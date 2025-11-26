@@ -32,12 +32,13 @@ struct RhythmicSession: Codable, Identifiable {
         return (distanceMeters / Double(elapsedSeconds)) * 3.6
     }
 
+
     var gaitSummary: GaitSummary?
     
     init(durationSeconds: Int, beat: String, pace: String) {
         self.id = UUID()
         self.startDate = Date()
-        self.requestedDurationSeconds = requestedDurationSeconds
+        self.requestedDurationSeconds = 0
         self.elapsedSeconds = 0
         self.beat = beat
         self.pace = pace
@@ -45,5 +46,6 @@ struct RhythmicSession: Codable, Identifiable {
         self.distanceMeters = 0
         self.gaitSummary = nil
         self.endDate = nil
+        
     }
 }
