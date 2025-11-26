@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="24412" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="Y6W-OH-hqX">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="24412" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="oZl-4f-dTn">
     <device id="retina6_3" orientation="portrait" appearance="light"/>
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="24405"/>
@@ -256,9 +256,6 @@
                                 </constraints>
                                 <state key="normal" title="Button"/>
                                 <buttonConfiguration key="configuration" style="filled" title="Allow" cornerStyle="capsule"/>
-                                <connections>
-                                    <segue destination="MUD-Lc-7Fb" kind="custom" id="NRv-uv-WmL"/>
-                                </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="y8R-nl-yU9">
                                 <rect key="frame" x="32" y="740" width="338" height="48"/>
@@ -267,9 +264,6 @@
                                 </constraints>
                                 <state key="normal" title="Button"/>
                                 <buttonConfiguration key="configuration" style="filled" title="Don't Allow" cornerStyle="capsule"/>
-                                <connections>
-                                    <segue destination="MUD-Lc-7Fb" kind="custom" id="TC5-P4-1iJ"/>
-                                </connections>
                             </button>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="Hj5-cV-Np4"/>
@@ -416,9 +410,6 @@
             <point key="canvasLocation" x="1472" y="148"/>
         </scene>
     </scenes>
-    <inferredMetricsTieBreakers>
-        <segue reference="NRv-uv-WmL"/>
-    </inferredMetricsTieBreakers>
     <resources>
         <image name="Icon - Apple Health" width="1920" height="1920"/>
         <image name="chevron.up.chevron.down" catalog="system" width="109" height="128"/>
