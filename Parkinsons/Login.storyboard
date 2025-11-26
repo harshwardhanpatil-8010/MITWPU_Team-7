@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="24412" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="OSu-5Z-dQg">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="24412" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="Y6W-OH-hqX">
     <device id="retina6_3" orientation="portrait" appearance="light"/>
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="24405"/>
@@ -163,7 +163,7 @@
                                     <constraint firstAttribute="height" constant="48" id="PmV-s6-POq"/>
                                 </constraints>
                                 <state key="normal" title="Button"/>
-                                <buttonConfiguration key="configuration" style="filled" title="Button" cornerStyle="capsule"/>
+                                <buttonConfiguration key="configuration" style="filled" title="Next" cornerStyle="capsule"/>
                                 <connections>
                                     <segue destination="OSu-5Z-dQg" kind="presentation" id="2IC-54-BEx"/>
                                 </connections>
@@ -212,19 +212,19 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Health" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="MOD-yi-jIb">
-                                <rect key="frame" x="16" y="143" width="54" height="20.333333333333343"/>
+                                <rect key="frame" x="16" y="143" width="54" height="82.333333333333314"/>
                                 <fontDescription key="fontDescription" type="boldSystem" pointSize="17"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="&quot;App&quot; would like to use and update your Health data" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="e7M-uS-mXN">
-                                <rect key="frame" x="16" y="177.33333333333334" width="370" height="40.666666666666657"/>
+                                <rect key="frame" x="16" y="239.33333333333334" width="370" height="40.666666666666657"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                 <color key="textColor" systemColor="systemGrayColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="UZ2-38-Cuc">
-                                <rect key="frame" x="20" y="235" width="362" height="48"/>
+                                <rect key="frame" x="20" y="297" width="362" height="48"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="48" id="krk-Ci-4xH"/>
                                 </constraints>
@@ -234,39 +234,67 @@
                                 </buttonConfiguration>
                             </button>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Allow &quot;App&quot; to read " textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="NSE-75-Ybq">
-                                <rect key="frame" x="16" y="305" width="153" height="21"/>
+                                <rect key="frame" x="16" y="367" width="153" height="21"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                 <color key="textColor" systemColor="systemGrayColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="-1" estimatedSectionHeaderHeight="-1" sectionFooterHeight="-1" estimatedSectionFooterHeight="-1" translatesAutoresizingMaskIntoConstraints="NO" id="hEA-fC-dsx">
-                                <rect key="frame" x="20" y="333" width="362" height="305"/>
+                                <rect key="frame" x="20" y="395" width="362" height="243"/>
                                 <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                             </tableView>
-                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="Icon - Apple Health" translatesAutoresizingMaskIntoConstraints="NO" id="Rxz-k4-JEt">
+                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" image="Icon - Apple Health" translatesAutoresizingMaskIntoConstraints="NO" id="Rxz-k4-JEt">
                                 <rect key="frame" x="159" y="62" width="84" height="84"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="84" id="OjJ-Kv-FxT"/>
                                 </constraints>
                             </imageView>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="rDx-r0-UNt">
+                                <rect key="frame" x="32" y="676" width="338" height="48"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="48" id="xsf-P7-clw"/>
+                                </constraints>
+                                <state key="normal" title="Button"/>
+                                <buttonConfiguration key="configuration" style="filled" title="Allow" cornerStyle="capsule"/>
+                                <connections>
+                                    <segue destination="MUD-Lc-7Fb" kind="custom" id="NRv-uv-WmL"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="y8R-nl-yU9">
+                                <rect key="frame" x="32" y="740" width="338" height="48"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="48" id="k6v-lA-7Z9"/>
+                                </constraints>
+                                <state key="normal" title="Button"/>
+                                <buttonConfiguration key="configuration" style="filled" title="Don't Allow" cornerStyle="capsule"/>
+                                <connections>
+                                    <segue destination="MUD-Lc-7Fb" kind="custom" id="TC5-P4-1iJ"/>
+                                </connections>
+                            </button>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="Hj5-cV-Np4"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                         <constraints>
+                            <constraint firstItem="rDx-r0-UNt" firstAttribute="top" secondItem="hEA-fC-dsx" secondAttribute="bottom" constant="38" id="0CQ-1F-gfg"/>
                             <constraint firstItem="e7M-uS-mXN" firstAttribute="leading" secondItem="Hj5-cV-Np4" secondAttribute="leading" constant="16" id="0eL-X4-9tJ"/>
                             <constraint firstItem="Hj5-cV-Np4" firstAttribute="trailing" secondItem="UZ2-38-Cuc" secondAttribute="trailing" constant="20" id="4WY-E8-87I"/>
                             <constraint firstItem="NSE-75-Ybq" firstAttribute="top" secondItem="UZ2-38-Cuc" secondAttribute="bottom" constant="22" id="4tf-AJ-Lv5"/>
                             <constraint firstItem="Hj5-cV-Np4" firstAttribute="trailing" secondItem="hEA-fC-dsx" secondAttribute="trailing" constant="20" id="4uY-d8-uXo"/>
                             <constraint firstItem="Rxz-k4-JEt" firstAttribute="top" secondItem="Hj5-cV-Np4" secondAttribute="top" constant="62" id="CdB-mu-f03"/>
                             <constraint firstItem="UZ2-38-Cuc" firstAttribute="top" secondItem="e7M-uS-mXN" secondAttribute="bottom" constant="17" id="CxD-7d-nO4"/>
+                            <constraint firstItem="y8R-nl-yU9" firstAttribute="leading" secondItem="pjv-4k-B29" secondAttribute="leadingMargin" constant="16" id="Elf-m4-zJL"/>
                             <constraint firstAttribute="bottomMargin" secondItem="hEA-fC-dsx" secondAttribute="bottom" constant="174" id="G0H-pg-ffT"/>
                             <constraint firstItem="Rxz-k4-JEt" firstAttribute="centerX" secondItem="e7M-uS-mXN" secondAttribute="centerX" id="IQH-0Q-XdE"/>
+                            <constraint firstAttribute="trailingMargin" secondItem="rDx-r0-UNt" secondAttribute="trailing" constant="16" id="Ix3-C8-adx"/>
                             <constraint firstItem="Hj5-cV-Np4" firstAttribute="trailing" secondItem="e7M-uS-mXN" secondAttribute="trailing" constant="16" id="JdR-si-XuB"/>
                             <constraint firstItem="hEA-fC-dsx" firstAttribute="top" secondItem="NSE-75-Ybq" secondAttribute="bottom" constant="7" id="MVu-DT-Egs"/>
                             <constraint firstItem="Rxz-k4-JEt" firstAttribute="leading" secondItem="Hj5-cV-Np4" secondAttribute="leading" constant="159" id="Odu-wf-d0M"/>
                             <constraint firstItem="e7M-uS-mXN" firstAttribute="top" secondItem="Rxz-k4-JEt" secondAttribute="bottom" constant="31.333333333333371" id="XuA-3b-RJW"/>
+                            <constraint firstItem="rDx-r0-UNt" firstAttribute="leading" secondItem="pjv-4k-B29" secondAttribute="leadingMargin" constant="16" id="Yp2-lg-aRx"/>
                             <constraint firstItem="UZ2-38-Cuc" firstAttribute="leading" secondItem="Hj5-cV-Np4" secondAttribute="leading" constant="20" id="ZfO-pA-eWm"/>
+                            <constraint firstItem="y8R-nl-yU9" firstAttribute="top" secondItem="hEA-fC-dsx" secondAttribute="bottom" constant="102" id="edj-LM-NZk"/>
                             <constraint firstItem="NSE-75-Ybq" firstAttribute="leading" secondItem="Hj5-cV-Np4" secondAttribute="leading" constant="16" id="kd3-zw-5YS"/>
+                            <constraint firstAttribute="trailingMargin" secondItem="y8R-nl-yU9" secondAttribute="trailing" constant="16" id="mO7-qQ-CXc"/>
                             <constraint firstItem="hEA-fC-dsx" firstAttribute="leading" secondItem="Hj5-cV-Np4" secondAttribute="leading" constant="20" id="te5-ty-wQ2"/>
                             <constraint firstItem="MOD-yi-jIb" firstAttribute="top" secondItem="Hj5-cV-Np4" secondAttribute="top" constant="81" id="vRX-bw-Ige"/>
                             <constraint firstItem="MOD-yi-jIb" firstAttribute="leading" secondItem="Hj5-cV-Np4" secondAttribute="leading" constant="16" id="x8k-qq-mXW"/>
@@ -388,6 +416,9 @@
             <point key="canvasLocation" x="1472" y="148"/>
         </scene>
     </scenes>
+    <inferredMetricsTieBreakers>
+        <segue reference="NRv-uv-WmL"/>
+    </inferredMetricsTieBreakers>
     <resources>
         <image name="Icon - Apple Health" width="1920" height="1920"/>
         <image name="chevron.up.chevron.down" catalog="system" width="109" height="128"/>

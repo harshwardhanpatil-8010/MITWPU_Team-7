@@ -18,11 +18,15 @@ class HealthPermissionsViewController: UIViewController, UITableViewDelegate, UI
         
         return cell
     }
+   
     
 
     @IBOutlet weak var permissionTableView: UITableView!
     override func viewDidLoad() {
         super.viewDidLoad()
+        permissionTableView.backgroundColor = UIColor.systemGray6
+        permissionTableView.layer.cornerRadius = 25
+        permissionTableView.clipsToBounds = true
         healthAppicon.layer.borderWidth = 1
         healthAppicon.layer.borderColor = UIColor.lightGray.cgColor
         healthAppicon.layer.cornerRadius = 20
