@@ -193,7 +193,7 @@
                                 <items>
                                     <navigationItem title="10 min workout" id="OvO-XT-FVN">
                                         <barButtonItem key="rightBarButtonItem" style="plain" id="4Ru-by-bn2">
-                                            <button key="customView" opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" id="Z7d-33-NBZ">
+                                            <button key="customView" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" id="Z7d-33-NBZ">
                                                 <rect key="frame" x="332.33333333333331" y="4.6666666666666687" width="49.666666666666686" height="34.666666666666664"/>
                                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                                 <state key="normal" title="Button"/>
