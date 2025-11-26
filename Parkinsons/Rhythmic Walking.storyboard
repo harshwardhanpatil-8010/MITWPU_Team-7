@@ -1,28 +1,210 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="17150" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="24412" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina6_12" orientation="portrait" appearance="light"/>
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="17122"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="24405"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="System colors in document resources" minToolsVersion="11.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
-        <!--View Controller-->
-        <scene sceneID="s0d-6b-0kx">
+        <!--Item-->
+        <scene sceneID="PlV-vA-0eo">
             <objects>
-                <viewController id="Y6W-OH-hqX" sceneMemberID="viewController">
-                    <view key="view" contentMode="scaleToFill" id="5EZ-qb-Rvc">
-                        <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+                <viewController storyboardIdentifier="SessionRunningVC" id="1kc-gU-wrq" customClass="SessionRunningViewController" customModule="Parkinson_s_App" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="Mdl-v4-X1O">
+                        <rect key="frame" x="0.0" y="0.0" width="393" height="793"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <viewLayoutGuide key="safeArea" id="vDu-zF-Fre"/>
+                        <subviews>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Qpe-gT-kER" customClass="CircularProgressView" customModule="Parkinson_s_App" customModuleProvider="target">
+                                <rect key="frame" x="95" y="17" width="203" height="263"/>
+                                <subviews>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" usesAttributedText="YES" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="P5j-xV-urJ">
+                                        <rect key="frame" x="71" y="78" width="62" height="71"/>
+                                        <attributedString key="attributedText">
+                                            <fragment content="Time Left">
+                                                <attributes>
+                                                    <font key="NSFont" size="14" name="SFPro-Regular"/>
+                                                    <paragraphStyle key="NSParagraphStyle" alignment="center" lineBreakMode="wordWrapping" baseWritingDirection="natural" tighteningFactorForTruncation="0.0"/>
+                                                </attributes>
+                                            </fragment>
+                                        </attributedString>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" usesAttributedText="YES" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="pBc-gX-Dut">
+                                        <rect key="frame" x="55" y="106" width="93" height="77"/>
+                                        <attributedString key="attributedText">
+                                            <fragment content="Label">
+                                                <attributes>
+                                                    <font key="NSFont" size="36" name="SFPro-Bold"/>
+                                                </attributes>
+                                            </fragment>
+                                        </attributedString>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                </subviews>
+                                <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                                <constraints>
+                                    <constraint firstItem="P5j-xV-urJ" firstAttribute="leading" secondItem="Qpe-gT-kER" secondAttribute="leading" constant="76.5" id="1ai-bE-nOg"/>
+                                    <constraint firstAttribute="bottom" secondItem="pBc-gX-Dut" secondAttribute="bottom" constant="80" id="6kG-rS-Gkr"/>
+                                    <constraint firstItem="P5j-xV-urJ" firstAttribute="top" secondItem="Qpe-gT-kER" secondAttribute="top" constant="78" id="O5x-cd-bgP"/>
+                                    <constraint firstItem="pBc-gX-Dut" firstAttribute="leading" secondItem="Qpe-gT-kER" secondAttribute="leading" constant="55" id="PWF-Wa-eo1"/>
+                                    <constraint firstAttribute="bottom" secondItem="P5j-xV-urJ" secondAttribute="bottom" constant="114" id="RUE-yv-p6W"/>
+                                    <constraint firstAttribute="trailing" secondItem="P5j-xV-urJ" secondAttribute="trailing" constant="76.5" id="ZrT-5b-DfF"/>
+                                    <constraint firstAttribute="trailing" secondItem="pBc-gX-Dut" secondAttribute="trailing" constant="55" id="far-yG-dsB"/>
+                                    <constraint firstItem="pBc-gX-Dut" firstAttribute="top" secondItem="Qpe-gT-kER" secondAttribute="top" constant="106" id="qVa-hO-ZDW"/>
+                                </constraints>
+                            </view>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Ubv-1p-jIa">
+                                <rect key="frame" x="151" y="355" width="90" height="90"/>
+                                <state key="normal" title="Button"/>
+                                <buttonConfiguration key="configuration" style="filled" cornerStyle="capsule">
+                                    <attributedString key="attributedTitle">
+                                        <fragment content="Pause">
+                                            <attributes>
+                                                <font key="NSFont" size="16" name="SFPro-Regular"/>
+                                                <paragraphStyle key="NSParagraphStyle" alignment="natural" lineBreakMode="wordWrapping" baseWritingDirection="natural" tighteningFactorForTruncation="0.0"/>
+                                            </attributes>
+                                        </fragment>
+                                    </attributedString>
+                                </buttonConfiguration>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ZKp-LN-1Mx">
+                                <rect key="frame" x="40" y="710" width="325" height="48"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <state key="normal" title="Button"/>
+                                <buttonConfiguration key="configuration" style="filled" title="End Session"/>
+                            </button>
+                        </subviews>
+                        <viewLayoutGuide key="safeArea" id="5dM-gP-LNl"/>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                        <constraints>
+                            <constraint firstItem="Ubv-1p-jIa" firstAttribute="leading" secondItem="5dM-gP-LNl" secondAttribute="leading" constant="151" id="3i1-Gu-EcB"/>
+                            <constraint firstItem="Qpe-gT-kER" firstAttribute="top" secondItem="5dM-gP-LNl" secondAttribute="top" constant="17" id="EEd-ic-uGc"/>
+                            <constraint firstItem="Qpe-gT-kER" firstAttribute="leading" secondItem="5dM-gP-LNl" secondAttribute="leading" constant="95" id="KzJ-XO-6WI"/>
+                            <constraint firstItem="5dM-gP-LNl" firstAttribute="trailing" secondItem="Ubv-1p-jIa" secondAttribute="trailing" constant="152" id="SOP-xh-7d2"/>
+                            <constraint firstItem="5dM-gP-LNl" firstAttribute="bottom" secondItem="Ubv-1p-jIa" secondAttribute="bottom" constant="348" id="bhk-kB-PJo"/>
+                            <constraint firstAttribute="bottomMargin" secondItem="Qpe-gT-kER" secondAttribute="bottom" constant="513" id="iRm-5N-kB6"/>
+                            <constraint firstItem="5dM-gP-LNl" firstAttribute="trailing" secondItem="Qpe-gT-kER" secondAttribute="trailing" constant="95" id="k3e-4K-l0g"/>
+                            <constraint firstItem="Ubv-1p-jIa" firstAttribute="top" secondItem="Qpe-gT-kER" secondAttribute="bottom" constant="75" id="yHK-qM-nG7"/>
+                        </constraints>
+                    </view>
+                    <tabBarItem key="tabBarItem" title="Item" id="odA-Ak-GUf"/>
+                    <nil key="simulatedBottomBarMetrics"/>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="RFy-Lo-jl5" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="3623.6641221374043" y="-454.22535211267609"/>
+        </scene>
+        <!--Rhythmic Walking-->
+        <scene sceneID="11U-OP-gRK">
+            <objects>
+                <viewController storyboardIdentifier="SetGoalVC" id="JJ7-RS-Dhn" customClass="SetGoalViewController" customModule="Parkinson_s_App" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" restorationIdentifier="Rhythmic_walking" id="wuG-Ru-sbe">
+                        <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Set Walking Goal" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="M23-Ec-ACv">
+                                <rect key="frame" x="16" y="152" width="206" height="23"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" type="boldSystem" pointSize="20"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="vHL-eo-hHZ">
+                                <rect key="frame" x="151" y="418" width="90" height="90"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <state key="normal" title="Button"/>
+                                <buttonConfiguration key="configuration" style="filled" cornerStyle="capsule">
+                                    <attributedString key="attributedTitle">
+                                        <fragment content="Start">
+                                            <attributes>
+                                                <font key="NSFont" size="16" name="SFPro-Regular"/>
+                                                <font key="NSOriginalFont" size="12" name="Helvetica"/>
+                                            </attributes>
+                                        </fragment>
+                                    </attributedString>
+                                </buttonConfiguration>
+                                <connections>
+                                    <segue destination="1kc-gU-wrq" kind="presentation" id="LmC-Ym-uKz"/>
+                                </connections>
+                            </button>
+                            <navigationBar contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="h9o-v8-NA3">
+                                <rect key="frame" x="0.0" y="74" width="393" height="44"/>
+                                <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxY="YES"/>
+                                <color key="barTintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <items>
+                                    <navigationItem title="Rhythmic Walking" id="M2K-DF-lmp">
+                                        <barButtonItem key="rightBarButtonItem" title="Item" image="info.circle" catalog="system" id="hqp-tl-EUo"/>
+                                    </navigationItem>
+                                </items>
+                            </navigationBar>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Today's Sessions" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="9dr-tt-Ogk">
+                                <rect key="frame" x="16" y="681" width="162.66666666666666" height="24"/>
+                                <fontDescription key="fontDescription" type="boldSystem" pointSize="20"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" fixedFrame="YES" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="-1" estimatedSectionHeaderHeight="-1" sectionFooterHeight="-1" estimatedSectionFooterHeight="-1" translatesAutoresizingMaskIntoConstraints="NO" id="Lh1-y2-G85">
+                                <rect key="frame" x="73" y="713" width="240" height="128"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                                <prototypes>
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="sessionCell" id="qZ7-XG-F0H" customClass="SessionTableViewCell" customModule="Parkinson_s_App" customModuleProvider="target">
+                                        <rect key="frame" x="0.0" y="50" width="240" height="51"/>
+                                        <autoresizingMask key="autoresizingMask"/>
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="qZ7-XG-F0H" id="eBE-Zo-CQX">
+                                            <rect key="frame" x="0.0" y="0.0" width="240" height="51"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                        </tableViewCellContentView>
+                                    </tableViewCell>
+                                </prototypes>
+                            </tableView>
+                            <datePicker contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" datePickerMode="time" minuteInterval="1" style="wheels" useCurrentDate="NO" translatesAutoresizingMaskIntoConstraints="NO" id="e2c-Rr-ggy">
+                                <rect key="frame" x="37" y="183" width="318" height="231"/>
+                                <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxY="YES"/>
+                                <date key="date" timeIntervalSinceReferenceDate="785590628.73706496">
+                                    <!--2025-11-23 11:37:08 +0000-->
+                                </date>
+                            </datePicker>
+                        </subviews>
+                        <viewLayoutGuide key="safeArea" id="3TP-Xy-pH0"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <constraints>
+                            <constraint firstItem="9dr-tt-Ogk" firstAttribute="leading" secondItem="3TP-Xy-pH0" secondAttribute="leading" constant="16" id="aGs-Xu-ecL"/>
+                            <constraint firstItem="9dr-tt-Ogk" firstAttribute="top" secondItem="3TP-Xy-pH0" secondAttribute="top" constant="563" id="anR-Vg-YSo"/>
+                        </constraints>
+                    </view>
+                    <toolbarItems/>
+                    <navigationItem key="navigationItem" title="Rhythmic Walking" id="zeu-ZJ-2cC"/>
+                    <simulatedToolbarMetrics key="simulatedBottomBarMetrics"/>
+                    <connections>
+                        <outlet property="sessionTableView" destination="Lh1-y2-G85" id="1RI-Sd-SF3"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="bRA-Ct-rib" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="2886.2595419847326" y="-453.52112676056339"/>
+        </scene>
+        <!--Item-->
+        <scene sceneID="aeM-6b-gqF">
+            <objects>
+                <viewController storyboardIdentifier="SessionSummaryVC" id="Elb-Rs-VbK" customClass="SessionSummaryViewController" customModule="Parkinson_s_App" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="ZWc-fB-9o5">
+                        <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <viewLayoutGuide key="safeArea" id="RSc-9f-7e6"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                     </view>
+                    <tabBarItem key="tabBarItem" title="Item" id="RBc-Fc-3hb"/>
                 </viewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="Ief-a0-LHa" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="z3w-A0-cwF" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
+            <point key="canvasLocation" x="4353.4351145038163" y="-454.22535211267609"/>
         </scene>
     </scenes>
     <resources>
+        <image name="info.circle" catalog="system" width="128" height="123"/>
         <systemColor name="systemBackgroundColor">
             <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
         </systemColor>
