@@ -49,6 +49,13 @@ class HealthPermissionsViewController: UIViewController, UITableViewDelegate, UI
     // MARK: - Button Actions
     
     // NEW: Action for the "Turn On All" button (Connect this in Storyboard)
+    @IBAction func allowButton(_ sender: Any) {
+        
+    }
+    
+    @IBAction func dontAllowButton(_ sender: Any) {
+    }
+    
     @IBAction func turnOnAllButtonTapped(_ sender: UIButton) {
         // 1. Update the data model: Set isEnabled to true for all items
         for i in 0..<permissions.count {

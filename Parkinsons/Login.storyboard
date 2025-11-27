@@ -54,7 +54,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dTw-Y0-ZOk" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-764.17910447761187" y="160.64073226544622"/>
+            <point key="canvasLocation" x="-688" y="148"/>
         </scene>
         <!--Info View Controller-->
         <scene sceneID="s0d-6b-0kx">
@@ -335,6 +335,9 @@
                                 </constraints>
                                 <state key="normal" title="Button"/>
                                 <buttonConfiguration key="configuration" style="filled" title="Allow" cornerStyle="capsule"/>
+                                <connections>
+                                    <action selector="allowButton:" destination="OSu-5Z-dQg" eventType="touchUpInside" id="X7Z-mH-Yis"/>
+                                </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="y8R-nl-yU9">
                                 <rect key="frame" x="32" y="740" width="338" height="48"/>
@@ -343,6 +346,9 @@
                                 </constraints>
                                 <state key="normal" title="Button"/>
                                 <buttonConfiguration key="configuration" style="gray" title="Don't Allow" cornerStyle="capsule"/>
+                                <connections>
+                                    <action selector="dontAllowButton:" destination="OSu-5Z-dQg" eventType="touchUpInside" id="D09-KZ-HNE"/>
+                                </connections>
                             </button>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="Hj5-cV-Np4"/>
@@ -381,12 +387,12 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="HoG-Ij-1S9" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="783.58208955223881" y="147.59725400457666"/>
+            <point key="canvasLocation" x="809" y="148"/>
         </scene>
         <!--Onboarding View Controller-->
         <scene sceneID="J5y-wo-uFx">
             <objects>
-                <viewController id="MUD-Lc-7Fb" customClass="OnboardingViewController" customModule="Parkinsons" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="onBoardingViewController" useStoryboardIdentifierAsRestorationIdentifier="YES" id="MUD-Lc-7Fb" customClass="OnboardingViewController" customModule="Parkinsons" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="d42-N8-Cv1">
                         <rect key="frame" x="0.0" y="0.0" width="402" height="874"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -486,7 +492,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="0bQ-sn-HSX" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1472" y="148"/>
+            <point key="canvasLocation" x="1518" y="148"/>
         </scene>
     </scenes>
     <resources>
