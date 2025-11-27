@@ -9,9 +9,13 @@ import UIKit
 
 class SessionSummaryViewController: UIViewController {
 
+    @IBOutlet weak var walkingUIView: UIView!
+    @IBOutlet weak var GaitUIView: UIView!
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-
+        walkingUIView.applyCardStyle()
+        GaitUIView.applyCardStyle()
         // Do any additional setup after loading the view.
     }
     

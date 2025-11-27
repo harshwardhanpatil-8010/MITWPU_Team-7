@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import SwiftUI
 
 struct GaitSummary: Codable {
     var stepLengthMeters: Double
@@ -49,3 +50,5 @@ struct RhythmicSession: Codable, Identifiable {
         
     }
 }
+
+
