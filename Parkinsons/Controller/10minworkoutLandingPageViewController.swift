@@ -8,6 +8,9 @@
 import UIKit
 
 class _0minworkoutLandingPageViewController: UIViewController, UITableViewDataSource {
+    
+    @IBOutlet weak var rightInfoBarButton: UINavigationItem!
+    
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         exerciselist.count
     }
@@ -24,6 +27,18 @@ class _0minworkoutLandingPageViewController: UIViewController, UITableViewDataSo
     @IBOutlet weak var exerciseTableView: UITableView!
     override func viewDidLoad() {
         super.viewDidLoad()
+        let infoButton = UIBarButtonItem(
+            image: UIImage(systemName: "info.circle"),
+            style: .plain,
+            target: self,
+            action: #selector(infoButtonTapped)
+        )
+        
+        rightInfoBarButton.rightBarButtonItem = infoButton
+        
+        exerciseTableView.layer.cornerRadius = 10
+        exerciseTableView.clipsToBounds = true
+        exerciseTableView.backgroundColor = UIColor.systemGray6
         exerciseTableView.dataSource = self
         // Do any additional setup after loading the view.
     }
@@ -38,5 +53,8 @@ class _0minworkoutLandingPageViewController: UIViewController, UITableViewDataSo
         // Pass the selected object to the new view controller.
     }
     */
+    @objc func infoButtonTapped() {
+        
+    }
 
 }

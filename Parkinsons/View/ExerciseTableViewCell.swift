@@ -9,8 +9,9 @@ import UIKit
 
 class ExerciseTableViewCell: UITableViewCell {
 
+    @IBOutlet weak var exerciseStatusImage: UIImageView!
     @IBOutlet weak var exerciseTypeLabel: UILabel!
-    @IBOutlet weak var exerciseStatusLabel: UILabel!
+
     @IBOutlet weak var exerciseImageView: UIImageView!
     @IBOutlet weak var exerciseTimeLabel: UILabel!
 
@@ -32,7 +33,7 @@ class ExerciseTableViewCell: UITableViewCell {
         exerciseTypeLabel.text = exercise.exerciseType
         exerciseImageView.image = UIImage(named: exercise.exerciseImage)
         exerciseTimeLabel.text = "\(exercise.exerciseTime)"
-        exerciseStatusLabel.text = String(exercise.exerciseStatus)
+        
         
     }
 

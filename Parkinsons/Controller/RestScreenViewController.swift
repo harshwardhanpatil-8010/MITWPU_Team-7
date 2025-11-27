@@ -14,6 +14,11 @@ class RestScreenViewController: UIViewController {
     @IBOutlet weak var addTimeButton: UIButton!
     
     
+    weak var delegate: RestScreenDelegate?
+    var currentIndex: Int = 0
+    var totalExercises: Int = 0
+
+    
       var timer: Timer?
       var totalTime = 60
       
@@ -49,16 +54,17 @@ class RestScreenViewController: UIViewController {
           )
       }
       
-      @objc func updateTimer() {
-          if totalTime > 0 {
-              totalTime -= 1
-              //updateTimerLabel()
-          } else {
-              timer?.invalidate()
-              timer = nil
-              dismiss(animated: true)
-          }
-      }
+    @objc func updateTimer() {
+        if totalTime > 0 {
+            totalTime -= 1
+            timerLabel.text = "\(totalTime)"
+        } else {
+            timer?.invalidate()
+            delegate?.restCompleted(nextIndex: currentIndex + 1)
+            navigationController?.popViewController(animated: true)
+        }
+    }
+
       
       func updateTimerLabel() {
           timerLabel.text = "\(totalTime)sec"
