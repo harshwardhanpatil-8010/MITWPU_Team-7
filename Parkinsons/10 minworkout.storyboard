@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="24412" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="Ndm-wp-35y">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="24412" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
     <device id="retina6_3" orientation="portrait" appearance="light"/>
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="24405"/>
@@ -11,7 +11,7 @@
         <!--Rest Screen View Controller-->
         <scene sceneID="ebc-ya-hmf">
             <objects>
-                <viewController id="J4b-8T-y2N" customClass="RestScreenViewController" customModule="Parkinson_s_App" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController id="J4b-8T-y2N" customClass="RestScreenViewController" customModule="Parkinsons" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="6p5-RL-dAZ">
                         <rect key="frame" x="0.0" y="0.0" width="402" height="874"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -107,7 +107,7 @@
         <!--Info Modal View Controller-->
         <scene sceneID="WSV-ha-It8">
             <objects>
-                <viewController id="3xf-SQ-w14" customClass="InfoModalViewController" customModule="Parkinson_s_App" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController id="3xf-SQ-w14" customClass="InfoModalViewController" customModule="Parkinsons" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="LHo-hh-3gH">
                         <rect key="frame" x="0.0" y="0.0" width="402" height="874"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -238,10 +238,10 @@
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <stackView opaque="NO" contentMode="scaleToFill" fixedFrame="YES" distribution="fillProportionally" alignment="center" spacing="21" translatesAutoresizingMaskIntoConstraints="NO" id="ESU-We-gQ1">
-                                                    <rect key="frame" x="19" y="-1" width="349.33333333333331" height="52.333333333333336"/>
+                                                    <rect key="frame" x="19" y="-1" width="228" height="52.333333333333336"/>
                                                     <subviews>
                                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="3fp-PV-UA6">
-                                                            <rect key="frame" x="0.0" y="15.999999999999998" width="41.333333333333336" height="20.333333333333329"/>
+                                                            <rect key="frame" x="0.0" y="15.999999999999998" width="20" height="20.333333333333329"/>
                                                             <constraints>
                                                                 <constraint firstAttribute="width" constant="20" id="rtN-w8-FUJ"/>
                                                             </constraints>
@@ -250,10 +250,10 @@
                                                             <nil key="highlightedColor"/>
                                                         </label>
                                                         <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="JAs-8g-Q1a">
-                                                            <rect key="frame" x="62.333333333333343" y="1.3333333333333321" width="52" height="50"/>
+                                                            <rect key="frame" x="41" y="1.3333333333333321" width="0.0" height="50"/>
                                                         </imageView>
                                                         <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="2" translatesAutoresizingMaskIntoConstraints="NO" id="SK2-W0-cFN">
-                                                            <rect key="frame" x="135.33333333333334" y="0.0" width="145.00000000000003" height="52.333333333333336"/>
+                                                            <rect key="frame" x="62" y="0.0" width="145" height="52.333333333333336"/>
                                                             <subviews>
                                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="r0n-kh-rY1">
                                                                     <rect key="frame" x="0.0" y="0.0" width="145" height="26.333333333333332"/>
@@ -273,7 +273,7 @@
                                                             </subviews>
                                                         </stackView>
                                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ilo-zm-zDP">
-                                                            <rect key="frame" x="301.33333333333331" y="14.333333333333336" width="48" height="24"/>
+                                                            <rect key="frame" x="228" y="14.333333333333336" width="0.0" height="24"/>
                                                             <fontDescription key="fontDescription" type="system" pointSize="20"/>
                                                             <nil key="textColor"/>
                                                             <nil key="highlightedColor"/>
@@ -560,7 +560,7 @@
         <!--0minworkout View Controller-->
         <scene sceneID="czI-ub-xzR">
             <objects>
-                <viewController id="kfw-Zk-5lP" customClass="_0minworkoutViewController" customModule="Parkinson_s_App" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController id="kfw-Zk-5lP" customClass="_0minworkoutViewController" customModule="Parkinsons" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="cog-hj-JbD">
                         <rect key="frame" x="0.0" y="0.0" width="402" height="874"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
