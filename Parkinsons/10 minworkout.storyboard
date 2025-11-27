@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="24412" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="kfw-Zk-5lP">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="24412" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="gbw-VJ-lsM">
     <device id="retina6_3" orientation="portrait" appearance="light"/>
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="24405"/>
@@ -11,7 +11,7 @@
         <!--Rest Screen View Controller-->
         <scene sceneID="ebc-ya-hmf">
             <objects>
-                <viewController id="J4b-8T-y2N" customClass="RestScreenViewController" customModule="Parkinsons" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController useStoryboardIdentifierAsRestorationIdentifier="YES" id="J4b-8T-y2N" customClass="RestScreenViewController" customModule="Parkinsons" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="6p5-RL-dAZ">
                         <rect key="frame" x="0.0" y="0.0" width="402" height="874"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -115,12 +115,12 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="jm5-Xy-JZp" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1809" y="130"/>
+            <point key="canvasLocation" x="2728.3582089552237" y="129.7482837528604"/>
         </scene>
         <!--Info Modal View Controller-->
         <scene sceneID="WSV-ha-It8">
             <objects>
-                <viewController id="3xf-SQ-w14" customClass="InfoModalViewController" customModule="Parkinsons" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController useStoryboardIdentifierAsRestorationIdentifier="YES" id="3xf-SQ-w14" customClass="InfoModalViewController" customModule="Parkinsons" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="LHo-hh-3gH">
                         <rect key="frame" x="0.0" y="0.0" width="402" height="874"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -191,12 +191,12 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="QvK-xH-w2J" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2743" y="122"/>
+            <point key="canvasLocation" x="3661.1940298507461" y="121.51029748283752"/>
         </scene>
         <!--0minworkout Landing Page View Controller-->
         <scene sceneID="hG1-va-qNN">
             <objects>
-                <viewController id="Ndm-wp-35y" customClass="_0minworkoutLandingPageViewController" customModule="Parkinsons" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController useStoryboardIdentifierAsRestorationIdentifier="YES" id="Ndm-wp-35y" customClass="_0minworkoutLandingPageViewController" customModule="Parkinsons" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="i6X-z3-sPf">
                         <rect key="frame" x="0.0" y="0.0" width="402" height="874"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -213,22 +213,25 @@
                                     <constraint firstAttribute="height" constant="52" id="Bhs-cT-wtf"/>
                                     <constraint firstAttribute="width" constant="334" id="yg6-QO-55t"/>
                                 </constraints>
-                                <buttonConfiguration key="configuration" style="filled" title="Label" cornerStyle="capsule"/>
+                                <buttonConfiguration key="configuration" style="filled" title="Start" cornerStyle="capsule"/>
+                                <connections>
+                                    <action selector="startButtonAction:" destination="Ndm-wp-35y" eventType="touchUpInside" id="o0d-Sb-Be0"/>
+                                </connections>
                             </button>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="EZX-J2-hy3">
-                                <rect key="frame" x="175" y="238" width="52" height="24"/>
+                                <rect key="frame" x="175" y="292" width="52" height="24"/>
                                 <fontDescription key="fontDescription" type="boldSystem" pointSize="20"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Completed" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Hvn-B8-w5Z">
-                                <rect key="frame" x="159" y="267" width="84" height="20.333333333333314"/>
+                                <rect key="frame" x="159" y="321" width="84" height="20.333333333333314"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="-1" estimatedSectionHeaderHeight="-1" sectionFooterHeight="-1" estimatedSectionFooterHeight="-1" translatesAutoresizingMaskIntoConstraints="NO" id="tMO-fk-ozK">
-                                <rect key="frame" x="16" y="387" width="370" height="283"/>
+                                <rect key="frame" x="16" y="441" width="370" height="229"/>
                                 <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                                 <prototypes>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="exercise_cell" id="DOG-dS-5vE" customClass="ExerciseTableViewCell" customModule="Parkinsons" customModuleProvider="target">
@@ -334,19 +337,21 @@
                             <constraint firstItem="Wub-cm-Ofp" firstAttribute="bottom" secondItem="xbg-g6-n8k" secondAttribute="bottom" constant="70" id="xPJ-hL-v4b"/>
                         </constraints>
                     </view>
+                    <navigationItem key="navigationItem" id="uWL-aI-44F"/>
                     <connections>
                         <outlet property="exerciseTableView" destination="tMO-fk-ozK" id="Dgd-Xc-gjl"/>
                         <outlet property="rightInfoBarButton" destination="OvO-XT-FVN" id="B74-WT-ZWv"/>
+                        <outlet property="startButtonOutlet" destination="xbg-g6-n8k" id="9Nw-5h-WIx"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="RQ4-6r-N8e" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-770.14925373134326" y="129.7482837528604"/>
+            <point key="canvasLocation" x="149.25373134328356" y="129.7482837528604"/>
         </scene>
         <!--0minworkout Countdown View Controller-->
         <scene sceneID="fwz-WR-0Sv">
             <objects>
-                <viewController id="f2T-cn-qUt" customClass="_0minworkoutCountdownViewController" customModule="Parkinsons" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="10minworkoutCountdownViewController" useStoryboardIdentifierAsRestorationIdentifier="YES" id="f2T-cn-qUt" customClass="_0minworkoutCountdownViewController" customModule="Parkinsons" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="D3K-98-ReG">
                         <rect key="frame" x="0.0" y="0.0" width="402" height="874"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -357,14 +362,14 @@
                                     <navigationItem title="10 min workout" id="tmB-Tq-N28"/>
                                 </items>
                             </navigationBar>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="wSf-Co-ErF">
-                                <rect key="frame" x="140" y="339" width="122" height="32.333333333333314"/>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Let's Begin" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="wSf-Co-ErF">
+                                <rect key="frame" x="0.0" y="250" width="402" height="33"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="27"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="65U-Ul-9tH">
-                                <rect key="frame" x="0.0" y="381.33333333333331" width="402" height="152.99999999999994"/>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="65U-Ul-9tH">
+                                <rect key="frame" x="0.0" y="382" width="402" height="153"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="128"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
@@ -373,26 +378,29 @@
                         <viewLayoutGuide key="safeArea" id="vUh-5N-FKN"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                         <constraints>
-                            <constraint firstItem="vUh-5N-FKN" firstAttribute="trailing" secondItem="wSf-Co-ErF" secondAttribute="trailing" constant="140" id="1wM-3L-ZzE"/>
+                            <constraint firstItem="65U-Ul-9tH" firstAttribute="top" secondItem="wSf-Co-ErF" secondAttribute="bottom" constant="99" id="0NR-I4-Z5m"/>
                             <constraint firstItem="vUh-5N-FKN" firstAttribute="trailing" secondItem="65U-Ul-9tH" secondAttribute="trailing" id="5Xv-qm-j9K"/>
-                            <constraint firstItem="wSf-Co-ErF" firstAttribute="top" secondItem="vUh-5N-FKN" secondAttribute="top" constant="215" id="TDm-Iw-2X5"/>
-                            <constraint firstItem="wSf-Co-ErF" firstAttribute="leading" secondItem="vUh-5N-FKN" secondAttribute="leading" constant="140" id="WHM-XD-kA4"/>
+                            <constraint firstItem="wSf-Co-ErF" firstAttribute="top" secondItem="D3K-98-ReG" secondAttribute="top" constant="250" id="CTi-V0-JYK"/>
                             <constraint firstItem="65U-Ul-9tH" firstAttribute="leading" secondItem="vUh-5N-FKN" secondAttribute="leading" id="Y55-jv-iv4"/>
-                            <constraint firstItem="65U-Ul-9tH" firstAttribute="top" secondItem="wSf-Co-ErF" secondAttribute="bottom" constant="10" id="dcU-AQ-SmB"/>
+                            <constraint firstItem="wSf-Co-ErF" firstAttribute="leading" secondItem="vUh-5N-FKN" secondAttribute="leading" id="hp6-uS-CGW"/>
                             <constraint firstItem="PkR-Sw-T7r" firstAttribute="trailing" secondItem="65U-Ul-9tH" secondAttribute="trailing" id="mVG-Jw-zwr"/>
                             <constraint firstItem="PkR-Sw-T7r" firstAttribute="top" secondItem="D3K-98-ReG" secondAttribute="top" constant="62" id="py3-wr-wtR"/>
                             <constraint firstItem="PkR-Sw-T7r" firstAttribute="leading" secondItem="65U-Ul-9tH" secondAttribute="leading" id="qNW-Ek-s3w"/>
+                            <constraint firstItem="vUh-5N-FKN" firstAttribute="trailing" secondItem="wSf-Co-ErF" secondAttribute="trailing" id="uZ2-WK-bQj"/>
                         </constraints>
                     </view>
+                    <connections>
+                        <outlet property="TimerLabel" destination="65U-Ul-9tH" id="fgv-nj-6eQ"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="hPz-QG-MXe" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="80.597014925373131" y="129.7482837528604"/>
+            <point key="canvasLocation" x="999.99999999999989" y="129.7482837528604"/>
         </scene>
         <!--0minworkout Good Job View Controller-->
         <scene sceneID="hrK-dw-KUr">
             <objects>
-                <viewController id="TZO-vY-iUG" customClass="_0minworkoutGoodJobViewController" customModule="Parkinsons" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController useStoryboardIdentifierAsRestorationIdentifier="YES" id="TZO-vY-iUG" customClass="_0minworkoutGoodJobViewController" customModule="Parkinsons" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="WXM-8e-z9q">
                         <rect key="frame" x="0.0" y="0.0" width="402" height="874"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -579,12 +587,12 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="5T6-RI-xm1" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="3535.8208955223877" y="121.51029748283752"/>
+            <point key="canvasLocation" x="4455.2238805970146" y="121.51029748283752"/>
         </scene>
         <!--0minworkout View Controller-->
         <scene sceneID="czI-ub-xzR">
             <objects>
-                <viewController id="kfw-Zk-5lP" customClass="_0minworkoutViewController" customModule="Parkinsons" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="10minworkoutViewController" useStoryboardIdentifierAsRestorationIdentifier="YES" id="kfw-Zk-5lP" customClass="_0minworkoutViewController" customModule="Parkinsons" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="cog-hj-JbD">
                         <rect key="frame" x="0.0" y="0.0" width="402" height="874"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -710,19 +718,22 @@
                                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" alignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="mZd-CH-2G8">
                                                 <rect key="frame" x="0.0" y="0.0" width="76" height="58.666666666666664"/>
                                                 <subviews>
-                                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="E53-Fa-HcK">
+                                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" text="Label" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="E53-Fa-HcK">
                                                         <rect key="frame" x="0.3333333333333357" y="0.0" width="75.666666666666657" height="38.333333333333336"/>
                                                         <fontDescription key="fontDescription" type="system" pointSize="32"/>
                                                         <nil key="textColor"/>
                                                         <nil key="highlightedColor"/>
                                                     </label>
-                                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Time Left" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="OdR-Ls-Cae">
+                                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" text="Time Left" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="OdR-Ls-Cae">
                                                         <rect key="frame" x="2.3333333333333357" y="38.333333333333258" width="71.666666666666657" height="20.333333333333329"/>
                                                         <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                         <nil key="textColor"/>
                                                         <nil key="highlightedColor"/>
                                                     </label>
                                                 </subviews>
+                                                <constraints>
+                                                    <constraint firstItem="OdR-Ls-Cae" firstAttribute="centerX" secondItem="E53-Fa-HcK" secondAttribute="centerX" id="7H8-es-5Sr"/>
+                                                </constraints>
                                             </stackView>
                                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" alignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="z5T-OB-qC3">
                                                 <rect key="frame" x="242" y="0.0" width="76" height="58.666666666666664"/>
@@ -773,7 +784,6 @@
                                         </subviews>
                                         <constraints>
                                             <constraint firstItem="MZl-LX-BdN" firstAttribute="height" secondItem="N6N-4i-Cr3" secondAttribute="height" multiplier="0.592233" id="US4-LD-Jar"/>
-                                            <constraint firstItem="MZl-LX-BdN" firstAttribute="leading" secondItem="tQQ-64-Gce" secondAttribute="leading" constant="20" id="xi5-TY-mNw"/>
                                         </constraints>
                                     </stackView>
                                 </subviews>
@@ -824,7 +834,25 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="qra-DB-Pu2" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1064.1791044776119" y="130.43478260869566"/>
+            <point key="canvasLocation" x="1983.5820895522386" y="130.43478260869566"/>
+        </scene>
+        <!--Navigation Controller-->
+        <scene sceneID="uwW-zm-yl0">
+            <objects>
+                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="gbw-VJ-lsM" sceneMemberID="viewController">
+                    <toolbarItems/>
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="Yan-9O-DUg">
+                        <rect key="frame" x="0.0" y="124" width="402" height="54"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                    </navigationBar>
+                    <nil name="viewControllers"/>
+                    <connections>
+                        <segue destination="Ndm-wp-35y" kind="relationship" relationship="rootViewController" id="G3A-Tw-nbd"/>
+                    </connections>
+                </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="2mB-64-HBW" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-770.14925373134326" y="129.7482837528604"/>
         </scene>
     </scenes>
     <resources>

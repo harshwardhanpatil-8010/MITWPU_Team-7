@@ -192,7 +192,7 @@ class _0minworkoutViewController: UIViewController {
     func navigateToNext() {
         if currentIndex < exercises.count - 1 {
             // Go to Rest Screen
-            let storyboard = UIStoryboard(name: "Main", bundle: nil)
+            let storyboard = UIStoryboard(name: "10 minworkout", bundle: nil)
             let vc = storyboard.instantiateViewController(withIdentifier: "RestScreenViewController") as! RestScreenViewController
             
             vc.currentIndex = currentIndex
@@ -238,9 +238,9 @@ class _0minworkoutViewController: UIViewController {
           present(alert, animated: true)
     }
     func showInfoModal(for exercise: ExerciseDetail) {
-        let storyboard = UIStoryboard(name: "10minworkoutViewController", bundle: nil)
+        let storyboard = UIStoryboard(name: "10 minworkout", bundle: nil)
         let modalVC = storyboard.instantiateViewController(withIdentifier: "InfoModalViewController") as! InfoModalViewController
-        modalVC.exerciseDetail = exercise   //
+        modalVC.exerciseDetail = exercise
         modalVC.modalPresentationStyle = .overCurrentContext
         present(modalVC, animated: true)
     }

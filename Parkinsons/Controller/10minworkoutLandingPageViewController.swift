@@ -11,6 +11,7 @@ class _0minworkoutLandingPageViewController: UIViewController, UITableViewDataSo
     
     @IBOutlet weak var rightInfoBarButton: UINavigationItem!
     
+    @IBOutlet weak var startButtonOutlet: UIButton!
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         exerciselist.count
     }
@@ -44,6 +45,25 @@ class _0minworkoutLandingPageViewController: UIViewController, UITableViewDataSo
     }
     
 
+    @IBAction func startButtonAction(_ sender: UIButton) {
+        
+        let storyboard = UIStoryboard(name: "10 minworkout", bundle: nil)
+        let vc = storyboard.instantiateViewController(withIdentifier: "10minworkoutCountdownViewController") as! _0minworkoutCountdownViewController
+        vc.modalPresentationStyle = .fullScreen
+        vc.modalTransitionStyle = .coverVertical   // Default push-like (slides from bottom)
+
+        // For push-like slide from right animation:
+        let transition = CATransition()
+        transition.duration = 0.3
+        transition.type = .push
+        transition.subtype = .fromRight
+        view.window?.layer.add(transition, forKey: kCATransition)
+        present(vc, animated: false)
+
+
+        
+
+    }
     /*
     // MARK: - Navigation
 
