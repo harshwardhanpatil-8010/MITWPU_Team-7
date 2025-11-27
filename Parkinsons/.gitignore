@@ -19,3 +19,4 @@ fastlane/screenshots
 *.xcuserdata/
 *.xcuserdatad/
 *.xcuserstate
+xcuserdata/
