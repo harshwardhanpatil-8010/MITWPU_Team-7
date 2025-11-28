@@ -15,7 +15,7 @@ class SessionRunningViewController: UIViewController {
     @IBOutlet weak var pauseButton: UIButton!
     
     private var progressView: CircularProgressView!
-    private let timerModel = TimerModel(totalSeconds: 40 * 60) // STATIC RN, HAVE TO USE PREPARE FUNC TO GET SET TIME DATA FROM SETGOALVC
+    private let timerModel = TimerModel(totalSeconds: 2 * 60) // STATIC RN, HAVE TO USE PREPARE FUNC TO GET SET TIME DATA FROM SETGOALVC
     
     
     private func setupProgressView() {
@@ -30,6 +30,7 @@ class SessionRunningViewController: UIViewController {
         timerModel.delegate = self
         timerModel.start()
         
+//        BeatPlayer.shared.setupAudio(fileName: selectedBeat)
         updatePauseButtonUI()
         // Do any additional setup after loading the view.
     }
@@ -60,7 +61,7 @@ class SessionRunningViewController: UIViewController {
         }
         
         func timerDidFinish() {
-            timeLabel.text = "00:00"
+            timeLabel.text = " 00:00 "
             progressView.setProgress(0)
             pauseButton.isEnabled = false
         }

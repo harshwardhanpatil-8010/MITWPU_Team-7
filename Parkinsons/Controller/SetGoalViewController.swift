@@ -8,6 +8,12 @@
 import UIKit
 
 class SetGoalViewController: UIViewController, UITableViewDataSource, UIPickerViewDataSource {
+    
+    @IBAction func infoButtonTapped(_ sender: UIBarButtonItem) {
+        let overLay = OverlayPopUp()
+        overLay.appear(sender: self)
+    }
+
     private let paces = ["Slow", "Moderate", "Fast"]
     private var beats: [String] = []
     private var selectedBeat = "Clock"
@@ -19,8 +25,8 @@ class SetGoalViewController: UIViewController, UITableViewDataSource, UIPickerVi
     //    let dataForColumn2 = ["00","01","02","03","04","05","06","07","08","09","10","11","12","13","14","15","16","17","18","19","20","21","22","23","24","25","26","27","28","29","30","31","32","33","34","35","36","37","38","39","40","41","42","43","44","45","46","47","48","49","50","51","52","53","54","55","56","57","58","59","60"]
 
     private func updateButtons() {
-        beatButton.setTitle("\(selectedBeat) ⌄", for: .normal)
-        paceButton.setTitle("\(selectedPace) ⌄", for: .normal)
+        beatButton.setTitle("\(selectedBeat)", for: .normal)
+        paceButton.setTitle("\(selectedPace)", for: .normal)
     }
     
     private func bpmForPace(_ pace: String) -> Int {
@@ -80,6 +86,8 @@ class SetGoalViewController: UIViewController, UITableViewDataSource, UIPickerVi
         return String(value)
     }
     
+    
+    
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return session.count
     }
@@ -100,21 +108,20 @@ class SetGoalViewController: UIViewController, UITableViewDataSource, UIPickerVi
         DurationPicker.delegate = self
         sessionTableView.dataSource = self
         beats = BeatPlayer.shared.availableBeats()
+        setupBeatButton()
+        setupPaceButton()
         updateButtons()
         
         // Do any additional setup after loading the view.
     }
     
     
-//    override func viewWillAppear(_ animated: Bool) {
-//        super.viewWillAppear(animated)
-//
-//        // Removes old sessions (yesterday) automatically
-//        DataStore.shared.cleanupOldSessions()
-//
-//        // Refresh your UITableView/CollectionView
-//        sessionsTableView.reloadData()
-//    }
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        DataStore.shared.cleanupOldSessions()
+        sessionTableView.reloadData()
+        
+    }
 
     
 
@@ -140,11 +147,11 @@ class SetGoalViewController: UIViewController, UITableViewDataSource, UIPickerVi
             return
         }
 
-        let bpm = bpmForPace(selectedPace)
+//        let bpm = bpmForPace(selectedPace)
+//
+//        var session = RhythmicSession(durationSeconds: total, beat: selectedBeat, pace: selectedPace)
 
-        var session = RhythmicSession(durationSeconds: total, beat: selectedBeat, pace: selectedPace)
-
-        let storyboard = UIStoryboard(name: "Main", bundle: nil)
+        let storyboard = UIStoryboard(name: "Rhythmic Walking", bundle: nil)
         guard let runningVC = storyboard.instantiateViewController(withIdentifier: "SessionRunningVC") as? SessionRunningViewController else { return }
 
 //        runningVC.session = session
@@ -155,30 +162,38 @@ class SetGoalViewController: UIViewController, UITableViewDataSource, UIPickerVi
     }
     
 
-    @IBAction func beatButtonTapped(_ sender: Any) {
-        let ac = UIAlertController(title: "Select beat", message: nil, preferredStyle: .actionSheet)
-        for name in beats{
-            ac.addAction(UIAlertAction(title: name, style: .default, handler: { (_) in
-                self.selectedBeat = name
-                self.updateButtons()
-            }))
-        }
-        ac.addAction(UIAlertAction(title: "Cancel", style: .cancel))
-        present(ac, animated: true)
+    @IBAction func beatButtonTapped(_ sender: UIButton) {
     }
     
     @IBAction func paceButtonTapped(_ sender: Any) {
-        let ac = UIAlertController(title: "Select Pace", message: nil, preferredStyle: .actionSheet)
-        for p in paces {
-            ac.addAction(UIAlertAction(title: p, style: .default, handler: { _ in
-                self.selectedPace = p
-                self.updateButtons()
-            }))
+    }
+    
+    func setupBeatButton(){
+        let optionClosure: UIActionHandler = { [weak self] action in
+                _ = self
         }
-        ac.addAction(UIAlertAction(title: "Cancel", style: .cancel))
-        present(ac, animated: true)
+        let option1 = UIAction(title: "Clock",state: .on, handler: optionClosure)
+        let option2 = UIAction(title: "Grass", handler: optionClosure)
+        let menu  = UIMenu(children: [option1, option2])
+        beatButton.menu = menu
+        beatButton.showsMenuAsPrimaryAction = true
+        beatButton.changesSelectionAsPrimaryAction = true
+    }
+    
+    func setupPaceButton(){
+        let optionClosure: UIActionHandler = { [weak self] action in
+                _ = self
+        }
+        let option1 = UIAction(title: "Slow",state: .on, handler: optionClosure)
+        let option2 = UIAction(title: "Medium", handler: optionClosure)
+        let option3 = UIAction(title: "Fast", handler: optionClosure)
+        let menu  = UIMenu(children: [option1, option2, option3])
+        paceButton.menu = menu
+        paceButton.showsMenuAsPrimaryAction = true
+        paceButton.changesSelectionAsPrimaryAction = true
     }
 }
+
 
 extension SetGoalViewController: UIPickerViewDelegate{
     func pickerView(_ pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
@@ -192,3 +207,4 @@ extension SetGoalViewController: UIPickerViewDelegate{
         }
     }
 }
+
