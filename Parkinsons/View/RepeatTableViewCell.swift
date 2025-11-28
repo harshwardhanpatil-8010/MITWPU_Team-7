@@ -1,0 +1,35 @@
+//
+//  RepeatTableViewCell.swift
+//  Parkinsons
+//
+//  Created by SDC-USER on 28/11/25.
+//
+
+import UIKit
+
+class RepeatTableViewCell: UITableViewCell {
+
+    @IBOutlet weak var repeatStatus: UIImageView!
+    @IBOutlet weak var repeatLabel: UILabel!
+    override func awakeFromNib() {
+        super.awakeFromNib()
+        // Initialization code
+    }
+
+    override func setSelected(_ selected: Bool, animated: Bool) {
+        super.setSelected(selected, animated: animated)
+
+        // Configure the view for the selected state
+    }
+    func configureCell(type: Repeat) {
+        repeatLabel.text = type.name
+
+        if type.isSelected {
+            repeatStatus.image = UIImage(systemName: "checkmark")
+            repeatStatus.tintColor = .systemGreen
+        } else {
+            repeatStatus.image = nil     // Remove previous image
+        }
+    }
+
+}
