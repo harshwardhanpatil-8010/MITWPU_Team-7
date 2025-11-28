@@ -9,13 +9,13 @@ import UIKit
 
 class _0minworkoutCountdownViewController: UIViewController {
     @IBOutlet weak var TimerLabel: UILabel!
-    var countDown = 4
+    var countDown = 3
     override func viewDidLoad() {
         super.viewDidLoad()
         TimerLabel.text = "\(countDown)"
         TimerLabel.alpha = 1
         startCountDown()
-
+        setupCloseButton()
         // Do any additional setup after loading the view.
     }
     func startCountDown() {
@@ -36,21 +36,49 @@ class _0minworkoutCountdownViewController: UIViewController {
              }
          }
     func navigateToNextScreen() {
-        let storyboard = UIStoryboard(name: "10 minworkout", bundle: nil)
-        let vc = storyboard.instantiateViewController(withIdentifier: "10minworkoutViewController") as! _0minworkoutViewController
-        vc.modalPresentationStyle = .fullScreen
-        vc.modalTransitionStyle = .coverVertical   // Default push-like (slides from bottom)
-
-        // For push-like slide from right animation:
-        let transition = CATransition()
-        transition.duration = 0.3
-        transition.type = .push
-        transition.subtype = .fromRight
-        view.window?.layer.add(transition, forKey: kCATransition)
-        present(vc, animated: false)
-
+            
+            guard let navigationController = self.navigationController else {
+                print("Error: View Controller is not embedded in a Navigation Controller.")
+      
+                return
+            }
+            
+          
+            let storyboard = UIStoryboard(name: "10 minworkout", bundle: nil)
+            let vc = storyboard.instantiateViewController(withIdentifier: "10minworkoutViewController") as! _0minworkoutViewController
+  
+            navigationController.pushViewController(vc, animated: true)
         }
+    
+    func setupCloseButton() {
+            // Use the system image for a consistent "close" icon
+            let closeImage = UIImage(systemName: "xmark")
+            
+            let closeButton = UIBarButtonItem(
+                image: closeImage,
+                style: .plain,
+                target: self,
+                action: #selector(closeButtonTapped) // This calls the function below when tapped
+            )
+            
+            navigationItem.leftBarButtonItem = closeButton
+        }
+    
+    @objc func closeButtonTapped() {
+        let alert = UIAlertController(
+               title: "Quit Workout?",
+               message: "Are you sure you want to quit the workout?",
+               preferredStyle: .alert
+           )
 
+           alert.addAction(UIAlertAction(title: "Yes", style: .destructive, handler: { _ in
+               self.dismiss(animated: true) // or pop
+           }))
+
+           alert.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: nil))
+
+           present(alert, animated: true)
+    }
     /*
     // MARK: - Navigation
 

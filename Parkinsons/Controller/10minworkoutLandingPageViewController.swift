@@ -9,9 +9,9 @@ import UIKit
 
 class _0minworkoutLandingPageViewController: UIViewController, UITableViewDataSource {
     
-    @IBOutlet weak var rightInfoBarButton: UINavigationItem!
     
     @IBOutlet weak var startButtonOutlet: UIButton!
+  
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         exerciselist.count
     }
@@ -28,14 +28,6 @@ class _0minworkoutLandingPageViewController: UIViewController, UITableViewDataSo
     @IBOutlet weak var exerciseTableView: UITableView!
     override func viewDidLoad() {
         super.viewDidLoad()
-        let infoButton = UIBarButtonItem(
-            image: UIImage(systemName: "info.circle"),
-            style: .plain,
-            target: self,
-            action: #selector(infoButtonTapped)
-        )
-        
-        rightInfoBarButton.rightBarButtonItem = infoButton
         
         exerciseTableView.layer.cornerRadius = 10
         exerciseTableView.clipsToBounds = true
@@ -45,28 +37,8 @@ class _0minworkoutLandingPageViewController: UIViewController, UITableViewDataSo
     }
     
 
-    @IBAction func startButtonAction(_ sender: UIButton) {
-        
-        let storyboard = UIStoryboard(name: "10 minworkout", bundle: nil)
-        let vc = storyboard.instantiateViewController(withIdentifier: "10minworkoutCountdownViewController") as! _0minworkoutCountdownViewController
-        vc.modalPresentationStyle = .fullScreen
-        vc.modalTransitionStyle = .coverVertical   // Default push-like (slides from bottom)
-
-        // For push-like slide from right animation:
-        let transition = CATransition()
-        transition.duration = 0.3
-        transition.type = .push
-        transition.subtype = .fromRight
-        view.window?.layer.add(transition, forKey: kCATransition)
-        present(vc, animated: false)
-
-
-        
-
-    }
     /*
     // MARK: - Navigation
-
     // In a storyboard-based application, you will often want to do a little preparation before navigation
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         // Get the new view controller using segue.destination.

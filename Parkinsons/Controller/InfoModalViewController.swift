@@ -11,8 +11,8 @@ class InfoModalViewController: UIViewController {
 
     @IBOutlet weak var titleLabel: UILabel!
     @IBOutlet weak var descriptionLabel: UILabel!
-    @IBOutlet weak var stepsTextView: UITextView!
-    @IBOutlet weak var benefitsTextView: UITextView!
+    @IBOutlet weak var stepsToPerformLabel: UILabel!
+    @IBOutlet weak var benefitsLabel: UILabel!
     
     var exerciseDetail: ExerciseDetail?   // 👈 Passed from previous screen
 
@@ -36,8 +36,8 @@ class InfoModalViewController: UIViewController {
         descriptionLabel.text = data.description
         
         // Format numbered lists
-        stepsTextView.text = data.steps.enumerated().map { "\($0 + 1). \($1)" }.joined(separator: "\n\n")
-        benefitsTextView.text = data.benefits.enumerated().map { "\($0 + 1). \($1)" }.joined(separator: "\n\n")
+        stepsToPerformLabel.text = data.steps.enumerated().map { "\($0 + 1). \($1)" }.joined(separator: "\n\n")
+        benefitsLabel.text = data.benefits.enumerated().map { "\($0 + 1). \($1)" }.joined(separator: "\n\n")
     }
 
     @IBAction func closeButtonTapped(_ sender: UIButton) {

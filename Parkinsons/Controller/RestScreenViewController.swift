@@ -9,7 +9,6 @@ import UIKit
 
 class RestScreenViewController: UIViewController {
 
-    @IBOutlet weak var restNavigation: UINavigationItem!
     @IBOutlet weak var timerLabel: UILabel!
     @IBOutlet weak var addTimeButton: UIButton!
     
@@ -24,22 +23,22 @@ class RestScreenViewController: UIViewController {
       
       override func viewDidLoad() {
           super.viewDidLoad()
-          
-          setupNavigationButton()
-          //updateTimerLabel()
+    
+          updateTimerLabel()
           startTimer()
+          setupCloseButton()
       }
       
       // MARK: - Setup Navigation Button
-      func setupNavigationButton() {
-          let closeButton = UIBarButtonItem(
-              image: UIImage(systemName: "xmark"),
-              style: .plain,
-              target: self,
-              action: #selector(closeButtonTapped)
-          )
-          restNavigation.leftBarButtonItem = closeButton
-      }
+//      func setupNavigationButton() {
+//          let closeButton = UIBarButtonItem(
+//              image: UIImage(systemName: "xmark"),
+//              style: .plain,
+//              target: self,
+//              action: #selector(closeButtonTapped)
+//          )
+//          restNavigation.leftBarButtonItem = closeButton
+//      }
       
       // MARK: - Timer Setup
       func startTimer() {
@@ -66,9 +65,24 @@ class RestScreenViewController: UIViewController {
     }
 
       
-      func updateTimerLabel() {
-          timerLabel.text = "\(totalTime)sec"
+    func updateTimerLabel() {
+          timerLabel.text = "\(totalTime)"
       }
+    
+    func setupCloseButton() {
+            // Use the system image for a consistent "close" icon
+            let closeImage = UIImage(systemName: "xmark")
+            
+            let closeButton = UIBarButtonItem(
+                image: closeImage,
+                style: .plain,
+                target: self,
+                action: #selector(closeButtonTapped) // This calls the function below when tapped
+            )
+            
+            navigationItem.leftBarButtonItem = closeButton
+        }
+
 
       // MARK: - Button Actions
       @IBAction func addTimeButtonTapped(_ sender: UIButton) {

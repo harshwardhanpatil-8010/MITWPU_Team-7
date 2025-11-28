@@ -18,7 +18,6 @@ class _0minworkoutViewController: UIViewController {
     @IBOutlet weak var stepLabel: UILabel!
     @IBOutlet weak var exerciseName: UILabel!
     @IBOutlet weak var timerLabel: UILabel!
-    @IBOutlet weak var workoutNavigation: UINavigationItem!
     @IBOutlet weak var webView: WKWebView!
     @IBOutlet weak var repsLabel: UILabel!
     @IBOutlet weak var skipButton: UIButton!
@@ -36,18 +35,11 @@ class _0minworkoutViewController: UIViewController {
         backgroundView.clipsToBounds = true
         backgroundView.backgroundColor = UIColor.lightGray
         exercises = WorkoutManager.shared.currentModule?.exercises ?? []
-        let closeButton = UIBarButtonItem(
-            image: UIImage(systemName: "xmark"),
-            style: .plain,
-            target: self,
-            action: #selector(closeButtonTapped)
-        )
-        closeButton.tintColor = .black
-        workoutNavigation.leftBarButtonItem = closeButton
+        setupCloseButton()
         setupProgressBars()
         configureWebView()
         configureExercise()
-        starttimer()
+
         //updateProgress(step: 1)
        // progressBar(step: 1)
 //        let videoID = "gLptmcuCx6Q"   // Replace with your video ID
@@ -59,25 +51,23 @@ class _0minworkoutViewController: UIViewController {
             // Do any additional setup after loading the view.
         }
     func configureWebView() {
-            let config = WKWebViewConfiguration()
-            config.allowsInlineMediaPlayback = true
-            config.mediaTypesRequiringUserActionForPlayback = []
-            
-            webView.configuration.preferences.javaScriptEnabled = true
+        webView.configuration.preferences.javaScriptEnabled = true
             webView.configuration.allowsInlineMediaPlayback = true
         }
         
-        func loadYouTubeVideo() {
-                let embedHTML = """
-                <html>
-                <body style="margin:0px;padding:0px;">
-                <iframe width="560" height="315" src="https://www.youtube.com/embed/gLptmcuCx6Q?si=dWdzzPTE5iYUyxf_" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
-                </body>
-                </html>
-                """
-
-                webView.loadHTMLString(embedHTML, baseURL: nil)
-            }
+    func loadYouTubeVideo() {
+       // let videoID = "gLptmcuCx6Q"
+        
+        // ⭐️ Recommended, clean embed URL with inline playback enabled
+        let embedURLString = "https://www.youtube.com/live/AWW2ZS-c3BE?si=TZyxZSbSLgEmdw4O"
+        
+        if let url = URL(string: embedURLString) {
+            let request = URLRequest(url: url)
+            webView.load(request)
+        } else {
+            print("Error: Invalid URL for YouTube video.")
+        }
+    }
         /*
          // MARK: - Navigation
          
@@ -149,7 +139,36 @@ class _0minworkoutViewController: UIViewController {
         }
     }
 
-   
+    func goToRestScreen() {
+        if currentIndex < exercises.count - 1 {  // Not last exercise
+            let storyboard = UIStoryboard(name: "10 minworkout", bundle: nil)
+            let vc = storyboard.instantiateViewController(withIdentifier: "RestScreenViewController") as! RestScreenViewController
+            
+            vc.currentIndex = currentIndex
+            vc.totalExercises = exercises.count
+            vc.delegate = self
+
+            navigationController?.pushViewController(vc, animated: true)
+        } else {
+            showWorkoutCompleted() // 🔹 Handle last screen
+        }
+    }
+    
+    func showWorkoutCompleted() {
+        let alert = UIAlertController(
+            title: "Workout Completed!",
+            message: "Great job! You finished all exercises.",
+            preferredStyle: .alert
+        )
+        
+        alert.addAction(UIAlertAction(title: "OK", style: .default, handler: { _ in
+            self.navigationController?.popToRootViewController(animated: true) // Or navigate to summary screen
+        }))
+        
+        present(alert, animated: true)
+    }
+
+    
     func setupProgressBars() {
         progressStackView.arrangedSubviews.forEach { $0.removeFromSuperview() }
         progressBars.removeAll()
@@ -172,7 +191,6 @@ class _0minworkoutViewController: UIViewController {
         return layer
     }
 
-
     @objc func closeButtonTapped() {
         let alert = UIAlertController(
                title: "Quit Workout?",
@@ -189,64 +207,53 @@ class _0minworkoutViewController: UIViewController {
            present(alert, animated: true)
     }
     
-    func navigateToNext() {
-        if currentIndex < exercises.count - 1 {
-            // Go to Rest Screen
-            let storyboard = UIStoryboard(name: "10 minworkout", bundle: nil)
-            let vc = storyboard.instantiateViewController(withIdentifier: "RestScreenViewController") as! RestScreenViewController
+//    func navigateToNext() {
+//        if currentIndex < exercises.count - 1 {
+//            // Go to Rest Screen
+//            let storyboard = UIStoryboard(name: "10 minworkout", bundle: nil)
+//            let vc = storyboard.instantiateViewController(withIdentifier: "RestScreenViewController") as! RestScreenViewController
+//            
+//            vc.currentIndex = currentIndex
+//            vc.totalExercises = exercises.count
+//            vc.delegate = self
+//            
+//            navigationController?.pushViewController(vc, animated: true)
+//        } else {
+//            // Last exercise completed
+//           // showWorkoutCompleted()
+//        }
+//    }
+    
+    func setupCloseButton() {
+            // Use the system image for a consistent "close" icon
+            let closeImage = UIImage(systemName: "xmark")
             
-            vc.currentIndex = currentIndex
-            vc.totalExercises = exercises.count
-            vc.delegate = self
+            let closeButton = UIBarButtonItem(
+                image: closeImage,
+                style: .plain,
+                target: self,
+                action: #selector(closeButtonTapped) // This calls the function below when tapped
+            )
             
-            navigationController?.pushViewController(vc, animated: true)
-        } else {
-            // Last exercise completed
-           // showWorkoutCompleted()
+            navigationItem.leftBarButtonItem = closeButton
         }
-    }
-    
-    
 
     @IBAction func doneButtonTapped(_ sender: UIButton) {
         currentIndex += 1
-        navigateToNext()
+     //   navigateToNext()
+        goToRestScreen()
 
     }
     
     @IBAction func skipButtonTapped(_ sender: UIButton) {
-        if currentIndex < exercises.count - 1 {
-                // Use the same navigation logic
-                currentIndex += 1
-                navigateToNext()
-            } else {
-                // If it's last exercise, go directly to result page
-               // showWorkoutCompleted()
-            }
+        goToRestScreen()
 
     }
     
-    @IBAction func infoButtonTapped(_ sender: UIButton) {
-        let alert = UIAlertController(
-              title: "Rest Screen Info",
-              message: "This rest screen helps you recover between exercises. You can add extra time, and the timer will continue automatically.",
-              preferredStyle: .alert
-          )
-          
-        
-          
-          present(alert, animated: true)
-    }
-    func showInfoModal(for exercise: ExerciseDetail) {
-        let storyboard = UIStoryboard(name: "10 minworkout", bundle: nil)
-        let modalVC = storyboard.instantiateViewController(withIdentifier: "InfoModalViewController") as! InfoModalViewController
-        modalVC.exerciseDetail = exercise
-        modalVC.modalPresentationStyle = .overCurrentContext
-        present(modalVC, animated: true)
-    }
+
+
      
 }
-
 
 extension _0minworkoutViewController: RestScreenDelegate {
     func restCompleted(nextIndex: Int) {
