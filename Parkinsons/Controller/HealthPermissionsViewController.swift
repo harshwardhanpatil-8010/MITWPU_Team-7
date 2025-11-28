@@ -10,14 +10,14 @@ import UIKit
 // (Assuming the HealthPermissionSetting struct and HealthPermissionCellDelegate protocol are defined above or in separate files)
 
 class HealthPermissionsViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
-    
+    var completionHandler: ((_ granted: Bool) -> Void)?
     // Data Model Array
     var permissions: [HealthPermissionSetting] = [
-        HealthPermissionSetting(iconName: "heart.fill", labelText: "Tremor data", isEnabled: false),
-        HealthPermissionSetting(iconName: "figure.walk", labelText: "Walking Speed", isEnabled: false),
-        HealthPermissionSetting(iconName: "figure.walk", labelText: "Walking Step Length", isEnabled: false),
-        HealthPermissionSetting(iconName: "figure.walk", labelText: "Walking Asymmetry", isEnabled: false),
-        HealthPermissionSetting(iconName: "figure.walk", labelText: "Walking Steadiness", isEnabled: false)
+        HealthPermissionSetting(iconName: "heart.fill", labelText: "Tremor data", isEnabled: false,iconColor: .systemRed),
+        HealthPermissionSetting(iconName: "figure.walk", labelText: "Walking Speed", isEnabled: false,iconColor: .systemYellow),
+        HealthPermissionSetting(iconName: "figure.walk", labelText: "Walking Step Length", isEnabled: false, iconColor: .systemYellow),
+        HealthPermissionSetting(iconName: "figure.walk", labelText: "Walking Asymmetry", isEnabled: false, iconColor: .systemYellow),
+        HealthPermissionSetting(iconName: "figure.walk", labelText: "Walking Steadiness", isEnabled: false, iconColor: .systemYellow)
     ]
     
     @IBOutlet weak var healthAppicon: UIImageView!
@@ -49,11 +49,19 @@ class HealthPermissionsViewController: UIViewController, UITableViewDelegate, UI
     // MARK: - Button Actions
     
     // NEW: Action for the "Turn On All" button (Connect this in Storyboard)
-    @IBAction func allowButton(_ sender: Any) {
-        
+    @IBAction func allowButton(_ sender: UIButton) {
+        dismiss(animated: true) { [weak self] in
+                    // 2. Call the handler, indicating permissions were *granted*
+                    // This runs AFTER the dismiss animation completes.
+                    self?.completionHandler?(true)
+                }
     }
     
-    @IBAction func dontAllowButton(_ sender: Any) {
+    @IBAction func dontAllowButton(_ sender: UIButton) {
+        dismiss(animated: true) { [weak self] in
+                    // 2. Call the handler, indicating permissions were *not granted*
+                    self?.completionHandler?(true)
+                }
     }
     
     @IBAction func turnOnAllButtonTapped(_ sender: UIButton) {

@@ -29,6 +29,13 @@ class HealthPermissionTableViewCell: UITableViewCell {
         cellIcon.image = UIImage(systemName: setting.iconName)
         cellLabel.text = setting.labelText
         
+        // Apply optional icon tint color
+        if let color = setting.iconColor {
+            cellIcon.tintColor = color
+        } else {
+            cellIcon.tintColor = .label // sensible default
+        }
+        
         // 3. Important: Use setOn to prevent infinite loops during cell reuse
         cellSwitch.setOn(setting.isEnabled, animated: false)
     }
@@ -37,3 +44,4 @@ class HealthPermissionTableViewCell: UITableViewCell {
         super.setSelected(selected, animated: animated)
     }
 }
+
