@@ -202,7 +202,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="jm5-Xy-JZp" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2728.3582089552237" y="129.7482837528604"/>
+            <point key="canvasLocation" x="2340" y="130"/>
         </scene>
         <!--Info Modal View Controller-->
         <scene sceneID="WSV-ha-It8">
@@ -267,7 +267,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="QvK-xH-w2J" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="3661.1940298507461" y="121.51029748283752"/>
+            <point key="canvasLocation" x="3187" y="130"/>
         </scene>
         <!--10 min Workout-->
         <scene sceneID="hG1-va-qNN">
@@ -411,7 +411,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="RQ4-6r-N8e" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="149.25373134328356" y="129.7482837528604"/>
+            <point key="canvasLocation" x="-10" y="130"/>
         </scene>
         <!--0minworkout Countdown View Controller-->
         <scene sceneID="fwz-WR-0Sv">
@@ -453,7 +453,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="hPz-QG-MXe" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="999.99999999999989" y="129.7482837528604"/>
+            <point key="canvasLocation" x="752" y="130"/>
         </scene>
         <!--0minworkout Good Job View Controller-->
         <scene sceneID="hrK-dw-KUr">
@@ -645,7 +645,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="5T6-RI-xm1" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="4455.2238805970146" y="121.51029748283752"/>
+            <point key="canvasLocation" x="3949" y="119"/>
         </scene>
         <!--10 min Workout-->
         <scene sceneID="czI-ub-xzR">
@@ -885,7 +885,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="qra-DB-Pu2" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1983.5820895522386" y="130.43478260869566"/>
+            <point key="canvasLocation" x="1442" y="130"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="uwW-zm-yl0">
