@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="24412" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina6_12" orientation="portrait" appearance="light"/>
+    <dependencies>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="24405"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="System colors in document resources" minToolsVersion="11.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <scenes>
+        <!--Mimic the Emoji-->
+        <scene sceneID="s0d-6b-0kx">
+            <objects>
+                <viewController id="Y6W-OH-hqX" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="5EZ-qb-Rvc">
+                        <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Emoji Landing" translatesAutoresizingMaskIntoConstraints="NO" id="sVi-a8-3TH">
+                                <rect key="frame" x="104" y="209" width="185" height="220"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="220" id="Vhe-E8-vi5"/>
+                                </constraints>
+                            </imageView>
+                            <stackView opaque="NO" contentMode="scaleToFill" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="hyM-fn-H3W">
+                                <rect key="frame" x="16" y="469" width="361" height="21"/>
+                                <subviews>
+                                    <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Trophy Image" translatesAutoresizingMaskIntoConstraints="NO" id="g8z-jc-Igw">
+                                        <rect key="frame" x="0.0" y="0.0" width="21" height="21"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="21" id="U5l-f8-VSv"/>
+                                            <constraint firstAttribute="width" constant="21" id="Y9j-fd-VVA"/>
+                                        </constraints>
+                                    </imageView>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Daily Challenge" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="DBd-WA-pcX">
+                                        <rect key="frame" x="29" y="0.0" width="332" height="21"/>
+                                        <fontDescription key="fontDescription" type="boldSystem" pointSize="19"/>
+                                        <nil key="textColor"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                </subviews>
+                            </stackView>
+                            <datePicker contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" datePickerMode="date" style="inline" translatesAutoresizingMaskIntoConstraints="NO" id="tBj-YW-VG7">
+                                <rect key="frame" x="16" y="497" width="361" height="329"/>
+                            </datePicker>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="xDd-EN-zQw">
+                                <rect key="frame" x="16" y="847" width="361" height="34.333333333333371"/>
+                                <state key="normal" title="Button"/>
+                                <buttonConfiguration key="configuration" style="filled" title="Button"/>
+                            </button>
+                        </subviews>
+                        <viewLayoutGuide key="safeArea" id="vDu-zF-Fre"/>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                        <constraints>
+                            <constraint firstItem="sVi-a8-3TH" firstAttribute="top" secondItem="vDu-zF-Fre" secondAttribute="top" constant="37" id="0PG-Ch-Wy2"/>
+                            <constraint firstItem="vDu-zF-Fre" firstAttribute="trailing" secondItem="hyM-fn-H3W" secondAttribute="trailing" constant="16" id="8WX-Fm-qu8"/>
+                            <constraint firstItem="hyM-fn-H3W" firstAttribute="top" secondItem="sVi-a8-3TH" secondAttribute="bottom" constant="40" id="GWZ-Nz-jyn"/>
+                            <constraint firstItem="xDd-EN-zQw" firstAttribute="top" secondItem="hyM-fn-H3W" secondAttribute="bottom" constant="357" id="GqF-T0-IHp"/>
+                            <constraint firstItem="xDd-EN-zQw" firstAttribute="top" secondItem="tBj-YW-VG7" secondAttribute="bottom" constant="21" id="JeJ-iK-xCE"/>
+                            <constraint firstItem="vDu-zF-Fre" firstAttribute="trailing" secondItem="tBj-YW-VG7" secondAttribute="trailing" constant="16" id="KZd-uQ-8Th"/>
+                            <constraint firstItem="xDd-EN-zQw" firstAttribute="leading" secondItem="5EZ-qb-Rvc" secondAttribute="leading" constant="16" id="TGV-aa-kvi"/>
+                            <constraint firstItem="tBj-YW-VG7" firstAttribute="top" secondItem="hyM-fn-H3W" secondAttribute="bottom" constant="7" id="TbG-VQ-fh3"/>
+                            <constraint firstAttribute="trailing" secondItem="xDd-EN-zQw" secondAttribute="trailing" constant="16" id="YWM-tz-GgF"/>
+                            <constraint firstItem="sVi-a8-3TH" firstAttribute="centerX" secondItem="5EZ-qb-Rvc" secondAttribute="centerX" id="cXs-hM-iYu"/>
+                            <constraint firstItem="tBj-YW-VG7" firstAttribute="leading" secondItem="vDu-zF-Fre" secondAttribute="leading" constant="16" id="mhl-Uj-bEQ"/>
+                            <constraint firstItem="hyM-fn-H3W" firstAttribute="leading" secondItem="vDu-zF-Fre" secondAttribute="leading" constant="16" id="wPw-5Z-kIp"/>
+                        </constraints>
+                    </view>
+                    <navigationItem key="navigationItem" title="Mimic the Emoji" id="YEr-bc-oIg"/>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="Ief-a0-LHa" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1064.885496183206" y="130.98591549295776"/>
+        </scene>
+        <!--Navigation Controller-->
+        <scene sceneID="pvu-ud-KE3">
+            <objects>
+                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="DKP-xe-UJY" sceneMemberID="viewController">
+                    <toolbarItems/>
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="dyf-JH-keE">
+                        <rect key="frame" x="0.0" y="118" width="393" height="54"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                    </navigationBar>
+                    <nil name="viewControllers"/>
+                    <connections>
+                        <segue destination="Y6W-OH-hqX" kind="relationship" relationship="rootViewController" id="IY0-V2-1bt"/>
+                    </connections>
+                </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="6mb-H7-0v9" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="138.1679389312977" y="130.98591549295776"/>
+        </scene>
+    </scenes>
+    <resources>
+        <image name="Emoji Landing" width="185" height="220"/>
+        <image name="Trophy Image" width="960" height="1088"/>
+        <systemColor name="systemBackgroundColor">
+            <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+        </systemColor>
+    </resources>
+</document>
