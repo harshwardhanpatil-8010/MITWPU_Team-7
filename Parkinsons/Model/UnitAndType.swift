@@ -14,15 +14,15 @@ struct UnitAndType{
 }
 
 var unitAndType: [UnitAndType] = [
-    UnitAndType(name: "Capsule", image: "Capsule", isSelected: false),
-    UnitAndType(name: "Tablet", image: "Capsule", isSelected: false),
-    UnitAndType(name: "Liquid", image: "Capsule", isSelected: false),
-    UnitAndType(name: "Cream", image: "Capsule", isSelected: false),
-    UnitAndType(name: "Device", image: "Capsule", isSelected: false),
-    UnitAndType(name: "Drops", image: "Capsule", isSelected: false),
-    UnitAndType(name: "Foam", image: "Capsule", isSelected: false),
-    UnitAndType(name: "Gel", image: "Capsule", isSelected: false),
-    UnitAndType(name: "Powder", image: "Capsule", isSelected: false),
-    UnitAndType(name: "Spray", image: "Capsule", isSelected: false)
+    UnitAndType(name: "Capsule", image: "capsule", isSelected: false),
+    UnitAndType(name: "Tablet", image: "tablet", isSelected: false),
+    UnitAndType(name: "Liquid", image: "liquid", isSelected: false),
+    UnitAndType(name: "Cream", image: "cream", isSelected: false),
+    UnitAndType(name: "Device", image: "device", isSelected: false),
+    UnitAndType(name: "Drops", image: "drops", isSelected: false),
+    UnitAndType(name: "Foam", image: "foam", isSelected: false),
+    UnitAndType(name: "Gel", image: "gel", isSelected: false),
+    UnitAndType(name: "Powder", image: "powder", isSelected: false),
+    UnitAndType(name: "Spray", image: "spray", isSelected: false)
 ]
 
