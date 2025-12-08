@@ -100,3 +100,14 @@ final class BeatPlayer {
         startBeat(fileName: fileKey, bpm: bpm)
     }
 }
+
+extension BeatPlayer {
+    func availableBeats() -> [String] {
+        guard let urls = Bundle.main.urls(forResourcesWithExtension: "mp3", subdirectory: "Bundle") else {
+            return []
+        }
+        return urls.map{
+            $0.deletingPathExtension().lastPathComponent
+        }
+    }
+}
