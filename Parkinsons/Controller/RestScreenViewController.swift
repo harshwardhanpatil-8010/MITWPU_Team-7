@@ -6,29 +6,55 @@
 //
 
 import UIKit
+import YouTubeiOSPlayerHelper
 
 class RestScreenViewController: UIViewController {
 
     @IBOutlet weak var timerLabel: UILabel!
     @IBOutlet weak var addTimeButton: UIButton!
     
+    @IBOutlet weak var backgroundView: UIView!
     
+    @IBOutlet weak var playerView: FullScreenYTPlayerView!
     weak var delegate: RestScreenDelegate?
     var currentIndex: Int = 0
     var totalExercises: Int = 0
-
+    var videoID = "jyOk-2DmVnU"
     
       var timer: Timer?
       var totalTime = 60
       
       override func viewDidLoad() {
           super.viewDidLoad()
-    
+          backgroundView.layer.cornerRadius = 35
+          backgroundView.clipsToBounds = true
+        
+         
           updateTimerLabel()
           startTimer()
           setupCloseButton()
+          load()
+          playerView.isUserInteractionEnabled = false
       }
       
+    func load() {
+           playerView.load(
+               withVideoId: videoID,
+               playerVars: [
+                   "controls": 0,
+                   "modestbranding": 1,
+                   "playsinline": 1,
+                   "rel": 0,
+                   "fs": 0,
+                   "iv_load_policy": 3,
+                   "disablekb": 1,
+                   "showinfo": 0,
+                   "autoplay": 1,
+                   "loop": 1,
+                   "playlist": videoID
+               ]
+           )
+       }
       // MARK: - Setup Navigation Button
 //      func setupNavigationButton() {
 //          let closeButton = UIBarButtonItem(

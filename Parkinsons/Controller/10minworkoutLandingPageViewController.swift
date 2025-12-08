@@ -7,22 +7,22 @@
 
 import UIKit
 
-class _0minworkoutLandingPageViewController: UIViewController, UITableViewDataSource {
+/*class _0minworkoutLandingPageViewController: UIViewController, UITableViewDataSource {
     
     
     @IBOutlet weak var startButtonOutlet: UIButton!
   
-    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        exerciselist.count
-    }
-    
-    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "exercise_cell", for: indexPath) as! ExerciseTableViewCell
-        let exercise = exerciselist[indexPath.row]
-        cell.configureCell(exercise: exercise)
-        
-        return cell
-    }
+//    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+//        exerciselist.count
+//    }
+//    
+//    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+//        let cell = tableView.dequeueReusableCell(withIdentifier: "exercise_cell", for: indexPath) as! ExerciseTableViewCell
+//        let exercise = exerciselist[indexPath.row]
+//        cell.configureCell(exercise: exercise)
+//        
+//        return cell
+//    }
     
 
     @IBOutlet weak var exerciseTableView: UITableView!
@@ -48,3 +48,4 @@ class _0minworkoutLandingPageViewController: UIViewController, UITableViewDataSo
 
 
 }
+*/

@@ -24,6 +24,8 @@ struct Exercise: Codable, Identifiable {
     var offDayReps: Int?
     var lastOffDayUsed: Date?
     var consecutiveOffDaySuccess: Int
+    var videoID: String?
+
 
     init(id: UUID = UUID(), name: String, category: ExerciseCategory, minReps: Int = 5, maxReps: Int = 20) {
         self.id = id
@@ -177,21 +179,63 @@ class WorkoutManager {
     }
 
     private func loadData() {
-        if let data = UserDefaults.standard.data(forKey: "exercises"), let decoded = try? JSONDecoder().decode([Exercise].self, from: data) { self.exercises = decoded }
-        else { self.exercises = createDefaultExercises(); saveExercises() }
+        // Load exercises
+        if let data = UserDefaults.standard.data(forKey: "exercises"),
+           let decoded = try? JSONDecoder().decode([Exercise].self, from: data) {
+            self.exercises.removeAll()
+            self.exercises.append(contentsOf: decoded)
+        } else {
+            let defaultExercises = createDefaultExercises()
+            self.exercises.removeAll()
+            self.exercises.append(contentsOf: defaultExercises)
+            saveExercises()
+        }
 
-        if let h = UserDefaults.standard.data(forKey: "moduleHistory"), let d = try? JSONDecoder().decode([ModuleHistory].self, from: h) { self.moduleHistory = d }
-        if let h = UserDefaults.standard.data(forKey: "userHealthState"), let d = try? JSONDecoder().decode(UserHealthState.self, from: h) { self.userHealthState = d }
-        if let h = UserDefaults.standard.data(forKey: "currentSession"), let d = try? JSONDecoder().decode(WorkoutSession.self, from: h) { self.currentSession = d }
+        // Load moduleHistory
+        if let h = UserDefaults.standard.data(forKey: "moduleHistory"),
+           let d = try? JSONDecoder().decode([ModuleHistory].self, from: h) {
+            self.moduleHistory = d
+        }
 
+        // Load userHealthState
+        if let h = UserDefaults.standard.data(forKey: "userHealthState"),
+           let d = try? JSONDecoder().decode(UserHealthState.self, from: h) {
+            self.userHealthState = d
+        }
+
+        // Load currentSession
+        if let h = UserDefaults.standard.data(forKey: "currentSession"),
+           let d = try? JSONDecoder().decode(WorkoutSession.self, from: h) {
+            self.currentSession = d
+        }
+
+        // Load simple values
         currentModuleIndex = UserDefaults.standard.integer(forKey: "currentModuleIndex")
         caregiverNotificationsEnabled = UserDefaults.standard.bool(forKey: "caregiverNotificationsEnabled")
         caregiverContactInfo = UserDefaults.standard.string(forKey: "caregiverContactInfo")
     }
 
     private func saveExercises() {
-        if let encoded = try? JSONEncoder().encode(exercises) { UserDefaults.standard.set(encoded, forKey: "exercises") }
+
+        let storeItems = self.exercises.map { exercise in
+            ExerciseStoreItem(
+                id: exercise.id,
+                name: exercise.name,
+                videoID: exercise.videoID ?? "",
+                category: exercise.category.rawValue,
+                reps: exercise.reps,
+                minReps: exercise.minReps,
+                maxReps: exercise.maxReps,
+                skipCount: exercise.skipCount,
+                isSuppressed: exercise.isSuppressed,
+                suppressedUntil: exercise.suppressedUntil ?? .distantPast
+            )
+        }
+
+        ExerciseStore.shared.replaceExercises(with: storeItems)
+        ExerciseStore.shared.save()
     }
+
 
     private func saveModuleHistory() {
         if let encoded = try? JSONEncoder().encode(moduleHistory) { UserDefaults.standard.set(encoded, forKey: "moduleHistory") }

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="24412" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="gbw-VJ-lsM">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="24412" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="kfw-Zk-5lP">
     <device id="retina6_3" orientation="portrait" appearance="light"/>
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="24405"/>
@@ -92,16 +92,12 @@
                                     </label>
                                 </subviews>
                             </stackView>
-                            <wkWebView contentMode="scaleToFill" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="mIj-iP-P95">
-                                <rect key="frame" x="0.0" y="221" width="402" height="382"/>
-                                <color key="backgroundColor" red="0.36078431370000003" green="0.38823529410000002" blue="0.4039215686" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                <wkWebViewConfiguration key="configuration">
-                                    <audiovisualMediaTypes key="mediaTypesRequiringUserActionForPlayback" none="YES"/>
-                                    <wkPreferences key="preferences"/>
-                                </wkWebViewConfiguration>
-                            </wkWebView>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Epn-SE-8lT" customClass="FullScreenYTPlayerView" customModule="Parkinsons" customModuleProvider="target">
+                                <rect key="frame" x="0.0" y="146" width="402" height="419"/>
+                                <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                            </view>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Jpk-pp-Zie">
-                                <rect key="frame" x="0.0" y="595.33333333333337" width="402" height="278.66666666666663"/>
+                                <rect key="frame" x="0.0" y="520" width="402" height="354"/>
                                 <subviews>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Rest" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="FpD-po-Nav">
                                         <rect key="frame" x="0.0" y="28" width="402" height="31.333333333333329"/>
@@ -110,7 +106,7 @@
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" alignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="4ek-AV-Z8r">
-                                        <rect key="frame" x="163.33333333333334" y="106.33333333333327" width="75.666666666666657" height="58.666666666666671"/>
+                                        <rect key="frame" x="163.33333333333334" y="106.33333333333339" width="75.666666666666657" height="58.666666666666671"/>
                                         <subviews>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="KaI-G0-XV6">
                                                 <rect key="frame" x="0.0" y="0.0" width="75.666666666666671" height="38.333333333333336"/>
@@ -119,7 +115,7 @@
                                                 <nil key="highlightedColor"/>
                                             </label>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Time Left" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="SXG-bH-bKR">
-                                                <rect key="frame" x="2" y="38.333333333333371" width="71.666666666666671" height="20.333333333333329"/>
+                                                <rect key="frame" x="2" y="38.333333333333258" width="71.666666666666671" height="20.333333333333329"/>
                                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                 <nil key="textColor"/>
                                                 <nil key="highlightedColor"/>
@@ -182,27 +178,31 @@
                         <viewLayoutGuide key="safeArea" id="DIh-DC-c9u"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                         <constraints>
+                            <constraint firstItem="Epn-SE-8lT" firstAttribute="top" secondItem="6p5-RL-dAZ" secondAttribute="top" constant="146" id="0ca-g9-nlK"/>
                             <constraint firstItem="pqP-9w-Yo4" firstAttribute="top" secondItem="6p5-RL-dAZ" secondAttribute="topMargin" constant="15" id="3uV-jo-n1E"/>
-                            <constraint firstItem="Jpk-pp-Zie" firstAttribute="top" secondItem="pqP-9w-Yo4" secondAttribute="bottom" constant="382" id="7ZX-Za-iBP"/>
-                            <constraint firstItem="mIj-iP-P95" firstAttribute="top" secondItem="pqP-9w-Yo4" secondAttribute="bottom" constant="15" id="Coe-zs-KNx"/>
-                            <constraint firstAttribute="bottom" secondItem="Jpk-pp-Zie" secondAttribute="bottom" id="F0N-Gy-QJp"/>
-                            <constraint firstItem="Jpk-pp-Zie" firstAttribute="leading" secondItem="DIh-DC-c9u" secondAttribute="leading" id="F3a-nb-fxa"/>
-                            <constraint firstItem="mIj-iP-P95" firstAttribute="leading" secondItem="DIh-DC-c9u" secondAttribute="leading" id="SPY-E7-qNu"/>
-                            <constraint firstItem="Jpk-pp-Zie" firstAttribute="trailing" secondItem="DIh-DC-c9u" secondAttribute="trailing" id="jDX-BZ-Mt8"/>
+                            <constraint firstItem="Epn-SE-8lT" firstAttribute="leading" secondItem="DIh-DC-c9u" secondAttribute="leading" id="OvA-1A-joK"/>
+                            <constraint firstAttribute="bottom" secondItem="Epn-SE-8lT" secondAttribute="bottom" constant="309" id="Qdo-UM-aYo"/>
+                            <constraint firstAttribute="bottom" secondItem="Jpk-pp-Zie" secondAttribute="bottom" constant="0.33333333333337123" id="eCO-oT-x97"/>
+                            <constraint firstItem="Jpk-pp-Zie" firstAttribute="leading" secondItem="DIh-DC-c9u" secondAttribute="leading" id="id4-Nj-T1N"/>
+                            <constraint firstItem="DIh-DC-c9u" firstAttribute="trailing" secondItem="Epn-SE-8lT" secondAttribute="trailing" id="kfc-VB-d3B"/>
                             <constraint firstItem="pqP-9w-Yo4" firstAttribute="leading" secondItem="DIh-DC-c9u" secondAttribute="leading" constant="16" id="lOx-3e-WUl"/>
+                            <constraint firstItem="Jpk-pp-Zie" firstAttribute="trailing" secondItem="DIh-DC-c9u" secondAttribute="trailing" id="mF1-p6-C0Y"/>
+                            <constraint firstItem="Jpk-pp-Zie" firstAttribute="top" secondItem="Epn-SE-8lT" secondAttribute="bottom" constant="-45" id="s4k-gN-n7N"/>
+                            <constraint firstAttribute="bottom" secondItem="Jpk-pp-Zie" secondAttribute="bottom" id="txj-EW-lcD"/>
                             <constraint firstItem="DIh-DC-c9u" firstAttribute="trailing" secondItem="pqP-9w-Yo4" secondAttribute="trailing" constant="20" id="u13-Oe-fKs"/>
-                            <constraint firstItem="mIj-iP-P95" firstAttribute="trailing" secondItem="DIh-DC-c9u" secondAttribute="trailing" id="yfU-gq-oVi"/>
                         </constraints>
                     </view>
                     <navigationItem key="navigationItem" title="10 min workout" id="HjM-t1-GpT"/>
                     <connections>
                         <outlet property="addTimeButton" destination="WTm-i5-D2P" id="l5w-mJ-Kg0"/>
+                        <outlet property="backgroundView" destination="Jpk-pp-Zie" id="4mh-y3-Sf9"/>
+                        <outlet property="playerView" destination="Epn-SE-8lT" id="zLE-Oy-SPK"/>
                         <outlet property="timerLabel" destination="KaI-G0-XV6" id="Zaa-iF-ski"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="jm5-Xy-JZp" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2340" y="130"/>
+            <point key="canvasLocation" x="2338.8059701492534" y="129.7482837528604"/>
         </scene>
         <!--Info Modal View Controller-->
         <scene sceneID="WSV-ha-It8">
@@ -731,19 +731,12 @@
                                     </label>
                                 </subviews>
                             </stackView>
-                            <wkWebView contentMode="scaleAspectFill" translatesAutoresizingMaskIntoConstraints="NO" id="Ndo-ad-eHT">
-                                <rect key="frame" x="0.0" y="228.33333333333337" width="402" height="419"/>
-                                <color key="backgroundColor" red="0.36078431370000003" green="0.38823529410000002" blue="0.4039215686" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                <constraints>
-                                    <constraint firstAttribute="height" constant="419" id="3am-gz-aLJ"/>
-                                </constraints>
-                                <wkWebViewConfiguration key="configuration">
-                                    <audiovisualMediaTypes key="mediaTypesRequiringUserActionForPlayback" none="YES"/>
-                                    <wkPreferences key="preferences"/>
-                                </wkWebViewConfiguration>
-                            </wkWebView>
+                            <view contentMode="scaleAspectFit" translatesAutoresizingMaskIntoConstraints="NO" id="bHc-li-B70" customClass="FullScreenYTPlayerView" customModule="Parkinsons" customModuleProvider="target">
+                                <rect key="frame" x="0.0" y="146" width="402" height="427"/>
+                                <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                            </view>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="86f-LH-JwT">
-                                <rect key="frame" x="0.0" y="595.33333333333337" width="402" height="278.66666666666663"/>
+                                <rect key="frame" x="0.0" y="528" width="402" height="346"/>
                                 <subviews>
                                     <stackView opaque="NO" contentMode="scaleToFill" distribution="fillProportionally" spacing="166" translatesAutoresizingMaskIntoConstraints="NO" id="Oda-1T-kam">
                                         <rect key="frame" x="42.333333333333343" y="131" width="317.33333333333326" height="58.666666666666657"/>
@@ -758,7 +751,7 @@
                                                         <nil key="highlightedColor"/>
                                                     </label>
                                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Time Left" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="OdR-Ls-Cae">
-                                                        <rect key="frame" x="5.6666666666666643" y="38.333333333333258" width="71.666666666666686" height="20.333333333333329"/>
+                                                        <rect key="frame" x="5.6666666666666643" y="38.333333333333371" width="71.666666666666686" height="20.333333333333329"/>
                                                         <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                         <nil key="textColor"/>
                                                         <nil key="highlightedColor"/>
@@ -775,7 +768,7 @@
                                                         <nil key="highlightedColor"/>
                                                     </label>
                                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Reps" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Yjk-Yp-QaN">
-                                                        <rect key="frame" x="15.333333333333318" y="38.333333333333258" width="38.333333333333343" height="20.333333333333329"/>
+                                                        <rect key="frame" x="15.333333333333318" y="38.333333333333371" width="38.333333333333343" height="20.333333333333329"/>
                                                         <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                         <nil key="textColor"/>
                                                         <nil key="highlightedColor"/>
@@ -859,33 +852,50 @@
                         <viewLayoutGuide key="safeArea" id="P6Q-Ah-Waw"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                         <constraints>
-                            <constraint firstItem="Ndo-ad-eHT" firstAttribute="trailing" secondItem="P6Q-Ah-Waw" secondAttribute="trailing" id="6mf-qY-q1c"/>
-                            <constraint firstItem="86f-LH-JwT" firstAttribute="top" secondItem="2bR-8X-e0Q" secondAttribute="bottom" constant="382" id="CYq-3B-MNb"/>
-                            <constraint firstItem="86f-LH-JwT" firstAttribute="leading" secondItem="cog-hj-JbD" secondAttribute="leading" id="HNT-Rs-Kvk"/>
+                            <constraint firstItem="bHc-li-B70" firstAttribute="top" secondItem="cog-hj-JbD" secondAttribute="top" constant="146" id="4mB-1g-0Ho"/>
+                            <constraint firstItem="86f-LH-JwT" firstAttribute="leading" secondItem="cog-hj-JbD" secondAttribute="leading" id="DpS-7W-WhZ"/>
+                            <constraint firstItem="86f-LH-JwT" firstAttribute="top" secondItem="bHc-li-B70" secondAttribute="bottom" constant="-45" id="HKS-E5-lDr"/>
+                            <constraint firstAttribute="bottom" secondItem="86f-LH-JwT" secondAttribute="bottom" id="MRC-CW-zF6"/>
                             <constraint firstItem="2bR-8X-e0Q" firstAttribute="leading" secondItem="P6Q-Ah-Waw" secondAttribute="leading" constant="16" id="REd-c2-ZAZ"/>
                             <constraint firstItem="2bR-8X-e0Q" firstAttribute="top" secondItem="cog-hj-JbD" secondAttribute="topMargin" constant="15" id="Sbe-xZ-3co"/>
-                            <constraint firstItem="Ndo-ad-eHT" firstAttribute="leading" secondItem="P6Q-Ah-Waw" secondAttribute="leading" id="T7U-bC-Wed"/>
-                            <constraint firstItem="Ndo-ad-eHT" firstAttribute="top" secondItem="2bR-8X-e0Q" secondAttribute="bottom" constant="15" id="aov-F5-XJP"/>
-                            <constraint firstItem="P6Q-Ah-Waw" firstAttribute="trailing" secondItem="86f-LH-JwT" secondAttribute="trailing" id="ljg-Ou-Qol"/>
+                            <constraint firstItem="86f-LH-JwT" firstAttribute="top" secondItem="cog-hj-JbD" secondAttribute="top" constant="528" id="YcY-tN-2Lj"/>
+                            <constraint firstItem="bHc-li-B70" firstAttribute="leading" secondItem="P6Q-Ah-Waw" secondAttribute="leading" id="idY-9f-kh4"/>
+                            <constraint firstItem="bHc-li-B70" firstAttribute="trailing" secondItem="P6Q-Ah-Waw" secondAttribute="trailing" id="kmu-MK-nfT"/>
+                            <constraint firstItem="86f-LH-JwT" firstAttribute="leading" secondItem="P6Q-Ah-Waw" secondAttribute="leading" id="pXv-Vc-8Du"/>
                             <constraint firstItem="P6Q-Ah-Waw" firstAttribute="trailing" secondItem="2bR-8X-e0Q" secondAttribute="trailing" constant="20" id="q6R-3q-EGl"/>
-                            <constraint firstAttribute="bottom" secondItem="86f-LH-JwT" secondAttribute="bottom" id="yY8-hn-c8Y"/>
+                            <constraint firstItem="86f-LH-JwT" firstAttribute="trailing" secondItem="P6Q-Ah-Waw" secondAttribute="trailing" id="zJh-tT-Z4m"/>
                         </constraints>
                     </view>
                     <navigationItem key="navigationItem" title="10 min Workout" largeTitleDisplayMode="always" id="jxq-l5-aKD"/>
                     <connections>
                         <outlet property="backgroundView" destination="86f-LH-JwT" id="ciO-hz-JIF"/>
                         <outlet property="exerciseName" destination="MZl-LX-BdN" id="WX0-J5-G9b"/>
+                        <outlet property="playerView" destination="bHc-li-B70" id="Exq-HD-jxc"/>
                         <outlet property="progressStackView" destination="mjt-iX-ntm" id="G41-kb-VvQ"/>
                         <outlet property="repsLabel" destination="tne-nX-W55" id="Ff7-bI-78q"/>
                         <outlet property="skipButton" destination="ev3-IW-IQ3" id="dZw-Kq-Q6G"/>
                         <outlet property="stepLabel" destination="Fjj-BF-fVz" id="jwe-fr-sC1"/>
                         <outlet property="timerLabel" destination="E53-Fa-HcK" id="gyg-wc-xfP"/>
-                        <outlet property="webView" destination="Ndo-ad-eHT" id="wPp-8b-nNr"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="qra-DB-Pu2" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1442" y="130"/>
+            <point key="canvasLocation" x="1441.7910447761194" y="129.7482837528604"/>
+        </scene>
+        <!--View Controller-->
+        <scene sceneID="Ba1-2f-bke">
+            <objects>
+                <viewController id="vKL-zW-al0" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="SzG-Rl-M2c">
+                        <rect key="frame" x="0.0" y="0.0" width="402" height="874"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <viewLayoutGuide key="safeArea" id="zL5-Bh-MiE"/>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                    </view>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="vgh-YJ-TXa" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1776" y="796"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="uwW-zm-yl0">
@@ -916,7 +926,7 @@
             <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
         </systemColor>
         <systemColor name="systemGray6Color">
-            <color red="0.94901960780000005" green="0.94901960780000005" blue="0.96862745100000003" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <color red="0.94901960784313721" green="0.94901960784313721" blue="0.96862745098039216" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </systemColor>
     </resources>
 </document>

@@ -28,13 +28,13 @@ class ExerciseTableViewCell: UITableViewCell {
 
         // Configure the view for the selected state
     }
-    func configureCell(exercise: ExerciseList) {
-        exerciseNameLabel.text = exercise.exerciseName
-        exerciseTypeLabel.text = exercise.exerciseType
-        exerciseImageView.image = UIImage(named: exercise.exerciseImage)
-        exerciseTimeLabel.text = "\(exercise.exerciseTime)"
-        
-        
-    }
+//    func configureCell(exercise: ExerciseList) {
+//        exerciseNameLabel.text = exercise.exerciseName
+//        exerciseTypeLabel.text = exercise.exerciseType
+//        exerciseImageView.image = UIImage(named: exercise.exerciseImage)
+//        exerciseTimeLabel.text = "\(exercise.exerciseTime)"
+//        
+//        
+//    }
 
 }

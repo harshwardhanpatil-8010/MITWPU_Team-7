@@ -6,7 +6,7 @@
 //
 
 import UIKit
-import WebKit
+import YouTubeiOSPlayerHelper
 
 protocol RestScreenDelegate: AnyObject {
     func restCompleted(nextIndex: Int)
@@ -14,11 +14,11 @@ protocol RestScreenDelegate: AnyObject {
 
 class _0minworkoutViewController: UIViewController {
     
+    @IBOutlet weak var playerView: FullScreenYTPlayerView!
     @IBOutlet weak var progressStackView: UIStackView!
     @IBOutlet weak var stepLabel: UILabel!
     @IBOutlet weak var exerciseName: UILabel!
     @IBOutlet weak var timerLabel: UILabel!
-    @IBOutlet weak var webView: WKWebView!
     @IBOutlet weak var repsLabel: UILabel!
     @IBOutlet weak var skipButton: UIButton!
     @IBOutlet weak var backgroundView: UIView!
@@ -28,46 +28,24 @@ class _0minworkoutViewController: UIViewController {
     var currentIndex: Int = 0
     var exercises: [Exercise] = []
     var progressBars: [UIView] = []
-
     override func viewDidLoad() {
         super.viewDidLoad()
-        backgroundView.layer.cornerRadius = 45
+        backgroundView.layer.cornerRadius = 35
         backgroundView.clipsToBounds = true
-        backgroundView.backgroundColor = UIColor.lightGray
-        exercises = WorkoutManager.shared.currentModule?.exercises ?? []
+      
+        let allExercises = WorkoutManager.shared.currentModule?.exercises ?? []
+
+  exercises = WorkoutAlgorithmBuilder.generateDailyWorkout(from: allExercises) as! [Exercise]
+
         setupCloseButton()
         setupProgressBars()
-        configureWebView()
+      //  configureExercise()
+        playerView.isUserInteractionEnabled = false
         configureExercise()
-
         //updateProgress(step: 1)
        // progressBar(step: 1)
-//        let videoID = "gLptmcuCx6Q"   // Replace with your video ID
-//        let embedURLString = "https://www.youtube.com/embed/\(videoID)"
-//        
-//        if let url = URL(string: embedURLString) {
-//            let request = URLRequest(url: url)
-//            webView.load(request)
-            // Do any additional setup after loading the view.
         }
-    func configureWebView() {
-        webView.configuration.preferences.javaScriptEnabled = true
-            webView.configuration.allowsInlineMediaPlayback = true
-        }
-        
-    func loadYouTubeVideo() {
-       // let videoID = "gLptmcuCx6Q"
-        
-        // ⭐️ Recommended, clean embed URL with inline playback enabled
-        let embedURLString = "https://www.youtube.com/live/AWW2ZS-c3BE?si=TZyxZSbSLgEmdw4O"
-        
-        if let url = URL(string: embedURLString) {
-            let request = URLRequest(url: url)
-            webView.load(request)
-        } else {
-            print("Error: Invalid URL for YouTube video.")
-        }
-    }
+
         /*
          // MARK: - Navigation
          
@@ -92,9 +70,7 @@ class _0minworkoutViewController: UIViewController {
                        ? UIColor.systemGreen.cgColor
                        : UIColor.lightGray.cgColor
                )
-               
                bar.layer.addSublayer(dashedLayer)
-
                if index == currentIndex - 1 {
                    animateDash(layer: dashedLayer)
                }
@@ -107,16 +83,34 @@ class _0minworkoutViewController: UIViewController {
         animation.duration = 0.4
         layer.add(animation, forKey: "colorChange")
     }
-
     func configureExercise() {
         guard currentIndex < exercises.count else { return }
-        let exercise = exercises[currentIndex]
-        exerciseName.text = exercise.name
-        repsLabel.text = "\(exercise.reps)"
-        stepLabel.text = "\(currentIndex + 1) of \(exercises.count)"
-        updateProgress()
-        starttimer()
-        loadYouTubeVideo()
+           let exercise = exercises[currentIndex]
+
+           // UI updates
+           exerciseName.text = exercise.name
+           repsLabel.text = "\(exercise.reps)"
+           stepLabel.text = "\(currentIndex + 1) of \(exercises.count)"
+           updateProgress()
+
+           // 🟢 Load exercise-specific video
+           playerView.load(
+            withVideoId: exercise.videoID ?? "",
+               playerVars: [
+                   "controls": 0,
+                   "modestbranding": 1,
+                   "playsinline": 1,
+                   "rel": 0,
+                   "fs": 0,
+                   "iv_load_policy": 3,
+                   "disablekb": 1,
+                   "showinfo": 0,
+                   "autoplay": 1
+               ]
+           )
+
+           starttimer()
+      
     }
     func starttimer() {
         totalTime = 60 // Reset to 60 if needed
@@ -167,12 +161,9 @@ class _0minworkoutViewController: UIViewController {
         
         present(alert, animated: true)
     }
-
-    
     func setupProgressBars() {
         progressStackView.arrangedSubviews.forEach { $0.removeFromSuperview() }
         progressBars.removeAll()
-
         for _ in 0..<exercises.count {
             let dashView = UIView()
             dashView.translatesAutoresizingMaskIntoConstraints = false
@@ -190,7 +181,6 @@ class _0minworkoutViewController: UIViewController {
         layer.path = UIBezierPath(rect: CGRect(x: 0, y: 0, width: 40, height: 1)).cgPath
         return layer
     }
-
     @objc func closeButtonTapped() {
         let alert = UIAlertController(
                title: "Quit Workout?",
@@ -206,7 +196,6 @@ class _0minworkoutViewController: UIViewController {
 
            present(alert, animated: true)
     }
-    
 //    func navigateToNext() {
 //        if currentIndex < exercises.count - 1 {
 //            // Go to Rest Screen
@@ -223,7 +212,6 @@ class _0minworkoutViewController: UIViewController {
 //           // showWorkoutCompleted()
 //        }
 //    }
-    
     func setupCloseButton() {
             // Use the system image for a consistent "close" icon
             let closeImage = UIImage(systemName: "xmark")
@@ -249,9 +237,6 @@ class _0minworkoutViewController: UIViewController {
         goToRestScreen()
 
     }
-    
-
-
      
 }
 
