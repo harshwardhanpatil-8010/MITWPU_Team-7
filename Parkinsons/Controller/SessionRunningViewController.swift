@@ -13,9 +13,12 @@ class SessionRunningViewController: UIViewController {
     @IBOutlet weak var circularContainer: UIView!
     @IBOutlet weak var timeLabel: UILabel!
     @IBOutlet weak var pauseButton: UIButton!
+    @IBOutlet weak var beatButton: UIButton!
+    @IBOutlet weak var paceButton: UIButton!
     
+    var totalSessionDuration: Int = 0
     private var progressView: CircularProgressView!
-    private let timerModel = TimerModel(totalSeconds: 2 * 60) // STATIC RN, HAVE TO USE PREPARE FUNC TO GET SET TIME DATA FROM SETGOALVC
+    private var timerModel: TimerModel!
     
     
     private func setupProgressView() {
@@ -27,44 +30,101 @@ class SessionRunningViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         setupProgressView()
+        setupBeatButton()
+        setupPaceButton()
+        
+        if totalSessionDuration > 0{
+            timerModel = TimerModel(totalSeconds: totalSessionDuration)
+            updateDisplay(with: totalSessionDuration)
+        }
+        else {
+            timerModel = TimerModel(totalSeconds: 1)
+            updateDisplay(with: 0)
+        }
         timerModel.delegate = self
-        timerModel.start()
+        if totalSessionDuration > 0{
+            timerModel.start()
+        }
+//        let model = TimerModel(totalSeconds: totalSessionDuration)
+//        model.delegate = self
+//        model.start()
+//        self.timerModel = model
         
 //        BeatPlayer.shared.setupAudio(fileName: selectedBeat)
         updatePauseButtonUI()
         // Do any additional setup after loading the view.
     }
     
-
-        @IBAction func pauseTapped(_ sender: Any) {
-            if timerModel.isPaused {
-                timerModel.resume()
-            } else {
-                timerModel.pause()
-            }
-            updatePauseButtonUI()
-        }
-        
-        private func updatePauseButtonUI() {
-            pauseButton.setTitle(timerModel.isPaused ? "Resume" : "Pause", for: .normal)
-        }
+    
+    private func updateDisplay(with timeleft: Int) {
+        let minutes = timeleft / 60
+        let seconds = timeleft % 60
+        timeLabel.text = String(format: "%02d:%02d", minutes, seconds)
+        progressView.setProgress(1.0)
     }
+    
+    @IBAction func pauseTapped(_ sender: Any) {
+        guard let timerModel = timerModel else { return }
+        if timerModel.isPaused {
+            timerModel.resume()
+        } else {
+            timerModel.pause()
+        }
+        updatePauseButtonUI()
+    }
+        
+    private func updatePauseButtonUI() {
+        let title: String
+        if let timerModel = timerModel {
+            title = timerModel.isPaused ? "Resume" : "Pause"
+        } else {
+            title = "Pause"
+        }
+        pauseButton.setTitle(title, for: .normal)
+    }
+        
+    func setupBeatButton(){
+        let optionClosure: UIActionHandler = { [weak self] action in
+                _ = self
+        }
+        let option1 = UIAction(title: "Clock",state: .on, handler: optionClosure)
+        let option2 = UIAction(title: "Grass", handler: optionClosure)
+        let menu  = UIMenu(children: [option1, option2])
+        beatButton.menu = menu
+        beatButton.showsMenuAsPrimaryAction = true
+        beatButton.changesSelectionAsPrimaryAction = true
+    }
+    
+    func setupPaceButton(){
+        let optionClosure: UIActionHandler = { [weak self] action in
+                _ = self
+        }
+        let option1 = UIAction(title: "Slow",state: .on, handler: optionClosure)
+        let option2 = UIAction(title: "Medium", handler: optionClosure)
+        let option3 = UIAction(title: "Fast", handler: optionClosure)
+        let menu  = UIMenu(children: [option1, option2, option3])
+        paceButton.menu = menu
+        paceButton.showsMenuAsPrimaryAction = true
+        paceButton.changesSelectionAsPrimaryAction = true
+    }
+    
+}
 
-    extension SessionRunningViewController: TimerModelDelegate {
+extension SessionRunningViewController: TimerModelDelegate {
         
-        func timerDidUpdate(timeLeft: Int, progress: CGFloat) {
-            let minutes = timeLeft / 60
-            let seconds = timeLeft % 60
-            timeLabel.text = String(format: "%02d:%02d", minutes, seconds)
-            
-            progressView.setProgress(progress)
-        }
+    func timerDidUpdate(timeLeft: Int, progress: CGFloat) {
+        let minutes = timeLeft / 60
+        let seconds = timeLeft % 60
+        timeLabel.text = String(format: "%02d:%02d", minutes, seconds)
         
-        func timerDidFinish() {
-            timeLabel.text = " 00:00 "
-            progressView.setProgress(0)
-            pauseButton.isEnabled = false
-        }
+        progressView.setProgress(progress)
+    }
+    
+    func timerDidFinish() {
+        timeLabel.text = " 00:00 "
+        progressView.setProgress(0)
+        pauseButton.isEnabled = false
+    }
 
     /*
     // MARK: - Navigation

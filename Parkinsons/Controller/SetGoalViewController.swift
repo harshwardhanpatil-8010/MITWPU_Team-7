@@ -138,7 +138,7 @@ class SetGoalViewController: UIViewController, UITableViewDataSource, UIPickerVi
     @IBAction func startButtonTapped(_ sender: Any) {
         let h = dataForColumn1[DurationPicker.selectedRow(inComponent: 0)]
         let m = dataForColumn2[DurationPicker.selectedRow(inComponent: 1)]
-        let total = h*3600 + m*60
+        let total = (h * 3600) + (m * 60)
 
         guard total > 0 else {
             let alert = UIAlertController(title: "Choose duration", message: "Please select a duration greater than 0.", preferredStyle: .alert)
@@ -153,7 +153,7 @@ class SetGoalViewController: UIViewController, UITableViewDataSource, UIPickerVi
 
         let storyboard = UIStoryboard(name: "Rhythmic Walking", bundle: nil)
         guard let runningVC = storyboard.instantiateViewController(withIdentifier: "SessionRunningVC") as? SessionRunningViewController else { return }
-
+        runningVC.totalSessionDuration = total
 //        runningVC.session = session
 //        runningVC.selectedBPM = bpm
 //        runningVC.selectedBeat = selectedBeat   // now dynamic
