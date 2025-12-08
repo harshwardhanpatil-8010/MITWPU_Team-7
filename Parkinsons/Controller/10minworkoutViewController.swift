@@ -28,23 +28,32 @@ class _0minworkoutViewController: UIViewController {
     var currentIndex: Int = 0
     var exercises: [Exercise] = []
     var progressBars: [UIView] = []
+    var shouldLoadExercise = true
+    var hasLoadedFirstExercise = false
     override func viewDidLoad() {
         super.viewDidLoad()
         backgroundView.layer.cornerRadius = 35
         backgroundView.clipsToBounds = true
       
-        let allExercises = WorkoutManager.shared.currentModule?.exercises ?? []
-
-  exercises = WorkoutAlgorithmBuilder.generateDailyWorkout(from: allExercises) as! [Exercise]
+        let allExercises = WorkoutManager.shared.exercises
+        
+        exercises = WorkoutAlgorithmBuilder.generateDailyWorkout(from: allExercises)
 
         setupCloseButton()
         setupProgressBars()
       //  configureExercise()
         playerView.isUserInteractionEnabled = false
-        configureExercise()
+  
         //updateProgress(step: 1)
        // progressBar(step: 1)
         }
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        if !hasLoadedFirstExercise {
+            hasLoadedFirstExercise = true
+            configureExercise()
+        }
+    }
 
         /*
          // MARK: - Navigation
@@ -61,21 +70,23 @@ class _0minworkoutViewController: UIViewController {
         stepLabel.text = "1 of 10"
     }
     
-    func updateProgress() {
+    func updateProgressBars() {
         for (index, bar) in progressBars.enumerated() {
                bar.layer.sublayers?.forEach { $0.removeFromSuperlayer() }
-
-               let dashedLayer = createDashedLayer(
-                   color: index < currentIndex
-                       ? UIColor.systemGreen.cgColor
-                       : UIColor.lightGray.cgColor
-               )
-               bar.layer.addSublayer(dashedLayer)
-               if index == currentIndex - 1 {
-                   animateDash(layer: dashedLayer)
-               }
+            let color = index < currentIndex ? UIColor.systemBlue.cgColor : UIColor.lightGray.cgColor
+            let dashed = dashedLayer(color: color)
+            bar.layer.addSublayer(dashed)
         }
     }
+    func dashedLayer(color: CGColor) -> CAShapeLayer {
+        let layer = CAShapeLayer()
+        layer.strokeColor = color
+        layer.lineWidth = 6
+        layer.lineDashPattern = [10,6]
+        layer.path = UIBezierPath(rect: CGRect(x: 0, y: 0, width: 40, height: 2)).cgPath
+        return layer
+    }
+    
     func animateDash(layer: CAShapeLayer) {
         let animation = CABasicAnimation(keyPath: "strokeColor")
         animation.fromValue = UIColor.lightGray.cgColor
@@ -84,16 +95,20 @@ class _0minworkoutViewController: UIViewController {
         layer.add(animation, forKey: "colorChange")
     }
     func configureExercise() {
-        guard currentIndex < exercises.count else { return }
-           let exercise = exercises[currentIndex]
+        guard !exercises.isEmpty else {
+            showCompletion()
+            return }
+        guard currentIndex >= 0, currentIndex < exercises.count else {
+            showCompletion()
+            return }
+        
+        let exercise = exercises[currentIndex]
+        exerciseName.text = exercise.name
+        repsLabel.text = "\(exercise.reps)"
+        stepLabel.text = "\(currentIndex + 1) of \(exercises.count)"
+        updateProgressBars()
+       
 
-           // UI updates
-           exerciseName.text = exercise.name
-           repsLabel.text = "\(exercise.reps)"
-           stepLabel.text = "\(currentIndex + 1) of \(exercises.count)"
-           updateProgress()
-
-           // 🟢 Load exercise-specific video
            playerView.load(
             withVideoId: exercise.videoID ?? "",
                playerVars: [
@@ -113,7 +128,8 @@ class _0minworkoutViewController: UIViewController {
       
     }
     func starttimer() {
-        totalTime = 60 // Reset to 60 if needed
+        timer?.invalidate()
+        totalTime = 60
            timerLabel.text = "\(totalTime)"
            
            timer = Timer.scheduledTimer(timeInterval: 1.0,
@@ -129,14 +145,13 @@ class _0minworkoutViewController: UIViewController {
         } else {
             timer?.invalidate()
             timer = nil
-            // You can also navigate to next screen or trigger any action
         }
     }
 
     func goToRestScreen() {
         if currentIndex < exercises.count - 1 {  // Not last exercise
-            let storyboard = UIStoryboard(name: "10 minworkout", bundle: nil)
-            let vc = storyboard.instantiateViewController(withIdentifier: "RestScreenViewController") as! RestScreenViewController
+            let sb = UIStoryboard(name: "10 minworkout", bundle: nil)
+            let vc = sb.instantiateViewController(withIdentifier: "RestScreenViewController") as! RestScreenViewController
             
             vc.currentIndex = currentIndex
             vc.totalExercises = exercises.count
@@ -144,20 +159,20 @@ class _0minworkoutViewController: UIViewController {
 
             navigationController?.pushViewController(vc, animated: true)
         } else {
-            showWorkoutCompleted() // 🔹 Handle last screen
+            showCompletion()
         }
     }
     
-    func showWorkoutCompleted() {
+    func showCompletion() {
         let alert = UIAlertController(
             title: "Workout Completed!",
             message: "Great job! You finished all exercises.",
             preferredStyle: .alert
         )
         
-        alert.addAction(UIAlertAction(title: "OK", style: .default, handler: { _ in
+        alert.addAction(UIAlertAction(title: "OK", style: .default) { _ in
             self.navigationController?.popToRootViewController(animated: true) // Or navigate to summary screen
-        }))
+        })
         
         present(alert, animated: true)
     }
@@ -168,7 +183,7 @@ class _0minworkoutViewController: UIViewController {
             let dashView = UIView()
             dashView.translatesAutoresizingMaskIntoConstraints = false
             dashView.heightAnchor.constraint(equalToConstant: 6).isActive = true
-            dashView.layer.addSublayer(createDashedLayer(color: UIColor.lightGray.cgColor))
+            dashView.layer.addSublayer(dashedLayer(color: UIColor.lightGray.cgColor))
             progressBars.append(dashView)
             progressStackView.addArrangedSubview(dashView)
         }
@@ -188,11 +203,11 @@ class _0minworkoutViewController: UIViewController {
                preferredStyle: .alert
            )
 
-           alert.addAction(UIAlertAction(title: "Yes", style: .destructive, handler: { _ in
+           alert.addAction(UIAlertAction(title: "Yes", style: .destructive) { _ in
                self.dismiss(animated: true) // or pop
-           }))
+           })
 
-           alert.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: nil))
+        alert.addAction(UIAlertAction(title: "Cancel", style: .cancel))
 
            present(alert, animated: true)
     }
@@ -214,10 +229,9 @@ class _0minworkoutViewController: UIViewController {
 //    }
     func setupCloseButton() {
             // Use the system image for a consistent "close" icon
-            let closeImage = UIImage(systemName: "xmark")
             
             let closeButton = UIBarButtonItem(
-                image: closeImage,
+                image: UIImage(systemName: "xmark"),
                 style: .plain,
                 target: self,
                 action: #selector(closeButtonTapped) // This calls the function below when tapped
@@ -226,8 +240,8 @@ class _0minworkoutViewController: UIViewController {
             navigationItem.leftBarButtonItem = closeButton
         }
 
+
     @IBAction func doneButtonTapped(_ sender: UIButton) {
-        currentIndex += 1
      //   navigateToNext()
         goToRestScreen()
 
@@ -242,8 +256,11 @@ class _0minworkoutViewController: UIViewController {
 
 extension _0minworkoutViewController: RestScreenDelegate {
     func restCompleted(nextIndex: Int) {
-        currentIndex = nextIndex
-        configureExercise()
-        updateProgress()
+        if nextIndex < exercises.count {
+            currentIndex = nextIndex
+            configureExercise()
+        } else {
+            showCompletion()
+        }
     }
 }

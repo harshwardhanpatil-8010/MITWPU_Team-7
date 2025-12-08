@@ -12,10 +12,9 @@ class RestScreenViewController: UIViewController {
 
     @IBOutlet weak var timerLabel: UILabel!
     @IBOutlet weak var addTimeButton: UIButton!
-    
     @IBOutlet weak var backgroundView: UIView!
-    
     @IBOutlet weak var playerView: FullScreenYTPlayerView!
+    
     weak var delegate: RestScreenDelegate?
     var currentIndex: Int = 0
     var totalExercises: Int = 0
@@ -28,16 +27,14 @@ class RestScreenViewController: UIViewController {
           super.viewDidLoad()
           backgroundView.layer.cornerRadius = 35
           backgroundView.clipsToBounds = true
-        
-         
           updateTimerLabel()
           startTimer()
           setupCloseButton()
-          load()
+          loadVideo()
           playerView.isUserInteractionEnabled = false
       }
       
-    func load() {
+    func loadVideo() {
            playerView.load(
                withVideoId: videoID,
                playerVars: [
@@ -68,8 +65,7 @@ class RestScreenViewController: UIViewController {
       
       // MARK: - Timer Setup
       func startTimer() {
-          timer?.invalidate() // stop previous if any
-          
+          timer?.invalidate()
           timer = Timer.scheduledTimer(
               timeInterval: 1.0,
               target: self,
@@ -84,23 +80,24 @@ class RestScreenViewController: UIViewController {
             totalTime -= 1
             timerLabel.text = "\(totalTime)"
         } else {
-            timer?.invalidate()
-            delegate?.restCompleted(nextIndex: currentIndex + 1)
-            navigationController?.popViewController(animated: true)
+         completeRestAndReturn()
         }
     }
 
-      
+      func completeRestAndReturn() {
+        timer?.invalidate()
+        let next = currentIndex + 1
+          navigationController?.popViewController(animated: true)
+          delegate?.restCompleted(nextIndex: next)
+    }
+    
     func updateTimerLabel() {
           timerLabel.text = "\(totalTime)"
       }
     
     func setupCloseButton() {
-            // Use the system image for a consistent "close" icon
-            let closeImage = UIImage(systemName: "xmark")
-            
             let closeButton = UIBarButtonItem(
-                image: closeImage,
+                image: UIImage(systemName: "xmark"),
                 style: .plain,
                 target: self,
                 action: #selector(closeButtonTapped) // This calls the function below when tapped
@@ -112,9 +109,14 @@ class RestScreenViewController: UIViewController {
 
       // MARK: - Button Actions
       @IBAction func addTimeButtonTapped(_ sender: UIButton) {
-          totalTime += 20      // 🔹 Simply add time, timer keeps running
+          totalTime += 20
           updateTimerLabel()
       }
+    
+    @IBAction func skipButtonTapped(_ sender: Any) {
+        completeRestAndReturn()
+    }
+    
 
       // MARK: - Quit Button Alert
       @objc func closeButtonTapped() {
@@ -124,9 +126,9 @@ class RestScreenViewController: UIViewController {
               preferredStyle: .alert
           )
           
-          alert.addAction(UIAlertAction(title: "Yes", style: .destructive, handler: { _ in
+          alert.addAction(UIAlertAction(title: "Yes", style: .destructive) { _ in
               self.dismiss(animated: true)
-          }))
+          })
           
           alert.addAction(UIAlertAction(title: "Cancel", style: .cancel))
           

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="24412" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="kfw-Zk-5lP">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="24412" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="EQU-9B-Ild">
     <device id="retina6_3" orientation="portrait" appearance="light"/>
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="24405"/>
@@ -11,13 +11,13 @@
         <!--10 min workout-->
         <scene sceneID="ebc-ya-hmf">
             <objects>
-                <viewController useStoryboardIdentifierAsRestorationIdentifier="YES" id="J4b-8T-y2N" customClass="RestScreenViewController" customModule="Parkinsons" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="RestScreenViewController" useStoryboardIdentifierAsRestorationIdentifier="YES" id="J4b-8T-y2N" customClass="RestScreenViewController" customModule="Parkinsons" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="6p5-RL-dAZ">
                         <rect key="frame" x="0.0" y="0.0" width="402" height="874"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <stackView opaque="NO" contentMode="scaleToFill" distribution="fillProportionally" alignment="center" spacing="16" translatesAutoresizingMaskIntoConstraints="NO" id="pqP-9w-Yo4">
-                                <rect key="frame" x="16" y="193" width="366" height="20.333333333333343"/>
+                                <rect key="frame" x="16" y="139" width="366" height="20.333333333333343"/>
                                 <subviews>
                                     <stackView opaque="NO" contentMode="scaleToFill" distribution="fillEqually" alignment="center" spacing="10" translatesAutoresizingMaskIntoConstraints="NO" id="xRB-IG-w6b">
                                         <rect key="frame" x="0.0" y="8.3333333333333428" width="290" height="4"/>
@@ -138,6 +138,7 @@
                                                 <state key="normal" title="Button"/>
                                                 <buttonConfiguration key="configuration" style="tinted" title="skip" cornerStyle="capsule"/>
                                                 <connections>
+                                                    <action selector="skipButtonTapped:" destination="J4b-8T-y2N" eventType="touchUpInside" id="7wU-DK-XF2"/>
                                                     <action selector="skipButtonTapped:" destination="kfw-Zk-5lP" eventType="touchUpInside" id="sI9-Re-Hhw"/>
                                                 </connections>
                                             </button>
@@ -182,7 +183,6 @@
                             <constraint firstItem="pqP-9w-Yo4" firstAttribute="top" secondItem="6p5-RL-dAZ" secondAttribute="topMargin" constant="15" id="3uV-jo-n1E"/>
                             <constraint firstItem="Epn-SE-8lT" firstAttribute="leading" secondItem="DIh-DC-c9u" secondAttribute="leading" id="OvA-1A-joK"/>
                             <constraint firstAttribute="bottom" secondItem="Epn-SE-8lT" secondAttribute="bottom" constant="309" id="Qdo-UM-aYo"/>
-                            <constraint firstAttribute="bottom" secondItem="Jpk-pp-Zie" secondAttribute="bottom" constant="0.33333333333337123" id="eCO-oT-x97"/>
                             <constraint firstItem="Jpk-pp-Zie" firstAttribute="leading" secondItem="DIh-DC-c9u" secondAttribute="leading" id="id4-Nj-T1N"/>
                             <constraint firstItem="DIh-DC-c9u" firstAttribute="trailing" secondItem="Epn-SE-8lT" secondAttribute="trailing" id="kfc-VB-d3B"/>
                             <constraint firstItem="pqP-9w-Yo4" firstAttribute="leading" secondItem="DIh-DC-c9u" secondAttribute="leading" constant="16" id="lOx-3e-WUl"/>
@@ -202,7 +202,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="jm5-Xy-JZp" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2338.8059701492534" y="129.7482837528604"/>
+            <point key="canvasLocation" x="3258.2089552238804" y="129.7482837528604"/>
         </scene>
         <!--Info Modal View Controller-->
         <scene sceneID="WSV-ha-It8">
@@ -267,7 +267,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="QvK-xH-w2J" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="3187" y="130"/>
+            <point key="canvasLocation" x="4105.9701492537315" y="129.7482837528604"/>
         </scene>
         <!--10 min Workout-->
         <scene sceneID="hG1-va-qNN">
@@ -284,9 +284,6 @@
                                     <constraint firstAttribute="width" constant="334" id="yg6-QO-55t"/>
                                 </constraints>
                                 <buttonConfiguration key="configuration" style="filled" title="Start" cornerStyle="capsule"/>
-                                <connections>
-                                    <segue destination="f2T-cn-qUt" kind="show" id="gSV-E2-YMp"/>
-                                </connections>
                             </button>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="EZX-J2-hy3">
                                 <rect key="frame" x="175" y="292" width="52" height="24"/>
@@ -413,7 +410,7 @@
             </objects>
             <point key="canvasLocation" x="-10" y="130"/>
         </scene>
-        <!--0minworkout Countdown View Controller-->
+        <!--10 min Workout-->
         <scene sceneID="fwz-WR-0Sv">
             <objects>
                 <viewController storyboardIdentifier="10minworkoutCountdownViewController" useStoryboardIdentifierAsRestorationIdentifier="YES" id="f2T-cn-qUt" customClass="_0minworkoutCountdownViewController" customModule="Parkinsons" customModuleProvider="target" sceneMemberID="viewController">
@@ -445,7 +442,7 @@
                             <constraint firstItem="vUh-5N-FKN" firstAttribute="trailing" secondItem="wSf-Co-ErF" secondAttribute="trailing" id="uZ2-WK-bQj"/>
                         </constraints>
                     </view>
-                    <navigationItem key="navigationItem" id="Ehw-06-6Ga"/>
+                    <navigationItem key="navigationItem" title="10 min Workout" id="Ehw-06-6Ga"/>
                     <connections>
                         <outlet property="TimerLabel" destination="65U-Ul-9tH" id="fgv-nj-6eQ"/>
                         <segue destination="kfw-Zk-5lP" kind="show" id="ixh-od-Kok"/>
@@ -453,7 +450,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="hPz-QG-MXe" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="752" y="130"/>
+            <point key="canvasLocation" x="1670.1492537313432" y="129.7482837528604"/>
         </scene>
         <!--0minworkout Good Job View Controller-->
         <scene sceneID="hrK-dw-KUr">
@@ -645,7 +642,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="5T6-RI-xm1" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="3949" y="119"/>
+            <point key="canvasLocation" x="4867.1641791044776" y="118.76430205949656"/>
         </scene>
         <!--10 min Workout-->
         <scene sceneID="czI-ub-xzR">
@@ -731,10 +728,6 @@
                                     </label>
                                 </subviews>
                             </stackView>
-                            <view contentMode="scaleAspectFit" translatesAutoresizingMaskIntoConstraints="NO" id="bHc-li-B70" customClass="FullScreenYTPlayerView" customModule="Parkinsons" customModuleProvider="target">
-                                <rect key="frame" x="0.0" y="146" width="402" height="427"/>
-                                <color key="backgroundColor" systemColor="systemBackgroundColor"/>
-                            </view>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="86f-LH-JwT">
                                 <rect key="frame" x="0.0" y="528" width="402" height="346"/>
                                 <subviews>
@@ -786,7 +779,6 @@
                                         <buttonConfiguration key="configuration" style="filled" image="checkmark" catalog="system" cornerStyle="capsule"/>
                                         <connections>
                                             <action selector="doneButtonTapped:" destination="kfw-Zk-5lP" eventType="touchUpInside" id="4f0-ra-WhN"/>
-                                            <segue destination="J4b-8T-y2N" kind="show" id="dwA-MU-pzN"/>
                                         </connections>
                                     </button>
                                     <stackView opaque="NO" contentMode="scaleToFill" spacing="114" translatesAutoresizingMaskIntoConstraints="NO" id="R4O-VU-23N">
@@ -803,7 +795,6 @@
                                                 <buttonConfiguration key="configuration" style="tinted" title="skip" cornerStyle="capsule"/>
                                                 <connections>
                                                     <action selector="skipButtonTapped:" destination="kfw-Zk-5lP" eventType="touchUpInside" id="AYp-KI-fJK"/>
-                                                    <segue destination="J4b-8T-y2N" kind="show" id="BGS-8G-Nym"/>
                                                 </connections>
                                             </button>
                                         </subviews>
@@ -811,8 +802,8 @@
                                             <constraint firstAttribute="height" constant="48" id="bBQ-VT-fl2"/>
                                         </constraints>
                                     </stackView>
-                                    <stackView opaque="NO" contentMode="scaleToFill" distribution="fillEqually" alignment="center" spacing="5" translatesAutoresizingMaskIntoConstraints="NO" id="tQQ-64-Gce">
-                                        <rect key="frame" x="137" y="28" width="128.33333333333337" height="53"/>
+                                    <stackView opaque="NO" contentMode="scaleToFill" distribution="fillProportionally" alignment="center" spacing="5" translatesAutoresizingMaskIntoConstraints="NO" id="tQQ-64-Gce">
+                                        <rect key="frame" x="143" y="28" width="116.33333333333331" height="53"/>
                                         <subviews>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="MZl-LX-BdN">
                                                 <rect key="frame" x="0.0" y="10.666666666666627" width="61.666666666666664" height="31.333333333333329"/>
@@ -821,7 +812,7 @@
                                                 <nil key="highlightedColor"/>
                                             </label>
                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="N6N-4i-Cr3">
-                                                <rect key="frame" x="66.666666666666657" y="0.0" width="61.666666666666657" height="53"/>
+                                                <rect key="frame" x="66.666666666666657" y="0.0" width="49.666666666666657" height="53"/>
                                                 <state key="normal" title="Button"/>
                                                 <buttonConfiguration key="configuration" style="plain" image="info.circle" catalog="system"/>
                                                 <connections>
@@ -848,19 +839,23 @@
                                     <constraint firstAttribute="trailing" secondItem="R4O-VU-23N" secondAttribute="trailing" constant="20" id="wTb-g3-Pmn"/>
                                 </constraints>
                             </view>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="KpT-vc-seY" customClass="FullScreenYTPlayerView" customModule="Parkinsons" customModuleProvider="target">
+                                <rect key="frame" x="0.0" y="146" width="402" height="419"/>
+                                <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                            </view>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="P6Q-Ah-Waw"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                         <constraints>
-                            <constraint firstItem="bHc-li-B70" firstAttribute="top" secondItem="cog-hj-JbD" secondAttribute="top" constant="146" id="4mB-1g-0Ho"/>
+                            <constraint firstItem="KpT-vc-seY" firstAttribute="leading" secondItem="P6Q-Ah-Waw" secondAttribute="leading" id="45a-Iy-pnx"/>
+                            <constraint firstAttribute="bottom" secondItem="KpT-vc-seY" secondAttribute="bottom" constant="309" id="5GS-vR-SCY"/>
                             <constraint firstItem="86f-LH-JwT" firstAttribute="leading" secondItem="cog-hj-JbD" secondAttribute="leading" id="DpS-7W-WhZ"/>
-                            <constraint firstItem="86f-LH-JwT" firstAttribute="top" secondItem="bHc-li-B70" secondAttribute="bottom" constant="-45" id="HKS-E5-lDr"/>
+                            <constraint firstItem="P6Q-Ah-Waw" firstAttribute="trailing" secondItem="KpT-vc-seY" secondAttribute="trailing" id="KCd-3O-27e"/>
                             <constraint firstAttribute="bottom" secondItem="86f-LH-JwT" secondAttribute="bottom" id="MRC-CW-zF6"/>
                             <constraint firstItem="2bR-8X-e0Q" firstAttribute="leading" secondItem="P6Q-Ah-Waw" secondAttribute="leading" constant="16" id="REd-c2-ZAZ"/>
                             <constraint firstItem="2bR-8X-e0Q" firstAttribute="top" secondItem="cog-hj-JbD" secondAttribute="topMargin" constant="15" id="Sbe-xZ-3co"/>
                             <constraint firstItem="86f-LH-JwT" firstAttribute="top" secondItem="cog-hj-JbD" secondAttribute="top" constant="528" id="YcY-tN-2Lj"/>
-                            <constraint firstItem="bHc-li-B70" firstAttribute="leading" secondItem="P6Q-Ah-Waw" secondAttribute="leading" id="idY-9f-kh4"/>
-                            <constraint firstItem="bHc-li-B70" firstAttribute="trailing" secondItem="P6Q-Ah-Waw" secondAttribute="trailing" id="kmu-MK-nfT"/>
+                            <constraint firstItem="KpT-vc-seY" firstAttribute="top" secondItem="cog-hj-JbD" secondAttribute="top" constant="146" id="ZYd-P7-qzI"/>
                             <constraint firstItem="86f-LH-JwT" firstAttribute="leading" secondItem="P6Q-Ah-Waw" secondAttribute="leading" id="pXv-Vc-8Du"/>
                             <constraint firstItem="P6Q-Ah-Waw" firstAttribute="trailing" secondItem="2bR-8X-e0Q" secondAttribute="trailing" constant="20" id="q6R-3q-EGl"/>
                             <constraint firstItem="86f-LH-JwT" firstAttribute="trailing" secondItem="P6Q-Ah-Waw" secondAttribute="trailing" id="zJh-tT-Z4m"/>
@@ -870,7 +865,7 @@
                     <connections>
                         <outlet property="backgroundView" destination="86f-LH-JwT" id="ciO-hz-JIF"/>
                         <outlet property="exerciseName" destination="MZl-LX-BdN" id="WX0-J5-G9b"/>
-                        <outlet property="playerView" destination="bHc-li-B70" id="Exq-HD-jxc"/>
+                        <outlet property="playerView" destination="KpT-vc-seY" id="qTi-XM-XAu"/>
                         <outlet property="progressStackView" destination="mjt-iX-ntm" id="G41-kb-VvQ"/>
                         <outlet property="repsLabel" destination="tne-nX-W55" id="Ff7-bI-78q"/>
                         <outlet property="skipButton" destination="ev3-IW-IQ3" id="dZw-Kq-Q6G"/>
@@ -880,7 +875,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="qra-DB-Pu2" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1441.7910447761194" y="129.7482837528604"/>
+            <point key="canvasLocation" x="2361.1940298507461" y="129.7482837528604"/>
         </scene>
         <!--View Controller-->
         <scene sceneID="Ba1-2f-bke">
@@ -915,10 +910,26 @@
             </objects>
             <point key="canvasLocation" x="-770.14925373134326" y="129.7482837528604"/>
         </scene>
+        <!--Navigation Controller-->
+        <scene sceneID="Oaj-nr-zPt">
+            <objects>
+                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="EQU-9B-Ild" sceneMemberID="viewController">
+                    <toolbarItems/>
+                    <navigationItem key="navigationItem" id="2wo-RB-Ugc"/>
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="8N3-I6-Uyb">
+                        <rect key="frame" x="0.0" y="124" width="402" height="54"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                    </navigationBar>
+                    <nil name="viewControllers"/>
+                    <connections>
+                        <segue destination="f2T-cn-qUt" kind="relationship" relationship="rootViewController" id="xfB-wi-C5x"/>
+                    </connections>
+                </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="eBT-LW-M7Z" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="750.74626865671632" y="129.7482837528604"/>
+        </scene>
     </scenes>
-    <inferredMetricsTieBreakers>
-        <segue reference="dwA-MU-pzN"/>
-    </inferredMetricsTieBreakers>
     <resources>
         <image name="checkmark" catalog="system" width="128" height="114"/>
         <image name="info.circle" catalog="system" width="128" height="123"/>

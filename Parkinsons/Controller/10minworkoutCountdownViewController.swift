@@ -32,14 +32,12 @@ class _0minworkoutCountdownViewController: UIViewController {
                  self.TimerLabel.transform = CGAffineTransform(scaleX: 3.0, y: 3.0)
              }) { _ in
                  self.countDown -= 1
-                 self.startCountDown()  // 
+                 self.startCountDown()
              }
          }
     func navigateToNextScreen() {
             
             guard let navigationController = self.navigationController else {
-                print("Error: View Controller is not embedded in a Navigation Controller.")
-      
                 return
             }
             
@@ -52,10 +50,9 @@ class _0minworkoutCountdownViewController: UIViewController {
     
     func setupCloseButton() {
             // Use the system image for a consistent "close" icon
-            let closeImage = UIImage(systemName: "xmark")
-            
+         
             let closeButton = UIBarButtonItem(
-                image: closeImage,
+                image: UIImage(systemName: "xmark"),
                 style: .plain,
                 target: self,
                 action: #selector(closeButtonTapped) // This calls the function below when tapped
@@ -71,11 +68,11 @@ class _0minworkoutCountdownViewController: UIViewController {
                preferredStyle: .alert
            )
 
-           alert.addAction(UIAlertAction(title: "Yes", style: .destructive, handler: { _ in
+           alert.addAction(UIAlertAction(title: "Yes", style: .destructive) { _ in
                self.dismiss(animated: true) // or pop
-           }))
+           })
 
-           alert.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: nil))
+           alert.addAction(UIAlertAction(title: "Cancel", style: .cancel))
 
            present(alert, animated: true)
     }

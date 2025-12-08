@@ -26,8 +26,7 @@ struct Exercise: Codable, Identifiable {
     var consecutiveOffDaySuccess: Int
     var videoID: String?
 
-
-    init(id: UUID = UUID(), name: String, category: ExerciseCategory, minReps: Int = 5, maxReps: Int = 20) {
+    init(id: UUID = UUID(), name: String, category: ExerciseCategory, minReps: Int = 5, maxReps: Int = 20, videoID: String? = nil) {
         self.id = id
         self.name = name
         self.category = category
@@ -44,6 +43,7 @@ struct Exercise: Codable, Identifiable {
         self.offDayReps = nil
         self.lastOffDayUsed = nil
         self.consecutiveOffDaySuccess = 0
+        self.videoID = videoID
     }
 }
 
@@ -156,7 +156,7 @@ struct WorkoutNotification {
 
 class WorkoutManager {
     static let shared = WorkoutManager()
-   
+
     var exercises: [Exercise] = []
     var currentModule: WorkoutModule?
     var currentSession: WorkoutSession?
@@ -179,86 +179,75 @@ class WorkoutManager {
     }
 
     private func loadData() {
-        // Load exercises
         if let data = UserDefaults.standard.data(forKey: "exercises"),
            let decoded = try? JSONDecoder().decode([Exercise].self, from: data) {
-            self.exercises.removeAll()
-            self.exercises.append(contentsOf: decoded)
+            exercises = decoded
         } else {
-            let defaultExercises = createDefaultExercises()
-            self.exercises.removeAll()
-            self.exercises.append(contentsOf: defaultExercises)
+            let defaults = createDefaultExercises()
+            exercises = defaults
             saveExercises()
         }
 
-        // Load moduleHistory
         if let h = UserDefaults.standard.data(forKey: "moduleHistory"),
            let d = try? JSONDecoder().decode([ModuleHistory].self, from: h) {
-            self.moduleHistory = d
+            moduleHistory = d
         }
 
-        // Load userHealthState
         if let h = UserDefaults.standard.data(forKey: "userHealthState"),
            let d = try? JSONDecoder().decode(UserHealthState.self, from: h) {
-            self.userHealthState = d
+            userHealthState = d
         }
 
-        // Load currentSession
         if let h = UserDefaults.standard.data(forKey: "currentSession"),
            let d = try? JSONDecoder().decode(WorkoutSession.self, from: h) {
-            self.currentSession = d
+            currentSession = d
         }
 
-        // Load simple values
         currentModuleIndex = UserDefaults.standard.integer(forKey: "currentModuleIndex")
         caregiverNotificationsEnabled = UserDefaults.standard.bool(forKey: "caregiverNotificationsEnabled")
         caregiverContactInfo = UserDefaults.standard.string(forKey: "caregiverContactInfo")
     }
 
     private func saveExercises() {
-
-        let storeItems = self.exercises.map { exercise in
+        let items = exercises.map {
             ExerciseStoreItem(
-                id: exercise.id,
-                name: exercise.name,
-                videoID: exercise.videoID ?? "",
-                category: exercise.category.rawValue,
-                reps: exercise.reps,
-                minReps: exercise.minReps,
-                maxReps: exercise.maxReps,
-                skipCount: exercise.skipCount,
-                isSuppressed: exercise.isSuppressed,
-                suppressedUntil: exercise.suppressedUntil ?? .distantPast
+                id: $0.id,
+                name: $0.name,
+                videoID: $0.videoID ?? "",
+                category: $0.category.rawValue,
+                reps: $0.reps,
+                minReps: $0.minReps,
+                maxReps: $0.maxReps,
+                skipCount: $0.skipCount,
+                isSuppressed: $0.isSuppressed,
+                suppressedUntil: $0.suppressedUntil ?? .distantPast
             )
         }
-
-        ExerciseStore.shared.replaceExercises(with: storeItems)
+        ExerciseStore.shared.replaceExercises(with: items)
         ExerciseStore.shared.save()
     }
 
-
     private func saveModuleHistory() {
-        if let encoded = try? JSONEncoder().encode(moduleHistory) { UserDefaults.standard.set(encoded, forKey: "moduleHistory") }
+        if let encoded = try? JSONEncoder().encode(moduleHistory) {
+            UserDefaults.standard.set(encoded, forKey: "moduleHistory")
+        }
     }
 
     private func saveUserHealthState() {
-        if let encoded = try? JSONEncoder().encode(userHealthState) { UserDefaults.standard.set(encoded, forKey: "userHealthState") }
+        if let encoded = try? JSONEncoder().encode(userHealthState) {
+            UserDefaults.standard.set(encoded, forKey: "userHealthState")
+        }
     }
 
     private func saveCurrentSession() {
-        if let encoded = try? JSONEncoder().encode(currentSession) { UserDefaults.standard.set(encoded, forKey: "currentSession") }
+        if let encoded = try? JSONEncoder().encode(currentSession) {
+            UserDefaults.standard.set(encoded, forKey: "currentSession")
+        }
     }
 
     private func createDefaultExercises() -> [Exercise] {
-        let stretch = ["Neck Rolls","Shoulder Circles","Arm Circles","Torso Twists","Hip Circles"]
-        let strength = ["Push-ups","Squats","Lunges","Plank","Mountain Climbers"]
-        let balance = ["Single Leg Stand","Tree Pose","Warrior III","Heel-to-Toe Walk","Single Leg Deadlift"]
-
-        var result: [Exercise] = []
-        for n in stretch { result.append(Exercise(name: n, category: .stretch, minReps: 3, maxReps: 15)) }
-        for n in strength { result.append(Exercise(name: n, category: .strength, minReps: 3, maxReps: 20)) }
-        for n in balance { result.append(Exercise(name: n, category: .balance, minReps: 3, maxReps: 20)) }
-        return result
+        let stored = ExerciseStore.shared.exercises
+        return stored.map { Exercise(from: $0)}
     }
 
     func generateNewModule() {
@@ -272,7 +261,9 @@ class WorkoutManager {
         }
         if userHealthState.isOffDay {
             for i in 0..<selected.count {
-                if let off = selected[i].offDayReps { selected[i].reps = off }
+                if let off = selected[i].offDayReps {
+                    selected[i].reps = off
+                }
             }
         }
         currentModule = WorkoutModule(moduleIndex: currentModuleIndex, exercises: selected, isOffDayModule: userHealthState.isOffDay)
@@ -295,7 +286,9 @@ class WorkoutManager {
         scored.sort { $0.1 > $1.1 }
         let list = scored.prefix(count).map { $0.0 }
         for e in list {
-            if let idx = exercises.firstIndex(where: { $0.id == e.id }) { exercises[idx].lastUsedModuleIndex = currentModuleIndex }
+            if let idx = exercises.firstIndex(where: { $0.id == e.id }) {
+                exercises[idx].lastUsedModuleIndex = currentModuleIndex
+            }
         }
         return list
     }
@@ -315,7 +308,9 @@ class WorkoutManager {
         scored.sort { $0.1 > $1.1 }
         let list = scored.prefix(count).map { $0.0 }
         for e in list {
-            if let idx = exercises.firstIndex(where: { $0.id == e.id }) { exercises[idx].lastUsedModuleIndex = currentModuleIndex }
+            if let idx = exercises.firstIndex(where: { $0.id == e.id }) {
+                exercises[idx].lastUsedModuleIndex = currentModuleIndex
+            }
         }
         return list
     }
@@ -337,7 +332,9 @@ class WorkoutManager {
         m.completedExercises.insert(id)
         currentModule = m
         if let idx = exercises.firstIndex(where: { $0.id == id }) {
-            if exercises[idx].skipCount > 0 { exercises[idx].skipCount -= 1 }
+            if exercises[idx].skipCount > 0 {
+                exercises[idx].skipCount -= 1
+            }
             exercises[idx].consecutiveUse += 1
             exercises[idx].usageHistory.append(ExerciseUsage(date: Date(), completed: true, feedbackRating: nil))
             saveExercises()
@@ -367,8 +364,12 @@ class WorkoutManager {
         s.quitReason = reason
         s.exercisesCompletedBeforeQuit = m.completedExercises.count
         currentSession = s
-        if reason == .tired { applyTiredAdjustment() }
-        if reason == .tooDifficult { triggerOffDayProtocol() }
+        if reason == .tired {
+            applyTiredAdjustment()
+        }
+        if reason == .tooDifficult {
+            triggerOffDayProtocol()
+        }
         saveCurrentSession()
         saveExercises()
     }
@@ -394,7 +395,9 @@ class WorkoutManager {
         userHealthState.lastOffDayDate = today
         userHealthState.offDayHistory.append(today)
         applyOffDayAdjustments()
-        if userHealthState.consecutiveOffDays >= 3 { handleExtendedOffDay() }
+        if userHealthState.consecutiveOffDays >= 3 {
+            handleExtendedOffDay()
+        }
         saveUserHealthState()
     }
 
@@ -402,17 +405,21 @@ class WorkoutManager {
         guard let m = currentModule else { return }
         for e in m.exercises where !m.completedExercises.contains(e.id) {
             if let idx = exercises.firstIndex(where: { $0.id == e.id }) {
-                if exercises[idx].baseReps == nil { exercises[idx].baseReps = exercises[idx].reps }
-                let reduction = Int(Double(exercises[idx].reps) * 0.4)
-                exercises[idx].offDayReps = max(3, exercises[idx].reps - reduction)
+                if exercises[idx].baseReps == nil {
+                    exercises[idx].baseReps = exercises[idx].reps
+                }
+                let reduction = Int(Double(exercises[idx].reps) * offDayReductionPercentage)
+                exercises[idx].offDayReps = max(absoluteMinimumReps, exercises[idx].reps - reduction)
                 exercises[idx].reps = exercises[idx].offDayReps!
                 exercises[idx].lastOffDayUsed = Date()
             }
         }
         for idx in 0..<exercises.count {
-            if exercises[idx].baseReps == nil { exercises[idx].baseReps = exercises[idx].reps }
-            let reduction = Int(Double(exercises[idx].reps) * 0.4)
-            exercises[idx].offDayReps = max(3, exercises[idx].reps - reduction)
+            if exercises[idx].baseReps == nil {
+                exercises[idx].baseReps = exercises[idx].reps
+            }
+            let reduction = Int(Double(exercises[idx].reps) * offDayReductionPercentage)
+            exercises[idx].offDayReps = max(absoluteMinimumReps, exercises[idx].reps - reduction)
         }
         saveExercises()
     }
@@ -420,7 +427,7 @@ class WorkoutManager {
     private func handleExtendedOffDay() {
         for idx in 0..<exercises.count {
             if let off = exercises[idx].offDayReps {
-                exercises[idx].offDayReps = max(3, Int(Double(off) * 0.8))
+                exercises[idx].offDayReps = max(absoluteMinimumReps, Int(Double(off) * 0.8))
             }
         }
         saveExercises()
@@ -432,7 +439,9 @@ class WorkoutManager {
         s.resumedAt = Date()
         currentSession = s
         saveCurrentSession()
-        if userHealthState.isOffDay { generateNewModule() }
+        if userHealthState.isOffDay {
+            generateNewModule()
+        }
     }
 
     func submitModuleFeedback(rating: WorkoutRating) {
@@ -441,11 +450,16 @@ class WorkoutManager {
         currentModule = m
         let h = ModuleHistory(moduleIndex: currentModuleIndex, date: Date(), rating: rating, isOffDayModule: m.isOffDayModule)
         moduleHistory.append(h)
-        if moduleHistory.count > 10 { moduleHistory.removeFirst() }
+        if moduleHistory.count > maxModuleHistoryCount {
+            moduleHistory.removeFirst()
+        }
         saveModuleHistory()
-        if m.isOffDayModule { updateOffDayExerciseDifficulty(rating: rating) }
-        else {
-            for id in m.completedExercises { updateExerciseDifficulty(exerciseId: id, rating: rating) }
+        if m.isOffDayModule {
+            updateOffDayExerciseDifficulty(rating: rating)
+        } else {
+            for id in m.completedExercises {
+                updateExerciseDifficulty(exerciseId: id, rating: rating)
+            }
         }
         saveExercises()
     }
@@ -459,7 +473,10 @@ class WorkoutManager {
             exercises[idx].reps -= 1
         case .justRight:
             exercises[idx].consecutiveUse += 1
-            if exercises[idx].consecutiveUse >= 3 { exercises[idx].reps += 1; exercises[idx].consecutiveUse = 0 }
+            if exercises[idx].consecutiveUse >= 3 {
+                exercises[idx].reps += 1
+                exercises[idx].consecutiveUse = 0
+            }
         }
         exercises[idx].reps = max(exercises[idx].minReps, min(exercises[idx].maxReps, exercises[idx].reps))
     }
@@ -471,11 +488,17 @@ class WorkoutManager {
             switch rating {
             case .easy:
                 exercises[idx].consecutiveOffDaySuccess += 1
-                if exercises[idx].consecutiveOffDaySuccess >= 2, let off = exercises[idx].offDayReps, let base = exercises[idx].baseReps { exercises[idx].offDayReps = min(off + 1, base) }
+                if exercises[idx].consecutiveOffDaySuccess >= 2,
+                   let off = exercises[idx].offDayReps,
+                   let base = exercises[idx].baseReps {
+                    exercises[idx].offDayReps = min(off + 1, base)
+                }
             case .justRight:
                 exercises[idx].consecutiveOffDaySuccess += 1
             case .hard:
-                if let off = exercises[idx].offDayReps { exercises[idx].offDayReps = max(3, off - 1) }
+                if let off = exercises[idx].offDayReps {
+                    exercises[idx].offDayReps = max(absoluteMinimumReps, off - 1)
+                }
                 exercises[idx].consecutiveOffDaySuccess = 0
             }
         }
@@ -500,7 +523,9 @@ class WorkoutManager {
         var used = Set<UUID>()
         for e in items {
             let recent = e.usageHistory.filter { $0.date > date && $0.completed }
-            if !recent.isEmpty { used.insert(e.id) }
+            if !recent.isEmpty {
+                used.insert(e.id)
+            }
         }
         return used.count
     }
@@ -508,7 +533,9 @@ class WorkoutManager {
     private func checkOffDayRecovery() {
         guard userHealthState.isOffDay else { return }
         let last = moduleHistory.filter { $0.isOffDayModule }.suffix(2).compactMap { $0.rating }
-        if last.count == 2, last.allSatisfy({ $0 == .easy || $0 == .justRight }) { confirmOffDayRecovery() }
+        if last.count == 2, last.allSatisfy({ $0 == .easy || $0 == .justRight }) {
+            confirmOffDayRecovery()
+        }
     }
 
     func confirmOffDayRecovery() {
@@ -560,3 +587,24 @@ class WorkoutAlgorithm {
     }
 }
 
+extension Exercise {
+    init(from storeItem: ExerciseStoreItem) {
+        self.id = storeItem.id
+        self.name = storeItem.name
+        self.category = ExerciseCategory(rawValue: storeItem.category) ?? .stretch
+        self.reps = storeItem.reps
+        self.minReps = storeItem.minReps
+        self.maxReps = storeItem.maxReps
+        self.skipCount = storeItem.skipCount
+        self.isSuppressed = storeItem.isSuppressed
+        self.suppressedUntil = storeItem.suppressedUntil
+        self.lastUsedModuleIndex = nil
+        self.consecutiveUse = 0
+        self.usageHistory = []
+        self.baseReps = nil
+        self.offDayReps = nil
+        self.lastOffDayUsed = nil
+        self.consecutiveOffDaySuccess = 0
+        self.videoID = storeItem.videoID
+    }
+}

@@ -8,13 +8,13 @@
 import Foundation
 
 class ExerciseStore {
-
     static let shared = ExerciseStore()
     private let key = "exercise_store"
-
-    private init() { load() }
-
     private(set) var exercises: [ExerciseStoreItem] = []
+
+    private init() {
+        load()
+    }
 
     private func load() {
         if let data = UserDefaults.standard.data(forKey: key),
@@ -33,51 +33,120 @@ class ExerciseStore {
     }
 
     func replaceExercises(with items: [ExerciseStoreItem]) {
-        self.exercises = items
+        exercises = items
     }
 
     private func defaultExercises() -> [ExerciseStoreItem] {
         return [
             ExerciseStoreItem(
                 id: UUID(),
-                name: "Neck Rolls",
-                videoID: "jyOk-2DmVnU",
-                category: "stretch",
-                reps: 8,
-                minReps: 5,
-                maxReps: 10,
-                skipCount: 0,
-                isSuppressed: false,
-                suppressedUntil: .distantPast
-            ),
-            ExerciseStoreItem(
-                id: UUID(),
-                name: "Shoulder Circles",
-                videoID: "9MIFX0w7At8",
+                name: "Neck Stretches",
+                videoID: "uOljoOvycuo",  // Power for Parkinson's - Gentle Neck Stretches
                 category: "stretch",
                 reps: 10,
-                minReps: 8,
+                minReps: 5,
                 maxReps: 15,
                 skipCount: 0,
                 isSuppressed: false,
                 suppressedUntil: .distantPast
             ),
+
             ExerciseStoreItem(
                 id: UUID(),
-                name: "Squats",
-                videoID: "uOljoOvycuo",
-                category: "strength",
-                reps: 15,
-                minReps: 10,
-                maxReps: 20,
+                name: "Shoulder Rolls",
+                videoID: "VQJ6KFlUBAI",  // Shoulder Stretches for Parkinson's
+                category: "stretch",
+                reps: 10,
+                minReps: 5,
+                maxReps: 15,
                 skipCount: 0,
                 isSuppressed: false,
                 suppressedUntil: .distantPast
             ),
+
             ExerciseStoreItem(
                 id: UUID(),
-                name: "Lunges",
-                videoID: "KNWqyKluZgg",
+                name: "Seated Chest Stretch",
+                videoID: "_iomTrSv_N0",  // Stretching exercises for Parkinson's
+                category: "stretch",
+                reps: 8,
+                minReps: 5,
+                maxReps: 12,
+                skipCount: 0,
+                isSuppressed: false,
+                suppressedUntil: .distantPast
+            ),
+
+            ExerciseStoreItem(
+                id: UUID(),
+                name: "Hamstring Stretch",
+                videoID: "Gh8cZ_W2vR4",  // Seated Hamstring Stretch for Parkinson's
+                category: "stretch",
+                reps: 8,
+                minReps: 5,
+                maxReps: 12,
+                skipCount: 0,
+                isSuppressed: false,
+                suppressedUntil: .distantPast
+            ),
+
+            ExerciseStoreItem(
+                id: UUID(),
+                name: "Full Body Stretching",
+                videoID: "WRyPQO_u_qE",  // Gentle Stretching Routine
+                category: "stretch",
+                reps: 10,
+                minReps: 5,
+                maxReps: 15,
+                skipCount: 0,
+                isSuppressed: false,
+                suppressedUntil: .distantPast
+            ),
+
+            // STRENGTH EXERCISES (5)
+            ExerciseStoreItem(
+                id: UUID(),
+                name: "Seated Arm Raises",
+                videoID: "TB_CtNHtMUA",  // Upper Body Strength for Parkinson's
+                category: "strength",
+                reps: 10,
+                minReps: 5,
+                maxReps: 15,
+                skipCount: 0,
+                isSuppressed: false,
+                suppressedUntil: .distantPast
+            ),
+
+            ExerciseStoreItem(
+                id: UUID(),
+                name: "Leg Strengthening",
+                videoID: "SbGL0J5qh9s",  // Lower Body Strength Exercises
+                category: "strength",
+                reps: 10,
+                minReps: 5,
+                maxReps: 15,
+                skipCount: 0,
+                isSuppressed: false,
+                suppressedUntil: .distantPast
+            ),
+
+            ExerciseStoreItem(
+                id: UUID(),
+                name: "Core Strengthening",
+                videoID: "KQJrM2-oGY4",  // Core Exercises for Parkinson's
+                category: "strength",
+                reps: 10,
+                minReps: 5,
+                maxReps: 15,
+                skipCount: 0,
+                isSuppressed: false,
+                suppressedUntil: .distantPast
+            ),
+
+            ExerciseStoreItem(
+                id: UUID(),
+                name: "Resistance Band Exercises",
+                videoID: "95seVUPTcEg",  // Resistance Training
                 category: "strength",
                 reps: 12,
                 minReps: 8,
@@ -86,198 +155,46 @@ class ExerciseStore {
                 isSuppressed: false,
                 suppressedUntil: .distantPast
             ),
+
             ExerciseStoreItem(
                 id: UUID(),
-                name: "Tree Pose",
-                videoID: "KNWqyKluZgg",
-                category: "balance",
+                name: "Chair Exercises",
+                videoID: "zIFtb-R24Ec",  // Seated Strength Workout
+                category: "strength",
                 reps: 10,
-                minReps: 10,
-                maxReps: 20,
+                minReps: 5,
+                maxReps: 15,
                 skipCount: 0,
                 isSuppressed: false,
                 suppressedUntil: .distantPast
             ),
+
+            // BALANCE EXERCISES (5)
             ExerciseStoreItem(
                 id: UUID(),
-                name: "Tree Pose",
-                videoID: "KNWqyKluZgg",
+                name: "Standing Balance",
+                videoID: "Wz5IXboB7zM",  // Balance Training for Parkinson's
                 category: "balance",
-                reps: 10,
-                minReps: 10,
-                maxReps: 20,
+                reps: 8,
+                minReps: 5,
+                maxReps: 12,
                 skipCount: 0,
                 isSuppressed: false,
                 suppressedUntil: .distantPast
             ),
+
             ExerciseStoreItem(
                 id: UUID(),
-                name: "Tree Pose",
-                videoID: "KNWqyKluZgg",
+                name: "Tandem Walking",
+                videoID: "zWUvZPWhT-w",  // Gait and Balance Exercises
                 category: "balance",
                 reps: 10,
-                minReps: 10,
-                maxReps: 20,
+                minReps: 5,
+                maxReps: 15,
                 skipCount: 0,
                 isSuppressed: false,
                 suppressedUntil: .distantPast
-            ),
-            ExerciseStoreItem(
-                id: UUID(),
-                name: "Tree Pose",
-                videoID: "KNWqyKluZgg",
-                category: "balance",
-                reps: 10,
-                minReps: 10,
-                maxReps: 20,
-                skipCount: 0,
-                isSuppressed: false,
-                suppressedUntil: .distantPast
-            ),
-            ExerciseStoreItem(
-                id: UUID(),
-                name: "Tree Pose",
-                videoID: "KNWqyKluZgg",
-                category: "balance",
-                reps: 10,
-                minReps: 10,
-                maxReps: 20,
-                skipCount: 0,
-                isSuppressed: false,
-                suppressedUntil: .distantPast
-            ),
-            ExerciseStoreItem(
-                id: UUID(),
-                name: "Tree Pose",
-                videoID: "KNWqyKluZgg",
-                category: "balance",
-                reps: 10,
-                minReps: 10,
-                maxReps: 20,
-                skipCount: 0,
-                isSuppressed: false,
-                suppressedUntil: .distantPast
-            ),
-            ExerciseStoreItem(
-                id: UUID(),
-                name: "Tree Pose",
-                videoID: "KNWqyKluZgg",
-                category: "balance",
-                reps: 10,
-                minReps: 10,
-                maxReps: 20,
-                skipCount: 0,
-                isSuppressed: false,
-                suppressedUntil: .distantPast
-            ),
-            ExerciseStoreItem(
-                id: UUID(),
-                name: "Tree Pose",
-                videoID: "KNWqyKluZgg",
-                category: "balance",
-                reps: 10,
-                minReps: 10,
-                maxReps: 20,
-                skipCount: 0,
-                isSuppressed: false,
-                suppressedUntil: .distantPast
-            ),
-            ExerciseStoreItem(
-                id: UUID(),
-                name: "Tree Pose",
-                videoID: "KNWqyKluZgg",
-                category: "balance",
-                reps: 10,
-                minReps: 10,
-                maxReps: 20,
-                skipCount: 0,
-                isSuppressed: false,
-                suppressedUntil: .distantPast
-            ),
-            ExerciseStoreItem(
-                id: UUID(),
-                name: "Tree Pose",
-                videoID: "KNWqyKluZgg",
-                category: "balance",
-                reps: 10,
-                minReps: 10,
-                maxReps: 20,
-                skipCount: 0,
-                isSuppressed: false,
-                suppressedUntil: .distantPast
-            ),
-            ExerciseStoreItem(
-                id: UUID(),
-                name: "Tree Pose",
-                videoID: "KNWqyKluZgg",
-                category: "balance",
-                reps: 10,
-                minReps: 10,
-                maxReps: 20,
-                skipCount: 0,
-                isSuppressed: false,
-                suppressedUntil: .distantPast
-            ),
-            ExerciseStoreItem(
-                id: UUID(),
-                name: "Tree Pose",
-                videoID: "KNWqyKluZgg",
-                category: "balance",
-                reps: 10,
-                minReps: 10,
-                maxReps: 20,
-                skipCount: 0,
-                isSuppressed: false,
-                suppressedUntil: .distantPast
-            ),
-            ExerciseStoreItem(
-                id: UUID(),
-                name: "Tree Pose",
-                videoID: "KNWqyKluZgg",
-                category: "balance",
-                reps: 10,
-                minReps: 10,
-                maxReps: 20,
-                skipCount: 0,
-                isSuppressed: false,
-                suppressedUntil: .distantPast
-            ),
-            ExerciseStoreItem(
-                id: UUID(),
-                name: "Tree Pose",
-                videoID: "KNWqyKluZgg",
-                category: "balance",
-                reps: 10,
-                minReps: 10,
-                maxReps: 20,
-                skipCount: 0,
-                isSuppressed: false,
-                suppressedUntil: .distantPast
-            ),
-            ExerciseStoreItem(
-                id: UUID(),
-                name: "Tree Pose",
-                videoID: "KNWqyKluZgg",
-                category: "balance",
-                reps: 10,
-                minReps: 10,
-                maxReps: 20,
-                skipCount: 0,
-                isSuppressed: false,
-                suppressedUntil: .distantPast
-            ),
-            ExerciseStoreItem(
-                id: UUID(),
-                name: "Tree Pose",
-                videoID: "KNWqyKluZgg",
-                category: "balance",
-                reps: 10,
-                minReps: 10,
-                maxReps: 20,
-                skipCount: 0,
-                isSuppressed: false,
-                suppressedUntil: .distantPast
-            ),
-        ]
+            )
+            ]
     }
 }
