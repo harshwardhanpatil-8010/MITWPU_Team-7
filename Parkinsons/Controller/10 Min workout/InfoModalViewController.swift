@@ -14,13 +14,22 @@ class InfoModalViewController: UIViewController {
     @IBOutlet weak var stepsToPerformLabel: UILabel!
     @IBOutlet weak var benefitsLabel: UILabel!
     
-  //  var exerciseDetail: ExerciseDetail?   // 👈 Passed from previous screen
+    var currentIndex: Int = 0
+    var exercises: [Exercise] = WorkoutManager.shared.getTodayWorkout()
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+        configureExercise()
         setupUI()
      //   loadExerciseData()
+    }
+    func configureExercise() {
+        let exercise = exercises[currentIndex]
+        titleLabel.text = exercise.name
+        descriptionLabel.text = exercise.description
+        stepsToPerformLabel.text = exercise.stepsToPerform
+        benefitsLabel.text = exercise.benefits
+        
     }
     
     private func setupUI() {
@@ -29,16 +38,7 @@ class InfoModalViewController: UIViewController {
         view.layer.masksToBounds = true
     }
 
-//    private func loadExerciseData() {
-//        guard let data = exerciseDetail else { return }
-//        
-//        titleLabel.text = "About \(data.title)"
-//        descriptionLabel.text = data.description
-//        
-//        // Format numbered lists
-//        stepsToPerformLabel.text = data.steps.enumerated().map { "\($0 + 1). \($1)" }.joined(separator: "\n\n")
-//        benefitsLabel.text = data.benefits.enumerated().map { "\($0 + 1). \($1)" }.joined(separator: "\n\n")
-//    }
+
 
     @IBAction func closeButtonTapped(_ sender: UIButton) {
         dismiss(animated: true)

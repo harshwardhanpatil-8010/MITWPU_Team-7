@@ -10,6 +10,8 @@ import UIKit
 class _0minworkoutCountdownViewController: UIViewController {
     @IBOutlet weak var TimerLabel: UILabel!
     var countDown = 3
+    var exercises: [Exercise] = []
+    var startingIndex: Int = 0
     override func viewDidLoad() {
         super.viewDidLoad()
         TimerLabel.text = "\(countDown)"
@@ -23,7 +25,7 @@ class _0minworkoutCountdownViewController: UIViewController {
              navigateToNextScreen()
              return
          }
-        TimerLabel.text = "\(countDown)"
+             TimerLabel.text = "\(countDown)"
              TimerLabel.alpha = 1
              TimerLabel.transform = .identity
              
@@ -36,16 +38,12 @@ class _0minworkoutCountdownViewController: UIViewController {
              }
          }
     func navigateToNextScreen() {
-            
-            guard let navigationController = self.navigationController else {
-                return
-            }
-            
-          
             let storyboard = UIStoryboard(name: "10 minworkout", bundle: nil)
             let vc = storyboard.instantiateViewController(withIdentifier: "10minworkoutViewController") as! _0minworkoutViewController
   
-            navigationController.pushViewController(vc, animated: true)
+        vc.exercises = WorkoutManager.shared.getTodayWorkout()
+        vc.currentIndex = startingIndex
+        navigationController?.pushViewController(vc, animated: true)
         }
     
     func setupCloseButton() {
@@ -73,7 +71,6 @@ class _0minworkoutCountdownViewController: UIViewController {
            })
 
            alert.addAction(UIAlertAction(title: "Cancel", style: .cancel))
-
            present(alert, animated: true)
     }
     /*

@@ -25,8 +25,11 @@ struct Exercise: Codable, Identifiable {
     var lastOffDayUsed: Date?
     var consecutiveOffDaySuccess: Int
     var videoID: String?
-
-    init(id: UUID = UUID(), name: String, category: ExerciseCategory, minReps: Int = 5, maxReps: Int = 20, videoID: String? = nil) {
+    var description: String?
+    var benefits: String?
+    var stepsToPerform: String?
+    
+    init(id: UUID = UUID(), name: String, category: ExerciseCategory, minReps: Int = 5, maxReps: Int = 20, videoID: String? = nil, benefits: String, description: String, stepsToPerform: String) {
         self.id = id
         self.name = name
         self.category = category
@@ -44,6 +47,9 @@ struct Exercise: Codable, Identifiable {
         self.lastOffDayUsed = nil
         self.consecutiveOffDaySuccess = 0
         self.videoID = videoID
+        self.benefits = benefits
+        self.description = description
+        self.stepsToPerform = stepsToPerform
     }
 }
 
@@ -163,7 +169,7 @@ class WorkoutManager {
     var moduleHistory: [ModuleHistory] = []
     var userHealthState: UserHealthState = UserHealthState()
     var pendingNotification: WorkoutNotification?
-
+    var todayWorkout: [Exercise] = []
     private var currentModuleIndex: Int = 0
     private let exercisesPerCategory = 2
     private let suppressionRecoveryThreshold = 3
@@ -173,11 +179,18 @@ class WorkoutManager {
 
     var caregiverNotificationsEnabled = false
     var caregiverContactInfo: String?
-
+    var completedToday: [UUID] = []
+    var SkippedToday: [UUID] = []
+    
     private init() {
         loadData()
     }
-
+    func getTodayWorkout() -> [Exercise] {
+        if todayWorkout.isEmpty {
+            todayWorkout = Array(exercises.shuffled().prefix(10))
+        }
+        return todayWorkout
+    }
     private func loadData() {
         if let data = UserDefaults.standard.data(forKey: "exercises"),
            let decoded = try? JSONDecoder().decode([Exercise].self, from: data) {
@@ -220,7 +233,11 @@ class WorkoutManager {
                 maxReps: $0.maxReps,
                 skipCount: $0.skipCount,
                 isSuppressed: $0.isSuppressed,
-                suppressedUntil: $0.suppressedUntil ?? .distantPast
+                suppressedUntil: $0.suppressedUntil ?? .distantPast,
+                description: $0.description ?? "",
+                Benefits: $0.benefits ?? "",
+                stepsToPerform: $0.stepsToPerform ?? ""
+                
             )
         }
         ExerciseStore.shared.replaceExercises(with: items)
@@ -606,5 +623,8 @@ extension Exercise {
         self.lastOffDayUsed = nil
         self.consecutiveOffDaySuccess = 0
         self.videoID = storeItem.videoID
+        self.description = storeItem.description
+        self.benefits = storeItem.Benefits
+        self.stepsToPerform = storeItem.stepsToPerform
     }
 }

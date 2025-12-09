@@ -18,4 +18,7 @@ struct ExerciseStoreItem: Codable {
     let skipCount: Int
     let isSuppressed: Bool
     let suppressedUntil: Date
+    let description: String
+    let Benefits: String
+    let stepsToPerform: String
 }
