@@ -25,6 +25,8 @@ class HomeViewController: UIViewController, UICollectionViewDelegate {
         case calendar
         case medications
         case exercises
+        case symptoms // ⭐️ NEW: Fourth section
+        case therapeuticGames
     }
     let homeSections = Section.allCases
 
@@ -36,9 +38,22 @@ class HomeViewController: UIViewController, UICollectionViewDelegate {
             MedicationModel(name: "Carbidopa", time: "10:00 AM", detail: "1 capsule", iconName: "pills.fill"),
     ]
     var exerciseData: [ExerciseModel] = [
-        ExerciseModel(title: "10-Min Workout", detail: "Repeat everyday", progressPercentage: 0 ),
-        ExerciseModel(title: "Rhythmic Walking", detail: "2-3 times a week", progressPercentage: 0 )
+        ExerciseModel(title: "10-Min Workout", detail: "Repeat everyday", progressPercentage: 50 ),
+        ExerciseModel(title: "Rhythmic Walking", detail: "2-3 times a week", progressPercentage: 25 )
     ]
+    var therapeuticGamesData: [TherapeuticGameModel] = [
+        TherapeuticGameModel(
+            title: "Mimic the Emoji",
+            description: "Complete your daily challenge!",
+            iconName: "smiley" // Use a system icon placeholder
+        ),
+        TherapeuticGameModel(
+            title: "Match the Cards",
+            description: "Complete your daily challenge!",
+            iconName: "cards" // Use a system icon placeholder
+        )
+    ]
+
     
     private let floatingBar: UIView = {
         let view = UIView()
@@ -84,6 +99,8 @@ class HomeViewController: UIViewController, UICollectionViewDelegate {
             withReuseIdentifier: "HeaderView"
         )
         mainCollectionView.register(UINib(nibName: "ExerciseCardCell", bundle: nil), forCellWithReuseIdentifier: "exercise_card_cell")
+        mainCollectionView.register(UINib(nibName: "SymptomLogCell", bundle: nil), forCellWithReuseIdentifier: "symptom_log_cell")
+        mainCollectionView.register(UINib(nibName: "TherapeuticGameCell", bundle: nil), forCellWithReuseIdentifier: "therapeutic_game_cell")
     }
     
     // MARK: - 4. Refactored Compositional Layout
@@ -91,8 +108,78 @@ class HomeViewController: UIViewController, UICollectionViewDelegate {
         let layout = UICollectionViewCompositionalLayout { [weak self] sectionIndex, env in
             guard let self = self else { return nil }
             let sectionType = self.homeSections[sectionIndex]
-
+            
             switch sectionType {
+            
+            case .therapeuticGames:
+                    // --- THERAPEUTIC GAMES HORIZONTAL LAYOUT (Section 4) ---
+
+                    // Item: Defines the card size
+                    let itemSize = NSCollectionLayoutSize(
+                        widthDimension: .fractionalWidth(1.0),
+                        heightDimension: .fractionalHeight(1.0)
+                    )
+                    let item = NSCollectionLayoutItem(layoutSize: itemSize)
+                    
+                    // Group: Defines the visible size of each card (e.g., 85% width, fixed height)
+                let groupWidthFraction: CGFloat = 0.47
+                let groupSize = NSCollectionLayoutSize(
+                    widthDimension: .fractionalWidth(groupWidthFraction), // ⭐️ Correctly uses .fractionalWidth
+                    heightDimension: .absolute(170)
+                )
+                    let group = NSCollectionLayoutGroup.horizontal(layoutSize: groupSize, subitems: [item])
+                    group.contentInsets = NSDirectionalEdgeInsets(top: 0, leading: 0, bottom: 0, trailing: 10) // Space between cards
+
+                    let section = NSCollectionLayoutSection(group: group)
+                    
+                    // Section insets (padding around the entire section)
+                    section.contentInsets = NSDirectionalEdgeInsets(top: 10, leading: 16, bottom: 30, trailing: 16)
+                    
+                    // Set the section to scroll horizontally
+                    section.orthogonalScrollingBehavior = .groupPaging // Or .continuous for a smooth scroll
+
+                    // Header
+                    let headerSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: .absolute(30))
+                    let header = NSCollectionLayoutBoundarySupplementaryItem(
+                        layoutSize: headerSize,
+                        elementKind: UICollectionView.elementKindSectionHeader,
+                        alignment: .top
+                    )
+                    section.boundarySupplementaryItems = [header]
+                    return section
+                
+            case .symptoms:
+                // --- SYMPTOMS VERTICAL LAYOUT (Section 3) ---
+                
+                // Item: Full width
+                let itemSize = NSCollectionLayoutSize(
+                    widthDimension: .fractionalWidth(1.0),
+                    heightDimension: .fractionalHeight(1.0)
+                )
+                let item = NSCollectionLayoutItem(layoutSize: itemSize)
+                
+                // Group: Defines the height for the card (e.g., 70pt for the text and button)
+                let groupSize = NSCollectionLayoutSize(
+                    widthDimension: .fractionalWidth(1.0),
+                    heightDimension: .absolute(80)
+                )
+                let group = NSCollectionLayoutGroup.horizontal(layoutSize: groupSize, subitems: [item])
+                
+                let section = NSCollectionLayoutSection(group: group)
+                
+                // Adjust contentInsets for padding around the entire section
+                section.contentInsets = NSDirectionalEdgeInsets(top: 0, leading: 16, bottom: 30, trailing: 16)
+                
+                // Header: "Symptoms" title
+                let headerSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: .absolute(30))
+                let header = NSCollectionLayoutBoundarySupplementaryItem(
+                    layoutSize: headerSize,
+                    elementKind: UICollectionView.elementKindSectionHeader,
+                    alignment: .top
+                )
+                section.boundarySupplementaryItems = [header]
+                return section
+            
             case .exercises:
                     // --- EXERCISES HORIZONTAL LAYOUT (Section 2) ---
                     
@@ -159,7 +246,7 @@ class HomeViewController: UIViewController, UICollectionViewDelegate {
                     
                     let section = NSCollectionLayoutSection(group: group)
                     section.interGroupSpacing = 12 // Spacing between the horizontal cards
-                    section.contentInsets = NSDirectionalEdgeInsets(top: 0, leading: 16, bottom: 20, trailing: 16)
+                    section.contentInsets = NSDirectionalEdgeInsets(top: 0, leading: 16, bottom: 10, trailing: 16)
                     section.orthogonalScrollingBehavior = .continuous // Enable horizontal scrolling
                     
                     // Header: "Upcoming Medications" title
@@ -219,6 +306,10 @@ extension HomeViewController: UICollectionViewDataSource {
             return medicationData.count
         case .exercises: // ⭐️ NEW ⭐️
                 return exerciseData.count
+        case .symptoms: // ⭐️ NEW ⭐️
+                return 1 // Always one log card
+        case .therapeuticGames: // ⭐️ NEW ⭐️
+                return therapeuticGamesData.count
         }
     }
     
@@ -248,6 +339,19 @@ extension HomeViewController: UICollectionViewDataSource {
                 let model = exerciseData[indexPath.row]
                 cell.configure(with: model)
                 return cell
+        case .symptoms: // ⭐️ NEW ⭐️
+                let cell = mainCollectionView.dequeueReusableCell(withReuseIdentifier: "symptom_log_cell", for: indexPath) as! SymptomLogCell
+                
+                // Configure the static content
+                let message = "You haven't logged your symptoms today"
+                let buttonTitle = "Log now"
+                cell.configure(with: message, buttonTitle: buttonTitle)
+                return cell
+        case .therapeuticGames: // ⭐️ NEW ⭐️
+                let cell = mainCollectionView.dequeueReusableCell(withReuseIdentifier: "therapeutic_game_cell", for: indexPath) as! TherapeuticGameCell
+                let game = therapeuticGamesData[indexPath.item]
+                cell.configure(with: game)
+                return cell
         }
     }
     
@@ -270,6 +374,13 @@ extension HomeViewController: UICollectionViewDataSource {
             header.configure(title: "Upcoming Medications")
         case .exercises: // ⭐️ NEW ⭐️
                 header.configure(title: "Guided Exercise")
+        case .symptoms: // ⭐️ NEW ⭐️
+                header.configure(title: "Symptoms")
+        case .therapeuticGames: // ⭐️ NEW ⭐️
+                header.configure(title: "Therapeutic Games")
+            // ⭐️ Show and configure the Info Button ⭐️
+//                    header.infoButton.isHidden = false
+//                    header.infoButton.addTarget(self, action: #selector(showTherapeuticGamesInfo), for: .touchUpInside)
         default:
             header.configure(title: "") // Calendar section doesn't need a title above it
         }

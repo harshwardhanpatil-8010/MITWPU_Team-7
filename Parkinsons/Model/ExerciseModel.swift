@@ -11,6 +11,7 @@ import Foundation
 struct ExerciseModel {
     let title: String          // e.g., "10-Min Workout"
     let detail: String         // e.g., "Repeat everyday"
-    let progressPercentage: Int // e.g., 0 for 0% Done
+    let progressPercentage: Int
+    // e.g., 0 for 0% Done
     // e.g., "7.5" (minutes/score)
 }

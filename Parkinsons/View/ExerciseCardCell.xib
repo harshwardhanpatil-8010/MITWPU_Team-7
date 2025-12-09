@@ -32,29 +32,35 @@
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="W6T-Is-SQg">
-                                <rect key="frame" x="43" y="54" width="70" height="70"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="W6T-Is-SQg">
+                                <rect key="frame" x="32" y="90" width="105" height="46"/>
                                 <subviews>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Label" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="vtv-Fo-AiT">
-                                        <rect key="frame" x="-5" y="25" width="80" height="21"/>
-                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="vtv-Fo-AiT">
+                                        <rect key="frame" x="31.999999999999993" y="7.9999999999999982" width="66.333333333333314" height="31.333333333333329"/>
+                                        <fontDescription key="fontDescription" type="boldSystem" pointSize="26"/>
                                         <nil key="textColor"/>
                                         <nil key="highlightedColor"/>
                                     </label>
                                 </subviews>
                                 <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                                <constraints>
+                                    <constraint firstItem="vtv-Fo-AiT" firstAttribute="top" secondItem="W6T-Is-SQg" secondAttribute="top" constant="8" id="993-E0-QZM"/>
+                                    <constraint firstItem="vtv-Fo-AiT" firstAttribute="leading" secondItem="W6T-Is-SQg" secondAttribute="leading" constant="32" id="g91-EH-Kt6"/>
+                                </constraints>
                             </view>
                         </subviews>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                         <constraints>
                             <constraint firstAttribute="trailing" secondItem="a36-lc-3gc" secondAttribute="trailing" constant="16" id="016-KO-bDO"/>
+                            <constraint firstAttribute="bottom" secondItem="W6T-Is-SQg" secondAttribute="bottom" constant="4" id="1EX-cM-YiV"/>
                             <constraint firstItem="a36-lc-3gc" firstAttribute="top" secondItem="pjg-HR-Z5W" secondAttribute="bottom" constant="4" id="7gB-yh-yQu"/>
                             <constraint firstAttribute="trailing" secondItem="pjg-HR-Z5W" secondAttribute="trailing" constant="16" id="SI7-wC-cQR"/>
                             <constraint firstItem="a36-lc-3gc" firstAttribute="leading" secondItem="W83-OF-dJd" secondAttribute="leading" constant="16" id="dZn-cy-ksv"/>
                             <constraint firstItem="pjg-HR-Z5W" firstAttribute="leading" secondItem="W83-OF-dJd" secondAttribute="leading" constant="16" id="fiW-6N-2o7"/>
                             <constraint firstItem="pjg-HR-Z5W" firstAttribute="top" secondItem="W83-OF-dJd" secondAttribute="top" constant="8" id="lLv-yg-WhW"/>
+                            <constraint firstItem="W6T-Is-SQg" firstAttribute="top" secondItem="a36-lc-3gc" secondAttribute="bottom" constant="40" id="mIh-rF-hGU"/>
+                            <constraint firstItem="W6T-Is-SQg" firstAttribute="leading" secondItem="W83-OF-dJd" secondAttribute="leading" constant="32" id="nle-3j-Z0P"/>
+                            <constraint firstAttribute="trailing" secondItem="W6T-Is-SQg" secondAttribute="trailing" constant="32" id="zs6-ho-INc"/>
                         </constraints>
                     </view>
                 </subviews>
