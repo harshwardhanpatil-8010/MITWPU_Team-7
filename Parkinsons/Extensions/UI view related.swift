@@ -11,7 +11,7 @@ import UIKit
 extension UIView {
 
     func applyCardStyle() {
-        let cornerRadius: CGFloat = 40
+        var cornerRadius: CGFloat = 30
         let shadowColor: UIColor = .black
         let shadowOpacity: Float = 0.15
         let shadowRadius: CGFloat = 3

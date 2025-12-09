@@ -15,8 +15,15 @@ class SessionRunningViewController: UIViewController {
     @IBOutlet weak var pauseButton: UIButton!
     @IBOutlet weak var beatButton: UIButton!
     @IBOutlet weak var paceButton: UIButton!
+    @IBOutlet weak var beatPaceUIView: UIView!
     
     var totalSessionDuration: Int = 0
+    var selectedBeat: String?
+    var selectedPace: String?
+    var selectedBPM: Int?
+    var hrs: Int = 0
+    var minn: Int = 0
+    
     private var progressView: CircularProgressView!
     private var timerModel: TimerModel!
     
@@ -30,36 +37,36 @@ class SessionRunningViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         setupProgressView()
+        progressView.progressColor = .systemGreen
+        progressView.trackColor = .systemGray5
+        beatButton.titleLabel?.text = selectedBeat
+        paceButton.titleLabel?.text = selectedPace
+        beatPaceUIView.applyCardStyle()
         setupBeatButton()
         setupPaceButton()
         
         if totalSessionDuration > 0{
             timerModel = TimerModel(totalSeconds: totalSessionDuration)
-            updateDisplay(with: totalSessionDuration)
+            updateDisplay( hours:hrs, minutes: minn)
         }
         else {
             timerModel = TimerModel(totalSeconds: 1)
-            updateDisplay(with: 0)
+            updateDisplay( hours:0, minutes:0)
         }
         timerModel.delegate = self
         if totalSessionDuration > 0{
             timerModel.start()
         }
-//        let model = TimerModel(totalSeconds: totalSessionDuration)
-//        model.delegate = self
-//        model.start()
-//        self.timerModel = model
-        
 //        BeatPlayer.shared.setupAudio(fileName: selectedBeat)
         updatePauseButtonUI()
         // Do any additional setup after loading the view.
     }
     
     
-    private func updateDisplay(with timeleft: Int) {
-        let minutes = timeleft / 60
-        let seconds = timeleft % 60
-        timeLabel.text = String(format: "%02d:%02d", minutes, seconds)
+    private func updateDisplay(hours: Int, minutes: Int) {
+        let hoursForDisplay = totalSessionDuration / 3600
+        let minutesForDisplay = (totalSessionDuration % 3600) / 60
+        timeLabel.text = String(format: "%02d:%02d", hoursForDisplay, minutesForDisplay)
         progressView.setProgress(1.0)
     }
     
@@ -84,11 +91,12 @@ class SessionRunningViewController: UIViewController {
     }
         
     func setupBeatButton(){
+        beatButton.setTitle(selectedBeat ?? "Clock", for: .normal)
         let optionClosure: UIActionHandler = { [weak self] action in
                 _ = self
         }
-        let option1 = UIAction(title: "Clock",state: .on, handler: optionClosure)
-        let option2 = UIAction(title: "Grass", handler: optionClosure)
+        let option1 = UIAction(title: "Clock", state: selectedBeat == "Clock" ? .on : .off, handler: optionClosure)
+        let option2 = UIAction(title: "Grass", state: selectedBeat == "Grass" ? .on : .off, handler: optionClosure)
         let menu  = UIMenu(children: [option1, option2])
         beatButton.menu = menu
         beatButton.showsMenuAsPrimaryAction = true
@@ -96,12 +104,13 @@ class SessionRunningViewController: UIViewController {
     }
     
     func setupPaceButton(){
+        paceButton.setTitle(selectedPace ?? "slow", for: .normal)
         let optionClosure: UIActionHandler = { [weak self] action in
                 _ = self
         }
-        let option1 = UIAction(title: "Slow",state: .on, handler: optionClosure)
-        let option2 = UIAction(title: "Medium", handler: optionClosure)
-        let option3 = UIAction(title: "Fast", handler: optionClosure)
+        let option1 = UIAction(title: "Slow", state: selectedPace == "Slow" ? .on : .off, handler: optionClosure)
+        let option2 = UIAction(title: "Medium", state: selectedPace == "Medium" ? .on : .off, handler: optionClosure)
+        let option3 = UIAction(title: "Fast", state: selectedPace == "Fast" ? .on : .off, handler: optionClosure)
         let menu  = UIMenu(children: [option1, option2, option3])
         paceButton.menu = menu
         paceButton.showsMenuAsPrimaryAction = true

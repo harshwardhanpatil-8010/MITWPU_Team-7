@@ -5,6 +5,22 @@ final class CircularProgressView: UIView {
     private let trackLayer = CAShapeLayer()
     private let progressLayer = CAShapeLayer()
     
+    // MARK: - Customizable properties
+    var trackColor: UIColor = .systemGray4 {
+        didSet { trackLayer.strokeColor = trackColor.cgColor }
+    }
+    
+    var progressColor: UIColor = .systemGreen {
+        didSet { progressLayer.strokeColor = progressColor.cgColor }
+    }
+    
+    var lineWidth: CGFloat = 30 {
+        didSet {
+            trackLayer.lineWidth = lineWidth
+            progressLayer.lineWidth = lineWidth
+        }
+    }
+    
     override init(frame: CGRect) {
         super.init(frame: frame)
         setupLayers()
@@ -18,21 +34,21 @@ final class CircularProgressView: UIView {
     private func setupLayers() {
         let circularPath = UIBezierPath(
             arcCenter: centerPoint,
-            radius: bounds.width/2,
+            radius: bounds.width / 2,
             startAngle: -.pi / 2,
             endAngle: 3 * .pi / 2,
             clockwise: true
         )
         
         trackLayer.path = circularPath.cgPath
-        trackLayer.strokeColor = UIColor.systemGray4.cgColor
-        trackLayer.lineWidth = 20
+        trackLayer.strokeColor = trackColor.cgColor
+        trackLayer.lineWidth = lineWidth
         trackLayer.fillColor = UIColor.clear.cgColor
         layer.addSublayer(trackLayer)
         
         progressLayer.path = circularPath.cgPath
-        progressLayer.strokeColor = UIColor.systemGreen.cgColor
-        progressLayer.lineWidth = 20
+        progressLayer.strokeColor = progressColor.cgColor
+        progressLayer.lineWidth = lineWidth
         progressLayer.lineCap = .round
         progressLayer.fillColor = UIColor.clear.cgColor
         progressLayer.strokeEnd = 1
@@ -48,4 +64,3 @@ final class CircularProgressView: UIView {
         progressLayer.strokeEnd = progress
     }
 }
-
