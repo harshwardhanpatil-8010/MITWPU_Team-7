@@ -34,4 +34,7 @@ class SectionHeaderView: UICollectionReusableView {
     func configure(title: String) {
         titleLabel.text = title
     }
+    func setTitleAlignment(_ alignment: NSTextAlignment) {
+        titleLabel.textAlignment = alignment
+    }
 }

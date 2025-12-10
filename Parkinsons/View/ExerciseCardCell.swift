@@ -19,10 +19,11 @@ class ExerciseCardCell: UICollectionViewCell {
     @IBOutlet weak var backgroundCardView: UIView! // For corner radius and shadow
     private var progressTrackLayer = CAShapeLayer()
     private var progressLayer = CAShapeLayer()
+   
     override func awakeFromNib() {
         super.awakeFromNib()
+        backgroundCardView.applyCardStyle()
         backgroundCardView.layer.cornerRadius = 16
-        backgroundCardView.layer.masksToBounds = true
         progressRingContainer.backgroundColor = .clear
         setupProgressRing()
     }
@@ -32,7 +33,7 @@ class ExerciseCardCell: UICollectionViewCell {
         detailLabel.text = model.detail
         progressLabel.text = "\(model.progressPercentage)%"
         // timeEstimateLabel.text = model.timeEstimate
-        backgroundCardView.backgroundColor = .systemGray5
+        //backgroundCardView.backgroundColor = .systemGray5
         updateProgressRing(progress: model.progressPercentage)
 
     }

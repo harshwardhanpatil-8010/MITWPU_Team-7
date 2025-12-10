@@ -18,8 +18,9 @@ class MedicationCardCollectionViewCell: UICollectionViewCell {
         super.awakeFromNib()
         
         // 2. Card Styling: Apply rounded corners and shadow to the main background view
-        BackgroundMedication.layer.cornerRadius = 16
-        BackgroundMedication.layer.masksToBounds = true // Clip subviews
+        BackgroundMedication.applyCardStyle()
+        BackgroundMedication.layer.cornerRadius = 16 
+        // Clip subviews
         
         // 3. Button Styling
         takenButton.layer.cornerRadius = 18 // Half the button height
@@ -30,13 +31,13 @@ class MedicationCardCollectionViewCell: UICollectionViewCell {
     func configure(with model: MedicationModel) {
         timeLabel.text = model.time
         nameLabel.text = model.name
-       detailLabel.text = model.detail // Set the new detail text
+        detailLabel.text = model.detail // Set the new detail text
 
         // Set the pill icon using SFSymbols
        // iconImageView.image = UIImage(systemName: model.iconName)
         
         // Basic styling for the card content
-        BackgroundMedication.backgroundColor = .systemGray5
+        //BackgroundMedication.backgroundColor = .systemGray5
         
         // Add action targets here if you want to handle button taps
         // takenButton.addTarget(self, action: #selector(takenTapped), for: .touchUpInside)

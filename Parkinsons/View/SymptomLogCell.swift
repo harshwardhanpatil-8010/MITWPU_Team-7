@@ -13,10 +13,10 @@ class SymptomLogCell: UICollectionViewCell {
         super.awakeFromNib()
         
         // Styling for the main card view
+        backgroundCardView.applyCardStyle()
         backgroundCardView.layer.cornerRadius = 16
-        backgroundCardView.layer.masksToBounds = true
         // Set a background color similar to the reference image (e.g., systemGray5 or lighter gray)
-        backgroundCardView.backgroundColor = UIColor.systemGray5
+        //backgroundCardView.backgroundColor = UIColor.systemGray5
         
         // Styling for the button
         logNowButton.layer.cornerRadius = 15 // Adjust radius to match goal image

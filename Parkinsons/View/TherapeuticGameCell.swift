@@ -14,9 +14,9 @@ class TherapeuticGameCell: UICollectionViewCell {
         super.awakeFromNib()
         
         // Styling for the card
+        backgroundCardView.applyCardStyle()
         backgroundCardView.layer.cornerRadius = 16
-        backgroundCardView.layer.masksToBounds = true
-        backgroundCardView.backgroundColor = UIColor.systemGray5 // Light background
+        //backgroundCardView.backgroundColor = UIColor.systemGray5 // Light background
     }
 
     func configure(with model: TherapeuticGameModel) {

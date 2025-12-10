@@ -1,31 +1,63 @@
 //
-//  HomeViewController.swift
-//  Parkinsons
+//  HomeViewController.swift
+//  Parkinsons
 //
-//  Created by SDC-USER on 27/11/25.
+//  Created by SDC-USER on 27/11/25.
 //
 
 import UIKit
 
-// MARK: - 1. New Model Structure (Must be defined outside the ViewController)
-// You need to ensure this struct exists in your project, likely in a separate file (MedicationModel.swift).
+// MARK: - Dummy Data Models (Assumed to exist elsewhere in the project)
+/*
+struct DateModel { let date: Date }
+struct MedicationModel {
+    let name: String
+    let time: String
+    let detail: String
+    let iconName: String
+}
+struct ExerciseModel {
+    let title: String
+    let detail: String
+    let progressPercentage: Int
+}
+struct TherapeuticGameModel {
+    let title: String
+    let description: String
+    let iconName: String
+}
+class DataStore {
+    static let shared = DataStore()
+    // Helper to generate some dummy dates
+    func getDates() -> [DateModel] {
+        let calendar = Calendar.current
+        let today = calendar.startOfDay(for: Date())
+        
+        var dates: [DateModel] = []
+        for i in -15...15 {
+            if let date = calendar.date(byAdding: .day, value: i, to: today) {
+                dates.append(DateModel(date: date))
+            }
+        }
+        return dates
+    }
+}
+// Assume CalenderCollectionViewCell and SectionHeaderView have `configure(title:)`
+// and `configure(with:isSelected:isToday:)` methods respectively.
+*/
 
-
-// NOTE: You must also create the MedicationCardCell.swift and MedicationCardCell.xib files!
-// NOTE: You must also create a SectionHeaderView.swift for the header title!
 
 class HomeViewController: UIViewController, UICollectionViewDelegate {
 
-    // Renamed from calenderCollectionView to mainCollectionView
-    @IBOutlet weak var todayDate: UILabel!
+    // ⭐️ Removed: @IBOutlet weak var todayDate: UILabel! ⭐️
     @IBOutlet weak var mainCollectionView: UICollectionView!
     
-    // MARK: - 2. Section Definition and Data
+    // MARK: - Section Definition and Data
     enum Section: Int, CaseIterable {
         case calendar
         case medications
         case exercises
-        case symptoms // ⭐️ NEW: Fourth section
+        case symptoms
         case therapeuticGames
     }
     let homeSections = Section.allCases
@@ -35,25 +67,24 @@ class HomeViewController: UIViewController, UICollectionViewDelegate {
     
     var medicationData: [MedicationModel] = [
         MedicationModel(name: "Levodopa", time: "6:00 PM",detail: "1 capsule",  iconName: "medication"),
-            MedicationModel(name: "Carbidopa", time: "10:00 AM", detail: "1 capsule", iconName: "pills.fill"),
+        MedicationModel(name: "Carbidopa", time: "10:00 AM", detail: "1 capsule", iconName: "pills.fill"),
     ]
     var exerciseData: [ExerciseModel] = [
-        ExerciseModel(title: "10-Min Workout", detail: "Repeat everyday", progressPercentage: 50 ),
+        ExerciseModel(title: "10-Min Workout", detail: "Repeat everyday", progressPercentage: 67 ),
         ExerciseModel(title: "Rhythmic Walking", detail: "2-3 times a week", progressPercentage: 25 )
     ]
     var therapeuticGamesData: [TherapeuticGameModel] = [
         TherapeuticGameModel(
             title: "Mimic the Emoji",
             description: "Complete your daily challenge!",
-            iconName: "smiley" // Use a system icon placeholder
+            iconName: "smiley"
         ),
         TherapeuticGameModel(
             title: "Match the Cards",
             description: "Complete your daily challenge!",
-            iconName: "cards" // Use a system icon placeholder
+            iconName: "cards"
         )
     ]
-
     
     private let floatingBar: UIView = {
         let view = UIView()
@@ -75,35 +106,43 @@ class HomeViewController: UIViewController, UICollectionViewDelegate {
         mainCollectionView.dataSource = self
         mainCollectionView.delegate = self
 
-        // 🥳 Set the main layout to the new multi-section layout
+        // Set the main layout
         mainCollectionView.setCollectionViewLayout(generateLayout(), animated: true)
         
         dates = DataStore.shared.getDates()
         autoSelectToday()
         
-        updateDateLabel(with: selectedDate)
+        // ⭐️ Removed: updateDateLabel(with: selectedDate) ⭐️
     }
     
-    // MARK: - 3. Updated Cell Registration
+    @IBAction func profilePageButton(_ sender: Any) {
+        let storyboard = UIStoryboard(name: "Home", bundle: nil)
+        let vc = storyboard.instantiateViewController(withIdentifier: "profileViewController") as! profileViewController
+        let nav = UINavigationController(rootViewController: vc)
+        nav.modalPresentationStyle = .pageSheet
+        present(nav, animated: true)
+    }
+    
+    // MARK: - 3. Cell and Supplementary View Registration
     func registerCells(){
         // Existing calendar cell registration
         mainCollectionView.register(UINib(nibName: "CalenderCollectionViewCell", bundle: nil), forCellWithReuseIdentifier: "calendar_cell")
         
-        // NEW: Medication card cell registration
+        // Content cell registrations
         mainCollectionView.register(UINib(nibName: "MedicationCardCollectionViewCell", bundle: nil), forCellWithReuseIdentifier: "medication_card_cell")
-        
-        // NEW: Header view registration for section titles
-        mainCollectionView.register(
-            SectionHeaderView.self, // You must create this subclass of UICollectionReusableView
-            forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader,
-            withReuseIdentifier: "HeaderView"
-        )
         mainCollectionView.register(UINib(nibName: "ExerciseCardCell", bundle: nil), forCellWithReuseIdentifier: "exercise_card_cell")
         mainCollectionView.register(UINib(nibName: "SymptomLogCell", bundle: nil), forCellWithReuseIdentifier: "symptom_log_cell")
         mainCollectionView.register(UINib(nibName: "TherapeuticGameCell", bundle: nil), forCellWithReuseIdentifier: "therapeutic_game_cell")
+        
+        // Header view registration for ALL section titles (including the new dynamic calendar header)
+        mainCollectionView.register(
+            SectionHeaderView.self, // Must be created
+            forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader,
+            withReuseIdentifier: "HeaderView"
+        )
     }
     
-    // MARK: - 4. Refactored Compositional Layout
+    // MARK: - 4. Refactored Compositional Layout (Calendar Header is now Sticky)
     func generateLayout() -> UICollectionViewLayout {
         let layout = UICollectionViewCompositionalLayout { [weak self] sectionIndex, env in
             guard let self = self else { return nil }
@@ -111,108 +150,6 @@ class HomeViewController: UIViewController, UICollectionViewDelegate {
             
             switch sectionType {
             
-            case .therapeuticGames:
-                    // --- THERAPEUTIC GAMES HORIZONTAL LAYOUT (Section 4) ---
-
-                    // Item: Defines the card size
-                    let itemSize = NSCollectionLayoutSize(
-                        widthDimension: .fractionalWidth(1.0),
-                        heightDimension: .fractionalHeight(1.0)
-                    )
-                    let item = NSCollectionLayoutItem(layoutSize: itemSize)
-                    
-                    // Group: Defines the visible size of each card (e.g., 85% width, fixed height)
-                let groupWidthFraction: CGFloat = 0.47
-                let groupSize = NSCollectionLayoutSize(
-                    widthDimension: .fractionalWidth(groupWidthFraction), // ⭐️ Correctly uses .fractionalWidth
-                    heightDimension: .absolute(170)
-                )
-                    let group = NSCollectionLayoutGroup.horizontal(layoutSize: groupSize, subitems: [item])
-                    group.contentInsets = NSDirectionalEdgeInsets(top: 0, leading: 0, bottom: 0, trailing: 10) // Space between cards
-
-                    let section = NSCollectionLayoutSection(group: group)
-                    
-                    // Section insets (padding around the entire section)
-                    section.contentInsets = NSDirectionalEdgeInsets(top: 10, leading: 16, bottom: 30, trailing: 16)
-                    
-                    // Set the section to scroll horizontally
-                    section.orthogonalScrollingBehavior = .groupPaging // Or .continuous for a smooth scroll
-
-                    // Header
-                    let headerSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: .absolute(30))
-                    let header = NSCollectionLayoutBoundarySupplementaryItem(
-                        layoutSize: headerSize,
-                        elementKind: UICollectionView.elementKindSectionHeader,
-                        alignment: .top
-                    )
-                    section.boundarySupplementaryItems = [header]
-                    return section
-                
-            case .symptoms:
-                // --- SYMPTOMS VERTICAL LAYOUT (Section 3) ---
-                
-                // Item: Full width
-                let itemSize = NSCollectionLayoutSize(
-                    widthDimension: .fractionalWidth(1.0),
-                    heightDimension: .fractionalHeight(1.0)
-                )
-                let item = NSCollectionLayoutItem(layoutSize: itemSize)
-                
-                // Group: Defines the height for the card (e.g., 70pt for the text and button)
-                let groupSize = NSCollectionLayoutSize(
-                    widthDimension: .fractionalWidth(1.0),
-                    heightDimension: .absolute(80)
-                )
-                let group = NSCollectionLayoutGroup.horizontal(layoutSize: groupSize, subitems: [item])
-                
-                let section = NSCollectionLayoutSection(group: group)
-                
-                // Adjust contentInsets for padding around the entire section
-                section.contentInsets = NSDirectionalEdgeInsets(top: 0, leading: 16, bottom: 30, trailing: 16)
-                
-                // Header: "Symptoms" title
-                let headerSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: .absolute(30))
-                let header = NSCollectionLayoutBoundarySupplementaryItem(
-                    layoutSize: headerSize,
-                    elementKind: UICollectionView.elementKindSectionHeader,
-                    alignment: .top
-                )
-                section.boundarySupplementaryItems = [header]
-                return section
-            
-            case .exercises:
-                    // --- EXERCISES HORIZONTAL LAYOUT (Section 2) ---
-                    
-                    // Item: Takes 100% of the group's space
-                    let itemSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: .fractionalHeight(1.0))
-                    let item = NSCollectionLayoutItem(layoutSize: itemSize)
-                    
-                    // Group: Defines the size of one visible card (e.g., 80% width, 180pt height)
-                    let groupWidthFraction: CGFloat = 0.45
-                    let groupHeight: CGFloat = 180 // Height needed for a vertical card with a circle/labels
-                    
-                    let groupSize = NSCollectionLayoutSize(
-                        widthDimension: .fractionalWidth(groupWidthFraction),
-                        heightDimension: .absolute(groupHeight)
-                    )
-                    let group = NSCollectionLayoutGroup.horizontal(layoutSize: groupSize, subitems: [item])
-                    
-                    let section = NSCollectionLayoutSection(group: group)
-                    section.interGroupSpacing = 12
-                    section.contentInsets = NSDirectionalEdgeInsets(top: 10, leading: 16, bottom: 20, trailing: 16) // Spacing below header
-                    section.orthogonalScrollingBehavior = .continuous
-                
-                    
-                    // Header: "Guided Exercise" title
-                    let headerSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: .absolute(30))
-                    let header = NSCollectionLayoutBoundarySupplementaryItem(
-                        layoutSize: headerSize,
-                        elementKind: UICollectionView.elementKindSectionHeader,
-                        alignment: .top
-                    )
-                    section.boundarySupplementaryItems = [header]
-                    return section
-                
             case .calendar:
                 // --- CALENDAR HORIZONTAL LAYOUT (Section 0) ---
                 let itemSize = NSCollectionLayoutSize(widthDimension: .absolute(60), heightDimension: .absolute(70))
@@ -223,103 +160,204 @@ class HomeViewController: UIViewController, UICollectionViewDelegate {
                 
                 let section = NSCollectionLayoutSection(group: group)
                 section.orthogonalScrollingBehavior = .continuous
-                section.interGroupSpacing = 4 // Spacing between date cells
+                section.interGroupSpacing = 4
                 section.contentInsets = NSDirectionalEdgeInsets(top: 10, leading: 16, bottom: 0, trailing: 16)
+                
+                // ⭐️ NEW: Header for the Calendar Section ⭐️
+                let calendarHeaderSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: .absolute(30))
+                let calendarHeader = NSCollectionLayoutBoundarySupplementaryItem(
+                    layoutSize: calendarHeaderSize,
+                    elementKind: UICollectionView.elementKindSectionHeader,
+                    alignment: .top
+                )
+                
+                // ⭐️ CRITICAL: Make the calendar header sticky (pinned) ⭐️
+                calendarHeader.pinToVisibleBounds = true
+                
+                section.boundarySupplementaryItems = [calendarHeader]
                 return section
 
-                case .medications:
-                    // --- MEDICATIONS HORIZONTAL LAYOUT (Section 1) ---
-                    
-                    // Item: Takes 100% of the group's space
-                    let itemSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: .fractionalHeight(1.0))
-                    let item = NSCollectionLayoutItem(layoutSize: itemSize)
-                    
-                // Group: Defines the size of one visible card (INCREASED HEIGHT)
-                let groupWidthFraction: CGFloat = 0.9
-                    let groupHeight: CGFloat = 140 // ⭐️ INCREASED HEIGHT to 120 (or higher, e.g., 140, if needed)
-                    
-                    let groupSize = NSCollectionLayoutSize(
-                        widthDimension: .fractionalWidth(groupWidthFraction),
-                        heightDimension: .absolute(groupHeight) // ⭐️ THIS MUST BE SUFFICIENT
-                    )
-                    let group = NSCollectionLayoutGroup.horizontal(layoutSize: groupSize, subitems: [item])
-                    
-                    let section = NSCollectionLayoutSection(group: group)
-                    section.interGroupSpacing = 12 // Spacing between the horizontal cards
-                    section.contentInsets = NSDirectionalEdgeInsets(top: 0, leading: 16, bottom: 10, trailing: 16)
-                    section.orthogonalScrollingBehavior = .continuous // Enable horizontal scrolling
-                    
-                    // Header: "Upcoming Medications" title
-                    let headerSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: .absolute(30))
-                    let header = NSCollectionLayoutBoundarySupplementaryItem(
-                        layoutSize: headerSize,
-                        elementKind: UICollectionView.elementKindSectionHeader,
-                        alignment: .top
-                    )
-                    section.boundarySupplementaryItems = [header]
-                    return section
-                }
+            case .medications:
+                // --- MEDICATIONS HORIZONTAL LAYOUT (Section 1) ---
+                let itemSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: .fractionalHeight(1.0))
+                let item = NSCollectionLayoutItem(layoutSize: itemSize)
+                
+//                let groupWidthFraction: CGFloat = 0.9
+//                let groupHeight: CGFloat = 140
+//
+//                let groupSize = NSCollectionLayoutSize(
+//                    widthDimension: .fractionalWidth(groupWidthFraction),
+//                    heightDimension: .absolute(groupHeight)
+//                )
+                let groupSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(0.9), heightDimension: .absolute(130))
+                let group = NSCollectionLayoutGroup.horizontal(layoutSize: groupSize, subitems: [item])
+                
+                let section = NSCollectionLayoutSection(group: group)
+                section.interGroupSpacing = 12
+                section.contentInsets = NSDirectionalEdgeInsets(top: 0, leading: 16, bottom: 4, trailing: 16)
+                section.orthogonalScrollingBehavior = .continuous
+                
+                let headerSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: .absolute(30))
+                let header = NSCollectionLayoutBoundarySupplementaryItem(
+                    layoutSize: headerSize,
+                    elementKind: UICollectionView.elementKindSectionHeader,
+                    alignment: .top
+                )
+                section.boundarySupplementaryItems = [header]
+                return section
+                
+            case .exercises:
+                // --- EXERCISES HORIZONTAL LAYOUT (Section 2) ---
+                let itemSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: .fractionalHeight(1.0))
+                let item = NSCollectionLayoutItem(layoutSize: itemSize)
+                
+                let groupWidthFraction: CGFloat = 0.45
+                let groupHeight: CGFloat = 180
+                
+                let groupSize = NSCollectionLayoutSize(
+                    widthDimension: .fractionalWidth(groupWidthFraction),
+                    heightDimension: .absolute(groupHeight)
+                )
+                let group = NSCollectionLayoutGroup.horizontal(layoutSize: groupSize, subitems: [item])
+                
+                let section = NSCollectionLayoutSection(group: group)
+                section.interGroupSpacing = 12
+                section.contentInsets = NSDirectionalEdgeInsets(top: 8, leading: 16, bottom: 16, trailing: 16)
+                section.orthogonalScrollingBehavior = .continuous
+                
+                let headerSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: .absolute(30))
+                let header = NSCollectionLayoutBoundarySupplementaryItem(
+                    layoutSize: headerSize,
+                    elementKind: UICollectionView.elementKindSectionHeader,
+                    alignment: .top
+                )
+                section.boundarySupplementaryItems = [header]
+                return section
+                
+            case .symptoms:
+                // --- SYMPTOMS VERTICAL LAYOUT (Section 3) ---
+                let itemSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: .fractionalHeight(1.0))
+                let item = NSCollectionLayoutItem(layoutSize: itemSize)
+                
+                let groupSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: .absolute(80))
+                let group = NSCollectionLayoutGroup.horizontal(layoutSize: groupSize, subitems: [item])
+                
+                let section = NSCollectionLayoutSection(group: group)
+                section.contentInsets = NSDirectionalEdgeInsets(top: 8, leading: 16, bottom: 16, trailing: 16)
+                
+                let headerSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: .absolute(30))
+                let header = NSCollectionLayoutBoundarySupplementaryItem(
+                    layoutSize: headerSize,
+                    elementKind: UICollectionView.elementKindSectionHeader,
+                    alignment: .top
+                )
+                section.boundarySupplementaryItems = [header]
+                return section
+                
+            case .therapeuticGames:
+                // --- GAMES HORIZONTAL LAYOUT (Section 4) ---
+                let itemSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: .fractionalHeight(1.0))
+                let item = NSCollectionLayoutItem(layoutSize: itemSize)
+                
+                let groupWidthFraction: CGFloat = 0.47
+                let groupSize = NSCollectionLayoutSize(
+                    widthDimension: .fractionalWidth(groupWidthFraction),
+                    heightDimension: .absolute(170)
+                )
+                let group = NSCollectionLayoutGroup.horizontal(layoutSize: groupSize, subitems: [item])
+                group.contentInsets = NSDirectionalEdgeInsets(top: 0, leading: 0, bottom: 0, trailing: 10)
+
+                let section = NSCollectionLayoutSection(group: group)
+                section.contentInsets = NSDirectionalEdgeInsets(top: 8, leading: 16, bottom: 30, trailing: 16)
+                section.orthogonalScrollingBehavior = .groupPaging
+
+                let headerSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: .absolute(30))
+                let header = NSCollectionLayoutBoundarySupplementaryItem(
+                    layoutSize: headerSize,
+                    elementKind: UICollectionView.elementKindSectionHeader,
+                    alignment: .top
+                )
+                section.boundarySupplementaryItems = [header]
+                return section
             }
-        
-            return layout
         }
+        return layout
+    }
     
     // Existing functions...
     func autoSelectToday() {
-        if let index = dates.firstIndex(where: { Calendar.current.isDate($0.date, inSameDayAs: Date()) }) {
+            if let index = dates.firstIndex(where: { Calendar.current.isDate($0.date, inSameDayAs: Date()) }) {
 
-            selectedDate = dates[index].date
+                selectedDate = dates[index].date
 
-            DispatchQueue.main.async {
-                let indexPath = IndexPath(item: index, section: 0)
-                self.mainCollectionView.scrollToItem(
-                    at: indexPath,
-                    at: .centeredHorizontally,
-                    animated: false
-                )
-                self.mainCollectionView.selectItem(
-                    at: indexPath,
-                    animated: false,
-                    scrollPosition: []
-                )
+                DispatchQueue.main.async {
+                    let indexPath = IndexPath(item: index, section: 0)
+                    self.mainCollectionView.scrollToItem(
+                        at: indexPath,
+                        at: .centeredHorizontally,
+                        animated: false
+                    )
+                    self.mainCollectionView.selectItem(
+                        at: indexPath,
+                        animated: false,
+                        scrollPosition: []
+                    )
+                }
             }
         }
+        
+        // ... rest of the class ...
+
+    // Function to update selectedDate when a date cell is tapped
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        if homeSections[indexPath.section] == .calendar {
+            // Deselect the previously selected item (optional, depending on CalenderCollectionViewCell logic)
+            if let selectedIndexPath = collectionView.indexPathsForSelectedItems?.first, selectedIndexPath != indexPath {
+                collectionView.deselectItem(at: selectedIndexPath, animated: true)
+            }
+            
+            selectedDate = dates[indexPath.row].date
+            
+            // Reload the calendar header to update the "Today, Date" title dynamically
+            collectionView.reloadSections(IndexSet(integer: Section.calendar.rawValue))
+            
+            // TODO: Reload other content sections (medications, exercises) if their data is date-dependent
+            // self.mainCollectionView.reloadSections(IndexSet(integersIn: 1..<self.homeSections.count))
+            
+        } else {
+             // Handle item selection in content sections
+             // ...
+        }
     }
-    
-    // ... rest of the class ...
 }
 
 // MARK: - 5. Updated Data Source Extension
 extension HomeViewController: UICollectionViewDataSource {
     
-    // NEW: Define the total number of vertical sections (2: Calendar and Medications)
     func numberOfSections(in collectionView: UICollectionView) -> Int {
         return homeSections.count
     }
     
-    // Updated to return item counts based on the section
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         switch homeSections[section] {
         case .calendar:
             return dates.count
         case .medications:
             return medicationData.count
-        case .exercises: // ⭐️ NEW ⭐️
-                return exerciseData.count
-        case .symptoms: // ⭐️ NEW ⭐️
-                return 1 // Always one log card
-        case .therapeuticGames: // ⭐️ NEW ⭐️
-                return therapeuticGamesData.count
+        case .exercises:
+            return exerciseData.count
+        case .symptoms:
+            return 1
+        case .therapeuticGames:
+            return therapeuticGamesData.count
         }
     }
     
-    // Updated to dequeue the correct cell for each section
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let sectionType = homeSections[indexPath.section]
         
         switch sectionType {
         case .calendar:
-            // Existing Calendar Cell Logic
             let cell = mainCollectionView.dequeueReusableCell(withReuseIdentifier: "calendar_cell", for: indexPath) as! CalenderCollectionViewCell
             let model = dates[indexPath.row]
             let isSelected = Calendar.current.isDate(model.date, inSameDayAs: selectedDate)
@@ -328,35 +366,35 @@ extension HomeViewController: UICollectionViewDataSource {
             return cell
             
         case .medications:
-            // NEW Medication Card Cell Logic
             let cell = mainCollectionView.dequeueReusableCell(withReuseIdentifier: "medication_card_cell", for: indexPath) as! MedicationCardCollectionViewCell
             let model = medicationData[indexPath.row]
             cell.configure(with: model)
             return cell
             
-        case .exercises: // ⭐️ NEW ⭐️
-                let cell = mainCollectionView.dequeueReusableCell(withReuseIdentifier: "exercise_card_cell", for: indexPath) as! ExerciseCardCell
-                let model = exerciseData[indexPath.row]
-                cell.configure(with: model)
-                return cell
-        case .symptoms: // ⭐️ NEW ⭐️
-                let cell = mainCollectionView.dequeueReusableCell(withReuseIdentifier: "symptom_log_cell", for: indexPath) as! SymptomLogCell
-                
-                // Configure the static content
-                let message = "You haven't logged your symptoms today"
-                let buttonTitle = "Log now"
-                cell.configure(with: message, buttonTitle: buttonTitle)
-                return cell
-        case .therapeuticGames: // ⭐️ NEW ⭐️
-                let cell = mainCollectionView.dequeueReusableCell(withReuseIdentifier: "therapeutic_game_cell", for: indexPath) as! TherapeuticGameCell
-                let game = therapeuticGamesData[indexPath.item]
-                cell.configure(with: game)
-                return cell
+        case .exercises:
+            let cell = mainCollectionView.dequeueReusableCell(withReuseIdentifier: "exercise_card_cell", for: indexPath) as! ExerciseCardCell
+            let model = exerciseData[indexPath.row]
+            cell.configure(with: model)
+            return cell
+            
+        case .symptoms:
+            let cell = mainCollectionView.dequeueReusableCell(withReuseIdentifier: "symptom_log_cell", for: indexPath) as! SymptomLogCell
+            let message = "You haven't logged your symptoms today"
+            let buttonTitle = "Log now"
+            cell.configure(with: message, buttonTitle: buttonTitle)
+            return cell
+            
+        case .therapeuticGames:
+            let cell = mainCollectionView.dequeueReusableCell(withReuseIdentifier: "therapeutic_game_cell", for: indexPath) as! TherapeuticGameCell
+            let game = therapeuticGamesData[indexPath.item]
+            cell.configure(with: game)
+            return cell
         }
     }
     
-    // NEW: Function to handle supplementary views (section headers)
+    // ⭐️ Updated Function to handle dynamic calendar header title ⭐️
     func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
+        
         guard kind == UICollectionView.elementKindSectionHeader else {
             return UICollectionReusableView()
         }
@@ -370,45 +408,61 @@ extension HomeViewController: UICollectionViewDataSource {
         let sectionType = homeSections[indexPath.section]
         
         switch sectionType {
+        case .calendar:
+            // ⭐️ Calendar Header: Centered ⭐️
+            let dateString = formattedDateString(for: selectedDate)
+            let isToday = Calendar.current.isDateInToday(selectedDate)
+            
+            let title = isToday ? "Today, \(dateString)" : dateString
+            header.configure(title: title)
+            
+            // ⭐️ CRITICAL: Set Alignment to Center ⭐️
+            header.setTitleAlignment(.center)
+            
         case .medications:
+            // ⭐️ Content Header: Left Aligned ⭐️
             header.configure(title: "Upcoming Medications")
-        case .exercises: // ⭐️ NEW ⭐️
-                header.configure(title: "Guided Exercise")
-        case .symptoms: // ⭐️ NEW ⭐️
-                header.configure(title: "Symptoms")
-        case .therapeuticGames: // ⭐️ NEW ⭐️
-                header.configure(title: "Therapeutic Games")
-            // ⭐️ Show and configure the Info Button ⭐️
-//                    header.infoButton.isHidden = false
-//                    header.infoButton.addTarget(self, action: #selector(showTherapeuticGamesInfo), for: .touchUpInside)
-        default:
-            header.configure(title: "") // Calendar section doesn't need a title above it
+            header.setTitleAlignment(.left)
+            
+        case .exercises:
+            // ⭐️ Content Header: Left Aligned ⭐️
+            header.configure(title: "Guided Exercise")
+            header.setTitleAlignment(.left)
+            
+        case .symptoms:
+            // ⭐️ Content Header: Left Aligned ⭐️
+            header.configure(title: "Symptoms")
+            header.setTitleAlignment(.left)
+            
+        case .therapeuticGames:
+            // ⭐️ Content Header: Left Aligned ⭐️
+            header.configure(title: "Therapeutic Games")
+            header.setTitleAlignment(.left)
         }
+        
+        // Optional: Hide info button for all headers unless explicitly needed
+        // header.infoButton.isHidden = true
+        
         return header
     }
-
-    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        // You'll handle item selection logic here (e.g., navigating to the detail view)
-    }
+    
+    
+    
+    
+    
+    
 }
 
+
+
+ 
 extension HomeViewController {
-    // Existing helper functions...
+    // Helper function moved here and kept for use in the dynamic header logic
     func formattedDateString(for date: Date) -> String {
         let formatter = DateFormatter()
         formatter.dateFormat = "d MMMM yyyy" // e.g., 28 November 2025
         return formatter.string(from: date)
     }
     
-    // Function to update the todayDate label
-    func updateDateLabel(with date: Date) {
-        let dateString = formattedDateString(for: date)
-        let isToday = Calendar.current.isDateInToday(date)
-        
-        if isToday {
-            todayDate.text = "Today, \(dateString)"
-        } else {
-            todayDate.text = dateString
-        }
-    }
+    // ⭐️ Removed: updateDateLabel(with:) function ⭐️
 }
