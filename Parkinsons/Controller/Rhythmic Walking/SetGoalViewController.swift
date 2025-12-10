@@ -9,9 +9,18 @@ import UIKit
 
 class SetGoalViewController: UIViewController, UITableViewDataSource, UIPickerViewDataSource {
     
+    @IBOutlet weak var datePickerUIView: UIView!
     @IBAction func infoButtonTapped(_ sender: UIBarButtonItem) {
-        let overLay = OverlayPopUp()
-        overLay.appear(sender: self)
+        let storyboard = UIStoryboard(name: "Rhythmic Walking", bundle: nil)
+        guard let infoVC = storyboard.instantiateViewController(withIdentifier: "infoVC") as? InfoViewController else {
+                print("Error: Could not find InfoViewController in storyboard.")
+                return
+            }
+        infoVC.modalPresentationStyle = .pageSheet
+        self.present(infoVC, animated: true, completion: nil)
+//        let overLay = OverlayPopUp()
+//        overLay.appear(sender: self)
+        
     }
 
     private let paces = ["Slow", "Moderate", "Fast"]
@@ -20,7 +29,7 @@ class SetGoalViewController: UIViewController, UITableViewDataSource, UIPickerVi
     private var selectedPace: String = "Slow"
 
     let dataForColumn1 = Array(00...05)
-    let dataForColumn2 = Array(00...60)
+    let dataForColumn2 = Array(00...59)
 
     private func updateButtons() {
         beatButton.setTitle("\(selectedBeat)", for: .normal)
@@ -104,6 +113,7 @@ class SetGoalViewController: UIViewController, UITableViewDataSource, UIPickerVi
         super.viewDidLoad()
         DurationPicker.dataSource = self
         DurationPicker.delegate = self
+        datePickerUIView.applyCardStyle()
         sessionTableView.dataSource = self
         sessionTableView.layer.cornerRadius = 30
         sessionTableView.clipsToBounds = true
@@ -150,7 +160,7 @@ class SetGoalViewController: UIViewController, UITableViewDataSource, UIPickerVi
         
         
         performSegue(withIdentifier: "go", sender: self)
-//        let bpm = bpmForPace(selectedPace)
+
 ////
 ////        var session = RhythmicSession(durationSeconds: total, beat: selectedBeat, pace: selectedPace)
 //
@@ -173,11 +183,13 @@ class SetGoalViewController: UIViewController, UITableViewDataSource, UIPickerVi
         let h = dataForColumn1[DurationPicker.selectedRow(inComponent: 0)]
         let m = dataForColumn2[DurationPicker.selectedRow(inComponent: 1)]
         let total = (h * 3600) + (m * 60)
+        let bpm = bpmForPace(selectedPace)
         destVC.totalSessionDuration = total
         destVC.hrs = h
         destVC.minn = m
         destVC.selectedBeat = selectedBeat
         destVC.selectedPace = selectedPace
+        destVC.selectedBeat = String(bpm)
     }
     
     @IBAction func beatButtonTapped(_ sender: UIButton) {

@@ -48,6 +48,9 @@ class SessionSummaryViewController: UIViewController {
     }
     
     
+    @IBAction func doneButtonTapped(_ sender: Any) {
+        self.dismiss(animated: true, completion: nil)
+    }
     
 
     /*

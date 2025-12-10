@@ -86,7 +86,19 @@ final class BeatPlayer {
         }
         timer?.resume()
     }
-
+    
+    func pauseBeat() {
+        isPlaying = false
+        timer?.suspend()
+        player.stop()
+    }
+    
+    func resumeBeat() {
+        guard let fileKey = currentFileKey, isPlaying == false else { return }
+        isPlaying = true
+        timer?.resume()
+    }
+    
     func stopBeat() {
         isPlaying = false
         timer?.cancel()

@@ -14,7 +14,7 @@ final class CircularProgressView: UIView {
         didSet { progressLayer.strokeColor = progressColor.cgColor }
     }
     
-    var lineWidth: CGFloat = 30 {
+    var lineWidth: CGFloat = 20 {
         didSet {
             trackLayer.lineWidth = lineWidth
             progressLayer.lineWidth = lineWidth

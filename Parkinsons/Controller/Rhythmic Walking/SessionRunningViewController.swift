@@ -37,13 +37,15 @@ class SessionRunningViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         setupProgressView()
-        progressView.progressColor = .systemGreen
+        progressView.progressColor = UIColor(hex: "90AF81")
         progressView.trackColor = .systemGray5
         beatButton.titleLabel?.text = selectedBeat
         paceButton.titleLabel?.text = selectedPace
         beatPaceUIView.applyCardStyle()
         setupBeatButton()
         setupPaceButton()
+        
+//        guard let beat = selectedBeat, let bpm = selectedBPM else { return }
         
         if totalSessionDuration > 0{
             timerModel = TimerModel(totalSeconds: totalSessionDuration)
@@ -57,16 +59,22 @@ class SessionRunningViewController: UIViewController {
         if totalSessionDuration > 0{
             timerModel.start()
         }
-//        BeatPlayer.shared.setupAudio(fileName: selectedBeat)
+//        BeatPlayer.shared.startBeat(fileName: beat, bpm: bpm)
         updatePauseButtonUI()
         // Do any additional setup after loading the view.
+    }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        BeatPlayer.shared.stopBeat()
     }
     
     
     private func updateDisplay(hours: Int, minutes: Int) {
         let hoursForDisplay = totalSessionDuration / 3600
         let minutesForDisplay = (totalSessionDuration % 3600) / 60
-        timeLabel.text = String(format: "%02d:%02d", hoursForDisplay, minutesForDisplay)
+        let secondsForDisplay = totalSessionDuration % 60
+        timeLabel.text = String(format: "%02d:%02d:%02d", hoursForDisplay, minutesForDisplay, secondsForDisplay)
         progressView.setProgress(1.0)
     }
     
@@ -74,8 +82,10 @@ class SessionRunningViewController: UIViewController {
         guard let timerModel = timerModel else { return }
         if timerModel.isPaused {
             timerModel.resume()
+            BeatPlayer.shared.resumeBeat()
         } else {
             timerModel.pause()
+            BeatPlayer.shared.pauseBeat()
         }
         updatePauseButtonUI()
     }
@@ -116,23 +126,70 @@ class SessionRunningViewController: UIViewController {
         paceButton.showsMenuAsPrimaryAction = true
         paceButton.changesSelectionAsPrimaryAction = true
     }
+    func presentSummaryAndDismiss() {
+        
+        // 1. Get the original view controller (SetGoalViewController) that presented this modal.
+        // This is the anchor point for finding the navigation stack.
+        guard let presentingVC = self.presentingViewController else {
+            print("Error: Presenting view controller not found.")
+            return
+        }
+
+        // 2. Instantiate the next View Controller (SessionSummaryViewController)
+        let storyboard = UIStoryboard(name: "Rhythmic Walking", bundle: nil) // Update "Main" to your actual Storyboard name
+        guard let summaryVC = storyboard.instantiateViewController(withIdentifier: "SessionSummaryVC") as? SessionSummaryViewController else {
+            print("Error: Could not instantiate SessionSummaryViewController.")
+            return
+        }
+        
+        // *** CRITICAL STEP ***
+        // 3. Find the target navigation stack to push onto.
+        // This is the navigation controller that *contains* the SetGoalVC.
+        guard let targetNav = presentingVC.navigationController else {
+            // Fallback if presentingVC is somehow not in a navigation stack.
+            // If this happens, you must present the SummaryVC modally instead of pushing.
+            print("Error: Presenting VC is not embedded in a UINavigationController. Presenting modally as a fallback.")
+//            summaryVC.modalPresentationStyle = .fullScreen
+            self.dismiss(animated: true) {
+                presentingVC.present(summaryVC, animated: true)
+            }
+            return
+        }
+
+        // 4. Dismiss the current modal view controller (SessionRunningVC)
+        self.dismiss(animated: true) {
+            // This block executes ONLY AFTER the modal dismissal animation completes.
+            
+            // 5. Push the Session Summary View Controller onto the original stack
+            // This will show a standard push animation (slide from right).
+            targetNav.pushViewController(summaryVC, animated: true)
+        }
+    }
+    
+    @IBAction func endSessionButtonTapped(_ sender: Any) {
+        presentSummaryAndDismiss()
+    }
+    
     
 }
 
 extension SessionRunningViewController: TimerModelDelegate {
         
     func timerDidUpdate(timeLeft: Int, progress: CGFloat) {
-        let minutes = timeLeft / 60
+        let hours = timeLeft / 3600
+        let minutes = (timeLeft % 3600) / 60
         let seconds = timeLeft % 60
-        timeLabel.text = String(format: "%02d:%02d", minutes, seconds)
+        
+        timeLabel.text = String(format: "%02d:%02d:%02d", hours, minutes, seconds)
         
         progressView.setProgress(progress)
     }
     
     func timerDidFinish() {
-        timeLabel.text = " 00:00 "
+        timeLabel.text = " 00:00:00 "
         progressView.setProgress(0)
         pauseButton.isEnabled = false
+        presentSummaryAndDismiss()
     }
 
     /*
