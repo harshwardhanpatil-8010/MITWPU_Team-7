@@ -10,6 +10,53 @@
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
+        <!--Edit Medication-->
+        <scene sceneID="xsf-cz-XbX">
+            <objects>
+                <viewController storyboardIdentifier="EditMedicationViewController" id="fPF-Zt-vSc" customClass="EditMedicationViewController" customModule="Parkinsons" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="AYk-sY-5GE">
+                        <rect key="frame" x="0.0" y="0.0" width="402" height="812"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="FvL-gM-jN9">
+                                <rect key="frame" x="16" y="110" width="370" height="702"/>
+                                <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                                <collectionViewFlowLayout key="collectionViewLayout" automaticEstimatedItemSize="YES" minimumLineSpacing="10" minimumInteritemSpacing="10" id="wwD-s6-1I1">
+                                    <size key="itemSize" width="128" height="128"/>
+                                    <size key="headerReferenceSize" width="0.0" height="0.0"/>
+                                    <size key="footerReferenceSize" width="0.0" height="0.0"/>
+                                    <inset key="sectionInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
+                                </collectionViewFlowLayout>
+                                <cells>
+                                    <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="EditMedCell" id="aPM-8H-mgK" customClass="EditMedicationCollectionViewCell" customModule="Parkinsons" customModuleProvider="target">
+                                        <rect key="frame" x="0.0" y="0.0" width="128" height="128"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                        <collectionViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" id="lbL-jO-LTL">
+                                            <rect key="frame" x="0.0" y="0.0" width="128" height="128"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                        </collectionViewCellContentView>
+                                    </collectionViewCell>
+                                </cells>
+                            </collectionView>
+                        </subviews>
+                        <viewLayoutGuide key="safeArea" id="dd3-o2-1I9"/>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                        <constraints>
+                            <constraint firstItem="FvL-gM-jN9" firstAttribute="top" secondItem="AYk-sY-5GE" secondAttribute="topMargin" constant="40" id="1A0-fq-jw8"/>
+                            <constraint firstItem="dd3-o2-1I9" firstAttribute="trailing" secondItem="FvL-gM-jN9" secondAttribute="trailing" constant="16" id="ZU2-7r-SeS"/>
+                            <constraint firstAttribute="bottomMargin" secondItem="FvL-gM-jN9" secondAttribute="bottom" id="i9E-cW-qsF"/>
+                            <constraint firstItem="FvL-gM-jN9" firstAttribute="leading" secondItem="dd3-o2-1I9" secondAttribute="leading" constant="16" id="mx3-ni-Fwn"/>
+                        </constraints>
+                    </view>
+                    <navigationItem key="navigationItem" title="Edit Medication" id="S8y-hV-eNJ"/>
+                    <connections>
+                        <outlet property="collectionView" destination="FvL-gM-jN9" id="Z7Z-cs-LYy"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="Gaz-SJ-M7g" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="2934.3283582089553" y="-638.44393592677341"/>
+        </scene>
         <!--Medication-->
         <scene sceneID="s0d-6b-0kx">
             <objects>
@@ -59,6 +106,8 @@
                     <simulatedToolbarMetrics key="simulatedBottomBarMetrics"/>
                     <connections>
                         <outlet property="collectionView" destination="x3W-Wd-eSg" id="d4i-UC-UYn"/>
+                        <segue destination="fUo-Iz-Fmc" kind="presentation" identifier="showSkipper" id="L3B-uX-ifs"/>
+                        <segue destination="lqJ-RC-jZL" kind="presentation" identifier="showEditMedication" id="C2g-Wm-86o"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Ief-a0-LHa" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
@@ -339,7 +388,7 @@
                                                             <nil key="highlightedColor"/>
                                                         </label>
                                                         <datePicker contentMode="scaleToFill" ambiguous="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" datePickerMode="time" minuteInterval="1" style="compact" translatesAutoresizingMaskIntoConstraints="NO" id="A3m-3N-g04">
-                                                            <rect key="frame" x="73.666666666666686" y="0.0" width="24" height="50"/>
+                                                            <rect key="frame" x="73.666666666666671" y="0.0" width="24" height="50"/>
                                                         </datePicker>
                                                     </subviews>
                                                 </stackView>
@@ -682,37 +731,10 @@
             </objects>
             <point key="canvasLocation" x="4783.5820895522384" y="957.66590389016017"/>
         </scene>
-        <!--View Controller-->
-        <scene sceneID="6ge-eX-mbs">
-            <objects>
-                <viewController id="X3Z-2Q-sSZ" sceneMemberID="viewController">
-                    <view key="view" contentMode="scaleToFill" id="lgP-7v-UCt">
-                        <rect key="frame" x="0.0" y="0.0" width="402" height="874"/>
-                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <subviews>
-                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="exT-tj-FVh">
-                                <rect key="frame" x="190" y="355" width="75" height="35"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <state key="normal" title="Button"/>
-                                <buttonConfiguration key="configuration" style="plain" title="Button"/>
-                                <connections>
-                                    <segue destination="fUo-Iz-Fmc" kind="presentation" id="c7g-Jm-GXP"/>
-                                </connections>
-                            </button>
-                        </subviews>
-                        <viewLayoutGuide key="safeArea" id="I67-Rp-aF2"/>
-                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
-                        <color key="tintColor" white="0.66666666669999997" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                    </view>
-                </viewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="OWH-Hh-rCr" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="-781" y="978"/>
-        </scene>
         <!--Skipped Taken View Controller-->
         <scene sceneID="l34-Ew-KHS">
             <objects>
-                <viewController id="ham-hl-RhS" customClass="SkippedTakenViewController" customModule="Parkinsons" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="SkippedTakenVC" id="ham-hl-RhS" customClass="SkippedTakenViewController" customModule="Parkinsons" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="Ode-4C-J7Z">
                         <rect key="frame" x="0.0" y="0.0" width="402" height="812"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -727,7 +749,10 @@
                                             <constraint firstAttribute="width" constant="153" id="obz-cH-g27"/>
                                         </constraints>
                                         <state key="normal" title="Button"/>
-                                        <buttonConfiguration key="configuration" style="gray" title="Skipped" cornerStyle="capsule"/>
+                                        <buttonConfiguration key="configuration" style="tinted" title="Skipped" cornerStyle="capsule"/>
+                                        <connections>
+                                            <action selector="skippedButtonTapped:" destination="ham-hl-RhS" eventType="touchUpInside" id="OzO-Wo-rKE"/>
+                                        </connections>
                                     </button>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="fOK-90-Diq">
                                         <rect key="frame" x="197" y="112" width="153" height="48"/>
@@ -736,7 +761,10 @@
                                             <constraint firstAttribute="height" constant="48" id="E0b-n2-4fz"/>
                                         </constraints>
                                         <state key="normal" title="Button"/>
-                                        <buttonConfiguration key="configuration" style="gray" title="Taken" cornerStyle="capsule"/>
+                                        <buttonConfiguration key="configuration" style="tinted" title="Taken" cornerStyle="capsule"/>
+                                        <connections>
+                                            <action selector="takenButtonTapped:" destination="ham-hl-RhS" eventType="touchUpInside" id="GoR-Ty-R7X"/>
+                                        </connections>
                                     </button>
                                     <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="ujC-kC-XWk">
                                         <rect key="frame" x="14" y="17" width="60" height="60"/>
@@ -797,17 +825,30 @@
                     </view>
                     <navigationItem key="navigationItem" id="BUi-7V-oMa">
                         <barButtonItem key="leftBarButtonItem" systemItem="cancel" id="WiQ-hm-Pcj"/>
-                        <barButtonItem key="rightBarButtonItem" style="done" systemItem="done" id="sFV-Dh-utA"/>
+                        <barButtonItem key="rightBarButtonItem" style="done" systemItem="done" id="sFV-Dh-utA">
+                            <connections>
+                                <action selector="tickButtonTapped:" destination="ham-hl-RhS" id="Ulo-YX-Wix"/>
+                            </connections>
+                        </barButtonItem>
                     </navigationItem>
+                    <connections>
+                        <outlet property="iconImageView" destination="ujC-kC-XWk" id="jFh-72-5rk"/>
+                        <outlet property="skippedButton" destination="UnS-2p-kHJ" id="yl2-NI-Jhu"/>
+                        <outlet property="subtitleLabel" destination="ung-yq-URV" id="T1o-A4-U8e"/>
+                        <outlet property="takenButton" destination="fOK-90-Diq" id="1RT-lN-1jX"/>
+                        <outlet property="tickButton" destination="sFV-Dh-utA" id="vxP-OQ-DEd"/>
+                        <outlet property="titleLabel" destination="hPF-5I-WVV" id="iRU-sb-MgK"/>
+                        <outlet property="uiview" destination="j9z-wR-sgR" id="CEt-a1-A92"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="mDV-Al-TU6" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="1570.1492537313432" y="977.57437070938204"/>
         </scene>
-        <!--Edit Medication View Controller-->
+        <!--View Controller-->
         <scene sceneID="c4S-pm-w5c">
             <objects>
-                <viewController id="lu9-Sw-cVA" customClass="EditMedicationViewController" customModule="Parkinsons" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController id="lu9-Sw-cVA" customClass="ViewController" customModule="Parkinsons" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="3A4-F7-nYc">
                         <rect key="frame" x="0.0" y="0.0" width="402" height="874"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -1335,6 +1376,47 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="ka7-dR-sBz" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="650.74626865671632" y="977.57437070938204"/>
+        </scene>
+        <!--View Controller-->
+        <scene sceneID="au1-ED-YJI">
+            <objects>
+                <viewController id="UZz-dU-4HZ" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="HVx-bu-ZS0">
+                        <rect key="frame" x="0.0" y="0.0" width="402" height="874"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="O23-0y-FvY">
+                                <rect key="frame" x="164" y="396" width="75" height="35"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <state key="normal" title="Button"/>
+                                <buttonConfiguration key="configuration" style="plain" title="Button"/>
+                            </button>
+                        </subviews>
+                        <viewLayoutGuide key="safeArea" id="PiW-4b-2cY"/>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                    </view>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="H5a-Wl-Sts" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="901" y="-656"/>
+        </scene>
+        <!--Navigation Controller-->
+        <scene sceneID="EMX-BX-uB8">
+            <objects>
+                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="lqJ-RC-jZL" sceneMemberID="viewController">
+                    <toolbarItems/>
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="KUL-9W-MOJ">
+                        <rect key="frame" x="0.0" y="16" width="402" height="54"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                    </navigationBar>
+                    <nil name="viewControllers"/>
+                    <connections>
+                        <segue destination="fPF-Zt-vSc" kind="relationship" relationship="rootViewController" id="nLQ-qn-QuK"/>
+                    </connections>
+                </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="SoH-LV-nbd" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="2014.9253731343283" y="-638.44393592677341"/>
         </scene>
     </scenes>
     <resources>

@@ -62,19 +62,29 @@ class TodayMedicationCell: UICollectionViewCell {
             iconImageView.image = UIImage(named: dose.medication.iconName ?? "")
 
             switch dose.status {
+
             case .taken:
-                statusImageView.image = UIImage(systemName: "checkmark.circle.fill")
+                statusImageView.image = UIImage(systemName: "checkmark")
                 statusImageView.tintColor = .systemGreen
 
             case .skipped:
-                statusImageView.image = UIImage(systemName: "xmark.circle.fill")
+                statusImageView.image = UIImage(systemName: "xmark")
                 statusImageView.tintColor = .systemRed
 
             case .none:
-                statusImageView.image = UIImage(systemName: "checkmark")
-                statusImageView.tintColor = .systemGray3
+                let now = Date()
+                let scheduledTime = dose.time
+
+                if now > scheduledTime {
+                    statusImageView.image = UIImage(named: "Due")
+                    statusImageView.tintColor = nil
+                } else {
+                    statusImageView.image = UIImage(systemName: "circle")
+                    statusImageView.tintColor = .systemGray5
+                }
             }
-        }
+
+            }
 
 
         @IBAction func chevronTapped(_ sender: UIButton) {

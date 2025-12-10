@@ -7,10 +7,19 @@
 
 import UIKit
 
-class MedicationLandingPageViewController: UIViewController, UICollectionViewDelegate {
+class MedicationLandingPageViewController: UIViewController, UICollectionViewDelegate, SkippedTakenDelegate {
+    func didUpdateDoseStatus(_ dose: MedicationDose, status: DoseStatus) {
+        if let index = todaysMedications.firstIndex(where: { $0.id == dose.id }) {
+                todaysMedications[index].status = status
+            }
+
+        collectionView.reloadData()
+    }
+    
     @IBOutlet weak var collectionView: UICollectionView!
     var todaysMedications: [MedicationDose] = []
     var allMedications: [Medication] = []
+    var selectedDose: MedicationDose?
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -24,11 +33,61 @@ class MedicationLandingPageViewController: UIViewController, UICollectionViewDel
     @objc func editMyMedications() {
             print("Edit button tapped for My Medications!")
             // open edit screen here
+            performSegue(withIdentifier: "showEditMedication", sender: self)
         }
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if segue.identifier == "showEditMedication" {
+            let nav = segue.destination as! UINavigationController
+            let vc = nav.topViewController as! EditMedicationViewController
+
+            vc.medications = allMedications  // or pass whatever you need
+        }
+    }
+
+    
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        // Only first section should be tappable
+        if indexPath.section == 0 {
+            selectedDose = todaysMedications[indexPath.row]   // pass the tapped item
+            performSegue(withIdentifier: "showSkipper", sender: self)
+        }
+    }
+
+
+    func openSkipTakenModal(for dose: MedicationDose) {
+        let storyboard = UIStoryboard(name: "Main", bundle: nil)
+
+        let vc = storyboard.instantiateViewController(withIdentifier: "SkippedTakenViewController") as! SkippedTakenViewController
+
+        // Pass the data
+        vc.selectedDose = dose
+
+        vc.modalPresentationStyle = .overCurrentContext
+        present(vc, animated: true)
+    }
+
+
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if segue.identifier == "showSkipper" {
+            let nav = segue.destination as! UINavigationController
+            let vc = nav.topViewController as! SkippedTakenViewController   // because it is embedded
+            
+            vc.selectedDose = selectedDose
+            vc.receivedTitle = selectedDose?.medication.name
+            vc.receivedSubtitle = selectedDose?.medication.form
+            vc.receivedIconName = selectedDose?.medication.iconName
+            
+            vc.delegate = self
+        }
+    }
+
+
+
+
     
     func loadSampleData() {
 
-        // First create medications
+        // Create medications
         var levodopa = Medication(
             id: UUID(),
             name: "Levodopa",
@@ -36,7 +95,6 @@ class MedicationLandingPageViewController: UIViewController, UICollectionViewDel
             iconName: "capsule",
             schedule: "Everyday",
             doses: []
-            
         )
 
         var carbidopa = Medication(
@@ -48,17 +106,24 @@ class MedicationLandingPageViewController: UIViewController, UICollectionViewDel
             doses: []
         )
 
-        // Now create doses with medication included
+        let now = Date()
+
+        // Dose time 1 hour **in the past**
+        let pastTime = now.addingTimeInterval(-3600)
+
+        // Dose time 1 hour **in the future**
+        let futureTime = now.addingTimeInterval(3600)
+
         let dose1 = MedicationDose(
             id: UUID(),
-            time: Date(),
+            time: pastTime,
             status: .none,
             medication: levodopa
         )
 
         let dose2 = MedicationDose(
             id: UUID(),
-            time: Date().addingTimeInterval(3600),
+            time: futureTime,
             status: .none,
             medication: carbidopa
         )
@@ -67,7 +132,6 @@ class MedicationLandingPageViewController: UIViewController, UICollectionViewDel
         carbidopa.doses = [dose2]
 
         todaysMedications = [dose1, dose2]
-
         allMedications = [levodopa, carbidopa]
     }
 
