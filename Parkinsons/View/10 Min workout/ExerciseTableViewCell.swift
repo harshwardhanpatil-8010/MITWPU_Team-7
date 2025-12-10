@@ -17,6 +17,8 @@ class ExerciseTableViewCell: UITableViewCell {
     override func awakeFromNib() {
         super.awakeFromNib()
         // Initialization code
+        exerciseImage.layer.cornerRadius = 10
+        exerciseImage.clipsToBounds = true
     }
     func loadThumbnail(videoID: String) {
         let urlString = "https://img.youtube.com/vi/\(videoID)/mqdefault.jpg"

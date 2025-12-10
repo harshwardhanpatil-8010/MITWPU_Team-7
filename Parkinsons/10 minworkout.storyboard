@@ -136,7 +136,7 @@
                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="jfR-lP-bNn">
                                                 <rect key="frame" x="238" y="0.0" width="124" height="48"/>
                                                 <state key="normal" title="Button"/>
-                                                <buttonConfiguration key="configuration" style="tinted" title="skip" cornerStyle="capsule"/>
+                                                <buttonConfiguration key="configuration" style="tinted" title="Skip" cornerStyle="capsule"/>
                                                 <connections>
                                                     <action selector="skipButtonTapped:" destination="J4b-8T-y2N" eventType="touchUpInside" id="7wU-DK-XF2"/>
                                                     <action selector="skipButtonTapped:" destination="kfw-Zk-5lP" eventType="touchUpInside" id="sI9-Re-Hhw"/>
@@ -306,14 +306,14 @@
                                 <color key="sectionIndexBackgroundColor" systemColor="systemGray6Color"/>
                                 <prototypes>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="previewCell" id="DOG-dS-5vE" customClass="ExerciseTableViewCell" customModule="Parkinsons" customModuleProvider="target">
-                                        <rect key="frame" x="0.0" y="50" width="370" height="52"/>
+                                        <rect key="frame" x="0.0" y="50" width="370" height="55"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="DOG-dS-5vE" id="1x0-1f-9Bv">
-                                            <rect key="frame" x="0.0" y="0.0" width="370" height="52"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="370" height="55"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
-                                                <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="JAs-8g-Q1a">
-                                                    <rect key="frame" x="58" y="0.0" width="50" height="51"/>
+                                                <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="JAs-8g-Q1a">
+                                                    <rect key="frame" x="58" y="2" width="50" height="51"/>
                                                     <constraints>
                                                         <constraint firstAttribute="height" constant="50" id="8m7-xT-RVq"/>
                                                         <constraint firstAttribute="width" constant="50" id="YpM-ir-ll4"/>
@@ -372,11 +372,13 @@
                                                 <constraint firstAttribute="trailing" secondItem="iHZ-DV-aqe" secondAttribute="trailing" constant="8" id="M2I-bs-NKq"/>
                                                 <constraint firstItem="CRL-lk-3Lc" firstAttribute="leading" secondItem="1x0-1f-9Bv" secondAttribute="leading" constant="20" id="YTE-Rz-qb0"/>
                                                 <constraint firstItem="JAs-8g-Q1a" firstAttribute="top" secondItem="1x0-1f-9Bv" secondAttribute="top" id="ZBY-s2-VMc"/>
+                                                <constraint firstItem="JAs-8g-Q1a" firstAttribute="top" secondItem="1x0-1f-9Bv" secondAttribute="top" constant="2" id="fOJ-Th-oVe"/>
                                                 <constraint firstItem="9cq-cz-VdD" firstAttribute="top" secondItem="1x0-1f-9Bv" secondAttribute="top" constant="-3" id="moV-Jq-bjf"/>
                                                 <constraint firstItem="JAs-8g-Q1a" firstAttribute="leading" secondItem="CRL-lk-3Lc" secondAttribute="trailing" constant="16" id="od1-uQ-TTF"/>
                                                 <constraint firstItem="JAs-8g-Q1a" firstAttribute="leading" secondItem="CRL-lk-3Lc" secondAttribute="trailing" constant="16" id="oma-7a-lg6"/>
                                                 <constraint firstItem="iHZ-DV-aqe" firstAttribute="top" secondItem="1x0-1f-9Bv" secondAttribute="top" constant="15" id="p3A-vB-O5h"/>
                                                 <constraint firstItem="iHZ-DV-aqe" firstAttribute="leading" secondItem="9cq-cz-VdD" secondAttribute="trailing" constant="5" id="r6x-Ii-nxN"/>
+                                                <constraint firstAttribute="bottom" secondItem="JAs-8g-Q1a" secondAttribute="bottom" constant="2" id="ub0-3X-3VR"/>
                                             </constraints>
                                         </tableViewCellContentView>
                                         <color key="backgroundColor" systemColor="systemGray6Color"/>
@@ -891,7 +893,7 @@
                                             <constraint firstAttribute="height" constant="48" id="6oD-sz-WIE"/>
                                             <constraint firstAttribute="width" constant="128" id="70v-jF-yVy"/>
                                         </constraints>
-                                        <buttonConfiguration key="configuration" style="filled" image="checkmark" catalog="system" cornerStyle="capsule"/>
+                                        <buttonConfiguration key="configuration" style="filled" title="Done" cornerStyle="capsule"/>
                                         <connections>
                                             <action selector="doneButtonTapped:" destination="kfw-Zk-5lP" eventType="touchUpInside" id="4f0-ra-WhN"/>
                                         </connections>
@@ -902,7 +904,7 @@
                                             <button opaque="NO" contentMode="scaleToFill" enabled="NO" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Zod-LQ-fDS">
                                                 <rect key="frame" x="0.0" y="0.0" width="124" height="48"/>
                                                 <state key="normal" title="Button"/>
-                                                <buttonConfiguration key="configuration" style="filled" title="Previous" cornerStyle="capsule"/>
+                                                <buttonConfiguration key="configuration" style="tinted" title="Previous" cornerStyle="capsule"/>
                                                 <connections>
                                                     <action selector="previousButtontapped:" destination="kfw-Zk-5lP" eventType="touchUpInside" id="wb3-0P-1yC"/>
                                                 </connections>
@@ -910,7 +912,7 @@
                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ev3-IW-IQ3">
                                                 <rect key="frame" x="238" y="0.0" width="124" height="48"/>
                                                 <state key="normal" title="Button"/>
-                                                <buttonConfiguration key="configuration" style="tinted" title="skip" cornerStyle="capsule"/>
+                                                <buttonConfiguration key="configuration" style="tinted" title="Skip" cornerStyle="capsule"/>
                                                 <connections>
                                                     <action selector="skipButtonTapped:" destination="kfw-Zk-5lP" eventType="touchUpInside" id="AYp-KI-fJK"/>
                                                 </connections>

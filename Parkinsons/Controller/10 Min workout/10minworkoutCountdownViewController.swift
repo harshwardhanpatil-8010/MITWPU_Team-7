@@ -21,22 +21,38 @@ class _0minworkoutCountdownViewController: UIViewController {
         // Do any additional setup after loading the view.
     }
     func startCountDown() {
-         guard countDown > 0 else {
-             navigateToNextScreen()
-             return
-         }
-             TimerLabel.text = "\(countDown)"
-             TimerLabel.alpha = 1
-             TimerLabel.transform = .identity
-             
-             UIView.animate(withDuration: 1.0, animations: {
-                 self.TimerLabel.alpha = 0
-                 self.TimerLabel.transform = CGAffineTransform(scaleX: 3.0, y: 3.0)
-             }) { _ in
-                 self.countDown -= 1
-                 self.startCountDown()
-             }
-         }
+        
+        if countDown == 0 {
+            TimerLabel.text = "GO!"
+            TimerLabel.alpha = 1
+            TimerLabel.transform = .identity
+            
+            UIView.animate(withDuration: 1.0, animations: {
+                self.TimerLabel.alpha = 0
+                self.TimerLabel.transform = CGAffineTransform(scaleX: 3.0, y: 3.0)
+            }) { _ in
+                // Wait 0.3 seconds before navigating
+                DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
+                    self.navigateToNextScreen()
+                }
+            }
+            return
+        }
+
+       
+        TimerLabel.text = "\(countDown)"
+        TimerLabel.alpha = 1
+        TimerLabel.transform = .identity
+
+        UIView.animate(withDuration: 1.0, animations: {
+            self.TimerLabel.alpha = 0
+            self.TimerLabel.transform = CGAffineTransform(scaleX: 3.0, y: 3.0)
+        }) { _ in
+            self.countDown -= 1
+            self.startCountDown()
+        }
+    }
+
     func navigateToNextScreen() {
             let storyboard = UIStoryboard(name: "10 minworkout", bundle: nil)
             let vc = storyboard.instantiateViewController(withIdentifier: "10minworkoutViewController") as! _0minworkoutViewController
