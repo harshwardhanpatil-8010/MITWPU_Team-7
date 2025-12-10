@@ -49,7 +49,7 @@ class ExerciseStore {
                 skipCount: 0,
                 isSuppressed: false,
                 suppressedUntil: .distantPast,
-                description: "A simple aerobic exercise where you lift your knees alternately as if walking or marching, either in place or moving forward.",
+                description: "Neck Stretches. A simple aerobic exercise where you lift your knees alternately as if walking or marching, either in place or moving forward.",
                 Benefits: "Improves leg strength and coordination.Boosts heart rate and cardiovascular fitness.Enhances balance and posture.Aids joint mobility—especially beneficial for seniors or people with Parkinson’s.Can be done anywhere, no equipment needed.",
                 stepsToPerform: "Stand upright with feet hip-width apart. Lift one knee to hip level while swinging the opposite arm. Lower it and repeat with the other leg. Continue at a steady rhythm; you can increase speed or lift height for intensity."
                 
@@ -66,7 +66,7 @@ class ExerciseStore {
                 skipCount: 0,
                 isSuppressed: false,
                 suppressedUntil: .distantPast,
-                description: "A simple aerobic exercise where you lift your knees alternately as if walking or marching, either in place or moving forward.",
+                description: "Shoulder Rolls. A simple aerobic exercise where you lift your knees alternately as if walking or marching, either in place or moving forward.",
                 Benefits: "Improves leg strength and coordination.Boosts heart rate and cardiovascular fitness.Enhances balance and posture.Aids joint mobility—especially beneficial for seniors or people with Parkinson’s.Can be done anywhere, no equipment needed.",
                 stepsToPerform: "Stand upright with feet hip-width apart. Lift one knee to hip level while swinging the opposite arm. Lower it and repeat with the other leg. Continue at a steady rhythm; you can increase speed or lift height for intensity."
             ),
@@ -82,7 +82,7 @@ class ExerciseStore {
                 skipCount: 0,
                 isSuppressed: false,
                 suppressedUntil: .distantPast,
-                description: "A simple aerobic exercise where you lift your knees alternately as if walking or marching, either in place or moving forward.",
+                description: "Seated Chest Stretch. A simple aerobic exercise where you lift your knees alternately as if walking or marching, either in place or moving forward.",
                 Benefits: "Improves leg strength and coordination.Boosts heart rate and cardiovascular fitness.Enhances balance and posture.Aids joint mobility—especially beneficial for seniors or people with Parkinson’s.Can be done anywhere, no equipment needed.",
                 stepsToPerform: "Stand upright with feet hip-width apart. Lift one knee to hip level while swinging the opposite arm. Lower it and repeat with the other leg. Continue at a steady rhythm; you can increase speed or lift height for intensity."
             ),
@@ -98,7 +98,7 @@ class ExerciseStore {
                 skipCount: 0,
                 isSuppressed: false,
                 suppressedUntil: .distantPast,
-                description: "A simple aerobic exercise where you lift your knees alternately as if walking or marching, either in place or moving forward.",
+                description: "Hamstring Stretch. A simple aerobic exercise where you lift your knees alternately as if walking or marching, either in place or moving forward.",
                 Benefits: "Improves leg strength and coordination.Boosts heart rate and cardiovascular fitness.Enhances balance and posture.Aids joint mobility—especially beneficial for seniors or people with Parkinson’s.Can be done anywhere, no equipment needed.",
                 stepsToPerform: "Stand upright with feet hip-width apart. Lift one knee to hip level while swinging the opposite arm. Lower it and repeat with the other leg. Continue at a steady rhythm; you can increase speed or lift height for intensity."
             ),
@@ -114,7 +114,7 @@ class ExerciseStore {
                 skipCount: 0,
                 isSuppressed: false,
                 suppressedUntil: .distantPast,
-                description: "A simple aerobic exercise where you lift your knees alternately as if walking or marching, either in place or moving forward.",
+                description: "Full Body Stretching. A simple aerobic exercise where you lift your knees alternately as if walking or marching, either in place or moving forward.",
                 Benefits: "Improves leg strength and coordination.Boosts heart rate and cardiovascular fitness.Enhances balance and posture.Aids joint mobility—especially beneficial for seniors or people with Parkinson’s.Can be done anywhere, no equipment needed.",
                 stepsToPerform: "Stand upright with feet hip-width apart. Lift one knee to hip level while swinging the opposite arm. Lower it and repeat with the other leg. Continue at a steady rhythm; you can increase speed or lift height for intensity."
             ),
@@ -131,7 +131,7 @@ class ExerciseStore {
                 skipCount: 0,
                 isSuppressed: false,
                 suppressedUntil: .distantPast,
-                description: "A simple aerobic exercise where you lift your knees alternately as if walking or marching, either in place or moving forward.",
+                description: "Seated Arm Raises. A simple aerobic exercise where you lift your knees alternately as if walking or marching, either in place or moving forward.",
                 Benefits: "Improves leg strength and coordination.Boosts heart rate and cardiovascular fitness.Enhances balance and posture.Aids joint mobility—especially beneficial for seniors or people with Parkinson’s.Can be done anywhere, no equipment needed.",
                 stepsToPerform: "Stand upright with feet hip-width apart. Lift one knee to hip level while swinging the opposite arm. Lower it and repeat with the other leg. Continue at a steady rhythm; you can increase speed or lift height for intensity."
             ),
@@ -147,7 +147,7 @@ class ExerciseStore {
                 skipCount: 0,
                 isSuppressed: false,
                 suppressedUntil: .distantPast,
-                description: "A simple aerobic exercise where you lift your knees alternately as if walking or marching, either in place or moving forward.",
+                description: "Leg Strengthening. A simple aerobic exercise where you lift your knees alternately as if walking or marching, either in place or moving forward.",
                 Benefits: "Improves leg strength and coordination.Boosts heart rate and cardiovascular fitness.Enhances balance and posture.Aids joint mobility—especially beneficial for seniors or people with Parkinson’s.Can be done anywhere, no equipment needed.",
                 stepsToPerform: "Stand upright with feet hip-width apart. Lift one knee to hip level while swinging the opposite arm. Lower it and repeat with the other leg. Continue at a steady rhythm; you can increase speed or lift height for intensity."
             ),
@@ -163,7 +163,7 @@ class ExerciseStore {
                 skipCount: 0,
                 isSuppressed: false,
                 suppressedUntil: .distantPast,
-                description: "A simple aerobic exercise where you lift your knees alternately as if walking or marching, either in place or moving forward.",
+                description: "Core Strengthening. A simple aerobic exercise where you lift your knees alternately as if walking or marching, either in place or moving forward.",
                 Benefits: "Improves leg strength and coordination.Boosts heart rate and cardiovascular fitness.Enhances balance and posture.Aids joint mobility—especially beneficial for seniors or people with Parkinson’s.Can be done anywhere, no equipment needed.",
                 stepsToPerform: "Stand upright with feet hip-width apart. Lift one knee to hip level while swinging the opposite arm. Lower it and repeat with the other leg. Continue at a steady rhythm; you can increase speed or lift height for intensity."
             ),
@@ -179,7 +179,7 @@ class ExerciseStore {
                 skipCount: 0,
                 isSuppressed: false,
                 suppressedUntil: .distantPast,
-                description: "A simple aerobic exercise where you lift your knees alternately as if walking or marching, either in place or moving forward.",
+                description: "Resistance Band Exercises. A simple aerobic exercise where you lift your knees alternately as if walking or marching, either in place or moving forward.",
                 Benefits: "Improves leg strength and coordination.Boosts heart rate and cardiovascular fitness.Enhances balance and posture.Aids joint mobility—especially beneficial for seniors or people with Parkinson’s.Can be done anywhere, no equipment needed.",
                 stepsToPerform: "Stand upright with feet hip-width apart. Lift one knee to hip level while swinging the opposite arm. Lower it and repeat with the other leg. Continue at a steady rhythm; you can increase speed or lift height for intensity."
             ),
@@ -195,7 +195,7 @@ class ExerciseStore {
                 skipCount: 0,
                 isSuppressed: false,
                 suppressedUntil: .distantPast,
-                description: "A simple aerobic exercise where you lift your knees alternately as if walking or marching, either in place or moving forward.",
+                description: "Chair Exercises. A simple aerobic exercise where you lift your knees alternately as if walking or marching, either in place or moving forward.",
                 Benefits: "Improves leg strength and coordination.Boosts heart rate and cardiovascular fitness.Enhances balance and posture.Aids joint mobility—especially beneficial for seniors or people with Parkinson’s.Can be done anywhere, no equipment needed.",
                 stepsToPerform: "Stand upright with feet hip-width apart. Lift one knee to hip level while swinging the opposite arm. Lower it and repeat with the other leg. Continue at a steady rhythm; you can increase speed or lift height for intensity."
             ),
@@ -212,7 +212,7 @@ class ExerciseStore {
                 skipCount: 0,
                 isSuppressed: false,
                 suppressedUntil: .distantPast,
-                description: "A simple aerobic exercise where you lift your knees alternately as if walking or marching, either in place or moving forward.",
+                description: "Standing Balance. A simple aerobic exercise where you lift your knees alternately as if walking or marching, either in place or moving forward.",
                 Benefits: "Improves leg strength and coordination.Boosts heart rate and cardiovascular fitness.Enhances balance and posture.Aids joint mobility—especially beneficial for seniors or people with Parkinson’s.Can be done anywhere, no equipment needed.",
                 stepsToPerform: "Stand upright with feet hip-width apart. Lift one knee to hip level while swinging the opposite arm. Lower it and repeat with the other leg. Continue at a steady rhythm; you can increase speed or lift height for intensity."
             ),
@@ -228,7 +228,7 @@ class ExerciseStore {
                 skipCount: 0,
                 isSuppressed: false,
                 suppressedUntil: .distantPast,
-                description: "A simple aerobic exercise where you lift your knees alternately as if walking or marching, either in place or moving forward.",
+                description: "Tandem Walking. A simple aerobic exercise where you lift your knees alternately as if walking or marching, either in place or moving forward.",
                 Benefits: "Improves leg strength and coordination.Boosts heart rate and cardiovascular fitness.Enhances balance and posture.Aids joint mobility—especially beneficial for seniors or people with Parkinson’s.Can be done anywhere, no equipment needed.",
                 stepsToPerform: "Stand upright with feet hip-width apart. Lift one knee to hip level while swinging the opposite arm. Lower it and repeat with the other leg. Continue at a steady rhythm; you can increase speed or lift height for intensity."
             )

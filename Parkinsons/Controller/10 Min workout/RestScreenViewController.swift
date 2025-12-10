@@ -14,14 +14,29 @@ class RestScreenViewController: UIViewController {
     @IBOutlet weak var addTimeButton: UIButton!
     @IBOutlet weak var backgroundView: UIView!
     @IBOutlet weak var playerView: FullScreenYTPlayerView!
+    @IBOutlet weak var exerciseLabel: UILabel!
+    @IBOutlet weak var bar1: UIProgressView!
+    @IBOutlet weak var bar2: UIProgressView!
+    @IBOutlet weak var bar3: UIProgressView!
+    @IBOutlet weak var bar4: UIProgressView!
+    @IBOutlet weak var bar5: UIProgressView!
+    @IBOutlet weak var bar6: UIProgressView!
+    @IBOutlet weak var bar7: UIProgressView!
+    @IBOutlet weak var bar8: UIProgressView!
+    @IBOutlet weak var bar9: UIProgressView!
+    @IBOutlet weak var bar10: UIProgressView!
     
+    var bars: [UIProgressView] = []
+    var exerciseDurations: [TimeInterval] = []
     weak var delegate: RestScreenDelegate?
     var currentIndex: Int = 0
     var totalExercises: Int = 0
     var videoID = "jyOk-2DmVnU"
     var timer: Timer?
     var totalTime = 60
-    
+    var exericses: [Exercise] = []
+    var restStartTime: Date?
+
     override func viewDidLoad() {
         super.viewDidLoad()
         backgroundView.layer.cornerRadius = 35
@@ -29,9 +44,33 @@ class RestScreenViewController: UIViewController {
         updateTimerLabel()
         startTimer()
         setupCloseButton()
+        restStartTime = Date()
+
         loadVideo()
         playerView.isUserInteractionEnabled = false
+        bars = [bar1, bar2, bar3, bar4, bar5, bar6, bar7, bar8, bar9, bar10]
+        updateProgressBars()
+        updateStepLabel()
     }
+    @objc func updateStepLabel(_ sender: Any? = nil) {
+        exerciseLabel.text = "\(currentIndex + 1) of \(totalExercises)"
+    }
+    func updateProgressBars() {
+        for (index,  bar) in bars.enumerated() {
+            if index < currentIndex {
+                bar.progressTintColor = .systemBlue
+                
+            } else if index == currentIndex {
+                bar.progressTintColor = UIColor.systemBlue.withAlphaComponent(0.4)
+              
+            } else {
+                bar.progressTintColor = .systemGray3
+               
+            }
+            bar.setProgress(1.0, animated: false)
+        }
+    }
+   
     
     func loadVideo() {
         playerView.load(
@@ -51,16 +90,7 @@ class RestScreenViewController: UIViewController {
             ]
         )
     }
-    // MARK: - Setup Navigation Button
-    //      func setupNavigationButton() {
-    //          let closeButton = UIBarButtonItem(
-    //              image: UIImage(systemName: "xmark"),
-    //              style: .plain,
-    //              target: self,
-    //              action: #selector(closeButtonTapped)
-    //          )
-    //          restNavigation.leftBarButtonItem = closeButton
-    //      }
+   
     
     // MARK: - Timer Setup
     func startTimer() {
@@ -85,6 +115,10 @@ class RestScreenViewController: UIViewController {
     
     func completeRestAndReturn() {
         timer?.invalidate()
+        if let start = restStartTime {
+            let restDuration = Date().timeIntervalSince(start)
+            delegate?.recordRestDuration(seconds: restDuration)
+        }
         let next = currentIndex + 1
         navigationController?.popViewController(animated: true)
         delegate?.restCompleted(nextIndex: next)

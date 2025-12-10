@@ -574,6 +574,7 @@ class WorkoutManager {
         currentModuleIndex = 0
         currentModule = nil
         currentSession = nil
+        todayWorkout = []
         userHealthState = UserHealthState()
         saveExercises()
         saveModuleHistory()

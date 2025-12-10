@@ -9,27 +9,44 @@ import UIKit
 import YouTubeiOSPlayerHelper
 
 protocol RestScreenDelegate: AnyObject {
+    func recordRestDuration(seconds: TimeInterval)
     func restCompleted(nextIndex: Int)
 }
 
 class _0minworkoutViewController: UIViewController {
     
     @IBOutlet weak var playerView: FullScreenYTPlayerView!
-    @IBOutlet weak var progressStackView: UIStackView!
     @IBOutlet weak var stepLabel: UILabel!
     @IBOutlet weak var exerciseName: UILabel!
     @IBOutlet weak var timerLabel: UILabel!
     @IBOutlet weak var repsLabel: UILabel!
     @IBOutlet weak var skipButton: UIButton!
     @IBOutlet weak var backgroundView: UIView!
+    @IBOutlet weak var previousButton: UIButton!
+    @IBOutlet weak var bar1: UIProgressView!
+    @IBOutlet weak var bar2: UIProgressView!
+    @IBOutlet weak var bar3: UIProgressView!
+    @IBOutlet weak var bar4: UIProgressView!
+    @IBOutlet weak var bar5: UIProgressView!
+    @IBOutlet weak var bar6: UIProgressView!
+    @IBOutlet weak var bar7: UIProgressView!
+    @IBOutlet weak var bar8: UIProgressView!
+    @IBOutlet weak var bar9: UIProgressView!
+    @IBOutlet weak var bar10: UIProgressView!
     
+    
+    var bars: [UIProgressView] = []
+    var exerciseStartTime: Date?
+    var totalWorkoutSeconds: TimeInterval = 0
+
     var completedExerciseIDs: [UUID] = []
     var skippedExerciseIDs: [UUID] = []
     var timer: Timer?
     var totalTime = 60
     var currentIndex: Int = 0
     var exercises: [Exercise] = WorkoutManager.shared.getTodayWorkout()
-    var progressBars: [UIView] = []
+    var exerciseDurations: [TimeInterval] = []
+
     var shouldLoadExercise = true
     var hasLoadedFirstExercise = false
     override func viewDidLoad() {
@@ -37,13 +54,12 @@ class _0minworkoutViewController: UIViewController {
         backgroundView.layer.cornerRadius = 35
         backgroundView.clipsToBounds = true
         setupCloseButton()
-        setupProgressBars()
+        
         playerView.isUserInteractionEnabled = false
+        bars = [bar1, bar2, bar3, bar4, bar5, bar6, bar7, bar8, bar9, bar10]
+        updateProgressBars()
         }
-    override func viewDidLayoutSubviews() {
-        super.viewDidLayoutSubviews( )
-        setupProgressBars()
-    }
+   
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
@@ -55,53 +71,33 @@ class _0minworkoutViewController: UIViewController {
         
     }
 
-    func updateProgress(step: Int) {
-        stepLabel.text = "1 of 10"
-    }
-    
     func updateProgressBars() {
-        for (index, bar) in progressBars.enumerated() {
-            bar.layer.sublayers?.forEach { $0.removeFromSuperlayer() }
-            let color: UIColor = index < currentIndex ? .systemBlue : .lightGray
-            let dashed = dashedLayer(for: bar, color: color)
-            bar.layer.addSublayer(dashed)
+        for (index,  bar) in bars.enumerated() {
+            if index < currentIndex {
+                bar.progressTintColor = .systemBlue
+                bar.setProgress(1.0, animated: true)
+            } else if index == currentIndex {
+                bar.progressTintColor = UIColor.systemBlue.withAlphaComponent(0.4)
+                bar.setProgress(1.0, animated: true)
+            } else {
+                bar.progressTintColor = .systemGray3
+                bar.setProgress(1.0, animated: false)
+            }
         }
     }
-    func dashedLayer(for view: UIView, color: UIColor) -> CAShapeLayer {
-        let layer = CAShapeLayer()
-        layer.strokeColor = color.cgColor
-        layer.lineWidth = 4
-        layer.lineDashPattern = [8, 6]
-        let path = UIBezierPath()
-        let midY = view.bounds.height / 2
-        path.move(to: CGPoint(x: 0, y: midY))
-        path.addLine(to: CGPoint(x: view.bounds.width, y: midY))
-        layer.path = path.cgPath
-        return layer
-    }
+   
 
-
-    func animateBar(at index: Int) {
-        guard index < progressBars.count else { return }
-        
-        let bar = progressBars[index]
-        if let layer = bar.layer.sublayers?.first as? CAShapeLayer {
-            let animation = CABasicAnimation(keyPath: "strokeColor")
-            animation.fromValue = UIColor.lightGray.cgColor
-            animation.toValue = UIColor.systemBlue.cgColor
-            animation.duration = 0.45
-            layer.add(animation, forKey: "colorAnim")
-        }
-    }
 
     func configureExercise() {
+        exerciseStartTime = Date()
+
         guard !exercises.isEmpty else {
             showCompletion()
             return }
         guard currentIndex >= 0, currentIndex < exercises.count else {
             showCompletion()
             return }
-        updateProgressBars()
+
         let exercise = exercises[currentIndex]
         exerciseName.text = exercise.name
         repsLabel.text = "\(exercise.reps)"
@@ -123,6 +119,9 @@ class _0minworkoutViewController: UIViewController {
         )
 
         starttimer()
+        updateProgressBars()
+        previousButton.isEnabled = currentIndex > 0
+        previousButton.alpha = currentIndex > 0 ? 1.0 : 0.4
     }
     func starttimer() {
         timer?.invalidate()
@@ -167,29 +166,10 @@ class _0minworkoutViewController: UIViewController {
         
         vc.completed = WorkoutManager.shared.completedToday.count
         vc.skipped = WorkoutManager.shared.SkippedToday.count
+        vc.totalWorkoutSeconds = totalWorkoutSeconds
         navigationController?.pushViewController(vc, animated: true)
     }
-    func setupProgressBars() {
-        progressStackView.arrangedSubviews.forEach { $0.removeFromSuperview() }
-        progressBars.removeAll()
-
-        for _ in 0..<exercises.count {
-            let bar = UIView()
-            bar.translatesAutoresizingMaskIntoConstraints = false
-            bar.heightAnchor.constraint(equalToConstant: 12).isActive = true
-
-            bar.backgroundColor = UIColor.systemGray6 
-            bar.layer.cornerRadius = 6
-            bar.clipsToBounds = true
-
-            progressBars.append(bar)
-            progressStackView.addArrangedSubview(bar)
-        }
-
-
-        view.layoutIfNeeded()   // ensures correct width before drawing dashed lines
-        updateProgressBars()
-    }
+ 
 
     func createDashedLayer(color: CGColor) -> CAShapeLayer {
         let layer = CAShapeLayer()
@@ -212,22 +192,39 @@ class _0minworkoutViewController: UIViewController {
         )
         navigationItem.leftBarButtonItem = closeButton
     }
-
+    
+    func  recordExerciseDuration() {
+        if let start = exerciseStartTime {
+            let duration = Date().timeIntervalSince(start)
+            totalWorkoutSeconds += duration
+        }
+    }
     
     
     @IBAction func infoButtonTapped(_ sender: UIButton) {
         let sb = UIStoryboard(name: "10 minworkout", bundle: nil)
             let vc = sb.instantiateViewController(withIdentifier: "InfoModalViewController") as! InfoModalViewController
-        vc.currentIndex = currentIndex
         vc.exercises = exercises
-        vc.modalPresentationStyle = .automatic
-        present(vc, animated: true)
+        vc.currentIndex = currentIndex
+       let nav = UINavigationController(rootViewController: vc)
+        nav.modalPresentationStyle = .formSheet
+        present(nav, animated: true)
+    }
+    
+    @IBAction func previousButtontapped(_ sender: UIButton) {
+        goToPreviousExercise()
+    }
+    
+    func goToPreviousExercise() {
+        guard currentIndex > 0 else { return }
+        currentIndex -= 1
+        updateProgressBars()
+        configureExercise()
     }
     
     
-    
-    
     @IBAction func doneButtonTapped(_ sender: UIButton) {
+        recordExerciseDuration()
         guard !exercises.isEmpty else {return}
         let exercise = exercises[currentIndex]
         if !WorkoutManager.shared.completedToday.contains(exercise.id) {
@@ -239,6 +236,7 @@ class _0minworkoutViewController: UIViewController {
     }
     
     @IBAction func skipButtonTapped(_ sender: UIButton) {
+        recordExerciseDuration()
         guard !exercises.isEmpty else { return }
         let exercise = exercises[currentIndex]
         if !WorkoutManager.shared.SkippedToday.contains(exercise.id) {
@@ -249,6 +247,10 @@ class _0minworkoutViewController: UIViewController {
 }
 
 extension _0minworkoutViewController: RestScreenDelegate {
+    func recordRestDuration(seconds: TimeInterval) {
+            totalWorkoutSeconds += seconds
+        }
+
     func restCompleted(nextIndex: Int) {
         if nextIndex < exercises.count {
             currentIndex = nextIndex

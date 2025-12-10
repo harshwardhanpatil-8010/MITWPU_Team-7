@@ -28,7 +28,7 @@ class _0minworkoutLandingPageViewController: UIViewController{
         let allExercises = WorkoutManager.shared.exercises
         exercises = WorkoutManager.shared.getTodayWorkout()
        setupProgressView()
-        
+      
         // Fix: dataSource has a capital S
         tableView.dataSource = self
         tableView.reloadData()
@@ -38,7 +38,7 @@ class _0minworkoutLandingPageViewController: UIViewController{
         progressView.progressColor = .systemBlue
         progressView.trackColor = .systemGray5
         updateProgress()
-      
+   
         // Do any additional setup after loading the view.
     }
 
@@ -49,7 +49,10 @@ class _0minworkoutLandingPageViewController: UIViewController{
         updateProgress()
         updateButtonUI()
       
+      
     }
+
+    
     func updateProgress() {
         let completed = WorkoutManager.shared.completedToday.count
         let total = exercises.count
@@ -125,6 +128,9 @@ extension _0minworkoutLandingPageViewController: UITableViewDataSource {
         cell.repsLabel.text = "\(exercise.reps) reps"
         cell.selectionStyle = .none
         cell.isUserInteractionEnabled = false
+        if let videoID = exercise.videoID {
+            cell.loadThumbnail(videoID: videoID)
+        }
         let completed =  WorkoutManager.shared.completedToday.contains(exercise.id)
         let skipped = WorkoutManager.shared.SkippedToday.contains(exercise.id)
         if completed {
