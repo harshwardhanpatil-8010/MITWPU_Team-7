@@ -1,55 +1,20 @@
 //
-//  HomeViewController.swift
-//  Parkinsons
+//  HomeViewController.swift
+//  Parkinsons
 //
-//  Created by SDC-USER on 27/11/25.
+//  Created by SDC-USER on 27/11/25.
 //
 
 import UIKit
 
-// MARK: - Dummy Data Models (Assumed to exist elsewhere in the project)
-/*
-struct DateModel { let date: Date }
-struct MedicationModel {
-    let name: String
-    let time: String
-    let detail: String
-    let iconName: String
-}
-struct ExerciseModel {
-    let title: String
-    let detail: String
-    let progressPercentage: Int
-}
-struct TherapeuticGameModel {
-    let title: String
-    let description: String
-    let iconName: String
-}
-class DataStore {
-    static let shared = DataStore()
-    // Helper to generate some dummy dates
-    func getDates() -> [DateModel] {
-        let calendar = Calendar.current
-        let today = calendar.startOfDay(for: Date())
-        
-        var dates: [DateModel] = []
-        for i in -15...15 {
-            if let date = calendar.date(byAdding: .day, value: i, to: today) {
-                dates.append(DateModel(date: date))
-            }
-        }
-        return dates
-    }
-}
-// Assume CalenderCollectionViewCell and SectionHeaderView have `configure(title:)`
-// and `configure(with:isSelected:isToday:)` methods respectively.
-*/
+// Make sure SymptomLogDetailDelegate is defined in HomeViewController.swift
+// or imported from SymptomLogDetailViewController.swift
 
+// Assuming SymptomLogDetailDelegate is defined here or imported:
+// protocol SymptomLogDetailDelegate: AnyObject { ... }
 
-class HomeViewController: UIViewController, UICollectionViewDelegate {
-
-    // ⭐️ Removed: @IBOutlet weak var todayDate: UILabel! ⭐️
+class HomeViewController: UIViewController, UICollectionViewDelegate , SymptomLogCellDelegate, SymptomLogDetailDelegate { // ⭐️ Added SymptomLogDetailDelegate ⭐️
+    
     @IBOutlet weak var mainCollectionView: UICollectionView!
     
     // MARK: - Section Definition and Data
@@ -61,7 +26,19 @@ class HomeViewController: UIViewController, UICollectionViewDelegate {
         case therapeuticGames
     }
     let homeSections = Section.allCases
-
+    
+    // Data Source/State property
+    var hasLoggedSymptomsToday: Bool = false {
+        didSet {
+            // When the status changes, reload the section
+            if let index = homeSections.firstIndex(of: .symptoms) {
+                mainCollectionView.reloadSections(IndexSet(integer: index))
+            } else {
+                mainCollectionView.reloadData()
+            }
+        }
+    }
+    
     var dates: [DateModel] = []
     var selectedDate: Date = Date()
     
@@ -105,14 +82,12 @@ class HomeViewController: UIViewController, UICollectionViewDelegate {
         
         mainCollectionView.dataSource = self
         mainCollectionView.delegate = self
-
+        
         // Set the main layout
         mainCollectionView.setCollectionViewLayout(generateLayout(), animated: true)
         
         dates = DataStore.shared.getDates()
         autoSelectToday()
-        
-        // ⭐️ Removed: updateDateLabel(with: selectedDate) ⭐️
     }
     
     @IBAction func profilePageButton(_ sender: Any) {
@@ -142,14 +117,14 @@ class HomeViewController: UIViewController, UICollectionViewDelegate {
         )
     }
     
-    // MARK: - 4. Refactored Compositional Layout (Calendar Header is now Sticky)
+    // MARK: - 4. Refactored Compositional Layout
     func generateLayout() -> UICollectionViewLayout {
         let layout = UICollectionViewCompositionalLayout { [weak self] sectionIndex, env in
             guard let self = self else { return nil }
             let sectionType = self.homeSections[sectionIndex]
             
             switch sectionType {
-            
+                
             case .calendar:
                 // --- CALENDAR HORIZONTAL LAYOUT (Section 0) ---
                 let itemSize = NSCollectionLayoutSize(widthDimension: .absolute(60), heightDimension: .absolute(70))
@@ -163,7 +138,6 @@ class HomeViewController: UIViewController, UICollectionViewDelegate {
                 section.interGroupSpacing = 4
                 section.contentInsets = NSDirectionalEdgeInsets(top: 10, leading: 16, bottom: 0, trailing: 16)
                 
-                // ⭐️ NEW: Header for the Calendar Section ⭐️
                 let calendarHeaderSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: .absolute(30))
                 let calendarHeader = NSCollectionLayoutBoundarySupplementaryItem(
                     layoutSize: calendarHeaderSize,
@@ -171,24 +145,16 @@ class HomeViewController: UIViewController, UICollectionViewDelegate {
                     alignment: .top
                 )
                 
-                // ⭐️ CRITICAL: Make the calendar header sticky (pinned) ⭐️
                 calendarHeader.pinToVisibleBounds = true
                 
                 section.boundarySupplementaryItems = [calendarHeader]
                 return section
-
+                
             case .medications:
                 // --- MEDICATIONS HORIZONTAL LAYOUT (Section 1) ---
                 let itemSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: .fractionalHeight(1.0))
                 let item = NSCollectionLayoutItem(layoutSize: itemSize)
                 
-//                let groupWidthFraction: CGFloat = 0.9
-//                let groupHeight: CGFloat = 140
-//
-//                let groupSize = NSCollectionLayoutSize(
-//                    widthDimension: .fractionalWidth(groupWidthFraction),
-//                    heightDimension: .absolute(groupHeight)
-//                )
                 let groupSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(0.9), heightDimension: .absolute(130))
                 let group = NSCollectionLayoutGroup.horizontal(layoutSize: groupSize, subitems: [item])
                 
@@ -266,11 +232,11 @@ class HomeViewController: UIViewController, UICollectionViewDelegate {
                 )
                 let group = NSCollectionLayoutGroup.horizontal(layoutSize: groupSize, subitems: [item])
                 group.contentInsets = NSDirectionalEdgeInsets(top: 0, leading: 0, bottom: 0, trailing: 10)
-
+                
                 let section = NSCollectionLayoutSection(group: group)
                 section.contentInsets = NSDirectionalEdgeInsets(top: 8, leading: 16, bottom: 30, trailing: 16)
                 section.orthogonalScrollingBehavior = .groupPaging
-
+                
                 let headerSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: .absolute(30))
                 let header = NSCollectionLayoutBoundarySupplementaryItem(
                     layoutSize: headerSize,
@@ -284,34 +250,88 @@ class HomeViewController: UIViewController, UICollectionViewDelegate {
         return layout
     }
     
+    // MARK: - SymptomLogDetailDelegate Methods (Receiving Data)
+    
+    func symptomLogDidComplete(with ratings: [SymptomRating]) {
+        // Data is received here! Mark state as true.
+        print("Received \(ratings.count) symptom ratings. Setting log status to true.")
+        
+        // Update the state property, which triggers the UI reload via didSet
+        hasLoggedSymptomsToday = true
+        
+        // TODO: Implement actual data persistence (e.g., save to a manager/database)
+        // You can store the received 'ratings' array here.
+    }
+    
+    func symptomLogDidCancel() {
+        print("Symptom logging canceled.")
+    }
+    
+    // MARK: - SymptomLogCellDelegate Method (Handling Button Tap)
+    
+    func symptomLogCellDidTapLogNow(_ cell: SymptomLogCell) {
+        
+        if hasLoggedSymptomsToday {
+            // Case 1: Logged today -> Navigate to View History (NEW NAVIGATION)
+            
+            print("View Log button tapped! Navigating to Symptom Log History.")
+            
+            let storyboard = UIStoryboard(name: "Home", bundle: nil) // Or whatever your storyboard name is
+            
+            // ⭐️ INSTANTIATE THE NEW HISTORY VC ⭐️
+            guard let historyVC = storyboard.instantiateViewController(withIdentifier: "SymptomLogHistoryViewController") as? SymptomLogHistoryViewController else {
+                print("Error: Could not instantiate SymptomLogHistoryViewController.")
+                return
+            }
+            
+            // **IMPORTANT:** Since HomeViewController is likely embedded in a NavigationController, we push the new screen.
+            // If not, you need to embed HomeViewController first.
+            navigationController?.pushViewController(historyVC, animated: true)
+            
+        } else {
+            // Case 2: Not logged today -> Open the Logging Modal (Existing Logic)
+            
+            // ... (existing code to present SymptomLogDetailViewController) ...
+            let storyboard = UIStoryboard(name: "Home", bundle: nil)
+            guard let symptomVC = storyboard.instantiateViewController(withIdentifier: "SymptomLogDetailViewController") as? SymptomLogDetailViewController else {
+                print("Error: Could not instantiate SymptomLogDetailViewController.")
+                return
+            }
+            
+            symptomVC.delegate = self
+            
+            let navController = UINavigationController(rootViewController: symptomVC)
+            navController.modalPresentationStyle = .pageSheet
+            
+            self.present(navController, animated: true, completion: nil)
+        }
+    }
+    
     // Existing functions...
     func autoSelectToday() {
-            if let index = dates.firstIndex(where: { Calendar.current.isDate($0.date, inSameDayAs: Date()) }) {
-
-                selectedDate = dates[index].date
-
-                DispatchQueue.main.async {
-                    let indexPath = IndexPath(item: index, section: 0)
-                    self.mainCollectionView.scrollToItem(
-                        at: indexPath,
-                        at: .centeredHorizontally,
-                        animated: false
-                    )
-                    self.mainCollectionView.selectItem(
-                        at: indexPath,
-                        animated: false,
-                        scrollPosition: []
-                    )
-                }
+        if let index = dates.firstIndex(where: { Calendar.current.isDate($0.date, inSameDayAs: Date()) }) {
+            
+            selectedDate = dates[index].date
+            
+            DispatchQueue.main.async {
+                let indexPath = IndexPath(item: index, section: 0)
+                self.mainCollectionView.scrollToItem(
+                    at: indexPath,
+                    at: .centeredHorizontally,
+                    animated: false
+                )
+                self.mainCollectionView.selectItem(
+                    at: indexPath,
+                    animated: false,
+                    scrollPosition: []
+                )
             }
         }
-        
-        // ... rest of the class ...
-
+    }
+    
     // Function to update selectedDate when a date cell is tapped
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         if homeSections[indexPath.section] == .calendar {
-            // Deselect the previously selected item (optional, depending on CalenderCollectionViewCell logic)
             if let selectedIndexPath = collectionView.indexPathsForSelectedItems?.first, selectedIndexPath != indexPath {
                 collectionView.deselectItem(at: selectedIndexPath, animated: true)
             }
@@ -320,13 +340,8 @@ class HomeViewController: UIViewController, UICollectionViewDelegate {
             
             // Reload the calendar header to update the "Today, Date" title dynamically
             collectionView.reloadSections(IndexSet(integer: Section.calendar.rawValue))
-            
-            // TODO: Reload other content sections (medications, exercises) if their data is date-dependent
-            // self.mainCollectionView.reloadSections(IndexSet(integersIn: 1..<self.homeSections.count))
-            
         } else {
-             // Handle item selection in content sections
-             // ...
+            // Handle item selection in content sections
         }
     }
 }
@@ -379,8 +394,19 @@ extension HomeViewController: UICollectionViewDataSource {
             
         case .symptoms:
             let cell = mainCollectionView.dequeueReusableCell(withReuseIdentifier: "symptom_log_cell", for: indexPath) as! SymptomLogCell
-            let message = "You haven't logged your symptoms today"
-            let buttonTitle = "Log now"
+            
+            cell.delegate = self
+            
+            let message: String
+            let buttonTitle: String
+            
+            if hasLoggedSymptomsToday {
+                message = "Your symptoms have been logged today."
+                buttonTitle = "View log"
+            } else {
+                message = "You haven't logged your symptoms today."
+                buttonTitle = "Log now"
+            }
             cell.configure(with: message, buttonTitle: buttonTitle)
             return cell
             
@@ -420,49 +446,33 @@ extension HomeViewController: UICollectionViewDataSource {
             header.setTitleAlignment(.center)
             
         case .medications:
-            // ⭐️ Content Header: Left Aligned ⭐️
             header.configure(title: "Upcoming Medications")
             header.setTitleAlignment(.left)
             
         case .exercises:
-            // ⭐️ Content Header: Left Aligned ⭐️
             header.configure(title: "Guided Exercise")
             header.setTitleAlignment(.left)
             
         case .symptoms:
-            // ⭐️ Content Header: Left Aligned ⭐️
             header.configure(title: "Symptoms")
             header.setTitleAlignment(.left)
             
         case .therapeuticGames:
-            // ⭐️ Content Header: Left Aligned ⭐️
             header.configure(title: "Therapeutic Games")
             header.setTitleAlignment(.left)
         }
         
-        // Optional: Hide info button for all headers unless explicitly needed
-        // header.infoButton.isHidden = true
-        
         return header
     }
-    
-    
-    
-    
-    
-    
 }
 
 
-
- 
+// MARK: - Helper Extension
 extension HomeViewController {
-    // Helper function moved here and kept for use in the dynamic header logic
+    // Helper function kept for use in the dynamic header logic
     func formattedDateString(for date: Date) -> String {
         let formatter = DateFormatter()
         formatter.dateFormat = "d MMMM yyyy" // e.g., 28 November 2025
         return formatter.string(from: date)
     }
-    
-    // ⭐️ Removed: updateDateLabel(with:) function ⭐️
 }
