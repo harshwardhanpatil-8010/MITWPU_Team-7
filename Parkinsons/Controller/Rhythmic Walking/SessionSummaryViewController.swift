@@ -12,6 +12,9 @@ class SessionSummaryViewController: UIViewController {
     @IBOutlet weak var walkingUIView: UIView!
     @IBOutlet weak var GaitUIView: UIView!
     
+    @IBOutlet weak var timeContainer: UIView!
+    
+    
     @IBOutlet weak var stepsTaken: UILabel!
     @IBOutlet weak var distanceCovered: UILabel!
     @IBOutlet weak var speed: UILabel!
@@ -23,6 +26,13 @@ class SessionSummaryViewController: UIViewController {
     @IBOutlet weak var walkingAsymmetryPercent: UILabel!
     @IBOutlet weak var walkingSteadinessPercent: UILabel!
     
+    private var progressView: CircularProgressView!
+    
+    private func setupProgressView() {
+        progressView = CircularProgressView(frame: timeContainer.bounds)
+        progressView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
+        timeContainer.addSubview(progressView)
+    }
     
     func loadData() {
         stepsTaken.text = WalkingSessionDemo.steps.description
@@ -41,9 +51,12 @@ class SessionSummaryViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        setupProgressView()
         walkingUIView.applyCardStyle()
         GaitUIView.applyCardStyle()
         loadData()
+        progressView.progressColor = UIColor(hex: "90AF81")
+        progressView.trackColor = .systemGray5
         // Do any additional setup after loading the view.
     }
     

@@ -160,21 +160,6 @@ class SetGoalViewController: UIViewController, UITableViewDataSource, UIPickerVi
         
         
         performSegue(withIdentifier: "go", sender: self)
-
-////
-////        var session = RhythmicSession(durationSeconds: total, beat: selectedBeat, pace: selectedPace)
-//
-//        let storyboard = UIStoryboard(name: "Rhythmic Walking", bundle: nil)
-//        guard let runningVC = storyboard.instantiateViewController(withIdentifier: "SessionRunningVC") as? SessionRunningViewController else { return }
-//        runningVC.totalSessionDuration = total
-//        runningVC.selectedBeat = selectedBeat
-//        runningVC.selectedPace = selectedPace
-//        runningVC.selectedBPM = bpm
-////        runningVC.session = session
-//        
-//          // now dynamic
-//
-//        navigationController?.pushViewController(runningVC, animated: true)
     }
     
     
