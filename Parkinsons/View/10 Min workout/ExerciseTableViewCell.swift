@@ -14,6 +14,10 @@ class ExerciseTableViewCell: UITableViewCell {
     @IBOutlet weak var checkMarkImageOutlet: UIImageView!
     
     @IBOutlet weak var exerciseImage: UIImageView!
+    
+    @IBOutlet weak var containerView: UIView!
+    
+    
     override func awakeFromNib() {
         super.awakeFromNib()
         // Initialization code

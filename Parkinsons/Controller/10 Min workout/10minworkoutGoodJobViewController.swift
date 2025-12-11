@@ -14,8 +14,7 @@ class _0minworkoutGoodJobViewController: UIViewController {
     @IBOutlet weak var hardButtonOutlet: UIButton!
     @IBOutlet weak var completedExerciseNumberLabel: UILabel!
     @IBOutlet weak var skippedExerciseNumberLabel: UILabel!
-    @IBOutlet weak var completionDataStackOutlet: UIView!
-    
+    @IBOutlet weak var completionDataStackOutlet: UIView!    
     @IBOutlet weak var totalTimeLabel: UILabel!
     var completed: Int = 0
     var skipped: Int = 0

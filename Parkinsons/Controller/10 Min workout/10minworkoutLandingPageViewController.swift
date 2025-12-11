@@ -13,7 +13,6 @@ class _0minworkoutLandingPageViewController: UIViewController{
     @IBOutlet weak var tableView: UITableView!
     @IBOutlet weak var circularProgressView: UIView!
     @IBOutlet weak var exerciseNumberLabel: UILabel!
-    
     var exercises: [Exercise] = []
     private var progressView: CircularProgressView!
     private func setupProgressView() {
@@ -119,6 +118,10 @@ extension _0minworkoutLandingPageViewController: UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return exercises.count
     }
+//    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+//        return 200  // increase as needed
+//    }
+
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "previewCell", for: indexPath) as! ExerciseTableViewCell

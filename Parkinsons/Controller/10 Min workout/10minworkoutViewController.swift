@@ -54,10 +54,14 @@ class _0minworkoutViewController: UIViewController {
         backgroundView.layer.cornerRadius = 35
         backgroundView.clipsToBounds = true
         setupCloseButton()
-        
+        playerView.layer.cornerRadius = 0
+        playerView.layer.maskedCorners = [.layerMinXMinYCorner, .layerMaxXMinYCorner]
+        playerView.clipsToBounds = true
         playerView.isUserInteractionEnabled = false
         bars = [bar1, bar2, bar3, bar4, bar5, bar6, bar7, bar8, bar9, bar10]
         updateProgressBars()
+       
+
         }
    
     
@@ -114,7 +118,8 @@ class _0minworkoutViewController: UIViewController {
                 "iv_load_policy": 3,
                 "disablekb": 1,
                 "showinfo": 0,
-                "autoplay": 1
+                "autoplay": 1,
+              
             ]
         )
 
