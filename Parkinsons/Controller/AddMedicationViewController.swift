@@ -7,8 +7,30 @@
 
 import UIKit
 
-class AddMedicationViewController:  UIViewController, UITableViewDelegate, UITableViewDataSource, DoseTableViewCellDelegate {
+class AddMedicationViewController:  UIViewController, UITableViewDelegate, UITableViewDataSource, DoseTableViewCellDelegate, UnitsAndTypeDelegate, RepeatSelectionDelegate {
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+
+        if let saved = AddMedicationDataStore.shared.repeatOption {
+            repeatLabel.text = saved
+        }
+    }
+
+
+    func didSelectRepeatOption(_ option: String) {
+        repeatLabel.text = option
+    }
     
+    @IBOutlet weak var repeatLabel: UILabel!
+    @IBOutlet weak var typeLabel: UILabel!
+    @IBOutlet weak var unitLabel: UILabel!
+    func didSelectUnitsAndType(unitText: String, selectedType: String) {
+        unitLabel.text = unitText
+        typeLabel.text = selectedType
+    }
+    
+    
+    @IBOutlet weak var repeatStack: UIStackView!
     @IBOutlet weak var unitandTypeStack: UIStackView!
     
     
@@ -91,7 +113,80 @@ class AddMedicationViewController:  UIViewController, UITableViewDelegate, UITab
         doseStepper.value = Double(doseArray.count)
         unitandTypeStack.isUserInteractionEnabled = true
         // Do any additional setup after loading the view.
+        repeatStack.isUserInteractionEnabled = true
+        if let savedRepeat = AddMedicationDataStore.shared.repeatOption {
+                repeatLabel.text = savedRepeat
+            }
+
+            //  Add tap gesture for Repeat Stack
+            repeatStack.addGestureRecognizer(
+                UITapGestureRecognizer(target: self, action: #selector(onRepeatStackTapped))
+            )
+
+        
     }
+    @IBAction func onStackTapped(_ sender: Any) {
+        print("StackView tapped!")
+
+            let storyboard = UIStoryboard(name: "Medication", bundle: nil)
+
+            // 1. Load the navigation controller
+            let nav = storyboard.instantiateViewController(
+                withIdentifier: "UnitsAndTypeNav"
+            ) as! UINavigationController
+
+            // 2. Get the inner VC
+            if let vc = nav.topViewController as? UnitAndTypeViewController {
+                vc.delegate = self   // Set delegate BEFORE presenting
+            }
+
+            // 3. Present ONCE
+            nav.modalPresentationStyle = .pageSheet
+            present(nav, animated: true)
+        
+    }
+    
+    @objc func goToUnitsAndType() {
+        performSegue(withIdentifier: "goToUnitsAndType", sender: self)
+    }
+//    @objc func onRepeatTapped() {
+//        print("Repeat stack tapped!")
+//
+//        let storyboard = UIStoryboard(name: "Medication", bundle: nil)
+//
+//        // Load navigation controller
+//        let nav = storyboard.instantiateViewController(
+//            withIdentifier: "RepeatNav"
+//        ) as! UINavigationController
+//
+//        // Get Repeat VC
+//        if let vc = nav.topViewController as? RepeatViewController {
+//            vc.delegate = self   //  set delegate
+//        }
+//
+//        nav.modalPresentationStyle = .pageSheet
+//        present(nav, animated: true)
+//    }
+    
+    @IBAction func repeatStackTapped(_ sender: Any) {
+        onRepeatStackTapped()
+    }
+    
+    @objc func onRepeatStackTapped() {
+        let storyboard = UIStoryboard(name: "Medication", bundle: nil)
+        let nav = storyboard.instantiateViewController(withIdentifier: "RepeatNav") as! UINavigationController
+
+        if let vc = nav.topViewController as? RepeatViewController {
+            vc.delegate = self
+        }
+
+        nav.modalPresentationStyle = .pageSheet
+        present(nav, animated: true)
+    }
+
+
+
+
     
 
     /*

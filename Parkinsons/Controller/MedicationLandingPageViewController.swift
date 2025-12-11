@@ -40,7 +40,18 @@ class MedicationLandingPageViewController: UIViewController, UICollectionViewDel
             let nav = segue.destination as! UINavigationController
             let vc = nav.topViewController as! EditMedicationViewController
 
-            vc.medications = allMedications  // or pass whatever you need
+           /* vc.medications = allMedications*/  // or pass whatever you need
+        }
+        if segue.identifier == "showSkipper" {
+            let nav = segue.destination as! UINavigationController
+            let vc = nav.topViewController as! SkippedTakenViewController   // because it is embedded
+            
+            vc.selectedDose = selectedDose
+            vc.receivedTitle = selectedDose?.medication.name
+            vc.receivedSubtitle = selectedDose?.medication.form
+            vc.receivedIconName = selectedDose?.medication.iconName
+            
+            vc.delegate = self
         }
     }
 
@@ -67,19 +78,19 @@ class MedicationLandingPageViewController: UIViewController, UICollectionViewDel
     }
 
 
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        if segue.identifier == "showSkipper" {
-            let nav = segue.destination as! UINavigationController
-            let vc = nav.topViewController as! SkippedTakenViewController   // because it is embedded
-            
-            vc.selectedDose = selectedDose
-            vc.receivedTitle = selectedDose?.medication.name
-            vc.receivedSubtitle = selectedDose?.medication.form
-            vc.receivedIconName = selectedDose?.medication.iconName
-            
-            vc.delegate = self
-        }
-    }
+//    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+//        if segue.identifier == "showSkipper" {
+//            let nav = segue.destination as! UINavigationController
+//            let vc = nav.topViewController as! SkippedTakenViewController   // because it is embedded
+//            
+//            vc.selectedDose = selectedDose
+//            vc.receivedTitle = selectedDose?.medication.name
+//            vc.receivedSubtitle = selectedDose?.medication.form
+//            vc.receivedIconName = selectedDose?.medication.iconName
+//            
+//            vc.delegate = self
+//        }
+//    }
 
 
 

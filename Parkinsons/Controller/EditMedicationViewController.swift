@@ -27,18 +27,18 @@ class EditMedicationViewController: UIViewController, UICollectionViewDelegate {
     private func setupUI() {
             guard let medication = medication, let dose = dose else { return }
 
-            titleLabel.text = medication.name
-            subtitleLabel.text = medication.form
-            scheduleLabel.text = medication.schedule
-            medIcon.image = UIImage(named: medication.iconName)
-
-            // Format time
-            let formatter = DateFormatter()
-            formatter.dateFormat = "hh:mm"
-            timeLabel.text = formatter.string(from: dose.time)
-
-            formatter.dateFormat = "a"
-            ampmLabel.text = formatter.string(from: dose.time)
+//            titleLabel.text = medication.name
+//            subtitleLabel.text = medication.form
+//            scheduleLabel.text = medication.schedule
+//            medIcon.image = UIImage(named: medication.iconName)
+//
+//            // Format time
+//            let formatter = DateFormatter()
+//            formatter.dateFormat = "hh:mm"
+//            timeLabel.text = formatter.string(from: dose.time)
+//
+//            formatter.dateFormat = "a"
+//            ampmLabel.text = formatter.string(from: dose.time)
         }
     
 
