@@ -8,14 +8,10 @@
 
 import Foundation
 
-class MemoryCard {
-    let id = UUID()
-    var imageName: String
-    var isFlipped = false
-    var isMatched = false
-
-    init(imageName: String) {
-        self.imageName = imageName
-    }
+struct Card {
+    let identifier: Int
+    let content: String
+    var isFlipped: Bool = false
+    var isMatched: Bool = false
 }
 

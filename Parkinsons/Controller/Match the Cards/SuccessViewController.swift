@@ -9,13 +9,18 @@ import UIKit
 
 class SuccessViewController: UIViewController {
 
+    @IBOutlet weak var playAgainButtonOutlet: UIButton!
     override func viewDidLoad() {
         super.viewDidLoad()
 
         // Do any additional setup after loading the view.
     }
     
-
+    @IBAction func playAgainButtonAction(_ sender: UIButton) {
+        let vc = self.storyboard?.instantiateViewController(withIdentifier: "GameViewController") as! GameViewController
+        self.present(vc, animated: true, completion: nil)
+    }
+    
     /*
     // MARK: - Navigation
 

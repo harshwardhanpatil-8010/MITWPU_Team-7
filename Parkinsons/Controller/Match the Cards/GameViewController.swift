@@ -9,185 +9,222 @@
 import UIKit
 
 class GameViewController: UIViewController {
-
+    
     // MARK: - Outlets
     @IBOutlet weak var timeLabel: UILabel!
     @IBOutlet weak var collectionView: UICollectionView!
     @IBOutlet weak var hintButton: UIButton!
-
-    // MARK: - Game State
-    var level: Int = 1
-    var cards: [MemoryCard] = []
-    var timer: Timer?
-    var timeLeft: Int = 60
-
-    var firstIndex: IndexPath?
-    var secondIndex: IndexPath?
-
-    var hintAvailable = true
-
-    // MARK: - View Lifecycle
+    
+    let maxLevel = 30
+    let preGameRevealDuration: TimeInterval = 4.0
+    let mismatchDelay: TimeInterval = 1.5
+    
+    var level = 1
+    var cards = [Card]()
+    var matchedPairs = 0
+    var firstIndexPath: IndexPath?
+    var secondIndexPath: IndexPath?
+    var interactionsEnabled: Bool = true
+    var hasInitializedLevel = false
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-
-        collectionView.delegate = self
+        let nib = UINib(nibName: "MatchTheCardCollectionViewCell", bundle: nil)
+        collectionView.register(nib, forCellWithReuseIdentifier: "CardCell")
         collectionView.dataSource = self
-        
-        startLevel()
+        collectionView.delegate = self
+        collectionView.isScrollEnabled = false
+        startNewLevel()
     }
-
-    func startLevel() {
-        cards = LevelManager.shared.generateCards(for: level)
-        hintAvailable = true
-        timeLeft = max(20, 80 - (level * 2))
-        updateTimeLabel()
-
-        collectionView.reloadData()
-
-        // Reveal all cards for 3 seconds for senior accessibility
-        revealAllCardsTemporarily()
-    }
-
-    func updateTimeLabel() {
-        timeLabel.text = "Time left: \(timeLeft)s"
-    }
-
-    // MARK: - Timer
-    func startTimer() {
-        timer?.invalidate()
-        timer = Timer.scheduledTimer(withTimeInterval: 1, repeats: true) { _ in
-            self.timeLeft -= 1
-            self.updateTimeLabel()
-
-            if self.timeLeft <= 0 {
-                self.timer?.invalidate()
-                self.showAlert(title: "Time’s up!", message: "Try again.")
-            }
+    
+    override func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
+        if !hasInitializedLevel && cards.count > 0 {
+            hasInitializedLevel = true
+            collectionView.layoutIfNeeded()
+            showAllCardsBriefly()
         }
     }
-
-    // MARK: - Reveal All (3 seconds)
-    func revealAllCardsTemporarily() {
-        cards.indices.forEach { cards[$0].isFlipped = true }
+    func startNewLevel() {
+        if level > maxLevel {
+            goToNextScreen()
+            return
+        }
+        hasInitializedLevel = false
+        resetState()
+        generateCards()
         collectionView.reloadData()
-
-        DispatchQueue.main.asyncAfter(deadline: .now() + 3) {
-            self.cards.indices.forEach { self.cards[$0].isFlipped = false }
-            self.collectionView.reloadData()
-            self.startTimer()
+    }
+    private func resetState() {
+        cards.removeAll()
+        matchedPairs = 0
+        firstIndexPath = nil
+        secondIndexPath = nil
+        interactionsEnabled = false
+    }
+    private func generateCards() {
+        let maxPairs = 4 + min(level - 1, 11)
+        let numberOfPairs = min(maxPairs, 15)
+        let available = [ "🤖", "🔥", "🌈", "🐶", "🚀", "🍕", "⚡️", "🎧", "🏖️", "🌙", "⭐️"]
+        let set = Array(available.prefix( numberOfPairs))
+        var data: [(Int, String)] = []
+        for (id, c) in set.enumerated() {
+            data.append((id,c))
+            data.append((id,c))
+        }
+        data.shuffle()
+        for d in data {
+            cards.append(Card(identifier: d.0, content: d.1))
         }
     }
-
-    // MARK: - Hint
-    @IBAction func hintTapped(_ sender: UIButton) {
-        guard hintAvailable else { return }
-
-        hintAvailable = false
-
-        if let card = cards.first(where: { !$0.isMatched }) {
-            card.isFlipped = true
-            if let index = cards.firstIndex(where: { $0.id == card.id }) {
-                collectionView.reloadItems(at: [IndexPath(item: index, section: 0)])
+    
+    private func showAllCardsBriefly() {
+        for i in 0..<cards.count {
+            cards[i].isFlipped = true
+            let ip = IndexPath(item: i, section: 0)
+            if let cell = collectionView.cellForItem(at: ip) as? MatchTheCardCollectionViewCell {
+                cell.flip(toFront: true, animated: false)
+                
             }
-
-            DispatchQueue.main.asyncAfter(deadline: .now() + 1.5) {
-                card.isFlipped = false
-                if let idx = self.cards.firstIndex(where: { $0.id == card.id }) {
-                    self.collectionView.reloadItems(at: [IndexPath(item: idx, section: 0)])
+        }
+        DispatchQueue.main.asyncAfter(deadline: .now() + preGameRevealDuration) {
+            for i in 0..<self.cards.count {
+                self.cards[i].isFlipped = false
+                let ip = IndexPath(item: i, section: 0)
+                if let cell = self.collectionView.cellForItem(at: ip) as? MatchTheCardCollectionViewCell {
+                    cell.flip(toFront: false, animated: true)
+                    
                 }
             }
+            self.interactionsEnabled = true
+        }
+    }
+    private func checkForMatch() {
+        guard let ip1 = firstIndexPath, let ip2 = secondIndexPath else {
+            resetSelection()
+            return
+        }
+        let c1 = cards[ip1.item]
+        let c2 = cards[ip2.item]
+        if c1.identifier == c2.identifier {
+            cards[ip1.item].isMatched = true
+            cards[ip2.item].isMatched = true
+            matchedPairs += 1
+            if matchedPairs == cards.count / 2 {
+                DispatchQueue.main.asyncAfter(deadline: .now() + 0.9) {
+            self.goToNextScreen()
+                }
+                
+            }
+            if let cell1 = collectionView.cellForItem(at: ip1) as? MatchTheCardCollectionViewCell {
+                cell1.configure(with: cards[ip1.item])
+            }
+            if let cell2 = collectionView.cellForItem(at: ip2) as? MatchTheCardCollectionViewCell {
+                cell2.configure(with: cards[ip2.item])
+            }
+            resetSelection()
+        } else {
+            DispatchQueue.main.asyncAfter(deadline: .now() + mismatchDelay) {
+                self.cards[ip1.item].isFlipped = false
+                self.cards[ip2.item].isFlipped = false
+                if let cell1 = self.collectionView.cellForItem(at: ip1) as? MatchTheCardCollectionViewCell {
+                    cell1.flip(toFront: false, animated: true)
+                }
+                if let cell2 = self.collectionView.cellForItem(at: ip2) as? MatchTheCardCollectionViewCell {
+                    cell2.flip(toFront: false, animated: true)
+                }
+                self.resetSelection()
+            }
+        }
+        
+    }
+    private func resetSelection() {
+        firstIndexPath = nil
+        secondIndexPath = nil
+        interactionsEnabled = true
+    }
+    
+    private func goToNextScreen() {
+        // 1. Load the next view controller from storyboard
+        let storyboard = UIStoryboard(name: "Match the Cards", bundle: nil)
+        if let nextVC = storyboard.instantiateViewController(withIdentifier: "SuccessViewController") as? SuccessViewController {
+            
+            // 2. Push navigation
+            navigationController?.pushViewController(nextVC, animated: true)
+            
+            // Or if your game uses fullscreen modals:
+            // present(nextVC, animated: true)
         }
     }
 
-    // MARK: - Alerts
-    func showAlert(title: String, message: String) {
-        let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
-        
-        alert.addAction(UIAlertAction(title: "OK", style: .default, handler: { _ in
-            self.navigationController?.popViewController(animated: true)
-        }))
-
-        present(alert, animated: true)
-    }
-
-    func levelComplete() {
-        timer?.invalidate()
-
-        let alert = UIAlertController(
-            title: "Great job!",
-            message: "You completed level \(level)!",
-            preferredStyle: .alert
-        )
-
-        alert.addAction(UIAlertAction(title: "Next Level", style: .default, handler: { _ in
-            self.level += 1
-            if self.level > 30 {
-                self.level = 1
-            }
-            self.startLevel()
-        }))
-
-        present(alert, animated: true)
-    }
+   
 }
 
-// MARK: - Collection View
-extension GameViewController: UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
-
+extension GameViewController: UICollectionViewDataSource, UICollectionViewDelegate {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return cards.count
+        cards.count
     }
-
-    func collectionView(_ collectionView: UICollectionView,
-                        cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let cell = collectionView.dequeueReusableCell(
-            withReuseIdentifier: "CardCell",
-            for: indexPath
-        ) as! MemoryCell
-
+    
+    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "CardCell", for: indexPath) as! MatchTheCardCollectionViewCell
         cell.configure(with: cards[indexPath.item])
         return cell
     }
-
-    // ADD BELOW THIS ↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓
-
-    // **(2) CELL SIZE**
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        guard interactionsEnabled else { return }
+        let card = cards[indexPath.item]
+        if card.isMatched || card.isFlipped{
+            return
+        }
+        interactionsEnabled = false
+        cards[indexPath.item].isFlipped = true
+        if let cell = collectionView.cellForItem(at: indexPath) as? MatchTheCardCollectionViewCell {
+            cell.flip(toFront: true, animated: true)
+        }
+        if firstIndexPath == nil {
+            firstIndexPath = indexPath
+            interactionsEnabled = true
+        } else if secondIndexPath == nil {
+            secondIndexPath = indexPath
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.08) {
+                self.checkForMatch()
+            }
+        }
+    }
+}
+extension GameViewController: UICollectionViewDelegateFlowLayout {
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAt section: Int) -> UIEdgeInsets {
+        return UIEdgeInsets(top: 12, left: 12, bottom: 12, right: 12)
+    }
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumInteritemSpacingForSectionAt section: Int) -> CGFloat {
+        return 12
+    }
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat {
+        return 12
+    }
     func collectionView(_ collectionView: UICollectionView,
                         layout collectionViewLayout: UICollectionViewLayout,
                         sizeForItemAt indexPath: IndexPath) -> CGSize {
+        
+        let total = cards.count
+        
+        // AUTO-CALCULATE number of columns based on total cards
+        // This ensures cards shrink when more are added
+        var columns = Int(sqrt(Double(total))) + 1
+        columns = min(columns, 6)   // maximum 6 per row
+        columns = max(columns, 3)   // minimum 3 per row
 
-        let spacing: CGFloat = 10
-        let itemsPerRow: CGFloat = 4
-        let totalSpacing = (itemsPerRow - 1) * spacing
-        let width = (collectionView.bounds.width - totalSpacing) / itemsPerRow
+        let sidePadding: CGFloat = 12
+        let spacing: CGFloat = 12
 
-        return CGSize(width: width, height: width * 1.3)
+        let totalSpacing = sidePadding * 2 + spacing * CGFloat(columns - 1)
+        let availableWidth = collectionView.bounds.width - totalSpacing
+
+        let cellWidth = floor(availableWidth / CGFloat(columns))
+
+        return CGSize(width: cellWidth, height: cellWidth)
     }
 
-    // **(3) SPACING**
-    func collectionView(_ collectionView: UICollectionView,
-                        layout collectionViewLayout: UICollectionViewLayout,
-                        minimumLineSpacingForSectionAt section: Int) -> CGFloat {
-        return 10
-    }
 
-    func collectionView(_ collectionView: UICollectionView,
-                        layout collectionViewLayout: UICollectionViewLayout,
-                        minimumInteritemSpacingForSectionAt section: Int) -> CGFloat {
-        return 10
-    }
 }
-
-    
-
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destination.
-        // Pass the selected object to the new view controller.
-    }
-    */
-
 
