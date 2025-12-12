@@ -52,13 +52,13 @@ class SymptomRatingCell: UITableViewCell {
             
             switch buttonIntensity {
             case .mild:
-                baseIconName = "face.smiling.om" // Happy face for Mild
+                baseIconName = "mild" // Happy face for Mild
             case .moderate:
-                baseIconName = "face.neutral.om" // Neutral face for Moderate
+                baseIconName = "moderate" // Neutral face for Moderate
             case .severe:
-                baseIconName = "face.sad.om"     // Sad face for Severe
+                baseIconName = "severe"     // Sad face for Severe
             case .notPresent:
-                baseIconName = "xmark.circle.om" // X icon for Not Present
+                baseIconName = "notPresent" // X icon for Not Present
             }
             
             // Apply the icon (using .fill if selected)

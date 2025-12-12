@@ -23,8 +23,10 @@ class CalenderCollectionViewCell: UICollectionViewCell {
         
         // Reset to default
         calenderBackground.backgroundColor = .clear
-        calenderDay.textColor = .lightGray
-        calenderDate.textColor = .black
+                calenderDay.backgroundColor = .clear // Crucial: Resetting the day label's background
+                
+                calenderDay.textColor = .lightGray
+                calenderDate.textColor = .black
 
 
         if isSelected {
@@ -36,7 +38,7 @@ class CalenderCollectionViewCell: UICollectionViewCell {
         
         // ... isToday block remains the same ...
         if isToday {
-            calenderDay.backgroundColor = UIColor(red: 1.0, green: 0.85, blue: 0.70, alpha: 1.0) // Light orange
+            //calenderDay.backgroundColor = UIColor(red: 1.0, green: 0.85, blue: 0.70, alpha: 1.0) // Light orange
             calenderDay.textColor = .systemCyan // <-- You might need this too for the Today state
             calenderDate.textColor = .systemCyan
             return

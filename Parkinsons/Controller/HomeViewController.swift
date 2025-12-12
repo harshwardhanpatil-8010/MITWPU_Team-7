@@ -140,7 +140,19 @@ class HomeViewController: UIViewController, UICollectionViewDelegate , SymptomLo
             withReuseIdentifier: "HeaderView"
         )
     }
-    
+    func viewLogTapped() {
+        // ... (Instantiate SymptomLogHistoryViewController) ...
+       // let historyVC = storyboard.instantiateViewController(withIdentifier: "SymptomLogHistoryViewController") as! SymptomLogHistoryViewController
+        
+        // 1. Pass the CURRENT log data (assuming you store it in HomeVC/Manager)
+        // Assuming 'currentDayLog' holds the current data source:
+        //historyVC.todayLogEntry = self.currentDayLog
+        
+        // 2. **CRITICAL FIX:** Set the update delegate to self
+      //  historyVC.updateDelegate = self
+        
+        // ... (Present modally) ...
+    }
     // MARK: - 4. Refactored Compositional Layout
     func generateLayout() -> UICollectionViewLayout {
         let layout = UICollectionViewCompositionalLayout { [weak self] sectionIndex, env in
@@ -534,4 +546,5 @@ extension HomeViewController {
         formatter.dateFormat = "d MMMM yyyy" // e.g., 28 November 2025
         return formatter.string(from: date)
     }
+   
 }

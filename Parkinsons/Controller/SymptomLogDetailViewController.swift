@@ -40,7 +40,7 @@ class SymptomLogDetailViewController: UIViewController {
         view.backgroundColor = .systemBackground
         
         // Ensure the navigation title is set
-        navigationItem.title = "Select symptoms faced"
+//        navigationItem.title = "Select symptoms faced"
         
         setupTableView()
     }
@@ -61,12 +61,12 @@ class SymptomLogDetailViewController: UIViewController {
         let topAnchor = headerContainerView?.bottomAnchor ?? view.safeAreaLayoutGuide.topAnchor
         
         NSLayoutConstraint.activate([
-            tableView.topAnchor.constraint(equalTo: topAnchor, constant: 250),
+            tableView.topAnchor.constraint(equalTo: topAnchor, constant: 200),
             tableView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
             tableView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
             tableView.bottomAnchor.constraint(equalTo: view.bottomAnchor)
         ])
-    }
+    } 
     
     // MARK: - Storyboard Actions (Connect your Cancel/Done buttons here)
     

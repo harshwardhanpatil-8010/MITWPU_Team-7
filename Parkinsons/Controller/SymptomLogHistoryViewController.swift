@@ -1,32 +1,103 @@
 import UIKit
 
-class SymptomLogHistoryViewController: UIViewController {
+class SymptomLogHistoryViewController: UIViewController , SymptomLogDetailDelegate {
 
     // MARK: - Data Source
     
     // ⭐️ Holds the single log entry for today ⭐️
-    var todayLogEntry: SymptomLogEntry?
+    var todayLogEntry: SymptomLogEntry? {
+        didSet {
+            // Ensure the table view is reloaded if data changes (e.g., after editing)
+            if isViewLoaded {
+                tableView.reloadData()
+                //updateTitle() // Update the title when data is set
+            }
+        }
+    }
     
     // MARK: - UI Elements
     
     private let tableView = UITableView()
+
+    // ⭐️ Custom Header Outlets/Actions ⭐️
+    // 1. Label outlet remains for the dynamic title
+    @IBOutlet weak var titleLabel: UILabel!
     
+    // 2. Bar Button Item Outlets (Optional: If you need to change properties dynamically,
+    //    but Actions are sufficient for simple taps)
+    // @IBOutlet weak var closeBarButton: UIBarButtonItem!
+    // @IBOutlet weak var editBarButton: UIBarButtonItem!
+    
+    // MARK: - Lifecycle
+
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        // ⭐️ IMPORTANT: Ensure the view is white background for modal look ⭐️
         view.backgroundColor = .systemBackground
         
-        // ⭐️ Nav Bar setup REMOVED as requested ⭐️
         setupTableView()
-        
-        // Placeholder data to test the display
-//        if todayLogEntry == nil {
-//            loadPlaceholderData()
-//        }
+        setupCustomHeader() // Now just sets the initial title
     }
     
-    // ⭐️ setupNavigationBar() function REMOVED as requested ⭐️
+    // MARK: - Custom Header Setup (Simplified)
+    
+    private func setupCustomHeader() {
+        // Only set the initial title here, actions are connected via IBAction
+        //updateTitle()
+    }
+    
+    private func updateTitle() {
+        let date = todayLogEntry?.date ?? Date()
+        let formatter = DateFormatter()
+        formatter.dateFormat = "d MMMM yyyy" // e.g., 12 December 2025
+        
+        if Calendar.current.isDateInToday(date) {
+            titleLabel.text = "Symptoms Faced (Today)"
+        } else {
+            titleLabel.text = "Symptoms Faced (\(formatter.string(from: date)))"
+        }
+    }
+    
+    // MARK: - Bar Button Actions ⭐️ NEW IB ACTIONS ⭐️
+    
+    /**
+     ACTION: Connect your Left Bar Button Item (Close/X) to this method.
+     */
+    @IBAction func cancelButtonTapped(_ sender: Any) {
+        // This dismisses the modal view. Use Any since it could be a UIBarButtonItem or a regular button.
+        dismiss(animated: true, completion: nil)
+    }
+
+    /**
+     ACTION: Connect your Right Bar Button Item (Edit) to this method.
+     */
+    @IBAction func editButtonTapped(_ sender: Any) {
+        guard let currentLog = todayLogEntry else {
+            print("Cannot edit: No current log entry available.")
+            return
+        }
+        
+        let storyboard = UIStoryboard(name: "Home", bundle: nil) // Assuming SymptomLogDetailViewController is in "Home.storyboard"
+        
+        guard let symptomVC = storyboard.instantiateViewController(withIdentifier: "SymptomLogDetailViewController") as? SymptomLogDetailViewController else {
+            print("Error: Could not instantiate SymptomLogDetailViewController.")
+            return
+        }
+        
+        // 1. Pass the *current* ratings to the editing view controller
+        symptomVC.symptoms = currentLog.ratings
+        
+        // 2. Set the delegate so this VC can receive the updated log after saving
+        symptomVC.delegate = self
+        
+        // 3. Present the editing view controller modally (wrapped in a Navigation Controller for its Save/Cancel buttons)
+        let navController = UINavigationController(rootViewController: symptomVC)
+        navController.modalPresentationStyle = .pageSheet
+        
+        self.present(navController, animated: true, completion: nil)
+    }
+    
+    // MARK: - Table View Setup (Constraint kept at 128)
 
     private func setupTableView() {
         view.addSubview(tableView)
@@ -39,27 +110,14 @@ class SymptomLogHistoryViewController: UIViewController {
         tableView.rowHeight = 60.0
         tableView.separatorStyle = .none // Optional: removes lines between cells
         
-        // ⭐️ Constraints for TableView - Use full view, but ensure a top offset if needed ⭐️
+        // ⭐️ Constraints for TableView - Top padding set to 128 as requested ⭐️
         NSLayoutConstraint.activate([
-            tableView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 20), // Top padding
+            tableView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 128), // Top padding
             tableView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
             tableView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
             tableView.bottomAnchor.constraint(equalTo: view.bottomAnchor)
         ])
     }
-    
-    // ⭐️ backButtonTapped() function REMOVED as requested (no nav bar) ⭐️
-    
-//    private func loadPlaceholderData() {
-//        // This simulates loading today's data
-//        let sampleRatings: [SymptomRating] = [
-//            SymptomRating(name: "Tremor", iconName: "hand.raised.fill", selectedIntensity: .mild),
-//            SymptomRating(name: "Loss of Balance", iconName: "figure.walk", selectedIntensity: .moderate),
-//            SymptomRating(name: "Gait Disturbance", iconName: "figure.roll", selectedIntensity: .notPresent),
-//            SymptomRating(name: "Facial Stiffness", iconName: "face.dashed", selectedIntensity: .severe)
-//        ]
-//        todayLogEntry = SymptomLogEntry(date: Date(), ratings: sampleRatings)
-//    }
 }
 
 // MARK: - UITableViewDataSource
@@ -67,7 +125,6 @@ class SymptomLogHistoryViewController: UIViewController {
 extension SymptomLogHistoryViewController: UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        // Only show cells for the single log entry
         return todayLogEntry?.ratings.count ?? 0
     }
     
@@ -85,5 +142,27 @@ extension SymptomLogHistoryViewController: UITableViewDataSource {
     }
 }
 
-// MARK: - UITableViewDelegate
-// Extension is empty or removed as there are no row taps for navigation.
+// MARK: - SymptomLogDetailDelegate
+
+extension SymptomLogHistoryViewController {
+    
+func symptomLogDidComplete(with ratings: [SymptomRating]) {
+   // 1. Dismiss the modal editing view
+self.presentedViewController?.dismiss(animated: true) {
+
+// 2. Create the new log entry
+let newLogEntry = SymptomLogEntry(date: self.todayLogEntry?.date ?? Date(), ratings: ratings)
+
+// 3. Save the updated entry (Requires SymptomLogManager)
+// Note: You must define SymptomLogManager.shared.saveLogEntry(newLogEntry) elsewhere
+// SymptomLogManager.shared.saveLogEntry(newLogEntry)
+
+// 4. Update the local data source and reload the table view
+    self.todayLogEntry = newLogEntry
+ }
+}
+    
+    func symptomLogDidCancel() {
+        // The modal is dismissed inside the SymptomLogDetailViewController.
+    }
+}
