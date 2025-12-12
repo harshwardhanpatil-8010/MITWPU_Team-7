@@ -19,7 +19,7 @@ class SectionHeaderView: UICollectionReusableView {
         
         // Add constraints to pin the label inside the header view
         NSLayoutConstraint.activate([
-            titleLabel.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 8), // Align with section inset
+            titleLabel.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 0), // Align with section inset
             titleLabel.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -16),
             titleLabel.topAnchor.constraint(equalTo: topAnchor),
             titleLabel.bottomAnchor.constraint(equalTo: bottomAnchor)

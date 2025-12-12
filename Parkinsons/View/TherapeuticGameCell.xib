@@ -21,14 +21,17 @@
                         <rect key="frame" x="0.0" y="0.0" width="175" height="140"/>
                         <subviews>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="hTJ-CF-CKg">
-                                <rect key="frame" x="16" y="7.9999999999999982" width="143" height="20.333333333333329"/>
-                                <fontDescription key="fontDescription" type="boldSystem" pointSize="17"/>
+                                <rect key="frame" x="16" y="7.9999999999999982" width="149" height="20.333333333333329"/>
+                                <fontDescription key="fontDescription" type="boldSystem" pointSize="16"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="feature1" translatesAutoresizingMaskIntoConstraints="NO" id="FKK-h6-PZP">
-                                <rect key="frame" x="46" y="33" width="83" height="79"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="feature1" translatesAutoresizingMaskIntoConstraints="NO" id="FKK-h6-PZP">
+                                <rect key="frame" x="45" y="27" width="85" height="85"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="85" id="TwZ-RR-uu1"/>
+                                    <constraint firstAttribute="width" constant="85" id="W1P-Rv-3VP"/>
+                                </constraints>
                             </imageView>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="HRu-mw-IAh">
                                 <rect key="frame" x="16" y="115" width="151" height="17"/>
@@ -39,11 +42,14 @@
                         </subviews>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                         <constraints>
-                            <constraint firstAttribute="trailing" secondItem="hTJ-CF-CKg" secondAttribute="trailing" constant="16" id="AOY-HK-mBl"/>
+                            <constraint firstAttribute="trailing" secondItem="FKK-h6-PZP" secondAttribute="trailing" constant="45" id="7LP-jC-C8X"/>
                             <constraint firstItem="hTJ-CF-CKg" firstAttribute="leading" secondItem="hyf-t1-NL3" secondAttribute="leading" constant="16" id="CFW-bD-aDt"/>
+                            <constraint firstAttribute="trailing" secondItem="hTJ-CF-CKg" secondAttribute="trailing" constant="10" id="ZTm-rm-vhy"/>
                             <constraint firstAttribute="trailing" secondItem="HRu-mw-IAh" secondAttribute="trailing" constant="8" id="aTe-Yo-6UV"/>
                             <constraint firstAttribute="bottom" secondItem="HRu-mw-IAh" secondAttribute="bottom" constant="8" id="d18-km-zMz"/>
                             <constraint firstItem="hTJ-CF-CKg" firstAttribute="top" secondItem="hyf-t1-NL3" secondAttribute="top" constant="8" id="t90-55-2hl"/>
+                            <constraint firstItem="FKK-h6-PZP" firstAttribute="leading" secondItem="hyf-t1-NL3" secondAttribute="leading" constant="45" id="tYt-X9-Y3d"/>
+                            <constraint firstItem="HRu-mw-IAh" firstAttribute="top" secondItem="FKK-h6-PZP" secondAttribute="bottom" constant="3" id="yg6-Z5-kly"/>
                             <constraint firstItem="HRu-mw-IAh" firstAttribute="leading" secondItem="hyf-t1-NL3" secondAttribute="leading" constant="16" id="ytz-yH-PKG"/>
                         </constraints>
                     </view>

@@ -26,7 +26,12 @@ class HomeViewController: UIViewController, UICollectionViewDelegate , SymptomLo
         case therapeuticGames
     }
     let homeSections = Section.allCases
-    
+    private let separatorView: UIView = {
+        let view = UIView()
+        view.backgroundColor = UIColor.systemGray4 // Use a light gray color
+        view.translatesAutoresizingMaskIntoConstraints = false
+        return view
+    }()
     // Data Source/State property
     var hasLoggedSymptomsToday: Bool = false {
         didSet {
@@ -88,6 +93,7 @@ class HomeViewController: UIViewController, UICollectionViewDelegate , SymptomLo
         
         dates = DataStore.shared.getDates()
         autoSelectToday()
+        setupSeparator()
     }
     
     @IBAction func profilePageButton(_ sender: Any) {
@@ -97,7 +103,25 @@ class HomeViewController: UIViewController, UICollectionViewDelegate , SymptomLo
         nav.modalPresentationStyle = .pageSheet
         present(nav, animated: true)
     }
-    
+    func setupSeparator() {
+        view.addSubview(separatorView)
+        
+        NSLayoutConstraint.activate([
+            // Position the top edge 166 points from the top of the HomeViewController's view
+            separatorView.topAnchor.constraint(equalTo: view.topAnchor, constant: 166),
+            
+            // Horizontal position with 16 points inset on both sides
+            separatorView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16),
+            separatorView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -16),
+            
+            // Define the height of the separator line
+            separatorView.heightAnchor.constraint(equalToConstant: 1)
+        ])
+        
+        // Ensure the collection view content starts below the separator if necessary
+        // (Based on your current layout, the calendar section header starts below 166 points,
+        // so this is a good insertion point for a fixed element.)
+    }
     // MARK: - 3. Cell and Supplementary View Registration
     func registerCells(){
         // Existing calendar cell registration
@@ -136,7 +160,7 @@ class HomeViewController: UIViewController, UICollectionViewDelegate , SymptomLo
                 let section = NSCollectionLayoutSection(group: group)
                 section.orthogonalScrollingBehavior = .continuous
                 section.interGroupSpacing = 4
-                section.contentInsets = NSDirectionalEdgeInsets(top: 10, leading: 16, bottom: 0, trailing: 16)
+                section.contentInsets = NSDirectionalEdgeInsets(top: 0, leading: 16, bottom: 0, trailing: 16)
                 
                 let calendarHeaderSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: .absolute(30))
                 let calendarHeader = NSCollectionLayoutBoundarySupplementaryItem(
@@ -155,12 +179,12 @@ class HomeViewController: UIViewController, UICollectionViewDelegate , SymptomLo
                 let itemSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: .fractionalHeight(1.0))
                 let item = NSCollectionLayoutItem(layoutSize: itemSize)
                 
-                let groupSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(0.9), heightDimension: .absolute(130))
+                let groupSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(0.9), heightDimension: .absolute(100))
                 let group = NSCollectionLayoutGroup.horizontal(layoutSize: groupSize, subitems: [item])
                 
                 let section = NSCollectionLayoutSection(group: group)
                 section.interGroupSpacing = 12
-                section.contentInsets = NSDirectionalEdgeInsets(top: 0, leading: 16, bottom: 4, trailing: 16)
+                section.contentInsets = NSDirectionalEdgeInsets(top: 8, leading: 16, bottom: 24, trailing: 16)
                 section.orthogonalScrollingBehavior = .continuous
                 
                 let headerSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: .absolute(30))
@@ -173,24 +197,33 @@ class HomeViewController: UIViewController, UICollectionViewDelegate , SymptomLo
                 return section
                 
             case .exercises:
-                // --- EXERCISES HORIZONTAL LAYOUT (Section 2) ---
-                let itemSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: .fractionalHeight(1.0))
+                // --- EXERCISES GRID LAYOUT (Section 2) ---
+                // 1. Define the Item: Half the width of the group (1.0), and full height.
+                let itemSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(0.5), heightDimension: .fractionalHeight(1.0))
                 let item = NSCollectionLayoutItem(layoutSize: itemSize)
-                
-                let groupWidthFraction: CGFloat = 0.45
-                let groupHeight: CGFloat = 180
+
+                // Add some trailing inset to create space between the two cards
+                item.contentInsets = NSDirectionalEdgeInsets(top: 0, leading: 2, bottom: 0, trailing: 4)
+
+                // 2. Define the Group: Full width and fixed height (to hold two items side-by-side).
+                let groupHeight: CGFloat = 185
                 
                 let groupSize = NSCollectionLayoutSize(
-                    widthDimension: .fractionalWidth(groupWidthFraction),
+                    widthDimension: .fractionalWidth(1.0), // The entire section width
                     heightDimension: .absolute(groupHeight)
                 )
-                let group = NSCollectionLayoutGroup.horizontal(layoutSize: groupSize, subitems: [item])
-                
+                // 3. Create a Horizontal Group containing two items.
+                let group = NSCollectionLayoutGroup.horizontal(layoutSize: groupSize, subitems: [item, item]) // Two items side-by-side
+
+                // 4. Define the Section:
                 let section = NSCollectionLayoutSection(group: group)
-                section.interGroupSpacing = 12
-                section.contentInsets = NSDirectionalEdgeInsets(top: 8, leading: 16, bottom: 16, trailing: 16)
-                section.orthogonalScrollingBehavior = .continuous
+                section.interGroupSpacing = 0 // Spacing is now handled by the item's contentInsets (trailing 12)
+                section.contentInsets = NSDirectionalEdgeInsets(top: 8, leading: 16, bottom: 24, trailing: 16)
                 
+                // ⭐️ MODIFICATION: Set orthogonalScrollingBehavior to .none ⭐️
+                section.orthogonalScrollingBehavior = .none // <-- Stacks groups vertically
+
+                // ... (header definition remains unchanged) ...
                 let headerSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: .absolute(30))
                 let header = NSCollectionLayoutBoundarySupplementaryItem(
                     layoutSize: headerSize,
@@ -198,6 +231,7 @@ class HomeViewController: UIViewController, UICollectionViewDelegate , SymptomLo
                     alignment: .top
                 )
                 section.boundarySupplementaryItems = [header]
+                
                 return section
                 
             case .symptoms:
@@ -209,7 +243,7 @@ class HomeViewController: UIViewController, UICollectionViewDelegate , SymptomLo
                 let group = NSCollectionLayoutGroup.horizontal(layoutSize: groupSize, subitems: [item])
                 
                 let section = NSCollectionLayoutSection(group: group)
-                section.contentInsets = NSDirectionalEdgeInsets(top: 8, leading: 16, bottom: 16, trailing: 16)
+                section.contentInsets = NSDirectionalEdgeInsets(top: 8, leading: 16, bottom: 24, trailing: 16)
                 
                 let headerSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: .absolute(30))
                 let header = NSCollectionLayoutBoundarySupplementaryItem(
@@ -221,22 +255,38 @@ class HomeViewController: UIViewController, UICollectionViewDelegate , SymptomLo
                 return section
                 
             case .therapeuticGames:
-                // --- GAMES HORIZONTAL LAYOUT (Section 4) ---
-                let itemSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: .fractionalHeight(1.0))
+                // --- GAMES GRID LAYOUT (Section 4) ---
+                
+                // 1. Define the Item: Half the width of the group, and full height.
+                let itemSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(0.5), heightDimension: .fractionalHeight(1.0))
                 let item = NSCollectionLayoutItem(layoutSize: itemSize)
                 
-                let groupWidthFraction: CGFloat = 0.47
-                let groupSize = NSCollectionLayoutSize(
-                    widthDimension: .fractionalWidth(groupWidthFraction),
-                    heightDimension: .absolute(170)
-                )
-                let group = NSCollectionLayoutGroup.horizontal(layoutSize: groupSize, subitems: [item])
-                group.contentInsets = NSDirectionalEdgeInsets(top: 0, leading: 0, bottom: 0, trailing: 10)
+                // Adjust insets to create a gap between the cards and keep the overall section insets clean.
+                // The total width is 1.0, so 0.5 for each item.
+                // We'll use a trailing inset on the item for the space between the cards.
+                item.contentInsets = NSDirectionalEdgeInsets(top: 0, leading: 2, bottom: 0, trailing: 4) // 12pt space between cards
                 
+                // 2. Define the Group: Full width and fixed height (170) to hold two items side-by-side.
+                let groupHeight: CGFloat = 170
+                
+                let groupSize = NSCollectionLayoutSize(
+                    widthDimension: .fractionalWidth(1.0), // Full width of the section
+                    heightDimension: .absolute(groupHeight)
+                )
+                
+                // 3. Create a Horizontal Group containing two items.
+                let group = NSCollectionLayoutGroup.horizontal(layoutSize: groupSize, subitems: [item, item])
+                
+                // NOTE: We remove the contentInsets from the group, as section insets and item insets are sufficient.
+                
+                // 4. Define the Section:
                 let section = NSCollectionLayoutSection(group: group)
                 section.contentInsets = NSDirectionalEdgeInsets(top: 8, leading: 16, bottom: 30, trailing: 16)
-                section.orthogonalScrollingBehavior = .groupPaging
                 
+                // ⭐️ MODIFICATION: Set orthogonalScrollingBehavior to .none ⭐️
+                section.orthogonalScrollingBehavior = .none // <-- This disables horizontal scrolling
+                
+                // ... (header definition remains unchanged) ...
                 let headerSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: .absolute(30))
                 let header = NSCollectionLayoutBoundarySupplementaryItem(
                     layoutSize: headerSize,
@@ -244,6 +294,7 @@ class HomeViewController: UIViewController, UICollectionViewDelegate , SymptomLo
                     alignment: .top
                 )
                 section.boundarySupplementaryItems = [header]
+                
                 return section
             }
         }
@@ -254,13 +305,13 @@ class HomeViewController: UIViewController, UICollectionViewDelegate , SymptomLo
     
     func symptomLogDidComplete(with ratings: [SymptomRating]) {
         // Data is received here! Mark state as true.
-        print("Received \(ratings.count) symptom ratings. Setting log status to true.")
-        
-        // Update the state property, which triggers the UI reload via didSet
-        hasLoggedSymptomsToday = true
-        
-        // TODO: Implement actual data persistence (e.g., save to a manager/database)
-        // You can store the received 'ratings' array here.
+        let newLogEntry = SymptomLogEntry(date: Date(), ratings: ratings)
+            
+            // 2. ⭐️ SAVE THE DATA USING THE MANAGER ⭐️
+            SymptomLogManager.shared.saveLogEntry(newLogEntry)
+            
+            // 3. Update the state property, which triggers the UI reload
+            hasLoggedSymptomsToday = true
     }
     
     func symptomLogDidCancel() {
@@ -270,42 +321,50 @@ class HomeViewController: UIViewController, UICollectionViewDelegate , SymptomLo
     // MARK: - SymptomLogCellDelegate Method (Handling Button Tap)
     
     func symptomLogCellDidTapLogNow(_ cell: SymptomLogCell) {
-        
-        if hasLoggedSymptomsToday {
-            // Case 1: Logged today -> Navigate to View History (NEW NAVIGATION)
             
-            print("View Log button tapped! Navigating to Symptom Log History.")
+        let storyboard = UIStoryboard(name: "Home", bundle: nil)
             
-            let storyboard = UIStoryboard(name: "Home", bundle: nil) // Or whatever your storyboard name is
-            
-            // ⭐️ INSTANTIATE THE NEW HISTORY VC ⭐️
-            guard let historyVC = storyboard.instantiateViewController(withIdentifier: "SymptomLogHistoryViewController") as? SymptomLogHistoryViewController else {
-                print("Error: Could not instantiate SymptomLogHistoryViewController.")
-                return
+            if hasLoggedSymptomsToday {
+                // Case 1: Logged today -> Navigate directly to Today's Detail View (MODAL WITHOUT NAV BAR)
+                
+                guard let todayLog = SymptomLogManager.shared.getLogForToday() else {
+                            print("❌ Warning: Logged status is TRUE, but could not find today's log in persistence. Falling back to Log Now.")
+                            // Reset status and return to prevent app crash if data is corrupted
+                            hasLoggedSymptomsToday = false
+                            return
+                        }
+
+                        // 2. Instantiate the Detail VC
+                        guard let detailVC = storyboard.instantiateViewController(withIdentifier: "SymptomLogHistoryViewController") as? SymptomLogHistoryViewController else {
+                            print("Error: Could not instantiate SymptomLogHistoryViewController.")
+                            return
+                        }
+                        
+                        // 3. ⭐️ PASS THE DATA ⭐️
+                        detailVC.todayLogEntry = todayLog
+
+                        // 4. Present Modally
+                        detailVC.modalPresentationStyle = .pageSheet
+                        self.present(detailVC, animated: true, completion: nil)
+                
+            } else {
+                // Case 2: Not logged today -> Open the Logging Modal (Existing Logic)
+                
+                // ... (existing code to present SymptomLogDetailViewController) ...
+                let storyboard = UIStoryboard(name: "Home", bundle: nil)
+                guard let symptomVC = storyboard.instantiateViewController(withIdentifier: "SymptomLogDetailViewController") as? SymptomLogDetailViewController else {
+                    print("Error: Could not instantiate SymptomLogDetailViewController.")
+                    return
+                }
+                
+                symptomVC.delegate = self
+                
+                let navController = UINavigationController(rootViewController: symptomVC)
+                navController.modalPresentationStyle = .pageSheet
+                
+                self.present(navController, animated: true, completion: nil)
             }
-            
-            // **IMPORTANT:** Since HomeViewController is likely embedded in a NavigationController, we push the new screen.
-            // If not, you need to embed HomeViewController first.
-            navigationController?.pushViewController(historyVC, animated: true)
-            
-        } else {
-            // Case 2: Not logged today -> Open the Logging Modal (Existing Logic)
-            
-            // ... (existing code to present SymptomLogDetailViewController) ...
-            let storyboard = UIStoryboard(name: "Home", bundle: nil)
-            guard let symptomVC = storyboard.instantiateViewController(withIdentifier: "SymptomLogDetailViewController") as? SymptomLogDetailViewController else {
-                print("Error: Could not instantiate SymptomLogDetailViewController.")
-                return
-            }
-            
-            symptomVC.delegate = self
-            
-            let navController = UINavigationController(rootViewController: symptomVC)
-            navController.modalPresentationStyle = .pageSheet
-            
-            self.present(navController, animated: true, completion: nil)
         }
-    }
     
     // Existing functions...
     func autoSelectToday() {

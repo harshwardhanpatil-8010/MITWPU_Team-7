@@ -21,19 +21,19 @@
                         <rect key="frame" x="0.0" y="0.0" width="169" height="140"/>
                         <subviews>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="pjg-HR-Z5W">
-                                <rect key="frame" x="16" y="8" width="137" height="21"/>
-                                <fontDescription key="fontDescription" type="boldSystem" pointSize="17"/>
+                                <rect key="frame" x="16" y="7.9999999999999982" width="145" height="20.333333333333329"/>
+                                <fontDescription key="fontDescription" type="boldSystem" pointSize="16"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="a36-lc-3gc">
-                                <rect key="frame" x="16" y="33" width="137" height="17"/>
+                                <rect key="frame" x="16" y="32.333333333333336" width="137" height="17"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="W6T-Is-SQg">
-                                <rect key="frame" x="32" y="90" width="105" height="46"/>
+                                <rect key="frame" x="32" y="89.333333333333329" width="105" height="46.666666666666671"/>
                                 <subviews>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="vtv-Fo-AiT">
                                         <rect key="frame" x="31.999999999999993" y="7.9999999999999982" width="66.333333333333314" height="31.333333333333329"/>
@@ -54,7 +54,7 @@
                             <constraint firstAttribute="trailing" secondItem="a36-lc-3gc" secondAttribute="trailing" constant="16" id="016-KO-bDO"/>
                             <constraint firstAttribute="bottom" secondItem="W6T-Is-SQg" secondAttribute="bottom" constant="4" id="1EX-cM-YiV"/>
                             <constraint firstItem="a36-lc-3gc" firstAttribute="top" secondItem="pjg-HR-Z5W" secondAttribute="bottom" constant="4" id="7gB-yh-yQu"/>
-                            <constraint firstAttribute="trailing" secondItem="pjg-HR-Z5W" secondAttribute="trailing" constant="16" id="SI7-wC-cQR"/>
+                            <constraint firstAttribute="trailing" secondItem="pjg-HR-Z5W" secondAttribute="trailing" constant="8" id="dO3-cW-Ric"/>
                             <constraint firstItem="a36-lc-3gc" firstAttribute="leading" secondItem="W83-OF-dJd" secondAttribute="leading" constant="16" id="dZn-cy-ksv"/>
                             <constraint firstItem="pjg-HR-Z5W" firstAttribute="leading" secondItem="W83-OF-dJd" secondAttribute="leading" constant="16" id="fiW-6N-2o7"/>
                             <constraint firstItem="pjg-HR-Z5W" firstAttribute="top" secondItem="W83-OF-dJd" secondAttribute="top" constant="8" id="lLv-yg-WhW"/>

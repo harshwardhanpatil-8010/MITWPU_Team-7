@@ -29,7 +29,7 @@
                             <stackView opaque="NO" contentMode="scaleToFill" alignment="center" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="Bt6-g5-kih">
                                 <rect key="frame" x="16" y="36" width="365" height="40"/>
                                 <subviews>
-                                    <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Medication" translatesAutoresizingMaskIntoConstraints="NO" id="ddK-gT-akj">
+                                    <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Medication" translatesAutoresizingMaskIntoConstraints="NO" id="ddK-gT-akj">
                                         <rect key="frame" x="0.0" y="0.0" width="40" height="40"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="40" id="APr-Na-dau"/>
@@ -90,8 +90,12 @@
             <constraints>
                 <constraint firstItem="d2F-1Q-w9l" firstAttribute="leading" secondItem="gTV-IL-0wX" secondAttribute="leading" id="JOz-yT-ots"/>
                 <constraint firstItem="d2F-1Q-w9l" firstAttribute="top" secondItem="gTV-IL-0wX" secondAttribute="top" symbolic="YES" id="P6A-CD-2WN"/>
+                <constraint firstAttribute="trailing" secondItem="d2F-1Q-w9l" secondAttribute="trailing" id="QUr-dO-MY7"/>
                 <constraint firstAttribute="bottom" secondItem="d2F-1Q-w9l" secondAttribute="bottom" symbolic="YES" id="Xk7-ew-hbZ"/>
+                <constraint firstItem="d2F-1Q-w9l" firstAttribute="leading" secondItem="gTV-IL-0wX" secondAttribute="leading" id="Xwu-ek-HyD"/>
                 <constraint firstAttribute="trailing" secondItem="d2F-1Q-w9l" secondAttribute="trailing" id="qrO-21-x2E"/>
+                <constraint firstAttribute="bottom" secondItem="d2F-1Q-w9l" secondAttribute="bottom" id="rcm-1k-uST"/>
+                <constraint firstItem="d2F-1Q-w9l" firstAttribute="top" secondItem="gTV-IL-0wX" secondAttribute="top" id="wiI-lF-5EK"/>
             </constraints>
             <size key="customSize" width="397" height="76"/>
             <connections>

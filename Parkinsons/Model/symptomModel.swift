@@ -9,12 +9,12 @@ import Foundation
 
 // MARK: - 1. Symptom Rating Model
 
-struct SymptomRating {
+struct SymptomRating: Codable { // ✅ Must be Codable
     let name: String
-    let iconName: String? // For the line icons (Tremor, Slowed Movement, etc.)
+    let iconName: String?
     var selectedIntensity: Intensity = .notPresent
     
-    enum Intensity: Int, CaseIterable {
+    enum Intensity: Int, Codable, CaseIterable { // ✅ Must be Codable
         case mild = 0
         case moderate = 1
         case severe = 2
@@ -22,9 +22,7 @@ struct SymptomRating {
     }
 }
 
-// MARK: - 2. Daily Log Entry Model (MOVED OUTSIDE)
-
-struct SymptomLogEntry {
+struct SymptomLogEntry: Codable { // ✅ Must be Codable
     let date: Date
-    let ratings: [SymptomRating] // The array of symptoms and their intensity
+    let ratings: [SymptomRating]
 }

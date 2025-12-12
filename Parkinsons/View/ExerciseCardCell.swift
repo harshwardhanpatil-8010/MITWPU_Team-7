@@ -22,12 +22,36 @@ class ExerciseCardCell: UICollectionViewCell {
    
     override func awakeFromNib() {
         super.awakeFromNib()
-        backgroundCardView.applyCardStyle()
-        backgroundCardView.layer.cornerRadius = 16
-        progressRingContainer.backgroundColor = .clear
-        setupProgressRing()
+        self.clipsToBounds = false
+                self.contentView.clipsToBounds = false
+                
+                // ⭐️ STEP 2: APPLY CUSTOM SHADOW LOGIC ⭐️
+                setupCardStyle()
+                
+                backgroundCardView.layer.cornerRadius = 16
+                progressRingContainer.backgroundColor = .clear
+                setupProgressRing()
     }
+    func setupCardStyle() {
+            let cornerRadius: CGFloat = 16 // Set to 16, matching the cornerRadius in awakeFromNib
+            let shadowColor: UIColor = .black
+            let shadowOpacity: Float = 0.15
+            let shadowRadius: CGFloat = 3
+            let shadowOffset: CGSize = .init(width: 0, height: 1) // Slight vertical offset
 
+            // Apply Corner Radius to the background view
+            backgroundCardView.layer.cornerRadius = cornerRadius
+            
+            // Disable clipping on the background view layer itself
+            // This is crucial for displaying the shadow
+            backgroundCardView.layer.masksToBounds = false
+
+            // Apply Shadow properties
+            backgroundCardView.layer.shadowColor = shadowColor.cgColor
+            backgroundCardView.layer.shadowOpacity = shadowOpacity
+            backgroundCardView.layer.shadowRadius = shadowRadius
+            backgroundCardView.layer.shadowOffset = shadowOffset
+        }
     func configure(with model: ExerciseModel) {
         titleLabel.text = model.title
         detailLabel.text = model.detail
