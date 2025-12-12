@@ -13,13 +13,13 @@
         <!--Edit Medication-->
         <scene sceneID="xsf-cz-XbX">
             <objects>
-                <viewController storyboardIdentifier="EditMedicationViewController" id="fPF-Zt-vSc" customClass="EditMedicationViewController" customModule="Parkinsons" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="EditMedicationViewController" useStoryboardIdentifierAsRestorationIdentifier="YES" id="fPF-Zt-vSc" customClass="EditMedicationViewController" customModule="Parkinsons" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="AYk-sY-5GE">
-                        <rect key="frame" x="0.0" y="0.0" width="402" height="812"/>
+                        <rect key="frame" x="0.0" y="0.0" width="402" height="874"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="FvL-gM-jN9">
-                                <rect key="frame" x="16" y="110" width="370" height="702"/>
+                                <rect key="frame" x="16" y="218" width="370" height="588"/>
                                 <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                                 <collectionViewFlowLayout key="collectionViewLayout" automaticEstimatedItemSize="YES" minimumLineSpacing="10" minimumInteritemSpacing="10" id="wwD-s6-1I1">
                                     <size key="itemSize" width="128" height="128"/>
@@ -106,8 +106,6 @@
                     <simulatedToolbarMetrics key="simulatedBottomBarMetrics"/>
                     <connections>
                         <outlet property="collectionView" destination="x3W-Wd-eSg" id="d4i-UC-UYn"/>
-                        <segue destination="fUo-Iz-Fmc" kind="presentation" identifier="showSkipper" id="L3B-uX-ifs"/>
-                        <segue destination="lqJ-RC-jZL" kind="presentation" identifier="showEditMedication" id="C2g-Wm-86o"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Ief-a0-LHa" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
@@ -569,10 +567,10 @@
                                                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                                 <textInputTraits key="textInputTraits"/>
                                                             </textField>
-                                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="dzD-3s-UCy">
+                                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="mg" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="dzD-3s-UCy">
                                                                 <rect key="frame" x="288" y="15.999999999999998" width="74" height="20.333333333333329"/>
                                                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                                                <color key="textColor" white="0.66666666666666663" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                                <color key="textColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                                 <nil key="highlightedColor"/>
                                                             </label>
                                                         </subviews>
@@ -580,9 +578,6 @@
                                                         <constraints>
                                                             <constraint firstAttribute="height" constant="52" id="adE-eh-gfg"/>
                                                         </constraints>
-                                                        <connections>
-                                                            <outletCollection property="gestureRecognizers" destination="FGY-yr-1jn" appends="YES" id="Sy5-m4-HiC"/>
-                                                        </connections>
                                                     </stackView>
                                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="8Ba-zK-fON">
                                                         <rect key="frame" x="0.0" y="158" width="362" height="1"/>
@@ -595,13 +590,13 @@
                                                         <rect key="frame" x="0.0" y="159" width="362" height="52"/>
                                                         <subviews>
                                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" verticalHuggingPriority="251" text="Repeat" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="yYc-39-GCC">
-                                                                <rect key="frame" x="0.0" y="15.999999999999998" width="134" height="20.333333333333329"/>
+                                                                <rect key="frame" x="0.0" y="15.999999999999998" width="105.66666666666667" height="20.333333333333329"/>
                                                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                                 <nil key="textColor"/>
                                                                 <nil key="highlightedColor"/>
                                                             </label>
-                                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="heN-Zu-44g">
-                                                                <rect key="frame" x="221" y="15.999999999999998" width="41.333333333333314" height="20.333333333333329"/>
+                                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Everyday" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="heN-Zu-44g">
+                                                                <rect key="frame" x="192.66666666666666" y="15.999999999999998" width="69.666666666666657" height="20.333333333333329"/>
                                                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                                 <color key="textColor" white="0.66666666669999997" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                                 <nil key="highlightedColor"/>
@@ -694,6 +689,9 @@
                                                                                 </label>
                                                                                 <datePicker contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" datePickerMode="time" minuteInterval="1" translatesAutoresizingMaskIntoConstraints="NO" id="rNL-T7-GQp">
                                                                                     <rect key="frame" x="242.66666666666666" y="0.0" width="119.33333333333334" height="52"/>
+                                                                                    <connections>
+                                                                                        <action selector="timeChanged:" destination="uB6-UL-vnu" eventType="valueChanged" id="u8i-IO-561"/>
+                                                                                    </connections>
                                                                                 </datePicker>
                                                                             </subviews>
                                                                             <constraints>
@@ -780,14 +778,20 @@
                                 <action selector="backButtonTapped:" destination="yJh-Dd-9bP" id="yhC-gN-ssK"/>
                             </connections>
                         </barButtonItem>
-                        <barButtonItem key="rightBarButtonItem" style="done" systemItem="done" id="Jbu-Bt-3WR"/>
+                        <barButtonItem key="rightBarButtonItem" style="done" systemItem="done" id="Jbu-Bt-3WR">
+                            <connections>
+                                <action selector="onTickPressed:" destination="yJh-Dd-9bP" id="27R-lN-NSC"/>
+                            </connections>
+                        </barButtonItem>
                     </navigationItem>
                     <size key="freeformSize" width="402" height="1076"/>
                     <connections>
                         <outlet property="doseStepper" destination="9LW-1A-HYC" id="k0a-N1-Ngg"/>
                         <outlet property="doseTableView" destination="ngi-X1-K4O" id="g9G-dD-gP9"/>
+                        <outlet property="medicationNameTextField" destination="8NH-ci-OO3" id="6HK-m8-1LU"/>
                         <outlet property="repeatLabel" destination="heN-Zu-44g" id="Cwl-Uc-UJC"/>
                         <outlet property="repeatStack" destination="vVB-dr-ib6" id="dtT-Iq-c0P"/>
+                        <outlet property="strengthUnitLabel" destination="dzD-3s-UCy" id="pwk-zq-vr2"/>
                         <outlet property="typeLabel" destination="ARD-xd-s7b" id="DIE-OL-aV2"/>
                         <outlet property="uiStackView" destination="sNJ-d1-pEM" id="I92-nT-650"/>
                         <outlet property="unitLabel" destination="xUA-MS-j2p" id="tUf-C9-coE"/>
@@ -812,13 +816,13 @@
         <!--Skipped Taken View Controller-->
         <scene sceneID="l34-Ew-KHS">
             <objects>
-                <viewController storyboardIdentifier="SkippedTakenVC" id="ham-hl-RhS" customClass="SkippedTakenViewController" customModule="Parkinsons" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="SkippedTakenViewController" useStoryboardIdentifierAsRestorationIdentifier="YES" id="ham-hl-RhS" customClass="SkippedTakenViewController" customModule="Parkinsons" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="Ode-4C-J7Z">
-                        <rect key="frame" x="0.0" y="0.0" width="402" height="812"/>
+                        <rect key="frame" x="0.0" y="0.0" width="402" height="874"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="j9z-wR-sgR">
-                                <rect key="frame" x="20" y="220" width="361" height="172"/>
+                                <rect key="frame" x="20" y="328" width="361" height="172"/>
                                 <subviews>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="UnS-2p-kHJ">
                                         <rect key="frame" x="12" y="112" width="153" height="48"/>
@@ -1443,7 +1447,7 @@
                 <navigationController automaticallyAdjustsScrollViewInsets="NO" id="fUo-Iz-Fmc" sceneMemberID="viewController">
                     <toolbarItems/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" id="rFe-dF-Mpt">
-                        <rect key="frame" x="0.0" y="16" width="402" height="54"/>
+                        <rect key="frame" x="0.0" y="124" width="402" height="54"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
                     <nil name="viewControllers"/>
@@ -1484,7 +1488,7 @@
                 <navigationController automaticallyAdjustsScrollViewInsets="NO" id="lqJ-RC-jZL" sceneMemberID="viewController">
                     <toolbarItems/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" id="KUL-9W-MOJ">
-                        <rect key="frame" x="0.0" y="16" width="402" height="54"/>
+                        <rect key="frame" x="0.0" y="124" width="402" height="54"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
                     <nil name="viewControllers"/>

@@ -22,27 +22,38 @@ class EditMedicationCollectionViewCell: UICollectionViewCell {
         cardView.layer.cornerRadius = 16
         cardView.layer.masksToBounds = true
     }
-    
-    func configure(with dose: MedicationDose) {
-            
-            // time
-            let fmt = DateFormatter()
-            fmt.dateFormat = "h:mm"
-            timeLabel.text = fmt.string(from: dose.time)
-            
-            fmt.dateFormat = "a"
-            ampmLabel.text = fmt.string(from: dose.time)
-            
-            // title + subtitle
-            titleLabel.text = dose.medication.name
-            subtitleLabel.text = "1 \(dose.medication.form.lowercased())"
-            
-            // schedule
-            scheduleLabel.text = dose.medication.schedule
-            
-            // icon
-            medIcon.image = UIImage(named: dose.medication.iconName ?? "")
+    private func weekdayName(_ n: Int) -> String {
+        let names = ["Sun","Mon","Tue","Wed","Thu","Fri","Sat"]
+        return names[n - 1]
+    }
+
+    func configure(with dose: MedicationDose, medication: Medication) {
+        // time
+        let fmt = DateFormatter()
+        fmt.dateFormat = "h:mm"
+        timeLabel.text = fmt.string(from: dose.time)
+
+        fmt.dateFormat = "a"
+        ampmLabel.text = fmt.string(from: dose.time)
+
+        // title + subtitle
+        titleLabel.text = medication.name
+        subtitleLabel.text = "1 \(medication.form.lowercased())"
+
+        // schedule
+        switch medication.schedule {
+        case .everyday:
+            scheduleLabel.text = "Everyday"
+        case .none:
+            scheduleLabel.text = "None"
+        case .weekly(let days):
+            scheduleLabel.text = "Weekly: " + days.map({ weekdayName($0) }).joined(separator: ", ")
         }
+
+        // icon
+        medIcon.image = UIImage(named: medication.iconName ?? "")
+    }
+
 
 }
 

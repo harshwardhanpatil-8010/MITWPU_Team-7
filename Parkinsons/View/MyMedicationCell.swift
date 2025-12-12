@@ -24,23 +24,23 @@ class MyMedicationCell: UICollectionViewCell {
         styleCard()
     }
     func configure(with medication: Medication) {
-            
-            titleLabel.text = medication.name
-            subtitleLabel.text = medication.form           // Tablet/Capsule etc.
-            
-            repeatLabel.text = medication.schedule         // “Everyday”, “Mon, Wed”
-            
-            // Frequency = number of doses per day
-            let timesPerDay = medication.doses.count
-            frequencyLabel.text = "\(timesPerDay)x/day"
-            
-            // Medication icon
-            if let icon = medication.iconName {
-                iconImageView.image = UIImage(named: icon)
-            } else {
-                iconImageView.image = UIImage(systemName: "pills")
-            }
+        titleLabel.text = medication.name
+        subtitleLabel.text = medication.form
+
+        // FIX: Repeat rule → readable string
+        repeatLabel.text = medication.schedule.displayString()
+
+        // Frequency
+        frequencyLabel.text = "\(medication.doses.count)x/day"
+
+        // Icon
+        if let icon = medication.iconName {
+            iconImageView.image = UIImage(named: icon)
+        } else {
+            iconImageView.image = UIImage(systemName: "pills")
         }
+    }
+
         
         // MARK: - Styling
     private func styleCard() {

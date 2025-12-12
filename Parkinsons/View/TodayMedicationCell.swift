@@ -44,47 +44,43 @@ class TodayMedicationCell: UICollectionViewCell {
     }
 
 
-        // NEW configure - accepts both medication and dose
-        func configure(with dose: MedicationDose) {
+    func configure(with dose: MedicationDose, medication: Medication) {
 
-            let formatter = DateFormatter()
-            formatter.dateFormat = "h:mm a"
+        // Time formatting
+        let formatter = DateFormatter()
+        formatter.dateFormat = "h:mm a"
 
-            let fullTime = formatter.string(from: dose.time)   // "10:45 AM"
-            let components = fullTime.split(separator: " ")    // ["10:45", "AM"]
+        let fullTime = formatter.string(from: dose.time)
+        let components = fullTime.split(separator: " ")
 
-            timeNumberLabel.text = String(components[0])       // "10:45"
-            ampmLabel.text = String(components[1])             // "AM"
+        timeNumberLabel.text = String(components[0])
+        ampmLabel.text = String(components[1])
 
+        // Medication info
+        titleLabel.text = medication.name
+        subtitleLabel.text = medication.form
+        iconImageView.image = UIImage(named: medication.iconName ?? "")
 
-            titleLabel.text = dose.medication.name
-            subtitleLabel.text = dose.medication.form
-            iconImageView.image = UIImage(named: dose.medication.iconName ?? "")
+        // Status icon
+        switch dose.status {
+        case .taken:
+            statusImageView.image = UIImage(systemName: "checkmark")
+            statusImageView.tintColor = .systemGreen
 
-            switch dose.status {
+        case .skipped:
+            statusImageView.image = UIImage(systemName: "xmark")
+            statusImageView.tintColor = .systemRed
 
-            case .taken:
-                statusImageView.image = UIImage(systemName: "checkmark")
-                statusImageView.tintColor = .systemGreen
-
-            case .skipped:
-                statusImageView.image = UIImage(systemName: "xmark")
-                statusImageView.tintColor = .systemRed
-
-            case .none:
-                let now = Date()
-                let scheduledTime = dose.time
-
-                if now > scheduledTime {
-                    statusImageView.image = UIImage(named: "Due")
-                    statusImageView.tintColor = nil
-                } else {
-                    statusImageView.image = UIImage(systemName: "circle")
-                    statusImageView.tintColor = .systemGray5
-                }
+        case .none:
+            if Date() > dose.time {
+                statusImageView.image = UIImage(named: "Due")
+                statusImageView.tintColor = nil
+            } else {
+                statusImageView.image = UIImage(systemName: "circle")
+                statusImageView.tintColor = .systemGray5
             }
-
-            }
+        }
+    }
 
 
         @IBAction func chevronTapped(_ sender: UIButton) {

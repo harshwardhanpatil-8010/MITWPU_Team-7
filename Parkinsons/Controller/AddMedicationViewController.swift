@@ -10,25 +10,78 @@ import UIKit
 class AddMedicationViewController:  UIViewController, UITableViewDelegate, UITableViewDataSource, DoseTableViewCellDelegate, UnitsAndTypeDelegate, RepeatSelectionDelegate {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-
-        if let saved = AddMedicationDataStore.shared.repeatOption {
-            repeatLabel.text = saved
+        print("SavedUnit: \(UnitAndTypeStore.shared.savedUnit ?? "nil")")
+        print("SavedType: \(UnitAndTypeStore.shared.savedType ?? "nil")")
+        
+        
+        
+        if let unit = UnitAndTypeStore.shared.savedUnit, !unit.isEmpty {
+            unitLabel.text = unit
+            unitLabel.textColor = .label
+            strengthUnitLabel.textColor = .label
+        } else {
+            unitLabel.text = "mg"
+            unitLabel.textColor = UIColor.systemGray2
+            strengthUnitLabel.textColor = UIColor.systemGray2
+        }
+        
+        if let medType = UnitAndTypeStore.shared.savedType, !medType.isEmpty {
+            typeLabel.text = medType
+            typeLabel.textColor = .label
+        } else {
+            typeLabel.text = "Capsule"
+            typeLabel.textColor = UIColor.systemGray2
+        }
+    }
+    
+    func updateLabelPlaceholderStyle(label: UILabel, placeholder: String) {
+        if label.text == placeholder {
+            label.textColor = .systemGray2       // light grey placeholder
+        } else {
+            label.textColor = .label             // normal text color
+        }
+    }
+    
+    
+    func didSelectRepeatOption(_ option: String) {
+        repeatLabel.text = option
+        repeatLabel.textColor = .label
+    }
+    
+    
+    @IBOutlet weak var medicationNameTextField: UITextField!
+    @IBOutlet weak var strengthUnitLabel: UILabel!
+    @IBOutlet weak var repeatLabel: UILabel!
+    @IBOutlet weak var typeLabel: UILabel!
+    @IBOutlet weak var unitLabel: UILabel!
+    
+    func didSelectUnitsAndType(unitText: String, selectedType: String) {
+        unitLabel.text = unitText
+        typeLabel.text = selectedType
+        strengthUnitLabel.text = unitText
+        
+        unitLabel.textColor = .label
+        typeLabel.textColor = .label
+        strengthUnitLabel.textColor = .label
+        
+    }
+    func iconForType(_ type: String) -> String {
+        switch type.lowercased() {
+        case "capsule": return "capsule"
+        case "tablet": return "tablet"
+        case "liquid": return "liquid"
+        case "cream": return "cream"
+        case "device": return "device"
+        case "drops": return "drops"
+        case "foam": return "foam"
+        case "gel": return "gel"
+        case "powder": return "powder"
+        case "spray": return "spray"
+        default: return "tablet"   // fallback icon
         }
     }
 
 
-    func didSelectRepeatOption(_ option: String) {
-        repeatLabel.text = option
-    }
-    
-    @IBOutlet weak var repeatLabel: UILabel!
-    @IBOutlet weak var typeLabel: UILabel!
-    @IBOutlet weak var unitLabel: UILabel!
-    func didSelectUnitsAndType(unitText: String, selectedType: String) {
-        unitLabel.text = unitText
-        typeLabel.text = selectedType
-    }
-    
     
     @IBOutlet weak var repeatStack: UIStackView!
     @IBOutlet weak var unitandTypeStack: UIStackView!
@@ -40,18 +93,18 @@ class AddMedicationViewController:  UIViewController, UITableViewDelegate, UITab
     var doseArray: [Date] = [Date()]
     func didTapDelete(cell: DoseTableViewCell) {
         guard let indexPath = doseTableView.indexPath(for: cell) else { return }
-
-                // Remove correct dose
-                doseArray.remove(at: indexPath.row)
-
-                // Animate removal
-                doseTableView.deleteRows(at: [indexPath], with: .fade)
-
-                // Update stepper
-                doseStepper.value = Double(doseArray.count)
-
-                // Renumber labels
-                renumberDoses()
+        
+        // Remove correct dose
+        doseArray.remove(at: indexPath.row)
+        
+        // Animate removal
+        doseTableView.deleteRows(at: [indexPath], with: .fade)
+        
+        // Update stepper
+        doseStepper.value = Double(doseArray.count)
+        
+        // Renumber labels
+        renumberDoses()
         
     }
     
@@ -61,12 +114,12 @@ class AddMedicationViewController:  UIViewController, UITableViewDelegate, UITab
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "DoseCell",
-                                                         for: indexPath) as! DoseTableViewCell
-
-                cell.delegate = self
-                cell.doseNumberLabel.text = " \(indexPath.row + 1)"
-
-                return cell
+                                                 for: indexPath) as! DoseTableViewCell
+        
+        cell.delegate = self
+        cell.doseNumberLabel.text = " \(indexPath.row + 1)"
+        
+        return cell
     }
     
     @objc func deleteDose(_ sender: UIButton) {
@@ -79,33 +132,36 @@ class AddMedicationViewController:  UIViewController, UITableViewDelegate, UITab
     @IBOutlet weak var doseStepper: UIStepper!
     @IBAction func doseStepperChanged(_ sender: UIStepper) {
         let newCount = Int(sender.value)
-
-                if newCount > doseArray.count {
-                    doseArray.append(Date())         // add new dose
-                } else {
-                    doseArray.removeLast()           // remove last dose
-                }
-
-                doseTableView.reloadData()
+        
+        if newCount > doseArray.count {
+            doseArray.append(Date())         // add new dose
+        } else {
+            doseArray.removeLast()           // remove last dose
+        }
+        
+        doseTableView.reloadData()
     }
     func updateStepperValue() {
         doseStepper.value = Double(doseArray.count)
     }
     func renumberDoses() {
         for i in 0..<doseArray.count {
-                    if let cell = doseTableView.cellForRow(at: IndexPath(row: i, section: 0)) as? DoseTableViewCell {
-                        cell.doseNumberLabel.text = "\(i + 1)"
-                    }
-                }
+            if let cell = doseTableView.cellForRow(at: IndexPath(row: i, section: 0)) as? DoseTableViewCell {
+                cell.doseNumberLabel.text = "\(i + 1)"
+            }
+        }
     }
-
-
+    
+    
     
     @IBOutlet weak var doseTableView: UITableView!
     var doseCount: Int = 1
     @IBOutlet weak var uiStackView: UIStackView!
+    
+    
     override func viewDidLoad() {
         super.viewDidLoad()
+        
         uiStackView.layer.cornerRadius = 30
         uiStackView.clipsToBounds = true
         doseTableView.dataSource = self
@@ -115,58 +171,58 @@ class AddMedicationViewController:  UIViewController, UITableViewDelegate, UITab
         // Do any additional setup after loading the view.
         repeatStack.isUserInteractionEnabled = true
         if let savedRepeat = AddMedicationDataStore.shared.repeatOption {
-                repeatLabel.text = savedRepeat
-            }
-
-            //  Add tap gesture for Repeat Stack
-            repeatStack.addGestureRecognizer(
-                UITapGestureRecognizer(target: self, action: #selector(onRepeatStackTapped))
-            )
-
+            repeatLabel.text = savedRepeat
+        }
+        
+        //  Add tap gesture for Repeat Stack
+        repeatStack.addGestureRecognizer(
+            UITapGestureRecognizer(target: self, action: #selector(onRepeatStackTapped))
+        )
+        
         
     }
     @IBAction func onStackTapped(_ sender: Any) {
         print("StackView tapped!")
-
-            let storyboard = UIStoryboard(name: "Medication", bundle: nil)
-
-            // 1. Load the navigation controller
-            let nav = storyboard.instantiateViewController(
-                withIdentifier: "UnitsAndTypeNav"
-            ) as! UINavigationController
-
-            // 2. Get the inner VC
-            if let vc = nav.topViewController as? UnitAndTypeViewController {
-                vc.delegate = self   // Set delegate BEFORE presenting
-            }
-
-            // 3. Present ONCE
-            nav.modalPresentationStyle = .pageSheet
-            present(nav, animated: true)
+        
+        let storyboard = UIStoryboard(name: "Medication", bundle: nil)
+        
+        // 1. Load the navigation controller
+        let nav = storyboard.instantiateViewController(
+            withIdentifier: "UnitsAndTypeNav"
+        ) as! UINavigationController
+        
+        // 2. Get the inner VC
+        if let vc = nav.topViewController as? UnitAndTypeViewController {
+            vc.delegate = self   // Set delegate BEFORE presenting
+        }
+        
+        // 3. Present ONCE
+        nav.modalPresentationStyle = .pageSheet
+        present(nav, animated: true)
         
     }
     
     @objc func goToUnitsAndType() {
         performSegue(withIdentifier: "goToUnitsAndType", sender: self)
     }
-//    @objc func onRepeatTapped() {
-//        print("Repeat stack tapped!")
-//
-//        let storyboard = UIStoryboard(name: "Medication", bundle: nil)
-//
-//        // Load navigation controller
-//        let nav = storyboard.instantiateViewController(
-//            withIdentifier: "RepeatNav"
-//        ) as! UINavigationController
-//
-//        // Get Repeat VC
-//        if let vc = nav.topViewController as? RepeatViewController {
-//            vc.delegate = self   //  set delegate
-//        }
-//
-//        nav.modalPresentationStyle = .pageSheet
-//        present(nav, animated: true)
-//    }
+    //    @objc func onRepeatTapped() {
+    //        print("Repeat stack tapped!")
+    //
+    //        let storyboard = UIStoryboard(name: "Medication", bundle: nil)
+    //
+    //        // Load navigation controller
+    //        let nav = storyboard.instantiateViewController(
+    //            withIdentifier: "RepeatNav"
+    //        ) as! UINavigationController
+    //
+    //        // Get Repeat VC
+    //        if let vc = nav.topViewController as? RepeatViewController {
+    //            vc.delegate = self   //  set delegate
+    //        }
+    //
+    //        nav.modalPresentationStyle = .pageSheet
+    //        present(nav, animated: true)
+    //    }
     
     @IBAction func repeatStackTapped(_ sender: Any) {
         onRepeatStackTapped()
@@ -175,28 +231,91 @@ class AddMedicationViewController:  UIViewController, UITableViewDelegate, UITab
     @objc func onRepeatStackTapped() {
         let storyboard = UIStoryboard(name: "Medication", bundle: nil)
         let nav = storyboard.instantiateViewController(withIdentifier: "RepeatNav") as! UINavigationController
-
+        
         if let vc = nav.topViewController as? RepeatViewController {
             vc.delegate = self
         }
-
+        
         nav.modalPresentationStyle = .pageSheet
         present(nav, animated: true)
     }
-
-
-
-
     
-
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destination.
-        // Pass the selected object to the new view controller.
+    func didUpdateTime(cell: DoseTableViewCell, newTime: Date) {
+        if let indexPath = doseTableView.indexPath(for: cell) {
+            doseArray[indexPath.row] = newTime
+            print("Updated dose time for row \(indexPath.row): \(newTime)")
+        }
     }
-    */
 
-}
+    @IBAction func onTickPressed(_ sender: UIBarButtonItem) {
+        guard let name = medicationNameTextField.text, !name.isEmpty else {
+                print("Medication name missing")
+                return
+            }
+
+            // 1. DETERMINE SCHEDULE
+            let repeatOption = repeatLabel.text ?? "Everyday"
+            let schedule: RepeatRule
+
+            switch repeatOption.lowercased() {
+            case "everyday":
+                schedule = .everyday
+
+            case "none":
+                schedule = .none
+
+            default:
+                // Example: "Mon, Wed, Fri"
+                let days = AddMedicationDataStore.shared.selectedWeekdayNumbers
+                schedule = .weekly(days)
+            }
+
+            // 2. CREATE DOSE MODELS
+            let medicationID = UUID()
+            
+            let doseModels = doseArray.map { date in
+                MedicationDose(
+                    id: UUID(),
+                    time: date,
+                    status: .none,
+                    medicationID: medicationID
+                )
+            }
+
+            // 3. CREATE MEDICATION OBJECT
+            let newMed = Medication(
+                id: medicationID,
+                name: name,
+                form: typeLabel.text ?? "Capsule",
+                iconName: iconForType(typeLabel.text ?? "Capsule"),
+                schedule: schedule,
+                doses: doseModels,
+                createdAt: Date()
+            )
+
+
+            // 4. SAVE IT
+            MedicationDataStore.shared.addMedication(newMed)
+
+            // Debug
+            print("Medication saved:", newMed)
+
+            // 5. DISMISS
+            dismiss(animated: true)
+        }
+        
+        
+        
+        
+        /*
+         // MARK: - Navigation
+         
+         // In a storyboard-based application, you will often want to do a little preparation before navigation
+         override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+         // Get the new view controller using segue.destination.
+         // Pass the selected object to the new view controller.
+         }
+         */
+        
+    }
+

@@ -1,20 +1,87 @@
 import Foundation
-enum DoseStatus { case none, taken, skipped }
 
-struct MedicationDose {
-    let id: UUID
-    var time: Date
-    var status: DoseStatus
-
-    var medication: Medication
+enum DoseStatus: String, Codable {
+    case none, taken, skipped
 }
 
-struct Medication {
+struct MedicationDose: Codable, Identifiable {
+    let id: UUID
+    var time: Date         // we'll store a full Date but treat it as time-of-day
+    var status: DoseStatus
+    var medicationID: UUID
+}
+
+enum RepeatRule: Codable {
+    case everyday
+    case weekly([Int]) // weekday numbers 1...7 (Sun...Sat)
+    case none
+
+    private enum CodingKeys: String, CodingKey { case type, days }
+
+    private enum RepeatType: String, Codable {
+        case everyday, weekly, none
+    }
+
+    init(from decoder: Decoder) throws {
+        let container = try decoder.container(keyedBy: CodingKeys.self)
+        let type = try container.decode(RepeatType.self, forKey: .type)
+        switch type {
+        case .everyday: self = .everyday
+        case .none: self = .none
+        case .weekly:
+            let days = try container.decode([Int].self, forKey: .days)
+            self = .weekly(days)
+        }
+    }
+
+    func encode(to encoder: Encoder) throws {
+        var container = encoder.container(keyedBy: CodingKeys.self)
+        switch self {
+        case .everyday:
+            try container.encode(RepeatType.everyday, forKey: .type)
+        case .none:
+            try container.encode(RepeatType.none, forKey: .type)
+        case .weekly(let days):
+            try container.encode(RepeatType.weekly, forKey: .type)
+            try container.encode(days, forKey: .days)
+        }
+    }
+}
+
+struct Medication: Codable, Identifiable {
     let id: UUID
     var name: String
     var form: String
     var iconName: String?
-    var schedule: String        // e.g., "Everyday"
+    var schedule: RepeatRule
     var doses: [MedicationDose]
+    var createdAt: Date
+}
+extension RepeatRule {
+    func displayString() -> String {
+        switch self {
+        case .everyday:
+            return "Everyday"
+
+        case .none:
+            return "None"
+
+        case .weekly(let days):
+            let formatter = DateFormatter()
+
+            // 💡 Safely unwrap optional
+            guard let weekdays = formatter.shortWeekdaySymbols else {
+                return "Weekly"
+            }
+
+            // Convert 1...7 → names
+            let names = days.compactMap { day -> String? in
+                guard day >= 1 && day <= weekdays.count else { return nil }
+                return weekdays[day - 1]
+            }
+
+            return names.joined(separator: ", ")
+        }
+    }
 }
 

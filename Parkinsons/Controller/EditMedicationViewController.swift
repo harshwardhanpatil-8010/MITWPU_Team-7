@@ -52,7 +52,7 @@ class EditMedicationViewController: UIViewController, UICollectionViewDelegate {
     }
     */
 
-}
+} 
 extension EditMedicationViewController: UICollectionViewDataSource {
 
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
@@ -64,7 +64,8 @@ extension EditMedicationViewController: UICollectionViewDataSource {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "EditMedCell", for: indexPath) as! EditMedicationCollectionViewCell
         
         let dose = medication.doses[indexPath.row]
-        cell.configure(with: dose)
+        cell.configure(with: dose, medication: medication)
+
         
         return cell
     }

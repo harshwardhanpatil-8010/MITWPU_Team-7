@@ -17,6 +17,6 @@ class AddMedicationDataStore {
 
     // New for REPEAT:
     var repeatOption: String?
-
+    var selectedWeekdayNumbers: [Int] = []   // e.g., [2,4,6]
     private init() {}
 }

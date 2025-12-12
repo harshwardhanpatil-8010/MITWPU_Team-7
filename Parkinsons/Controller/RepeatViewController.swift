@@ -17,8 +17,11 @@ class RepeatViewController: UIViewController, UITableViewDataSource, UITableView
     @IBOutlet weak var RepeatTableView: UITableView!
     weak var delegate: RepeatSelectionDelegate?
     var selectedRepeat: String?
+    
+
     override func viewDidLoad() {
         super.viewDidLoad()
+        RepeatTableView.allowsMultipleSelection = true
         RepeatTableView.layer.cornerRadius = 10
         RepeatTableView.clipsToBounds = true
         RepeatTableView.backgroundColor = UIColor.systemGray6
@@ -44,12 +47,34 @@ class RepeatViewController: UIViewController, UITableViewDataSource, UITableView
     }
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
 
-        for i in 0..<repeatList.count {
-            repeatList[i].isSelected = (i == indexPath.row)
-        }
-        print(repeatList)
-        selectedRepeat = repeatList[indexPath.row].name
-        tableView.reloadData()
+        if repeatList[indexPath.row].name.lowercased() == "everyday" {
+
+                // Select ONLY everyday
+                for i in 0..<repeatList.count {
+                    repeatList[i].isSelected = (i == indexPath.row)
+                }
+
+                selectedRepeat = "Everyday"
+                tableView.reloadData()
+                return
+            }
+
+            // 2. User selected a weekday → must unselect Everyday
+            if repeatList.first?.name.lowercased() == "everyday" {
+                repeatList[0].isSelected = false  // unselect everyday
+            }
+
+            // Toggle weekday selection
+            repeatList[indexPath.row].isSelected.toggle()
+
+            // Update final selection list
+            let selectedDays = repeatList
+                .filter { $0.isSelected }
+                .map { $0.name }
+
+            selectedRepeat = selectedDays.joined(separator: ", ")
+
+            tableView.reloadData()
     }
 
     
@@ -62,13 +87,35 @@ class RepeatViewController: UIViewController, UITableViewDataSource, UITableView
     
     
     @IBAction func onTickPressed(_ sender: Any) {
-        guard let selected = selectedRepeat else { return }
+        let selectedDays = repeatList
+                .filter { $0.isSelected }
+                .map { $0.name }
 
-                // Save to DataStore
-                AddMedicationDataStore.shared.repeatOption = selected
+            if selectedDays.contains("Everyday") {
+                // Save simple string
+                AddMedicationDataStore.shared.repeatOption = "Everyday"
+                AddMedicationDataStore.shared.selectedWeekdayNumbers = [1,2,3,4,5,6,7]
+            } else {
 
-                delegate?.didSelectRepeatOption(selected)
-                dismiss(animated: true)
+                // Convert weekday names to numbers
+                let weekdayMap: [String: Int] = [
+                    "Sunday": 1,
+                    "Monday": 2,
+                    "Tuesday": 3,
+                    "Wednesday": 4,
+                    "Thursday": 5,
+                    "Friday": 6,
+                    "Saturday": 7
+                ]
+
+                let mappedNumbers = selectedDays.compactMap { weekdayMap[$0] }
+
+                AddMedicationDataStore.shared.repeatOption = selectedDays.joined(separator: ", ")
+                AddMedicationDataStore.shared.selectedWeekdayNumbers = mappedNumbers
+            }
+
+            delegate?.didSelectRepeatOption(AddMedicationDataStore.shared.repeatOption!)
+            dismiss(animated: true)
     }
     
     

@@ -27,16 +27,19 @@ class UnitAndTypeViewController: UIViewController, UITableViewDataSource, UITabl
         TypeTableView.delegate = self
         TypeTableView.dataSource = self
         unitTextField.delegate = self
+        unitTextField.placeholder = "mg"
+
         unitTextField.text = UnitAndTypeStore.shared.savedUnit
 
            // Restore previous type selection
-           if !UnitAndTypeStore.shared.savedType.isEmpty {
-               selectedType = UnitAndTypeStore.shared.savedType
+        if let savedType = UnitAndTypeStore.shared.savedType, !savedType.isEmpty {
+            selectedType = savedType
 
-               if let index = unitAndType.firstIndex(where: { $0.name == selectedType }) {
-                   unitAndType[index].isSelected = true
-               }
-           }
+            if let index = unitAndType.firstIndex(where: { $0.name == savedType }) {
+                unitAndType[index].isSelected = true
+            }
+        }
+
 
            TypeTableView.reloadData()
 

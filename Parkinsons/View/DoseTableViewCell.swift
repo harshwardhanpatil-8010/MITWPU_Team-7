@@ -9,7 +9,9 @@ import UIKit
 
 protocol DoseTableViewCellDelegate: AnyObject {
     func didTapDelete(cell: DoseTableViewCell)
+    func didUpdateTime(cell: DoseTableViewCell, newTime: Date)
 }
+
 
 class DoseTableViewCell: UITableViewCell {
     weak var delegate: DoseTableViewCellDelegate?
@@ -32,5 +34,8 @@ class DoseTableViewCell: UITableViewCell {
 
         // Configure the view for the selected state
     }
-
+    @IBAction func timeChanged(_ sender: UIDatePicker) {
+        delegate?.didUpdateTime(cell: self, newTime: sender.date)
+    }
+    
 }
