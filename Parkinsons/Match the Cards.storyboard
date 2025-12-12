@@ -125,6 +125,7 @@
                                 <state key="normal" title="Button"/>
                                 <buttonConfiguration key="configuration" style="filled" title="Play" cornerStyle="capsule"/>
                                 <connections>
+                                    <action selector="startButtonTapped:" destination="JqZ-U1-ZY8" eventType="touchUpInside" id="Q9E-aW-mVz"/>
                                     <segue destination="cR1-vI-89a" kind="show" id="cn2-5n-217"/>
                                 </connections>
                             </button>
@@ -152,7 +153,8 @@
                         <barButtonItem key="rightBarButtonItem" title="Item" image="questionmark.circle" catalog="system" id="fOh-dL-wmL"/>
                     </navigationItem>
                     <connections>
-                        <outlet property="datePickerUIView" destination="TMp-53-3oK" id="JdB-2d-L79"/>
+                        <outlet property="datePickerOutlet" destination="hqb-Wq-C1e" id="gEB-pe-U5g"/>
+                        <outlet property="datePickerUIView" destination="TMp-53-3oK" id="yoo-Xh-8p4"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Yx6-rB-5dT" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>

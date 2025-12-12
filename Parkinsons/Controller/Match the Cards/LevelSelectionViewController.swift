@@ -12,10 +12,18 @@ class LevelSelectionViewController: UIViewController {
     
     @IBOutlet weak var datePickerUIView: UIView!
     
+    @IBOutlet weak var datePickerOutlet: UIDatePicker!
     override func viewDidLoad() {
         super.viewDidLoad()
         datePickerUIView.applyCardStyle()
+        datePickerOutlet.maximumDate = Date()
+        datePickerOutlet.preferredDatePickerStyle = .wheels
+        datePickerOutlet.datePickerMode = .date
         // Do any additional setup after loading the view.
+    }
+    
+    @IBAction func startButtonTapped(_ sender: UIButton) {
+        let selected = datePickerOutlet.date
     }
     
 
