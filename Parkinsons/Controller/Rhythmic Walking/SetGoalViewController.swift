@@ -18,11 +18,11 @@ class SetGoalViewController: UIViewController, UITableViewDataSource, UIPickerVi
             }
         infoVC.modalPresentationStyle = .pageSheet
         self.present(infoVC, animated: true, completion: nil)
-//        let overLay = OverlayPopUp()
-//        overLay.appear(sender: self)
         
     }
-
+    
+    var startTapsCount: Int = 0
+    
     private let paces = ["Slow", "Moderate", "Fast"]
     private var beats: [String] = []
     private var selectedBeat = "Clock"
@@ -94,20 +94,30 @@ class SetGoalViewController: UIViewController, UITableViewDataSource, UIPickerVi
         return String(value)
     }
     
+    @IBOutlet weak var sessionTableView: UITableView!
+
 
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return session.count
+        return DataStore.shared.sessions.count
     }
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "sessionCell", for: indexPath)
-        cell.textLabel?.text = "\(session[indexPath.row].title)"
+        let session = DataStore.shared.sessions[indexPath.row]
+        let sessionNumber = DataStore.shared.sessions.count - indexPath.row
+        let walked = session.elapsedSeconds
+        let hrs = walked / 3600
+        let mins = walked % 3600 / 60
+        let secs = walked % 60
+        
+        if hrs == 0 {
+            cell.textLabel?.text = "Session \(sessionNumber)\t\t\t\t\t\t\t \(mins)min \(secs)s"
+        }
+        else{
+            cell.textLabel?.text = "Session \(sessionNumber)\t\t\t\t\t\t\t \(hrs)hrs \(mins)min"
+        }
         
         return cell
     }
-    
-
-    @IBOutlet weak var sessionTableView: UITableView!
-
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -155,9 +165,28 @@ class SetGoalViewController: UIViewController, UITableViewDataSource, UIPickerVi
             let alert = UIAlertController(title: "Choose duration", message: "Please select a duration greater than 0.", preferredStyle: .alert)
             alert.addAction(UIAlertAction(title: "OK", style: .default))
             present(alert, animated: true)
+            self.startTapsCount = 0
+            self.sessionTableView.reloadData()
             return
         }
         
+        let newSession = RhythmicSession(
+            id: UUID(),
+            startDate: Date(),
+            endDate: nil,
+            requestedDurationSeconds: total,
+            elapsedSeconds: 0,
+            beat: selectedBeat,
+            pace: selectedPace,
+            steps: 0,
+            distanceKMeters: 0
+        )
+
+        DataStore.shared.add(newSession)
+        sessionTableView.reloadData()
+        
+        
+    
         
         performSegue(withIdentifier: "go", sender: self)
     }
@@ -174,7 +203,8 @@ class SetGoalViewController: UIViewController, UITableViewDataSource, UIPickerVi
         destVC.minn = m
         destVC.selectedBeat = selectedBeat
         destVC.selectedPace = selectedPace
-        destVC.selectedBeat = String(bpm)
+        // Fix: assign BPM to selectedBPM, not to selectedBeat
+        destVC.selectedBPM = bpm
     }
     
     @IBAction func beatButtonTapped(_ sender: UIButton) {
@@ -204,7 +234,7 @@ class SetGoalViewController: UIViewController, UITableViewDataSource, UIPickerVi
             self.updateButtons()
         }
         let option1 = UIAction(title: "Slow",state: .on, handler: optionClosure)
-        let option2 = UIAction(title: "Medium", handler: optionClosure)
+        let option2 = UIAction(title: "Moderate", handler: optionClosure)
         let option3 = UIAction(title: "Fast", handler: optionClosure)
         let menu  = UIMenu(children: [option1, option2, option3])
         paceButton.menu = menu

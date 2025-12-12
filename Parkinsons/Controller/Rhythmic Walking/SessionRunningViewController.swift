@@ -71,10 +71,7 @@ class SessionRunningViewController: UIViewController {
     
     
     private func updateDisplay(hours: Int, minutes: Int) {
-        let hoursForDisplay = totalSessionDuration / 3600
-        let minutesForDisplay = (totalSessionDuration % 3600) / 60
-        let secondsForDisplay = totalSessionDuration % 60
-        timeLabel.text = String(format: "%02d:%02d:%02d", hoursForDisplay, minutesForDisplay, secondsForDisplay)
+        timeLabel.text = String(format: "%02d:%02d:%02d", hours, minutes, 0)
         progressView.setProgress(1.0)
     }
     
@@ -167,6 +164,21 @@ class SessionRunningViewController: UIViewController {
     }
     
     @IBAction func endSessionButtonTapped(_ sender: Any) {
+        guard var session = DataStore.shared.sessions.first else{
+            presentSummaryAndDismiss()
+            return
+        }
+        let parts = timeLabel.text?.split(separator: ":") ?? ["0", "0", "0"]
+        let h = Int(parts[0]) ?? 0
+        let m = Int(parts[1]) ?? 0
+        let s = Int(parts[2]) ?? 0
+        let timeLeft = (h * 3600) + (m * 60) + s
+        let elapsedSeconds = session.requestedDurationSeconds - timeLeft
+        session.endDate = Date()
+        session.elapsedSeconds = elapsedSeconds
+        
+        DataStore.shared.update(session)
+        
         presentSummaryAndDismiss()
     }
     

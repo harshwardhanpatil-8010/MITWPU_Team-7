@@ -23,7 +23,7 @@ var gaitDemoInfo: GaitSummary = .init(stepLengthMeters: 0.8, walkingAsymmetryPer
 struct RhythmicSession: Codable, Identifiable {
     let id: UUID
     let startDate: Date
-    let endDate: Date?
+    var endDate: Date?
     var requestedDurationSeconds: Int
     var elapsedSeconds: Int
     var beat: String
