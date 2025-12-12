@@ -116,7 +116,7 @@ class SessionRunningViewController: UIViewController {
                 _ = self
         }
         let option1 = UIAction(title: "Slow", state: selectedPace == "Slow" ? .on : .off, handler: optionClosure)
-        let option2 = UIAction(title: "Medium", state: selectedPace == "Medium" ? .on : .off, handler: optionClosure)
+        let option2 = UIAction(title: "Moderate", state: selectedPace == "Moderate" ? .on : .off, handler: optionClosure)
         let option3 = UIAction(title: "Fast", state: selectedPace == "Fast" ? .on : .off, handler: optionClosure)
         let menu  = UIMenu(children: [option1, option2, option3])
         paceButton.menu = menu

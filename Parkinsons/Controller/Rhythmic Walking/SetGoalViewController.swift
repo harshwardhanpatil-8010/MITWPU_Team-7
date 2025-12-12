@@ -207,22 +207,7 @@ class SetGoalViewController: UIViewController, UITableViewDataSource, UIPickerVi
         destVC.selectedBPM = bpm
     }
     
-    @IBAction func beatButtonTapped(_ sender: UIButton) {
-        let optionClosure: UIActionHandler = { [weak self] action in
-            guard let self = self else { return }
-            self.selectedBeat = action.title
-            self.updateButtons()
-        }
-        let option1 = UIAction(title: "Clock",state: .on, handler: optionClosure)
-        let option2 = UIAction(title: "Grass", handler: optionClosure)
-        let menu  = UIMenu(children: [option1, option2])
-        beatButton.menu = menu
-        beatButton.showsMenuAsPrimaryAction = true
-        beatButton.changesSelectionAsPrimaryAction = true
-    }
-    
-    @IBAction func paceButtonTapped(_ sender: Any) {
-    }
+
     
     func setupBeatButton(){
         let optionClosure: UIActionHandler = { [weak self] action in
