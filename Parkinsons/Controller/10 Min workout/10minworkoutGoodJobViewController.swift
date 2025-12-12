@@ -26,7 +26,7 @@ class _0minworkoutGoodJobViewController: UIViewController {
         completionDataStackOutlet.applyCardStyle()
         // Do any additional setup after loading the view.
         totalTimeLabel.text = formatTime(totalWorkoutSeconds)
-
+        
     }
     func updateUI() {
         completedExerciseNumberLabel.text = "\(completed)"
