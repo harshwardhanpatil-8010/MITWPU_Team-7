@@ -52,9 +52,11 @@ class HomeViewController: UIViewController, UICollectionViewDelegate , SymptomLo
         MedicationModel(name: "Carbidopa", time: "10:00 AM", detail: "1 capsule", iconName: "pills.fill"),
     ]
     var exerciseData: [ExerciseModel] = [
-        ExerciseModel(title: "10-Min Workout", detail: "Repeat everyday", progressPercentage: 67 ),
-        ExerciseModel(title: "Rhythmic Walking", detail: "2-3 times a week", progressPercentage: 25 )
-    ]
+// ⭐️ MODIFIED: Added progressColorHex: "0088FF" ⭐️
+ExerciseModel(title: "10-Min Workout", detail: "Repeat everyday", progressPercentage: 67, progressColorHex: "0088FF" ),
+// ⭐️ MODIFIED: Added progressColorHex: "90AF81" ⭐️
+ExerciseModel(title: "Rhythmic Walking", detail: "2-3 times a week", progressPercentage: 25, progressColorHex: "90AF81" )
+]
     var therapeuticGamesData: [TherapeuticGameModel] = [
         TherapeuticGameModel(
             title: "Mimic the Emoji",

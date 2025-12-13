@@ -112,7 +112,7 @@ class SymptomLogHistoryViewController: UIViewController , SymptomLogDetailDelega
         
         // ⭐️ Constraints for TableView - Top padding set to 128 as requested ⭐️
         NSLayoutConstraint.activate([
-            tableView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 128), // Top padding
+            tableView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 160), // Top padding
             tableView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
             tableView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
             tableView.bottomAnchor.constraint(equalTo: view.bottomAnchor)

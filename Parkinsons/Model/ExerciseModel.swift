@@ -14,4 +14,5 @@ struct ExerciseModel {
     let progressPercentage: Int
     // e.g., 0 for 0% Done
     // e.g., "7.5" (minutes/score)
+    let progressColorHex: String
 }

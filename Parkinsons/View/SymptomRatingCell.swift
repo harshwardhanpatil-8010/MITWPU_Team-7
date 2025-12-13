@@ -72,7 +72,7 @@ class SymptomRatingCell: UITableViewCell {
                 
                 // ⭐️ FIX: Add Border Logic Here ⭐️
                 button.layer.borderWidth = 1.0
-                button.layer.borderColor = selectedColor.cgColor
+                button.layer.borderColor = selectedColor.cgColor   
                 button.layer.cornerRadius = button.frame.height / 2 // Makes the border circular
                 button.layer.masksToBounds = true // Crucial for making sure the corner radius applies
                 

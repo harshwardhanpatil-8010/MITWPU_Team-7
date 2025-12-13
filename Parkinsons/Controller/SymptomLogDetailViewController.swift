@@ -22,12 +22,13 @@ class SymptomLogDetailViewController: UIViewController {
     
     // Data Source: This array tracks all user selections
     var symptoms: [SymptomRating] = [
-        SymptomRating(name: "Slowed Movement", iconName: "running_man"),
-        SymptomRating(name: "Tremor", iconName: "hand_tremor"),
-        SymptomRating(name: "Loss of Balance", iconName: "person_balance"),
-        SymptomRating(name: "Facial Stiffness", iconName: "face.smiling"),
-        SymptomRating(name: "Body Stiffness", iconName: "figure.walk"),
-        SymptomRating(name: "Gait Disturbance", iconName: "figure.roll")
+        SymptomRating(name: "Slowed Movement", iconName: "SlowedMovement"),
+        SymptomRating(name: "Tremor", iconName: "tremor"),
+        SymptomRating(name: "Loss of Balance", iconName: "lossOfBalance"),
+        SymptomRating(name: "Facial Stiffness", iconName: "stiffFace"),
+        SymptomRating(name: "Body Stiffness", iconName: "bodyStiffness"),
+        SymptomRating(name: "Gait Disturbance", iconName: "walking"),
+        SymptomRating(name: "Insomnia", iconName: "insomnia")
     ]
     
     // UI Elements
@@ -61,7 +62,7 @@ class SymptomLogDetailViewController: UIViewController {
         let topAnchor = headerContainerView?.bottomAnchor ?? view.safeAreaLayoutGuide.topAnchor
         
         NSLayoutConstraint.activate([
-            tableView.topAnchor.constraint(equalTo: topAnchor, constant: 200),
+            tableView.topAnchor.constraint(equalTo: topAnchor, constant: 140),
             tableView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
             tableView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
             tableView.bottomAnchor.constraint(equalTo: view.bottomAnchor)

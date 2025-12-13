@@ -7,45 +7,47 @@ class SymptomDetailCell: UITableViewCell {
     // ⭐️ Connect these outlets from the XIB/Storyboard ⭐️
     @IBOutlet weak var symptomIconImageView: UIImageView!
     @IBOutlet weak var symptomNameLabel: UILabel!
-    @IBOutlet weak var intensityIconImageView: UIImageView!
+    @IBOutlet weak var intensityIconImageView: UIImageView! // The target image view
     
     static let reuseIdentifier = "SymptomDetailCell"
 
     // Helper function to map Intensity to an image
     private func imageForIntensity(_ intensity: SymptomRating.Intensity) -> UIImage? {
-        let baseIconName: String
+        let assetName: String
         
-        // We use the same base names from your SymptomRatingCell code,
-        // assuming 'om' is a placeholder for the non-filled state.
+        // ⭐️ MODIFICATION: Use Asset Names instead of SFSymbols ⭐️
         switch intensity {
         case .mild:
-            // Assuming your non-filled icon is "face.smiling.om" (if it's a real asset)
-            // If you are using standard SFSymbols, it should just be "face.smiling"
-            baseIconName = "face.smiling"
+            // Assumes you have an image named "face.mild" in your assets.
+            assetName = "faceMild"
         case .moderate:
-            baseIconName = "face.neutral"
+            // Assumes you have an image named "face.moderate" in your assets.
+            assetName = "moderateFace"
         case .severe:
-            baseIconName = "face.sad"
+            // Assuming you have a severe icon in your assets, e.g., "face.severe"
+            assetName = "SevereFace 1" // Replace with your actual severe asset name if different
         case .notPresent:
-            baseIconName = "xmark.circle"
+            // Assuming you have a not present icon, e.g., "xmark.circle.red"
+            assetName = "xMark" // Replace with your actual notPresent asset name if different
         }
         
-        // In the detail cell, we always want the 'filled' version of the icon
-        // to show the result clearly.
-        return UIImage(systemName: baseIconName + ".fill")
+        // Load image from the main asset catalog
+        return UIImage(named: assetName)
     }
 
     func configure(with rating: SymptomRating) {
         symptomNameLabel.text = rating.name
         
-        // Symptom Icon (left side)
+        // Symptom Icon (left side) - Remains the same, loading from assets by `rating.iconName`
         symptomIconImageView.image = UIImage(named: rating.iconName ?? "doc.text.image")
         symptomIconImageView.tintColor = .label
         
-        // Intensity Icon (right side)
+        // Intensity Icon (right side) - Now using custom assets
         intensityIconImageView.image = imageForIntensity(rating.selectedIntensity)
         
         // Set color based on intensity for visual feedback
+        // NOTE: If your asset images are not template images (i.e., they are full color),
+        // setting the tintColor here might not change their appearance.
         if rating.selectedIntensity == .notPresent {
             intensityIconImageView.tintColor = .systemRed
         } else if rating.selectedIntensity == .severe {
