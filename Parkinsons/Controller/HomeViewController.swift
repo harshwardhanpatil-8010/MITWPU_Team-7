@@ -7,6 +7,13 @@
 
 import UIKit
 
+enum Section: Int, CaseIterable {
+    case calendar
+    case medications
+    case exercises
+    case symptoms
+    case therapeuticGames
+}
 // Make sure SymptomLogDetailDelegate is defined in HomeViewController.swift
 // or imported from SymptomLogDetailViewController.swift
 
@@ -18,13 +25,7 @@ class HomeViewController: UIViewController, UICollectionViewDelegate , SymptomLo
     @IBOutlet weak var mainCollectionView: UICollectionView!
     
     // MARK: - Section Definition and Data
-    enum Section: Int, CaseIterable {
-        case calendar
-        case medications
-        case exercises
-        case symptoms
-        case therapeuticGames
-    }
+    
     let homeSections = Section.allCases
     private let separatorView: UIView = {
         let view = UIView()
@@ -416,6 +417,22 @@ ExerciseModel(title: "Rhythmic Walking", detail: "2-3 times a week", progressPer
             
             // Reload the calendar header to update the "Today, Date" title dynamically
             collectionView.reloadSections(IndexSet(integer: Section.calendar.rawValue))
+            
+            let storyboard = UIStoryboard(name: "Home", bundle: nil) // Assuming HomeViewController is in "Home.storyboard"
+                        
+                        guard let summaryVC = storyboard.instantiateViewController(withIdentifier: "SummaryViewController") as? SummaryViewController else {
+                            print("Error: Could not instantiate SummaryViewController.")
+                            return
+                        }
+                        
+                        // Pass the newly selected date to the SummaryViewController
+                        summaryVC.dateToDisplay = selectedDate
+                        
+                        // Wrap in a navigation controller (optional, but good practice for a modal sheet)
+                        let navController = UINavigationController(rootViewController: summaryVC)
+                        navController.modalPresentationStyle = .pageSheet // Present as a partial sheet
+                        
+                        present(navController, animated: true, completion: nil)
         } else {
             // Handle item selection in content sections
         }

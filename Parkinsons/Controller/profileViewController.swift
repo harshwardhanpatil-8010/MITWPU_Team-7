@@ -74,16 +74,18 @@ class profileViewController: UIViewController {
         
         if isEditingMode {
             // --- EDIT MODE ---
-            // 1. Change button icon to checkmark (Save)
+            // 1. Change button to a checkmark icon (Save action)
             editButton.image = UIImage(systemName: "checkmark.circle.fill")
+            editButton.title = nil // Make sure text is nil when using an image
             
             // 2. Enable editing for all fields
             updateUI(forEditing: true)
             
         } else {
-            // --- SAVE MODE ---
-            // 1. Change button icon back to pencil (Edit)
-            editButton.image = UIImage(systemName: "pencil")
+            // --- SAVE MODE / Switch back to VIEW MODE ---
+            // 1. Change button back to the text "Edit"
+            editButton.image = nil // Make sure image is nil when using text
+            editButton.title = "Edit"
             
             // 2. Disable editing for all fields
             updateUI(forEditing: false)
@@ -96,7 +98,6 @@ class profileViewController: UIViewController {
             // TODO: Implement your data saving logic here
         }
     }
-    
     // MARK: - UI State Toggle Function
     
     func updateUI(forEditing isEditing: Bool) {
