@@ -92,8 +92,12 @@ class MedicationLandingPageViewController: UIViewController, UICollectionViewDel
 
         for med in allMedications {
             guard isMedicationDueToday(med) else { continue }
-            todaysMedications.append(contentsOf: med.doses)
+
+            let normalized = med.doses.map { normalizeDoseDate($0) }
+
+            todaysMedications.append(contentsOf: normalized)
         }
+
 
         let now = Date()
 
@@ -117,12 +121,20 @@ class MedicationLandingPageViewController: UIViewController, UICollectionViewDel
     }
 
     
-    @objc func editMyMedications() {
-        // Choose the medication currently selected OR open a list screen, whichever you prefer.
-        if let first = allMedications.first {
-            openEditMedicationScreen(for: first)
-        }
+    @IBAction func editMyMedications(_ sender: Any) {
+        let storyboard = UIStoryboard(name: "Medication", bundle: nil)
+        let vc = storyboard.instantiateViewController(
+            withIdentifier: "EditMedicationViewController"
+        ) as! EditMedicationViewController
+
+        vc.medications = allMedications   // pass entire meds list
+
+        let nav = UINavigationController(rootViewController: vc)
+        nav.modalPresentationStyle = .formSheet
+        present(nav, animated: true)
     }
+
+
 
 //    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
 //        if segue.identifier == "showEditMedication" {
@@ -156,15 +168,15 @@ class MedicationLandingPageViewController: UIViewController, UICollectionViewDel
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
 
         if indexPath.section == 0 {
-            // Today’s medications → open skip/taken modal
             selectedDose = todaysMedications[indexPath.row]
             openSkipTakenModal(for: selectedDose!)
         } else {
-            // My medications → open edit screen
-            selectedMedication = allMedications[indexPath.row]
-            openEditMedicationScreen(for: selectedMedication!)
+            // Open the list of medications
+            openEditMedicationScreen()
         }
     }
+
+
 
 
 //    func openSkipTakenModal(for dose: MedicationDose) {
@@ -386,6 +398,7 @@ extension MedicationLandingPageViewController: UICollectionViewDataSource {
         if indexPath.section == 0 {
             header.configureHeader(text: "Today's Medication", showEdit: false)
         } else {
+            
             header.configureHeader(text: "My Medications", showEdit: true)
 
             header.editButton.addTarget(
@@ -474,17 +487,21 @@ extension MedicationLandingPageViewController: UICollectionViewDataSource {
 // MARK: - Navigation (Programmatic)
 extension MedicationLandingPageViewController {
 
-    func openEditMedicationScreen(for medication: Medication) {
+    func openEditMedicationScreen() {
         let storyboard = UIStoryboard(name: "Medication", bundle: nil)
         let vc = storyboard.instantiateViewController(
             withIdentifier: "EditMedicationViewController"
         ) as! EditMedicationViewController
-        
-        vc.medication = medication   // pass object
+
+        vc.medications = allMedications
+
         let nav = UINavigationController(rootViewController: vc)
         nav.modalPresentationStyle = .formSheet
         present(nav, animated: true)
     }
+
+
+
 
     func openSkipTakenModal(for dose: MedicationDose) {
         let storyboard = UIStoryboard(name: "Medication", bundle: nil)
@@ -493,7 +510,7 @@ extension MedicationLandingPageViewController {
         ) as! SkippedTakenViewController
 
         vc.selectedDose = dose
-        
+
         if let med = allMedications.first(where: { $0.id == dose.medicationID }) {
             vc.receivedTitle = med.name
             vc.receivedSubtitle = med.form
@@ -501,7 +518,32 @@ extension MedicationLandingPageViewController {
         }
 
         vc.delegate = self
-        vc.modalPresentationStyle = .overCurrentContext
-        present(vc, animated: true)
+
+        // 🔥 The REAL fix
+        let nav = UINavigationController(rootViewController: vc)
+        nav.modalPresentationStyle = .pageSheet   // or .formSheet, or .overFullScreen
+        present(nav, animated: true)
+
     }
+    private func normalizeDoseDate(_ dose: MedicationDose) -> MedicationDose {
+        var updatedDose = dose
+        let calendar = Calendar.current
+
+        // If dose.status was from a previous day → reset it
+        if !calendar.isDateInToday(dose.time) {
+            // Extract hour/minute from old time
+            let components = calendar.dateComponents([.hour, .minute], from: dose.time)
+            let today = calendar.date(bySettingHour: components.hour ?? 0,
+                                      minute: components.minute ?? 0,
+                                      second: 0,
+                                      of: Date())!
+
+            updatedDose.time = today
+            updatedDose.status = .none
+        }
+
+        return updatedDose
+    }
+
+
 }

@@ -11,35 +11,43 @@ class EditMedicationViewController: UIViewController, UICollectionViewDelegate {
     
 
     @IBOutlet weak var collectionView: UICollectionView!
-    var medication: Medication!
-    var dose: MedicationDose?
+    
+    var medications: [Medication] = []
+
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-        setupUI()
+        
         collectionView.dataSource = self
         collectionView.delegate = self
 
-                // Register cell
-        collectionView.register(UINib(nibName: "EditMedCell", bundle: nil),
-                                        forCellWithReuseIdentifier: "EditMedCell")
-        // Do any additional setup after loading the view.
+        collectionView.register(
+            UINib(nibName: "EditMedicationCollectionViewCell", bundle: nil),
+            forCellWithReuseIdentifier: "EditMedCell"
+        )
     }
-    private func setupUI() {
-            guard let medication = medication, let dose = dose else { return }
 
-//            titleLabel.text = medication.name
-//            subtitleLabel.text = medication.form
-//            scheduleLabel.text = medication.schedule
-//            medIcon.image = UIImage(named: medication.iconName)
-//
-//            // Format time
-//            let formatter = DateFormatter()
-//            formatter.dateFormat = "hh:mm"
-//            timeLabel.text = formatter.string(from: dose.time)
-//
-//            formatter.dateFormat = "a"
-//            ampmLabel.text = formatter.string(from: dose.time)
-        }
+//    private func setupUI() {
+//        guard let medication = medication, let dose = dose else { return }
+//    }
+
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        let selected = medications[indexPath.row]
+
+        let storyboard = UIStoryboard(name: "Medication", bundle: nil)
+        let vc = storyboard.instantiateViewController(
+            withIdentifier: "AddMedVC"
+        ) as! AddMedicationViewController
+
+        vc.isEditMode = true                 // IMPORTANT
+        vc.medicationToEdit = selected       // PASS MEDICATION OBJECT
+
+        let nav = UINavigationController(rootViewController: vc)
+        nav.modalPresentationStyle = .formSheet
+        present(nav, animated: true)
+    }
+
+
     
 
     /*
@@ -56,19 +64,14 @@ class EditMedicationViewController: UIViewController, UICollectionViewDelegate {
 extension EditMedicationViewController: UICollectionViewDataSource {
 
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return medication.doses.count
+        return medications.count
     }
-
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "EditMedCell", for: indexPath) as! EditMedicationCollectionViewCell
-        
-        let dose = medication.doses[indexPath.row]
-        cell.configure(with: dose, medication: medication)
-
-        
+        cell.configure(with: medications[indexPath.row])
         return cell
     }
+    
 }
 
 extension EditMedicationViewController: UICollectionViewDelegateFlowLayout {

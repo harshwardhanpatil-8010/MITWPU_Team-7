@@ -19,7 +19,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="FvL-gM-jN9">
-                                <rect key="frame" x="16" y="218" width="370" height="588"/>
+                                <rect key="frame" x="13.666666666666657" y="218" width="375" height="588"/>
                                 <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                                 <collectionViewFlowLayout key="collectionViewLayout" automaticEstimatedItemSize="YES" minimumLineSpacing="10" minimumInteritemSpacing="10" id="wwD-s6-1I1">
                                     <size key="itemSize" width="128" height="128"/>
@@ -43,9 +43,9 @@
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                         <constraints>
                             <constraint firstItem="FvL-gM-jN9" firstAttribute="top" secondItem="AYk-sY-5GE" secondAttribute="topMargin" constant="40" id="1A0-fq-jw8"/>
-                            <constraint firstItem="dd3-o2-1I9" firstAttribute="trailing" secondItem="FvL-gM-jN9" secondAttribute="trailing" constant="16" id="ZU2-7r-SeS"/>
+                            <constraint firstItem="dd3-o2-1I9" firstAttribute="trailing" secondItem="FvL-gM-jN9" secondAttribute="trailing" constant="13.5" id="ZU2-7r-SeS"/>
                             <constraint firstAttribute="bottomMargin" secondItem="FvL-gM-jN9" secondAttribute="bottom" id="i9E-cW-qsF"/>
-                            <constraint firstItem="FvL-gM-jN9" firstAttribute="leading" secondItem="dd3-o2-1I9" secondAttribute="leading" constant="16" id="mx3-ni-Fwn"/>
+                            <constraint firstItem="FvL-gM-jN9" firstAttribute="leading" secondItem="dd3-o2-1I9" secondAttribute="leading" constant="13.5" id="mx3-ni-Fwn"/>
                         </constraints>
                     </view>
                     <navigationItem key="navigationItem" title="Edit Medication" id="S8y-hV-eNJ"/>
@@ -461,7 +461,7 @@
         <!--Add Medication-->
         <scene sceneID="kTb-Yk-Bo1">
             <objects>
-                <viewController title="Add Medication" id="yJh-Dd-9bP" customClass="AddMedicationViewController" customModule="Parkinsons" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="AddMedVC" title="Add Medication" useStoryboardIdentifierAsRestorationIdentifier="YES" id="yJh-Dd-9bP" customClass="AddMedicationViewController" customModule="Parkinsons" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="7Ny-w9-GZi">
                         <rect key="frame" x="0.0" y="0.0" width="402" height="1014"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -760,11 +760,26 @@
                                     <constraint firstItem="3ss-SD-Qb4" firstAttribute="top" secondItem="rZa-Wb-i25" secondAttribute="top" id="rnW-ly-MUV"/>
                                 </constraints>
                             </scrollView>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" role="destructive" translatesAutoresizingMaskIntoConstraints="NO" id="up2-1V-tmf">
+                                <rect key="frame" x="34" y="723" width="334" height="52"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="334" id="ILS-i4-YOW"/>
+                                    <constraint firstAttribute="height" constant="52" id="hdV-dC-xlX"/>
+                                </constraints>
+                                <state key="normal" title="Button"/>
+                                <buttonConfiguration key="configuration" style="gray" title="Delete medicine" cornerStyle="capsule"/>
+                                <connections>
+                                    <action selector="deleteMedication:" destination="yJh-Dd-9bP" eventType="touchUpInside" id="CzU-bW-Pl0"/>
+                                </connections>
+                            </button>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="83b-2T-2Rh"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                         <gestureRecognizers/>
                         <constraints>
+                            <constraint firstItem="up2-1V-tmf" firstAttribute="top" secondItem="83b-2T-2Rh" secondAttribute="top" constant="653" id="HLJ-it-x1g"/>
+                            <constraint firstItem="up2-1V-tmf" firstAttribute="leading" secondItem="83b-2T-2Rh" secondAttribute="leading" constant="34" id="Y84-OA-NPn"/>
+                            <constraint firstItem="83b-2T-2Rh" firstAttribute="trailing" secondItem="up2-1V-tmf" secondAttribute="trailing" constant="34" id="e2L-aJ-cHg"/>
                             <constraint firstItem="rZa-Wb-i25" firstAttribute="leading" secondItem="83b-2T-2Rh" secondAttribute="leading" id="gbu-Cj-v6e"/>
                             <constraint firstItem="3ss-SD-Qb4" firstAttribute="width" secondItem="7Ny-w9-GZi" secondAttribute="width" id="gdI-P5-xdO"/>
                             <constraint firstItem="rZa-Wb-i25" firstAttribute="trailing" secondItem="83b-2T-2Rh" secondAttribute="trailing" id="jBy-0P-PTP"/>
@@ -786,6 +801,7 @@
                     </navigationItem>
                     <size key="freeformSize" width="402" height="1076"/>
                     <connections>
+                        <outlet property="deleteButton" destination="up2-1V-tmf" id="PXl-70-2K8"/>
                         <outlet property="doseStepper" destination="9LW-1A-HYC" id="k0a-N1-Ngg"/>
                         <outlet property="doseTableView" destination="ngi-X1-K4O" id="g9G-dD-gP9"/>
                         <outlet property="medicationNameTextField" destination="8NH-ci-OO3" id="6HK-m8-1LU"/>
@@ -822,7 +838,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="j9z-wR-sgR">
-                                <rect key="frame" x="20" y="328" width="361" height="172"/>
+                                <rect key="frame" x="20" y="274" width="361" height="172"/>
                                 <subviews>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="UnS-2p-kHJ">
                                         <rect key="frame" x="12" y="112" width="153" height="48"/>
@@ -1171,26 +1187,13 @@
                                     </tableViewCell>
                                 </prototypes>
                             </tableView>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" role="destructive" translatesAutoresizingMaskIntoConstraints="NO" id="IAf-px-uyc">
-                                <rect key="frame" x="34" y="785" width="334" height="52"/>
-                                <constraints>
-                                    <constraint firstAttribute="width" constant="334" id="WNH-Lw-H8l"/>
-                                    <constraint firstAttribute="height" constant="52" id="j1L-lR-0ay"/>
-                                </constraints>
-                                <state key="normal" title="Button"/>
-                                <buttonConfiguration key="configuration" style="gray" title="Delete medicine" cornerStyle="capsule"/>
-                            </button>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="LXm-77-bUz"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                         <constraints>
                             <constraint firstItem="vrS-Uy-dab" firstAttribute="leading" secondItem="3A4-F7-nYc" secondAttribute="leading" constant="118" id="Qh1-Q3-9nF"/>
                             <constraint firstItem="8s9-ZM-E4c" firstAttribute="leading" secondItem="LXm-77-bUz" secondAttribute="leading" constant="20" id="Wj1-8u-HNE"/>
-                            <constraint firstItem="LXm-77-bUz" firstAttribute="trailing" secondItem="IAf-px-uyc" secondAttribute="trailing" constant="34" id="Y66-kL-jbt"/>
-                            <constraint firstAttribute="bottom" secondItem="IAf-px-uyc" secondAttribute="bottom" constant="37" id="byw-gq-tRm"/>
-                            <constraint firstItem="IAf-px-uyc" firstAttribute="top" secondItem="8s9-ZM-E4c" secondAttribute="bottom" constant="45" id="fLl-kb-4vC"/>
                             <constraint firstItem="vrS-Uy-dab" firstAttribute="top" secondItem="3A4-F7-nYc" secondAttribute="top" constant="29" id="hai-gy-pvO"/>
-                            <constraint firstItem="IAf-px-uyc" firstAttribute="leading" secondItem="LXm-77-bUz" secondAttribute="leading" constant="34" id="hoP-Bl-49e"/>
                             <constraint firstAttribute="trailing" secondItem="vrS-Uy-dab" secondAttribute="trailing" constant="118" id="koE-aG-m1Z"/>
                             <constraint firstItem="LXm-77-bUz" firstAttribute="trailing" secondItem="8s9-ZM-E4c" secondAttribute="trailing" constant="20" id="t9u-hJ-qgZ"/>
                         </constraints>
@@ -1440,24 +1443,6 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="fCt-Jp-PUI" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="3864.1791044776119" y="957.66590389016017"/>
-        </scene>
-        <!--Navigation Controller-->
-        <scene sceneID="yPt-4y-V09">
-            <objects>
-                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="fUo-Iz-Fmc" sceneMemberID="viewController">
-                    <toolbarItems/>
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="rFe-dF-Mpt">
-                        <rect key="frame" x="0.0" y="124" width="402" height="54"/>
-                        <autoresizingMask key="autoresizingMask"/>
-                    </navigationBar>
-                    <nil name="viewControllers"/>
-                    <connections>
-                        <segue destination="ham-hl-RhS" kind="relationship" relationship="rootViewController" id="7mY-9C-fRd"/>
-                    </connections>
-                </navigationController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="ka7-dR-sBz" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="650.74626865671632" y="977.57437070938204"/>
         </scene>
         <!--View Controller-->
         <scene sceneID="au1-ED-YJI">

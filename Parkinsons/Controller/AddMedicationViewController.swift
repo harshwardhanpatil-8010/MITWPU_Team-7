@@ -8,30 +8,31 @@
 import UIKit
 
 class AddMedicationViewController:  UIViewController, UITableViewDelegate, UITableViewDataSource, DoseTableViewCellDelegate, UnitsAndTypeDelegate, RepeatSelectionDelegate {
+    var isEditMode = false
+    var medicationToEdit: Medication!
+
+
+    @IBOutlet weak var deleteButton: UIButton!
+
     override func viewWillAppear(_ animated: Bool) {
+        
         super.viewWillAppear(animated)
-        print("SavedUnit: \(UnitAndTypeStore.shared.savedUnit ?? "nil")")
-        print("SavedType: \(UnitAndTypeStore.shared.savedType ?? "nil")")
-        
-        
-        
-        if let unit = UnitAndTypeStore.shared.savedUnit, !unit.isEmpty {
-            unitLabel.text = unit
-            unitLabel.textColor = .label
-            strengthUnitLabel.textColor = .label
-        } else {
-            unitLabel.text = "mg"
-            unitLabel.textColor = UIColor.systemGray2
-            strengthUnitLabel.textColor = UIColor.systemGray2
-        }
-        
-        if let medType = UnitAndTypeStore.shared.savedType, !medType.isEmpty {
-            typeLabel.text = medType
-            typeLabel.textColor = .label
-        } else {
-            typeLabel.text = "Capsule"
-            typeLabel.textColor = UIColor.systemGray2
-        }
+
+            if !isEditMode {
+                if let unit = UnitAndTypeStore.shared.savedUnit {
+                    unitLabel.text = unit
+                    strengthUnitLabel.text = unit
+                } else {
+                    unitLabel.text = "mg"
+                    strengthUnitLabel.text = "mg"
+                }
+
+                if let medType = UnitAndTypeStore.shared.savedType {
+                    typeLabel.text = medType
+                } else {
+                    typeLabel.text = "Capsule"
+                }
+            }
     }
     
     func updateLabelPlaceholderStyle(label: UILabel, placeholder: String) {
@@ -117,9 +118,12 @@ class AddMedicationViewController:  UIViewController, UITableViewDelegate, UITab
                                                  for: indexPath) as! DoseTableViewCell
         
         cell.delegate = self
-        cell.doseNumberLabel.text = " \(indexPath.row + 1)"
-        
-        return cell
+            cell.doseNumberLabel.text = "\(indexPath.row + 1)"
+
+            // SET SAVED TIME HERE
+            cell.timePicker.date = doseArray[indexPath.row]
+
+            return cell
     }
     
     @objc func deleteDose(_ sender: UIButton) {
@@ -161,6 +165,7 @@ class AddMedicationViewController:  UIViewController, UITableViewDelegate, UITab
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        deleteButton.isHidden = !isEditMode
         
         uiStackView.layer.cornerRadius = 30
         uiStackView.clipsToBounds = true
@@ -170,6 +175,12 @@ class AddMedicationViewController:  UIViewController, UITableViewDelegate, UITab
         unitandTypeStack.isUserInteractionEnabled = true
         // Do any additional setup after loading the view.
         repeatStack.isUserInteractionEnabled = true
+        if isEditMode {
+                fillFieldsForEditing()
+                deleteButton.isHidden = false
+            } else {
+                deleteButton.isHidden = true
+            }
         if let savedRepeat = AddMedicationDataStore.shared.repeatOption {
             repeatLabel.text = savedRepeat
         }
@@ -179,8 +190,54 @@ class AddMedicationViewController:  UIViewController, UITableViewDelegate, UITab
             UITapGestureRecognizer(target: self, action: #selector(onRepeatStackTapped))
         )
         
+
+
+
+        
         
     }
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+
+        if isEditMode {
+            fillFieldsForEditing()
+        }
+    }
+
+    
+    func fillFieldsForEditing() {
+        guard let med = medicationToEdit else { return }
+
+        medicationNameTextField.text = med.name
+        typeLabel.text = med.form
+        typeLabel.textColor = .label
+
+        // UNIT
+        unitLabel.text = med.unit
+        strengthUnitLabel.text = med.unit
+        unitLabel.textColor = .label
+        strengthUnitLabel.textColor = .label
+
+        // STRENGTH
+        if let strength = med.strength {
+            strengthUnitLabel.text = "\(strength)"
+        } else {
+            strengthUnitLabel.text = ""
+        }
+
+        // REPEAT
+        repeatLabel.text = med.schedule.displayString()
+        repeatLabel.textColor = .label
+
+        // DOSES
+        doseArray = med.doses.map { $0.time }
+        doseTableView.reloadData()
+        updateStepperValue()
+    }
+
+
+    
+
     @IBAction func onStackTapped(_ sender: Any) {
         print("StackView tapped!")
         
@@ -247,33 +304,30 @@ class AddMedicationViewController:  UIViewController, UITableViewDelegate, UITab
         }
     }
 
-    @IBAction func onTickPressed(_ sender: UIBarButtonItem) {
-        guard let name = medicationNameTextField.text, !name.isEmpty else {
-                print("Medication name missing")
-                return
-            }
+    @IBAction func deleteMedication(_ sender: UIButton) {
+        guard let med = medicationToEdit else { return }
 
-            // 1. DETERMINE SCHEDULE
-            let repeatOption = repeatLabel.text ?? "Everyday"
+            MedicationDataStore.shared.deleteMedication(med.id)
+
+            dismiss(animated: true)
+    }
+    @IBAction func onTickPressed(_ sender: UIBarButtonItem) {
+        guard let name = medicationNameTextField.text, !name.isEmpty else { return }
+
+            // Determine correct ID early
+            let medicationID: UUID = isEditMode ? medicationToEdit.id : UUID()
+
+            let repeatText = repeatLabel.text ?? "Everyday"
             let schedule: RepeatRule
 
-            switch repeatOption.lowercased() {
-            case "everyday":
-                schedule = .everyday
-
-            case "none":
-                schedule = .none
-
-            default:
-                // Example: "Mon, Wed, Fri"
-                let days = AddMedicationDataStore.shared.selectedWeekdayNumbers
-                schedule = .weekly(days)
+            switch repeatText.lowercased() {
+            case "everyday": schedule = .everyday
+            case "none": schedule = .none
+            default: schedule = .weekly(AddMedicationDataStore.shared.selectedWeekdayNumbers)
             }
 
-            // 2. CREATE DOSE MODELS
-            let medicationID = UUID()
-            
-            let doseModels = doseArray.map { date in
+            // Generate doses with SAFE medicationID
+            let updatedDoses = doseArray.map { date in
                 MedicationDose(
                     id: UUID(),
                     time: date,
@@ -282,26 +336,37 @@ class AddMedicationViewController:  UIViewController, UITableViewDelegate, UITab
                 )
             }
 
-            // 3. CREATE MEDICATION OBJECT
-            let newMed = Medication(
-                id: medicationID,
-                name: name,
-                form: typeLabel.text ?? "Capsule",
-                iconName: iconForType(typeLabel.text ?? "Capsule"),
-                schedule: schedule,
-                doses: doseModels,
-                createdAt: Date()
-            )
+            if isEditMode {
+                // UPDATE existing medication
+                MedicationDataStore.shared.updateMedication(
+                    originalID: medicationToEdit.id,
+                    newName: name,
+                    newForm: typeLabel.text ?? "Capsule",
+                    newSchedule: schedule,
+                    newDoses: updatedDoses,
+                    newUnit: unitLabel.text ?? "mg",
+                    newStrength: Int(strengthUnitLabel.text ?? "")
+                )
 
+            } else {
+                // ADD new medication
+                let newMedication = Medication(
+                    id: medicationID,
+                    name: name,
+                    form: typeLabel.text ?? "Capsule",
+                    unit: unitLabel.text ?? "mg",
+                    strength: nil,
+                    iconName: iconForType(typeLabel.text ?? "Capsule"),
+                    schedule: schedule,
+                    doses: updatedDoses,
+                    createdAt: Date()
+                )
 
-            // 4. SAVE IT
-            MedicationDataStore.shared.addMedication(newMed)
+                MedicationDataStore.shared.addMedication(newMedication)
+            }
 
-            // Debug
-            print("Medication saved:", newMed)
-
-            // 5. DISMISS
             dismiss(animated: true)
+
         }
         
         

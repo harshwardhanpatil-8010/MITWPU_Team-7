@@ -45,5 +45,26 @@ class MedicationDataStore: ObservableObject {
             medications = decoded
         }
     }
+    func updateMedication(
+        originalID: UUID,
+        newName: String,
+        newForm: String,
+        newSchedule: RepeatRule,
+        newDoses: [MedicationDose],
+        newUnit: String,
+        newStrength: Int?
+    ) {
+        if let index = medications.firstIndex(where: { $0.id == originalID }) {
+            medications[index].name = newName
+            medications[index].form = newForm
+            medications[index].schedule = newSchedule
+            medications[index].doses = newDoses
+            medications[index].unit = newUnit
+            medications[index].strength = newStrength
+            saveToStorage()
+        }
+    }
+
+
 }
 

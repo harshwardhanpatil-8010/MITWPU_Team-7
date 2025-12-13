@@ -26,7 +26,15 @@ class SkippedTakenViewController: UIViewController {
     @IBOutlet weak var titleLabel: UILabel!
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+        let formatter = DateFormatter()
+            formatter.dateFormat = "EEEE, d MMM"   // Saturday, 13 Dec
+            self.title = formatter.string(from: Date())
+        navigationItem.leftBarButtonItem = UIBarButtonItem(
+                barButtonSystemItem: .close,
+                target: self,
+                action: #selector(handleBack)
+            )
+
 //        guard let dose = selectedDose else { return }
         print("receivedTitle \(receivedTitle ?? " ")")
         titleLabel.text = receivedTitle
@@ -36,6 +44,10 @@ class SkippedTakenViewController: UIViewController {
         uiview.layer.masksToBounds = true
         // Do any additional setup after loading the view.
     }
+    @objc func handleBack() {
+        dismiss(animated: true)
+    }
+
     @IBAction func skippedButtonTapped(_ sender: UIButton) {
         selectedStatus = .skipped
         updateButtonUI()

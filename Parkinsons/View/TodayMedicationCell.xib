@@ -61,9 +61,6 @@
                                 <rect key="frame" x="330.33333333333331" y="14" width="39.666666666666686" height="35"/>
                                 <state key="normal" title="Button"/>
                                 <buttonConfiguration key="configuration" style="plain" image="chevron.right" catalog="system" title=""/>
-                                <connections>
-                                    <action selector="chevronTapped:" destination="gTV-IL-0wX" eventType="touchUpInside" id="EH8-Kj-8MG"/>
-                                </connections>
                             </button>
                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="7" translatesAutoresizingMaskIntoConstraints="NO" id="bEJ-N1-g2A">
                                 <rect key="frame" x="139" y="12" width="162.66666666666663" height="40"/>

@@ -48,16 +48,25 @@ enum RepeatRule: Codable {
     }
 }
 
-struct Medication: Codable, Identifiable {
+struct Medication : Codable{
     let id: UUID
     var name: String
     var form: String
-    var iconName: String?
+    var unit: String        // ← ADD THIS
+    var strength: Int?      // ← OPTIONAL
+    var iconName: String
     var schedule: RepeatRule
     var doses: [MedicationDose]
-    var createdAt: Date
+    let createdAt: Date
 }
+
 extension RepeatRule {
+    var weekdayNumbers: [Int] {
+            switch self {
+            case .weekly(let days): return days
+            default: return []
+            }
+        }
     func displayString() -> String {
         switch self {
         case .everyday:
@@ -68,13 +77,8 @@ extension RepeatRule {
 
         case .weekly(let days):
             let formatter = DateFormatter()
+            let weekdays = formatter.shortWeekdaySymbols!  // always exists (Sun, Mon, ...)
 
-            // 💡 Safely unwrap optional
-            guard let weekdays = formatter.shortWeekdaySymbols else {
-                return "Weekly"
-            }
-
-            // Convert 1...7 → names
             let names = days.compactMap { day -> String? in
                 guard day >= 1 && day <= weekdays.count else { return nil }
                 return weekdays[day - 1]
@@ -84,4 +88,5 @@ extension RepeatRule {
         }
     }
 }
+
 
