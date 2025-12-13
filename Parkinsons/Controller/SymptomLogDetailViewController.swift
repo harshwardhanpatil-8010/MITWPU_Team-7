@@ -21,15 +21,16 @@ class SymptomLogDetailViewController: UIViewController {
     weak var delegate: SymptomLogDetailDelegate?
     
     // Data Source: This array tracks all user selections
-    var symptoms: [SymptomRating] = [
-        SymptomRating(name: "Slowed Movement", iconName: "SlowedMovement"),
-        SymptomRating(name: "Tremor", iconName: "tremor"),
-        SymptomRating(name: "Loss of Balance", iconName: "lossOfBalance"),
-        SymptomRating(name: "Facial Stiffness", iconName: "stiffFace"),
-        SymptomRating(name: "Body Stiffness", iconName: "bodyStiffness"),
-        SymptomRating(name: "Gait Disturbance", iconName: "walking"),
-        SymptomRating(name: "Insomnia", iconName: "insomnia")
-    ]
+//    var symptoms: [SymptomRating] = [
+//        SymptomRating(name: "Slowed Movement", iconName: "SlowedMovement"),
+//        SymptomRating(name: "Tremor", iconName: "tremor"),
+//        SymptomRating(name: "Loss of Balance", iconName: "lossOfBalance"),
+//        SymptomRating(name: "Facial Stiffness", iconName: "stiffFace"),
+//        SymptomRating(name: "Body Stiffness", iconName: "bodyStiffness"),
+//        SymptomRating(name: "Gait Disturbance", iconName: "walking"),
+//        SymptomRating(name: "Insomnia", iconName: "insomnia")
+//    ]
+    var symptoms: [SymptomRating]!
     
     // UI Elements
     private let tableView = UITableView()
@@ -37,6 +38,9 @@ class SymptomLogDetailViewController: UIViewController {
     // MARK: - Lifecycle
 
     override func viewDidLoad() {
+        if self.symptoms == nil || self.symptoms.isEmpty {
+                    loadDefaultSymptoms()
+                }
         super.viewDidLoad()
         view.backgroundColor = .systemBackground
         
@@ -47,7 +51,17 @@ class SymptomLogDetailViewController: UIViewController {
     }
     
     // MARK: - UI Setup
-    
+    private func loadDefaultSymptoms() {
+            self.symptoms = [
+                SymptomRating(name: "Slowed Movement", iconName: "SlowedMovement"),
+                SymptomRating(name: "Tremor", iconName: "tremor"),
+                SymptomRating(name: "Loss of Balance", iconName: "lossOfBalance"),
+                SymptomRating(name: "Facial Stiffness", iconName: "stiffFace"),
+                SymptomRating(name: "Body Stiffness", iconName: "bodyStiffness"),
+                SymptomRating(name: "Gait Disturbance", iconName: "walking"),
+                SymptomRating(name: "Insomnia", iconName: "insomnia")
+            ]
+        }
     private func setupTableView() {
         view.addSubview(tableView)
         tableView.translatesAutoresizingMaskIntoConstraints = false

@@ -4,6 +4,7 @@ class SymptomLogHistoryViewController: UIViewController , SymptomLogDetailDelega
 
     // MARK: - Data Source
     
+    weak var updateCompletionDelegate: SymptomLogDetailDelegate?
     // ⭐️ Holds the single log entry for today ⭐️
     var todayLogEntry: SymptomLogEntry? {
         didSet {
@@ -146,21 +147,23 @@ extension SymptomLogHistoryViewController: UITableViewDataSource {
 
 extension SymptomLogHistoryViewController {
     
-func symptomLogDidComplete(with ratings: [SymptomRating]) {
-   // 1. Dismiss the modal editing view
-self.presentedViewController?.dismiss(animated: true) {
+    func symptomLogDidComplete(with ratings: [SymptomRating]) {
+            // 1. Dismiss the modal editing view
+            self.presentedViewController?.dismiss(animated: true) {
 
-// 2. Create the new log entry
-let newLogEntry = SymptomLogEntry(date: self.todayLogEntry?.date ?? Date(), ratings: ratings)
+                // 2. Create the new log entry
+                let newLogEntry = SymptomLogEntry(date: self.todayLogEntry?.date ?? Date(), ratings: ratings)
 
-// 3. Save the updated entry (Requires SymptomLogManager)
-// Note: You must define SymptomLogManager.shared.saveLogEntry(newLogEntry) elsewhere
-// SymptomLogManager.shared.saveLogEntry(newLogEntry)
+                // 3. Save the updated entry (This saves to persistence)
+                SymptomLogManager.shared.saveLogEntry(newLogEntry) // Assumed working
 
-// 4. Update the local data source and reload the table view
-    self.todayLogEntry = newLogEntry
- }
-}
+                // 4. Update the local data source and reload the table view (This updates the History VC's UI)
+                self.todayLogEntry = newLogEntry
+
+                // 5. ⭐️ CRITICAL FIX: Inform the HomeViewController that the log was completed/updated ⭐️
+                self.updateCompletionDelegate?.symptomLogDidComplete(with: ratings)
+            }
+        }
     
     func symptomLogDidCancel() {
         // The modal is dismissed inside the SymptomLogDetailViewController.

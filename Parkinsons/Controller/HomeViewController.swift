@@ -335,50 +335,53 @@ ExerciseModel(title: "Rhythmic Walking", detail: "2-3 times a week", progressPer
     // MARK: - SymptomLogCellDelegate Method (Handling Button Tap)
     
     func symptomLogCellDidTapLogNow(_ cell: SymptomLogCell) {
-            
+                
         let storyboard = UIStoryboard(name: "Home", bundle: nil)
-            
-            if hasLoggedSymptomsToday {
-                // Case 1: Logged today -> Navigate directly to Today's Detail View (MODAL WITHOUT NAV BAR)
                 
-                guard let todayLog = SymptomLogManager.shared.getLogForToday() else {
-                            print("❌ Warning: Logged status is TRUE, but could not find today's log in persistence. Falling back to Log Now.")
-                            // Reset status and return to prevent app crash if data is corrupted
-                            hasLoggedSymptomsToday = false
-                            return
-                        }
-
-                        // 2. Instantiate the Detail VC
-                        guard let detailVC = storyboard.instantiateViewController(withIdentifier: "SymptomLogHistoryViewController") as? SymptomLogHistoryViewController else {
-                            print("Error: Could not instantiate SymptomLogHistoryViewController.")
-                            return
-                        }
-                        
-                        // 3. ⭐️ PASS THE DATA ⭐️
-                        detailVC.todayLogEntry = todayLog
-
-                        // 4. Present Modally
-                        detailVC.modalPresentationStyle = .pageSheet
-                        self.present(detailVC, animated: true, completion: nil)
-                
-            } else {
-                // Case 2: Not logged today -> Open the Logging Modal (Existing Logic)
-                
-                // ... (existing code to present SymptomLogDetailViewController) ...
-                let storyboard = UIStoryboard(name: "Home", bundle: nil)
-                guard let symptomVC = storyboard.instantiateViewController(withIdentifier: "SymptomLogDetailViewController") as? SymptomLogDetailViewController else {
-                    print("Error: Could not instantiate SymptomLogDetailViewController.")
-                    return
-                }
-                
-                symptomVC.delegate = self
-                
-                let navController = UINavigationController(rootViewController: symptomVC)
-                navController.modalPresentationStyle = .pageSheet
-                
-                self.present(navController, animated: true, completion: nil)
+        if hasLoggedSymptomsToday {
+            // Case 1: Logged today -> Navigate directly to Today's Detail View
+                    
+            // 1. ⭐️ LOAD TODAY'S DATA FROM MANAGER ⭐️
+            guard let todayLog = SymptomLogManager.shared.getLogForToday() else {
+                print("❌ Warning: Logged status is TRUE, but could not find today's log in persistence. Falling back to Log Now.")
+                hasLoggedSymptomsToday = false
+                return
             }
+
+            // 2. Instantiate the Detail VC
+            guard let detailVC = storyboard.instantiateViewController(withIdentifier: "SymptomLogHistoryViewController") as? SymptomLogHistoryViewController else {
+                print("Error: Could not instantiate SymptomLogHistoryViewController.")
+                return
+            }
+                    
+            // 3. ⭐️ PASS THE DATA ⭐️
+            detailVC.todayLogEntry = todayLog
+            
+            // 4. ⭐️ CRITICAL FIX: Set the HomeViewController as the update delegate for the History VC ⭐️
+            detailVC.updateCompletionDelegate = self
+
+            // 5. Present Modally
+            detailVC.modalPresentationStyle = .pageSheet
+            self.present(detailVC, animated: true, completion: nil)
+                    
+        } else {
+            // Case 2: Not logged today -> Open the Logging Modal (Existing Logic)
+            
+            // ... (existing code to present SymptomLogDetailViewController, remains unchanged) ...
+            let storyboard = UIStoryboard(name: "Home", bundle: nil)
+            guard let symptomVC = storyboard.instantiateViewController(withIdentifier: "SymptomLogDetailViewController") as? SymptomLogDetailViewController else {
+                print("Error: Could not instantiate SymptomLogDetailViewController.")
+                return
+            }
+                    
+            symptomVC.delegate = self
+                    
+            let navController = UINavigationController(rootViewController: symptomVC)
+            navController.modalPresentationStyle = .pageSheet
+                    
+            self.present(navController, animated: true, completion: nil)
         }
+    }
     
     // Existing functions...
     func autoSelectToday() {
