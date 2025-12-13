@@ -37,19 +37,11 @@ class MatchTheCardCollectionViewCell: UICollectionViewCell {
             frontLabel.isHidden = false
             backImageView.isHidden = true
             contentView.alpha = 0.3
-            showingFront = true
-        } else {
-            contentView.alpha = 1.0
-            if card.isFlipped {
-                frontLabel.isHidden = false
-                backImageView.isHidden = true
-                showingFront = true
-            } else {
-                frontLabel.isHidden = true
-                backImageView.isHidden = false
-                showingFront = false
-            }
+            return
         }
+        contentView.alpha = 1.0
+        frontLabel.isHidden = !card.isFlipped
+        backImageView.isHidden = card.isFlipped
     }
     
     func flip(toFront: Bool, animated: Bool) {

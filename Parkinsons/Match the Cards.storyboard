@@ -10,71 +10,6 @@
     </dependencies>
     <scenes>
         <!--Match the Cards-->
-        <scene sceneID="4kP-GG-n39">
-            <objects>
-                <viewController id="6Gh-ff-K81" sceneMemberID="viewController">
-                    <view key="view" contentMode="scaleToFill" id="bPI-Xb-l5k">
-                        <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
-                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <subviews>
-                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Emoji Landing" translatesAutoresizingMaskIntoConstraints="NO" id="BfJ-lR-JEF">
-                                <rect key="frame" x="104" y="155" width="185" height="220"/>
-                                <constraints>
-                                    <constraint firstAttribute="height" constant="220" id="t1f-Jc-jaK"/>
-                                </constraints>
-                            </imageView>
-                            <stackView opaque="NO" contentMode="scaleToFill" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="1G1-ER-uxn">
-                                <rect key="frame" x="16" y="415" width="361" height="21"/>
-                                <subviews>
-                                    <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Trophy Image" translatesAutoresizingMaskIntoConstraints="NO" id="AF0-bM-WQj">
-                                        <rect key="frame" x="0.0" y="0.0" width="21" height="21"/>
-                                        <constraints>
-                                            <constraint firstAttribute="height" constant="21" id="Syx-F7-uv5"/>
-                                            <constraint firstAttribute="width" constant="21" id="xuG-tw-JhY"/>
-                                        </constraints>
-                                    </imageView>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Daily Challenge" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="MPk-Oa-02F">
-                                        <rect key="frame" x="29" y="0.0" width="332" height="21"/>
-                                        <fontDescription key="fontDescription" type="boldSystem" pointSize="19"/>
-                                        <nil key="textColor"/>
-                                        <nil key="highlightedColor"/>
-                                    </label>
-                                </subviews>
-                            </stackView>
-                            <datePicker contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" datePickerMode="date" style="inline" translatesAutoresizingMaskIntoConstraints="NO" id="bp7-U1-SLL">
-                                <rect key="frame" x="16" y="443" width="361" height="329"/>
-                            </datePicker>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Mpj-qq-WaQ">
-                                <rect key="frame" x="16" y="793" width="361" height="28"/>
-                                <state key="normal" title="Button"/>
-                                <buttonConfiguration key="configuration" style="filled" title="Play" cornerStyle="capsule"/>
-                            </button>
-                        </subviews>
-                        <viewLayoutGuide key="safeArea" id="Gtp-YO-NbX"/>
-                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
-                        <constraints>
-                            <constraint firstItem="bp7-U1-SLL" firstAttribute="leading" secondItem="Gtp-YO-NbX" secondAttribute="leading" constant="16" id="6Z4-v3-S93"/>
-                            <constraint firstItem="1G1-ER-uxn" firstAttribute="top" secondItem="BfJ-lR-JEF" secondAttribute="bottom" constant="40" id="9Kk-9l-aH6"/>
-                            <constraint firstItem="BfJ-lR-JEF" firstAttribute="centerX" secondItem="bPI-Xb-l5k" secondAttribute="centerX" id="C3u-fi-s61"/>
-                            <constraint firstItem="1G1-ER-uxn" firstAttribute="leading" secondItem="Gtp-YO-NbX" secondAttribute="leading" constant="16" id="LbJ-SR-kaa"/>
-                            <constraint firstItem="Gtp-YO-NbX" firstAttribute="trailing" secondItem="bp7-U1-SLL" secondAttribute="trailing" constant="16" id="Lbq-aJ-TzH"/>
-                            <constraint firstAttribute="trailing" secondItem="Mpj-qq-WaQ" secondAttribute="trailing" constant="16" id="Yzb-S2-PIN"/>
-                            <constraint firstItem="Gtp-YO-NbX" firstAttribute="trailing" secondItem="1G1-ER-uxn" secondAttribute="trailing" constant="16" id="ajy-oU-sz8"/>
-                            <constraint firstItem="BfJ-lR-JEF" firstAttribute="top" secondItem="Gtp-YO-NbX" secondAttribute="top" constant="37" id="d6Y-kn-uL9"/>
-                            <constraint firstItem="Mpj-qq-WaQ" firstAttribute="top" secondItem="bp7-U1-SLL" secondAttribute="bottom" constant="21" id="keb-bg-dVP"/>
-                            <constraint firstAttribute="bottom" secondItem="Mpj-qq-WaQ" secondAttribute="bottom" constant="31" id="nzD-ad-oJb"/>
-                            <constraint firstItem="Mpj-qq-WaQ" firstAttribute="top" secondItem="1G1-ER-uxn" secondAttribute="bottom" constant="357" id="rMf-p4-Iun"/>
-                            <constraint firstItem="Mpj-qq-WaQ" firstAttribute="leading" secondItem="bPI-Xb-l5k" secondAttribute="leading" constant="16" id="rT3-sO-a9r"/>
-                            <constraint firstItem="bp7-U1-SLL" firstAttribute="top" secondItem="1G1-ER-uxn" secondAttribute="bottom" constant="7" id="rc1-tf-3EY"/>
-                        </constraints>
-                    </view>
-                    <navigationItem key="navigationItem" title="Match the Cards" id="MW6-ik-sH6"/>
-                </viewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="1CK-8d-fQK" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="1064.885496183206" y="130.98591549295776"/>
-        </scene>
-        <!--Match the Cards-->
         <scene sceneID="PI8-Ar-JOi">
             <objects>
                 <viewController id="JqZ-U1-ZY8" customClass="LevelSelectionViewController" customModule="Parkinsons" customModuleProvider="target" sceneMemberID="viewController">
@@ -82,7 +17,7 @@
                         <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="cards" translatesAutoresizingMaskIntoConstraints="NO" id="Jln-MY-x4G">
+                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="landingpage" translatesAutoresizingMaskIntoConstraints="NO" id="Jln-MY-x4G">
                                 <rect key="frame" x="79" y="211" width="235" height="214"/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="235" id="1M8-gd-nVL"/>
@@ -126,7 +61,6 @@
                                 <buttonConfiguration key="configuration" style="filled" title="Play" cornerStyle="capsule"/>
                                 <connections>
                                     <action selector="startButtonTapped:" destination="JqZ-U1-ZY8" eventType="touchUpInside" id="Q9E-aW-mVz"/>
-                                    <segue destination="cR1-vI-89a" kind="show" id="cn2-5n-217"/>
                                 </connections>
                             </button>
                         </subviews>
@@ -155,6 +89,7 @@
                     <connections>
                         <outlet property="datePickerOutlet" destination="hqb-Wq-C1e" id="gEB-pe-U5g"/>
                         <outlet property="datePickerUIView" destination="TMp-53-3oK" id="yoo-Xh-8p4"/>
+                        <outlet property="playButton" destination="rR8-W1-hW2" id="Pd6-0o-Veh"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Yx6-rB-5dT" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
@@ -169,20 +104,20 @@
                         <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Time left:" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="6Mz-0g-oWb">
-                                <rect key="frame" x="16" y="203" width="307" height="21"/>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Time:" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="6Mz-0g-oWb">
+                                <rect key="frame" x="16" y="149" width="307" height="21"/>
                                 <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="17"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="252" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="4aG-zH-bQn">
-                                <rect key="frame" x="333" y="203" width="44" height="21"/>
+                                <rect key="frame" x="333" y="149" width="44" height="21"/>
                                 <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="17"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" scrollEnabled="NO" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="hrF-g2-qku">
-                                <rect key="frame" x="16" y="240" width="361" height="528"/>
+                                <rect key="frame" x="16" y="186" width="361" height="582"/>
                                 <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                                 <collectionViewFlowLayout key="collectionViewLayout" automaticEstimatedItemSize="YES" minimumLineSpacing="10" minimumInteritemSpacing="10" id="t2G-zw-eJ9">
                                     <size key="itemSize" width="128" height="128"/>
@@ -267,11 +202,17 @@
                                     <constraint firstAttribute="width" constant="178" id="ozR-lP-AAj"/>
                                 </constraints>
                                 <state key="normal" title="Button"/>
-                                <buttonConfiguration key="configuration" style="filled" title="Play Again" cornerStyle="capsule"/>
+                                <buttonConfiguration key="configuration" style="filled" title="Finish" cornerStyle="capsule"/>
                                 <connections>
-                                    <action selector="playAgainButtonAction:" destination="F4j-j0-rPB" eventType="touchUpInside" id="TsT-Vw-aFm"/>
+                                    <action selector="FinishButtonAction:" destination="F4j-j0-rPB" eventType="touchUpInside" id="TsT-Vw-aFm"/>
                                 </connections>
                             </button>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="mDT-dg-e76">
+                                <rect key="frame" x="16" y="561.33333333333337" width="361" height="21"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="gQJ-wN-18J"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
@@ -281,16 +222,21 @@
                             <constraint firstItem="ES8-e9-DYe" firstAttribute="leading" secondItem="gQJ-wN-18J" secondAttribute="leading" constant="16" id="9mj-Pj-LzP"/>
                             <constraint firstItem="FBu-lI-dmm" firstAttribute="top" secondItem="ES8-e9-DYe" secondAttribute="bottom" constant="48" id="Ad1-ws-nEw"/>
                             <constraint firstItem="gwQ-Ea-9oJ" firstAttribute="centerX" secondItem="CIa-cA-WP3" secondAttribute="centerX" id="Jli-gd-krn"/>
+                            <constraint firstItem="mDT-dg-e76" firstAttribute="top" secondItem="FBu-lI-dmm" secondAttribute="bottom" constant="8" id="KE3-nR-80g"/>
+                            <constraint firstItem="mDT-dg-e76" firstAttribute="centerX" secondItem="CIa-cA-WP3" secondAttribute="centerX" id="OwL-0v-DqO"/>
                             <constraint firstItem="YDC-qT-bh4" firstAttribute="centerX" secondItem="CIa-cA-WP3" secondAttribute="centerX" id="Z5P-LE-T7u"/>
                             <constraint firstItem="gwQ-Ea-9oJ" firstAttribute="top" secondItem="FBu-lI-dmm" secondAttribute="bottom" constant="56" id="ZM8-Hp-SF3"/>
                             <constraint firstItem="ES8-e9-DYe" firstAttribute="top" secondItem="YDC-qT-bh4" secondAttribute="bottom" constant="66" id="haJ-iw-MEk"/>
                             <constraint firstItem="YDC-qT-bh4" firstAttribute="top" secondItem="MIU-zu-iO6" secondAttribute="bottom" constant="36" id="haq-ST-DyO"/>
                             <constraint firstItem="MIU-zu-iO6" firstAttribute="top" secondItem="gQJ-wN-18J" secondAttribute="top" constant="5" id="oPy-zI-Lfd"/>
+                            <constraint firstItem="mDT-dg-e76" firstAttribute="leading" secondItem="gQJ-wN-18J" secondAttribute="leading" constant="16" id="qJB-LV-ofG"/>
+                            <constraint firstItem="gQJ-wN-18J" firstAttribute="trailing" secondItem="mDT-dg-e76" secondAttribute="trailing" constant="16" id="u6f-1l-Xeg"/>
                             <constraint firstItem="gQJ-wN-18J" firstAttribute="trailing" secondItem="ES8-e9-DYe" secondAttribute="trailing" constant="16" id="vrQ-mK-wMU"/>
                         </constraints>
                     </view>
                     <connections>
-                        <outlet property="playAgainButtonOutlet" destination="gwQ-Ea-9oJ" id="i2V-Gi-Id8"/>
+                        <outlet property="FinishButton" destination="gwQ-Ea-9oJ" id="i2V-Gi-Id8"/>
+                        <outlet property="timeTakenLabel" destination="mDT-dg-e76" id="KzH-Ru-HZL"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="AMk-8s-oLP" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
@@ -317,9 +263,7 @@
         </scene>
     </scenes>
     <resources>
-        <image name="Emoji Landing" width="185" height="220"/>
-        <image name="Trophy Image" width="960" height="1088"/>
-        <image name="cards" width="485" height="438"/>
+        <image name="landingpage" width="822" height="818"/>
         <image name="lightbulb.min.fill" catalog="system" width="115" height="128"/>
         <image name="questionmark.circle" catalog="system" width="128" height="123"/>
         <image name="trophy1" width="960" height="1088"/>

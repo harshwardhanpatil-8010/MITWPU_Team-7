@@ -10,40 +10,55 @@ import Foundation
 class DailyGameManager {
     static let shared = DailyGameManager()
     private let calendar = Calendar.current
-    private let completedKey = "completedDays"
-    private let attemptedkey = "attemptedDays"
     
     private init() {}
     
-    func levelForToday() -> Int {
-        let day = calendar.component(.day, from: Date())
-        return day
+    
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+        //Remove the below function when in production this is only for testing
+    
+    //Also remove this function calling from sceneDelegate
+    
+    func clearAllGameData() {
+        let defaults = UserDefaults.standard
+        for key in defaults.dictionaryRepresentation().keys where key.hasPrefix("game_") {
+            defaults.removeObject(forKey: key)
+        }
     }
+    
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
     func level(for date: Date) -> Int {
-        return calendar.component(.day, from: date)
+        let day = calendar.component(.day, from: date)
+        return min(max(day, 1), 30)
     }
     func isCompleted(date: Date) -> Bool {
-        let key = storageKey(for: date)
-        UserDefaults.standard.bool(forKey: key + "_completed")
+        UserDefaults.standard.bool(forKey: key(date) + "_completed")
     }
     func markCompleted(date: Date) {
-        let key = storageKey(for: date)
-        UserDefaults.standard.set(true, forKey: key + "_completed")
+        UserDefaults.standard.set(true, forKey: key(date) + "_completed")
     }
     func isAttempted(date: Date) -> Bool {
-        let key = storageKey(for: date)
-        UserDefaults.standard.bool(forKey: key + "_attempted")
+        UserDefaults.standard.bool(forKey: key(date) + "_attempted")
     }
     func markAttempted(date: Date) {
-        let key = storageKey(for: date)
-        UserDefaults.standard.set(true, forKey: key + "_attempted")
+        UserDefaults.standard.set(true, forKey: key(date) + "_attempted")
+        
     }
     func isFuture(date: Date) -> Bool {
-        let today = calendar.startOfDay(for: Date())
-        return date > today
+        calendar.startOfDay(for: date) > calendar.startOfDay(for: Date())
     }
-    func storageKey(for date: Date) -> String {
-        let components = calendar.dateComponents([.year, .month, .day], from: date)
-        return "game_\(components.year!)_\(components.month!)_\(components.day!)"
+    func isOutsideCurrentMonth(date: Date) -> Bool {
+        let now = Date()
+        let c1 = calendar.dateComponents([.year, .month], from: date)
+        let c2 = calendar.dateComponents([.year, .month], from: now)
+        
+        return c1.year != c2.year || c1.month != c2.month
+        
+    }
+   private func key(_ date: Date) -> String {
+        let c = calendar.dateComponents([.year, .month, .day], from: date)
+       return "game_\(c.year!)_\(c.month!)_\(c.day!)"
     }
 }

@@ -12,21 +12,71 @@ class LevelSelectionViewController: UIViewController {
     
     @IBOutlet weak var datePickerUIView: UIView!
     
+    @IBOutlet weak var playButton: UIButton!
     @IBOutlet weak var datePickerOutlet: UIDatePicker!
     override func viewDidLoad() {
         super.viewDidLoad()
         datePickerUIView.applyCardStyle()
-        datePickerOutlet.maximumDate = Date()
-        datePickerOutlet.preferredDatePickerStyle = .wheels
+        playButton.isEnabled = true
+        let calendar = Calendar.current
+        let now = Date()
+        
+        let startOfMonth = calendar.date(from: calendar.dateComponents([.year,.month], from: now))!
+        let range = calendar.range(of: .day, in: .month, for: now)!
+        let endOfMonth = calendar.date(byAdding: .day, value: range.count - 1 ,to: startOfMonth)!
+        
+        datePickerOutlet.minimumDate = startOfMonth
+        datePickerOutlet.maximumDate = min(endOfMonth, now)
         datePickerOutlet.datePickerMode = .date
-        // Do any additional setup after loading the view.
+    }
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        playButton.isEnabled = true
     }
     
     @IBAction func startButtonTapped(_ sender: UIButton) {
-        let selected = datePickerOutlet.date
+        sender.isEnabled = false
+        let date = datePickerOutlet.date
+        let manager = DailyGameManager.shared
+        
+        if manager.isOutsideCurrentMonth(date: date) {
+           alert("This date is in future. You can't play it yet")
+            sender.isEnabled = true
+            return
+        }
+        if manager.isFuture(date: date) {
+            alert("This levels are locked")
+            sender.isEnabled = true
+            return
+        }
+        
+        if manager.isCompleted(date: date) {
+            alert("Game for this day is already completed")
+            sender.isEnabled = true
+            return
+        }
+        
+        if manager.isAttempted(date: date) {
+            alert("You already attempted this day and cannot retry")
+            sender.isEnabled = true
+            return
+        }
+        
+        
+        let storyboard = UIStoryboard(name: "Match the Cards", bundle: nil)
+        let vc = storyboard.instantiateViewController(withIdentifier: "GameViewController") as! GameViewController
+        
+        vc.selectedDate = date
+        vc.level = manager.level(for: date)
+        
+        navigationController?.pushViewController(vc, animated: true)
     }
     
-
+    private func alert(_ text: String) {
+        let alert = UIAlertController(title: "Not Allowed", message: text, preferredStyle: .alert)
+        alert.addAction(UIAlertAction(title: "Dismiss", style: .default))
+        present(alert, animated: true)
+        }
     /*
     // MARK: - Navigation
 
