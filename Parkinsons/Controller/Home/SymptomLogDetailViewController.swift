@@ -15,7 +15,7 @@ class SymptomLogDetailViewController: UIViewController {
     
     // Connect the view containing the "Mild" to "Not present" key/legend
     @IBOutlet weak var headerContainerView: UIView!
-    
+    @IBOutlet weak var tableView: UITableView!
     // MARK: - Properties
     
     weak var delegate: SymptomLogDetailDelegate?
@@ -33,7 +33,7 @@ class SymptomLogDetailViewController: UIViewController {
     var symptoms: [SymptomRating]!
     
     // UI Elements
-    private let tableView = UITableView()
+  //  private let tableView = UITableView()
     
     // MARK: - Lifecycle
 
@@ -47,7 +47,8 @@ class SymptomLogDetailViewController: UIViewController {
         // Ensure the navigation title is set
 //        navigationItem.title = "Select symptoms faced"
         
-        setupTableView()
+        //setupTableView()
+        setupTableViewFromStoryboard()
     }
     
     // MARK: - UI Setup
@@ -62,27 +63,54 @@ class SymptomLogDetailViewController: UIViewController {
                 SymptomRating(name: "Insomnia", iconName: "insomnia")
             ]
         }
-    private func setupTableView() {
-        view.addSubview(tableView)
-        tableView.translatesAutoresizingMaskIntoConstraints = false
-        tableView.dataSource = self
-        tableView.delegate = self
-        tableView.separatorStyle = .none
-        
-        // Register the custom cell created from XIB
-        tableView.register(UINib(nibName: "SymptomRatingCell", bundle: nil), forCellReuseIdentifier: "SymptomRatingCell")
-        
-        // The table view starts below the header/legend view
-        let topAnchor = headerContainerView?.bottomAnchor ?? view.safeAreaLayoutGuide.topAnchor
-        
-        NSLayoutConstraint.activate([
-            tableView.topAnchor.constraint(equalTo: topAnchor, constant: 140),
-            tableView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
-            tableView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
-            tableView.bottomAnchor.constraint(equalTo: view.bottomAnchor)
-        ])
-    } 
-    
+//    private func setupTableView() {
+//        view.addSubview(tableView)
+//        tableView.translatesAutoresizingMaskIntoConstraints = false
+//        tableView.dataSource = self
+//        tableView.delegate = self
+//        tableView.separatorStyle = .none
+//        
+//        // Register the custom cell created from XIB
+//        tableView.register(UINib(nibName: "SymptomRatingCell", bundle: nil), forCellReuseIdentifier: "SymptomRatingCell")
+//        
+//        // The table view starts below the header/legend view
+//        let topAnchor = headerContainerView?.bottomAnchor ?? view.safeAreaLayoutGuide.topAnchor
+//        
+//        NSLayoutConstraint.activate([
+//            tableView.topAnchor.constraint(equalTo: topAnchor, constant: 140),
+//            tableView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+//            tableView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+//            tableView.bottomAnchor.constraint(equalTo: view.bottomAnchor)
+//        ])
+//    } 
+    private func setupTableViewFromStoryboard() {
+            // Since the TableView is connected via outlet and delegates via Storyboard,
+            // we just need to register the cell and configure its constraints.
+            
+            // Set the data source and delegate one more time for safety (optional if done in Storyboard)
+            tableView.dataSource = self
+            tableView.delegate = self
+            tableView.separatorStyle = .none
+            
+            // Register the custom cell created from XIB (Still required)
+            tableView.register(UINib(nibName: "SymptomRatingCell", bundle: nil), forCellReuseIdentifier: "SymptomRatingCell")
+            
+            // ⭐️ IMPORTANT: If you set constraints in the Storyboard, this code is NOT needed.
+            // If your Table View is not constrained in the Storyboard, you must add constraints.
+            // If you keep the Table View programmatic constraints, ensure you remove the Storyboard constraints.
+            
+            // If you are using Auto Layout in the Storyboard, DELETE this block.
+            /*
+            tableView.translatesAutoresizingMaskIntoConstraints = false
+            let topAnchor = headerContainerView?.bottomAnchor ?? view.safeAreaLayoutGuide.topAnchor
+            NSLayoutConstraint.activate([
+                tableView.topAnchor.constraint(equalTo: topAnchor, constant: 140),
+                tableView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+                tableView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+                tableView.bottomAnchor.constraint(equalTo: view.bottomAnchor)
+            ])
+            */
+        }
     // MARK: - Storyboard Actions (Connect your Cancel/Done buttons here)
     
     /**

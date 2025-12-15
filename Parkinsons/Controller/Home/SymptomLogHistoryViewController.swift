@@ -17,8 +17,8 @@ class SymptomLogHistoryViewController: UIViewController , SymptomLogDetailDelega
     }
     
     // MARK: - UI Elements
-    
-    private let tableView = UITableView()
+    @IBOutlet weak var tableView: UITableView!
+   // private let tableView = UITableView()
 
     // ⭐️ Custom Header Outlets/Actions ⭐️
     // 1. Label outlet remains for the dynamic title
@@ -35,8 +35,8 @@ class SymptomLogHistoryViewController: UIViewController , SymptomLogDetailDelega
         super.viewDidLoad()
         
         view.backgroundColor = .systemBackground
-        
-        setupTableView()
+        setupTableViewFromStoryboard()
+        //setupTableView()
         setupCustomHeader() // Now just sets the initial title
     }
     
@@ -100,25 +100,42 @@ class SymptomLogHistoryViewController: UIViewController , SymptomLogDetailDelega
     
     // MARK: - Table View Setup (Constraint kept at 128)
 
-    private func setupTableView() {
-        view.addSubview(tableView)
-        tableView.translatesAutoresizingMaskIntoConstraints = false
-        tableView.dataSource = self
-        
-        // ⭐️ REGISTER THE CUSTOM DETAIL CELL ⭐️
-        tableView.register(UINib(nibName: SymptomDetailCell.reuseIdentifier, bundle: nil), forCellReuseIdentifier: SymptomDetailCell.reuseIdentifier)
-        
-        tableView.rowHeight = 60.0
-        tableView.separatorStyle = .none // Optional: removes lines between cells
-        
-        // ⭐️ Constraints for TableView - Top padding set to 128 as requested ⭐️
-        NSLayoutConstraint.activate([
-            tableView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 160), // Top padding
-            tableView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
-            tableView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
-            tableView.bottomAnchor.constraint(equalTo: view.bottomAnchor)
-        ])
-    }
+//    private func setupTableView() {
+//        view.addSubview(tableView)
+//        tableView.translatesAutoresizingMaskIntoConstraints = false
+//        tableView.dataSource = self
+//        
+//        // ⭐️ REGISTER THE CUSTOM DETAIL CELL ⭐️
+//        tableView.register(UINib(nibName: SymptomDetailCell.reuseIdentifier, bundle: nil), forCellReuseIdentifier: SymptomDetailCell.reuseIdentifier)
+//        
+//        tableView.rowHeight = 60.0
+//        tableView.separatorStyle = .none // Optional: removes lines between cells
+//        
+//        // ⭐️ Constraints for TableView - Top padding set to 128 as requested ⭐️
+//        NSLayoutConstraint.activate([
+//            tableView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 160), // Top padding
+//            tableView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+//            tableView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+//            tableView.bottomAnchor.constraint(equalTo: view.bottomAnchor)
+//        ])
+//    }
+    private func setupTableViewFromStoryboard() {
+            // Since the TableView and its delegates are connected via Storyboard,
+            // we only need to register the custom cell, which is loaded from a NIB.
+            
+            // This ensures the delegates are set even if not done in Storyboard (good safety)
+            tableView.dataSource = self
+            
+            // Register the custom detail cell (MUST be done if using XIB/NIB)
+            tableView.register(UINib(nibName: SymptomDetailCell.reuseIdentifier, bundle: nil), forCellReuseIdentifier: SymptomDetailCell.reuseIdentifier)
+            
+            tableView.rowHeight = 60.0
+            tableView.separatorStyle = .none
+            
+            // ⭐️ IMPORTANT: The Auto Layout constraints are now handled by the Storyboard.
+            // We delete the entire NSLayoutConstraint.activate([...]) block.
+        }
+    
 }
 
 // MARK: - UITableViewDataSource
