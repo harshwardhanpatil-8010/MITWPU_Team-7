@@ -27,6 +27,7 @@ class SessionRunningViewController: UIViewController {
     private var progressView: CircularProgressView!
     private var timerModel: TimerModel!
     
+    var session: RhythmicSession?
     
     private func setupProgressView() {
         progressView = CircularProgressView(frame: circularContainer.bounds)
@@ -132,12 +133,13 @@ class SessionRunningViewController: UIViewController {
             return
         }
 
-        // 2. Instantiate the next View Controller (SessionSummaryViewController)
+        // 2. Instantiate the next aView Controller (SessionSummaryViewController)
         let storyboard = UIStoryboard(name: "Rhythmic Walking", bundle: nil) // Update "Main" to your actual Storyboard name
         guard let summaryVC = storyboard.instantiateViewController(withIdentifier: "SessionSummaryVC") as? SessionSummaryViewController else {
             print("Error: Could not instantiate SessionSummaryViewController.")
             return
         }
+        summaryVC.sessionData = session
         
         // *** CRITICAL STEP ***
         // 3. Find the target navigation stack to push onto.
@@ -179,6 +181,7 @@ class SessionRunningViewController: UIViewController {
         
         DataStore.shared.update(session)
         
+        self.session = session
         presentSummaryAndDismiss()
     }
     

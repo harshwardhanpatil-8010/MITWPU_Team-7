@@ -9,6 +9,10 @@ import UIKit
 
 class SessionSummaryViewController: UIViewController {
 
+    var sessionData: RhythmicSession?
+    
+    @IBOutlet weak var timeLabel: UILabel!
+    
     @IBOutlet weak var walkingUIView: UIView!
     @IBOutlet weak var GaitUIView: UIView!
     
@@ -35,6 +39,30 @@ class SessionSummaryViewController: UIViewController {
     }
     
     func loadData() {
+        if let session = sessionData {
+            let elapsedSeconds = session.elapsedSeconds
+            let requestedSeconds = session.requestedDurationSeconds
+                    
+            let hours = elapsedSeconds / 3600
+            let minutes = (elapsedSeconds % 3600) / 60
+            let seconds = elapsedSeconds % 60
+                    
+            timeLabel.text = String(format: "%02d:%02d:%02d", hours, minutes, seconds)
+                    
+            var progress: Float = 0.0
+            if requestedSeconds > 0 {
+                progress = Float(elapsedSeconds) / Float(requestedSeconds)
+            }
+            else if elapsedSeconds > 0 {
+                progress = 1.0
+            }
+            progressView.setProgress(CGFloat(progress))
+        }
+                    
+        else {
+            timeLabel.text = "00:00:00"
+            progressView.setProgress(0.0)
+        }
         stepsTaken.text = WalkingSessionDemo.steps.description
         distanceCovered.text = WalkingSessionDemo.distanceKMeters.description
         speed.text = "3 Km/h"
@@ -46,9 +74,7 @@ class SessionSummaryViewController: UIViewController {
         walkingSteadinessPercent.text = "5 %"
     }
 
-    
-    
-    
+
     override func viewDidLoad() {
         super.viewDidLoad()
         setupProgressView()
