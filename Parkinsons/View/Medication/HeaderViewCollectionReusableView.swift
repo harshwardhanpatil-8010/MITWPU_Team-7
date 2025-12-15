@@ -11,11 +11,6 @@ class HeaderViewCollectionReusableView: UICollectionReusableView {
     @IBOutlet weak var editButton: UIButton!
     
     @IBOutlet weak var headerLabel: UILabel!
-    var onEditTapped: (() -> Void)?
-
-        @IBAction func editButtonTapped(_ sender: UIButton) {
-            onEditTapped?()
-        }
     override func awakeFromNib() {
         super.awakeFromNib()
         // Initialization code
@@ -25,6 +20,12 @@ class HeaderViewCollectionReusableView: UICollectionReusableView {
         bringSubviewToFront(editButton)
 
     }
+    var onEditTapped: (() -> Void)?
+
+        @IBAction func editButtonTapped(_ sender: UIButton) {
+            onEditTapped?()
+        }
+    
     
     func configureHeader(text: String, showEdit: Bool){
         headerLabel.text = text

@@ -10,13 +10,10 @@ import Foundation
 
 class AddMedicationDataStore {
     static let shared = AddMedicationDataStore()
-
-    // Already existing:
     var unitText: String?
     var selectedType: String?
 
-    // New for REPEAT:
     var repeatOption: String?
-    var selectedWeekdayNumbers: [Int] = []   // e.g., [2,4,6]
+    var selectedWeekdayNumbers: [Int] = []   //  [2,4,6]
     private init() {}
 }

@@ -7,43 +7,31 @@
 
 import UIKit
 
-class EditMedicationViewController: UIViewController, UICollectionViewDelegate,AddMedicationDelegate {
-    func reloadMedications() {
-        medications = MedicationDataStore.shared.medications
-        collectionView.reloadData()
-    }
+// MARK: - Edit Medication Screen
+class EditMedicationViewController: UIViewController,
+                                    UICollectionViewDelegate,
+                                    AddMedicationDelegate {
 
-
-    func didUpdateMedication() {
-        reloadMedications()
-    }
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
-        reloadMedications()
-    }
-
-    
-    
-    @IBOutlet weak var backButton: UIBarButtonItem!
-    @IBOutlet weak var saveButton: UIBarButtonItem!
-    @IBOutlet weak var collectionView: UICollectionView!
-    
-    @IBAction func saveTapped(_ sender: UIBarButtonItem) {
-        delegate?.didUpdateMedication()
-        dismiss(animated: true)
-    }
-    @IBAction func backTapped(_ sender: Any) {
-        dismiss(animated: true)
-    }
-    
+    // ---------------------------------------------------------
+    // MARK: - Properties
+    // ---------------------------------------------------------
     var medications: [Medication] = []
     weak var delegate: AddMedicationDelegate?
 
+    // ---------------------------------------------------------
+    // MARK: - Outlets
+    // ---------------------------------------------------------
+    @IBOutlet weak var backButton: UIBarButtonItem!
+    @IBOutlet weak var saveButton: UIBarButtonItem!
+    @IBOutlet weak var collectionView: UICollectionView!
 
-    
+    // ---------------------------------------------------------
+    // MARK: - Lifecycle
+    // ---------------------------------------------------------
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+
+        // Setup collection view
         collectionView.dataSource = self
         collectionView.delegate = self
 
@@ -53,63 +41,92 @@ class EditMedicationViewController: UIViewController, UICollectionViewDelegate,A
         )
     }
 
-//    private func setupUI() {
-//        guard let medication = medication, let dose = dose else { return }
-//    }
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        reloadMedications()     // Refresh list
+    }
 
+    // ---------------------------------------------------------
+    // MARK: - Data Reloading
+    // ---------------------------------------------------------
+    func reloadMedications() {      // Reload medication list
+        medications = MedicationDataStore.shared.medications
+        collectionView.reloadData()
+    }
+
+    func didUpdateMedication() {    // Delegate callback
+        reloadMedications()
+    }
+
+    // ---------------------------------------------------------
+    // MARK: - Actions
+    // ---------------------------------------------------------
+    @IBAction func saveTapped(_ sender: UIBarButtonItem) {   // Save and close
+        delegate?.didUpdateMedication()
+        dismiss(animated: true)
+    }
+
+    @IBAction func backTapped(_ sender: Any) {               // Back button
+        dismiss(animated: true)
+    }
+
+    // ---------------------------------------------------------
+    // MARK: - Collection Selection
+    // ---------------------------------------------------------
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         let selected = medications[indexPath.row]
 
         let storyboard = UIStoryboard(name: "Medication", bundle: nil)
-        let vc = storyboard.instantiateViewController(
-            withIdentifier: "AddMedVC"
-        ) as! AddMedicationViewController
+        let vc = storyboard.instantiateViewController(withIdentifier: "AddMedVC")
+            as! AddMedicationViewController
 
-        vc.isEditMode = true                 // IMPORTANT
+        vc.isEditMode = true
         vc.medicationToEdit = selected
         vc.delegate = self
-        // PASS MEDICATION OBJECT
 
         let nav = UINavigationController(rootViewController: vc)
         nav.modalPresentationStyle = .formSheet
         present(nav, animated: true)
     }
+}
 
-
-    
-
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destination.
-        // Pass the selected object to the new view controller.
-    }
-    */
-
-} 
+//
+// MARK: - CollectionView DataSource
+//
 extension EditMedicationViewController: UICollectionViewDataSource {
 
-    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+    func collectionView(_ collectionView: UICollectionView,
+                        numberOfItemsInSection section: Int) -> Int {   // Count cells
         return medications.count
     }
-    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "EditMedCell", for: indexPath) as! EditMedicationCollectionViewCell
+
+    func collectionView(_ collectionView: UICollectionView,
+                        cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {  // Setup cell
+        let cell = collectionView.dequeueReusableCell(
+            withReuseIdentifier: "EditMedCell",
+            for: indexPath
+        ) as! EditMedicationCollectionViewCell
+
         cell.configure(with: medications[indexPath.row])
         return cell
     }
-    
 }
 
+//
+// MARK: - CollectionView Layout
+//
 extension EditMedicationViewController: UICollectionViewDelegateFlowLayout {
-    
-    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        
+
+    func collectionView(_ collectionView: UICollectionView,
+                        layout collectionViewLayout: UICollectionViewLayout,
+                        sizeForItemAt indexPath: IndexPath) -> CGSize {    // Cell size
         return CGSize(width: collectionView.frame.width - 32, height: 110)
     }
-    
-    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAt section: Int) -> UIEdgeInsets {
+
+    func collectionView(_ collectionView: UICollectionView,
+                        layout collectionViewLayout: UICollectionViewLayout,
+                        insetForSectionAt section: Int) -> UIEdgeInsets {   // Section padding
         return UIEdgeInsets(top: 16, left: 16, bottom: 16, right: 16)
     }
 }
+

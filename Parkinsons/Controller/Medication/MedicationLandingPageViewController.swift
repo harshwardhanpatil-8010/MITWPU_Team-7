@@ -7,274 +7,156 @@
 
 import UIKit
 
-class MedicationLandingPageViewController: UIViewController, UICollectionViewDelegate, SkippedTakenDelegate {
+// MARK: - Landing Page (Today's + All Medications)
+class MedicationLandingPageViewController: UIViewController,
+                                           UICollectionViewDelegate,
+                                           SkippedTakenDelegate {
+
+    // ---------------------------------------------------------
+    // MARK: - Properties
+    // ---------------------------------------------------------
+    @IBOutlet weak var collectionView: UICollectionView!
+
+    var todaysMedications: [MedicationDose] = []     // Doses scheduled for today
+    var allMedications: [Medication] = []            // All stored medications
+    var selectedDose: MedicationDose?
     var selectedMedication: Medication?
 
+    // ---------------------------------------------------------
+    // MARK: - Lifecycle
+    // ---------------------------------------------------------
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        
+        configureCollectionView()    // Setup collection + layout
+        loadMedications()            // Initial load
+        
+        // Listen for updates from Add/Edit screens
+        NotificationCenter.default.addObserver(
+            self,
+            selector: #selector(loadMedications),
+            name: Notification.Name("MedicationUpdated"),
+            object: nil
+        )
+    }
+
+    // ---------------------------------------------------------
+    // MARK: - Status Update Delegate (Skip / Taken)
+    // ---------------------------------------------------------
     func didUpdateDoseStatus(_ dose: MedicationDose, status: DoseStatus) {
-        // 1. Update in todaysMedications (UI array)
+        
+        // Update in today's list
         if let index = todaysMedications.firstIndex(where: { $0.id == dose.id }) {
             todaysMedications[index].status = status
         }
 
-        // 2. Update in allMedications (source of truth)
-        if let medIndex = allMedications.firstIndex(where: { $0.id == dose.medicationID }) {
-            if let doseIndex = allMedications[medIndex].doses.firstIndex(where: { $0.id == dose.id }) {
-                allMedications[medIndex].doses[doseIndex].status = status
+        // Update in stored list
+        if let medIndex = allMedications.firstIndex(where: { $0.id == dose.medicationID }),
+           let doseIndex = allMedications[medIndex].doses.firstIndex(where: { $0.id == dose.id }) {
 
-                // 3. Persist the changed medication back to data store
-                MedicationDataStore.shared.updateMedication(allMedications[medIndex])
-            }
+            allMedications[medIndex].doses[doseIndex].status = status
+            
+            // Persist
+            MedicationDataStore.shared.updateMedication(allMedications[medIndex])
         }
 
-        // 4. Rebuild & resort the list from stored/allMedications to ensure consistent ordering
+        // Rebuild today's list with updated states
         loadMedications()
     }
 
-    
-    
-    @IBOutlet weak var collectionView: UICollectionView!
-    var todaysMedications: [MedicationDose] = []
-    var allMedications: [Medication] = []
-    var selectedDose: MedicationDose?
-
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        
-        configureCollectionView()
-        loadMedications()
-        NotificationCenter.default.addObserver(
-                self,
-                selector: #selector(loadMedications),
-                name: Notification.Name("MedicationUpdated"),
-                object: nil)
-//        medications = MedicationStorage.shared.fetchMedications()
-//        loadSampleData()
-        // Do any additional setup after loading the view.
-        
-    }
-    
+    // ---------------------------------------------------------
+    // MARK: - Medication Sorting Helpers
+    // ---------------------------------------------------------
     private func dosePriority(_ dose: MedicationDose, now: Date) -> Int {
-
-        if dose.status == .taken || dose.status == .skipped {
-            return 2       // completed (bottom)
-        }
-
-        if dose.time > now {
-            return 0       // upcoming (top)
-        }
-
-        return 1           // due (middle)
+        if dose.status == .taken || dose.status == .skipped { return 2 }   // Completed
+        if dose.time > now { return 0 }                                    // Upcoming
+        return 1                                                           // Due
     }
 
-
-    
-    
-    // MARK: - Helpers inside MedicationLandingPageViewController
-
-    // Convert RepeatRule -> whether the med should appear today
     private func isMedicationDueToday(_ med: Medication, date: Date = Date()) -> Bool {
         switch med.schedule {
-        case .everyday:
-            return true
-        case .none:
-            return false
+        case .everyday: return true
+        case .none: return false
         case .weekly(let days):
-            let weekday = Calendar.current.component(.weekday, from: date) // 1..7 Sun..Sat
+            let weekday = Calendar.current.component(.weekday, from: date)
             return days.contains(weekday)
         }
     }
 
-    // Load saved meds from your MedicationDataStore and populate all/today arrays
+    // ---------------------------------------------------------
+    // MARK: - Loading All + Today Medications
+    // ---------------------------------------------------------
     @objc func loadMedications() {
         allMedications = MedicationDataStore.shared.medications
-
         todaysMedications = []
 
         for med in allMedications {
             guard isMedicationDueToday(med) else { continue }
-
             let normalized = med.doses.map { normalizeDoseDate($0) }
-
             todaysMedications.append(contentsOf: normalized)
         }
 
-
         let now = Date()
 
+        // Sort by status group → then by time
         todaysMedications.sort { a, b in
-
-            // 1️⃣ GROUP ORDER
-            let priorityA = dosePriority(a, now: now)
-            let priorityB = dosePriority(b, now: now)
-
-            if priorityA != priorityB {
-                return priorityA < priorityB
-            }
-
-            // 2️⃣ SAME GROUP → sort by time
+            let pA = dosePriority(a, now: now)
+            let pB = dosePriority(b, now: now)
+            
+            if pA != pB { return pA < pB }
             return a.time < b.time
         }
 
         collectionView.reloadData()
-        
-
     }
 
-    
+    // ---------------------------------------------------------
+    // MARK: - Edit Button Action
+    // ---------------------------------------------------------
     @IBAction func editMyMedications(_ sender: Any) {
         let storyboard = UIStoryboard(name: "Medication", bundle: nil)
-        let vc = storyboard.instantiateViewController(
-            withIdentifier: "EditMedicationViewController"
-        ) as! EditMedicationViewController
+        let vc = storyboard.instantiateViewController(withIdentifier: "EditMedicationViewController")
+            as! EditMedicationViewController
 
-        vc.medications = allMedications   // pass entire meds list
+        vc.medications = allMedications
 
         let nav = UINavigationController(rootViewController: vc)
         nav.modalPresentationStyle = .formSheet
         present(nav, animated: true)
     }
 
-
-
-//    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-//        if segue.identifier == "showEditMedication" {
-//            let nav = segue.destination as! UINavigationController
-//            let vc = nav.topViewController as! EditMedicationViewController
-//
-//            if let med = selectedMedication {
-//                vc.medication = med
-//            }
-//        }
-//
-//        if segue.identifier == "showSkipper" {
-//            let nav = segue.destination as! UINavigationController
-//            let vc = nav.topViewController as! SkippedTakenViewController   // because it is embedded
-//            
-//            if let dose = selectedDose,
-//               let med = allMedications.first(where: { $0.id == dose.medicationID }) {
-//                vc.selectedDose = dose
-//                vc.receivedTitle = med.name
-//                vc.receivedSubtitle = med.form
-//                vc.receivedIconName = med.iconName
-//                vc.delegate = self
-//            }
-//
-//            
-//            vc.delegate = self
-//        }
-//    }
-
-    
+    // ---------------------------------------------------------
+    // MARK: - Collection Selection
+    // ---------------------------------------------------------
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
 
+        // Section 0 → Today’s doses
         if indexPath.section == 0 {
             selectedDose = todaysMedications[indexPath.row]
             openSkipTakenModal(for: selectedDose!)
-        } else {
-            // Open the list of medications
+        }
+        // Section 1 → Open medication list
+        else {
             openEditMedicationScreen()
         }
     }
 
-
-
-
-//    func openSkipTakenModal(for dose: MedicationDose) {
-//        let storyboard = UIStoryboard(name: "Main", bundle: nil)
-//
-//        let vc = storyboard.instantiateViewController(withIdentifier: "SkippedTakenViewController") as! SkippedTakenViewController
-//
-//        // Pass the data
-//        vc.selectedDose = dose
-//
-//        vc.modalPresentationStyle = .overCurrentContext
-//        present(vc, animated: true)
-//    }
-
-
-//    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-//        if segue.identifier == "showSkipper" {
-//            let nav = segue.destination as! UINavigationController
-//            let vc = nav.topViewController as! SkippedTakenViewController   // because it is embedded
-//            
-//            vc.selectedDose = selectedDose
-//            vc.receivedTitle = selectedDose?.medication.name
-//            vc.receivedSubtitle = selectedDose?.medication.form
-//            vc.receivedIconName = selectedDose?.medication.iconName
-//            
-//            vc.delegate = self
-//        }
-//    }
-
-
-
-
-    
-//    func loadSampleData() {
-//
-//        // Create medications
-//        var levodopa = Medication(
-//            id: UUID(),
-//            name: "Levodopa",
-//            form: "Capsule",
-//            iconName: "capsule",
-//            schedule: "Everyday",
-//            doses: []
-//        )
-//
-//        var carbidopa = Medication(
-//            id: UUID(),
-//            name: "Carbidopa",
-//            form: "Tablet",
-//            iconName: "tablet",
-//            schedule: "Mon, Wed",
-//            doses: []
-//        )
-//
-//        let now = Date()
-//
-//        // Dose time 1 hour **in the past**
-//        let pastTime = now.addingTimeInterval(-3600)
-//
-//        // Dose time 1 hour **in the future**
-//        let futureTime = now.addingTimeInterval(3600)
-//
-//        let dose1 = MedicationDose(
-//            id: UUID(),
-//            time: pastTime,
-//            status: .none,
-//            medication: levodopa
-//        )
-//
-//        let dose2 = MedicationDose(
-//            id: UUID(),
-//            time: futureTime,
-//            status: .none,
-//            medication: carbidopa
-//        )
-//
-//        levodopa.doses = [dose1]
-//        carbidopa.doses = [dose2]
-//
-//        todaysMedications = [dose1, dose2]
-//        allMedications = [levodopa, carbidopa]
-//    }
-
-
+    // ---------------------------------------------------------
+    // MARK: - Compositional Layouts
+    // ---------------------------------------------------------
     func myMedicationSection() -> NSCollectionLayoutSection {
-
-        let itemSize = NSCollectionLayoutSize(
-            widthDimension: .fractionalWidth(1.0),
-            heightDimension: .absolute(100)
+        let item = NSCollectionLayoutItem(
+            layoutSize: NSCollectionLayoutSize(
+                widthDimension: .fractionalWidth(1.0),
+                heightDimension: .absolute(100)
+            )
         )
-        let item = NSCollectionLayoutItem(layoutSize: itemSize)
 
-        let groupSize = NSCollectionLayoutSize(
-            widthDimension: .fractionalWidth(1.0),
-            heightDimension: .estimated(300)
-        )
         let group = NSCollectionLayoutGroup.vertical(
-            layoutSize: groupSize,
+            layoutSize: NSCollectionLayoutSize(
+                widthDimension: .fractionalWidth(1.0),
+                heightDimension: .estimated(300)
+            ),
             subitems: [item]
         )
 
@@ -291,28 +173,23 @@ class MedicationLandingPageViewController: UIViewController, UICollectionViewDel
                 alignment: .top
             )
         ]
-
-
         return section
     }
 
-    
     func todaySection() -> NSCollectionLayoutSection {
-        
 
-
-        let itemSize = NSCollectionLayoutSize(
-            widthDimension: .fractionalWidth(1.0),
-            heightDimension: .absolute(80)
+        let item = NSCollectionLayoutItem(
+            layoutSize: NSCollectionLayoutSize(
+                widthDimension: .fractionalWidth(1.0),
+                heightDimension: .absolute(80)
+            )
         )
-        let item = NSCollectionLayoutItem(layoutSize: itemSize)
 
-        let groupSize = NSCollectionLayoutSize(
-            widthDimension: .fractionalWidth(1.0),
-            heightDimension: .estimated(300)
-        )
         let group = NSCollectionLayoutGroup.vertical(
-            layoutSize: groupSize,
+            layoutSize: NSCollectionLayoutSize(
+                widthDimension: .fractionalWidth(1.0),
+                heightDimension: .estimated(300)
+            ),
             subitems: [item]
         )
 
@@ -328,27 +205,19 @@ class MedicationLandingPageViewController: UIViewController, UICollectionViewDel
                 alignment: .top
             )
         ]
-
         return section
     }
 
-    
     func createLayout() -> UICollectionViewLayout {
-
-            let layout = UICollectionViewCompositionalLayout { sectionIndex, env in
-
-                if sectionIndex == 0 {
-                    return self.todaySection()
-                } else {
-                    return self.myMedicationSection()
-                }
-            }
-
-            return layout
+        return UICollectionViewCompositionalLayout { sectionIndex, env in
+            return sectionIndex == 0 ? self.todaySection() : self.myMedicationSection()
         }
-    
+    }
+
+    // ---------------------------------------------------------
+    // MARK: - CollectionView Setup
+    // ---------------------------------------------------------
     func configureCollectionView() {
-            
         
         collectionView.register(
             UINib(nibName: "HeaderViewCollectionReusableView", bundle: nil),
@@ -356,137 +225,24 @@ class MedicationLandingPageViewController: UIViewController, UICollectionViewDel
             withReuseIdentifier: "HeaderViewCollectionReusableView"
         )
 
-            collectionView.register(
-                UINib(nibName: "TodayMedicationCell", bundle: nil),
-                forCellWithReuseIdentifier: "TodayMedicationCell"
-            )
+        collectionView.register(
+            UINib(nibName: "TodayMedicationCell", bundle: nil),
+            forCellWithReuseIdentifier: "TodayMedicationCell"
+        )
 
-            collectionView.register(
-                UINib(nibName: "MyMedicationCell", bundle: nil),
-                forCellWithReuseIdentifier: "MyMedicationCell"
-            )
+        collectionView.register(
+            UINib(nibName: "MyMedicationCell", bundle: nil),
+            forCellWithReuseIdentifier: "MyMedicationCell"
+        )
 
-            collectionView.collectionViewLayout = createLayout()
-            collectionView.dataSource = self
-            collectionView.delegate = self
-        }
-    
-
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destination.
-        // Pass the selected object to the new view controller.
-    }
-    */
-
-}
-
-extension MedicationLandingPageViewController: UICollectionViewDataSource {
-    func collectionView(_ collectionView: UICollectionView,
-                        viewForSupplementaryElementOfKind kind: String,
-                        at indexPath: IndexPath) -> UICollectionReusableView {
-
-        let header = collectionView.dequeueReusableSupplementaryView(
-            ofKind: kind,
-            withReuseIdentifier: "HeaderViewCollectionReusableView",
-            for: indexPath
-        ) as! HeaderViewCollectionReusableView
-
-        if indexPath.section == 0 {
-            header.configureHeader(text: "Today's Medication", showEdit: false)
-        } else {
-            
-            header.configureHeader(text: "My Medications", showEdit: true)
-
-            header.editButton.addTarget(
-                self,
-                action: #selector(editMyMedications),
-                for: .touchUpInside
-            )
-        }
-
-        return header
+        collectionView.collectionViewLayout = createLayout()
+        collectionView.dataSource = self
+        collectionView.delegate = self
     }
 
-
-    func numberOfSections(in collectionView: UICollectionView) -> Int {
-        return 2
-    }
-
-    func collectionView(_ collectionView: UICollectionView,
-                        numberOfItemsInSection section: Int) -> Int {
-
-        return section == 0 ? todaysMedications.count : allMedications.count
-    }
-
-    func collectionView(_ collectionView: UICollectionView,
-                        cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-
-        if indexPath.section == 0 {
-            let cell = collectionView.dequeueReusableCell(
-                withReuseIdentifier: "TodayMedicationCell",
-                for: indexPath
-            ) as! TodayMedicationCell
-
-            let dose = todaysMedications[indexPath.item]
-
-            // Find parent medication for this dose
-            if let med = allMedications.first(where: { $0.id == dose.medicationID }) {
-                cell.configure(with: dose, medication: med) // note the new signature
-            } else {
-                // fallback: configure with dose only (you can add a fallback configure overload)
-                // or just clear the cell
-            }
-
-            return cell
-
-        } else {
-            let cell = collectionView.dequeueReusableCell(
-                withReuseIdentifier: "MyMedicationCell",
-                for: indexPath
-            ) as! MyMedicationCell
-
-            let medication = allMedications[indexPath.item]
-            cell.configure(with: medication) // keep as-is
-            return cell
-        }
-    }
-
-}
-
-//extension MedicationLandingPageViewController {
-//
-//    // MARK: - Open Add Medication Screen
-//    @objc func openAddMedication() {
-//        let storyboard = UIStoryboard(name: "Main", bundle: nil)
-//        let vc = storyboard.instantiateViewController(
-//            withIdentifier: "AddMedicationViewController"
-//        ) as! AddMedicationViewController
-//
-//        vc.modalPresentationStyle = .pageSheet
-//        present(vc, animated: true)
-//    }
-//
-//    // MARK: - Open Edit Medication Screen
-//    func openEditMedication(for medication: Medication) {
-//        let storyboard = UIStoryboard(name: "Main", bundle: nil)
-//        let vc = storyboard.instantiateViewController(
-//            withIdentifier: "EditMedicationViewController"
-//        ) as! EditMedicationViewController
-//
-//        vc.medication = medication     // pass data
-//        vc.modalPresentationStyle = .pageSheet
-//        present(vc, animated: true)
-//    }
-//}
-
-
-// MARK: - Navigation (Programmatic)
-extension MedicationLandingPageViewController {
-
+    // ---------------------------------------------------------
+    // MARK: - Modal Screens
+    // ---------------------------------------------------------
     func openEditMedicationScreen() {
         let storyboard = UIStoryboard(name: "Medication", bundle: nil)
         let vc = storyboard.instantiateViewController(
@@ -499,9 +255,6 @@ extension MedicationLandingPageViewController {
         nav.modalPresentationStyle = .formSheet
         present(nav, animated: true)
     }
-
-
-
 
     func openSkipTakenModal(for dose: MedicationDose) {
         let storyboard = UIStoryboard(name: "Medication", bundle: nil)
@@ -519,24 +272,27 @@ extension MedicationLandingPageViewController {
 
         vc.delegate = self
 
-        // 🔥 The REAL fix
         let nav = UINavigationController(rootViewController: vc)
-        nav.modalPresentationStyle = .pageSheet   // or .formSheet, or .overFullScreen
+        nav.modalPresentationStyle = .pageSheet
         present(nav, animated: true)
-
     }
+
+    // ---------------------------------------------------------
+    // MARK: - Normalize Dose Date
+    // ---------------------------------------------------------
     private func normalizeDoseDate(_ dose: MedicationDose) -> MedicationDose {
         var updatedDose = dose
         let calendar = Calendar.current
 
-        // If dose.status was from a previous day → reset it
         if !calendar.isDateInToday(dose.time) {
-            // Extract hour/minute from old time
             let components = calendar.dateComponents([.hour, .minute], from: dose.time)
-            let today = calendar.date(bySettingHour: components.hour ?? 0,
-                                      minute: components.minute ?? 0,
-                                      second: 0,
-                                      of: Date())!
+
+            let today = calendar.date(
+                bySettingHour: components.hour ?? 0,
+                minute: components.minute ?? 0,
+                second: 0,
+                of: Date()
+            )!
 
             updatedDose.time = today
             updatedDose.status = .none
@@ -544,6 +300,65 @@ extension MedicationLandingPageViewController {
 
         return updatedDose
     }
+}
 
+// ---------------------------------------------------------
+// MARK: - CollectionView DataSource
+// ---------------------------------------------------------
+extension MedicationLandingPageViewController: UICollectionViewDataSource {
 
+    func collectionView(_ collectionView: UICollectionView,
+                        viewForSupplementaryElementOfKind kind: String,
+                        at indexPath: IndexPath) -> UICollectionReusableView {
+
+        let header = collectionView.dequeueReusableSupplementaryView(
+            ofKind: kind,
+            withReuseIdentifier: "HeaderViewCollectionReusableView",
+            for: indexPath
+        ) as! HeaderViewCollectionReusableView
+
+        if indexPath.section == 0 {
+            header.configureHeader(text: "Today's Medication", showEdit: false)
+        } else {
+            header.configureHeader(text: "My Medications", showEdit: true)
+            header.editButton.addTarget(self,
+                                        action: #selector(editMyMedications),
+                                        for: .touchUpInside)
+        }
+        return header
+    }
+
+    func numberOfSections(in collectionView: UICollectionView) -> Int { 2 }
+
+    func collectionView(_ collectionView: UICollectionView,
+                        numberOfItemsInSection section: Int) -> Int {
+        return section == 0 ? todaysMedications.count : allMedications.count
+    }
+
+    func collectionView(_ collectionView: UICollectionView,
+                        cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+
+        if indexPath.section == 0 {
+            let cell = collectionView.dequeueReusableCell(
+                withReuseIdentifier: "TodayMedicationCell",
+                for: indexPath
+            ) as! TodayMedicationCell
+
+            let dose = todaysMedications[indexPath.item]
+
+            if let med = allMedications.first(where: { $0.id == dose.medicationID }) {
+                cell.configure(with: dose, medication: med)
+            }
+
+            return cell
+        }
+
+        let cell = collectionView.dequeueReusableCell(
+            withReuseIdentifier: "MyMedicationCell",
+            for: indexPath
+        ) as! MyMedicationCell
+
+        cell.configure(with: allMedications[indexPath.item])
+        return cell
+    }
 }

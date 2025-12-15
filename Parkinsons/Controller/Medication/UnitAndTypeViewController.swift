@@ -6,32 +6,47 @@
 //
 
 import UIKit
+
+// Delegate used to pass selected unit + type back to previous screen
 protocol UnitsAndTypeDelegate: AnyObject {
     func didSelectUnitsAndType(unitText: String, selectedType: String)
 }
 
-class UnitAndTypeViewController: UIViewController, UITableViewDataSource, UITableViewDelegate, UITextFieldDelegate  {
+class UnitAndTypeViewController: UIViewController,
+                                 UITableViewDataSource,
+                                 UITableViewDelegate,
+                                 UITextFieldDelegate {
+
+    // MARK: - Outlets
     @IBOutlet weak var tickButton: UIBarButtonItem!
     @IBOutlet weak var unitTextField: UITextField!
+    @IBOutlet weak var TypeTableView: UITableView!
+
+    // MARK: - Properties
     weak var delegate: UnitsAndTypeDelegate?
     var selectedType: String?
-    
+
+    // MARK: - Lifecycle
     override func viewDidLoad() {
         super.viewDidLoad()
+
+        // UI Setup
         unitTextField.layer.cornerRadius = 25
-        
         unitTextField.clipsToBounds = true
+        unitTextField.placeholder = "mg"
+        unitTextField.delegate = self
+
+        // Setup table appearance
         TypeTableView.layer.cornerRadius = 10
         TypeTableView.clipsToBounds = true
         TypeTableView.backgroundColor = UIColor.systemGray6
         TypeTableView.delegate = self
         TypeTableView.dataSource = self
-        unitTextField.delegate = self
-        unitTextField.placeholder = "mg"
 
+        // Restore saved unit text
         unitTextField.text = UnitAndTypeStore.shared.savedUnit
 
-           // Restore previous type selection
+        // Restore saved type selection
         if let savedType = UnitAndTypeStore.shared.savedType, !savedType.isEmpty {
             selectedType = savedType
 
@@ -40,63 +55,65 @@ class UnitAndTypeViewController: UIViewController, UITableViewDataSource, UITabl
             }
         }
 
-
-           TypeTableView.reloadData()
-
-        // Do any additional setup after loading the view.
+        TypeTableView.reloadData()
     }
+
+    // MARK: - TableView DataSource
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        unitAndType.count
+        return unitAndType.count
     }
-    
-    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath) as! UnitAndTypeTableViewCell
+
+    func tableView(_ tableView: UITableView,
+                   cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+
+        let cell = tableView.dequeueReusableCell(withIdentifier: "cell",
+                                                 for: indexPath) as! UnitAndTypeTableViewCell
+
         let type = unitAndType[indexPath.row]
         cell.configureCell(type: type)
         return cell
     }
+
+    // MARK: - TableView Selection Handling
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+
         selectedType = unitAndType[indexPath.row].name
 
+        // Ensure only one type is selected
         for i in 0..<unitAndType.count {
             unitAndType[i].isSelected = (i == indexPath.row)
         }
+
+        // Store selected type
         UnitAndTypeStore.shared.savedType = selectedType!
-        print(unitAndType)
+
         tableView.reloadData()
     }
+
+    // MARK: - TextField Delegate
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
-        textField.resignFirstResponder()   // hides keyboard
+        textField.resignFirstResponder() // hide keyboard
         return true
     }
-    
-    
+
+    // MARK: - Actions
+    @IBAction func onBackPressed(_ sender: UIBarButtonItem) {
+        navigationController?.popViewController(animated: true)
+    }
 
     @IBAction func onTickPressed(_ sender: UIBarButtonItem) {
+        // Ensure both unit text and type are selected
         guard let text = unitTextField.text,
-                  let type = selectedType else {
-                return
-            }
+              let type = selectedType else { return }
+
+        // Save selections
         UnitAndTypeStore.shared.savedUnit = text
         UnitAndTypeStore.shared.savedType = type
 
-            delegate?.didSelectUnitsAndType(unitText: text, selectedType: type)
+        // Pass back selected values using delegate
+        delegate?.didSelectUnitsAndType(unitText: text, selectedType: type)
 
-            dismiss(animated: true)
+        // Go back
+        navigationController?.popViewController(animated: true)
     }
-    @IBOutlet weak var TypeTableView: UITableView!
-    
-
-    
-
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destination.
-        // Pass the selected object to the new view controller.
-    }
-    */
-
 }
