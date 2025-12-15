@@ -7,7 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		1979F95D2EE68C3C00437038 /* YouTubeiOSPlayerHelper in Frameworks */ = {isa = PBXBuildFile; productRef = 1979F95C2EE68C3C00437038 /* YouTubeiOSPlayerHelper */; };
+		1997F40C2EF007ED00E69B25 /* YouTubeiOSPlayerHelper in Frameworks */ = {isa = PBXBuildFile; productRef = 1997F40B2EF007ED00E69B25 /* YouTubeiOSPlayerHelper */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -40,7 +40,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				1979F95D2EE68C3C00437038 /* YouTubeiOSPlayerHelper in Frameworks */,
+				1997F40C2EF007ED00E69B25 /* YouTubeiOSPlayerHelper in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -83,7 +83,7 @@
 			);
 			name = Parkinsons;
 			packageProductDependencies = (
-				1979F95C2EE68C3C00437038 /* YouTubeiOSPlayerHelper */,
+				1997F40B2EF007ED00E69B25 /* YouTubeiOSPlayerHelper */,
 			);
 			productName = Parkinsons;
 			productReference = 19423B6D2ED6BD590004C99E /* Parkinsons.app */;
@@ -114,7 +114,7 @@
 			mainGroup = 19423B642ED6BD590004C99E;
 			minimizedProjectReferenceProxies = 1;
 			packageReferences = (
-				1979F95B2EE68C3C00437038 /* XCRemoteSwiftPackageReference "youtube-ios-player-helper" */,
+				1997F40A2EF007ED00E69B25 /* XCRemoteSwiftPackageReference "youtube-ios-player-helper" */,
 			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = 19423B6E2ED6BD590004C99E /* Products */;
@@ -354,7 +354,7 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
-		1979F95B2EE68C3C00437038 /* XCRemoteSwiftPackageReference "youtube-ios-player-helper" */ = {
+		1997F40A2EF007ED00E69B25 /* XCRemoteSwiftPackageReference "youtube-ios-player-helper" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/youtube/youtube-ios-player-helper.git";
 			requirement = {
@@ -365,9 +365,9 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
-		1979F95C2EE68C3C00437038 /* YouTubeiOSPlayerHelper */ = {
+		1997F40B2EF007ED00E69B25 /* YouTubeiOSPlayerHelper */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = 1979F95B2EE68C3C00437038 /* XCRemoteSwiftPackageReference "youtube-ios-player-helper" */;
+			package = 1997F40A2EF007ED00E69B25 /* XCRemoteSwiftPackageReference "youtube-ios-player-helper" */;
 			productName = YouTubeiOSPlayerHelper;
 		};
 /* End XCSwiftPackageProductDependency section */

@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="24412" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina6_12" orientation="portrait" appearance="light"/>
+    <dependencies>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="24405"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="System colors in document resources" minToolsVersion="11.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" rowHeight="148" id="KGk-i7-Jjw" customClass="SymptomRatingCell" customModule="Parkinsons" customModuleProvider="target">
+            <rect key="frame" x="0.0" y="0.0" width="488" height="148"/>
+            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+            <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="KGk-i7-Jjw" id="H2p-sc-9uM">
+                <rect key="frame" x="0.0" y="0.0" width="488" height="148"/>
+                <autoresizingMask key="autoresizingMask"/>
+                <subviews>
+                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="qiu-7M-HoK">
+                        <rect key="frame" x="0.0" y="0.0" width="488" height="148"/>
+                        <subviews>
+                            <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="p8b-qN-TDz">
+                                <rect key="frame" x="0.0" y="0.0" width="488" height="148"/>
+                                <subviews>
+                                    <stackView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="2jV-sj-mAD">
+                                        <rect key="frame" x="0.0" y="0.0" width="488" height="60"/>
+                                        <subviews>
+                                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="PFb-V4-Vb9">
+                                                <rect key="frame" x="0.0" y="0.0" width="60" height="60"/>
+                                                <constraints>
+                                                    <constraint firstAttribute="width" constant="60" id="Ylx-gK-8ka"/>
+                                                </constraints>
+                                            </imageView>
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="AGl-qG-33X">
+                                                <rect key="frame" x="60" y="0.0" width="428" height="60"/>
+                                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                <nil key="textColor"/>
+                                                <nil key="highlightedColor"/>
+                                            </label>
+                                        </subviews>
+                                        <constraints>
+                                            <constraint firstItem="PFb-V4-Vb9" firstAttribute="top" secondItem="2jV-sj-mAD" secondAttribute="top" id="E0S-sQ-WqN"/>
+                                            <constraint firstItem="PFb-V4-Vb9" firstAttribute="leading" secondItem="2jV-sj-mAD" secondAttribute="leading" id="LOD-Zg-BhJ"/>
+                                            <constraint firstAttribute="height" constant="60" id="p8E-ze-xRg"/>
+                                        </constraints>
+                                    </stackView>
+                                    <stackView opaque="NO" contentMode="scaleToFill" distribution="fillEqually" translatesAutoresizingMaskIntoConstraints="NO" id="BjV-7k-KgU">
+                                        <rect key="frame" x="0.0" y="60" width="488" height="88"/>
+                                        <subviews>
+                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="4ca-j6-DNZ">
+                                                <rect key="frame" x="0.0" y="0.0" width="122" height="88"/>
+                                                <state key="normal" title="Button"/>
+                                                <buttonConfiguration key="configuration" style="plain" image="Screenshot 2025-11-10 at 2.07.21 PM 2" cornerStyle="capsule">
+                                                    <preferredSymbolConfiguration key="preferredSymbolConfigurationForImage" scale="large"/>
+                                                </buttonConfiguration>
+                                            </button>
+                                            <button opaque="NO" tag="1" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="FHs-rj-cap">
+                                                <rect key="frame" x="122" y="0.0" width="122" height="88"/>
+                                                <state key="normal" title="Button"/>
+                                                <buttonConfiguration key="configuration" style="plain" image="notPresent 2" cornerStyle="capsule">
+                                                    <preferredSymbolConfiguration key="preferredSymbolConfigurationForImage" scale="large"/>
+                                                </buttonConfiguration>
+                                            </button>
+                                            <button opaque="NO" tag="2" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="iA3-mb-ddc">
+                                                <rect key="frame" x="244" y="0.0" width="122" height="88"/>
+                                                <state key="normal" title="Button"/>
+                                                <buttonConfiguration key="configuration" style="plain" image="severe" cornerStyle="capsule">
+                                                    <preferredSymbolConfiguration key="preferredSymbolConfigurationForImage" scale="large"/>
+                                                </buttonConfiguration>
+                                            </button>
+                                            <button opaque="NO" tag="3" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="JyC-eg-JtR">
+                                                <rect key="frame" x="366" y="0.0" width="122" height="88"/>
+                                                <state key="normal" title="Button"/>
+                                                <buttonConfiguration key="configuration" style="plain" image="notPresent" cornerStyle="capsule">
+                                                    <preferredSymbolConfiguration key="preferredSymbolConfigurationForImage" scale="large"/>
+                                                </buttonConfiguration>
+                                            </button>
+                                        </subviews>
+                                    </stackView>
+                                </subviews>
+                                <constraints>
+                                    <constraint firstAttribute="bottom" secondItem="BjV-7k-KgU" secondAttribute="bottom" id="6dA-Ae-DeG"/>
+                                    <constraint firstItem="BjV-7k-KgU" firstAttribute="top" secondItem="2jV-sj-mAD" secondAttribute="bottom" id="GgI-ja-7dE"/>
+                                    <constraint firstItem="BjV-7k-KgU" firstAttribute="leading" secondItem="p8b-qN-TDz" secondAttribute="leading" id="Qk5-ot-Up3"/>
+                                    <constraint firstItem="2jV-sj-mAD" firstAttribute="leading" secondItem="p8b-qN-TDz" secondAttribute="leading" id="aA5-JK-f70"/>
+                                    <constraint firstAttribute="trailing" secondItem="BjV-7k-KgU" secondAttribute="trailing" id="rh2-BG-82A"/>
+                                    <constraint firstItem="2jV-sj-mAD" firstAttribute="top" secondItem="p8b-qN-TDz" secondAttribute="top" id="xyD-1p-PdE"/>
+                                </constraints>
+                            </stackView>
+                        </subviews>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                        <constraints>
+                            <constraint firstItem="p8b-qN-TDz" firstAttribute="top" secondItem="qiu-7M-HoK" secondAttribute="top" id="3Et-GY-Zsi"/>
+                            <constraint firstItem="p8b-qN-TDz" firstAttribute="leading" secondItem="qiu-7M-HoK" secondAttribute="leading" id="9rc-pu-Q5z"/>
+                            <constraint firstAttribute="trailing" secondItem="p8b-qN-TDz" secondAttribute="trailing" id="fDx-c0-Aop"/>
+                            <constraint firstAttribute="bottom" secondItem="p8b-qN-TDz" secondAttribute="bottom" id="vgf-4h-awQ"/>
+                        </constraints>
+                    </view>
+                </subviews>
+                <constraints>
+                    <constraint firstAttribute="trailing" secondItem="qiu-7M-HoK" secondAttribute="trailing" id="941-9E-sqB"/>
+                    <constraint firstItem="qiu-7M-HoK" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" id="fIU-1O-Nql"/>
+                    <constraint firstItem="qiu-7M-HoK" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" id="gDg-KL-EAU"/>
+                    <constraint firstAttribute="bottom" secondItem="qiu-7M-HoK" secondAttribute="bottom" id="nXs-ho-1nh"/>
+                </constraints>
+            </tableViewCellContentView>
+            <viewLayoutGuide key="safeArea" id="njF-e1-oar"/>
+            <connections>
+                <outlet property="symptomIcon" destination="PFb-V4-Vb9" id="05W-lN-WJV"/>
+                <outlet property="symptomLabel" destination="AGl-qG-33X" id="BYt-AL-FUm"/>
+                <outletCollection property="ratingButtons" destination="4ca-j6-DNZ" collectionClass="NSMutableArray" id="Gd9-VN-gox"/>
+                <outletCollection property="ratingButtons" destination="FHs-rj-cap" collectionClass="NSMutableArray" id="VcR-8M-sYp"/>
+                <outletCollection property="ratingButtons" destination="iA3-mb-ddc" collectionClass="NSMutableArray" id="oBf-v7-FTp"/>
+                <outletCollection property="ratingButtons" destination="JyC-eg-JtR" collectionClass="NSMutableArray" id="08j-SG-wAj"/>
+            </connections>
+            <point key="canvasLocation" x="267.17557251908397" y="190.14084507042256"/>
+        </tableViewCell>
+    </objects>
+    <resources>
+        <image name="Screenshot 2025-11-10 at 2.07.21 PM 2" width="24" height="24"/>
+        <image name="notPresent" width="24" height="24"/>
+        <image name="notPresent 2" width="24" height="24"/>
+        <image name="severe" width="24" height="24"/>
+        <systemColor name="systemBackgroundColor">
+            <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+        </systemColor>
+    </resources>
+</document>

@@ -46,8 +46,8 @@ class _0minworkoutGoodJobViewController: UIViewController {
            )
 
         alert.addAction(UIAlertAction(title: "Back to Home", style: .default) { _ in
-            let storyboard = UIStoryboard(name: "10 minworkout", bundle: nil)
-              let homeVC = storyboard.instantiateViewController(withIdentifier: "exerciseLandingPage") as! _0minworkoutLandingPageViewController
+            let storyboard = UIStoryboard(name: "Home", bundle: nil)
+              let homeVC = storyboard.instantiateViewController(withIdentifier: "HomePage") as! HomeViewController
               self.navigationController?.setViewControllers([homeVC], animated: true)
            })
 

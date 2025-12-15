@@ -81,9 +81,17 @@ extension UIViewController {
     
     
     // MARK: - Navigation Helper
+   
     private func navigateToWorkoutLanding() {
-        let storyboard = UIStoryboard(name: "10 minworkout", bundle: nil)
-        let homeVC = storyboard.instantiateViewController(withIdentifier: "exerciseLandingPage") as! _0minworkoutLandingPageViewController
-        self.navigationController?.setViewControllers([homeVC], animated: true)
+       
+        if let existingLandingVC = self.navigationController?.viewControllers.first(where: { vc in
+            return vc is _0minworkoutLandingPageViewController
+        }) {
+            self.navigationController?.popToViewController(existingLandingVC, animated: true)
+        } else {
+            let storyboard = UIStoryboard(name: "10 minworkout", bundle: nil)
+            let homeVC = storyboard.instantiateViewController(withIdentifier: "exerciseLandingPage") as! _0minworkoutLandingPageViewController
+            self.navigationController?.setViewControllers([homeVC], animated: true)
+        }
     }
 }
