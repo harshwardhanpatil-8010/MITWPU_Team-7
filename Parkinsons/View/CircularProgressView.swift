@@ -1,65 +1,66 @@
 import UIKit
 
-@IBDesignable
-class CircularProgressView: UIView {
-    private let backgroundLayer = CAShapeLayer()
+final class CircularProgressView: UIView {
+    
+    private let trackLayer = CAShapeLayer()
     private let progressLayer = CAShapeLayer()
     
-    @IBInspectable var lineWidth: CGFloat = 25 {
-        didSet { configure() }
-    }
-    @IBInspectable var progress: CGFloat = 0 { // 0..1
-        didSet { updateProgress() }
+    // MARK: - Customizable properties
+    var trackColor: UIColor = .systemGray4 {
+        didSet { trackLayer.strokeColor = trackColor.cgColor }
     }
     
-    override init(frame: CGRect) { super.init(frame: frame); configure() }
-    required init?(coder: NSCoder) { super.init(coder: coder); configure() }
-    override func layoutSubviews() { super.layoutSubviews(); configurePaths() }
+    var progressColor: UIColor = .systemGreen {
+        didSet { progressLayer.strokeColor = progressColor.cgColor }
+    }
     
-    private func configure() {
-        backgroundColor = .clear
-        backgroundLayer.strokeColor = UIColor.systemGray5.cgColor
-        backgroundLayer.fillColor = UIColor.clear.cgColor
-        backgroundLayer.lineWidth = lineWidth
-        layer.addSublayer(backgroundLayer)
+    var lineWidth: CGFloat = 20 {
+        didSet {
+            trackLayer.lineWidth = lineWidth
+            progressLayer.lineWidth = lineWidth
+        }
+    }
+    
+    override init(frame: CGRect) {
+        super.init(frame: frame)
+        setupLayers()
+    }
+    
+    required init?(coder: NSCoder) {
+        super.init(coder: coder)
+        setupLayers()
+    }
+    
+    private func setupLayers() {
+        let circularPath = UIBezierPath(
+            arcCenter: centerPoint,
+            radius: bounds.width / 2,
+            startAngle: -.pi / 2,
+            endAngle: 3 * .pi / 2,
+            clockwise: true
+        )
         
-        progressLayer.strokeColor = UIColor.systemGreen.cgColor
-        progressLayer.fillColor = UIColor.clear.cgColor
+        trackLayer.path = circularPath.cgPath
+        trackLayer.strokeColor = trackColor.cgColor
+        trackLayer.lineWidth = lineWidth
+        trackLayer.fillColor = UIColor.clear.cgColor
+        layer.addSublayer(trackLayer)
+        
+        progressLayer.path = circularPath.cgPath
+        progressLayer.strokeColor = progressColor.cgColor
         progressLayer.lineWidth = lineWidth
         progressLayer.lineCap = .round
-        progressLayer.strokeEnd = progress
+        progressLayer.fillColor = UIColor.clear.cgColor
+        progressLayer.strokeEnd = 1
         layer.addSublayer(progressLayer)
     }
     
-    private func configurePaths() {
-        let centerPoint = CGPoint(x: bounds.midX, y: bounds.midY)
-        let radius = min(bounds.width, bounds.height) / 2 - lineWidth/2
-        let startAngle = -CGFloat.pi / 2
-        let endAngle = startAngle + CGFloat.pi * 2
-        let path = UIBezierPath(arcCenter: centerPoint, radius: radius, startAngle: startAngle, endAngle: endAngle, clockwise: true)
-        backgroundLayer.path = path.cgPath
-        progressLayer.path = path.cgPath
+    private var centerPoint: CGPoint {
+        CGPoint(x: bounds.midX, y: bounds.midY)
     }
     
-    private func updateProgress() {
-        DispatchQueue.main.async {
-            self.progressLayer.strokeEnd = min(max(self.progress, 0), 1)
-        }
-    }
-    
-    func setProgress(_ p: CGFloat, animated: Bool = true, duration: CFTimeInterval = 0.3) {
-        let clamped = min(max(p,0),1)
-        if animated {
-            let anim = CABasicAnimation(keyPath: "strokeEnd")
-            anim.fromValue = progressLayer.strokeEnd
-            anim.toValue = clamped
-            anim.duration = duration
-            anim.timingFunction = CAMediaTimingFunction(name: .easeInEaseOut)
-            progressLayer.strokeEnd = clamped
-            progressLayer.add(anim, forKey: "progress")
-        } else {
-            progressLayer.strokeEnd = clamped
-        }
+    /// Update progress (0 to 1)
+    func setProgress(_ progress: CGFloat) {
+        progressLayer.strokeEnd = progress
     }
 }
-
