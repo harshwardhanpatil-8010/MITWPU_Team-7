@@ -36,7 +36,7 @@
                                 <rect key="frame" x="32" y="89.333333333333329" width="105" height="46.666666666666671"/>
                                 <subviews>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="vtv-Fo-AiT">
-                                        <rect key="frame" x="14" y="7.9999999999999982" width="81" height="26.333333333333329"/>
+                                        <rect key="frame" x="12" y="7.9999999999999982" width="81" height="26.333333333333329"/>
                                         <fontDescription key="fontDescription" type="boldSystem" pointSize="22"/>
                                         <nil key="textColor"/>
                                         <nil key="highlightedColor"/>
@@ -45,8 +45,8 @@
                                 <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                                 <constraints>
                                     <constraint firstItem="vtv-Fo-AiT" firstAttribute="top" secondItem="W6T-Is-SQg" secondAttribute="top" constant="8" id="993-E0-QZM"/>
-                                    <constraint firstItem="vtv-Fo-AiT" firstAttribute="leading" secondItem="W6T-Is-SQg" secondAttribute="leading" constant="14" id="g91-EH-Kt6"/>
-                                    <constraint firstAttribute="trailing" secondItem="vtv-Fo-AiT" secondAttribute="trailing" constant="10" id="zhs-I2-mBt"/>
+                                    <constraint firstItem="vtv-Fo-AiT" firstAttribute="leading" secondItem="W6T-Is-SQg" secondAttribute="leading" constant="12" id="g91-EH-Kt6"/>
+                                    <constraint firstAttribute="trailing" secondItem="vtv-Fo-AiT" secondAttribute="trailing" constant="12" id="zhs-I2-mBt"/>
                                 </constraints>
                             </view>
                         </subviews>

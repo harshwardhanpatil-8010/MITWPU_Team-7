@@ -11,75 +11,73 @@
         <!--10 min workout-->
         <scene sceneID="ebc-ya-hmf">
             <objects>
-
                 <viewController storyboardIdentifier="RestScreenViewController" useStoryboardIdentifierAsRestorationIdentifier="YES" id="J4b-8T-y2N" customClass="RestScreenViewController" customModule="Parkinsons" customModuleProvider="target" sceneMemberID="viewController">
-
                     <view key="view" contentMode="scaleToFill" id="6p5-RL-dAZ">
                         <rect key="frame" x="0.0" y="0.0" width="402" height="874"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <stackView opaque="NO" contentMode="scaleToFill" distribution="fillProportionally" alignment="center" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="pqP-9w-Yo4">
-                                <rect key="frame" x="16" y="144" width="350" height="20.333333333333343"/>
+                                <rect key="frame" x="16" y="144" width="366" height="20.333333333333343"/>
                                 <subviews>
                                     <stackView opaque="NO" contentMode="scaleToFill" distribution="fillEqually" alignment="center" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="xRB-IG-w6b">
-                                        <rect key="frame" x="0.0" y="8.3333333333333428" width="272" height="4"/>
+                                        <rect key="frame" x="0.0" y="8.3333333333333428" width="288" height="4"/>
                                         <subviews>
                                             <progressView opaque="NO" contentMode="scaleToFill" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="qLw-bg-xWc">
-                                                <rect key="frame" x="0.0" y="0.0" width="20" height="4"/>
+                                                <rect key="frame" x="0.0" y="0.0" width="21.666666666666668" height="4"/>
                                                 <constraints>
                                                     <constraint firstAttribute="width" constant="20" id="5r4-3t-01i"/>
                                                 </constraints>
                                             </progressView>
                                             <progressView opaque="NO" contentMode="scaleToFill" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="BzK-dc-s40">
-                                                <rect key="frame" x="28" y="0.0" width="20" height="4"/>
+                                                <rect key="frame" x="29.666666666666664" y="0.0" width="21.666666666666664" height="4"/>
                                                 <constraints>
                                                     <constraint firstAttribute="width" constant="20" id="0Lj-97-f0m"/>
                                                 </constraints>
                                             </progressView>
                                             <progressView opaque="NO" contentMode="scaleToFill" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="c5U-ar-fcM">
-                                                <rect key="frame" x="56" y="0.0" width="20" height="4"/>
+                                                <rect key="frame" x="59.333333333333336" y="0.0" width="21.333333333333336" height="4"/>
                                                 <constraints>
                                                     <constraint firstAttribute="width" constant="20" id="6YM-aN-BIy"/>
                                                 </constraints>
                                             </progressView>
                                             <progressView opaque="NO" contentMode="scaleToFill" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="DgC-KD-3tB">
-                                                <rect key="frame" x="84" y="0.0" width="20" height="4"/>
+                                                <rect key="frame" x="88.666666666666671" y="0.0" width="21.666666666666671" height="4"/>
                                                 <constraints>
                                                     <constraint firstAttribute="width" constant="20" id="a7V-Xd-vQS"/>
                                                 </constraints>
                                             </progressView>
                                             <progressView opaque="NO" contentMode="scaleToFill" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="0hI-2c-6Lt">
-                                                <rect key="frame" x="112" y="0.0" width="20" height="4"/>
+                                                <rect key="frame" x="118.33333333333336" y="0.0" width="21.666666666666671" height="4"/>
                                                 <constraints>
                                                     <constraint firstAttribute="width" constant="20" id="StM-oG-DcK"/>
                                                 </constraints>
                                             </progressView>
                                             <progressView opaque="NO" contentMode="scaleToFill" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="SJf-xB-Jhs">
-                                                <rect key="frame" x="140" y="0.0" width="20" height="4"/>
+                                                <rect key="frame" x="148" y="0.0" width="21.666666666666657" height="4"/>
                                                 <constraints>
                                                     <constraint firstAttribute="width" constant="20" id="c73-do-9NN"/>
                                                 </constraints>
                                             </progressView>
                                             <progressView opaque="NO" contentMode="scaleToFill" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="gYi-3g-GsB">
-                                                <rect key="frame" x="168" y="0.0" width="20" height="4"/>
+                                                <rect key="frame" x="177.66666666666666" y="0.0" width="21.666666666666657" height="4"/>
                                                 <constraints>
                                                     <constraint firstAttribute="width" constant="20" id="6An-TG-OYN"/>
                                                 </constraints>
                                             </progressView>
                                             <progressView opaque="NO" contentMode="scaleToFill" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="xEL-lB-GAY">
-                                                <rect key="frame" x="196" y="0.0" width="20" height="4"/>
+                                                <rect key="frame" x="207.33333333333334" y="0.0" width="21.333333333333343" height="4"/>
                                                 <constraints>
                                                     <constraint firstAttribute="width" constant="20" id="NlM-kF-tYV"/>
                                                 </constraints>
                                             </progressView>
                                             <progressView opaque="NO" contentMode="scaleToFill" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="Voj-sP-sfB">
-                                                <rect key="frame" x="224" y="0.0" width="20" height="4"/>
+                                                <rect key="frame" x="236.66666666666666" y="0.0" width="21.666666666666657" height="4"/>
                                                 <constraints>
                                                     <constraint firstAttribute="width" constant="20" id="oBE-dv-NSC"/>
                                                 </constraints>
                                             </progressView>
                                             <progressView opaque="NO" contentMode="scaleToFill" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="Upb-gV-j15">
-                                                <rect key="frame" x="252" y="0.0" width="20" height="4"/>
+                                                <rect key="frame" x="266.33333333333331" y="0.0" width="21.666666666666686" height="4"/>
                                                 <constraints>
                                                     <constraint firstAttribute="width" constant="20" id="Um8-aO-8yz"/>
                                                 </constraints>
@@ -87,7 +85,7 @@
                                         </subviews>
                                     </stackView>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="10 of 10" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="u9S-cO-EtI">
-                                        <rect key="frame" x="280" y="0.0" width="70" height="20.333333333333332"/>
+                                        <rect key="frame" x="296" y="0.0" width="70" height="20.333333333333332"/>
                                         <constraints>
                                             <constraint firstAttribute="width" constant="70" id="Y9y-4h-IXF"/>
                                         </constraints>
@@ -102,20 +100,20 @@
                                 </constraints>
                             </stackView>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Epn-SE-8lT" customClass="FullScreenYTPlayerView" customModule="Parkinsons" customModuleProvider="target">
-                                <rect key="frame" x="0.0" y="179.33333333333334" width="386" height="385.66666666666663"/>
+                                <rect key="frame" x="0.0" y="179.33333333333334" width="402" height="385.66666666666663"/>
                                 <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                             </view>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Jpk-pp-Zie">
-                                <rect key="frame" x="0.0" y="520" width="386" height="354"/>
+                                <rect key="frame" x="0.0" y="520" width="402" height="354"/>
                                 <subviews>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Rest" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="FpD-po-Nav">
-                                        <rect key="frame" x="16" y="28" width="354" height="31.333333333333329"/>
+                                        <rect key="frame" x="16" y="28" width="370" height="31.333333333333329"/>
                                         <fontDescription key="fontDescription" type="system" weight="medium" pointSize="26"/>
                                         <nil key="textColor"/>
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" alignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="4ek-AV-Z8r">
-                                        <rect key="frame" x="152.33333333333334" y="115.00000000000001" width="81.666666666666657" height="58.666666666666671"/>
+                                        <rect key="frame" x="160.33333333333334" y="115.00000000000001" width="81.666666666666657" height="58.666666666666671"/>
                                         <subviews>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="KaI-G0-XV6">
                                                 <rect key="frame" x="0.0" y="0.0" width="81.666666666666671" height="38.333333333333336"/>
@@ -132,7 +130,7 @@
                                         </subviews>
                                     </stackView>
                                     <stackView opaque="NO" contentMode="scaleToFill" spacing="114" translatesAutoresizingMaskIntoConstraints="NO" id="g1i-Lm-JY2">
-                                        <rect key="frame" x="12" y="252" width="362" height="48"/>
+                                        <rect key="frame" x="20" y="252" width="362" height="48"/>
                                         <subviews>
                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="WTm-i5-D2P">
                                                 <rect key="frame" x="0.0" y="0.0" width="124" height="48"/>
@@ -212,9 +210,7 @@
         <!--Info Modal View Controller-->
         <scene sceneID="WSV-ha-It8">
             <objects>
-
                 <viewController storyboardIdentifier="InfoModalViewController" useStoryboardIdentifierAsRestorationIdentifier="YES" id="3xf-SQ-w14" customClass="InfoModalViewController" customModule="Parkinsons" customModuleProvider="target" sceneMemberID="viewController">
-
                     <view key="view" contentMode="scaleToFill" id="LHo-hh-3gH">
                         <rect key="frame" x="0.0" y="0.0" width="402" height="812"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -288,8 +284,6 @@
                         <rect key="frame" x="0.0" y="0.0" width="402" height="874"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-
-
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="-1" estimatedSectionHeaderHeight="-1" sectionFooterHeight="-1" estimatedSectionFooterHeight="-1" translatesAutoresizingMaskIntoConstraints="NO" id="tMO-fk-ozK">
                                 <rect key="frame" x="16" y="397" width="370" height="317"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
@@ -339,6 +333,7 @@
                                                         </stackView>
                                                         <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="checkmark" catalog="system" translatesAutoresizingMaskIntoConstraints="NO" id="CRL-lk-3Lc">
                                                             <rect key="frame" x="5" y="12.333333333333332" width="39" height="35"/>
+                                                            <color key="tintColor" red="0.20392156859999999" green="0.78039215689999997" blue="0.34901960780000002" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                             <constraints>
                                                                 <constraint firstAttribute="width" secondItem="CRL-lk-3Lc" secondAttribute="height" multiplier="30:30" id="T8T-Xj-B5z"/>
                                                             </constraints>

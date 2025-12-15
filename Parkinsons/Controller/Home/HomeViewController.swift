@@ -25,7 +25,14 @@ class HomeViewController: UIViewController, UICollectionViewDelegate , SymptomLo
     @IBOutlet weak var mainCollectionView: UICollectionView!
     
     // MARK: - Section Definition and Data
-    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+
+        mainCollectionView.reloadSections(
+            IndexSet(integer: Section.exercises.rawValue)
+        )
+    }
+
     let homeSections = Section.allCases
     private let separatorView: UIView = {
         let view = UIView()
@@ -543,10 +550,21 @@ extension HomeViewController: UICollectionViewDataSource {
             return cell
             
         case .exercises:
-            let cell = mainCollectionView.dequeueReusableCell(withReuseIdentifier: "exercise_card_cell", for: indexPath) as! ExerciseCardCell
+            let cell = mainCollectionView.dequeueReusableCell(
+                withReuseIdentifier: "exercise_card_cell",
+                for: indexPath
+            ) as! ExerciseCardCell
+
             let model = exerciseData[indexPath.row]
+
+            let completed = WorkoutManager.shared.completedToday.count
+            let total = WorkoutManager.shared.getTodayWorkout().count
+
+            cell.setProgress(completed: completed, total: total)
             cell.configure(with: model)
+
             return cell
+
             
         case .symptoms:
             let cell = mainCollectionView.dequeueReusableCell(withReuseIdentifier: "symptom_log_cell", for: indexPath) as! SymptomLogCell
