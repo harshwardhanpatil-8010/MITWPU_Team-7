@@ -34,6 +34,12 @@ class GameViewController: UIViewController {
         collectionView.dataSource = self
         collectionView.delegate = self
         collectionView.isScrollEnabled = false
+        let layout = UICollectionViewFlowLayout()
+        layout.minimumInteritemSpacing = 12
+        layout.minimumLineSpacing = 12
+        collectionView.collectionViewLayout = layout
+
+        configureLayout()
         level = min(max(level, 1), 30)
 
         if let layout = collectionView.collectionViewLayout as? UICollectionViewFlowLayout {
@@ -47,13 +53,6 @@ class GameViewController: UIViewController {
             startGame()
         }
        
-    }
-    
-    override func viewDidLayoutSubviews() {
-        super.viewDidLayoutSubviews()
-
-        
-        collectionView.collectionViewLayout.invalidateLayout()
     }
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
@@ -89,25 +88,26 @@ class GameViewController: UIViewController {
             return Difficulty(pairs: 10, revealTime: 2)
         case 25...27:
             return Difficulty(pairs: 11, revealTime: 2)
-        default: // 28...30
+        default:
             return Difficulty(pairs: 12, revealTime: 1.5)
         }
     }
+    private func configureLayout() {
+        guard let layout = collectionView.collectionViewLayout as? UICollectionViewFlowLayout else { return }
+
+        layout.sectionInset = UIEdgeInsets(top: 12, left: 12, bottom: 12, right: 12)
+        layout.minimumInteritemSpacing = 12
+        layout.minimumLineSpacing = 12
+    }
+
 
     private func startGame() {
-        guard level > 0 else {
-            level = 1
-            return
-        }
         generateCards()
-        if let layout = collectionView.collectionViewLayout as? UICollectionViewFlowLayout {
-            layout.invalidateLayout()
-        }
-        collectionView.reloadData()
-        collectionView.layoutIfNeeded()
-        
-        revealCards()
-        startTimer()
+
+           collectionView.reloadData()
+           collectionView.layoutIfNeeded()
+           revealCards()
+           startTimer()
         
     }
 private func startTimer() {
@@ -172,6 +172,7 @@ private func checkMatch() {
         matchedPairs += 1
         resetSelection()
         if matchedPairs == cards.count / 2 {
+            
             stopTimer()
             DailyGameManager.shared.markCompleted(date: selectedDate)
             goToSuccess()
@@ -200,15 +201,7 @@ private func checkMatch() {
         navigationController?.pushViewController(vc, animated: true)
     
 }
-    private func columns(for pairCount: Int) -> Int {
-        switch pairCount {
-        case 3...4: return 2
-        case 5...6: return 3
-        case 7...8: return 4
-        case 9...10: return 5
-        default: return 6
-        }
-    }
+  
 
 }
 
@@ -217,22 +210,44 @@ extension GameViewController: UICollectionViewDataSource, UICollectionViewDelega
         cards.count
     }
     
-    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "CardCell", for: indexPath) as! MatchTheCardCollectionViewCell
-        cell.configure(with: cards[indexPath.item])
+    func collectionView(
+        _ collectionView: UICollectionView,
+        cellForItemAt indexPath: IndexPath
+    ) -> UICollectionViewCell {
+
+        let cell = collectionView.dequeueReusableCell(
+            withReuseIdentifier: "CardCell",
+            for: indexPath
+        ) as! MatchTheCardCollectionViewCell
+
+        if indexPath.item < cards.count {
+            cell.configure(with: cards[indexPath.item])
+            cell.alpha = 1.0
+            cell.isUserInteractionEnabled = true
+        } else {
+            // Placeholder cell (keeps grid intact)
+            cell.showEmpty()
+            cell.alpha = 0.15   // or 0.0 if you want invisible
+            cell.isUserInteractionEnabled = false
+        }
+
         return cell
     }
+
+
+    
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+
+        guard indexPath.item < cards.count else { return }
         guard interactionsEnabled else { return }
+
         if cards[indexPath.item].isMatched || cards[indexPath.item].isFlipped {
             return
         }
+
         cards[indexPath.item].isFlipped = true
         collectionView.reloadItems(at: [indexPath])
-        
-        if firstIndex == nil && secondIndex == nil && secondsElapsed == 0 {
-            DailyGameManager.shared.markAttempted(date: selectedDate)
-        }
+
         if firstIndex == nil {
             firstIndex = indexPath
         } else {
@@ -241,32 +256,36 @@ extension GameViewController: UICollectionViewDataSource, UICollectionViewDelega
             checkMatch()
         }
     }
+
     func collectionView(
         _ collectionView: UICollectionView,
         layout collectionViewLayout: UICollectionViewLayout,
         sizeForItemAt indexPath: IndexPath
     ) -> CGSize {
 
-        let pairCount = cards.count / 2
-        let columns = columns(for: pairCount)
-
+        let columns: CGFloat = 4
         let spacing: CGFloat = 12
-        let inset: CGFloat = 12
+        let horizontalInsets: CGFloat = 24 // 12 left + 12 right
 
-        let totalHorizontalSpacing =
-            inset * 2 + spacing * CGFloat(columns - 1)
-
+        let totalSpacing = spacing * (columns - 1)
         let availableWidth =
-            collectionView.bounds.width - totalHorizontalSpacing
+            collectionView.bounds.width - totalSpacing - horizontalInsets
 
-        let side = floor(availableWidth / CGFloat(columns))
-
+        let side = floor(availableWidth / columns)
         return CGSize(width: side, height: side)
     }
 
-    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAt section: Int) -> UIEdgeInsets {
-        UIEdgeInsets(top: 12, left: 12, bottom: 12, right: 12)
+
+
+
+    func collectionView(
+        _ collectionView: UICollectionView,
+        layout collectionViewLayout: UICollectionViewLayout,
+        insetForSectionAt section: Int
+    ) -> UIEdgeInsets {
+        return UIEdgeInsets(top: 12, left: 12, bottom: 12, right: 12)
     }
+
 
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat {
         12
