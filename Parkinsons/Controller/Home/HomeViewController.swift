@@ -406,6 +406,34 @@ ExerciseModel(title: "Rhythmic Walking", detail: "2-3 times a week", progressPer
         }
     }
     
+    private func  handleGamesSelection(at row: Int) {
+        switch row {
+        case 0:
+            let storyboard = UIStoryboard(name: "Match the Cards", bundle: nil) // ⭐️ Use the specific Storyboard name ⭐️
+            // 2. Instantiate the View Controller (assuming it's the initial VC or has a specific identifier)
+            guard let vc = storyboard.instantiateViewController(withIdentifier: "matchTheCardsLandingPage") as? LevelSelectionViewController else {
+                // ...
+                return
+            }
+            // 3. Perform Push Navigation
+            navigationController?.pushViewController(vc, animated: true)
+
+        case 1:
+            // The second item: "Rhythmic Walking"
+            // 1. Instantiate the Storyboard
+            let storyboard = UIStoryboard(name: "", bundle: nil) // ⭐️ Use the specific Storyboard name ⭐️
+            // 2. Instantiate the View Controller
+            guard let vc = storyboard.instantiateViewController(withIdentifier: "SetGoalVCc") as? SetGoalViewController else {
+                // ...
+                return
+            }
+            // 3. Perform Push Navigation
+            navigationController?.pushViewController(vc, animated: true)
+
+        default:
+            print("Games item at row \(row) not configured for navigation.")
+        }
+    }
     // Add this method to your HomeViewController class
     private func handleExerciseSelection(at row: Int) {
         switch row {
@@ -465,7 +493,8 @@ ExerciseModel(title: "Rhythmic Walking", detail: "2-3 times a week", progressPer
         case .exercises:
             // ⭐️ NEW LOGIC: Handle Exercise Taps ⭐️
             handleExerciseSelection(at: indexPath.row)
-
+        case .therapeuticGames:
+            handleGamesSelection(at: indexPath.row)
         default:
             // Handle other sections if necessary (e.g., deselecting a cell)
             collectionView.deselectItem(at: indexPath, animated: true)
