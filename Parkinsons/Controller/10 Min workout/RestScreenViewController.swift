@@ -45,8 +45,6 @@ class RestScreenViewController: UIViewController {
         startTimer()
         setupCloseButton()
         restStartTime = Date()
-        playerView.layer.cornerRadius = 45
-        playerView.layer.maskedCorners = [.layerMinXMinYCorner, .layerMaxXMinYCorner]
         playerView.clipsToBounds = true
         loadVideo()
         playerView.isUserInteractionEnabled = false

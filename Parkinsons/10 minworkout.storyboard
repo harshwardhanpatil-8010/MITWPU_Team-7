@@ -1,5 +1,4 @@
 <?xml version="1.0" encoding="UTF-8"?>
-
 <document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="24412" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="bb1-yB-VUA">
     <device id="retina6_3" orientation="portrait" appearance="light"/>
     <dependencies>
@@ -12,6 +11,7 @@
         <!--10 min workout-->
         <scene sceneID="ebc-ya-hmf">
             <objects>
+
                 <viewController storyboardIdentifier="RestScreenViewController" useStoryboardIdentifierAsRestorationIdentifier="YES" id="J4b-8T-y2N" customClass="RestScreenViewController" customModule="Parkinsons" customModuleProvider="target" sceneMemberID="viewController">
 
                     <view key="view" contentMode="scaleToFill" id="6p5-RL-dAZ">
