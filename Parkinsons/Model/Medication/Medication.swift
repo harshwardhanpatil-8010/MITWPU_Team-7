@@ -11,6 +11,7 @@ struct MedicationDose: Codable, Identifiable {
     var medicationID: UUID
 }
 
+
 enum RepeatRule: Codable {
     case everyday
     case weekly([Int]) // weekday numbers 1...7 (Sun...Sat)

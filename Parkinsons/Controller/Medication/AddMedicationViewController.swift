@@ -6,12 +6,17 @@
 //
 
 import UIKit
+protocol AddMedicationDelegate: AnyObject {
+    func didUpdateMedication()
+}
 
 class AddMedicationViewController:  UIViewController, UITableViewDelegate, UITableViewDataSource, DoseTableViewCellDelegate, UnitsAndTypeDelegate, RepeatSelectionDelegate {
+    weak var delegate: AddMedicationDelegate?
     var isEditMode = false
     var medicationToEdit: Medication!
 
 
+    @IBOutlet weak var strengthLabel: UITextField!
     @IBOutlet weak var deleteButton: UIButton!
 
     override func viewWillAppear(_ animated: Bool) {
@@ -218,12 +223,20 @@ class AddMedicationViewController:  UIViewController, UITableViewDelegate, UITab
         unitLabel.textColor = .label
         strengthUnitLabel.textColor = .label
 
-        // STRENGTH
+        
+        // 3. STRENGTH VALUE
         if let strength = med.strength {
-            strengthUnitLabel.text = "\(strength)"
+            strengthLabel.text = "\(strength)"
+            strengthLabel.textColor = .label
         } else {
-            strengthUnitLabel.text = ""
+            strengthLabel.text = "10"   // or "" or placeholder
+            strengthLabel.textColor = .systemGray2
         }
+
+        // 4. STRENGTH UNIT (same as unit)
+        strengthUnitLabel.text = med.unit
+        strengthUnitLabel.textColor = .label
+
 
         // REPEAT
         repeatLabel.text = med.schedule.displayString()
@@ -312,6 +325,8 @@ class AddMedicationViewController:  UIViewController, UITableViewDelegate, UITab
             dismiss(animated: true)
     }
     @IBAction func onTickPressed(_ sender: UIBarButtonItem) {
+        let strengthValue = Int(strengthLabel.text ?? "")
+
         guard let name = medicationNameTextField.text, !name.isEmpty else { return }
 
             // Determine correct ID early
@@ -345,7 +360,7 @@ class AddMedicationViewController:  UIViewController, UITableViewDelegate, UITab
                     newSchedule: schedule,
                     newDoses: updatedDoses,
                     newUnit: unitLabel.text ?? "mg",
-                    newStrength: Int(strengthUnitLabel.text ?? "")
+                    newStrength: strengthValue
                 )
 
             } else {
@@ -355,7 +370,7 @@ class AddMedicationViewController:  UIViewController, UITableViewDelegate, UITab
                     name: name,
                     form: typeLabel.text ?? "Capsule",
                     unit: unitLabel.text ?? "mg",
-                    strength: nil,
+                    strength: strengthValue,
                     iconName: iconForType(typeLabel.text ?? "Capsule"),
                     schedule: schedule,
                     doses: updatedDoses,
@@ -365,7 +380,9 @@ class AddMedicationViewController:  UIViewController, UITableViewDelegate, UITab
                 MedicationDataStore.shared.addMedication(newMedication)
             }
 
+            delegate?.didUpdateMedication()
             dismiss(animated: true)
+
 
         }
         

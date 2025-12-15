@@ -4,6 +4,21 @@ class MedicationDataStore: ObservableObject {
 
     static let shared = MedicationDataStore()
     private let storageKey = "saved_medications"
+    static func iconForType(_ type: String) -> String {
+            switch type.lowercased() {
+            case "capsule": return "capsule"
+            case "tablet": return "tablet"
+            case "liquid": return "liquid"
+            case "cream": return "cream"
+            case "device": return "device"
+            case "drops": return "drops"
+            case "foam": return "foam"
+            case "gel": return "gel"
+            case "powder": return "powder"
+            case "spray": return "spray"
+            default: return "tablet"
+            }
+        }
 
     @Published var medications: [Medication] = [] {
         didSet { saveToStorage()
@@ -61,6 +76,8 @@ class MedicationDataStore: ObservableObject {
             medications[index].doses = newDoses
             medications[index].unit = newUnit
             medications[index].strength = newStrength
+            medications[index].iconName = MedicationDataStore.iconForType(newForm)
+
             saveToStorage()
         }
     }

@@ -21,7 +21,7 @@ class EditMedicationCollectionViewCell: UICollectionViewCell {
         // Initialization code
         cardView.layer.cornerRadius = 16
         cardView.layer.masksToBounds = true
-        styleCard()
+        applyCardStyle()
     }
     private func weekdayName(_ n: Int) -> String {
         let names = ["Sun","Mon","Tue","Wed","Thu","Fri","Sat"]
@@ -49,7 +49,7 @@ class EditMedicationCollectionViewCell: UICollectionViewCell {
     func configure(with medication: Medication) {
         titleLabel.text = medication.name
         subtitleLabel.text = "1 \(medication.form.lowercased())"
-        medIcon.image = UIImage(named: medication.iconName ?? "")
+        medIcon.image = UIImage(named: medication.iconName)
 
         // Schedule
         switch medication.schedule {

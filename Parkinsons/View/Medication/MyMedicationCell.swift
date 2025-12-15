@@ -21,7 +21,8 @@ class MyMedicationCell: UICollectionViewCell {
         super.awakeFromNib()
         // Initialization code
         
-        styleCard()
+        applyCardStyle()
+        containerView.layer.cornerRadius = 16
     }
     func configure(with medication: Medication) {
         titleLabel.text = medication.name

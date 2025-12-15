@@ -21,7 +21,8 @@ class TodayMedicationCell: UICollectionViewCell {
 
         override func awakeFromNib() {
             super.awakeFromNib()
-            styleCard()
+            applyCardStyle()
+            containerView.layer.cornerRadius = 16
         }
 
     private func styleCard() {

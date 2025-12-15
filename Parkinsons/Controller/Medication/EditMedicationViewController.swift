@@ -7,12 +7,38 @@
 
 import UIKit
 
-class EditMedicationViewController: UIViewController, UICollectionViewDelegate {
-    
+class EditMedicationViewController: UIViewController, UICollectionViewDelegate,AddMedicationDelegate {
+    func reloadMedications() {
+        medications = MedicationDataStore.shared.medications
+        collectionView.reloadData()
+    }
 
+
+    func didUpdateMedication() {
+        reloadMedications()
+    }
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        reloadMedications()
+    }
+
+    
+    
+    @IBOutlet weak var backButton: UIBarButtonItem!
+    @IBOutlet weak var saveButton: UIBarButtonItem!
     @IBOutlet weak var collectionView: UICollectionView!
     
+    @IBAction func saveTapped(_ sender: UIBarButtonItem) {
+        delegate?.didUpdateMedication()
+        dismiss(animated: true)
+    }
+    @IBAction func backTapped(_ sender: Any) {
+        dismiss(animated: true)
+    }
+    
     var medications: [Medication] = []
+    weak var delegate: AddMedicationDelegate?
+
 
     
     override func viewDidLoad() {
@@ -40,7 +66,9 @@ class EditMedicationViewController: UIViewController, UICollectionViewDelegate {
         ) as! AddMedicationViewController
 
         vc.isEditMode = true                 // IMPORTANT
-        vc.medicationToEdit = selected       // PASS MEDICATION OBJECT
+        vc.medicationToEdit = selected
+        vc.delegate = self
+        // PASS MEDICATION OBJECT
 
         let nav = UINavigationController(rootViewController: vc)
         nav.modalPresentationStyle = .formSheet
