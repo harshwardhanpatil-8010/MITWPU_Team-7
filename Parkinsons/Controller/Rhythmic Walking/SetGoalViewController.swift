@@ -127,7 +127,6 @@ class SetGoalViewController: UIViewController, UITableViewDataSource, UIPickerVi
         sessionTableView.dataSource = self
         sessionTableView.layer.cornerRadius = 30
         sessionTableView.clipsToBounds = true
-        beats = BeatPlayer.shared.availableBeats()
         setupBeatButton()
         setupPaceButton()
         updateButtons()

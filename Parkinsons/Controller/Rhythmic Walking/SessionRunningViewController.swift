@@ -67,7 +67,6 @@ class SessionRunningViewController: UIViewController {
     
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
-        BeatPlayer.shared.stopBeat()
     }
     
     
@@ -80,10 +79,8 @@ class SessionRunningViewController: UIViewController {
         guard let timerModel = timerModel else { return }
         if timerModel.isPaused {
             timerModel.resume()
-            BeatPlayer.shared.resumeBeat()
         } else {
             timerModel.pause()
-            BeatPlayer.shared.pauseBeat()
         }
         updatePauseButtonUI()
     }
