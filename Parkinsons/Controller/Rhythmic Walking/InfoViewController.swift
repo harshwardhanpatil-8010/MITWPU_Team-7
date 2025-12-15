@@ -1,21 +1,25 @@
 //
-//  SessionRunningViewController.swift
-//  Parkinson's App
+//  InfoViewController.swift
+//  Parkinsons
 //
-//  Created by SDC-USER on 25/11/25.
+//  Created by SDC-USER on 10/12/25.
 //
 
 import UIKit
 
-class SessionRunningViewController: UIViewController {
+class InfoViewController: UIViewController {
 
+    
     override func viewDidLoad() {
         super.viewDidLoad()
 
         // Do any additional setup after loading the view.
     }
     
-
+    @IBAction func cancelButtonTapped(_ sender: Any) {
+        self.dismiss(animated: true, completion: nil)
+    }
+    
     /*
     // MARK: - Navigation
 

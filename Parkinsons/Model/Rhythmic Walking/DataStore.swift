@@ -9,6 +9,9 @@ import Foundation
 
 
 //--------------------------------Rhythmic Walking--------------------------------------------------------
+
+
+
 class DataStore {
     static let shared = DataStore()
     private let sessionsKey = "rhythmic_sessions_v1"

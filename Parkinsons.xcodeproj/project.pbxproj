@@ -107,6 +107,9 @@
 			);
 			mainGroup = 19423B642ED6BD590004C99E;
 			minimizedProjectReferenceProxies = 1;
+			packageReferences = (
+				19686B942ED8259E00CCFBA0 /* XCRemoteSwiftPackageReference "MBCircularProgressBar" */,
+			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = 19423B6E2ED6BD590004C99E /* Products */;
 			projectDirPath = "";
@@ -145,6 +148,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = DATYYVTW5U;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = Parkinsons/Info.plist;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
@@ -176,6 +180,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = DATYYVTW5U;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = Parkinsons/Info.plist;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
@@ -341,6 +346,17 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		19686B942ED8259E00CCFBA0 /* XCRemoteSwiftPackageReference "MBCircularProgressBar" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/MatiBot/MBCircularProgressBar";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 0.3.4;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
 	};
 	rootObject = 19423B652ED6BD590004C99E /* Project object */;
 }
