@@ -13,7 +13,7 @@ class CalenderCollectionViewCell: UICollectionViewCell {
     func configure(with model: DateModel, isSelected: Bool, isToday: Bool) {
         calenderDay.text = model.dayString
         calenderDate.text = model.dateString
-        calenderBackground.layer.cornerRadius = 18.5
+        calenderBackground.layer.cornerRadius = 17.8
         
         // Reset to default
         calenderBackground.backgroundColor = .clear
