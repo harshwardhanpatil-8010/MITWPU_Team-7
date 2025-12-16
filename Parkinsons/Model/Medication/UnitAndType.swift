@@ -14,7 +14,7 @@ struct UnitAndType{
 }
 
 var unitAndType: [UnitAndType] = [
-    UnitAndType(name: "Capsule", image: "capsule", isSelected: false),
+    UnitAndType(name: "Capsule", image: "capsuleM", isSelected: false),
     UnitAndType(name: "Tablet", image: "tablet", isSelected: false),
     UnitAndType(name: "Liquid", image: "liquid", isSelected: false),
     UnitAndType(name: "Cream", image: "cream", isSelected: false),

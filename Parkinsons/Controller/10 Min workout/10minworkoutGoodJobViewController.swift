@@ -28,6 +28,11 @@ class _0minworkoutGoodJobViewController: UIViewController {
         totalTimeLabel.text = formatTime(totalWorkoutSeconds)
         
     }
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        navigationItem.hidesBackButton = true
+        navigationItem.rightBarButtonItem = nil
+    }
     func updateUI() {
         completedExerciseNumberLabel.text = "\(completed)"
         skippedExerciseNumberLabel.text = "\(skipped)"

@@ -85,10 +85,10 @@ class SetGoalViewController: UIViewController, UITableViewDataSource, UIPickerVi
         let secs = walked % 60
         
         if hrs == 0 {
-            cell.textLabel?.text = "Session \(sessionNumber)\t\t\t\t\t\t \(mins)min \(secs)s"
+            cell.textLabel?.text = "Session \(sessionNumber)\t\t\t\t\t\t\t \(mins)min \(secs)s"
         }
         else{
-            cell.textLabel?.text = "Session \(sessionNumber)\t\t\t\t\t\t \(hrs)hrs \(mins)min"
+            cell.textLabel?.text = "Session \(sessionNumber)\t\t\t\t\t\t\t\(hrs)hrs \(mins)min"
         }
         
         return cell
@@ -147,7 +147,7 @@ class SetGoalViewController: UIViewController, UITableViewDataSource, UIPickerVi
     
     @IBAction func infoButtonTapped(_ sender: UIBarButtonItem) {
         let storyboard = UIStoryboard(name: "Rhythmic Walking", bundle: nil)
-        guard let infoVC = storyboard.instantiateViewController(withIdentifier: "infoVC") as? InfoViewController else {
+        guard let infoVC = storyboard.instantiateViewController(withIdentifier: "infoVC") as? RhythmicInfoViewController else {
             return
         }
         infoVC.modalPresentationStyle = .pageSheet

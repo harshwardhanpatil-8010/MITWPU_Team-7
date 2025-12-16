@@ -14,7 +14,7 @@ class MedicationDataStore: ObservableObject {
     // MARK: - Resolve icon name based on medication form
     static func iconForType(_ type: String) -> String {
         switch type.lowercased() {
-        case "capsule": return "capsule"
+        case "capsule": return "capsuleM"
         case "tablet": return "tablet"
         case "liquid": return "liquid"
         case "cream": return "cream"

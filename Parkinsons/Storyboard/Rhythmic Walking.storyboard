@@ -397,7 +397,7 @@
         <!--Info View Controller-->
         <scene sceneID="R5Y-uo-jV3">
             <objects>
-                <viewController storyboardIdentifier="infoVC" useStoryboardIdentifierAsRestorationIdentifier="YES" id="llc-Di-Exy" userLabel="Info View Controller" customClass="InfoViewController" customModule="Parkinsons" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="infoVC" useStoryboardIdentifierAsRestorationIdentifier="YES" id="llc-Di-Exy" userLabel="Info View Controller" customClass="RhythmicInfoViewController" customModule="Parkinsons" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="XSL-GY-XgO">
                         <rect key="frame" x="0.0" y="0.0" width="402" height="874"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>

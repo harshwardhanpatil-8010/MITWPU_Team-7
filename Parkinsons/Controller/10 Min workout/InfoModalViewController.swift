@@ -20,7 +20,9 @@ class InfoModalViewController: UIViewController {
         super.viewDidLoad()
         configureExercise()
         setupCloseButton()
+        
     }
+   
     func configureExercise() {
         let exercise = exercises[currentIndex]
         title = exercise.name
