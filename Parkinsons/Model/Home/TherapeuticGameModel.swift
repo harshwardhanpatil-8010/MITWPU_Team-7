@@ -6,13 +6,12 @@
 //
 
 import Foundation
-// TherapeuticGameModel.swift (or in HomeViewController.swift)
 
 struct TherapeuticGameModel {
     let title: String
     let description: String
-    let iconName: String? // For the main image/icon in the card
+    let iconName: String?
 }
 
-// HomeViewController.swift (Inside HomeViewController class)
+
 

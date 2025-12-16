@@ -1,46 +1,24 @@
-//
-//  profileViewController.swift
-//  Parkinsons
-//
-//  Created by SDC-USER on 10/12/25.
-//
-
 import UIKit
 
 class profileViewController: UIViewController {
 
-    // MARK: - Navigation Bar Outlet
-    @IBOutlet weak var editButton: UIBarButtonItem! // Your connected Edit/Save button
-    
-    // MARK: - Header Outlets (Top Section)
+    @IBOutlet weak var editButton: UIBarButtonItem!
     @IBOutlet weak var logoBackground: UIView!
-    @IBOutlet weak var logoLabel: UILabel!       // "JD" label
-    @IBOutlet weak var nameBellowLogoLabel: UILabel! // "John Doe" title below the logo
-
-    // MARK: - Detail Row Key Labels (Static text)
+    @IBOutlet weak var logoLabel: UILabel!
+    @IBOutlet weak var nameBellowLogoLabel: UILabel!
     @IBOutlet weak var nameLabel: UILabel!
     @IBOutlet weak var emergencyNoLabel: UILabel!
     @IBOutlet weak var dateOfBirthLabel: UILabel!
     @IBOutlet weak var sexLabel: UILabel!
-
-    // MARK: - Editable/Interactive Fields (The values that change)
     @IBOutlet weak var nameTextField: UITextField!
     @IBOutlet weak var emergencyNoTextField: UITextField!
     @IBOutlet weak var dateOfBirthSelector: UIDatePicker!
     @IBOutlet weak var sexsSelector: UIButton!
 
-    // MARK: - Action Buttons (Outlets needed for the My Medication and Past Symptoms buttons)
-    // ⭐️ You will need to connect these if you want to implement the navigation actions ⭐️
-//    @IBOutlet weak var myMedicationButton: UIButton!
-//    @IBOutlet weak var pastSymptomsButton: UIButton!
-    
-    // MARK: - State Management
     var isEditingMode: Bool = false
     
-    // Stored property for current sex selection (Default value)
     var selectedSex: String = "Male" {
         didSet {
-            // Update the button title whenever the selection changes
             sexsSelector.setTitle(selectedSex, for: .normal)
         }
     }
@@ -48,49 +26,36 @@ class profileViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        // 1. Initial Header Styling (Circle shape)
-        // Ensure the layout has been calculated for the height/width to be correct
         logoBackground.layer.cornerRadius = logoBackground.frame.size.height / 2
         logoBackground.clipsToBounds = true
         logoBackground.backgroundColor = .systemGray4
         
-        // 2. Set Initial Sex Button Title and State
         sexsSelector.setTitle(selectedSex, for: .normal)
         
-        // 3. Set Initial UI State (View Mode)
         updateUI(forEditing: false)
     }
 
-    // This ensures the logo background size is correct even if layout changes occur
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
         logoBackground.layer.cornerRadius = logoBackground.frame.size.height / 2
     }
 
-    // MARK: - Edit/Save Action
-    // ⭐️ Connect this action to your editButton UIBarButtonItem in Storyboard ⭐️
     @IBAction func editButtonTapped(_ sender: UIBarButtonItem) {
         isEditingMode.toggle()
         
         if isEditingMode {
-            // --- EDIT MODE ---
-            // 1. Change button to a checkmark icon (Save action)
             editButton.image = UIImage(systemName: "checkmark.circle.fill")
-            editButton.title = nil // Make sure text is nil when using an image
+            editButton.title = nil
             
-            // 2. Enable editing for all fields
             updateUI(forEditing: true)
             
         } else {
-            // --- SAVE MODE / Switch back to VIEW MODE ---
-            // 1. Change button back to the text "Edit"
-            editButton.image = nil // Make sure image is nil when using text
+           
+            editButton.image = nil
             editButton.title = "Edit"
             
-            // 2. Disable editing for all fields
             updateUI(forEditing: false)
             
-            // 3. Update the Name Label below the logo
             if let newName = nameTextField.text, !newName.isEmpty {
                 nameBellowLogoLabel.text = newName
             }
@@ -98,10 +63,8 @@ class profileViewController: UIViewController {
             // TODO: Implement your data saving logic here
         }
     }
-    // MARK: - UI State Toggle Function
     
     func updateUI(forEditing isEditing: Bool) {
-        // Collect all fields that should toggle editability
         let editableFields: [UIView] = [
             nameTextField,
             emergencyNoTextField,
@@ -112,22 +75,17 @@ class profileViewController: UIViewController {
         for field in editableFields {
             field.isUserInteractionEnabled = isEditing
             
-            // Apply border style only to the TextFields
             if let textField = field as? UITextField {
                 textField.borderStyle = isEditing ? .roundedRect : .none
                 textField.textAlignment = .right
             }
             
             if !isEditing {
-                // Dismiss keyboard when switching to view mode
                 view.endEditing(true)
             }
         }
     }
     
-    // MARK: - Action Implementations
-    
-    // ⭐️ Connect this action to the 'sexsSelector' Button in Storyboard ⭐️
     @IBAction func sexSelectorTapped(_ sender: UIButton) {
         guard isEditingMode else { return }
         
@@ -137,7 +95,7 @@ class profileViewController: UIViewController {
         
         for sex in sexes {
             let action = UIAlertAction(title: sex, style: .default) { [weak self] _ in
-                self?.selectedSex = sex // Updates the button title
+                self?.selectedSex = sex
             }
             actionSheet.addAction(action)
         }
@@ -151,16 +109,4 @@ class profileViewController: UIViewController {
         
         present(actionSheet, animated: true)
     }
-    
-    // ⭐️ Connect this action to the 'My Medication' Button in Storyboard ⭐️
-//    @IBAction func myMedicationButtonTapped(_ sender: UIButton) {
-//        print("Navigating to My Medication Screen...")
-//        // Example Placeholder: To be replaced with navigation/segue logic
-//    }
-//    
-//    // ⭐️ Connect this action to the 'Past symptom records' Button in Storyboard ⭐️
-//    @IBAction func pastSymptomsButtonTapped(_ sender: UIButton) {
-//        print("Navigating to Past Symptom Records Screen...")
-//        // Example Placeholder: To be replaced with navigation/segue logic
-//    }
 }
