@@ -50,27 +50,36 @@ class HealthPermissionsViewController: UIViewController, UITableViewDelegate, UI
     
     // NEW: Action for the "Turn On All" button (Connect this in Storyboard)
     @IBAction func allowButton(_ sender: UIButton) {
-        dismiss(animated: true) { [weak self] in
-                    // 2. Call the handler, indicating permissions were *granted*
-                    // This runs AFTER the dismiss animation completes.
-                    self?.completionHandler?(true)
-                }
+    navigateToNextScreen()
     }
     
     @IBAction func dontAllowButton(_ sender: UIButton) {
-        dismiss(animated: true) { [weak self] in
-                    // 2. Call the handler, indicating permissions were *not granted*
-                    self?.completionHandler?(true)
-                }
+      navigateToNextScreen()
     }
     
+    func navigateToNextScreen() {
+        let storyboard = UIStoryboard(name: "Login", bundle: nil)
+        let vc = storyboard.instantiateViewController(
+            withIdentifier: "onBoardingViewController"
+        ) as! OnboardingViewController
+
+        if let nav = navigationController {
+            nav.pushViewController(vc, animated: true)
+        } else {
+            let nav = UINavigationController(rootViewController: vc)
+            nav.modalPresentationStyle = .fullScreen
+            present(nav, animated: true)
+        }
+    }
+
+    
     @IBAction func turnOnAllButtonTapped(_ sender: UIButton) {
-        // 1. Update the data model: Set isEnabled to true for all items
+     
         for i in 0..<permissions.count {
             permissions[i].isEnabled = true
         }
         
-        // 2. Reload the table view to reflect the switch changes
+        
         tableView.reloadData()
         
         // 3. Update the "Allow" button state (will enable it)
@@ -130,8 +139,6 @@ extension HealthPermissionsViewController: HealthPermissionCellDelegate {
     func switchStateDidChange(cell: HealthPermissionTableViewCell, isOn: Bool) {
         // 1. Find the index path of the cell that changed
         if let indexPath = tableView.indexPath(for: cell) {
-            
-            // 2. Update the data model at that specific index
             permissions[indexPath.row].isEnabled = isOn
             
             // 3. Re-run the validation check to update the "Allow" button
