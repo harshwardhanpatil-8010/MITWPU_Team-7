@@ -18,13 +18,13 @@
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="qiu-7M-HoK">
-                        <rect key="frame" x="0.0" y="0.0" width="488" height="148"/>
+                        <rect key="frame" x="16" y="6" width="456" height="136"/>
                         <subviews>
                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="p8b-qN-TDz">
-                                <rect key="frame" x="0.0" y="0.0" width="488" height="148"/>
+                                <rect key="frame" x="0.0" y="0.0" width="456" height="136"/>
                                 <subviews>
                                     <stackView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="2jV-sj-mAD">
-                                        <rect key="frame" x="0.0" y="0.0" width="488" height="60"/>
+                                        <rect key="frame" x="0.0" y="0.0" width="456" height="60"/>
                                         <subviews>
                                             <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="PFb-V4-Vb9">
                                                 <rect key="frame" x="0.0" y="0.0" width="60" height="60"/>
@@ -33,7 +33,7 @@
                                                 </constraints>
                                             </imageView>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="AGl-qG-33X">
-                                                <rect key="frame" x="60" y="0.0" width="428" height="60"/>
+                                                <rect key="frame" x="60" y="0.0" width="396" height="60"/>
                                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                 <nil key="textColor"/>
                                                 <nil key="highlightedColor"/>
@@ -46,31 +46,31 @@
                                         </constraints>
                                     </stackView>
                                     <stackView opaque="NO" contentMode="scaleToFill" distribution="fillEqually" translatesAutoresizingMaskIntoConstraints="NO" id="BjV-7k-KgU">
-                                        <rect key="frame" x="0.0" y="60" width="488" height="88"/>
+                                        <rect key="frame" x="0.0" y="60" width="456" height="76"/>
                                         <subviews>
                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="4ca-j6-DNZ">
-                                                <rect key="frame" x="0.0" y="0.0" width="122" height="88"/>
+                                                <rect key="frame" x="0.0" y="0.0" width="114" height="76"/>
                                                 <state key="normal" title="Button"/>
                                                 <buttonConfiguration key="configuration" style="plain" image="Screenshot 2025-11-10 at 2.07.21 PM 2" cornerStyle="capsule">
                                                     <preferredSymbolConfiguration key="preferredSymbolConfigurationForImage" scale="large"/>
                                                 </buttonConfiguration>
                                             </button>
                                             <button opaque="NO" tag="1" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="FHs-rj-cap">
-                                                <rect key="frame" x="122" y="0.0" width="122" height="88"/>
+                                                <rect key="frame" x="114" y="0.0" width="114" height="76"/>
                                                 <state key="normal" title="Button"/>
                                                 <buttonConfiguration key="configuration" style="plain" image="notPresent 2" cornerStyle="capsule">
                                                     <preferredSymbolConfiguration key="preferredSymbolConfigurationForImage" scale="large"/>
                                                 </buttonConfiguration>
                                             </button>
                                             <button opaque="NO" tag="2" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="iA3-mb-ddc">
-                                                <rect key="frame" x="244" y="0.0" width="122" height="88"/>
+                                                <rect key="frame" x="228" y="0.0" width="114" height="76"/>
                                                 <state key="normal" title="Button"/>
                                                 <buttonConfiguration key="configuration" style="plain" image="severe" cornerStyle="capsule">
                                                     <preferredSymbolConfiguration key="preferredSymbolConfigurationForImage" scale="large"/>
                                                 </buttonConfiguration>
                                             </button>
                                             <button opaque="NO" tag="3" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="JyC-eg-JtR">
-                                                <rect key="frame" x="366" y="0.0" width="122" height="88"/>
+                                                <rect key="frame" x="342" y="0.0" width="114" height="76"/>
                                                 <state key="normal" title="Button"/>
                                                 <buttonConfiguration key="configuration" style="plain" image="notPresent" cornerStyle="capsule">
                                                     <preferredSymbolConfiguration key="preferredSymbolConfigurationForImage" scale="large"/>
@@ -96,13 +96,19 @@
                             <constraint firstAttribute="trailing" secondItem="p8b-qN-TDz" secondAttribute="trailing" id="fDx-c0-Aop"/>
                             <constraint firstAttribute="bottom" secondItem="p8b-qN-TDz" secondAttribute="bottom" id="vgf-4h-awQ"/>
                         </constraints>
+                        <userDefinedRuntimeAttributes>
+                            <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
+                                <integer key="value" value="10"/>
+                            </userDefinedRuntimeAttribute>
+                        </userDefinedRuntimeAttributes>
                     </view>
                 </subviews>
+                <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                 <constraints>
-                    <constraint firstAttribute="trailing" secondItem="qiu-7M-HoK" secondAttribute="trailing" id="941-9E-sqB"/>
-                    <constraint firstItem="qiu-7M-HoK" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" id="fIU-1O-Nql"/>
-                    <constraint firstItem="qiu-7M-HoK" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" id="gDg-KL-EAU"/>
-                    <constraint firstAttribute="bottom" secondItem="qiu-7M-HoK" secondAttribute="bottom" id="nXs-ho-1nh"/>
+                    <constraint firstAttribute="trailing" secondItem="qiu-7M-HoK" secondAttribute="trailing" constant="16" id="941-9E-sqB"/>
+                    <constraint firstItem="qiu-7M-HoK" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" constant="6" id="fIU-1O-Nql"/>
+                    <constraint firstItem="qiu-7M-HoK" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" constant="16" id="gDg-KL-EAU"/>
+                    <constraint firstAttribute="bottom" secondItem="qiu-7M-HoK" secondAttribute="bottom" constant="6" id="nXs-ho-1nh"/>
                 </constraints>
             </tableViewCellContentView>
             <viewLayoutGuide key="safeArea" id="njF-e1-oar"/>

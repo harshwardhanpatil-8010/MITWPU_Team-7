@@ -51,16 +51,16 @@
                                         </constraints>
                                     </imageView>
                                     <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="QCD-1M-PGP">
-                                        <rect key="frame" x="106" y="0.0" width="199" height="48"/>
+                                        <rect key="frame" x="106" y="0.0" width="193" height="48"/>
                                         <subviews>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="GNW-Eu-cmv">
-                                                <rect key="frame" x="0.0" y="0.0" width="199" height="23"/>
+                                                <rect key="frame" x="0.0" y="0.0" width="193" height="23"/>
                                                 <fontDescription key="fontDescription" type="boldSystem" pointSize="19"/>
                                                 <nil key="textColor"/>
                                                 <nil key="highlightedColor"/>
                                             </label>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="bxk-eO-nnb">
-                                                <rect key="frame" x="0.0" y="23" width="199" height="25"/>
+                                                <rect key="frame" x="0.0" y="23" width="193" height="25"/>
                                                 <fontDescription key="fontDescription" type="system" pointSize="15"/>
                                                 <nil key="textColor"/>
                                                 <nil key="highlightedColor"/>
@@ -68,9 +68,9 @@
                                         </subviews>
                                     </stackView>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="fxQ-cp-Os3">
-                                        <rect key="frame" x="310" y="0.0" width="44" height="48"/>
+                                        <rect key="frame" x="304" y="0.0" width="50" height="48"/>
                                         <constraints>
-                                            <constraint firstAttribute="width" constant="44" id="50T-bZ-cbT"/>
+                                            <constraint firstAttribute="width" constant="50" id="50T-bZ-cbT"/>
                                         </constraints>
                                         <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                         <nil key="textColor"/>

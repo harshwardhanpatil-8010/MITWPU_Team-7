@@ -300,13 +300,11 @@ ExerciseModel(title: "Rhythmic Walking", detail: "2-3 times a week", progressPer
         if hasLoggedSymptomsToday {
             
             guard let todayLog = SymptomLogManager.shared.getLogForToday() else {
-                print("❌ Warning: Logged status is TRUE, but could not find today's log in persistence. Falling back to Log Now.")
                 hasLoggedSymptomsToday = false
                 return
             }
 
             guard let detailVC = storyboard.instantiateViewController(withIdentifier: "SymptomLogHistoryViewController") as? SymptomLogHistoryViewController else {
-                print("Error: Could not instantiate SymptomLogHistoryViewController.")
                 return
             }
                         

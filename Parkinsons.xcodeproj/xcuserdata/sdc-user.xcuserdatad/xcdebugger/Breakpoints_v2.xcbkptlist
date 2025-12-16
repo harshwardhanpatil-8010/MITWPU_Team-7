@@ -1,6 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Bucket
+<<<<<<< HEAD
    uuid = "5CF63D40-50E6-4A13-9E77-3A4782D60631"
+=======
+   uuid = "5ABDB31C-952A-468C-9970-FF4BBF305EEC"
+>>>>>>> origin/feature/medication
    type = "1"
    version = "2.0">
 </Bucket>

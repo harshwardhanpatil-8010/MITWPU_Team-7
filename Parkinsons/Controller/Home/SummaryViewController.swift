@@ -104,7 +104,7 @@ class SummaryViewController: UIViewController {
                 
                 item.contentInsets = NSDirectionalEdgeInsets(top: 0, leading: 2, bottom: 0, trailing: 4)
                 
-                let groupHeight: CGFloat = 175
+                let groupHeight: CGFloat = 190
                 
                 let groupSize = NSCollectionLayoutSize(
                     widthDimension: .fractionalWidth(1.0),
