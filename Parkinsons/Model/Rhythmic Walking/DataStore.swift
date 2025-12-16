@@ -15,22 +15,22 @@ import Foundation
 class DataStore {
     static let shared = DataStore()
     private let sessionsKey = "rhythmic_sessions_v1"
-    private let lastCleanupKey = "rhythmic_sessions_last_cleanup"   // NEW
+    private let lastCleanupKey = "rhythmic_sessions_last_cleanup"
     
     private init() {
         load()
-        autoCleanupIfNeeded()      // NEW: auto-clean on startup
+        autoCleanupIfNeeded()
     }
     
     private(set) var sessions: [RhythmicSession] = []
     
-    // ADD SESSION
+
     func add(_ session: RhythmicSession) {
         sessions.insert(session, at: 0)
         save()
     }
     
-    // UPDATE SESSION
+
     func update(_ session: RhythmicSession) {
         if let idx = sessions.firstIndex(where: { $0.id == session.id }) {
             sessions[idx] = session
@@ -38,7 +38,7 @@ class DataStore {
         }
     }
     
-    // SAVE TO USERDEFAULTS
+
     private func save() {
         do {
             let data = try JSONEncoder().encode(sessions)
@@ -48,7 +48,7 @@ class DataStore {
         }
     }
     
-    // LOAD FROM USERDEFAULTS
+
     private func load() {
         guard let data = UserDefaults.standard.data(forKey: sessionsKey) else { return }
         do {
@@ -57,14 +57,8 @@ class DataStore {
             print("Failed to load sessions: \(error)")
         }
     }
-    
-    
-    // --------------------------------------------------------------
-    // MARK: - DAILY CLEANUP (IMPORTANT)
-    // --------------------------------------------------------------
-    
-    /// Removes sessions older than today
-    func cleanupOldSessions() {          // NEW
+
+    func cleanupOldSessions() {
         let calendar = Calendar.current
         
         sessions = sessions.filter {
@@ -75,9 +69,8 @@ class DataStore {
         UserDefaults.standard.set(Date(), forKey: lastCleanupKey)
     }
     
-    
-    /// Automatically runs cleanup when the app starts or user opens screen
-    private func autoCleanupIfNeeded() {     // NEW
+
+    private func autoCleanupIfNeeded() {    
         let calendar = Calendar.current
         
         let lastRun = UserDefaults.standard.object(forKey: lastCleanupKey) as? Date

@@ -59,7 +59,6 @@ final class CircularProgressView: UIView {
         CGPoint(x: bounds.midX, y: bounds.midY)
     }
     
-    /// Update progress (0 to 1)
     func setProgress(_ progress: CGFloat) {
         progressLayer.strokeEnd = progress
     }

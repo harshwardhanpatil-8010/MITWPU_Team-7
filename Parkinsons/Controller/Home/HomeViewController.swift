@@ -388,7 +388,6 @@ ExerciseModel(title: "Rhythmic Walking", detail: "2-3 times a week", progressPer
             
             let storyboard = UIStoryboard(name: "10 minworkout", bundle: nil)
             guard let vc = storyboard.instantiateViewController(withIdentifier: "exerciseLandingPage") as? _0minworkoutLandingPageViewController else {
-                // ...
                 return
             }
           
