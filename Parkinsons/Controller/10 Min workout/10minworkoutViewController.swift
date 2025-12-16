@@ -23,19 +23,10 @@ class _0minworkoutViewController: UIViewController {
     @IBOutlet weak var skipButton: UIButton!
     @IBOutlet weak var backgroundView: UIView!
     @IBOutlet weak var previousButton: UIButton!
-    @IBOutlet weak var bar1: UIProgressView!
-    @IBOutlet weak var bar2: UIProgressView!
-    @IBOutlet weak var bar3: UIProgressView!
-    @IBOutlet weak var bar4: UIProgressView!
-    @IBOutlet weak var bar5: UIProgressView!
-    @IBOutlet weak var bar6: UIProgressView!
-    @IBOutlet weak var bar7: UIProgressView!
-    @IBOutlet weak var bar8: UIProgressView!
-    @IBOutlet weak var bar9: UIProgressView!
-    @IBOutlet weak var bar10: UIProgressView!
+
+    @IBOutlet var progressBars: [UIProgressView]!
     
     
-    var bars: [UIProgressView] = []
     var exerciseStartTime: Date?
     var totalWorkoutSeconds: TimeInterval = 0
 
@@ -54,11 +45,9 @@ class _0minworkoutViewController: UIViewController {
         backgroundView.layer.cornerRadius = 35
         backgroundView.clipsToBounds = true
         setupCloseButton()
-        playerView.layer.cornerRadius = 0
-        playerView.layer.maskedCorners = [.layerMinXMinYCorner, .layerMaxXMinYCorner]
         playerView.clipsToBounds = true
         playerView.isUserInteractionEnabled = false
-        bars = [bar1, bar2, bar3, bar4, bar5, bar6, bar7, bar8, bar9, bar10]
+     
         updateProgressBars()
        
 
@@ -76,19 +65,15 @@ class _0minworkoutViewController: UIViewController {
     }
 
     func updateProgressBars() {
-        for (index,  bar) in bars.enumerated() {
-            if index < currentIndex {
-                bar.progressTintColor = .systemBlue
-                bar.setProgress(1.0, animated: true)
-            } else if index == currentIndex {
-                bar.progressTintColor = UIColor.systemBlue.withAlphaComponent(0.4)
-                bar.setProgress(1.0, animated: true)
-            } else {
-                bar.progressTintColor = .systemGray3
-                bar.setProgress(1.0, animated: false)
-            }
+        for (index, bar) in progressBars.enumerated() {
+            bar.progress = 1.0
+            bar.progressTintColor =
+                index < currentIndex ? .systemBlue :
+                index == currentIndex ? UIColor.systemBlue.withAlphaComponent(0.4) :
+                .systemGray3
         }
     }
+
    
 
 
@@ -174,16 +159,7 @@ class _0minworkoutViewController: UIViewController {
         vc.totalWorkoutSeconds = totalWorkoutSeconds
         navigationController?.pushViewController(vc, animated: true)
     }
- 
-
-    func createDashedLayer(color: CGColor) -> CAShapeLayer {
-        let layer = CAShapeLayer()
-        layer.strokeColor = color
-        layer.lineWidth = 6
-        layer.lineDashPattern = [10, 6] // dash width, gap width
-        layer.path = UIBezierPath(rect: CGRect(x: 0, y: 0, width: 40, height: 1)).cgPath
-        return layer
-    }
+    
     @objc func closeButtonTapped() {
         showQuitWorkoutAlert()
     }
@@ -235,8 +211,6 @@ class _0minworkoutViewController: UIViewController {
         if !WorkoutManager.shared.completedToday.contains(exercise.id) {
             WorkoutManager.shared.completedToday.append(exercise.id)
         }
-       
-        
         goToRestScreen()
     }
     

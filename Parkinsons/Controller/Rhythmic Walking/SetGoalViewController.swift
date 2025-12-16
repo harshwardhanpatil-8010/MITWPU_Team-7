@@ -12,7 +12,7 @@ class SetGoalViewController: UIViewController, UITableViewDataSource, UIPickerVi
     @IBOutlet weak var datePickerUIView: UIView!
     @IBAction func infoButtonTapped(_ sender: UIBarButtonItem) {
         let storyboard = UIStoryboard(name: "Rhythmic Walking", bundle: nil)
-        guard let infoVC = storyboard.instantiateViewController(withIdentifier: "infoVC") as? InfoViewController else {
+        guard let infoVC = storyboard.instantiateViewController(withIdentifier: "infoVC") as? RhythmicInfoViewController else {
                 print("Error: Could not find InfoViewController in storyboard.")
                 return
             }

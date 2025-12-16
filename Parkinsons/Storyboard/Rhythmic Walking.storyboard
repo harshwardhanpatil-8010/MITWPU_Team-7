@@ -374,7 +374,7 @@
         <!--Info View Controller-->
         <scene sceneID="R5Y-uo-jV3">
             <objects>
-                <viewController storyboardIdentifier="infoVC" id="llc-Di-Exy" userLabel="Info View Controller" customClass="InfoViewController" customModule="Parkinsons" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="infoVC" id="llc-Di-Exy" userLabel="Info View Controller" customClass="RhythmicInfoViewController" customModule="Parkinsons" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="XSL-GY-XgO">
                         <rect key="frame" x="0.0" y="0.0" width="402" height="874"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -385,7 +385,7 @@
                                     <navigationItem id="edL-yP-KFm">
                                         <barButtonItem key="rightBarButtonItem" systemItem="cancel" id="mQY-EQ-rGk">
                                             <connections>
-                                                <action selector="cancelButtonTapped:" destination="llc-Di-Exy" id="E0b-eB-Hxg"/>
+                                                <action selector="cancelButtonTapped:" destination="llc-Di-Exy" id="VxC-2l-OwK"/>
                                             </connections>
                                         </barButtonItem>
                                     </navigationItem>
@@ -427,7 +427,7 @@
                                 <nil key="highlightedColor"/>
                             </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="20" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="6tJ-4K-dyH">
-                                <rect key="frame" x="16" y="261" width="370" height="405.99999999999994"/>
+                                <rect key="frame" x="16" y="261.33333333333331" width="370" height="405.99999999999994"/>
                                 <string key="text">1. Choose a beat you like - Pick a sound or rhythm that feels pleasant and easy to follow.
 
 2. Select a pace for the beat - The app will play the beat slower or faster based on the pace you choose.
@@ -813,10 +813,10 @@
             <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
         </systemColor>
         <systemColor name="systemGreenColor">
-            <color red="0.20392156862745098" green="0.7803921568627451" blue="0.34901960784313724" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <color red="0.20392156859999999" green="0.78039215689999997" blue="0.34901960780000002" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </systemColor>
         <systemColor name="systemRedColor">
-            <color red="1" green="0.2196078431372549" blue="0.23529411764705882" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <color red="1" green="0.23137254900000001" blue="0.18823529410000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </systemColor>
     </resources>
 </document>

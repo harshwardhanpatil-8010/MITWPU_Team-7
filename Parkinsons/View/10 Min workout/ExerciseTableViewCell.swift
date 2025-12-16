@@ -20,7 +20,6 @@ class ExerciseTableViewCell: UITableViewCell {
     
     override func awakeFromNib() {
         super.awakeFromNib()
-        // Initialization code
         exerciseImage.layer.cornerRadius = 10
         exerciseImage.clipsToBounds = true
     }

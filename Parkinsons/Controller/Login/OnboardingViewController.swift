@@ -42,13 +42,28 @@ class OnboardingViewController: UIViewController {
         featureDescription.text = feature.description
         if currentIndex == features.count - 1 {
             continueButtonOutlet.setTitle("Done", for: .normal)
+            skipButtonOutlet.isEnabled = false
             skipButtonOutlet.isHidden = true
         } else {
             continueButtonOutlet.setTitle("Continue", for: .normal)
             skipButtonOutlet.isHidden = false
         }
     }
+    func navigateToHomeScreen() {
+        let storyboard = UIStoryboard(name: "Home", bundle: nil)
+        let vc = storyboard.instantiateViewController(
+            withIdentifier: "HomePage"
+        ) as! HomeViewController
 
+        if let nav = navigationController {
+            nav.pushViewController(vc, animated: true)
+        } else {
+            let nav = UINavigationController(rootViewController: vc)
+            nav.modalPresentationStyle = .fullScreen
+            present(nav, animated: true)
+        }
+    }
+    
     @IBAction func continueButtonTapped(_ sender: UIButton) {
         if currentIndex < features.count - 1 {
             currentIndex += 1
@@ -59,11 +74,14 @@ class OnboardingViewController: UIViewController {
             dismiss(animated: true)
             progressBars[currentIndex].setProgress(1.0, animated: true)
         }
+        if continueButtonOutlet.title(for: .normal) == "Done" {
+           navigateToHomeScreen()
+        }
     }
     
     
     @IBAction func skipTapped(_ sender: UIButton) {
-        dismiss(animated: true)
+        navigateToHomeScreen()
     }
     
     /*

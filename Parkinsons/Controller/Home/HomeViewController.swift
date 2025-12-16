@@ -1,10 +1,3 @@
-//
-//  HomeViewController.swift
-//  Parkinsons
-//
-//  Created by SDC-USER on 27/11/25.
-//
-
 import UIKit
 
 enum Section: Int, CaseIterable {
@@ -14,13 +7,8 @@ enum Section: Int, CaseIterable {
     case symptoms
     case therapeuticGames
 }
-// Make sure SymptomLogDetailDelegate is defined in HomeViewController.swift
-// or imported from SymptomLogDetailViewController.swift
 
-// Assuming SymptomLogDetailDelegate is defined here or imported:
-// protocol SymptomLogDetailDelegate: AnyObject { ... }
-
-class HomeViewController: UIViewController, UICollectionViewDelegate , SymptomLogCellDelegate, SymptomLogDetailDelegate { // ⭐️ Added SymptomLogDetailDelegate ⭐️
+class HomeViewController: UIViewController, UICollectionViewDelegate , SymptomLogCellDelegate, SymptomLogDetailDelegate { 
     
     @IBOutlet weak var mainCollectionView: UICollectionView!
     
@@ -36,14 +24,14 @@ class HomeViewController: UIViewController, UICollectionViewDelegate , SymptomLo
     let homeSections = Section.allCases
     private let separatorView: UIView = {
         let view = UIView()
-        view.backgroundColor = UIColor.systemGray4 // Use a light gray color
+        view.backgroundColor = UIColor.systemGray4
         view.translatesAutoresizingMaskIntoConstraints = false
         return view
     }()
-    // Data Source/State property
+
     var hasLoggedSymptomsToday: Bool = false {
         didSet {
-            // When the status changes, reload the section
+
             if let index = homeSections.firstIndex(of: .symptoms) {
                 mainCollectionView.reloadSections(IndexSet(integer: index))
             } else {
@@ -60,9 +48,9 @@ class HomeViewController: UIViewController, UICollectionViewDelegate , SymptomLo
         MedicationModel(name: "Carbidopa", time: "10:00 AM", detail: "1 capsule", iconName: "pills.fill"),
     ]
     var exerciseData: [ExerciseModel] = [
-// ⭐️ MODIFIED: Added progressColorHex: "0088FF" ⭐️
+
 ExerciseModel(title: "10-Min Workout", detail: "Repeat everyday", progressPercentage: 67, progressColorHex: "0088FF" ),
-// ⭐️ MODIFIED: Added progressColorHex: "90AF81" ⭐️
+
 ExerciseModel(title: "Rhythmic Walking", detail: "2-3 times a week", progressPercentage: 25, progressColorHex: "90AF81" )
 ]
     var therapeuticGamesData: [TherapeuticGameModel] = [
@@ -98,7 +86,6 @@ ExerciseModel(title: "Rhythmic Walking", detail: "2-3 times a week", progressPer
         mainCollectionView.dataSource = self
         mainCollectionView.delegate = self
         
-        // Set the main layout
         mainCollectionView.setCollectionViewLayout(generateLayout(), animated: true)
         
         dates = HomeDataStore.shared.getDates()
@@ -117,33 +104,26 @@ ExerciseModel(title: "Rhythmic Walking", detail: "2-3 times a week", progressPer
         view.addSubview(separatorView)
         
         NSLayoutConstraint.activate([
-            // Position the top edge 166 points from the top of the HomeViewController's view
+ 
             separatorView.topAnchor.constraint(equalTo: view.topAnchor, constant: 166),
             
-            // Horizontal position with 16 points inset on both sides
             separatorView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16),
             separatorView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -16),
             
-            // Define the height of the separator line
             separatorView.heightAnchor.constraint(equalToConstant: 1)
         ])
-        
-        // Ensure the collection view content starts below the separator if necessary
-        // (Based on your current layout, the calendar section header starts below 166 points,
-        // so this is a good insertion point for a fixed element.)
+       
     }
     // MARK: - 3. Cell and Supplementary View Registration
     func registerCells(){
-        // Existing calendar cell registration
+        
         mainCollectionView.register(UINib(nibName: "CalenderCollectionViewCell", bundle: nil), forCellWithReuseIdentifier: "calendar_cell")
         
-        // Content cell registrations
         mainCollectionView.register(UINib(nibName: "MedicationCardCollectionViewCell", bundle: nil), forCellWithReuseIdentifier: "medication_card_cell")
         mainCollectionView.register(UINib(nibName: "ExerciseCardCell", bundle: nil), forCellWithReuseIdentifier: "exercise_card_cell")
         mainCollectionView.register(UINib(nibName: "SymptomLogCell", bundle: nil), forCellWithReuseIdentifier: "symptom_log_cell")
         mainCollectionView.register(UINib(nibName: "TherapeuticGameCell", bundle: nil), forCellWithReuseIdentifier: "therapeutic_game_cell")
         
-        // Header view registration for ALL section titles (including the new dynamic calendar header)
         mainCollectionView.register(
             SectionHeaderView.self, // Must be created
             forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader,
@@ -151,17 +131,7 @@ ExerciseModel(title: "Rhythmic Walking", detail: "2-3 times a week", progressPer
         )
     }
     func viewLogTapped() {
-        // ... (Instantiate SymptomLogHistoryViewController) ...
-       // let historyVC = storyboard.instantiateViewController(withIdentifier: "SymptomLogHistoryViewController") as! SymptomLogHistoryViewController
-        
-        // 1. Pass the CURRENT log data (assuming you store it in HomeVC/Manager)
-        // Assuming 'currentDayLog' holds the current data source:
-        //historyVC.todayLogEntry = self.currentDayLog
-        
-        // 2. **CRITICAL FIX:** Set the update delegate to self
-      //  historyVC.updateDelegate = self
-        
-        // ... (Present modally) ...
+       
     }
     // MARK: - 4. Refactored Compositional Layout
     func generateLayout() -> UICollectionViewLayout {
@@ -172,7 +142,7 @@ ExerciseModel(title: "Rhythmic Walking", detail: "2-3 times a week", progressPer
             switch sectionType {
                 
             case .calendar:
-                // --- CALENDAR HORIZONTAL LAYOUT (Section 0) ---
+               
                 let itemSize = NSCollectionLayoutSize(widthDimension: .absolute(60), heightDimension: .absolute(70))
                 let item = NSCollectionLayoutItem(layoutSize: itemSize)
                 
@@ -197,7 +167,7 @@ ExerciseModel(title: "Rhythmic Walking", detail: "2-3 times a week", progressPer
                 return section
                 
             case .medications:
-                // --- MEDICATIONS HORIZONTAL LAYOUT (Section 1) ---
+                
                 let itemSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: .fractionalHeight(1.0))
                 let item = NSCollectionLayoutItem(layoutSize: itemSize)
                 
@@ -219,33 +189,28 @@ ExerciseModel(title: "Rhythmic Walking", detail: "2-3 times a week", progressPer
                 return section
                 
             case .exercises:
-                // --- EXERCISES GRID LAYOUT (Section 2) ---
-                // 1. Define the Item: Half the width of the group (1.0), and full height.
+              
                 let itemSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(0.5), heightDimension: .fractionalHeight(1.0))
                 let item = NSCollectionLayoutItem(layoutSize: itemSize)
 
-                // Add some trailing inset to create space between the two cards
                 item.contentInsets = NSDirectionalEdgeInsets(top: 0, leading: 2, bottom: 0, trailing: 4)
 
-                // 2. Define the Group: Full width and fixed height (to hold two items side-by-side).
                 let groupHeight: CGFloat = 185
                 
                 let groupSize = NSCollectionLayoutSize(
-                    widthDimension: .fractionalWidth(1.0), // The entire section width
+                    widthDimension: .fractionalWidth(1.0),
                     heightDimension: .absolute(groupHeight)
                 )
-                // 3. Create a Horizontal Group containing two items.
-                let group = NSCollectionLayoutGroup.horizontal(layoutSize: groupSize, subitems: [item, item]) // Two items side-by-side
-
-                // 4. Define the Section:
+              
+                let group = NSCollectionLayoutGroup.horizontal(layoutSize: groupSize, subitems: [item, item])
+                
                 let section = NSCollectionLayoutSection(group: group)
                 section.interGroupSpacing = 0 // Spacing is now handled by the item's contentInsets (trailing 12)
                 section.contentInsets = NSDirectionalEdgeInsets(top: 8, leading: 16, bottom: 24, trailing: 16)
                 
-                // ⭐️ MODIFICATION: Set orthogonalScrollingBehavior to .none ⭐️
-                section.orthogonalScrollingBehavior = .none // <-- Stacks groups vertically
+               
+                section.orthogonalScrollingBehavior = .none
 
-                // ... (header definition remains unchanged) ...
                 let headerSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: .absolute(30))
                 let header = NSCollectionLayoutBoundarySupplementaryItem(
                     layoutSize: headerSize,
@@ -257,7 +222,7 @@ ExerciseModel(title: "Rhythmic Walking", detail: "2-3 times a week", progressPer
                 return section
                 
             case .symptoms:
-                // --- SYMPTOMS VERTICAL LAYOUT (Section 3) ---
+             
                 let itemSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: .fractionalHeight(1.0))
                 let item = NSCollectionLayoutItem(layoutSize: itemSize)
                 
@@ -277,38 +242,25 @@ ExerciseModel(title: "Rhythmic Walking", detail: "2-3 times a week", progressPer
                 return section
                 
             case .therapeuticGames:
-                // --- GAMES GRID LAYOUT (Section 4) ---
-                
-                // 1. Define the Item: Half the width of the group, and full height.
+               
                 let itemSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(0.5), heightDimension: .fractionalHeight(1.0))
                 let item = NSCollectionLayoutItem(layoutSize: itemSize)
-                
-                // Adjust insets to create a gap between the cards and keep the overall section insets clean.
-                // The total width is 1.0, so 0.5 for each item.
-                // We'll use a trailing inset on the item for the space between the cards.
-                item.contentInsets = NSDirectionalEdgeInsets(top: 0, leading: 2, bottom: 0, trailing: 4) // 12pt space between cards
-                
-                // 2. Define the Group: Full width and fixed height (170) to hold two items side-by-side.
+    
+                item.contentInsets = NSDirectionalEdgeInsets(top: 0, leading: 2, bottom: 0, trailing: 4)
                 let groupHeight: CGFloat = 170
                 
                 let groupSize = NSCollectionLayoutSize(
                     widthDimension: .fractionalWidth(1.0), // Full width of the section
                     heightDimension: .absolute(groupHeight)
                 )
-                
-                // 3. Create a Horizontal Group containing two items.
+               
                 let group = NSCollectionLayoutGroup.horizontal(layoutSize: groupSize, subitems: [item, item])
                 
-                // NOTE: We remove the contentInsets from the group, as section insets and item insets are sufficient.
-                
-                // 4. Define the Section:
                 let section = NSCollectionLayoutSection(group: group)
                 section.contentInsets = NSDirectionalEdgeInsets(top: 8, leading: 16, bottom: 30, trailing: 16)
-                
-                // ⭐️ MODIFICATION: Set orthogonalScrollingBehavior to .none ⭐️
+              
                 section.orthogonalScrollingBehavior = .none // <-- This disables horizontal scrolling
                 
-                // ... (header definition remains unchanged) ...
                 let headerSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: .absolute(30))
                 let header = NSCollectionLayoutBoundarySupplementaryItem(
                     layoutSize: headerSize,
@@ -326,13 +278,11 @@ ExerciseModel(title: "Rhythmic Walking", detail: "2-3 times a week", progressPer
     // MARK: - SymptomLogDetailDelegate Methods (Receiving Data)
     
     func symptomLogDidComplete(with ratings: [SymptomRating]) {
-        // Data is received here! Mark state as true.
+       
         let newLogEntry = SymptomLogEntry(date: Date(), ratings: ratings)
             
-            // 2. ⭐️ SAVE THE DATA USING THE MANAGER ⭐️
             SymptomLogManager.shared.saveLogEntry(newLogEntry)
             
-            // 3. Update the state property, which triggers the UI reload
             hasLoggedSymptomsToday = true
     }
     
@@ -347,46 +297,39 @@ ExerciseModel(title: "Rhythmic Walking", detail: "2-3 times a week", progressPer
         let storyboard = UIStoryboard(name: "Home", bundle: nil)
                 
         if hasLoggedSymptomsToday {
-            // Case 1: Logged today -> Navigate directly to Today's Detail View
-                    
-            // 1. ⭐️ LOAD TODAY'S DATA FROM MANAGER ⭐️
+            
             guard let todayLog = SymptomLogManager.shared.getLogForToday() else {
                 print("❌ Warning: Logged status is TRUE, but could not find today's log in persistence. Falling back to Log Now.")
                 hasLoggedSymptomsToday = false
                 return
             }
 
-            // 2. Instantiate the Detail VC
             guard let detailVC = storyboard.instantiateViewController(withIdentifier: "SymptomLogHistoryViewController") as? SymptomLogHistoryViewController else {
                 print("Error: Could not instantiate SymptomLogHistoryViewController.")
                 return
             }
-                    
-            // 3. ⭐️ PASS THE DATA ⭐️
+                        
+           
             detailVC.todayLogEntry = todayLog
             
-            // 4. ⭐️ CRITICAL FIX: Set the HomeViewController as the update delegate for the History VC ⭐️
             detailVC.updateCompletionDelegate = self
 
-            // 5. Present Modally
             detailVC.modalPresentationStyle = .pageSheet
             self.present(detailVC, animated: true, completion: nil)
-                    
+                        
         } else {
-            // Case 2: Not logged today -> Open the Logging Modal (Existing Logic)
-            
-            // ... (existing code to present SymptomLogDetailViewController, remains unchanged) ...
+           
             let storyboard = UIStoryboard(name: "Home", bundle: nil)
             guard let symptomVC = storyboard.instantiateViewController(withIdentifier: "SymptomLogDetailViewController") as? SymptomLogDetailViewController else {
                 print("Error: Could not instantiate SymptomLogDetailViewController.")
                 return
             }
-                    
+                        
             symptomVC.delegate = self
-                    
+                        
             let navController = UINavigationController(rootViewController: symptomVC)
             navController.modalPresentationStyle = .pageSheet
-                    
+                        
             self.present(navController, animated: true, completion: nil)
         }
     }
@@ -413,59 +356,50 @@ ExerciseModel(title: "Rhythmic Walking", detail: "2-3 times a week", progressPer
         }
     }
     
-    private func  handleGamesSelection(at row: Int) {
+    private func handleGamesSelection(at row: Int) {
         switch row {
         case 0:
-            let storyboard = UIStoryboard(name: "Match the Cards", bundle: nil) // ⭐️ Use the specific Storyboard name ⭐️
-            // 2. Instantiate the View Controller (assuming it's the initial VC or has a specific identifier)
+            let storyboard = UIStoryboard(name: "Match the Cards", bundle: nil)
             guard let vc = storyboard.instantiateViewController(withIdentifier: "matchTheCardsLandingPage") as? LevelSelectionViewController else {
                 // ...
                 return
             }
-            // 3. Perform Push Navigation
+           
             navigationController?.pushViewController(vc, animated: true)
 
         case 1:
-            // The second item: "Rhythmic Walking"
-            // 1. Instantiate the Storyboard
-            let storyboard = UIStoryboard(name: "Match the Cards", bundle: nil) // ⭐️ Use the specific Storyboard name ⭐️
-            // 2. Instantiate the View Controller
+            
+            let storyboard = UIStoryboard(name: "Match the Cards", bundle: nil)
             guard let vc = storyboard.instantiateViewController(withIdentifier: "matchTheCardsLandingPage") as? LevelSelectionViewController else {
                 // ...
                 return
             }
-            // 3. Perform Push Navigation
+            
             navigationController?.pushViewController(vc, animated: true)
 
         default:
             print("Games item at row \(row) not configured for navigation.")
         }
     }
-    // Add this method to your HomeViewController class
+  
     private func handleExerciseSelection(at row: Int) {
         switch row {
         case 0:
-            // The first item: "10-Min Workout"
-            // 1. Instantiate the Storyboard
-            let storyboard = UIStoryboard(name: "10 minworkout", bundle: nil) // ⭐️ Use the specific Storyboard name ⭐️
-            // 2. Instantiate the View Controller (assuming it's the initial VC or has a specific identifier)
+            
+            let storyboard = UIStoryboard(name: "10 minworkout", bundle: nil)
             guard let vc = storyboard.instantiateViewController(withIdentifier: "exerciseLandingPage") as? _0minworkoutLandingPageViewController else {
                 // ...
                 return
             }
-            // 3. Perform Push Navigation
+          
             navigationController?.pushViewController(vc, animated: true)
 
         case 1:
-            // The second item: "Rhythmic Walking"
-            // 1. Instantiate the Storyboard
-            let storyboard = UIStoryboard(name: "Rhythmic Walking", bundle: nil) // ⭐️ Use the specific Storyboard name ⭐️
-            // 2. Instantiate the View Controller
+            
+            let storyboard = UIStoryboard(name: "Rhythmic Walking", bundle: nil)
             guard let vc = storyboard.instantiateViewController(withIdentifier: "SetGoalVCc") as? SetGoalViewController else {
-                // ...
                 return
             }
-            // 3. Perform Push Navigation
             navigationController?.pushViewController(vc, animated: true)
 
         default:
@@ -473,14 +407,13 @@ ExerciseModel(title: "Rhythmic Walking", detail: "2-3 times a week", progressPer
         }
     }
     
-    // Function to update selectedDate when a date cell is tapped
     // MARK: - UICollectionViewDelegate Method (Handling Taps)
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         let sectionType = homeSections[indexPath.section]
 
         switch sectionType {
         case .calendar:
-            // --- Existing Calendar Logic ---
+            
             if let selectedIndexPath = collectionView.indexPathsForSelectedItems?.first, selectedIndexPath != indexPath {
                 collectionView.deselectItem(at: selectedIndexPath, animated: true)
             }
@@ -498,12 +431,11 @@ ExerciseModel(title: "Rhythmic Walking", detail: "2-3 times a week", progressPer
             present(navController, animated: true, completion: nil)
 
         case .exercises:
-            // ⭐️ NEW LOGIC: Handle Exercise Taps ⭐️
+            
             handleExerciseSelection(at: indexPath.row)
         case .therapeuticGames:
             handleGamesSelection(at: indexPath.row)
         default:
-            // Handle other sections if necessary (e.g., deselecting a cell)
             collectionView.deselectItem(at: indexPath, animated: true)
         }
     }
@@ -592,7 +524,6 @@ extension HomeViewController: UICollectionViewDataSource {
         }
     }
     
-    // ⭐️ Updated Function to handle dynamic calendar header title ⭐️
     func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
         
         guard kind == UICollectionView.elementKindSectionHeader else {
@@ -609,14 +540,13 @@ extension HomeViewController: UICollectionViewDataSource {
         
         switch sectionType {
         case .calendar:
-            // ⭐️ Calendar Header: Centered ⭐️
+ 
             let dateString = formattedDateString(for: selectedDate)
             let isToday = Calendar.current.isDateInToday(selectedDate)
             
             let title = isToday ? "Today, \(dateString)" : dateString
             header.configure(title: title)
             
-            // ⭐️ CRITICAL: Set Alignment to Center ⭐️
             header.setTitleAlignment(.center)
             
         case .medications:
@@ -643,11 +573,11 @@ extension HomeViewController: UICollectionViewDataSource {
 
 // MARK: - Helper Extension
 extension HomeViewController {
-    // Helper function kept for use in the dynamic header logic
+   
     func formattedDateString(for date: Date) -> String {
         let formatter = DateFormatter()
-        formatter.dateFormat = "d MMMM yyyy" // e.g., 28 November 2025
+        formatter.dateFormat = "d MMMM yyyy"
         return formatter.string(from: date)
     }
-   
+    
 }

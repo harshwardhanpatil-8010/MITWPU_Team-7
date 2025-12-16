@@ -15,18 +15,9 @@ class RestScreenViewController: UIViewController {
     @IBOutlet weak var backgroundView: UIView!
     @IBOutlet weak var playerView: FullScreenYTPlayerView!
     @IBOutlet weak var exerciseLabel: UILabel!
-    @IBOutlet weak var bar1: UIProgressView!
-    @IBOutlet weak var bar2: UIProgressView!
-    @IBOutlet weak var bar3: UIProgressView!
-    @IBOutlet weak var bar4: UIProgressView!
-    @IBOutlet weak var bar5: UIProgressView!
-    @IBOutlet weak var bar6: UIProgressView!
-    @IBOutlet weak var bar7: UIProgressView!
-    @IBOutlet weak var bar8: UIProgressView!
-    @IBOutlet weak var bar9: UIProgressView!
-    @IBOutlet weak var bar10: UIProgressView!
+
+    @IBOutlet var progressBars: [UIProgressView]!
     
-    var bars: [UIProgressView] = []
     var exerciseDurations: [TimeInterval] = []
     weak var delegate: RestScreenDelegate?
     var currentIndex: Int = 0
@@ -48,7 +39,6 @@ class RestScreenViewController: UIViewController {
         playerView.clipsToBounds = true
         loadVideo()
         playerView.isUserInteractionEnabled = false
-        bars = [bar1, bar2, bar3, bar4, bar5, bar6, bar7, bar8, bar9, bar10]
         updateProgressBars()
         updateStepLabel()
     }
@@ -56,18 +46,12 @@ class RestScreenViewController: UIViewController {
         exerciseLabel.text = "\(currentIndex + 1) of \(totalExercises)"
     }
     func updateProgressBars() {
-        for (index,  bar) in bars.enumerated() {
-            if index < currentIndex {
-                bar.progressTintColor = .systemBlue
-                
-            } else if index == currentIndex {
-                bar.progressTintColor = UIColor.systemBlue.withAlphaComponent(0.4)
-              
-            } else {
-                bar.progressTintColor = .systemGray3
-               
-            }
-            bar.setProgress(1.0, animated: false)
+        for (index, bar) in progressBars.enumerated() {
+            bar.progress = 1.0
+            bar.progressTintColor =
+                index < currentIndex ? .systemBlue :
+                index == currentIndex ? UIColor.systemBlue.withAlphaComponent(0.4) :
+                .systemGray3
         }
     }
    
@@ -136,7 +120,7 @@ class RestScreenViewController: UIViewController {
             image: UIImage(systemName: "xmark"),
             style: .plain,
             target: self,
-            action: #selector(closeButtonTapped) // This calls the function below when tapped
+            action: #selector(closeButtonTapped) 
         )
         
         navigationItem.leftBarButtonItem = closeButton

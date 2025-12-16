@@ -31,7 +31,6 @@ class _0minworkoutCountdownViewController: UIViewController {
                 self.TimerLabel.alpha = 0
                 self.TimerLabel.transform = CGAffineTransform(scaleX: 3.0, y: 3.0)
             }) { _ in
-                // Wait 0.3 seconds before navigating
                 DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
                     self.navigateToNextScreen()
                 }
@@ -63,13 +62,11 @@ class _0minworkoutCountdownViewController: UIViewController {
         }
     
     func setupCloseButton() {
-            // Use the system image for a consistent "close" icon
-         
             let closeButton = UIBarButtonItem(
                 image: UIImage(systemName: "xmark"),
                 style: .plain,
                 target: self,
-                action: #selector(closeButtonTapped) // This calls the function below when tapped
+                action: #selector(closeButtonTapped) 
             )
             
             navigationItem.leftBarButtonItem = closeButton

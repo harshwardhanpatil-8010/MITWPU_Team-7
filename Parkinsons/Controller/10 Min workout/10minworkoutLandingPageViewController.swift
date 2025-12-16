@@ -27,8 +27,6 @@ class _0minworkoutLandingPageViewController: UIViewController{
         let allExercises = WorkoutManager.shared.exercises
         exercises = WorkoutManager.shared.getTodayWorkout()
        setupProgressView()
-      
-        // Fix: dataSource has a capital S
         tableView.dataSource = self
         tableView.reloadData()
         tableView.layer.cornerRadius = 20
@@ -47,11 +45,8 @@ class _0minworkoutLandingPageViewController: UIViewController{
         tableView.reloadData()
         updateProgress()
         updateButtonUI()
-      
-      
     }
 
-    
     func updateProgress() {
         let completed = WorkoutManager.shared.completedToday.count
         let total = exercises.count
@@ -118,10 +113,6 @@ extension _0minworkoutLandingPageViewController: UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return exercises.count
     }
-//    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-//        return 200  // increase as needed
-//    }
-
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "previewCell", for: indexPath) as! ExerciseTableViewCell

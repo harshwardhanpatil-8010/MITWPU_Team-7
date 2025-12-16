@@ -17,67 +17,67 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <stackView opaque="NO" contentMode="scaleToFill" distribution="fillProportionally" alignment="center" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="pqP-9w-Yo4">
-                                <rect key="frame" x="16" y="144" width="366" height="20.333333333333343"/>
+                                <rect key="frame" x="16" y="144" width="350" height="20.333333333333343"/>
                                 <subviews>
                                     <stackView opaque="NO" contentMode="scaleToFill" distribution="fillEqually" alignment="center" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="xRB-IG-w6b">
-                                        <rect key="frame" x="0.0" y="8.3333333333333428" width="288" height="4"/>
+                                        <rect key="frame" x="0.0" y="8.3333333333333428" width="272" height="4"/>
                                         <subviews>
                                             <progressView opaque="NO" contentMode="scaleToFill" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="qLw-bg-xWc">
-                                                <rect key="frame" x="0.0" y="0.0" width="21.666666666666668" height="4"/>
+                                                <rect key="frame" x="0.0" y="0.0" width="20" height="4"/>
                                                 <constraints>
                                                     <constraint firstAttribute="width" constant="20" id="5r4-3t-01i"/>
                                                 </constraints>
                                             </progressView>
                                             <progressView opaque="NO" contentMode="scaleToFill" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="BzK-dc-s40">
-                                                <rect key="frame" x="29.666666666666664" y="0.0" width="21.666666666666664" height="4"/>
+                                                <rect key="frame" x="28" y="0.0" width="20" height="4"/>
                                                 <constraints>
                                                     <constraint firstAttribute="width" constant="20" id="0Lj-97-f0m"/>
                                                 </constraints>
                                             </progressView>
                                             <progressView opaque="NO" contentMode="scaleToFill" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="c5U-ar-fcM">
-                                                <rect key="frame" x="59.333333333333336" y="0.0" width="21.333333333333336" height="4"/>
+                                                <rect key="frame" x="56" y="0.0" width="20" height="4"/>
                                                 <constraints>
                                                     <constraint firstAttribute="width" constant="20" id="6YM-aN-BIy"/>
                                                 </constraints>
                                             </progressView>
                                             <progressView opaque="NO" contentMode="scaleToFill" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="DgC-KD-3tB">
-                                                <rect key="frame" x="88.666666666666671" y="0.0" width="21.666666666666671" height="4"/>
+                                                <rect key="frame" x="84" y="0.0" width="20" height="4"/>
                                                 <constraints>
                                                     <constraint firstAttribute="width" constant="20" id="a7V-Xd-vQS"/>
                                                 </constraints>
                                             </progressView>
                                             <progressView opaque="NO" contentMode="scaleToFill" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="0hI-2c-6Lt">
-                                                <rect key="frame" x="118.33333333333336" y="0.0" width="21.666666666666671" height="4"/>
+                                                <rect key="frame" x="112" y="0.0" width="20" height="4"/>
                                                 <constraints>
                                                     <constraint firstAttribute="width" constant="20" id="StM-oG-DcK"/>
                                                 </constraints>
                                             </progressView>
                                             <progressView opaque="NO" contentMode="scaleToFill" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="SJf-xB-Jhs">
-                                                <rect key="frame" x="148" y="0.0" width="21.666666666666657" height="4"/>
+                                                <rect key="frame" x="140" y="0.0" width="20" height="4"/>
                                                 <constraints>
                                                     <constraint firstAttribute="width" constant="20" id="c73-do-9NN"/>
                                                 </constraints>
                                             </progressView>
                                             <progressView opaque="NO" contentMode="scaleToFill" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="gYi-3g-GsB">
-                                                <rect key="frame" x="177.66666666666666" y="0.0" width="21.666666666666657" height="4"/>
+                                                <rect key="frame" x="168" y="0.0" width="20" height="4"/>
                                                 <constraints>
                                                     <constraint firstAttribute="width" constant="20" id="6An-TG-OYN"/>
                                                 </constraints>
                                             </progressView>
                                             <progressView opaque="NO" contentMode="scaleToFill" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="xEL-lB-GAY">
-                                                <rect key="frame" x="207.33333333333334" y="0.0" width="21.333333333333343" height="4"/>
+                                                <rect key="frame" x="196" y="0.0" width="20" height="4"/>
                                                 <constraints>
                                                     <constraint firstAttribute="width" constant="20" id="NlM-kF-tYV"/>
                                                 </constraints>
                                             </progressView>
                                             <progressView opaque="NO" contentMode="scaleToFill" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="Voj-sP-sfB">
-                                                <rect key="frame" x="236.66666666666666" y="0.0" width="21.666666666666657" height="4"/>
+                                                <rect key="frame" x="224" y="0.0" width="20" height="4"/>
                                                 <constraints>
                                                     <constraint firstAttribute="width" constant="20" id="oBE-dv-NSC"/>
                                                 </constraints>
                                             </progressView>
                                             <progressView opaque="NO" contentMode="scaleToFill" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="Upb-gV-j15">
-                                                <rect key="frame" x="266.33333333333331" y="0.0" width="21.666666666666686" height="4"/>
+                                                <rect key="frame" x="252" y="0.0" width="20" height="4"/>
                                                 <constraints>
                                                     <constraint firstAttribute="width" constant="20" id="Um8-aO-8yz"/>
                                                 </constraints>
@@ -85,7 +85,7 @@
                                         </subviews>
                                     </stackView>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="10 of 10" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="u9S-cO-EtI">
-                                        <rect key="frame" x="296" y="0.0" width="70" height="20.333333333333332"/>
+                                        <rect key="frame" x="280" y="0.0" width="70" height="20.333333333333332"/>
                                         <constraints>
                                             <constraint firstAttribute="width" constant="70" id="Y9y-4h-IXF"/>
                                         </constraints>
@@ -100,20 +100,20 @@
                                 </constraints>
                             </stackView>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Epn-SE-8lT" customClass="FullScreenYTPlayerView" customModule="Parkinsons" customModuleProvider="target">
-                                <rect key="frame" x="0.0" y="179.33333333333334" width="402" height="385.66666666666663"/>
+                                <rect key="frame" x="0.0" y="179.33333333333334" width="386" height="385.66666666666663"/>
                                 <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                             </view>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Jpk-pp-Zie">
-                                <rect key="frame" x="0.0" y="520" width="402" height="354"/>
+                                <rect key="frame" x="0.0" y="520" width="386" height="354"/>
                                 <subviews>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Rest" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="FpD-po-Nav">
-                                        <rect key="frame" x="16" y="28" width="370" height="31.333333333333329"/>
+                                        <rect key="frame" x="16" y="28" width="354" height="31.333333333333329"/>
                                         <fontDescription key="fontDescription" type="system" weight="medium" pointSize="26"/>
                                         <nil key="textColor"/>
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" alignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="4ek-AV-Z8r">
-                                        <rect key="frame" x="160.33333333333334" y="115.00000000000001" width="81.666666666666657" height="58.666666666666671"/>
+                                        <rect key="frame" x="152.33333333333334" y="115.00000000000001" width="81.666666666666657" height="58.666666666666671"/>
                                         <subviews>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="KaI-G0-XV6">
                                                 <rect key="frame" x="0.0" y="0.0" width="81.666666666666671" height="38.333333333333336"/>
@@ -130,7 +130,7 @@
                                         </subviews>
                                     </stackView>
                                     <stackView opaque="NO" contentMode="scaleToFill" spacing="114" translatesAutoresizingMaskIntoConstraints="NO" id="g1i-Lm-JY2">
-                                        <rect key="frame" x="20" y="252" width="362" height="48"/>
+                                        <rect key="frame" x="12" y="252" width="362" height="48"/>
                                         <subviews>
                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="WTm-i5-D2P">
                                                 <rect key="frame" x="0.0" y="0.0" width="124" height="48"/>
@@ -188,19 +188,19 @@
                     <connections>
                         <outlet property="addTimeButton" destination="WTm-i5-D2P" id="l5w-mJ-Kg0"/>
                         <outlet property="backgroundView" destination="Jpk-pp-Zie" id="4mh-y3-Sf9"/>
-                        <outlet property="bar1" destination="qLw-bg-xWc" id="LtN-x0-Ey8"/>
-                        <outlet property="bar10" destination="Upb-gV-j15" id="mjB-4h-iUo"/>
-                        <outlet property="bar2" destination="BzK-dc-s40" id="7YC-0E-HDE"/>
-                        <outlet property="bar3" destination="c5U-ar-fcM" id="oJ2-gq-Iff"/>
-                        <outlet property="bar4" destination="DgC-KD-3tB" id="VbC-2y-TM8"/>
-                        <outlet property="bar5" destination="0hI-2c-6Lt" id="4sC-2M-TTd"/>
-                        <outlet property="bar6" destination="SJf-xB-Jhs" id="oj9-nu-x07"/>
-                        <outlet property="bar7" destination="gYi-3g-GsB" id="nLu-5a-EpI"/>
-                        <outlet property="bar8" destination="xEL-lB-GAY" id="d4x-bf-lMz"/>
-                        <outlet property="bar9" destination="Voj-sP-sfB" id="I80-4e-YkB"/>
                         <outlet property="exerciseLabel" destination="u9S-cO-EtI" id="1Xu-B2-yN1"/>
                         <outlet property="playerView" destination="Epn-SE-8lT" id="fGe-HY-nwv"/>
                         <outlet property="timerLabel" destination="KaI-G0-XV6" id="Zaa-iF-ski"/>
+                        <outletCollection property="progressBars" destination="qLw-bg-xWc" collectionClass="NSMutableArray" id="urx-lA-rfm"/>
+                        <outletCollection property="progressBars" destination="BzK-dc-s40" collectionClass="NSMutableArray" id="t14-ng-d0c"/>
+                        <outletCollection property="progressBars" destination="c5U-ar-fcM" collectionClass="NSMutableArray" id="ihm-w1-Mn6"/>
+                        <outletCollection property="progressBars" destination="DgC-KD-3tB" collectionClass="NSMutableArray" id="y2q-o3-ifn"/>
+                        <outletCollection property="progressBars" destination="0hI-2c-6Lt" collectionClass="NSMutableArray" id="ztG-37-ZUH"/>
+                        <outletCollection property="progressBars" destination="SJf-xB-Jhs" collectionClass="NSMutableArray" id="1H6-yy-DCo"/>
+                        <outletCollection property="progressBars" destination="gYi-3g-GsB" collectionClass="NSMutableArray" id="8Rm-m0-v7h"/>
+                        <outletCollection property="progressBars" destination="xEL-lB-GAY" collectionClass="NSMutableArray" id="4Rw-CK-3Rn"/>
+                        <outletCollection property="progressBars" destination="Voj-sP-sfB" collectionClass="NSMutableArray" id="7P6-90-Rm9"/>
+                        <outletCollection property="progressBars" destination="Upb-gV-j15" collectionClass="NSMutableArray" id="Mio-Kc-9cy"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="jm5-Xy-JZp" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
@@ -992,16 +992,6 @@
                     <navigationItem key="navigationItem" title="10 min Workout" largeTitleDisplayMode="always" id="jxq-l5-aKD"/>
                     <connections>
                         <outlet property="backgroundView" destination="86f-LH-JwT" id="ciO-hz-JIF"/>
-                        <outlet property="bar1" destination="vM8-kd-Z5N" id="tyY-wQ-5dd"/>
-                        <outlet property="bar10" destination="bbg-qZ-EJN" id="HTj-c2-IWN"/>
-                        <outlet property="bar2" destination="Gpj-U6-039" id="58c-tf-OXd"/>
-                        <outlet property="bar3" destination="6hG-iW-UI3" id="6hk-Vp-7uB"/>
-                        <outlet property="bar4" destination="IfM-V7-NHk" id="wIa-yv-NmK"/>
-                        <outlet property="bar5" destination="Hrp-eG-aZY" id="o8H-kd-rYc"/>
-                        <outlet property="bar6" destination="V6K-d2-ypG" id="gZW-Zf-rp1"/>
-                        <outlet property="bar7" destination="cIj-eV-fAs" id="eaO-Js-0SE"/>
-                        <outlet property="bar8" destination="zID-iz-Jxs" id="eJ7-wG-z1r"/>
-                        <outlet property="bar9" destination="7zk-AV-eEe" id="Pev-AH-Agd"/>
                         <outlet property="exerciseName" destination="MZl-LX-BdN" id="WX0-J5-G9b"/>
                         <outlet property="playerView" destination="KpT-vc-seY" id="qTi-XM-XAu"/>
                         <outlet property="previousButton" destination="Zod-LQ-fDS" id="Hc7-iz-4gc"/>
@@ -1009,6 +999,16 @@
                         <outlet property="skipButton" destination="ev3-IW-IQ3" id="dZw-Kq-Q6G"/>
                         <outlet property="stepLabel" destination="Fjj-BF-fVz" id="jwe-fr-sC1"/>
                         <outlet property="timerLabel" destination="E53-Fa-HcK" id="gyg-wc-xfP"/>
+                        <outletCollection property="progressBars" destination="vM8-kd-Z5N" collectionClass="NSMutableArray" id="ZlC-I3-hn9"/>
+                        <outletCollection property="progressBars" destination="Gpj-U6-039" collectionClass="NSMutableArray" id="Ujc-Mc-Iyj"/>
+                        <outletCollection property="progressBars" destination="6hG-iW-UI3" collectionClass="NSMutableArray" id="s6J-sI-AOo"/>
+                        <outletCollection property="progressBars" destination="IfM-V7-NHk" collectionClass="NSMutableArray" id="YwD-WP-CEh"/>
+                        <outletCollection property="progressBars" destination="Hrp-eG-aZY" collectionClass="NSMutableArray" id="6ii-AP-OS0"/>
+                        <outletCollection property="progressBars" destination="V6K-d2-ypG" collectionClass="NSMutableArray" id="rZb-k5-Esq"/>
+                        <outletCollection property="progressBars" destination="cIj-eV-fAs" collectionClass="NSMutableArray" id="V29-nF-oyw"/>
+                        <outletCollection property="progressBars" destination="zID-iz-Jxs" collectionClass="NSMutableArray" id="0N7-hB-FK9"/>
+                        <outletCollection property="progressBars" destination="7zk-AV-eEe" collectionClass="NSMutableArray" id="IHp-Yl-3QK"/>
+                        <outletCollection property="progressBars" destination="bbg-qZ-EJN" collectionClass="NSMutableArray" id="jEh-Yj-Dqp"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="qra-DB-Pu2" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>

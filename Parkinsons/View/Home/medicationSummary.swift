@@ -1,11 +1,3 @@
-//
-// medicationSummary.swift
-// Parkinsons
-//
-// Created by SDC-USER on 15/12/25.
-//
-
-
 import UIKit
 
 class MedicationSummaryCell: UICollectionViewCell {
@@ -15,7 +7,7 @@ class MedicationSummaryCell: UICollectionViewCell {
     @IBOutlet weak var amPmLabel: UILabel!
     @IBOutlet weak var nameLabel: UILabel!
     @IBOutlet weak var detailLabel: UILabel!
-    @IBOutlet weak var statusLabel: UILabel! // Used for the checkmark/status text
+    @IBOutlet weak var statusLabel: UILabel!
     @IBOutlet weak var medicationIconImageView: UIImageView!
     
     // Outlet for the main background card (for styling)
@@ -26,7 +18,6 @@ class MedicationSummaryCell: UICollectionViewCell {
     override func awakeFromNib() {
         super.awakeFromNib()
         
-        // Ensure clipping is disabled on the cell and contentView to allow the shadow to show
         self.clipsToBounds = false
         self.contentView.clipsToBounds = false
         
@@ -40,17 +31,16 @@ class MedicationSummaryCell: UICollectionViewCell {
 
     // ⭐️ NEW: Function to apply consistent card styling (Shadow and Corner Radius) ⭐️
     func setupCardStyle() {
-        let cornerRadius: CGFloat = 12 // Matches the radius you previously set
+        let cornerRadius: CGFloat = 12
         let shadowColor: UIColor = .black
-        let shadowOpacity: Float = 0.1 // A lighter shadow looks modern
-        let shadowRadius: CGFloat = 8 // Softness of the shadow
-        let shadowOffset: CGSize = .init(width: 0, height: 4) // Vertical drop shadow
+        let shadowOpacity: Float = 0.1
+        let shadowRadius: CGFloat = 8
+        let shadowOffset: CGSize = .init(width: 0, height: 4)
 
         // Apply Corner Radius
         backgroundCardView.layer.cornerRadius = cornerRadius
 
         // Disable clipping on the background view layer itself
-        // This is crucial for displaying the shadow
         backgroundCardView.layer.masksToBounds = false
 
         // Apply Shadow properties
@@ -88,36 +78,42 @@ class MedicationSummaryCell: UICollectionViewCell {
             medicationIconImageView.backgroundColor = .systemBlue
             medicationIconImageView.tintColor = .white
             
-            let totalRemaining = totalScheduled - totalTaken
+            // MARK: - Updated Status Label Logic (Checkmark or Xmark)
             
-            // ⭐️ FIX 2: Implement icon for 'Completed' status ⭐️
             if totalScheduled == 0 {
-                statusLabel.text = "No meds scheduled"
+                statusLabel.attributedText = nil
+                statusLabel.text = "No schedule"
                 statusLabel.textColor = .systemGray
             } else if totalTaken == totalScheduled {
-                // Use SF Symbol for checkmark
+                // Status: Taken (Green Checkmark)
                 let checkmarkImage = UIImage(systemName: "checkmark.circle.fill")
-                let checkmarkAttachment = NSTextAttachment(image: checkmarkImage!)
-                
-                // Optional: Adjust the size/baseline of the checkmark to align with text
-                // checkmarkAttachment.bounds = CGRect(x: 0, y: -2, width: 14, height: 14)
+                let checkmarkAttachment = NSTextAttachment(image: checkmarkImage!.withTintColor(.systemGreen))
                 
                 let attributedString = NSMutableAttributedString(string: "")
                 attributedString.append(NSAttributedString(attachment: checkmarkAttachment))
-                attributedString.append(NSAttributedString(string: " Completed")) // Add "Completed" text next to the icon
+                attributedString.append(NSAttributedString(string: " Taken"))
                 
                 statusLabel.attributedText = attributedString
                 statusLabel.textColor = .systemGreen
                 
-            } else if totalTaken > 0 {
-                // Example: "1 / 2 taken"
-                statusLabel.attributedText = nil // Clear attributed text for regular string
-                statusLabel.text = "\(totalTaken) / \(totalScheduled) taken"
-                statusLabel.textColor = .systemOrange
             } else {
-                // Example: "2 remaining"
-                statusLabel.attributedText = nil
-                statusLabel.text = "\(totalScheduled) remaining"
+                // Status: Not Taken or Partially Taken (Red Xmark)
+                let xmarkImage = UIImage(systemName: "xmark.circle.fill")
+                let xmarkAttachment = NSTextAttachment(image: xmarkImage!.withTintColor(.systemRed))
+
+                let attributedString = NSMutableAttributedString(string: "")
+                attributedString.append(NSAttributedString(attachment: xmarkAttachment))
+                
+                let statusText: String
+                if totalTaken > 0 {
+                    statusText = " \(totalTaken)/\(totalScheduled) Partial"
+                } else {
+                    statusText = " Not Taken"
+                }
+                
+                attributedString.append(NSAttributedString(string: statusText))
+                
+                statusLabel.attributedText = attributedString
                 statusLabel.textColor = .systemRed
             }
         }
