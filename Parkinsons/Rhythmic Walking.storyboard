@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="24412" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="Al1-Zq-pB3">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="24506" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="Al1-Zq-pB3">
     <device id="retina6_3" orientation="portrait" appearance="light"/>
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="24405"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="24504"/>
         <capability name="Image references" minToolsVersion="12.0"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="System colors in document resources" minToolsVersion="11.0"/>
@@ -13,13 +13,13 @@
         <!--Item-->
         <scene sceneID="PlV-vA-0eo">
             <objects>
-                <viewController storyboardIdentifier="SessionRunningVC" id="1kc-gU-wrq" customClass="SessionRunningViewController" customModule="Parkinsons" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="SessionRunningVC" useStoryboardIdentifierAsRestorationIdentifier="YES" id="1kc-gU-wrq" customClass="SessionRunningViewController" customModule="Parkinsons" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="Mdl-v4-X1O">
-                        <rect key="frame" x="0.0" y="0.0" width="402" height="812"/>
+                        <rect key="frame" x="0.0" y="0.0" width="402" height="874"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <view userInteractionEnabled="NO" contentMode="center" translatesAutoresizingMaskIntoConstraints="NO" id="Qpe-gT-kER" customClass="CircularProgressView" customModule="Parkinsons" customModuleProvider="target">
-                                <rect key="frame" x="90" y="62" width="222" height="232"/>
+                                <rect key="frame" x="90" y="186" width="222" height="232"/>
                                 <subviews>
                                     <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="Xf8-ld-8JP">
                                         <rect key="frame" x="65.333333333333343" y="86" width="91.333333333333343" height="60"/>
@@ -48,7 +48,7 @@
                                 </constraints>
                             </view>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ZKp-LN-1Mx">
-                                <rect key="frame" x="16" y="745" width="370" height="52"/>
+                                <rect key="frame" x="16" y="739" width="370" height="52"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="52" id="VPe-Go-LR9"/>
                                 </constraints>
@@ -59,7 +59,7 @@
                                 </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Ubv-1p-jIa">
-                                <rect key="frame" x="156" y="342" width="90" height="90"/>
+                                <rect key="frame" x="156" y="466" width="90" height="90"/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="90" id="4XE-Xb-sgo"/>
                                     <constraint firstAttribute="width" secondItem="Ubv-1p-jIa" secondAttribute="height" multiplier="45:45" id="NGC-Dy-pWz"/>
@@ -81,7 +81,7 @@
                                 </connections>
                             </button>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="mtX-Ok-BvQ">
-                                <rect key="frame" x="16" y="462" width="370" height="92"/>
+                                <rect key="frame" x="16" y="586" width="370" height="92"/>
                                 <subviews>
                                     <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="18" translatesAutoresizingMaskIntoConstraints="NO" id="onY-O9-xnw">
                                         <rect key="frame" x="20" y="7" width="330" height="78"/>
@@ -172,12 +172,12 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="RFy-Lo-jl5" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="5541.7910447761187" y="-454.46224256292902"/>
+            <point key="canvasLocation" x="5540.2985074626858" y="-454.46224256292902"/>
         </scene>
         <!--Rhythmic Walking-->
         <scene sceneID="11U-OP-gRK">
             <objects>
-                <viewController storyboardIdentifier="SetGoalVCc" id="JJ7-RS-Dhn" customClass="SetGoalViewController" customModule="Parkinsons" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="SetGoalVCc" useStoryboardIdentifierAsRestorationIdentifier="YES" id="JJ7-RS-Dhn" customClass="SetGoalViewController" customModule="Parkinsons" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" restorationIdentifier="Rhythmic_walking" id="wuG-Ru-sbe">
                         <rect key="frame" x="0.0" y="0.0" width="402" height="874"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -196,7 +196,7 @@
                                 <color key="barTintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                             </navigationBar>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="-1" estimatedSectionHeaderHeight="-1" sectionFooterHeight="-1" estimatedSectionFooterHeight="-1" translatesAutoresizingMaskIntoConstraints="NO" id="Lh1-y2-G85">
-                                <rect key="frame" x="16" y="735" width="370" height="60"/>
+                                <rect key="frame" x="16" y="740" width="370" height="55"/>
                                 <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                                 <prototypes>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="sessionCell" id="qZ7-XG-F0H" customClass="SessionTableViewCell" customModule="Parkinsons" customModuleProvider="target">
@@ -211,7 +211,7 @@
                                 </prototypes>
                             </tableView>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Today's Sessions" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="9dr-tt-Ogk">
-                                <rect key="frame" x="16" y="696" width="354" height="24"/>
+                                <rect key="frame" x="16" y="701" width="354" height="24"/>
                                 <fontDescription key="fontDescription" type="boldSystem" pointSize="20"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
@@ -235,10 +235,10 @@
                                 </constraints>
                             </view>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="TQm-Gl-XGU">
-                                <rect key="frame" x="16" y="462" width="370" height="84"/>
+                                <rect key="frame" x="16" y="462" width="370" height="89"/>
                                 <subviews>
                                     <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="4" translatesAutoresizingMaskIntoConstraints="NO" id="MWy-8K-OY9">
-                                        <rect key="frame" x="20" y="10" width="330" height="64"/>
+                                        <rect key="frame" x="20" y="10" width="330" height="69"/>
                                         <subviews>
                                             <stackView opaque="NO" contentMode="scaleToFill" alignment="top" spacing="85" translatesAutoresizingMaskIntoConstraints="NO" id="3EP-bj-Wct" userLabel="Main stack">
                                                 <rect key="frame" x="0.0" y="0.0" width="330" height="30"/>
@@ -260,9 +260,20 @@
                                                         <state key="normal" title="Button"/>
                                                     </button>
                                                 </subviews>
+                                                <gestureRecognizers/>
+                                                <connections>
+                                                    <outletCollection property="gestureRecognizers" destination="9eA-K0-rgw" appends="YES" id="wjt-XR-yWt"/>
+                                                </connections>
                                             </stackView>
+                                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="a0I-oS-HyU">
+                                                <rect key="frame" x="0.0" y="34" width="330" height="1"/>
+                                                <color key="backgroundColor" systemColor="separatorColor"/>
+                                                <constraints>
+                                                    <constraint firstAttribute="height" constant="1" id="npy-n9-D28"/>
+                                                </constraints>
+                                            </view>
                                             <stackView opaque="NO" contentMode="scaleToFill" spacing="68" translatesAutoresizingMaskIntoConstraints="NO" id="I8p-uU-MGw">
-                                                <rect key="frame" x="0.0" y="34" width="330" height="30"/>
+                                                <rect key="frame" x="0.0" y="39" width="330" height="30"/>
                                                 <subviews>
                                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Select Pace" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Lic-KY-72r">
                                                         <rect key="frame" x="0.0" y="0.0" width="105.66666666666667" height="30"/>
@@ -282,6 +293,10 @@
                                                         <state key="normal" title="Button"/>
                                                     </button>
                                                 </subviews>
+                                                <gestureRecognizers/>
+                                                <connections>
+                                                    <outletCollection property="gestureRecognizers" destination="4y7-DN-1Jf" appends="YES" id="L7V-CB-98F"/>
+                                                </connections>
                                             </stackView>
                                         </subviews>
                                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
@@ -296,7 +311,7 @@
                                 </constraints>
                             </view>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="VPN-t2-Ehx">
-                                <rect key="frame" x="156" y="576" width="90" height="90"/>
+                                <rect key="frame" x="156" y="581" width="90" height="90"/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="90" id="DQF-zL-Tjf"/>
                                     <constraint firstAttribute="width" secondItem="VPN-t2-Ehx" secondAttribute="height" multiplier="45:45" id="xJH-h9-EUu"/>
@@ -314,7 +329,6 @@
                                 </buttonConfiguration>
                                 <connections>
                                     <action selector="startButtonTapped:" destination="JJ7-RS-Dhn" eventType="touchUpInside" id="jPZ-xJ-1DO"/>
-                                    <segue destination="1kc-gU-wrq" kind="presentation" identifier="go" id="fTN-O1-3zf"/>
                                 </connections>
                             </button>
                         </subviews>
@@ -368,13 +382,15 @@
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="bRA-Ct-rib" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+                <tapGestureRecognizer id="9eA-K0-rgw" userLabel="select beat"/>
+                <tapGestureRecognizer id="4y7-DN-1Jf" userLabel="select pace"/>
             </objects>
             <point key="canvasLocation" x="4682.0895522388055" y="-454.46224256292902"/>
         </scene>
         <!--Info View Controller-->
         <scene sceneID="R5Y-uo-jV3">
             <objects>
-                <viewController storyboardIdentifier="infoVC" id="llc-Di-Exy" userLabel="Info View Controller" customClass="InfoViewController" customModule="Parkinsons" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="infoVC" useStoryboardIdentifierAsRestorationIdentifier="YES" id="llc-Di-Exy" userLabel="Info View Controller" customClass="InfoViewController" customModule="Parkinsons" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="XSL-GY-XgO">
                         <rect key="frame" x="0.0" y="0.0" width="402" height="874"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -479,7 +495,7 @@
         <!--Session Summary View Controller-->
         <scene sceneID="t6o-1p-YDN">
             <objects>
-                <viewController storyboardIdentifier="SessionSummaryVC" id="Pur-Wm-rd9" customClass="SessionSummaryViewController" customModule="Parkinsons" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="SessionSummaryVC" useStoryboardIdentifierAsRestorationIdentifier="YES" id="Pur-Wm-rd9" customClass="SessionSummaryViewController" customModule="Parkinsons" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="bBS-zW-oR2">
                         <rect key="frame" x="0.0" y="0.0" width="402" height="874"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -808,6 +824,9 @@
         <image name="info.circle" catalog="system" width="128" height="123"/>
         <systemColor name="linkColor">
             <color red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </systemColor>
+        <systemColor name="separatorColor">
+            <color red="0.23529411759999999" green="0.23529411759999999" blue="0.26274509800000001" alpha="0.28999999999999998" colorSpace="custom" customColorSpace="sRGB"/>
         </systemColor>
         <systemColor name="systemBackgroundColor">
             <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
