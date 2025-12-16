@@ -47,23 +47,35 @@ class HealthPermissionsViewController: UIViewController, UITableViewDelegate, UI
     
    
     @IBAction func allowButton(_ sender: UIButton) {
-        dismiss(animated: true) { [weak self] in
-                    self?.completionHandler?(true)
-                }
+    navigateToNextScreen()
     }
     
     @IBAction func dontAllowButton(_ sender: UIButton) {
-        dismiss(animated: true) { [weak self] in
-                    
-                    self?.completionHandler?(true)
-                }
+      navigateToNextScreen()
     }
     
+    func navigateToNextScreen() {
+        let storyboard = UIStoryboard(name: "Login", bundle: nil)
+        let vc = storyboard.instantiateViewController(
+            withIdentifier: "onBoardingViewController"
+        ) as! OnboardingViewController
+
+        if let nav = navigationController {
+            nav.pushViewController(vc, animated: true)
+        } else {
+            let nav = UINavigationController(rootViewController: vc)
+            nav.modalPresentationStyle = .fullScreen
+            present(nav, animated: true)
+        }
+    }
+
+    
     @IBAction func turnOnAllButtonTapped(_ sender: UIButton) {
-       
+     
         for i in 0..<permissions.count {
             permissions[i].isEnabled = true
         }
+        
         tableView.reloadData()
         updateAllowButtonState()
     }
