@@ -9,8 +9,6 @@ class SymptomLogManager {
     
     private let logKey = "SymptomLogEntries"
     
-    // NOTE: Your models (SymptomRating and SymptomLogEntry) MUST be Codable
-    // for JSONEncoder/Decoder to work. (Assume this is fixed based on previous steps.)
     
     // MARK: - Saving Data
     
@@ -30,9 +28,9 @@ class SymptomLogManager {
         do {
             let encodedData = try JSONEncoder().encode(allLogs)
             UserDefaults.standard.set(encodedData, forKey: logKey)
-            print("✅ SymptomLogManager: Successfully saved log entry for today.")
+            print("SymptomLogManager: Successfully saved log entry for today.")
         } catch {
-            print("❌ SymptomLogManager: Failed to encode/save symptom logs: \(error)")
+            print("SymptomLogManager: Failed to encode/save symptom logs: \(error)")
         }
     }
     
