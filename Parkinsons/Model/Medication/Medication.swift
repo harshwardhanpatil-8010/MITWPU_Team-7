@@ -113,37 +113,21 @@ struct Medication: Codable {
 // MARK: - RepeatRule Helpers
 // ---------------------------------------------------------
 extension RepeatRule {
-
-    // Returns weekday numbers only if .weekly
-    var weekdayNumbers: [Int] {
-        switch self {
-        case .weekly(let days):
-            return days
-        default:
-            return []
-        }
-    }
-
-    // Display friendly string: "Everyday", "Sun, Mon", etc.
     func displayString() -> String {
         switch self {
-
         case .everyday:
             return "Everyday"
-
         case .none:
             return "None"
-
         case .weekly(let days):
-            let formatter = DateFormatter()
-            let weekdays = formatter.shortWeekdaySymbols! // Sun, Mon, Tue...
-
-            let names = days.compactMap { index -> String? in
-                guard index >= 1, index <= weekdays.count else { return nil }
-                return weekdays[index - 1]
+            if Set(days) == Set([1,2,3,4,5,6,7]) {
+                return "Everyday"
+            } else {
+                let fmt = DateFormatter()
+                fmt.locale = Locale(identifier: "en_US")
+                let weekdayNames = ["Sun","Mon","Tue","Wed","Thu","Fri","Sat"]
+                return days.map { weekdayNames[$0 - 1] }.joined(separator: ", ")
             }
-
-            return names.joined(separator: ", ")
         }
     }
 }

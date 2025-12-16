@@ -300,6 +300,17 @@ class MedicationLandingPageViewController: UIViewController,
 
         return updatedDose
     }
+    
+    @IBAction func plusButtonTapped(_ sender: UIBarButtonItem) {
+        let storyboard = UIStoryboard(name: "Medication", bundle: nil)
+        let vc = storyboard.instantiateViewController(
+            withIdentifier: "AddMedVC"
+        ) as! AddMedicationViewController
+        
+        let nav = UINavigationController(rootViewController: vc)
+        nav.modalPresentationStyle = .formSheet
+        present(nav, animated: true)
+    }
 }
 
 // ---------------------------------------------------------
@@ -361,4 +372,5 @@ extension MedicationLandingPageViewController: UICollectionViewDataSource {
         cell.configure(with: allMedications[indexPath.item])
         return cell
     }
+    
 }

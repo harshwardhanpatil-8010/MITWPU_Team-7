@@ -17,7 +17,7 @@ class AddMedicationViewController: UIViewController,
                                    UITableViewDataSource,
                                    DoseTableViewCellDelegate,
                                    UnitsAndTypeDelegate,
-                                   RepeatSelectionDelegate {
+                                   RepeatSelectionDelegate,UITextFieldDelegate {
     
     // ---------------------------------------------------------
     // MARK: - Properties
@@ -50,6 +50,11 @@ class AddMedicationViewController: UIViewController,
     // ---------------------------------------------------------
     override func viewDidLoad() {
         super.viewDidLoad()
+        let tap = UITapGestureRecognizer(target: self, action: #selector(dismissKeyboard))
+        view.addGestureRecognizer(tap)
+
+        medicationNameTextField.delegate = self
+        strengthLabel.delegate = self
         
         // setup UI + hide delete button if adding new medication
         deleteButton.isHidden = !isEditMode
@@ -80,6 +85,10 @@ class AddMedicationViewController: UIViewController,
             UITapGestureRecognizer(target: self, action: #selector(repeatStackTapped))
         )
     }
+    @objc func dismissKeyboard() {
+        view.endEditing(true)
+    }
+
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
@@ -92,12 +101,12 @@ class AddMedicationViewController: UIViewController,
         }
     }
     
-    override func viewDidAppear(_ animated: Bool) {
-        super.viewDidAppear(animated)
-        
-        // ensure fields reload properly in edit mode
-        if isEditMode { fillFieldsForEditing() }
-    }
+//    override func viewDidAppear(_ animated: Bool) {
+//        super.viewDidAppear(animated)
+//        
+//        // ensure fields reload properly in edit mode
+//        if isEditMode { fillFieldsForEditing() }
+//    }
     
     // ---------------------------------------------------------
     // MARK: - Helpers
@@ -181,14 +190,26 @@ class AddMedicationViewController: UIViewController,
     }
     
     /// Opens Units + Type screen using push navigation
-    @IBAction func onUnitStackTapped(_ sender: Any) {
-        let storyboard = UIStoryboard(name: "Medication", bundle: nil)
-        guard let vc = storyboard.instantiateViewController(withIdentifier: "UnitAndTypeVC")
-                as? UnitAndTypeViewController else { return }
+    ///
+    ///
+    
+    @IBAction func onUnitStackTapped(_ sender: UITapGestureRecognizer) {
+                let storyboard = UIStoryboard(name: "Medication", bundle: nil)
+                guard let vc = storyboard.instantiateViewController(withIdentifier: "UnitAndTypeVC")
+                        as? UnitAndTypeViewController else { return }
         
-        vc.delegate = self
-        navigationController?.pushViewController(vc, animated: true)
+                vc.delegate = self
+                navigationController?.pushViewController(vc, animated: true)
     }
+    
+//    @IBAction func onUnitStackTapped(_ sender: Any) {
+//        let storyboard = UIStoryboard(name: "Medication", bundle: nil)
+//        guard let vc = storyboard.instantiateViewController(withIdentifier: "UnitAndTypeVC")
+//                as? UnitAndTypeViewController else { return }
+//        
+//        vc.delegate = self
+//        navigationController?.pushViewController(vc, animated: true)
+//    }
     
     /// Opens Repeat screen using push navigation
     @IBAction func repeatStackTapped(_ sender: Any) {
@@ -299,7 +320,9 @@ extension AddMedicationViewController {
     func didSelectRepeatOption(_ option: String) {
         repeatLabel.text = option
         repeatLabel.textColor = .label
+        AddMedicationDataStore.shared.repeatOption = option
     }
+
     
     /// Updates dose time when user changes time picker
     func didUpdateTime(cell: DoseTableViewCell, newTime: Date) {

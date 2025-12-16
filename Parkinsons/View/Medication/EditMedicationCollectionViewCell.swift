@@ -15,8 +15,7 @@ class EditMedicationCollectionViewCell: UICollectionViewCell {
     @IBOutlet weak var titleLabel: UILabel!
     @IBOutlet weak var medIcon: UIImageView!
     @IBOutlet weak var cardView: UIView!
-    @IBOutlet weak var ampmLabel: UILabel!
-    @IBOutlet weak var timeLabel: UILabel!
+
     
     // MARK: - Lifecycle
     override func awakeFromNib() {
@@ -24,7 +23,7 @@ class EditMedicationCollectionViewCell: UICollectionViewCell {
         
         // Round card corners
         cardView.layer.cornerRadius = 16
-        cardView.layer.masksToBounds = true
+        cardView.clipsToBounds = true
         
         // Apply shadow + card styling
         applyCardStyle()
@@ -38,21 +37,6 @@ class EditMedicationCollectionViewCell: UICollectionViewCell {
     }
     
     /// Applies drop‑shadow and white card styling.
-    private func applyCardStyle() {
-        cardView.layer.cornerRadius = 16
-        cardView.layer.masksToBounds = false
-        cardView.backgroundColor = .white
-        
-        // Shadow
-        cardView.layer.shadowColor = UIColor.black.cgColor
-        cardView.layer.shadowOpacity = 0.15
-        cardView.layer.shadowRadius = 5
-        cardView.layer.shadowOffset = CGSize(width: 0, height: 2)
-        
-        // Fix transparent background issue in collection cells
-        contentView.backgroundColor = .clear
-        backgroundColor = .clear
-    }
     
     // MARK: - Configure Cell
     /// Populates the cell UI with medication data.
@@ -74,18 +58,18 @@ class EditMedicationCollectionViewCell: UICollectionViewCell {
             scheduleLabel.text = "None"
             
         case .weekly(let days):
-            scheduleLabel.text = "Weekly: " +
+            scheduleLabel.text =
                 days.map { weekdayName($0) }.joined(separator: ", ")
         }
         
-        // Time — show first dose time
-        if let firstDose = medication.doses.first {
-            let fmt = DateFormatter()
-            fmt.dateFormat = "h:mm a"
-            timeLabel.text = fmt.string(from: firstDose.time)
-        }
-        
-        // You are not using a separate AM/PM label
-        ampmLabel.isHidden = true
+//        // Time — show first dose time
+//        if let firstDose = medication.doses.first {
+//            let fmt = DateFormatter()
+//            fmt.dateFormat = "h:mm a"
+//            timeLabel.text = fmt.string(from: firstDose.time)
+//        }
+//        
+//        // You are not using a separate AM/PM label
+//        ampmLabel.isHidden = true
     }
 }

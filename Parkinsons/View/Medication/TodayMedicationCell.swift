@@ -60,7 +60,7 @@ class TodayMedicationCell: UICollectionViewCell {
         // Medication info
         titleLabel.text = medication.name
         subtitleLabel.text = medication.form
-        iconImageView.image = UIImage(named: medication.iconName ?? "")
+        iconImageView.image = UIImage(named: medication.iconName)
 
         // Status icon
         switch dose.status {
@@ -84,8 +84,8 @@ class TodayMedicationCell: UICollectionViewCell {
     }
 
 
-        @IBAction func chevronTapped(_ sender: UIButton) {
-            onChevronTap?()
-        }
+//        @IBAction func chevronTapped(_ sender: UIButton) {
+//            onChevronTap?()
+//        }
 
 }

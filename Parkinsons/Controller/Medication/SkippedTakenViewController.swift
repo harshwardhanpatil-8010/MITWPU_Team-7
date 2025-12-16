@@ -35,7 +35,7 @@ class SkippedTakenViewController: UIViewController {
     // MARK: - Lifecycle
     override func viewDidLoad() {
         super.viewDidLoad()
-
+        
         // Set screen title
         let formatter = DateFormatter()
         formatter.dateFormat = "EEEE, d MMM"
@@ -54,8 +54,9 @@ class SkippedTakenViewController: UIViewController {
         iconImageView.image = UIImage(named: receivedIconName ?? "")
 
         // Rounded container
-        uiview.layer.cornerRadius = 16
-        uiview.layer.masksToBounds = true
+        uiview.applyCardStyle()
+        
+        
     }
 
     // MARK: - Navigation
