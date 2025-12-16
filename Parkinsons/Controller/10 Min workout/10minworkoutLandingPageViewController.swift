@@ -21,10 +21,10 @@ class _0minworkoutLandingPageViewController: UIViewController{
         circularProgressView.addSubview(progressView)
     }
    
-    
+    let allExercises = WorkoutManager.shared.exercises
     override func viewDidLoad() {
         super.viewDidLoad()
-        let allExercises = WorkoutManager.shared.exercises
+        
         exercises = WorkoutManager.shared.getTodayWorkout()
        setupProgressView()
         tableView.dataSource = self

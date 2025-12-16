@@ -698,7 +698,6 @@
                                 <constraints>
                                     <constraint firstAttribute="height" constant="52" id="QBR-nA-0FM"/>
                                     <constraint firstItem="yfc-SI-0fw" firstAttribute="top" secondItem="KYJ-cO-AcF" secondAttribute="top" id="lQp-th-g7h"/>
-                                    <constraint firstItem="yfc-SI-0fw" firstAttribute="leading" secondItem="KYJ-cO-AcF" secondAttribute="leading" constant="16" id="v2r-nA-2oI"/>
                                 </constraints>
                             </stackView>
                         </subviews>
