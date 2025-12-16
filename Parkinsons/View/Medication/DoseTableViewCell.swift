@@ -8,9 +8,7 @@
 import UIKit
 
 // MARK: - Delegate Protocol
-// This protocol allows the cell to notify the parent controller when:
-// 1. The delete button is tapped
-// 2. The time picker value is changed
+
 protocol DoseTableViewCellDelegate: AnyObject {
     func didTapDelete(cell: DoseTableViewCell)
     func didUpdateTime(cell: DoseTableViewCell, newTime: Date)

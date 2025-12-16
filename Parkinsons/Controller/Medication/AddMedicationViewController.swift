@@ -190,8 +190,7 @@ class AddMedicationViewController: UIViewController,
     }
     
     /// Opens Units + Type screen using push navigation
-    ///
-    ///
+
     
     @IBAction func onUnitStackTapped(_ sender: UITapGestureRecognizer) {
                 let storyboard = UIStoryboard(name: "Medication", bundle: nil)

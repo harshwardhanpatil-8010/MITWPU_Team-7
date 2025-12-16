@@ -25,24 +25,24 @@ class TodayMedicationCell: UICollectionViewCell {
             containerView.layer.cornerRadius = 16
         }
 
-    private func styleCard() {
-        let cornerRadius: CGFloat = 16
-        
-        // Card base
-        containerView.layer.cornerRadius = cornerRadius
-        containerView.layer.masksToBounds = false
-        containerView.backgroundColor = .white
-
-        // Shadow
-        containerView.layer.shadowColor = UIColor.black.cgColor
-        containerView.layer.shadowOpacity = 0.15
-        containerView.layer.shadowRadius = 5
-        containerView.layer.shadowOffset = CGSize(width: 0, height: 2)
-
-        // Fix transparent background
-        contentView.backgroundColor = .clear
-        backgroundColor = .clear
-    }
+//    private func styleCard() {
+//        let cornerRadius: CGFloat = 16
+//        
+//        // Card base
+//        containerView.layer.cornerRadius = cornerRadius
+//        containerView.layer.masksToBounds = false
+//        containerView.backgroundColor = .white
+//
+//        // Shadow
+//        containerView.layer.shadowColor = UIColor.black.cgColor
+//        containerView.layer.shadowOpacity = 0.15
+//        containerView.layer.shadowRadius = 5
+//        containerView.layer.shadowOffset = CGSize(width: 0, height: 2)
+//
+//        // Fix transparent background
+//        contentView.backgroundColor = .clear
+//        backgroundColor = .clear
+//    }
 
 
     func configure(with dose: MedicationDose, medication: Medication) {

@@ -62,14 +62,13 @@ class EditMedicationCollectionViewCell: UICollectionViewCell {
                 days.map { weekdayName($0) }.joined(separator: ", ")
         }
         
-//        // Time — show first dose time
+//
 //        if let firstDose = medication.doses.first {
 //            let fmt = DateFormatter()
 //            fmt.dateFormat = "h:mm a"
 //            timeLabel.text = fmt.string(from: firstDose.time)
 //        }
 //        
-//        // You are not using a separate AM/PM label
 //        ampmLabel.isHidden = true
     }
 }

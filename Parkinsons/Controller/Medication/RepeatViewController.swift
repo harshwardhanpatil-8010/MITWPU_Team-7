@@ -69,12 +69,9 @@ class RepeatViewController: UIViewController,
         return cell
     }
     
-    // MARK: - TableView Selection Logic
+    // MARK: - TableView Selection
     
-    /// Handles selection rules:
-    /// - Selecting "Everyday" deselects all weekdays
-    /// - Selecting any weekday deselects "Everyday"
-    /// - Multiple weekdays can be selected together
+
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         
         let tappedOption = repeatList[indexPath.row]

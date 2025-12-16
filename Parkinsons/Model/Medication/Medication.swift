@@ -12,12 +12,7 @@ enum DoseStatus: String, Codable {
 // ---------------------------------------------------------
 // MARK: - A Single Medication Dose Entry
 // ---------------------------------------------------------
-// Each dose belongs to a medication and tracks:
-// - ID
-// - Time of day
-// - Whether it was taken or skipped
-// - The parent medication's ID
-// ---------------------------------------------------------
+
 struct MedicationDose: Codable, Identifiable {
     let id: UUID
     var time: Date            // stored as a Date, but used mainly for time-of-day
@@ -28,12 +23,7 @@ struct MedicationDose: Codable, Identifiable {
 // ---------------------------------------------------------
 // MARK: - Medication Repeat Rule
 // ---------------------------------------------------------
-// This describes how often a medication repeats:
-// - everyday
-// - weekly (selected weekdays 1...7)
-// - none (one-time)
-// Also conforms to Codable for saving
-// ---------------------------------------------------------
+
 enum RepeatRule: Codable {
     case everyday
     case weekly([Int])        // 1 = Sunday ... 7 = Saturday
@@ -87,16 +77,7 @@ enum RepeatRule: Codable {
 // ---------------------------------------------------------
 // MARK: - Medication Model
 // ---------------------------------------------------------
-// Represents a full medication entry:
-// - ID
-// - Name
-// - Form (tablet, capsule, etc.)
-// - Unit and strength
-// - Icon name for UI display
-// - Repeat schedule
-// - All doses for that medication
-// - Creation timestamp
-// ---------------------------------------------------------
+
 struct Medication: Codable {
     let id: UUID
     var name: String
