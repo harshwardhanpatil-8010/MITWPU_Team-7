@@ -56,6 +56,7 @@ class SessionRunningViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        title = "Rhythmic Walking"
         setupProgressView()
         progressView.progressColor = UIColor(hex: "90AF81")
         progressView.trackColor = .systemGray5
