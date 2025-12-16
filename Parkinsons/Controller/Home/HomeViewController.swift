@@ -15,7 +15,8 @@ class HomeViewController: UIViewController, UICollectionViewDelegate , SymptomLo
     // MARK: - Section Definition and Data
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-
+        navigationItem.hidesBackButton = true
+        navigationItem.rightBarButtonItem = nil
         mainCollectionView.reloadSections(
             IndexSet(integer: Section.exercises.rawValue)
         )

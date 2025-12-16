@@ -487,11 +487,11 @@
                         <outlet property="featureDescription" destination="RSa-f9-9wU" id="xCZ-1t-dT6"/>
                         <outlet property="featureName" destination="hVL-HS-qiZ" id="CaU-KL-TMu"/>
                         <outlet property="imageView" destination="XHh-ru-tbc" id="YPu-OF-yUx"/>
-                        <outlet property="progressBar1" destination="iTn-Eo-HZ2" id="Gkh-CA-Zfh"/>
-                        <outlet property="progressBar2" destination="gKW-wR-mA0" id="4II-lh-RTH"/>
-                        <outlet property="progressBar3" destination="wc5-JT-aBC" id="Y0S-nu-N5n"/>
-                        <outlet property="progressBar4" destination="9r2-lp-VUl" id="bAB-zf-lcg"/>
                         <outlet property="skipButtonOutlet" destination="G0b-lG-UQj" id="EEK-UQ-UPR"/>
+                        <outletCollection property="progressBars" destination="iTn-Eo-HZ2" collectionClass="NSMutableArray" id="R24-2J-CwW"/>
+                        <outletCollection property="progressBars" destination="gKW-wR-mA0" collectionClass="NSMutableArray" id="EYR-zJ-lgG"/>
+                        <outletCollection property="progressBars" destination="wc5-JT-aBC" collectionClass="NSMutableArray" id="dqi-cU-3dZ"/>
+                        <outletCollection property="progressBars" destination="9r2-lp-VUl" collectionClass="NSMutableArray" id="6Um-ia-oAe"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="0bQ-sn-HSX" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>

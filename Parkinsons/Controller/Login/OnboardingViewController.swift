@@ -14,25 +14,18 @@ class OnboardingViewController: UIViewController {
     @IBOutlet weak var featureDescription: UILabel!
     @IBOutlet weak var continueButtonOutlet: UIButton!
     @IBOutlet weak var skipButtonOutlet: UIButton!
-    @IBOutlet weak var progressBar1: UIProgressView!
-    @IBOutlet weak var progressBar2: UIProgressView!
-    @IBOutlet weak var progressBar3: UIProgressView!
-    @IBOutlet weak var progressBar4: UIProgressView!
+    @IBOutlet var progressBars: [UIProgressView]!
     
-    
-    var progressBars: [UIProgressView] = []
+   
     var currentIndex = 0
     override func viewDidLoad() {
         super.viewDidLoad()
-        progressBars = [progressBar1, progressBar2, progressBar3, progressBar4]
-        progressBar1.setProgress(1.0, animated: true)
+        progressBars.first?.setProgress(1, animated: true)
         onboardingChange()
         imageView.layer.cornerRadius = 83
         imageView.clipsToBounds = true
         // Do any additional setup after loading the view.
     }
-    
-    
     
     func onboardingChange() {
         let feature =  features[currentIndex]
@@ -75,8 +68,11 @@ class OnboardingViewController: UIViewController {
             progressBars[currentIndex].setProgress(1.0, animated: true)
         }
         if continueButtonOutlet.title(for: .normal) == "Done" {
-           navigateToHomeScreen()
+            progressBars.last?.setProgress(1.0, animated: true)
+                navigateToHomeScreen()
+            
         }
+        
     }
     
     

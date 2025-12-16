@@ -57,7 +57,7 @@ class SuccessViewController: UIViewController {
 
          view.layer.addSublayer(confettiLayer)
 
-         // Stop after 3 seconds (HIG friendly)
+    
          DispatchQueue.main.asyncAfter(deadline: .now() + 3) {
              confettiLayer.birthRate = 0
          }
@@ -72,10 +72,10 @@ class SuccessViewController: UIViewController {
             ctx.setFillColor(UIColor.white.cgColor)
 
             if Bool.random() {
-                // Rectangle
+               
                 ctx.fill(CGRect(origin: .zero, size: size))
             } else {
-                // Rounded confetti
+         
                 let radius = min(size.width, size.height) / 2
                 let center = CGPoint(x: size.width / 2, y: size.height / 2)
                 ctx.addArc(center: center,
@@ -95,15 +95,12 @@ class SuccessViewController: UIViewController {
          if let existingLandingVC = self.navigationController?.viewControllers.first(where: { vc in
              return vc is LevelSelectionViewController
          }) {
-             // Case 1: SUCCESSFUL POP
-             // If LevelSelectionViewController is found, you pop to it.
-             // The chevron *should* be visible because HomeVC is still below it.
+             
              self.navigationController?.popToViewController(existingLandingVC, animated: true)
          } else {
-             // Case 2: FAILURE (The LevelSelectionViewController was NOT found)
              let storyboard = UIStoryboard(name: "Match the Cards", bundle: nil)
              let homeVC = storyboard.instantiateViewController(withIdentifier: "matchTheCardsLandingPage") as! LevelSelectionViewController
-             // ⭐️ ISSUE: This line replaces the entire navigation stack! ⭐️
+       
              self.navigationController?.setViewControllers([homeVC], animated: true)
          }
     }
