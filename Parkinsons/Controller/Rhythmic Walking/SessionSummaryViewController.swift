@@ -9,15 +9,12 @@ import UIKit
 
 class SessionSummaryViewController: UIViewController {
 
-    var sessionData: RhythmicSession?
-    
     @IBOutlet weak var timeLabel: UILabel!
     
     @IBOutlet weak var walkingUIView: UIView!
     @IBOutlet weak var GaitUIView: UIView!
     
     @IBOutlet weak var timeContainer: UIView!
-    
     
     @IBOutlet weak var stepsTaken: UILabel!
     @IBOutlet weak var distanceCovered: UILabel!
@@ -30,6 +27,8 @@ class SessionSummaryViewController: UIViewController {
     @IBOutlet weak var walkingAsymmetryPercent: UILabel!
     @IBOutlet weak var walkingSteadinessPercent: UILabel!
     
+    
+    var sessionData: RhythmicSession?
     private var progressView: CircularProgressView!
     
     private func setupProgressView() {
@@ -37,6 +36,26 @@ class SessionSummaryViewController: UIViewController {
         progressView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
         timeContainer.addSubview(progressView)
     }
+
+
+    
+    
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        setupProgressView()
+        walkingUIView.applyCardStyle()
+        GaitUIView.applyCardStyle()
+        loadData()
+        progressView.progressColor = UIColor(hex: "90AF81")
+        progressView.trackColor = .systemGray5
+        navigationItem.hidesBackButton = true
+        navigationController?.interactivePopGestureRecognizer?.isEnabled = false
+
+        // Do any additional setup after loading the view.
+    }
+    
+    
+    
     
     func loadData() {
         if let session = sessionData {
@@ -58,11 +77,11 @@ class SessionSummaryViewController: UIViewController {
             }
             progressView.setProgress(CGFloat(progress))
         }
-                    
         else {
             timeLabel.text = "00:00:00"
             progressView.setProgress(0.0)
         }
+        
         stepsTaken.text = WalkingSessionDemo.steps.description
         distanceCovered.text = WalkingSessionDemo.distanceKMeters.description
         speed.text = "3 Km/h"
@@ -73,22 +92,9 @@ class SessionSummaryViewController: UIViewController {
         walkingAsymmetryPercent.text = "0.5 %"
         walkingSteadinessPercent.text = "5 %"
     }
-
-
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        setupProgressView()
-        walkingUIView.applyCardStyle()
-        GaitUIView.applyCardStyle()
-        loadData()
-        progressView.progressColor = UIColor(hex: "90AF81")
-        progressView.trackColor = .systemGray5
-        // Do any additional setup after loading the view.
-    }
-    
     
     @IBAction func doneButtonTapped(_ sender: Any) {
-        self.dismiss(animated: true, completion: nil)
+        dismiss(animated: true)
     }
     
 

@@ -17,6 +17,9 @@ class SessionRunningViewController: UIViewController {
     @IBOutlet weak var paceButton: UIButton!
     @IBOutlet weak var beatPaceUIView: UIView!
     
+    
+    
+    
     var totalSessionDuration: Int = 0
     var selectedBeat: String?
     var selectedPace: String?
@@ -34,6 +37,22 @@ class SessionRunningViewController: UIViewController {
         progressView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
         circularContainer.addSubview(progressView)
     }
+    private func updateDisplay(hours: Int, minutes: Int) {
+        timeLabel.text = String(format: "%02d:%02d:%02d", hours, minutes, 0)
+        progressView.setProgress(1.0)
+    }
+    private func updatePauseButtonUI() {
+        let title: String
+        if let timerModel = timerModel {
+            title = timerModel.isPaused ? "Resume" : "Pause"
+        } else {
+            title = "Pause"
+        }
+        pauseButton.setTitle(title, for: .normal)
+    }
+    
+    
+    
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -45,9 +64,7 @@ class SessionRunningViewController: UIViewController {
         beatPaceUIView.applyCardStyle()
         setupBeatButton()
         setupPaceButton()
-        
-//        guard let beat = selectedBeat, let bpm = selectedBPM else { return }
-        
+   
         if totalSessionDuration > 0{
             timerModel = TimerModel(totalSeconds: totalSessionDuration)
             updateDisplay( hours:hrs, minutes: minn)
@@ -60,7 +77,6 @@ class SessionRunningViewController: UIViewController {
         if totalSessionDuration > 0{
             timerModel.start()
         }
-//        BeatPlayer.shared.startBeat(fileName: beat, bpm: bpm)
         updatePauseButtonUI()
         // Do any additional setup after loading the view.
     }
@@ -68,12 +84,9 @@ class SessionRunningViewController: UIViewController {
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
     }
+
+
     
-    
-    private func updateDisplay(hours: Int, minutes: Int) {
-        timeLabel.text = String(format: "%02d:%02d:%02d", hours, minutes, 0)
-        progressView.setProgress(1.0)
-    }
     
     @IBAction func pauseTapped(_ sender: Any) {
         guard let timerModel = timerModel else { return }
@@ -84,17 +97,7 @@ class SessionRunningViewController: UIViewController {
         }
         updatePauseButtonUI()
     }
-        
-    private func updatePauseButtonUI() {
-        let title: String
-        if let timerModel = timerModel {
-            title = timerModel.isPaused ? "Resume" : "Pause"
-        } else {
-            title = "Pause"
-        }
-        pauseButton.setTitle(title, for: .normal)
-    }
-        
+   
     func setupBeatButton(){
         beatButton.setTitle(selectedBeat ?? "Clock", for: .normal)
         let optionClosure: UIActionHandler = { [weak self] action in
@@ -122,44 +125,14 @@ class SessionRunningViewController: UIViewController {
         paceButton.changesSelectionAsPrimaryAction = true
     }
     func presentSummaryAndDismiss() {
-        
-        // 1. Get the original view controller (SetGoalViewController) that presented this modal.
-        // This is the anchor point for finding the navigation stack.
-        guard let presentingVC = self.presentingViewController else {
-            print("Error: Presenting view controller not found.")
-            return
-        }
 
-        // 2. Instantiate the next aView Controller (SessionSummaryViewController)
-        let storyboard = UIStoryboard(name: "Rhythmic Walking", bundle: nil) // Update "Main" to your actual Storyboard name
+        let storyboard = UIStoryboard(name: "Rhythmic Walking", bundle: nil)
         guard let summaryVC = storyboard.instantiateViewController(withIdentifier: "SessionSummaryVC") as? SessionSummaryViewController else {
-            print("Error: Could not instantiate SessionSummaryViewController.")
             return
         }
         summaryVC.sessionData = session
+        navigationController?.pushViewController(summaryVC, animated: true)
         
-        // *** CRITICAL STEP ***
-        // 3. Find the target navigation stack to push onto.
-        // This is the navigation controller that *contains* the SetGoalVC.
-        guard let targetNav = presentingVC.navigationController else {
-            // Fallback if presentingVC is somehow not in a navigation stack.
-            // If this happens, you must present the SummaryVC modally instead of pushing.
-            print("Error: Presenting VC is not embedded in a UINavigationController. Presenting modally as a fallback.")
-//            summaryVC.modalPresentationStyle = .fullScreen
-            self.dismiss(animated: true) {
-                presentingVC.present(summaryVC, animated: true)
-            }
-            return
-        }
-
-        // 4. Dismiss the current modal view controller (SessionRunningVC)
-        self.dismiss(animated: true) {
-            // This block executes ONLY AFTER the modal dismissal animation completes.
-            
-            // 5. Push the Session Summary View Controller onto the original stack
-            // This will show a standard push animation (slide from right).
-            targetNav.pushViewController(summaryVC, animated: true)
-        }
     }
     
     @IBAction func endSessionButtonTapped(_ sender: Any) {
@@ -181,12 +154,13 @@ class SessionRunningViewController: UIViewController {
         self.session = session
         presentSummaryAndDismiss()
     }
-    
-    
 }
 
+
+
+
 extension SessionRunningViewController: TimerModelDelegate {
-        
+    
     func timerDidUpdate(timeLeft: Int, progress: CGFloat) {
         let hours = timeLeft / 3600
         let minutes = (timeLeft % 3600) / 60
@@ -198,12 +172,12 @@ extension SessionRunningViewController: TimerModelDelegate {
     }
     
     func timerDidFinish() {
-        timeLabel.text = " 00:00:00 "
+        timeLabel.text = "00:00:00"
         progressView.setProgress(0)
         pauseButton.isEnabled = false
         presentSummaryAndDismiss()
     }
-
+}
     /*
     // MARK: - Navigation
 
@@ -214,4 +188,4 @@ extension SessionRunningViewController: TimerModelDelegate {
     }
     */
 
-}
+
