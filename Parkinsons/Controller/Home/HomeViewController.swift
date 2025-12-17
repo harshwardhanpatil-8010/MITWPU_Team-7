@@ -91,7 +91,7 @@ ExerciseModel(title: "Rhythmic Walking", detail: "2-3 times a week", progressPer
         
         dates = HomeDataStore.shared.getDates()
         autoSelectToday()
-        setupSeparator()
+        //setupSeparator()
     }
     
     @IBAction func profilePageButton(_ sender: Any) {
