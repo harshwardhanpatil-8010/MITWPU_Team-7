@@ -415,42 +415,20 @@
                                 </items>
                             </navigationBar>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="7" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="OeQ-ZR-KSc">
-                                <rect key="frame" x="16" y="118" width="370" height="81.333333333333314"/>
+                                <rect key="frame" x="16" y="100" width="370" height="81.333333333333314"/>
                                 <string key="text">A gentle walking exercise where you match your steps to a steady beat. The rhythm helps guide your movement, making walking smoother, more balanced, and easier to control</string>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="About Rhythmic Walking" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Oiz-46-g1e">
-                                <rect key="frame" x="103.66666666666669" y="70" width="195" height="21"/>
-                                <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="17"/>
-                                <nil key="textColor"/>
-                                <nil key="highlightedColor"/>
-                            </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Steps to Perform" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="WGF-95-xOI">
-                                <rect key="frame" x="16" y="224.33333333333334" width="370" height="21"/>
+                                <rect key="frame" x="16" y="206.33333333333334" width="370" height="21"/>
                                 <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="17"/>
-                                <nil key="textColor"/>
-                                <nil key="highlightedColor"/>
-                            </label>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Benefits" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="lab-9p-o8N">
-                                <rect key="frame" x="16" y="692.33333333333337" width="370" height="21"/>
-                                <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="17"/>
-                                <nil key="textColor"/>
-                                <nil key="highlightedColor"/>
-                            </label>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="8" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="8VQ-Lh-pm6">
-                                <rect key="frame" x="16" y="729.33333333333337" width="370" height="101.66666666666663"/>
-                                <string key="text">1. Helps improve walking steadiness and walking smoothness.
-2. Helps improves balance and coordination.
-
-</string>
-                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="20" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="6tJ-4K-dyH">
-                                <rect key="frame" x="16" y="261.33333333333331" width="370" height="405.99999999999994"/>
+                                <rect key="frame" x="16" y="243.33333333333337" width="370" height="406"/>
                                 <string key="text">1. Choose a beat you like - Pick a sound or rhythm that feels pleasant and easy to follow.
 
 2. Select a pace for the beat - The app will play the beat slower or faster based on the pace you choose.
@@ -468,27 +446,30 @@
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="About Rhythmic Walking" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Oiz-46-g1e">
+                                <rect key="frame" x="103.66666666666669" y="32.666666666666664" width="195" height="21"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="21" id="Vnw-nc-mUb"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="17"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="nt2-c0-h3Q"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                         <constraints>
                             <constraint firstItem="6tJ-4K-dyH" firstAttribute="leading" secondItem="nt2-c0-h3Q" secondAttribute="leading" constant="16" id="0rh-3V-loP"/>
-                            <constraint firstItem="lab-9p-o8N" firstAttribute="leading" secondItem="nt2-c0-h3Q" secondAttribute="leading" constant="16" id="5sH-6J-Z7y"/>
                             <constraint firstItem="8b6-ej-iHz" firstAttribute="trailing" secondItem="nt2-c0-h3Q" secondAttribute="trailing" id="Cg1-pG-ZPc"/>
                             <constraint firstItem="8b6-ej-iHz" firstAttribute="leading" secondItem="nt2-c0-h3Q" secondAttribute="leading" id="Ckq-LH-2fR"/>
-                            <constraint firstAttribute="trailing" secondItem="8VQ-Lh-pm6" secondAttribute="trailing" constant="16" id="Gq1-eq-SQ7"/>
-                            <constraint firstItem="8VQ-Lh-pm6" firstAttribute="leading" secondItem="nt2-c0-h3Q" secondAttribute="leading" constant="16" id="Mh1-ov-BNl"/>
-                            <constraint firstItem="lab-9p-o8N" firstAttribute="top" secondItem="6tJ-4K-dyH" secondAttribute="bottom" constant="25" id="Myx-xZ-9dU"/>
+                            <constraint firstItem="OeQ-ZR-KSc" firstAttribute="top" secondItem="8b6-ej-iHz" secondAttribute="bottom" constant="30" id="JQI-9i-hmI"/>
                             <constraint firstItem="nt2-c0-h3Q" firstAttribute="trailing" secondItem="6tJ-4K-dyH" secondAttribute="trailing" constant="16" id="TZO-cW-HPv"/>
-                            <constraint firstItem="8VQ-Lh-pm6" firstAttribute="top" secondItem="lab-9p-o8N" secondAttribute="bottom" constant="16" id="U58-x2-Fmj"/>
-                            <constraint firstItem="OeQ-ZR-KSc" firstAttribute="top" secondItem="Oiz-46-g1e" secondAttribute="bottom" constant="27" id="XnP-YM-Avn"/>
                             <constraint firstItem="nt2-c0-h3Q" firstAttribute="trailing" secondItem="WGF-95-xOI" secondAttribute="trailing" constant="16" id="YlP-PI-eZh"/>
-                            <constraint firstItem="Oiz-46-g1e" firstAttribute="top" secondItem="8b6-ej-iHz" secondAttribute="bottom" id="bkq-MT-xxS"/>
                             <constraint firstItem="nt2-c0-h3Q" firstAttribute="trailing" secondItem="OeQ-ZR-KSc" secondAttribute="trailing" constant="16" id="dAi-vG-vrJ"/>
                             <constraint firstItem="Oiz-46-g1e" firstAttribute="centerX" secondItem="XSL-GY-XgO" secondAttribute="centerX" id="fxv-V9-mKw"/>
                             <constraint firstItem="OeQ-ZR-KSc" firstAttribute="leading" secondItem="nt2-c0-h3Q" secondAttribute="leading" constant="16" id="hiC-uy-N9k"/>
                             <constraint firstItem="8b6-ej-iHz" firstAttribute="top" secondItem="XSL-GY-XgO" secondAttribute="top" constant="16" id="j2z-XU-J5d"/>
-                            <constraint firstItem="nt2-c0-h3Q" firstAttribute="trailing" secondItem="lab-9p-o8N" secondAttribute="trailing" constant="16" id="o44-FH-aIc"/>
+                            <constraint firstItem="Oiz-46-g1e" firstAttribute="centerY" secondItem="8b6-ej-iHz" secondAttribute="centerY" id="nht-7w-w6J"/>
                             <constraint firstItem="WGF-95-xOI" firstAttribute="top" secondItem="OeQ-ZR-KSc" secondAttribute="bottom" constant="25" id="pFh-6x-omF"/>
                             <constraint firstItem="WGF-95-xOI" firstAttribute="leading" secondItem="nt2-c0-h3Q" secondAttribute="leading" constant="16" id="pR5-BW-f7h"/>
                             <constraint firstItem="6tJ-4K-dyH" firstAttribute="top" secondItem="WGF-95-xOI" secondAttribute="bottom" constant="16" id="zwj-G8-pKn"/>

@@ -530,13 +530,13 @@
                                         <rect key="frame" x="5" y="29.999999999999993" width="50" height="68.333333333333314"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                     </stackView>
-                                    <stackView opaque="NO" contentMode="scaleToFill" distribution="equalSpacing" spacing="7" translatesAutoresizingMaskIntoConstraints="NO" id="yJw-oL-br6">
+                                    <stackView opaque="NO" contentMode="scaleToFill" distribution="equalSpacing" spacing="6" translatesAutoresizingMaskIntoConstraints="NO" id="yJw-oL-br6">
                                         <rect key="frame" x="18" y="14" width="334" height="71.333333333333329"/>
                                         <subviews>
                                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" alignment="center" spacing="16" translatesAutoresizingMaskIntoConstraints="NO" id="phb-Wu-utD">
                                                 <rect key="frame" x="0.0" y="0.0" width="96.666666666666671" height="71.333333333333329"/>
                                                 <subviews>
-                                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Completed" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="4l1-CH-nP7">
+                                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Completed" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="4l1-CH-nP7">
                                                         <rect key="frame" x="0.0" y="0.0" width="96.666666666666671" height="24"/>
                                                         <fontDescription key="fontDescription" type="system" pointSize="20"/>
                                                         <nil key="textColor"/>
