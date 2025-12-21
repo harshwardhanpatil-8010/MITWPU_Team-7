@@ -7,12 +7,11 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		1957F54E2ED9961600AC2BF5 /* WebKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1957F54D2ED9961600AC2BF5 /* WebKit.framework */; settings = {ATTRIBUTES = (Required, ); }; };
+		1997F40C2EF007ED00E69B25 /* YouTubeiOSPlayerHelper in Frameworks */ = {isa = PBXBuildFile; productRef = 1997F40B2EF007ED00E69B25 /* YouTubeiOSPlayerHelper */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
 		19423B6D2ED6BD590004C99E /* Parkinsons.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Parkinsons.app; sourceTree = BUILT_PRODUCTS_DIR; };
-		1957F54D2ED9961600AC2BF5 /* WebKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WebKit.framework; path = System/Library/Frameworks/WebKit.framework; sourceTree = SDKROOT; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
@@ -41,7 +40,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				1957F54E2ED9961600AC2BF5 /* WebKit.framework in Frameworks */,
+				1997F40C2EF007ED00E69B25 /* YouTubeiOSPlayerHelper in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -52,7 +51,6 @@
 			isa = PBXGroup;
 			children = (
 				19423B6F2ED6BD590004C99E /* Parkinsons */,
-				1957F54C2ED9961600AC2BF5 /* Frameworks */,
 				19423B6E2ED6BD590004C99E /* Products */,
 			);
 			sourceTree = "<group>";
@@ -63,14 +61,6 @@
 				19423B6D2ED6BD590004C99E /* Parkinsons.app */,
 			);
 			name = Products;
-			sourceTree = "<group>";
-		};
-		1957F54C2ED9961600AC2BF5 /* Frameworks */ = {
-			isa = PBXGroup;
-			children = (
-				1957F54D2ED9961600AC2BF5 /* WebKit.framework */,
-			);
-			name = Frameworks;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -93,6 +83,7 @@
 			);
 			name = Parkinsons;
 			packageProductDependencies = (
+				1997F40B2EF007ED00E69B25 /* YouTubeiOSPlayerHelper */,
 			);
 			productName = Parkinsons;
 			productReference = 19423B6D2ED6BD590004C99E /* Parkinsons.app */;
@@ -123,7 +114,7 @@
 			mainGroup = 19423B642ED6BD590004C99E;
 			minimizedProjectReferenceProxies = 1;
 			packageReferences = (
-				19686B942ED8259E00CCFBA0 /* XCRemoteSwiftPackageReference "MBCircularProgressBar" */,
+				1997F40A2EF007ED00E69B25 /* XCRemoteSwiftPackageReference "youtube-ios-player-helper" */,
 			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = 19423B6E2ED6BD590004C99E /* Products */;
@@ -167,7 +158,7 @@
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = Parkinsons/Info.plist;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
-				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
+				INFOPLIST_KEY_UILaunchStoryboardName = Login.storyboard;
 				INFOPLIST_KEY_UIMainStoryboardFile = Main;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
@@ -199,7 +190,7 @@
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = Parkinsons/Info.plist;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
-				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
+				INFOPLIST_KEY_UILaunchStoryboardName = Login.storyboard;
 				INFOPLIST_KEY_UIMainStoryboardFile = Main;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
@@ -363,15 +354,23 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
-		19686B942ED8259E00CCFBA0 /* XCRemoteSwiftPackageReference "MBCircularProgressBar" */ = {
+		1997F40A2EF007ED00E69B25 /* XCRemoteSwiftPackageReference "youtube-ios-player-helper" */ = {
 			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/MatiBot/MBCircularProgressBar";
+			repositoryURL = "https://github.com/youtube/youtube-ios-player-helper.git";
 			requirement = {
 				kind = upToNextMajorVersion;
-				minimumVersion = 0.3.4;
+				minimumVersion = 1.0.4;
 			};
 		};
 /* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		1997F40B2EF007ED00E69B25 /* YouTubeiOSPlayerHelper */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 1997F40A2EF007ED00E69B25 /* XCRemoteSwiftPackageReference "youtube-ios-player-helper" */;
+			productName = YouTubeiOSPlayerHelper;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = 19423B652ED6BD590004C99E /* Project object */;
 }

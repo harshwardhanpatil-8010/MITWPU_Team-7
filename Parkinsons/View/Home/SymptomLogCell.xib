@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="24412" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina6_12" orientation="portrait" appearance="light"/>
+    <dependencies>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="24405"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="System colors in document resources" minToolsVersion="11.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" id="gTV-IL-0wX" customClass="SymptomLogCell" customModule="Parkinsons" customModuleProvider="target">
+            <rect key="frame" x="0.0" y="0.0" width="386" height="105"/>
+            <autoresizingMask key="autoresizingMask"/>
+            <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center">
+                <rect key="frame" x="0.0" y="0.0" width="386" height="105"/>
+                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                <subviews>
+                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Mcc-9r-tel">
+                        <rect key="frame" x="0.0" y="0.0" width="386" height="105"/>
+                        <subviews>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="M9X-AC-Pvu">
+                                <rect key="frame" x="16" y="8" width="221" height="62"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="62" id="3yY-fo-ath"/>
+                                    <constraint firstAttribute="width" constant="221" id="mZa-3h-Ytn"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="IxX-a1-dXg">
+                                <rect key="frame" x="295" y="20.000000000000004" width="75" height="34.333333333333343"/>
+                                <state key="normal" title="Button"/>
+                                <buttonConfiguration key="configuration" style="filled" title="Button" cornerStyle="capsule" titleAlignment="center"/>
+                            </button>
+                        </subviews>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                        <constraints>
+                            <constraint firstItem="M9X-AC-Pvu" firstAttribute="top" secondItem="Mcc-9r-tel" secondAttribute="top" constant="8" id="QSe-E9-Pzg"/>
+                            <constraint firstAttribute="trailing" secondItem="IxX-a1-dXg" secondAttribute="trailing" constant="16" id="dYl-ue-doE"/>
+                            <constraint firstItem="IxX-a1-dXg" firstAttribute="top" secondItem="Mcc-9r-tel" secondAttribute="top" constant="20" id="lnG-ey-diy"/>
+                            <constraint firstItem="M9X-AC-Pvu" firstAttribute="leading" secondItem="Mcc-9r-tel" secondAttribute="leading" constant="16" id="zee-JD-Pvk"/>
+                        </constraints>
+                    </view>
+                </subviews>
+            </view>
+            <viewLayoutGuide key="safeArea" id="ZTg-uK-7eu"/>
+            <constraints>
+                <constraint firstAttribute="trailing" secondItem="Mcc-9r-tel" secondAttribute="trailing" id="0VS-te-iIp"/>
+                <constraint firstItem="Mcc-9r-tel" firstAttribute="leading" secondItem="gTV-IL-0wX" secondAttribute="leading" id="OVC-KZ-dL9"/>
+                <constraint firstItem="Mcc-9r-tel" firstAttribute="top" secondItem="gTV-IL-0wX" secondAttribute="top" id="Rnj-C3-ggg"/>
+                <constraint firstAttribute="bottom" secondItem="Mcc-9r-tel" secondAttribute="bottom" id="tQH-nf-0fn"/>
+            </constraints>
+            <size key="customSize" width="386" height="105"/>
+            <connections>
+                <outlet property="backgroundCardView" destination="Mcc-9r-tel" id="chG-uE-1Nh"/>
+                <outlet property="descriptionLabel" destination="M9X-AC-Pvu" id="E8h-Oq-tNA"/>
+                <outlet property="logNowButton" destination="IxX-a1-dXg" id="Od6-aq-MpS"/>
+            </connections>
+            <point key="canvasLocation" x="68.702290076335871" y="98.239436619718319"/>
+        </collectionViewCell>
+    </objects>
+    <resources>
+        <systemColor name="systemBackgroundColor">
+            <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+        </systemColor>
+    </resources>
+</document>

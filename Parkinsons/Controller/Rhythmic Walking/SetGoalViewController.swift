@@ -7,40 +7,34 @@
 
 import UIKit
 
-class SetGoalViewController: UIViewController, UITableViewDataSource, UIPickerViewDataSource {
+class SetGoalViewController: UIViewController, UITableViewDataSource, UIPickerViewDataSource, UIPickerViewDelegate {
     
-    @IBAction func infoButtonTapped(_ sender: UIBarButtonItem) {
-        let overLay = OverlayPopUp()
-        overLay.appear(sender: self)
-    }
+    @IBOutlet weak var datePickerUIView: UIView!
+    
+    @IBOutlet weak var DurationPicker: UIPickerView!
+    
+    @IBOutlet weak var beatButton: UIButton!
+    
+    @IBOutlet weak var paceButton: UIButton!
+    
+    
+    @IBOutlet weak var startButton: UIButton!
+    @IBOutlet weak var paceBeatUIView: UIView!
+    @IBOutlet weak var sessionTableView: UITableView!
 
+    var startTapsCount: Int = 0
     private let paces = ["Slow", "Moderate", "Fast"]
     private var beats: [String] = []
     private var selectedBeat = "Clock"
     private var selectedPace: String = "Slow"
-
     let dataForColumn1 = Array(00...05)
-    let dataForColumn2 = Array(00...60)
-    //    let dataForColumn1: [String] = ["00","01","02","03","04","05"]
-    //    let dataForColumn2 = ["00","01","02","03","04","05","06","07","08","09","10","11","12","13","14","15","16","17","18","19","20","21","22","23","24","25","26","27","28","29","30","31","32","33","34","35","36","37","38","39","40","41","42","43","44","45","46","47","48","49","50","51","52","53","54","55","56","57","58","59","60"]
-
-    private func updateButtons() {
-        beatButton.setTitle("\(selectedBeat)", for: .normal)
-        paceButton.setTitle("\(selectedPace)", for: .normal)
+    let dataForColumn2 = Array(00...59)
+    var selectedHoursString: String {
+        let selectedRow = DurationPicker?.selectedRow(inComponent: 0) ?? 0
+        let value = dataForColumn1[min(max(0, selectedRow), dataForColumn1.count - 1)]
+        return String(value)
     }
     
-    private func bpmForPace(_ pace: String) -> Int {
-        switch pace {
-        case "Slow":
-            return 80
-        case "Moderate":
-            return 120
-        case "Fast":
-            return 140
-        default:
-            return 100
-        }
-    }
     
     func numberOfComponents(in pickerView: UIPickerView) -> Int {
         return 2
@@ -63,7 +57,6 @@ class SetGoalViewController: UIViewController, UITableViewDataSource, UIPickerVi
         let label = UILabel(frame: CGRect(x: 0, y: 0, width: container.frame.width, height: 44))
         label.font = UIFont.systemFont(ofSize: 22, weight: .regular)
         label.textAlignment = .center
-
         if component == 0 {
             label.text = "\(dataForColumn1[row]) hours"
         } else {
@@ -73,57 +66,74 @@ class SetGoalViewController: UIViewController, UITableViewDataSource, UIPickerVi
         container.addSubview(label)
         return container
     }
-
-    @IBOutlet weak var DurationPicker: UIPickerView!
-    @IBOutlet weak var beatButton: UIButton!
-    @IBOutlet weak var paceButton: UIButton!
-    @IBOutlet weak var startButton: UIButton!
-    
-    // Computed property if you need a string for the currently selected hours
-    var selectedHoursString: String {
-        let selectedRow = DurationPicker?.selectedRow(inComponent: 0) ?? 0
-        let value = dataForColumn1[min(max(0, selectedRow), dataForColumn1.count - 1)]
-        return String(value)
+    func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
+        updateStartButtonState()
     }
     
     
-    
+
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return session.count
+        return DataStore.shared.sessions.count
     }
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "sessionCell", for: indexPath)
-        cell.textLabel?.text = "\(session[indexPath.row].title)"
+        let session = DataStore.shared.sessions[indexPath.row]
+        let sessionNumber = DataStore.shared.sessions.count - indexPath.row
+        let walked = session.elapsedSeconds
+        let hrs = walked / 3600
+        let mins = walked % 3600 / 60
+        let secs = walked % 60
+        
+        if hrs == 0 {
+            cell.textLabel?.text = "Session \(sessionNumber)\t\t\t\t\t\t \(mins)min \(secs)s"
+        }
+        else{
+            cell.textLabel?.text = "Session \(sessionNumber)\t\t\t\t\t\t\(hrs)hrs \(mins)min"
+        }
         
         return cell
     }
     
-
-    @IBOutlet weak var sessionTableView: UITableView!
     
+    private func updateButtons() {
+        beatButton.setTitle("\(selectedBeat)", for: .normal)
+        paceButton.setTitle("\(selectedPace)", for: .normal)
+    }
+    private func bpmForPace(_ pace: String) -> Int {
+        switch pace {
+        case "Slow":
+            return 80
+        case "Moderate":
+            return 120
+        case "Fast":
+            return 140
+        default:
+            return 100
+        }
+    }
 
     override func viewDidLoad() {
         super.viewDidLoad()
         DurationPicker.dataSource = self
         DurationPicker.delegate = self
+        datePickerUIView.applyCardStyle()
         sessionTableView.dataSource = self
-        beats = BeatPlayer.shared.availableBeats()
+        sessionTableView.layer.cornerRadius = 30
+        sessionTableView.clipsToBounds = true
         setupBeatButton()
         setupPaceButton()
         updateButtons()
-        
+        paceBeatUIView.applyCardStyle()
+        updateStartButtonState()
+
         // Do any additional setup after loading the view.
     }
-    
-    
+
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         DataStore.shared.cleanupOldSessions()
         sessionTableView.reloadData()
-        
     }
-
-    
 
     /*
     // MARK: - Navigation
@@ -135,42 +145,74 @@ class SetGoalViewController: UIViewController, UITableViewDataSource, UIPickerVi
     }
     */
     
+    @IBAction func infoButtonTapped(_ sender: UIBarButtonItem) {
+        let storyboard = UIStoryboard(name: "Rhythmic Walking", bundle: nil)
+        guard let infoVC = storyboard.instantiateViewController(withIdentifier: "infoVC") as? RhythmicInfoViewController else {
+            return
+        }
+        infoVC.modalPresentationStyle = .pageSheet
+        self.present(infoVC, animated: true, completion: nil)
+        
+    }
+    
     @IBAction func startButtonTapped(_ sender: Any) {
         let h = dataForColumn1[DurationPicker.selectedRow(inComponent: 0)]
         let m = dataForColumn2[DurationPicker.selectedRow(inComponent: 1)]
         let total = (h * 3600) + (m * 60)
 
-        guard total > 0 else {
-            let alert = UIAlertController(title: "Choose duration", message: "Please select a duration greater than 0.", preferredStyle: .alert)
-            alert.addAction(UIAlertAction(title: "OK", style: .default))
-            present(alert, animated: true)
+        guard total > 0 else{
             return
         }
 
-//        let bpm = bpmForPace(selectedPace)
-//
-//        var session = RhythmicSession(durationSeconds: total, beat: selectedBeat, pace: selectedPace)
+        let newSession = RhythmicSession(
+            id: UUID(),
+            startDate: Date(),
+            endDate: nil,
+            requestedDurationSeconds: total,
+            elapsedSeconds: 0,
+            beat: selectedBeat,
+            pace: selectedPace,
+            steps: 0,
+            distanceKMeters: 0
+        )
 
+        DataStore.shared.add(newSession)
+        sessionTableView.reloadData()
+        
         let storyboard = UIStoryboard(name: "Rhythmic Walking", bundle: nil)
-        guard let runningVC = storyboard.instantiateViewController(withIdentifier: "SessionRunningVC") as? SessionRunningViewController else { return }
-        runningVC.totalSessionDuration = total
-//        runningVC.session = session
-//        runningVC.selectedBPM = bpm
-//        runningVC.selectedBeat = selectedBeat   // now dynamic
+        guard let destVC = storyboard.instantiateViewController(withIdentifier: "SessionRunningVC") as? SessionRunningViewController else { return
+        }
+        
+        let bpm = bpmForPace(selectedPace)
+        destVC.totalSessionDuration = total
+        destVC.hrs = h
+        destVC.minn = m
+        destVC.selectedBeat = selectedBeat
+        destVC.selectedPace = selectedPace
+        destVC.selectedBPM = bpm
+        
+        let nav = UINavigationController(rootViewController: destVC)
+        nav.modalPresentationStyle = .formSheet
+        present(nav, animated: true)
+    }
 
-        navigationController?.pushViewController(runningVC, animated: true)
+    func updateStartButtonState() {
+        let h = dataForColumn1[DurationPicker.selectedRow(inComponent: 0)]
+        let m = dataForColumn2[DurationPicker.selectedRow(inComponent: 1)]
+        let total = (h * 3600) + (m * 60)
+        
+        if total > 0{
+            startButton.isEnabled = true
+        }
+        else {
+            startButton.isEnabled = false
+        }
     }
-    
-
-    @IBAction func beatButtonTapped(_ sender: UIButton) {
-    }
-    
-    @IBAction func paceButtonTapped(_ sender: Any) {
-    }
-    
     func setupBeatButton(){
         let optionClosure: UIActionHandler = { [weak self] action in
-                _ = self
+            guard let self = self else { return }
+            self.selectedBeat = action.title
+            self.updateButtons()
         }
         let option1 = UIAction(title: "Clock",state: .on, handler: optionClosure)
         let option2 = UIAction(title: "Grass", handler: optionClosure)
@@ -182,10 +224,12 @@ class SetGoalViewController: UIViewController, UITableViewDataSource, UIPickerVi
     
     func setupPaceButton(){
         let optionClosure: UIActionHandler = { [weak self] action in
-                _ = self
+            guard let self = self else { return }
+            self.selectedPace = action.title
+            self.updateButtons()
         }
         let option1 = UIAction(title: "Slow",state: .on, handler: optionClosure)
-        let option2 = UIAction(title: "Medium", handler: optionClosure)
+        let option2 = UIAction(title: "Moderate", handler: optionClosure)
         let option3 = UIAction(title: "Fast", handler: optionClosure)
         let menu  = UIMenu(children: [option1, option2, option3])
         paceButton.menu = menu
@@ -194,17 +238,4 @@ class SetGoalViewController: UIViewController, UITableViewDataSource, UIPickerVi
     }
 }
 
-
-extension SetGoalViewController: UIPickerViewDelegate{
-    func pickerView(_ pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
-        switch component {
-        case 0:
-            return String(dataForColumn1[row])
-        case 1:
-            return String(dataForColumn2[row])
-        default:
-            return nil
-        }
-    }
-}
 

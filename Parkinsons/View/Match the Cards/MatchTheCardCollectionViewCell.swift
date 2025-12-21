@@ -23,33 +23,55 @@ class MatchTheCardCollectionViewCell: UICollectionViewCell {
         showingFront = false
         contentContainer.layer.cornerRadius = 20
         contentContainer.clipsToBounds = true
-        contentContainer.layer.borderColor = UIColor.systemBlue.cgColor
+        contentContainer.layer.borderColor = UIColor.purple.cgColor
         contentContainer.layer.borderWidth = 1.0
         frontLabel.layer.cornerRadius = 20
         frontLabel.clipsToBounds = true
         backImageView.layer.cornerRadius = 20
         backImageView.clipsToBounds = true
     }
+    override func prepareForReuse() {
+        super.prepareForReuse()
+
+        alpha = 1.0
+        isUserInteractionEnabled = true
+
+        contentContainer.isHidden = false
+        contentContainer.layer.borderWidth = 1.0
+        contentContainer.layer.borderColor = UIColor.purple.cgColor
+
+        frontLabel.isHidden = true
+        backImageView.isHidden = false
+
+        showingFront = false
+    }
+
+    func showEmpty() {
+        // Reset visuals but KEEP the cell visible
+        contentContainer.isHidden = false
+
+        frontLabel.isHidden = true
+        backImageView.isHidden = true
+
+        contentContainer.backgroundColor = .clear
+        contentContainer.layer.borderWidth = 0
+
+        alpha = 0.15
+        isUserInteractionEnabled = false
+    }
     
+
     func configure(with card: Card) {
         frontLabel.text = card.content
         if card.isMatched {
             frontLabel.isHidden = false
             backImageView.isHidden = true
             contentView.alpha = 0.3
-            showingFront = true
-        } else {
-            contentView.alpha = 1.0
-            if card.isFlipped {
-                frontLabel.isHidden = false
-                backImageView.isHidden = true
-                showingFront = true
-            } else {
-                frontLabel.isHidden = true
-                backImageView.isHidden = false
-                showingFront = false
-            }
+            return
         }
+        contentView.alpha = 1.0
+        frontLabel.isHidden = !card.isFlipped
+        backImageView.isHidden = card.isFlipped
     }
     
     func flip(toFront: Bool, animated: Bool) {
