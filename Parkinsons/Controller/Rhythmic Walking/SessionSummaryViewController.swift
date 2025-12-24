@@ -9,8 +9,12 @@ import UIKit
 
 class SessionSummaryViewController: UIViewController {
 
+    @IBOutlet weak var timeLabel: UILabel!
+    
     @IBOutlet weak var walkingUIView: UIView!
     @IBOutlet weak var GaitUIView: UIView!
+    
+    @IBOutlet weak var timeContainer: UIView!
     
     @IBOutlet weak var stepsTaken: UILabel!
     @IBOutlet weak var distanceCovered: UILabel!
@@ -24,7 +28,60 @@ class SessionSummaryViewController: UIViewController {
     @IBOutlet weak var walkingSteadinessPercent: UILabel!
     
     
+    var sessionData: RhythmicSession?
+    private var progressView: CircularProgressView!
+    
+    private func setupProgressView() {
+        progressView = CircularProgressView(frame: timeContainer.bounds)
+        progressView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
+        timeContainer.addSubview(progressView)
+    }
+
+
+    
+    
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        setupProgressView()
+        walkingUIView.applyCardStyle()
+        GaitUIView.applyCardStyle()
+        loadData()
+        progressView.progressColor = UIColor(hex: "90AF81")
+        progressView.trackColor = .systemGray5
+        navigationItem.hidesBackButton = true
+        navigationController?.interactivePopGestureRecognizer?.isEnabled = false
+
+        // Do any additional setup after loading the view.
+    }
+    
+    
+    
+    
     func loadData() {
+        if let session = sessionData {
+            let elapsedSeconds = session.elapsedSeconds
+            let requestedSeconds = session.requestedDurationSeconds
+                    
+            let hours = elapsedSeconds / 3600
+            let minutes = (elapsedSeconds % 3600) / 60
+            let seconds = elapsedSeconds % 60
+                    
+            timeLabel.text = String(format: "%02d:%02d:%02d", hours, minutes, seconds)
+                    
+            var progress: Float = 0.0
+            if requestedSeconds > 0 {
+                progress = Float(elapsedSeconds) / Float(requestedSeconds)
+            }
+            else if elapsedSeconds > 0 {
+                progress = 1.0
+            }
+            progressView.setProgress(CGFloat(progress))
+        }
+        else {
+            timeLabel.text = "00:00:00"
+            progressView.setProgress(0.0)
+        }
+        
         stepsTaken.text = WalkingSessionDemo.steps.description
         distanceCovered.text = WalkingSessionDemo.distanceKMeters.description
         speed.text = "3 Km/h"
@@ -35,19 +92,10 @@ class SessionSummaryViewController: UIViewController {
         walkingAsymmetryPercent.text = "0.5 %"
         walkingSteadinessPercent.text = "5 %"
     }
-
     
-    
-    
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        walkingUIView.applyCardStyle()
-        GaitUIView.applyCardStyle()
-        loadData()
-        // Do any additional setup after loading the view.
+    @IBAction func doneButtonTapped(_ sender: Any) {
+        dismiss(animated: true)
     }
-    
-    
     
 
     /*

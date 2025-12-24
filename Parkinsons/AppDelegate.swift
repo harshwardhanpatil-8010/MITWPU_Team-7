@@ -14,6 +14,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         // Override point for customization after application launch.
+   let _ = WorkoutManager.shared
+     UserDefaults.standard.removeObject(forKey: "exercise_store")
+        WorkoutManager.shared.resetAllExercises()
         return true
     }
 
