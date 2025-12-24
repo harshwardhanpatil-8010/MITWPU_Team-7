@@ -12,6 +12,7 @@ class _0minworkoutCountdownViewController: UIViewController {
     var countDown = 3
     var exercises: [Exercise] = []
     var startingIndex: Int = 0
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         TimerLabel.text = "\(countDown)"
