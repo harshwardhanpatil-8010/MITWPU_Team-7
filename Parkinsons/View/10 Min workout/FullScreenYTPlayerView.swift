@@ -7,43 +7,28 @@
 
 import UIKit
 import YouTubeiOSPlayerHelper
+import WebKit
 
 class FullScreenYTPlayerView: YTPlayerView {
     
     override func layoutSubviews() {
         super.layoutSubviews()
         
-       
-        guard let web = subviews.first(where: { $0 is WKWebView }) as? WKWebView else {
-            return
-        }
+        // Find the internal WebView and inject CSS to force "Full Frame"
+        guard let web = subviews.first(where: { $0 is WKWebView }) as? WKWebView else { return }
         
         let js = """
             var css = `
             * { margin:0 !important; padding:0 !important; }
-            html, body, #player, #player-container, .html5-video-container, .video-stream {
-                position: absolute !important;
-                top: 0 !important;
-                left: 0 !important;
-                width: 100% !important;
-                height: 100% !important;
-                overflow: hidden !important;
+            html, body, #player, #player-container {
+                width: 100% !important; height: 100% !important;
                 background: black !important;
             }
             video {
-                position: absolute !important;
-                top: 0 !important;
-                left: 0 !important;
-                width: 100% !important;
-                height: 100% !important;
-                object-fit: cover !important;
+                object-fit: cover !important; /* Maximizes therapist visibility */
             }
-            iframe {
-                position: absolute !important;
-                width: 100% !important;
-                height: 100% !important;
-                top: 0 !important;
-                left: 0 !important;
+            .ytp-chrome-top, .ytp-chrome-bottom, .ytp-show-cards-title { 
+                display: none !important; /* Hides distracting UI buttons */
             }
             `;
             var style = document.createElement('style');
@@ -52,5 +37,4 @@ class FullScreenYTPlayerView: YTPlayerView {
             """
         web.evaluateJavaScript(js, completionHandler: nil)
     }
-
 }

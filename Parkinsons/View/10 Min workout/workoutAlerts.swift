@@ -9,89 +9,55 @@ import UIKit
 
 extension UIViewController {
     
-    // MARK: - Quit Workout Alert
+    // MARK: - Safety Exit Alert
     func showQuitWorkoutAlert() {
-        let alert = UIAlertController(
-            title: "Quit Workout?",
-            message: "Are you sure you want to quit the workout?",
-            preferredStyle: .alert
-        )
-
-        alert.addAction(UIAlertAction(title: "Yes", style: .destructive) { _ in
-            alert.dismiss(animated: true) {
-                        self.showWhyStoppedAlert()
-                    }
+        let alert = UIAlertController(title: "Stop Exercise?", message: "Your progress is saved.", preferredStyle: .alert)
+        
+        alert.addAction(UIAlertAction(title: "Resume", style: .cancel))
+        alert.addAction(UIAlertAction(title: "Stop", style: .destructive) { _ in
+            self.showWhyStoppedAlert()
         })
-
-        alert.addAction(UIAlertAction(title: "Cancel", style: .cancel))
-
+        
         present(alert, animated: true)
     }
     
-    
-    // MARK: - Why Stopped Alert
+    // MARK: - Clinical Feedback
     func showWhyStoppedAlert() {
-        let alert = UIAlertController(
-            title: "That's okay - What made you stop?",
-            message: "",
-            preferredStyle: .alert
-        )
-
-        alert.addAction(UIAlertAction(title: "Resume Later", style: .default) { _ in
-            alert.dismiss(animated: true) {
-                self.navigateToWorkoutLanding()
-            }
+        let alert = UIAlertController(title: "What happened?", message: "We'll adjust your next workout.", preferredStyle: .alert)
+        
+        alert.addAction(UIAlertAction(title: "Physical Pain/Fatigue", style: .default) { _ in
+            // Logic: Mark this exercise as 'hard' in ExerciseStore
+            self.navigateToWorkoutLanding()
         })
-
-        alert.addAction(UIAlertAction(title: "Too tired", style: .default) { _ in
-            alert.dismiss(animated: true) {
-                self.navigateToWorkoutLanding()
-            }
+        
+        alert.addAction(UIAlertAction(title: "Ran out of time", style: .default) { _ in
+            self.navigateToWorkoutLanding()
         })
-
-        alert.addAction(UIAlertAction(title: "Quit", style: .destructive) { _ in
-            alert.dismiss(animated: true) {
-                self.showFeedbackAlert()
-            }
-        })
-
+        
         present(alert, animated: true)
     }
     
-    
-    // MARK: - Feedback Alert
+    // MARK: - Intensity Calibration
     func showFeedbackAlert() {
-        let alert = UIAlertController(
-            title: "How has your workout been so far?",
-            message: "Next time, your workout will be personalized based on your feedback.",
-            preferredStyle: .alert
-        )
-
-        let options = ["Easy", "Perfect", "Hard"]
-        for option in options {
-            alert.addAction(UIAlertAction(title: option, style: .default) { _ in
-                alert.dismiss(animated: true) {
-                    self.navigateToWorkoutLanding()
-                }
+        let alert = UIAlertController(title: "How was it?", message: "Personalizing your next set...", preferredStyle: .alert)
+        
+        let levels = ["Too Easy", "Perfect", "Too Hard"]
+        for level in levels {
+            alert.addAction(UIAlertAction(title: level, style: .default) { _ in
+                // Logic: Trigger Algorithm Update here
+                self.navigateToWorkoutLanding()
             })
         }
-
         present(alert, animated: true)
     }
     
-    
-    // MARK: - Navigation Helper
-   
-    private func navigateToWorkoutLanding() {
-       
-        if let existingLandingVC = self.navigationController?.viewControllers.first(where: { vc in
-            return vc is _0minworkoutLandingPageViewController
-        }) {
-            self.navigationController?.popToViewController(existingLandingVC, animated: true)
+    // MARK: - Navigation Logic
+    func navigateToWorkoutLanding() {
+        if let landingVC = self.navigationController?.viewControllers.first(where: { $0 is _0minworkoutLandingPageViewController }) {
+            self.navigationController?.popToViewController(landingVC, animated: true)
         } else {
-            let storyboard = UIStoryboard(name: "10 minworkout", bundle: nil)
-            let homeVC = storyboard.instantiateViewController(withIdentifier: "exerciseLandingPage") as! _0minworkoutLandingPageViewController
-            self.navigationController?.setViewControllers([homeVC], animated: true)
+            // Fallback to home
+            self.dismiss(animated: true)
         }
     }
 }
