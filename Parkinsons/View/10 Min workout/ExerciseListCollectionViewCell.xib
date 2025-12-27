@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="24506" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina6_12" orientation="portrait" appearance="light"/>
+    <dependencies>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="24504"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="System colors in document resources" minToolsVersion="11.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="ExerciseCollectionViewCell" id="gTV-IL-0wX" customClass="ExerciseListCollectionViewCell" customModule="Parkinsons" customModuleProvider="target">
+            <rect key="frame" x="0.0" y="0.0" width="244" height="50"/>
+            <autoresizingMask key="autoresizingMask"/>
+            <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center">
+                <rect key="frame" x="0.0" y="0.0" width="244" height="50"/>
+                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                <subviews>
+                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="jMW-on-nMv" userLabel="contentView">
+                        <rect key="frame" x="0.0" y="0.0" width="244" height="50"/>
+                        <subviews>
+                            <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="zqY-RA-O7b">
+                                <rect key="frame" x="2" y="-39" width="240" height="128"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                            </view>
+                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="C3R-tk-ter">
+                                <rect key="frame" x="0.0" y="0.0" width="50" height="50"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="50" id="hkd-gn-N9A"/>
+                                </constraints>
+                            </imageView>
+                            <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="cbT-t5-wLd">
+                                <rect key="frame" x="55" y="0.0" width="189" height="50"/>
+                                <subviews>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" text="Label" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="bZr-NN-Fvk">
+                                        <rect key="frame" x="0.0" y="0.0" width="189" height="34.333333333333336"/>
+                                        <fontDescription key="fontDescription" type="system" weight="medium" pointSize="17"/>
+                                        <nil key="textColor"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Sri-9j-3WN">
+                                        <rect key="frame" x="0.0" y="34.333333333333336" width="189" height="15.666666666666664"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="13"/>
+                                        <color key="textColor" systemColor="systemGrayColor"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                </subviews>
+                                <constraints>
+                                    <constraint firstItem="Sri-9j-3WN" firstAttribute="top" secondItem="bZr-NN-Fvk" secondAttribute="bottom" id="Bob-PH-jer"/>
+                                    <constraint firstItem="Sri-9j-3WN" firstAttribute="leading" secondItem="cbT-t5-wLd" secondAttribute="leading" id="CQS-B3-VAc"/>
+                                    <constraint firstAttribute="trailing" secondItem="Sri-9j-3WN" secondAttribute="trailing" id="NMb-kg-A1c"/>
+                                    <constraint firstAttribute="trailing" secondItem="bZr-NN-Fvk" secondAttribute="trailing" id="V1g-BO-BtO"/>
+                                    <constraint firstItem="bZr-NN-Fvk" firstAttribute="leading" secondItem="cbT-t5-wLd" secondAttribute="leading" id="ViV-9s-T1W"/>
+                                </constraints>
+                            </stackView>
+                        </subviews>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                        <constraints>
+                            <constraint firstItem="C3R-tk-ter" firstAttribute="top" secondItem="jMW-on-nMv" secondAttribute="top" id="38R-0d-Qgf"/>
+                            <constraint firstAttribute="bottom" secondItem="cbT-t5-wLd" secondAttribute="bottom" id="H6R-uE-P44"/>
+                            <constraint firstItem="C3R-tk-ter" firstAttribute="leading" secondItem="jMW-on-nMv" secondAttribute="leading" id="iqr-Ob-Je3"/>
+                            <constraint firstItem="cbT-t5-wLd" firstAttribute="top" secondItem="jMW-on-nMv" secondAttribute="top" id="jvL-Jl-PXd"/>
+                            <constraint firstItem="cbT-t5-wLd" firstAttribute="leading" secondItem="C3R-tk-ter" secondAttribute="trailing" constant="5" id="ljV-6x-wGW"/>
+                            <constraint firstAttribute="bottom" secondItem="C3R-tk-ter" secondAttribute="bottom" id="ppc-ds-oHD"/>
+                            <constraint firstAttribute="trailing" secondItem="cbT-t5-wLd" secondAttribute="trailing" id="qgk-yq-8qL"/>
+                        </constraints>
+                    </view>
+                </subviews>
+            </view>
+            <viewLayoutGuide key="safeArea" id="ZTg-uK-7eu"/>
+            <constraints>
+                <constraint firstItem="jMW-on-nMv" firstAttribute="top" secondItem="gTV-IL-0wX" secondAttribute="top" id="CDJ-FT-EIO"/>
+                <constraint firstAttribute="bottom" secondItem="jMW-on-nMv" secondAttribute="bottom" id="EUp-he-pdf"/>
+                <constraint firstItem="jMW-on-nMv" firstAttribute="leading" secondItem="gTV-IL-0wX" secondAttribute="leading" id="WGP-zS-d4N"/>
+                <constraint firstAttribute="trailing" secondItem="jMW-on-nMv" secondAttribute="trailing" id="cOL-9z-f1D"/>
+            </constraints>
+            <size key="customSize" width="244" height="50"/>
+            <connections>
+                <outlet property="containerView" destination="zqY-RA-O7b" id="aQc-Oc-Hqb"/>
+                <outlet property="exerciseNameOutlet" destination="bZr-NN-Fvk" id="naY-GD-tBw"/>
+                <outlet property="repsOutlet" destination="Sri-9j-3WN" id="OSD-4s-pjt"/>
+                <outlet property="thumbnailOutlet" destination="C3R-tk-ter" id="L1K-aO-CTa"/>
+            </connections>
+            <point key="canvasLocation" x="349.61832061068702" y="159.85915492957747"/>
+        </collectionViewCell>
+    </objects>
+    <resources>
+        <systemColor name="systemBackgroundColor">
+            <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+        </systemColor>
+        <systemColor name="systemGrayColor">
+            <color red="0.5568627451" green="0.5568627451" blue="0.57647058819999997" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </systemColor>
+    </resources>
+</document>
