@@ -11,6 +11,19 @@ class SymptomLogViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        title = "Symptom Log"
+        let calendarButton = UIBarButtonItem(
+                image: UIImage(systemName: "calendar"),
+                style: .plain,
+                target: self,
+                action: #selector(calendarTapped)
+            )
+
+            navigationItem.rightBarButtonItem = calendarButton
+        @objc func calendarTapped() {
+            print("Calendar tapped")
+            // Later: open calendar / filter dates
+        }
 
         // Do any additional setup after loading the view.
     }
