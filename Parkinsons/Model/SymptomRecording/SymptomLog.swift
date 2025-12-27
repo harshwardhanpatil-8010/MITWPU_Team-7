@@ -20,10 +20,10 @@ enum SymptomType: String, CaseIterable, Codable {
 
 // MARK: - Symptom Severity
 enum SymptomSeverity: String, Codable, CaseIterable {
-    case notPresent = "Not Present"
     case mild = "Mild"
     case moderate = "Moderate"
     case severe = "Severe"
+    case notPresent = "Not Present"
 }
 
 // MARK: - Symptom Log Model

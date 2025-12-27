@@ -11,7 +11,7 @@ class SymptomLogViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        title = "Symptom Log"
+        title = "Symptom Recording"
         let calendarButton = UIBarButtonItem(
                 image: UIImage(systemName: "calendar"),
                 style: .plain,
