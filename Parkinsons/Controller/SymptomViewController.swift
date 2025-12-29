@@ -3,24 +3,21 @@ import UIKit
 class SymptomViewController: UIViewController {
 
     @IBOutlet weak var collectionView: UICollectionView!
-    // @IBOutlet weak var collectionView: UICollectionView!
     
-    // 1. Data properties needed for the calendar
     var dates: [DateModel] = []
     var selectedDate: Date = Date()
     
-    // The section enum to keep logic consistent
-    enum Section: Int {
-        case calendar
+    // ADD CaseIterable HERE to fix the error
+    enum Section: Int, CaseIterable {
+        case calendar = 0
+        case tremor = 1
+        case gait = 2 // Separate case
     }
-
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        // 2. Setup Data
         dates = HomeDataStore.shared.getDates()
         
-        // 3. Setup CollectionView
         registerCells()
         collectionView.dataSource = self
         collectionView.delegate = self
@@ -29,45 +26,63 @@ class SymptomViewController: UIViewController {
         autoSelectToday()
     }
     
-    // MARK: - Registration (Exact same as HomeController)
     func registerCells() {
         collectionView.register(UINib(nibName: "CalenderCollectionViewCell", bundle: nil), forCellWithReuseIdentifier: "calendar_cell")
+        collectionView.register(UINib(nibName: "tremorCard", bundle: nil), forCellWithReuseIdentifier: "tremor_cell")
+        collectionView.register(UINib(nibName: "gaitCard", bundle: nil), forCellWithReuseIdentifier: "gait_cell") // Registered
         
-        collectionView.register(
-            SectionHeaderView.self,
-            forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader,
-            withReuseIdentifier: "HeaderView"
-        )
+        collectionView.register(SectionHeaderView.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: "HeaderView")
     }
 
-    // MARK: - Layout (The exact ".calendar" case from generateLayout)
     func generateLayout() -> UICollectionViewLayout {
         return UICollectionViewCompositionalLayout { sectionIndex, env in
-            // Item
-            let itemSize = NSCollectionLayoutSize(widthDimension: .absolute(60), heightDimension: .absolute(70))
-            let item = NSCollectionLayoutItem(layoutSize: itemSize)
+            guard let sectionType = Section(rawValue: sectionIndex) else { return nil }
             
-            // Group (7 items for a week view)
-            let groupSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: .absolute(100))
-            let group = NSCollectionLayoutGroup.horizontal(layoutSize: groupSize, subitem: item, count: 7)
-            
-            // Section
-            let section = NSCollectionLayoutSection(group: group)
-            section.orthogonalScrollingBehavior = .continuous
-            section.interGroupSpacing = 4
-            section.contentInsets = NSDirectionalEdgeInsets(top: 0, leading: 16, bottom: 0, trailing: 16)
-            
-            // Header (Date display)
-            let headerSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: .absolute(30))
-            let calendarHeader = NSCollectionLayoutBoundarySupplementaryItem(
-                layoutSize: headerSize,
-                elementKind: UICollectionView.elementKindSectionHeader,
-                alignment: .top
-            )
-            calendarHeader.pinToVisibleBounds = true
-            section.boundarySupplementaryItems = [calendarHeader]
-            
-            return section
+            switch sectionType {
+            case .calendar:
+                let itemSize = NSCollectionLayoutSize(widthDimension: .absolute(60), heightDimension: .absolute(70))
+                let item = NSCollectionLayoutItem(layoutSize: itemSize)
+                
+                let groupSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: .absolute(100))
+                let group = NSCollectionLayoutGroup.horizontal(layoutSize: groupSize, subitem: item, count: 7)
+                
+                let section = NSCollectionLayoutSection(group: group)
+                section.orthogonalScrollingBehavior = .continuous
+                section.interGroupSpacing = 4
+                section.contentInsets = NSDirectionalEdgeInsets(top: 0, leading: 16, bottom: 0, trailing: 16)
+                
+                let headerSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: .absolute(30))
+                let calendarHeader = NSCollectionLayoutBoundarySupplementaryItem(
+                    layoutSize: headerSize,
+                    elementKind: UICollectionView.elementKindSectionHeader,
+                    alignment: .top
+                )
+                section.boundarySupplementaryItems = [calendarHeader]
+                return section
+                
+            case .tremor:
+                // Full width card layout
+                let itemSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: .estimated(130))
+                let item = NSCollectionLayoutItem(layoutSize: itemSize)
+                
+                let groupSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: .estimated(150))
+                let group = NSCollectionLayoutGroup.vertical(layoutSize: groupSize, subitems: [item])
+                
+                let section = NSCollectionLayoutSection(group: group)
+                section.contentInsets = NSDirectionalEdgeInsets(top: 20, leading: 0, bottom: 20, trailing: 0)
+                return section
+            case .gait:
+                        // SEPARATE CASE FOR GAIT
+                        let itemSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: .estimated(130))
+                        let item = NSCollectionLayoutItem(layoutSize: itemSize)
+                        let groupSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: .estimated(130))
+                        let group = NSCollectionLayoutGroup.vertical(layoutSize: groupSize, subitems: [item])
+                        let section = NSCollectionLayoutSection(group: group)
+                        
+                        // Less top inset here so it sits nicely below the Tremor card
+                        section.contentInsets = NSDirectionalEdgeInsets(top: 5, leading: 0, bottom: 20, trailing: 0)
+                        return section
+            }
         }
     }
     
@@ -93,38 +108,62 @@ class SymptomViewController: UIViewController {
 extension SymptomViewController: UICollectionViewDataSource, UICollectionViewDelegate {
     
     func numberOfSections(in collectionView: UICollectionView) -> Int {
-        return 1
+        return Section.allCases.count
     }
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return dates.count
+        guard let sectionType = Section(rawValue: section) else { return 0 }
+        switch sectionType {
+        case .calendar: return dates.count
+        case .tremor: return 1
+        case .gait: return 1
+        }
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "calendar_cell", for: indexPath) as! CalenderCollectionViewCell
-        let model = dates[indexPath.row]
+        guard let sectionType = Section(rawValue: indexPath.section) else { return UICollectionViewCell() }
         
-        let isSelected = Calendar.current.isDate(model.date, inSameDayAs: selectedDate)
-        let isToday = Calendar.current.isDate(model.date, inSameDayAs: Date())
-        
-        cell.configure(with: model, isSelected: isSelected, isToday: isToday)
-        return cell
+        switch sectionType {
+        case .calendar:
+            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "calendar_cell", for: indexPath) as! CalenderCollectionViewCell
+            let model = dates[indexPath.row]
+            let isSelected = Calendar.current.isDate(model.date, inSameDayAs: selectedDate)
+            let isToday = Calendar.current.isDate(model.date, inSameDayAs: Date())
+            cell.configure(with: model, isSelected: isSelected, isToday: isToday)
+            return cell
+            
+        case .tremor:
+            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "tremor_cell", for: indexPath) as! tremorCard
+            // Configuration for your tremor card
+            //cell.avgLabel.text = "15%"
+            cell.configure(average: "12%")
+            return cell
+            
+        case .gait:
+                // SEPARATE CASE FOR GAIT CELL
+                let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "gait_cell", for: indexPath) as! gaitCard
+                cell.configure(range: "45 - 77")
+                return cell
+        }
     }
     
     func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
-        let header = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: "HeaderView", for: indexPath) as! SectionHeaderView
-        
-        let dateString = formattedDateString(for: selectedDate)
-        let isToday = Calendar.current.isDateInToday(selectedDate)
-        header.configure(title: isToday ? "Today, \(dateString)" : dateString)
-        header.setTitleAlignment(.center)
-        
-        return header
+        if kind == UICollectionView.elementKindSectionHeader && indexPath.section == 0 {
+            let header = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: "HeaderView", for: indexPath) as! SectionHeaderView
+            let dateString = formattedDateString(for: selectedDate)
+            let isToday = Calendar.current.isDateInToday(selectedDate)
+            header.configure(title: isToday ? "Today, \(dateString)" : dateString)
+            header.setTitleAlignment(.center)
+            return header
+        }
+        return UICollectionReusableView()
     }
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        selectedDate = dates[indexPath.row].date
-        // Refresh the calendar section to update the selection styling and header text
-        collectionView.reloadSections(IndexSet(integer: 0))
+        if indexPath.section == Section.calendar.rawValue {
+            selectedDate = dates[indexPath.row].date
+            // Reload all sections so the header AND the tremor card update
+            collectionView.reloadData()
+        }
     }
 }
