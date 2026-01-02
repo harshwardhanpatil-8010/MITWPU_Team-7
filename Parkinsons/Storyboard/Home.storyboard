@@ -448,7 +448,7 @@
                                                 <action selector="cancelButtonTapped:" destination="P6n-zy-mFU" id="dyW-IT-NEP"/>
                                             </connections>
                                         </barButtonItem>
-                                        <barButtonItem key="rightBarButtonItem" systemItem="done" id="aBi-18-Q6r">
+                                        <barButtonItem key="rightBarButtonItem" style="done" systemItem="done" id="aBi-18-Q6r">
                                             <color key="tintColor" red="0.26675117570000001" green="0.69884089299999996" blue="1" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
                                             <connections>
                                                 <action selector="saveButtonTapped:" destination="P6n-zy-mFU" id="Cwc-I3-EQh"/>
@@ -466,6 +466,7 @@
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="-1" estimatedSectionHeaderHeight="-1" sectionFooterHeight="-1" estimatedSectionFooterHeight="-1" translatesAutoresizingMaskIntoConstraints="NO" id="ahp-LW-ZVV">
                                 <rect key="frame" x="0.0" y="202" width="393" height="650"/>
                                 <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                                <color key="sectionIndexBackgroundColor" systemColor="systemBackgroundColor"/>
                             </tableView>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="uVB-e3-yhL"/>
