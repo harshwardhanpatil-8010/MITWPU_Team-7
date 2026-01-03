@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="24412" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="24506" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
     <device id="retina6_12" orientation="portrait" appearance="light"/>
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="24405"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="24504"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="System colors in document resources" minToolsVersion="11.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
@@ -18,10 +18,10 @@
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="qiu-7M-HoK">
-                        <rect key="frame" x="16" y="6" width="456" height="136"/>
+                        <rect key="frame" x="16" y="0.0" width="456" height="126"/>
                         <subviews>
                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="p8b-qN-TDz">
-                                <rect key="frame" x="0.0" y="0.0" width="456" height="136"/>
+                                <rect key="frame" x="0.0" y="0.0" width="456" height="126"/>
                                 <subviews>
                                     <stackView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="2jV-sj-mAD">
                                         <rect key="frame" x="0.0" y="0.0" width="456" height="60"/>
@@ -46,31 +46,31 @@
                                         </constraints>
                                     </stackView>
                                     <stackView opaque="NO" contentMode="scaleToFill" distribution="fillEqually" translatesAutoresizingMaskIntoConstraints="NO" id="BjV-7k-KgU">
-                                        <rect key="frame" x="0.0" y="60" width="456" height="76"/>
+                                        <rect key="frame" x="0.0" y="60" width="456" height="66"/>
                                         <subviews>
                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="4ca-j6-DNZ">
-                                                <rect key="frame" x="0.0" y="0.0" width="114" height="76"/>
+                                                <rect key="frame" x="0.0" y="0.0" width="114" height="66"/>
                                                 <state key="normal" title="Button"/>
                                                 <buttonConfiguration key="configuration" style="plain" image="Screenshot 2025-11-10 at 2.07.21 PM 2" cornerStyle="capsule">
                                                     <preferredSymbolConfiguration key="preferredSymbolConfigurationForImage" scale="large"/>
                                                 </buttonConfiguration>
                                             </button>
                                             <button opaque="NO" tag="1" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="FHs-rj-cap">
-                                                <rect key="frame" x="114" y="0.0" width="114" height="76"/>
+                                                <rect key="frame" x="114" y="0.0" width="114" height="66"/>
                                                 <state key="normal" title="Button"/>
                                                 <buttonConfiguration key="configuration" style="plain" image="notPresent 2" cornerStyle="capsule">
                                                     <preferredSymbolConfiguration key="preferredSymbolConfigurationForImage" scale="large"/>
                                                 </buttonConfiguration>
                                             </button>
                                             <button opaque="NO" tag="2" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="iA3-mb-ddc">
-                                                <rect key="frame" x="228" y="0.0" width="114" height="76"/>
+                                                <rect key="frame" x="228" y="0.0" width="114" height="66"/>
                                                 <state key="normal" title="Button"/>
                                                 <buttonConfiguration key="configuration" style="plain" image="severe" cornerStyle="capsule">
                                                     <preferredSymbolConfiguration key="preferredSymbolConfigurationForImage" scale="large"/>
                                                 </buttonConfiguration>
                                             </button>
                                             <button opaque="NO" tag="3" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="JyC-eg-JtR">
-                                                <rect key="frame" x="342" y="0.0" width="114" height="76"/>
+                                                <rect key="frame" x="342" y="0.0" width="114" height="66"/>
                                                 <state key="normal" title="Button"/>
                                                 <buttonConfiguration key="configuration" style="plain" image="notPresent" cornerStyle="capsule">
                                                     <preferredSymbolConfiguration key="preferredSymbolConfigurationForImage" scale="large"/>
@@ -106,9 +106,9 @@
                 <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                 <constraints>
                     <constraint firstAttribute="trailing" secondItem="qiu-7M-HoK" secondAttribute="trailing" constant="16" id="941-9E-sqB"/>
-                    <constraint firstItem="qiu-7M-HoK" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" constant="6" id="fIU-1O-Nql"/>
+                    <constraint firstItem="qiu-7M-HoK" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" id="fIU-1O-Nql"/>
                     <constraint firstItem="qiu-7M-HoK" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" constant="16" id="gDg-KL-EAU"/>
-                    <constraint firstAttribute="bottom" secondItem="qiu-7M-HoK" secondAttribute="bottom" constant="6" id="nXs-ho-1nh"/>
+                    <constraint firstAttribute="bottom" secondItem="qiu-7M-HoK" secondAttribute="bottom" constant="22" id="nXs-ho-1nh"/>
                 </constraints>
             </tableViewCellContentView>
             <viewLayoutGuide key="safeArea" id="njF-e1-oar"/>

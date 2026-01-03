@@ -42,6 +42,8 @@ class SymptomRatingCell: UITableViewCell {
     }
 
     private func showBubble(above button: UIButton, text: String, animated: Bool) {
+        self.layoutIfNeeded()
+        
         bubbleLabel.text = text
         bubbleLabel.sizeToFit()
         
@@ -49,10 +51,15 @@ class SymptomRatingCell: UITableViewCell {
         bubbleLabel.frame.size.width += padding
         bubbleLabel.frame.size.height = 30
         
-        // Aligning to center of the button
-        let centerX = button.center.x
-        let centerY = button.frame.maxY + 15
-        bubbleLabel.center = CGPoint(x: centerX, y: centerY)
+        let buttonFrameInCell = button.convert(button.bounds, to: self.contentView)
+        
+        let calculatedCenterX = buttonFrameInCell.midX
+        // Using +10 keeps it closer to the button than +15 or +20, preventing clipping
+        let calculatedCenterY = buttonFrameInCell.maxY + 8
+        
+        bubbleLabel.center = CGPoint(x: calculatedCenterX, y: calculatedCenterY)
+        
+        contentView.bringSubviewToFront(bubbleLabel)
         
         if animated {
             bubbleLabel.transform = CGAffineTransform(scaleX: 0.5, y: 0.5)
