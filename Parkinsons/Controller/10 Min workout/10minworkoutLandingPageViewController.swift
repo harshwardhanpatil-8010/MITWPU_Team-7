@@ -140,106 +140,277 @@
 //        return cell
 //    }
 //}
+
+
+
+//ug version
+
+
+//import UIKit
+//
+//class _0minworkoutLandingPageViewController: UIViewController {
+//
+//    @IBOutlet weak var startButtonOutlet: UIButton!
+//    @IBOutlet weak var tableView: UITableView!
+//    @IBOutlet weak var circularProgressView: UIView!
+//    @IBOutlet weak var exerciseNumberLabel: UILabel!
+//    
+//    var exercises: [WorkoutExercise] = []
+//    private var progressView: CircularProgressView!
+//
+//    override func viewDidLoad() {
+//        super.viewDidLoad()
+//        setupUI()
+//    }
+//
+//    override func viewWillAppear(_ animated: Bool) {
+//        super.viewWillAppear(animated)
+//        refreshData()
+//    }
+//
+//    private func setupUI() {
+//        tableView.dataSource = self
+//        tableView.layer.cornerRadius = 20
+//        tableView.backgroundColor = .systemGray6
+//        
+//        progressView = CircularProgressView(frame: circularProgressView.bounds)
+//        progressView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
+//        circularProgressView.addSubview(progressView)
+//    }
+//
+//    private func refreshData() {
+//        // Fetches from the corrected Manager
+//        exercises = WorkoutManager.shared.getTodayWorkout()
+//        tableView.reloadData()
+//        
+//        let completedCount = WorkoutManager.shared.completedToday.count
+//        let totalCount = exercises.count
+//        
+//        exerciseNumberLabel.text = "\(completedCount)/\(totalCount)"
+//        let progress = totalCount == 0 ? 0 : CGFloat(completedCount) / CGFloat(totalCount)
+//        progressView.setProgress(progress)
+//        
+//        updateButtonUI(completed: completedCount, total: totalCount)
+//    }
+//
+//    private func updateButtonUI(completed: Int, total: Int) {
+//        if total > 0 && completed == total {
+//            startButtonOutlet.setTitle("Workout Completed", for: .normal)
+//            startButtonOutlet.isEnabled = false
+//            startButtonOutlet.alpha = 0.6
+//        } else {
+//            let title = completed > 0 ? "Resume Workout" : "Start Workout"
+//            startButtonOutlet.setTitle(title, for: .normal)
+//            startButtonOutlet.isEnabled = true
+//            startButtonOutlet.alpha = 1.0
+//        }
+//    }
+//
+//    @IBAction func StartWorkoutTapped(_ sender: Any) {
+//        let sb = UIStoryboard(name: "10 minworkout", bundle: nil)
+//        if let vc = sb.instantiateViewController(withIdentifier: "10minworkoutCountdownViewController") as? _0minworkoutCountdownViewController {
+//            vc.startingIndex = WorkoutManager.shared.completedToday.count
+//            vc.exercises = self.exercises
+//            navigationController?.pushViewController(vc, animated: true)
+//        }
+//    }
+//}
+//
+//extension _0minworkoutLandingPageViewController: UITableViewDataSource {
+//    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+//        return exercises.count
+//    }
+//    
+//    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+//        guard let cell = tableView.dequeueReusableCell(withIdentifier: "previewCell", for: indexPath) as? ExerciseTableViewCell else {
+//            return UITableViewCell()
+//        }
+//        
+//        let exercise = exercises[indexPath.row]
+//        let isDone = WorkoutManager.shared.completedToday.contains(exercise.id)
+//        let isSkipped = WorkoutManager.shared.SkippedToday.contains(exercise.id)
+//        
+//        cell.exerciseNameLabel.text = exercise.name
+//        cell.repsLabel.text = "\(exercise.reps) reps"
+//        
+//        // Visual State Logic
+//        if isDone {
+//            cell.checkMarkImageOutlet.image = UIImage(systemName: "checkmark.circle.fill")
+//            cell.checkMarkImageOutlet.tintColor = .systemBlue
+//        } else if isSkipped {
+//            cell.checkMarkImageOutlet.image = UIImage(systemName: "xmark.circle")
+//            cell.checkMarkImageOutlet.tintColor = .systemGray
+//        } else {
+//            cell.checkMarkImageOutlet.image = UIImage(systemName: "circle")
+//            cell.checkMarkImageOutlet.tintColor = .systemGray4
+//        }
+//        
+//        cell.loadThumbnail(videoID: exercise.videoID ?? "")
+//        return cell
+//    }
+//}
+
 import UIKit
 
-class _0minworkoutLandingPageViewController: UIViewController {
+class _0minworkoutLandingPageViewController: UIViewController, UICollectionViewDelegate {
 
     @IBOutlet weak var startButtonOutlet: UIButton!
-    @IBOutlet weak var tableView: UITableView!
     @IBOutlet weak var circularProgressView: UIView!
     @IBOutlet weak var exerciseNumberLabel: UILabel!
-    
+    @IBOutlet weak var collectionView: UICollectionView!
+
     var exercises: [WorkoutExercise] = []
     private var progressView: CircularProgressView!
+    
+    private var currentSortedExercises: [WorkoutExercise] {
+        let completedSet = WorkoutManager.shared.completedToday
+        let topGroup = exercises.filter { !completedSet.contains($0.id) }
+        let completedGroup = exercises.filter { completedSet.contains($0.id) }
+        return topGroup + completedGroup
+    }
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        setupUI()
+        
+        // 1. Get the 7 clinical exercises we defined earlier
+        exercises = WorkoutManager.shared.getTodayWorkout()
+        
+        setupProgressView()
+        setupCollectionView()
+        updateProgress()
+        updateButtonUI()
     }
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        refreshData()
-    }
+        exercises = WorkoutManager.shared.getTodayWorkout()
+        collectionView.reloadData()
+        updateProgress()
+        updateButtonUI()
+        }
 
-    private func setupUI() {
-        tableView.dataSource = self
-        tableView.layer.cornerRadius = 20
-        tableView.backgroundColor = .systemGray6
-        
+    private func setupProgressView() {
         progressView = CircularProgressView(frame: circularProgressView.bounds)
         progressView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
         circularProgressView.addSubview(progressView)
+        progressView.progressColor = .systemBlue
+        progressView.trackColor = .systemGray5
     }
 
-    private func refreshData() {
-        // Fetches from the corrected Manager
-        exercises = WorkoutManager.shared.getTodayWorkout()
-        tableView.reloadData()
-        
-        let completedCount = WorkoutManager.shared.completedToday.count
-        let totalCount = exercises.count
-        
-        exerciseNumberLabel.text = "\(completedCount)/\(totalCount)"
-        let progress = totalCount == 0 ? 0 : CGFloat(completedCount) / CGFloat(totalCount)
-        progressView.setProgress(progress)
-        
-        updateButtonUI(completed: completedCount, total: totalCount)
+    private func setupCollectionView() {
+        collectionView.dataSource = self
+        collectionView.delegate = self
+        collectionView.backgroundColor = .white
+
+        let nib = UINib(nibName: "ExerciseListCollectionViewCell", bundle: nil)
+        collectionView.register(nib, forCellWithReuseIdentifier: "ExerciseCollectionViewCell")
+
+        let itemSize = NSCollectionLayoutSize(
+            widthDimension: .fractionalWidth(1.0),
+            heightDimension: .fractionalHeight(1.0)
+        )
+        let item = NSCollectionLayoutItem(layoutSize: itemSize)
+
+        let groupSize = NSCollectionLayoutSize(
+            widthDimension: .fractionalWidth(1.0),
+            heightDimension: .absolute(62) // Fixed height for a list-like look
+        )
+        let group = NSCollectionLayoutGroup.horizontal(layoutSize: groupSize, subitems: [item])
+
+        let section = NSCollectionLayoutSection(group: group)
+        section.interGroupSpacing = 2.5
+        section.contentInsets = NSDirectionalEdgeInsets(top: 0, leading: 0, bottom: 0, trailing: 0)
+
+        let layout = UICollectionViewCompositionalLayout(section: section)
+        collectionView.setCollectionViewLayout(layout, animated: false)
     }
 
-    private func updateButtonUI(completed: Int, total: Int) {
-        if total > 0 && completed == total {
+    func updateProgress() {
+        // Force a layout pass to ensure bounds are correct before drawing
+        self.view.layoutIfNeeded()
+        
+        let completed = WorkoutManager.shared.completedToday.count
+        let skipped = WorkoutManager.shared.SkippedToday.count
+        let total = exercises.count
+        
+        exerciseNumberLabel.text = "\(completed)/\(total)"
+        
+        if total > 0 {
+            let totalAdvanced = CGFloat(completed + skipped)
+            let progressValue = totalAdvanced / CGFloat(total)
+            progressView.setProgress(progressValue)
+        } else {
+            progressView.setProgress(0)
+        }
+    }
+    
+    func updateButtonUI() {
+        let finishedCount = WorkoutManager.shared.completedToday.count + WorkoutManager.shared.SkippedToday.count
+        let total = exercises.count
+        
+        if finishedCount == 0 {
+            startButtonOutlet.setTitle("Start Workout", for: .normal)
+            startButtonOutlet.backgroundColor = .systemBlue
+        } else if finishedCount < total {
+            startButtonOutlet.setTitle("Resume Workout", for: .normal)
+            startButtonOutlet.backgroundColor = .systemOrange
+        } else {
             startButtonOutlet.setTitle("Workout Completed", for: .normal)
             startButtonOutlet.isEnabled = false
-            startButtonOutlet.alpha = 0.6
-        } else {
-            let title = completed > 0 ? "Resume Workout" : "Start Workout"
-            startButtonOutlet.setTitle(title, for: .normal)
-            startButtonOutlet.isEnabled = true
-            startButtonOutlet.alpha = 1.0
+            startButtonOutlet.backgroundColor = .systemGray
         }
     }
 
     @IBAction func StartWorkoutTapped(_ sender: Any) {
+        let finishedCount = WorkoutManager.shared.completedToday.count + WorkoutManager.shared.SkippedToday.count
+        let total = exercises.count
+
+        
+        if finishedCount == total && total > 0 {
+            WorkoutManager.shared.resetDailyProgress()
+        }
+
         let sb = UIStoryboard(name: "10 minworkout", bundle: nil)
         if let vc = sb.instantiateViewController(withIdentifier: "10minworkoutCountdownViewController") as? _0minworkoutCountdownViewController {
-            vc.startingIndex = WorkoutManager.shared.completedToday.count
-            vc.exercises = self.exercises
+            
+            vc.startingIndex = finishedCount
+            vc.exercises = exercises
             navigationController?.pushViewController(vc, animated: true)
         }
     }
 }
 
-extension _0minworkoutLandingPageViewController: UITableViewDataSource {
-    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+// MARK: - CollectionView DataSource
+extension _0minworkoutLandingPageViewController: UICollectionViewDataSource {
+
+    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return exercises.count
     }
-    
-    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        guard let cell = tableView.dequeueReusableCell(withIdentifier: "previewCell", for: indexPath) as? ExerciseTableViewCell else {
-            return UITableViewCell()
+
+    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        let cell = collectionView.dequeueReusableCell(
+            withReuseIdentifier: "ExerciseCollectionViewCell",
+            for: indexPath
+        ) as! ExerciseListCollectionViewCell
+
+        
+        let exercise = currentSortedExercises[indexPath.item]
+
+        cell.exerciseNameOutlet.text = exercise.name
+        cell.repsOutlet.text = "\(exercise.reps) Reps"
+
+        if let videoID = exercise.videoID {
+            cell.loadThumbnail(videoID: videoID)
         }
-        
-        let exercise = exercises[indexPath.row]
-        let isDone = WorkoutManager.shared.completedToday.contains(exercise.id)
-        let isSkipped = WorkoutManager.shared.SkippedToday.contains(exercise.id)
-        
-        cell.exerciseNameLabel.text = exercise.name
-        cell.repsLabel.text = "\(exercise.reps) reps"
-        
-        // Visual State Logic
-        if isDone {
-            cell.checkMarkImageOutlet.image = UIImage(systemName: "checkmark.circle.fill")
-            cell.checkMarkImageOutlet.tintColor = .systemBlue
-        } else if isSkipped {
-            cell.checkMarkImageOutlet.image = UIImage(systemName: "xmark.circle")
-            cell.checkMarkImageOutlet.tintColor = .systemGray
-        } else {
-            cell.checkMarkImageOutlet.image = UIImage(systemName: "circle")
-            cell.checkMarkImageOutlet.tintColor = .systemGray4
+
+        let isCompleted = WorkoutManager.shared.completedToday.contains(exercise.id)
+
+        if isCompleted {
+            cell.configureCompleted()
+        } else{
+            cell.configurePendingOrSkipped()
         }
-        
-        cell.loadThumbnail(videoID: exercise.videoID ?? "")
+
         return cell
     }
 }

@@ -89,6 +89,10 @@ import UIKit
 class _0minworkoutGoodJobViewController: UIViewController {
     @IBOutlet weak var completedExerciseNumberLabel: UILabel!
     @IBOutlet weak var totalTimeLabel: UILabel!
+    @IBOutlet weak var summaryUIView: UIView!
+    
+    @IBOutlet weak var skippedExerciseNumber: UILabel!
+    
     var completed: Int = 0
     var totalWorkoutSeconds: TimeInterval = 0
 
@@ -97,14 +101,18 @@ class _0minworkoutGoodJobViewController: UIViewController {
         navigationItem.hidesBackButton = true
         completedExerciseNumberLabel.text = "\(completed)"
         totalTimeLabel.text = String(format: "%02d:%02d", Int(totalWorkoutSeconds)/60, Int(totalWorkoutSeconds)%60)
+        summaryUIView.applyCardStyle()
     }
 
-    @IBAction func feedbackTapped(_ sender: UIButton) {
-        // Here you would trigger: WorkoutManager.shared.adjustIntensity(sender.tag)
-        let alert = UIAlertController(title: "Session Saved", message: "We've tailored tomorrow's session based on your feedback.", preferredStyle: .alert)
-        alert.addAction(UIAlertAction(title: "Finish", style: .default) { _ in
-            self.navigationController?.popToRootViewController(animated: true)
-        })
-        present(alert, animated: true)
+    
+    @IBAction func easyButtonTapped(_ sender: Any) {
     }
+    
+    @IBAction func perfectButtonTapped(_ sender: Any) {
+    }
+    
+    
+    @IBAction func hardButtonTapped(_ sender: Any) {
+    }
+    
 }

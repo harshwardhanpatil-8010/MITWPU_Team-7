@@ -154,17 +154,12 @@ protocol RestScreenDelegate: AnyObject {
 
 class RestScreenViewController: UIViewController {
     
-    // MARK: - Outlets
     @IBOutlet weak var timerLabel: UILabel!
-
     @IBOutlet weak var breatheView: UIView!
     @IBOutlet weak var exerciseLabel: UILabel!
-    
-    // IMPORTANT: Adding this back fixes the crash!
     @IBOutlet var progressBars: [UIProgressView]!
     @IBOutlet weak var backgroundView: UIView!
     
-    // MARK: - Properties
     weak var delegate: RestScreenDelegate?
     var currentIndex: Int = 0
     var totalExercises: Int = 0
@@ -172,21 +167,13 @@ class RestScreenViewController: UIViewController {
     var restStartTime: Date?
     private var isCompleting = false
 
-    
-
     private func setupBreathGuide() {
-        // Hide the playerView if it's still there
-        
         breatheView.layer.cornerRadius = 75
         breatheView.backgroundColor = UIColor.systemBlue.withAlphaComponent(0.2)
-        
-        // Animate the "Pulse"
         UIView.animate(withDuration: 4.0, delay: 0, options: [.repeat, .autoreverse], animations: { [self] in
             breatheView.transform = CGAffineTransform(scaleX: 1.5, y: 1.5)
             breatheView.backgroundColor = UIColor.systemCyan.withAlphaComponent(0.4)
         }, completion: nil)
-        
-        // Add a label inside
     }
     
     override func viewDidLoad() {
@@ -198,9 +185,7 @@ class RestScreenViewController: UIViewController {
         backgroundView.layer.shadowOffset = CGSize(width: 0, height: 1)
         backgroundView.layer.shadowRadius = 3
         backgroundView.layer.masksToBounds = false
-
         setupUI()
-        
         setupBreathGuide()
         
         Timer.scheduledTimer(withTimeInterval: 1.0, repeats: true) { [weak self] t in
@@ -209,19 +194,14 @@ class RestScreenViewController: UIViewController {
     }
 
     private func setupUI() {
-        // 1. Update the label to show exactly how many are DONE (excluding skips)
         let completedCount = WorkoutManager.shared.completedToday.count
         exerciseLabel.text = "\(completedCount) of \(totalExercises)"
-        
         restStartTime = Date()
         updateProgressBars()
     }
 
     private func updateProgressBars() {
         guard progressBars != nil else { return }
-        
-        // Sort the progress bars by their X-coordinate to ensure they
-        // update from left-to-right regardless of connection order.
         let sortedBars = progressBars.sorted { $0.frame.origin.x < $1.frame.origin.x }
         
         let allExercises = WorkoutManager.shared.exercises
@@ -270,35 +250,21 @@ class RestScreenViewController: UIViewController {
         finishRest()
     }
 
-//    private func finishRest() {
-//        guard !isCompleting else { return }
-//        isCompleting = true
-//        
-//        if let start = restStartTime {
-//            delegate?.recordRestDuration(seconds: Date().timeIntervalSince(start))
-//        }
-//        
-//        navigationController?.popViewController(animated: true)
-//        delegate?.restCompleted(nextIndex: currentIndex + 1)
-//    }
     private func finishRest() {
         guard !isCompleting else { return }
         isCompleting = true
         
         // 1. Tell the delegate to update the index
         delegate?.restCompleted(nextIndex: currentIndex + 1)
-        
-        // 2. Create a custom transition
+       
         let transition = CATransition()
         transition.duration = 0.4
         transition.type = .push
-        transition.subtype = .fromRight // This forces the right-to-left movement
+        transition.subtype = .fromRight
         transition.timingFunction = CAMediaTimingFunction(name: .easeInEaseOut)
         
-        // 3. Add the transition to the navigation controller's layer
         self.navigationController?.view.layer.add(transition, forKey: kCATransition)
         
-        // 4. Pop the controller - the custom transition will override the default left-to-right slide
         navigationController?.popViewController(animated: false)
     }
     @IBAction func addTimeButtonTapped(_ sender: UIButton) {
