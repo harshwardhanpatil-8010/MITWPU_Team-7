@@ -49,7 +49,16 @@ class SymptomLogManager {
             return []
         }
     }
-    
+    // Inside SymptomLogManager
+    // Inside SymptomLogManager.swift
+
+    func getLogEntry(for date: Date) -> SymptomLogEntry? {
+        // 1. Load the array from UserDefaults
+        let allLogs = loadAllLogs()
+        
+        // 2. Find the first log that matches the date passed in
+        return allLogs.first { Calendar.current.isDate($0.date, inSameDayAs: date) }
+    }
     // MARK: - Specific Log Retrieval
     
     func getLogForToday() -> SymptomLogEntry? {

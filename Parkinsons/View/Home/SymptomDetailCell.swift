@@ -8,9 +8,12 @@ class SymptomDetailCell: UITableViewCell {
     
     static let reuseIdentifier = "SymptomDetailCell"
 
-    private func imageForIntensity(_ intensity: SymptomRating.Intensity) -> UIImage? {
-        let assetName: String
+    // 1. Update the parameter type to Intensity? (Optional)
+    private func imageForIntensity(_ intensity: SymptomRating.Intensity?) -> UIImage? {
+        // Handle nil case
+        guard let intensity = intensity else { return nil }
         
+        let assetName: String
         switch intensity {
         case .mild:
             assetName = "faceMild"
@@ -32,16 +35,25 @@ class SymptomDetailCell: UITableViewCell {
         symptomIconImageView.image = UIImage(named: rating.iconName ?? "doc.text.image")
         symptomIconImageView.tintColor = .label
         
-        // Intensity Icon (right side)
-        intensityIconImageView.image = imageForIntensity(rating.selectedIntensity)
-        
-        // Set color based on intensity for visual feedback
-        if rating.selectedIntensity == .notPresent {
-            intensityIconImageView.tintColor = .systemRed
-        } else if rating.selectedIntensity == .severe {
-            intensityIconImageView.tintColor = .systemOrange
+        // 2. Safely handle the optional intensity
+        if let intensity = rating.selectedIntensity {
+            // Show the icon if there is a selection
+            intensityIconImageView.isHidden = false
+            intensityIconImageView.image = imageForIntensity(intensity)
+            
+            // Set color based on intensity
+            switch intensity {
+            case .notPresent:
+                intensityIconImageView.tintColor = .systemRed
+            case .severe:
+                intensityIconImageView.tintColor = .systemOrange
+            default:
+                intensityIconImageView.tintColor = .systemBlue
+            }
         } else {
-            intensityIconImageView.tintColor = .systemBlue
+            // 3. Hide the intensity icon if nothing is selected
+            intensityIconImageView.image = nil
+            intensityIconImageView.isHidden = true
         }
         
         self.selectionStyle = .none

@@ -1,4 +1,5 @@
 
+
 import UIKit
 
 enum Section: Int, CaseIterable {
@@ -19,29 +20,18 @@ class HomeViewController: UIViewController, UICollectionViewDelegate , SymptomLo
     @IBOutlet weak var mainCollectionView: UICollectionView!
     
     // MARK: - Section Definition and Data
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
-        navigationItem.hidesBackButton = true
-        navigationItem.rightBarButtonItem = nil
-        mainCollectionView.reloadSections(
-            IndexSet(integer: Section.exercises.rawValue)
-        )
-    }
-
+    
     let homeSections = Section.allCases
     private let separatorView: UIView = {
         let view = UIView()
-        view.backgroundColor = UIColor.systemGray4
+        view.backgroundColor = UIColor.systemGray4 // Use a light gray color
         view.translatesAutoresizingMaskIntoConstraints = false
         return view
     }()
 
-    
-    // Data Source/State property
-
     var hasLoggedSymptomsToday: Bool = false {
         didSet {
-
+            // When the status changes, reload the section
             if let index = homeSections.firstIndex(of: .symptoms) {
                 mainCollectionView.reloadSections(IndexSet(integer: index))
             } else {
@@ -60,11 +50,9 @@ class HomeViewController: UIViewController, UICollectionViewDelegate , SymptomLo
     
     var exerciseData: [ExerciseModel] = [
 
-
-ExerciseModel(title: "10-Min Workout", detail: "Repeat everyday", progressPercentage: 67, progressColorHex: "0088FF" ),
-
-ExerciseModel(title: "Rhythmic Walking", detail: "2-3 times a week", progressPercentage: 25, progressColorHex: "90AF81" )
-]
+        ExerciseModel(title: "10-Min Workout", detail: "Repeat everyday", progressPercentage: 67, progressColorHex: "0088FF" ),
+        ExerciseModel(title: "Rhythmic Walking", detail: "2-3 times a week", progressPercentage: 25, progressColorHex: "90AF81" )
+    ]
 
     var therapeuticGamesData: [TherapeuticGameModel] = [
         TherapeuticGameModel(
@@ -98,10 +86,14 @@ ExerciseModel(title: "Rhythmic Walking", detail: "2-3 times a week", progressPer
         mainCollectionView.dataSource = self
         mainCollectionView.delegate = self
         
+        // Set the main layout
         mainCollectionView.setCollectionViewLayout(generateLayout(), animated: true)
         
-        dates = HomeDataStore.shared.getDates()
-  autoSelectToday()
+
+
+
+//         dates = DataStore.shared.getDates()
+        autoSelectToday()
 
     }
     
@@ -130,6 +122,7 @@ ExerciseModel(title: "Rhythmic Walking", detail: "2-3 times a week", progressPer
     func registerCells(){
 
         mainCollectionView.register(UINib(nibName: "CalenderCollectionViewCell", bundle: nil), forCellWithReuseIdentifier: "calendar_cell")
+
 
         mainCollectionView.register(UINib(nibName: "MedicationCardCollectionViewCell", bundle: nil), forCellWithReuseIdentifier: "medication_card_cell")
         mainCollectionView.register(UINib(nibName: "ExerciseCardCell", bundle: nil), forCellWithReuseIdentifier: "exercise_card_cell")
@@ -202,7 +195,6 @@ ExerciseModel(title: "Rhythmic Walking", detail: "2-3 times a week", progressPer
 
                 let itemSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(0.5), heightDimension: .fractionalHeight(1.0))
                 let item = NSCollectionLayoutItem(layoutSize: itemSize)
-
                 item.contentInsets = NSDirectionalEdgeInsets(top: 0, leading: 2, bottom: 0, trailing: 4)
 
                 let groupHeight: CGFloat = 185
@@ -210,6 +202,7 @@ ExerciseModel(title: "Rhythmic Walking", detail: "2-3 times a week", progressPer
                     widthDimension: .fractionalWidth(1.0),
                     heightDimension: .absolute(groupHeight)
                 )
+
      let group = NSCollectionLayoutGroup.horizontal(layoutSize: groupSize, subitems: [item, item])
 
 
@@ -249,10 +242,12 @@ ExerciseModel(title: "Rhythmic Walking", detail: "2-3 times a week", progressPer
                 return section
                 
             case .therapeuticGames:
+
     let itemSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(0.5), heightDimension: .fractionalHeight(1.0))
                 let item = NSCollectionLayoutItem(layoutSize: itemSize)
                 item.contentInsets = NSDirectionalEdgeInsets(top: 0, leading: 2, bottom: 0, trailing: 4)
                 
+
 
                 let groupHeight: CGFloat = 170
                 let groupSize = NSCollectionLayoutSize(
@@ -264,6 +259,7 @@ ExerciseModel(title: "Rhythmic Walking", detail: "2-3 times a week", progressPer
                 
                 let section = NSCollectionLayoutSection(group: group)
                 section.contentInsets = NSDirectionalEdgeInsets(top: 8, leading: 16, bottom: 30, trailing: 16)
+
 
                 section.orthogonalScrollingBehavior = .none
 
@@ -288,6 +284,7 @@ ExerciseModel(title: "Rhythmic Walking", detail: "2-3 times a week", progressPer
         let newLogEntry = SymptomLogEntry(date: Date(), ratings: ratings)
         SymptomLogManager.shared.saveLogEntry(newLogEntry)
         hasLoggedSymptomsToday = true
+
 
     }
     
@@ -321,60 +318,58 @@ ExerciseModel(title: "Rhythmic Walking", detail: "2-3 times a week", progressPer
         }
     }
     
+    private func handleGamesSelection(at row: Int) {
+            switch row {
+            case 0:
+                let storyboard = UIStoryboard(name: "Match the Cards", bundle: nil)
+                guard let vc = storyboard.instantiateViewController(withIdentifier: "matchTheCardsLandingPage") as? LevelSelectionViewController else {
+                    // ...
+                    return
+                }
+               
+                navigationController?.pushViewController(vc, animated: true)
+
+            case 1:
+               
+                let storyboard = UIStoryboard(name: "Match the Cards", bundle: nil)
+                guard let vc = storyboard.instantiateViewController(withIdentifier: "matchTheCardsLandingPage") as? LevelSelectionViewController else {
+                    // ...
+                    return
+                }
+               
+                navigationController?.pushViewController(vc, animated: true)
+
+            default:
+                print("Games item at row \(row) not configured for navigation.")
+            }
+        }
+     
+        private func handleExerciseSelection(at row: Int) {
+            switch row {
+            case 0:
+               
+                let storyboard = UIStoryboard(name: "10 minworkout", bundle: nil)
+                guard let vc = storyboard.instantiateViewController(withIdentifier: "exerciseLandingPage") as? _0minworkoutLandingPageViewController else {
+                    return
+                }
+             
+                navigationController?.pushViewController(vc, animated: true)
+
+            case 1:
+               
+                let storyboard = UIStoryboard(name: "Rhythmic Walking", bundle: nil)
+                guard let vc = storyboard.instantiateViewController(withIdentifier: "SetGoalVCc") as? SetGoalViewController else {
+                    return
+                }
+                navigationController?.pushViewController(vc, animated: true)
+
+            default:
+                print("Exercise item at row \(row) not configured for navigation.")
+            }
+        }
+    
     // MARK: - CollectionView Delegate Selection Control
     
-    private func handleGamesSelection(at row: Int) {
-        switch row {
-        case 0:
-            let storyboard = UIStoryboard(name: "Match the Cards", bundle: nil)
-            guard let vc = storyboard.instantiateViewController(withIdentifier: "matchTheCardsLandingPage") as? LevelSelectionViewController else {
-                // ...
-                return
-            }
-           
-            navigationController?.pushViewController(vc, animated: true)
-
-        case 1:
-            
-            let storyboard = UIStoryboard(name: "Match the Cards", bundle: nil)
-            guard let vc = storyboard.instantiateViewController(withIdentifier: "matchTheCardsLandingPage") as? LevelSelectionViewController else {
-                // ...
-                return
-            }
-            
-            navigationController?.pushViewController(vc, animated: true)
-
-        default:
-            print("Games item at row \(row) not configured for navigation.")
-        }
-    }
-  
-    private func handleExerciseSelection(at row: Int) {
-        switch row {
-        case 0:
-            
-            let storyboard = UIStoryboard(name: "10 minworkout", bundle: nil)
-            guard let vc = storyboard.instantiateViewController(withIdentifier: "exerciseLandingPage") as? _0minworkoutLandingPageViewController else {
-                return
-            }
-          
-            navigationController?.pushViewController(vc, animated: true)
-
-        case 1:
-            
-            let storyboard = UIStoryboard(name: "Rhythmic Walking", bundle: nil)
-            guard let vc = storyboard.instantiateViewController(withIdentifier: "SetGoalVCc") as? SetGoalViewController else {
-                return
-            }
-            navigationController?.pushViewController(vc, animated: true)
-
-        default:
-            print("Exercise item at row \(row) not configured for navigation.")
-        }
-    }
-    
-    // MARK: - UICollectionViewDelegate Method (Handling Taps)
-
     // ⭐️ NEW: This disables clicking on future dates
     func collectionView(_ collectionView: UICollectionView, shouldSelectItemAt indexPath: IndexPath) -> Bool {
         if homeSections[indexPath.section] == .calendar {
@@ -387,35 +382,56 @@ ExerciseModel(title: "Rhythmic Walking", detail: "2-3 times a week", progressPer
         }
         return true
     }
-    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        let sectionType = homeSections[indexPath.section]
 
-        switch sectionType {
-        case .calendar:
-            
+//
+//    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+//          let sectionType = homeSections[indexPath.section]
+//
+//          switch sectionType {
+//          case .calendar:
+//             
+//              if let selectedIndexPath = collectionView.indexPathsForSelectedItems?.first, selectedIndexPath != indexPath {
+//                  collectionView.deselectItem(at: selectedIndexPath, animated: true)
+//              }
+//              selectedDate = dates[indexPath.row].date
+//              collectionView.reloadSections(IndexSet(integer: Section.calendar.rawValue))
+//
+//              let storyboard = UIStoryboard(name: "Home", bundle: nil)
+//              guard let summaryVC = storyboard.instantiateViewController(withIdentifier: "SummaryViewController") as? SummaryViewController else { return }
+//              summaryVC.dateToDisplay = selectedDate
+//              let navController = UINavigationController(rootViewController: summaryVC)
+//              navController.modalPresentationStyle = .pageSheet
+//              present(navController, animated: true, completion: nil)
+//
+//          case .exercises:
+//
+//              handleExerciseSelection(at: indexPath.row)
+//          case .therapeuticGames:
+//              handleGamesSelection(at: indexPath.row)
+//          default:
+//              collectionView.deselectItem(at: indexPath, animated: true)
+//
+//          }
+//      }
+
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        if homeSections[indexPath.section] == .calendar {
             if let selectedIndexPath = collectionView.indexPathsForSelectedItems?.first, selectedIndexPath != indexPath {
                 collectionView.deselectItem(at: selectedIndexPath, animated: true)
             }
+            
             selectedDate = dates[indexPath.row].date
             collectionView.reloadSections(IndexSet(integer: Section.calendar.rawValue))
-
+            
             let storyboard = UIStoryboard(name: "Home", bundle: nil)
             guard let summaryVC = storyboard.instantiateViewController(withIdentifier: "SummaryViewController") as? SummaryViewController else { return }
             summaryVC.dateToDisplay = selectedDate
             let navController = UINavigationController(rootViewController: summaryVC)
             navController.modalPresentationStyle = .pageSheet
             present(navController, animated: true, completion: nil)
-
-        case .exercises:
-
-            handleExerciseSelection(at: indexPath.row)
-        case .therapeuticGames:
-            handleGamesSelection(at: indexPath.row)
-        default:
-            collectionView.deselectItem(at: indexPath, animated: true)
-
         }
     }
+
 
     func autoSelectToday() {
         if let index = dates.firstIndex(where: { Calendar.current.isDate($0.date, inSameDayAs: Date()) }) {
@@ -487,7 +503,6 @@ extension HomeViewController: UICollectionViewDataSource {
             cell.configure(with: model)
 
             return cell
-
             
         case .symptoms:
             let cell = mainCollectionView.dequeueReusableCell(withReuseIdentifier: "symptom_log_cell", for: indexPath) as! SymptomLogCell
@@ -511,6 +526,7 @@ extension HomeViewController: UICollectionViewDataSource {
         
         switch sectionType {
         case .calendar:
+
 //<<<<<<< HEAD
 // 
 //            let dateString = formattedDateString(for: selectedDate)
@@ -523,7 +539,7 @@ extension HomeViewController: UICollectionViewDataSource {
             let dateString = formattedDateString(for: selectedDate)
             let isToday = Calendar.current.isDateInToday(selectedDate)
             header.configure(title: isToday ? "Today, \(dateString)" : dateString)
-//>>>>>>> origin/Home
+
             header.setTitleAlignment(.center)
         case .medications:
             header.configure(title: "Upcoming Medications")

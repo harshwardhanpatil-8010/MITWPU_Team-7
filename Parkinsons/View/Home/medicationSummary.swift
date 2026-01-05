@@ -89,6 +89,7 @@ class MedicationSummaryCell: UICollectionViewCell {
 
             statusLabel.text = "Missed"
 
+
             statusLabel.textColor = .systemRed
         }
     }
