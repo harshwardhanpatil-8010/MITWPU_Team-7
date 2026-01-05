@@ -12,14 +12,14 @@
         <scene sceneID="s0d-6b-0kx">
             <objects>
                 <viewController storyboardIdentifier="SymptomLogVC" useStoryboardIdentifierAsRestorationIdentifier="YES" id="Y6W-OH-hqX" customClass="GaitViewController" customModule="Parkinsons" customModuleProvider="target" sceneMemberID="viewController">
-                    <view key="view" contentMode="scaleToFill" id="5EZ-qb-Rvc">
+                    <view key="view" contentMode="scaleToFill" ambiguous="YES" id="5EZ-qb-Rvc">
                         <rect key="frame" x="0.0" y="0.0" width="402" height="874"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Gmq-uI-I9u">
+                            <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Gmq-uI-I9u">
                                 <rect key="frame" x="0.0" y="178" width="402" height="1500"/>
                                 <subviews>
-                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="7Kf-Zc-tMf">
+                                    <view contentMode="scaleToFill" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="7Kf-Zc-tMf">
                                         <rect key="frame" x="0.0" y="0.0" width="402" height="1500"/>
                                         <subviews>
                                             <segmentedControl opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="plain" selectedSegmentIndex="0" translatesAutoresizingMaskIntoConstraints="NO" id="raN-Ig-P22">
@@ -52,11 +52,11 @@
                                                 <subviews>
                                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" lineBreakMode="tailTruncation" numberOfLines="43" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="7Fn-35-UKb">
                                                         <rect key="frame" x="16" y="15" width="340" height="324.66666666666669"/>
-                                                        <mutableString key="text">Gait disturbance refers to difficulty in walking, which can appear as unsteady steps, slowed movement, shuffling, or imbalance while moving.
+                                                        <string key="text">Gait disturbance refers to difficulty in walking, which can appear as unsteady steps, slowed movement, shuffling, or imbalance while moving.
 
 It is a common symptom in neurological conditions like Parkinson’s disease, stroke, or multiple sclerosis. Gait issues can also arise from muscle weakness, joint problems, inner ear disorders, or age-related changes.
 
-The severity may range from mild unsteadiness to a higher risk of falls that impact daily activities. Factors such as fatigue, medications, and vision problems can worsen gait disturbance. Persistent or worsening gait changes should be medically evaluated.</mutableString>
+The severity may range from mild unsteadiness to a higher risk of falls that impact daily activities. Factors such as fatigue, medications, and vision problems can worsen gait disturbance. Persistent or worsening gait changes should be medically evaluated.</string>
                                                         <fontDescription key="fontDescription" type="system" pointSize="16"/>
                                                         <nil key="textColor"/>
                                                         <nil key="highlightedColor"/>
