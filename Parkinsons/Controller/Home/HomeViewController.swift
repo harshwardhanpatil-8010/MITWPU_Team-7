@@ -92,7 +92,7 @@ class HomeViewController: UIViewController, UICollectionViewDelegate , SymptomLo
         // Set the main layout
         mainCollectionView.setCollectionViewLayout(generateLayout(), animated: true)
         
-        // dates = DataStore.shared.getDates()
+         dates = HomeDataStore.shared.getDates()
         autoSelectToday()
     }
     

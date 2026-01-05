@@ -90,7 +90,7 @@
                                                         <rect key="frame" x="278" y="21" width="75" height="35"/>
                                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                                         <state key="normal" title="Button"/>
-                                                        <buttonConfiguration key="configuration" style="plain" title="Button"/>
+                                                        <buttonConfiguration key="configuration" style="tinted" title="Button"/>
                                                         <connections>
                                                             <action selector="editAndSaveTapped:" destination="uuW-P4-EWo" eventType="touchUpInside" id="xjp-o3-nwg"/>
                                                         </connections>

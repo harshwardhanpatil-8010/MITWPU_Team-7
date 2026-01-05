@@ -27,7 +27,7 @@
                                 <nil key="highlightedColor"/>
                             </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="3.9" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="tJa-mD-QUm">
-                                <rect key="frame" x="33" y="70" width="53" height="30"/>
+                                <rect key="frame" x="33" y="76" width="53" height="30"/>
                                 <fontDescription key="fontDescription" type="boldSystem" pointSize="25"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
@@ -45,13 +45,17 @@
                                     <constraint firstAttribute="height" constant="3" id="Urt-MJ-bfS"/>
                                 </constraints>
                             </view>
+                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="TremorsGraph" translatesAutoresizingMaskIntoConstraints="NO" id="Ppc-m1-c3b">
+                                <rect key="frame" x="124" y="44" width="230" height="84"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            </imageView>
                         </subviews>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                         <constraints>
                             <constraint firstItem="8Zu-Z4-NQW" firstAttribute="trailing" secondItem="tJa-mD-QUm" secondAttribute="trailing" id="140-j3-plL"/>
                             <constraint firstItem="L7I-dC-KjR" firstAttribute="leading" secondItem="6MY-mq-Boi" secondAttribute="leading" constant="8" id="JTz-3c-EHd"/>
                             <constraint firstAttribute="trailing" secondItem="L7I-dC-KjR" secondAttribute="trailing" constant="16" id="LzE-YU-yqL"/>
-                            <constraint firstItem="tJa-mD-QUm" firstAttribute="top" secondItem="8Zu-Z4-NQW" secondAttribute="bottom" constant="4" id="Rks-8Y-Yfj"/>
+                            <constraint firstItem="tJa-mD-QUm" firstAttribute="top" secondItem="8Zu-Z4-NQW" secondAttribute="bottom" constant="10" id="Rks-8Y-Yfj"/>
                             <constraint firstAttribute="bottom" secondItem="L7I-dC-KjR" secondAttribute="bottom" constant="87" id="Wwn-cC-sHA"/>
                             <constraint firstItem="8Zu-Z4-NQW" firstAttribute="top" secondItem="L7I-dC-KjR" secondAttribute="bottom" constant="8" id="Y9s-vR-pU1"/>
                             <constraint firstItem="8Zu-Z4-NQW" firstAttribute="leading" secondItem="6MY-mq-Boi" secondAttribute="leading" constant="33" id="dFx-2Q-Asm"/>
@@ -79,11 +83,12 @@
         </collectionViewCell>
     </objects>
     <resources>
+        <image name="TremorsGraph" width="762" height="324"/>
         <systemColor name="systemBackgroundColor">
             <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
         </systemColor>
         <systemColor name="systemGray5Color">
-            <color red="0.8980392157" green="0.8980392157" blue="0.91764705879999997" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <color red="0.89803921568627454" green="0.89803921568627454" blue="0.91764705882352937" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </systemColor>
     </resources>
 </document>
