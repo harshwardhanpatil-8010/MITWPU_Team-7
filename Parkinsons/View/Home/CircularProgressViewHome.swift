@@ -1,6 +1,13 @@
+//
+//  CircularProgressViewHome.swift
+//  Parkinsons
+//
+//  Created by SDC-USER on 04/01/26.
+//
+
 import UIKit
 
- class CircularProgressView: UIView {
+ class CircularProgressViewHome: UIView {
     
     private let trackLayer = CAShapeLayer()
     private let progressLayer = CAShapeLayer()
@@ -34,7 +41,7 @@ import UIKit
     private func setupLayers() {
         let circularPath = UIBezierPath(
             arcCenter: centerPoint,
-            radius: bounds.width / 2,
+            radius: (bounds.width / 2) - 7,
             startAngle: -.pi / 2,
             endAngle: 3 * .pi / 2,
             clockwise: true
@@ -42,13 +49,13 @@ import UIKit
         
         trackLayer.path = circularPath.cgPath
         trackLayer.strokeColor = trackColor.cgColor
-        trackLayer.lineWidth = lineWidth
+        trackLayer.lineWidth = CGFloat(14.0)
         trackLayer.fillColor = UIColor.clear.cgColor
         layer.addSublayer(trackLayer)
         
         progressLayer.path = circularPath.cgPath
         progressLayer.strokeColor = progressColor.cgColor
-        progressLayer.lineWidth = lineWidth
+        progressLayer.lineWidth = CGFloat(14.0)
         progressLayer.lineCap = .round
         progressLayer.fillColor = UIColor.clear.cgColor
         progressLayer.strokeEnd = 1

@@ -21,12 +21,12 @@ private var progressLayer = CAShapeLayer()
 
 
 private var currentProgressColor: UIColor = .systemBlue
-    private var progressView: CircularProgressView!
+    private var progressView: CircularProgressViewHome!
  override func awakeFromNib() {
     super.awakeFromNib()
     self.clipsToBounds = false
     self.contentView.clipsToBounds = false
-     progressView = CircularProgressView(frame: progressRingContainer.bounds)
+     progressView = CircularProgressViewHome(frame: progressRingContainer.bounds)
      progressView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
      progressRingContainer.addSubview(progressView)
      
@@ -84,24 +84,3 @@ override func layoutSubviews() {
 
 }
 
-extension UIColor {
-    convenience init?(hex: String) {
-        let r, g, b: CGFloat
-        var hexSanitized = hex.trimmingCharacters(in: .whitespacesAndNewlines)
-        
-        if hexSanitized.hasPrefix("#") {
-            hexSanitized.remove(at: hexSanitized.startIndex)
-        }
-        
-        guard hexSanitized.count == 6 else { return nil }
-        
-        var rgbValue: UInt64 = 0
-        Scanner(string: hexSanitized).scanHexInt64(&rgbValue)
-        
-        r = CGFloat((rgbValue & 0xFF0000) >> 16) / 255.0
-        g = CGFloat((rgbValue & 0x00FF00) >> 8) / 255.0
-        b = CGFloat(rgbValue & 0x0000FF) / 255.0
-        
-        self.init(red: r, green: g, blue: b, alpha: 1.0)
-    }
-}

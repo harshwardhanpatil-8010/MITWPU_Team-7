@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="24412" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="24506" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
     <device id="retina6_12" orientation="portrait" appearance="light"/>
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="24405"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="24504"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="System colors in document resources" minToolsVersion="11.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
@@ -33,10 +33,10 @@
                                 <nil key="highlightedColor"/>
                             </label>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="W6T-Is-SQg">
-                                <rect key="frame" x="32" y="89.333333333333329" width="105" height="46.666666666666671"/>
+                                <rect key="frame" x="32" y="87.333333333333329" width="105" height="48.666666666666671"/>
                                 <subviews>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="10/10" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="vtv-Fo-AiT">
-                                        <rect key="frame" x="12" y="8" width="81" height="27"/>
+                                        <rect key="frame" x="24" y="11" width="57" height="27"/>
                                         <fontDescription key="fontDescription" type="boldSystem" pointSize="22"/>
                                         <nil key="textColor"/>
                                         <nil key="highlightedColor"/>
@@ -44,9 +44,8 @@
                                 </subviews>
                                 <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                                 <constraints>
-                                    <constraint firstItem="vtv-Fo-AiT" firstAttribute="top" secondItem="W6T-Is-SQg" secondAttribute="top" constant="8" id="993-E0-QZM"/>
-                                    <constraint firstItem="vtv-Fo-AiT" firstAttribute="leading" secondItem="W6T-Is-SQg" secondAttribute="leading" constant="12" id="g91-EH-Kt6"/>
-                                    <constraint firstAttribute="trailing" secondItem="vtv-Fo-AiT" secondAttribute="trailing" constant="12" id="zhs-I2-mBt"/>
+                                    <constraint firstItem="vtv-Fo-AiT" firstAttribute="centerX" secondItem="W6T-Is-SQg" secondAttribute="centerX" id="0jy-Ky-uxZ"/>
+                                    <constraint firstItem="vtv-Fo-AiT" firstAttribute="centerY" secondItem="W6T-Is-SQg" secondAttribute="centerY" id="11D-Pl-pWv"/>
                                 </constraints>
                             </view>
                         </subviews>
@@ -55,13 +54,14 @@
                             <constraint firstAttribute="trailing" secondItem="a36-lc-3gc" secondAttribute="trailing" constant="16" id="016-KO-bDO"/>
                             <constraint firstAttribute="bottom" secondItem="W6T-Is-SQg" secondAttribute="bottom" constant="4" id="1EX-cM-YiV"/>
                             <constraint firstItem="a36-lc-3gc" firstAttribute="top" secondItem="pjg-HR-Z5W" secondAttribute="bottom" constant="4" id="7gB-yh-yQu"/>
+                            <constraint firstItem="W6T-Is-SQg" firstAttribute="centerX" secondItem="W83-OF-dJd" secondAttribute="centerX" id="Xqc-jr-W5M"/>
+                            <constraint firstItem="W6T-Is-SQg" firstAttribute="leading" secondItem="W83-OF-dJd" secondAttribute="leading" constant="32" id="aP7-YY-7zo"/>
                             <constraint firstAttribute="trailing" secondItem="pjg-HR-Z5W" secondAttribute="trailing" constant="8" id="dO3-cW-Ric"/>
                             <constraint firstItem="a36-lc-3gc" firstAttribute="leading" secondItem="W83-OF-dJd" secondAttribute="leading" constant="16" id="dZn-cy-ksv"/>
                             <constraint firstItem="pjg-HR-Z5W" firstAttribute="leading" secondItem="W83-OF-dJd" secondAttribute="leading" constant="16" id="fiW-6N-2o7"/>
                             <constraint firstItem="pjg-HR-Z5W" firstAttribute="top" secondItem="W83-OF-dJd" secondAttribute="top" constant="8" id="lLv-yg-WhW"/>
-                            <constraint firstItem="W6T-Is-SQg" firstAttribute="top" secondItem="a36-lc-3gc" secondAttribute="bottom" constant="40" id="mIh-rF-hGU"/>
-                            <constraint firstItem="W6T-Is-SQg" firstAttribute="leading" secondItem="W83-OF-dJd" secondAttribute="leading" constant="32" id="nle-3j-Z0P"/>
-                            <constraint firstAttribute="trailing" secondItem="W6T-Is-SQg" secondAttribute="trailing" constant="32" id="zs6-ho-INc"/>
+                            <constraint firstItem="W6T-Is-SQg" firstAttribute="top" secondItem="a36-lc-3gc" secondAttribute="bottom" constant="38" id="mIh-rF-hGU"/>
+                            <constraint firstAttribute="trailing" secondItem="W6T-Is-SQg" secondAttribute="trailing" constant="32" id="rd2-VZ-8sg"/>
                         </constraints>
                     </view>
                 </subviews>
