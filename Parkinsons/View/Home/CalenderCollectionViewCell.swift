@@ -8,29 +8,53 @@ class CalenderCollectionViewCell: UICollectionViewCell {
 
     override func awakeFromNib() {
         super.awakeFromNib()
+        // Ensure the cell itself doesn't clip the shadow
+        self.clipsToBounds = false
+        self.contentView.clipsToBounds = false
+        
+        setupShadow()
+    }
+    
+    private func setupShadow() {
+        calenderBackground.layer.cornerRadius = 17.8
+        
+        // 1. Shadows require masksToBounds to be false
+        calenderBackground.layer.masksToBounds = false
+        
+        // 2. Apply the shadow properties
+        calenderBackground.layer.shadowColor = UIColor.black.cgColor
+        calenderBackground.layer.shadowOpacity = 0.1
+        calenderBackground.layer.shadowRadius = 3
+        calenderBackground.layer.shadowOffset = CGSize(width: 0, height: 1)
     }
     
     func configure(with model: DateModel, isSelected: Bool, isToday: Bool) {
         calenderDay.text = model.dayString
         calenderDate.text = model.dateString
-        calenderBackground.layer.cornerRadius = 17.8
         
         // Reset to default
-        calenderBackground.backgroundColor = .clear
-        calenderDay.backgroundColor = .clear
+        calenderBackground.backgroundColor = .white // Shadow needs a background color to be visible
         calenderDay.textColor = .lightGray
         calenderDate.textColor = .black
+        
+        // Reset Border (if you used the blue border from earlier)
+        calenderBackground.layer.borderWidth = 0
+        calenderBackground.layer.borderColor = nil
 
         if isSelected {
-            calenderDay.textColor = .black
+            calenderDay.textColor = .white
             calenderDate.textColor = .white
-            calenderBackground.backgroundColor = .systemCyan
+            calenderBackground.backgroundColor = .systemBlue
             return
         }
         
         if isToday {
-            calenderDay.textColor = .systemCyan
-            calenderDate.textColor = .systemCyan
+            calenderDay.textColor = .systemBlue
+            calenderDate.textColor = .systemBlue
+            
+            // Adding the blue border for "Today" as requested previously
+            calenderBackground.layer.borderWidth = 2.0
+            calenderBackground.layer.borderColor = UIColor.systemBlue.cgColor
             return
         }
     }

@@ -86,7 +86,7 @@ class MedicationSummaryCell: UICollectionViewCell {
             statusLabel.textColor = .systemOrange
         } else {
             statusLabel.attributedText = nil
-            statusLabel.text = "Skipped"
+            statusLabel.text = "Missed"
             statusLabel.textColor = .systemRed
         }
     }
