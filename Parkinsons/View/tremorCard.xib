@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="24412" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="24506" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
     <device id="retina6_12" orientation="portrait" appearance="light"/>
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="24405"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="24504"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="System colors in document resources" minToolsVersion="11.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
@@ -26,29 +26,38 @@
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="L7I-dC-KjR">
-                                <rect key="frame" x="8" y="34" width="341" height="3"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <color key="backgroundColor" systemColor="systemGray5Color"/>
-                            </view>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="3.9" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="tJa-mD-QUm">
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="3.9" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="tJa-mD-QUm">
                                 <rect key="frame" x="33" y="70" width="53" height="30"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <fontDescription key="fontDescription" type="boldSystem" pointSize="25"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Average" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="8Zu-Z4-NQW">
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Average" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="8Zu-Z4-NQW">
                                 <rect key="frame" x="33" y="49" width="53" height="17"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="L7I-dC-KjR">
+                                <rect key="frame" x="8" y="38" width="346" height="3"/>
+                                <color key="backgroundColor" systemColor="systemGray5Color"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="3" id="Urt-MJ-bfS"/>
+                                </constraints>
+                            </view>
                         </subviews>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                         <constraints>
+                            <constraint firstItem="8Zu-Z4-NQW" firstAttribute="trailing" secondItem="tJa-mD-QUm" secondAttribute="trailing" id="140-j3-plL"/>
+                            <constraint firstItem="L7I-dC-KjR" firstAttribute="leading" secondItem="6MY-mq-Boi" secondAttribute="leading" constant="8" id="JTz-3c-EHd"/>
+                            <constraint firstAttribute="trailing" secondItem="L7I-dC-KjR" secondAttribute="trailing" constant="16" id="LzE-YU-yqL"/>
+                            <constraint firstItem="tJa-mD-QUm" firstAttribute="top" secondItem="8Zu-Z4-NQW" secondAttribute="bottom" constant="4" id="Rks-8Y-Yfj"/>
+                            <constraint firstAttribute="bottom" secondItem="L7I-dC-KjR" secondAttribute="bottom" constant="87" id="Wwn-cC-sHA"/>
+                            <constraint firstItem="8Zu-Z4-NQW" firstAttribute="top" secondItem="L7I-dC-KjR" secondAttribute="bottom" constant="8" id="Y9s-vR-pU1"/>
+                            <constraint firstItem="8Zu-Z4-NQW" firstAttribute="leading" secondItem="6MY-mq-Boi" secondAttribute="leading" constant="33" id="dFx-2Q-Asm"/>
+                            <constraint firstItem="L7I-dC-KjR" firstAttribute="top" secondItem="Vky-OX-ADV" secondAttribute="bottom" constant="1" id="dtd-TI-9ep"/>
                             <constraint firstItem="Vky-OX-ADV" firstAttribute="leading" secondItem="6MY-mq-Boi" secondAttribute="leading" constant="8" id="lz4-3b-8AU"/>
+                            <constraint firstItem="8Zu-Z4-NQW" firstAttribute="leading" secondItem="tJa-mD-QUm" secondAttribute="leading" id="pMJ-zI-upy"/>
                             <constraint firstItem="Vky-OX-ADV" firstAttribute="top" secondItem="6MY-mq-Boi" secondAttribute="top" constant="8" id="zMh-44-HXx"/>
                         </constraints>
                     </view>
@@ -74,7 +83,7 @@
             <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
         </systemColor>
         <systemColor name="systemGray5Color">
-            <color red="0.89803921568627454" green="0.89803921568627454" blue="0.91764705882352937" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <color red="0.8980392157" green="0.8980392157" blue="0.91764705879999997" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </systemColor>
     </resources>
 </document>
