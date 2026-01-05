@@ -1,15 +1,10 @@
 import UIKit
 
-protocol SymptomLogCellDelegate: AnyObject {
-    func symptomLogCellDidTapLogNow(_ cell: SymptomLogCell)
-}
-
-class SymptomLogCell: UICollectionViewCell {
+class TherapeuticGameCell: UICollectionViewCell {
     
-    weak var delegate: SymptomLogCellDelegate?
-
+    @IBOutlet weak var titleLabel: UILabel!
     @IBOutlet weak var descriptionLabel: UILabel!
-    @IBOutlet weak var logNowButton: UIButton!
+    @IBOutlet weak var iconImageView: UIImageView!
     @IBOutlet weak var backgroundCardView: UIView!
     
     override func awakeFromNib() {
@@ -19,16 +14,10 @@ class SymptomLogCell: UICollectionViewCell {
         self.contentView.clipsToBounds = false
         
         setupCardStyle()
-        
-        logNowButton.layer.cornerRadius = 15
-        logNowButton.backgroundColor = UIColor.systemBlue
-        logNowButton.setTitleColor(UIColor.white, for: .normal)
-        
-        logNowButton.addTarget(self, action: #selector(logNowButtonTapped), for: .touchUpInside)
     }
     
     func setupCardStyle() {
-        let cornerRadius: CGFloat = 16
+        let cornerRadius: CGFloat = 23
         let shadowColor: UIColor = .black
         let shadowOpacity: Float = 0.15
         let shadowRadius: CGFloat = 3
@@ -43,12 +32,13 @@ class SymptomLogCell: UICollectionViewCell {
         backgroundCardView.layer.shadowOffset = shadowOffset
     }
     
-    @objc private func logNowButtonTapped() {
-        delegate?.symptomLogCellDidTapLogNow(self)
-    }
-
-    func configure(with message: String, buttonTitle: String) {
-        descriptionLabel.text = message
-        logNowButton.setTitle(buttonTitle, for: .normal)
+    func configure(with model: TherapeuticGameModel) {
+        titleLabel.text = model.title
+        descriptionLabel.text = model.description
+        
+        if let imageName = model.iconName {
+            iconImageView.image = UIImage(named: imageName)
+            iconImageView.tintColor = nil
+        }
     }
 }

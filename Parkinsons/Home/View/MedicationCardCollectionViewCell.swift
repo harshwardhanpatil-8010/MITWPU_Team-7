@@ -30,7 +30,7 @@ class MedicationCardCollectionViewCell: UICollectionViewCell {
     }
     
     func setupCardStyle() {
-        let cornerRadius: CGFloat = 16
+        let cornerRadius: CGFloat = 23
         let shadowColor: UIColor = .black
         let shadowOpacity: Float = 0.15
         let shadowRadius: CGFloat = 3

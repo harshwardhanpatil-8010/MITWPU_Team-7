@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="24412" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="24506" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
     <device id="retina6_12" orientation="portrait" appearance="light"/>
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="24405"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="24504"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="System colors in document resources" minToolsVersion="11.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
@@ -21,7 +21,7 @@
                         <rect key="frame" x="0.0" y="0.0" width="175" height="140"/>
                         <subviews>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="hTJ-CF-CKg">
-                                <rect key="frame" x="13" y="7.9999999999999982" width="149" height="20.333333333333329"/>
+                                <rect key="frame" x="13" y="11.999999999999998" width="149" height="20.333333333333329"/>
                                 <fontDescription key="fontDescription" type="boldSystem" pointSize="16"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
@@ -49,7 +49,7 @@
                             <constraint firstItem="FKK-h6-PZP" firstAttribute="centerY" secondItem="hyf-t1-NL3" secondAttribute="centerY" id="b24-r1-it9"/>
                             <constraint firstAttribute="bottom" secondItem="HRu-mw-IAh" secondAttribute="bottom" constant="8" id="d18-km-zMz"/>
                             <constraint firstItem="HRu-mw-IAh" firstAttribute="leading" secondItem="hyf-t1-NL3" secondAttribute="leading" constant="8" id="f7T-nO-pyw"/>
-                            <constraint firstItem="hTJ-CF-CKg" firstAttribute="top" secondItem="hyf-t1-NL3" secondAttribute="top" constant="8" id="t90-55-2hl"/>
+                            <constraint firstItem="hTJ-CF-CKg" firstAttribute="top" secondItem="hyf-t1-NL3" secondAttribute="top" constant="12" id="t90-55-2hl"/>
                             <constraint firstItem="HRu-mw-IAh" firstAttribute="top" secondItem="FKK-h6-PZP" secondAttribute="bottom" constant="5" id="yg6-Z5-kly"/>
                         </constraints>
                     </view>

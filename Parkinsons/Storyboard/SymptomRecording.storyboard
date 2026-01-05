@@ -117,7 +117,7 @@ The severity may range from mild unsteadiness to a higher risk of falls that imp
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Ief-a0-LHa" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1076.1194029850747" y="124.94279176201373"/>
+            <point key="canvasLocation" x="1540" y="115"/>
         </scene>
         <!--Tremor View Controller-->
         <scene sceneID="P4c-s9-PsO">
@@ -219,7 +219,7 @@ The severity may range from mild unsteadiness to a higher risk of falls that imp
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="enb-rr-Qao" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="138.1679389312977" y="130.98591549295776"/>
+            <point key="canvasLocation" x="721" y="115"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="WaJ-Md-ioG">

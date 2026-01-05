@@ -38,7 +38,10 @@ class MedicationLandingPageViewController: UIViewController,
             name: Notification.Name("MedicationUpdated"),
             object: nil
         )
+        
+        
     }
+    
 
     // ---------------------------------------------------------
     // MARK: - Status Update Delegate (Skip / Taken)

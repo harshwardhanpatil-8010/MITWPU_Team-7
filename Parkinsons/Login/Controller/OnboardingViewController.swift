@@ -43,17 +43,13 @@ class OnboardingViewController: UIViewController {
         }
     }
     func navigateToHomeScreen() {
-        let storyboard = UIStoryboard(name: "Home", bundle: nil)
-        let vc = storyboard.instantiateViewController(
-            withIdentifier: "HomePage"
-        ) as! HomeViewController
-
-        if let nav = navigationController {
-            nav.pushViewController(vc, animated: true)
-        } else {
-            let nav = UINavigationController(rootViewController: vc)
-            nav.modalPresentationStyle = .fullScreen
-            present(nav, animated: true)
+        let homeStoryboard = UIStoryboard(name: "Home", bundle: nil)
+        guard let mainTabBarController = homeStoryboard.instantiateInitialViewController() else{
+            return
+        }
+        if let window = view.window {
+            window.rootViewController = mainTabBarController
+            UIView.transition(with: window, duration: 0.3, options: .transitionCrossDissolve, animations: nil)
         }
     }
     

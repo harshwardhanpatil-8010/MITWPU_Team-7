@@ -91,7 +91,6 @@ class HomeViewController: UIViewController, UICollectionViewDelegate , SymptomLo
         dates = HomeDataStore.shared.getDates()
         autoSelectToday()
         
-
     }
     
     @IBAction func profilePageButton(_ sender: Any) {
@@ -194,7 +193,7 @@ class HomeViewController: UIViewController, UICollectionViewDelegate , SymptomLo
                 let item = NSCollectionLayoutItem(layoutSize: itemSize)
                 item.contentInsets = NSDirectionalEdgeInsets(top: 0, leading: 2, bottom: 0, trailing: 4)
 
-                let groupHeight: CGFloat = 185
+                let groupHeight: CGFloat = 179
                 let groupSize = NSCollectionLayoutSize(
                     widthDimension: .fractionalWidth(1.0),
                     heightDimension: .absolute(groupHeight)
@@ -412,7 +411,11 @@ class HomeViewController: UIViewController, UICollectionViewDelegate , SymptomLo
 //      }
 
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        if homeSections[indexPath.section] == .calendar {
+        let sectionType = homeSections[indexPath.section]
+
+        switch sectionType {
+        case .calendar:
+            // Handle Calendar selection
             if let selectedIndexPath = collectionView.indexPathsForSelectedItems?.first, selectedIndexPath != indexPath {
                 collectionView.deselectItem(at: selectedIndexPath, animated: true)
             }
@@ -426,9 +429,19 @@ class HomeViewController: UIViewController, UICollectionViewDelegate , SymptomLo
             let navController = UINavigationController(rootViewController: summaryVC)
             navController.modalPresentationStyle = .pageSheet
             present(navController, animated: true, completion: nil)
+
+        case .exercises:
+            // ⭐️ FIX: Call the exercise handler
+            handleExerciseSelection(at: indexPath.row)
+
+        case .therapeuticGames:
+            // ⭐️ FIX: Call the games handler
+            handleGamesSelection(at: indexPath.row)
+
+        default:
+            collectionView.deselectItem(at: indexPath, animated: true)
         }
     }
-
 
     func autoSelectToday() {
         if let index = dates.firstIndex(where: { Calendar.current.isDate($0.date, inSameDayAs: Date()) }) {
@@ -484,19 +497,36 @@ extension HomeViewController: UICollectionViewDataSource {
             cell.configure(with: medicationData[indexPath.row])
             return cell
             
+//        case .exercises:
+//
+//            let cell = mainCollectionView.dequeueReusableCell(
+//                withReuseIdentifier: "exercise_card_cell",
+//                for: indexPath
+//            ) as! ExerciseCardCell
+//
+//            let model = exerciseData[indexPath.row]
+//
+//            let completed = WorkoutManager.shared.completedToday.count
+//            let total = WorkoutManager.shared.getTodayWorkout().count
+//
+//            cell.setProgress(completed: completed, total: total)
+//            cell.configure(with: model)
+//
+//            return cell
         case .exercises:
-
             let cell = mainCollectionView.dequeueReusableCell(
                 withReuseIdentifier: "exercise_card_cell",
                 for: indexPath
             ) as! ExerciseCardCell
 
             let model = exerciseData[indexPath.row]
-
+            
+            // 1. Pass the progress data
             let completed = WorkoutManager.shared.completedToday.count
             let total = WorkoutManager.shared.getTodayWorkout().count
-
             cell.setProgress(completed: completed, total: total)
+            
+            // 2. Pass the model (which now includes the hex color logic)
             cell.configure(with: model)
 
             return cell
