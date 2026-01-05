@@ -88,12 +88,9 @@ class HomeViewController: UIViewController, UICollectionViewDelegate , SymptomLo
         
         // Set the main layout
         mainCollectionView.setCollectionViewLayout(generateLayout(), animated: true)
-        
-
-
-
-//         dates = DataStore.shared.getDates()
+        dates = HomeDataStore.shared.getDates()
         autoSelectToday()
+        
 
     }
     
@@ -203,7 +200,7 @@ class HomeViewController: UIViewController, UICollectionViewDelegate , SymptomLo
                     heightDimension: .absolute(groupHeight)
                 )
 
-     let group = NSCollectionLayoutGroup.horizontal(layoutSize: groupSize, subitems: [item, item])
+                let group = NSCollectionLayoutGroup.horizontal(layoutSize: groupSize, subitems: [item, item])
 
 
                 let section = NSCollectionLayoutSection(group: group)
@@ -243,7 +240,7 @@ class HomeViewController: UIViewController, UICollectionViewDelegate , SymptomLo
                 
             case .therapeuticGames:
 
-    let itemSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(0.5), heightDimension: .fractionalHeight(1.0))
+                let itemSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(0.5), heightDimension: .fractionalHeight(1.0))
                 let item = NSCollectionLayoutItem(layoutSize: itemSize)
                 item.contentInsets = NSDirectionalEdgeInsets(top: 0, leading: 2, bottom: 0, trailing: 4)
                 
@@ -526,16 +523,6 @@ extension HomeViewController: UICollectionViewDataSource {
         
         switch sectionType {
         case .calendar:
-
-//<<<<<<< HEAD
-// 
-//            let dateString = formattedDateString(for: selectedDate)
-//            let isToday = Calendar.current.isDateInToday(selectedDate)
-//            
-//            let title = isToday ? "Today, \(dateString)" : dateString
-//            header.configure(title: title)
-//            
-//=======
             let dateString = formattedDateString(for: selectedDate)
             let isToday = Calendar.current.isDateInToday(selectedDate)
             header.configure(title: isToday ? "Today, \(dateString)" : dateString)
