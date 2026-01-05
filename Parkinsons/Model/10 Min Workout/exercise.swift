@@ -24,33 +24,61 @@
 //}
 
 
+//import Foundation
+//
+//enum ExerciseCategory: String, Codable, CaseIterable {
+//    case warmup     // Neuro-Primer
+//    case balance    // Coordination
+//    case aerobic    // The Peak (BDNF)
+//    case strength   // Functional
+//    case stretch    // Reset
+//}
+//
+//struct Exercise: Codable, Identifiable {
+//    let id: UUID
+//    let name: String
+//    let category: ExerciseCategory
+//    let videoID: String
+//    let seatedVideoID: String?      // For "Off" Medication status
+//    let metronomeBPM: Int           // Audio Stimulation (approx 100-110)
+//    let cognitiveTask: String?      // Dual-Task Factor
+//    
+//    // Performance Tracking
+//    var reps: Int
+//    let minReps: Int
+//    let maxReps: Int
+//    var isSuppressed: Bool = false  // For "Post-Session Recovery" logic
+//    
+//    // UI Content
+//    let description: String
+//    let benefits: String
+//    let steps: String
+//}
 import Foundation
 
-enum ExerciseCategory: String, Codable, CaseIterable {
-    case warmup     // Neuro-Primer
-    case balance    // Coordination
-    case aerobic    // The Peak (BDNF)
-    case strength   // Functional
-    case stretch    // Reset
+enum ExerciseCategory: String, CaseIterable {
+    case warmup = "Warm Up / Stretching"
+    case balance = "Balance / Agility"
+    case aerobic = "Aerobic"
+    case strength = "Strength"
+    case cooldown = "Cool Down / Deep Breathing"
 }
 
-struct Exercise: Codable, Identifiable {
-    let id: UUID
+enum ExercisePosition {
+    case seated
+    case standing
+}
+
+struct WorkoutExercise: Identifiable {
+    let id = UUID()
     let name: String
-    let category: ExerciseCategory
-    let videoID: String
-    let seatedVideoID: String?      // For "Off" Medication status
-    let metronomeBPM: Int           // Audio Stimulation (approx 100-110)
-    let cognitiveTask: String?      // Dual-Task Factor
-    
-    // Performance Tracking
     var reps: Int
-    let minReps: Int
-    let maxReps: Int
-    var isSuppressed: Bool = false  // For "Post-Session Recovery" logic
-    
-    // UI Content
+    let videoID: String?
     let description: String
+    let category: ExerciseCategory
+    let position: ExercisePosition
+    let targetJoints: [String]
+    
     let benefits: String
-    let steps: String
+    let stepsToPerform: String
 }
