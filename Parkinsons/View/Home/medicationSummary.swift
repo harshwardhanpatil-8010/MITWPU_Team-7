@@ -82,11 +82,11 @@ class MedicationSummaryCell: UICollectionViewCell {
             
         } else if totalTaken > 0 {
             statusLabel.attributedText = nil
-            statusLabel.text = "\(totalTaken) / \(totalScheduled) taken"
+            statusLabel.text = "Taken"
             statusLabel.textColor = .systemOrange
         } else {
             statusLabel.attributedText = nil
-            statusLabel.text = "\(totalScheduled) remaining"
+            statusLabel.text = "Missed"
             statusLabel.textColor = .systemRed
         }
     }
