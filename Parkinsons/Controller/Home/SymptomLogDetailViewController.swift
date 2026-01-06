@@ -88,7 +88,7 @@ extension SymptomLogDetailViewController: UITableViewDataSource, UITableViewDele
     }
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return 110
+        return 130
     }
 }
 
@@ -98,7 +98,11 @@ extension SymptomLogDetailViewController: SymptomRatingCellDelegate {
     func didSelectIntensity(_ intensity: SymptomRating.Intensity, in cell: SymptomRatingCell) {
         guard let indexPath = tableView.indexPath(for: cell) else { return }
         
+        // Update the data model
         symptoms[indexPath.row].selectedIntensity = intensity
-        tableView.reloadRows(at: [indexPath], with: .none)
+        
+        // Instead of reloading the whole row (which can flicker),
+        // just let the cell handle its own internal UI update.
+        // tableView.reloadRows(at: [indexPath], with: .none) // Comment this out
     }
 }

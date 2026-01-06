@@ -8,42 +8,54 @@ class SymptomDetailCell: UITableViewCell {
     
     static let reuseIdentifier = "SymptomDetailCell"
 
-    private func imageForIntensity(_ intensity: SymptomRating.Intensity) -> UIImage? {
+    // 1. Add the closure to notify the ViewController of changes
+    var onRatingChanged: ((SymptomRating.Intensity) -> Void)?
+
+    private func imageForIntensity(_ intensity: SymptomRating.Intensity?) -> UIImage? {
+        guard let intensity = intensity else { return nil }
+        
         let assetName: String
-        
         switch intensity {
-        case .mild:
-            assetName = "faceMild"
-        case .moderate:
-            assetName = "moderateFace"
-        case .severe:
-            assetName = "SevereFace 1"
-        case .notPresent:
-            assetName = "xMark"
+        case .mild: assetName = "faceMild"
+        case .moderate: assetName = "moderateFace"
+        case .severe: assetName = "SevereFace 1"
+        case .notPresent: assetName = "xMark"
         }
-        
         return UIImage(named: assetName)
     }
 
-    func configure(with rating: SymptomRating) {
+    // 2. Update signature to include isEditable
+    func configure(with rating: SymptomRating, isEditable: Bool) {
         symptomNameLabel.text = rating.name
         
-        // Symptom Icon (left side)
+        // Symptom Icon
         symptomIconImageView.image = UIImage(named: rating.iconName ?? "doc.text.image")
         symptomIconImageView.tintColor = .label
         
-        // Intensity Icon (right side)
-        intensityIconImageView.image = imageForIntensity(rating.selectedIntensity)
-        
-        // Set color based on intensity for visual feedback
-        if rating.selectedIntensity == .notPresent {
-            intensityIconImageView.tintColor = .systemRed
-        } else if rating.selectedIntensity == .severe {
-            intensityIconImageView.tintColor = .systemOrange
+        // Intensity Logic
+        if let intensity = rating.selectedIntensity {
+            intensityIconImageView.isHidden = false
+            intensityIconImageView.image = imageForIntensity(intensity)
+            
+            switch intensity {
+            case .notPresent: intensityIconImageView.tintColor = .systemRed
+            case .severe: intensityIconImageView.tintColor = .systemOrange
+            default: intensityIconImageView.tintColor = .systemBlue
+            }
         } else {
-            intensityIconImageView.tintColor = .systemBlue
+            intensityIconImageView.image = nil
+            intensityIconImageView.isHidden = true
         }
         
-        self.selectionStyle = .none
+        // 3. Handle UI changes for "Edit Mode"
+        if isEditable {
+            self.backgroundColor = UIColor.systemGray6 // Light gray to show it's "active"
+            self.accessoryType = .disclosureIndicator  // Shows a small arrow >
+        } else {
+            self.backgroundColor = .clear
+            self.accessoryType = .none
+        }
+        
+        self.selectionStyle = isEditable ? .default : .none
     }
 }

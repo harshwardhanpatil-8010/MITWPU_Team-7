@@ -11,15 +11,15 @@
         <!--Gait View Controller-->
         <scene sceneID="s0d-6b-0kx">
             <objects>
-                <viewController storyboardIdentifier="SymptomLogVC" useStoryboardIdentifierAsRestorationIdentifier="YES" id="Y6W-OH-hqX" customClass="GaitViewController" customModule="Parkinsons" customModuleProvider="target" sceneMemberID="viewController">
-                    <view key="view" contentMode="scaleToFill" ambiguous="YES" id="5EZ-qb-Rvc">
+                <viewController storyboardIdentifier="GaitVC" useStoryboardIdentifierAsRestorationIdentifier="YES" id="Y6W-OH-hqX" customClass="GaitViewController" customModule="Parkinsons" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="5EZ-qb-Rvc">
                         <rect key="frame" x="0.0" y="0.0" width="402" height="874"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Gmq-uI-I9u">
+                            <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Gmq-uI-I9u">
                                 <rect key="frame" x="0.0" y="178" width="402" height="1500"/>
                                 <subviews>
-                                    <view contentMode="scaleToFill" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="7Kf-Zc-tMf">
+                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="7Kf-Zc-tMf">
                                         <rect key="frame" x="0.0" y="0.0" width="402" height="1500"/>
                                         <subviews>
                                             <segmentedControl opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="plain" selectedSegmentIndex="0" translatesAutoresizingMaskIntoConstraints="NO" id="raN-Ig-P22">
@@ -102,7 +102,6 @@ The severity may range from mild unsteadiness to a higher risk of falls that imp
                         <viewLayoutGuide key="safeArea" id="vDu-zF-Fre"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                         <constraints>
-                            <constraint firstItem="7Kf-Zc-tMf" firstAttribute="height" secondItem="5EZ-qb-Rvc" secondAttribute="height" multiplier="1.71625" id="1Cz-hJ-eAO"/>
                             <constraint firstItem="Gmq-uI-I9u" firstAttribute="leading" secondItem="vDu-zF-Fre" secondAttribute="leading" id="DCE-2c-yAO"/>
                             <constraint firstItem="7Kf-Zc-tMf" firstAttribute="width" secondItem="5EZ-qb-Rvc" secondAttribute="width" id="Wpp-jT-Jas"/>
                             <constraint firstItem="Gmq-uI-I9u" firstAttribute="trailing" secondItem="vDu-zF-Fre" secondAttribute="trailing" id="yhT-A0-ubc"/>
@@ -220,7 +219,7 @@ The severity may range from mild unsteadiness to a higher risk of falls that imp
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="enb-rr-Qao" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="138.1679389312977" y="130.98591549295776"/>
+            <point key="canvasLocation" x="149" y="125"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="WaJ-Md-ioG">

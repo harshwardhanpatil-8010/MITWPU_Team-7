@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="24412" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="24506" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
     <device id="retina6_12" orientation="portrait" appearance="light"/>
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="24405"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="24504"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="System colors in document resources" minToolsVersion="11.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
@@ -18,27 +18,29 @@
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="5qs-NL-R6y">
-                        <rect key="frame" x="0.0" y="0.0" width="442" height="96"/>
+                        <rect key="frame" x="0.0" y="0.0" width="442" height="78"/>
                         <subviews>
                             <stackView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="z1x-yZ-3bH">
-                                <rect key="frame" x="0.0" y="0.0" width="442" height="96"/>
+                                <rect key="frame" x="0.0" y="18" width="442" height="60"/>
                                 <subviews>
                                     <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="Squ-AN-tQs">
-                                        <rect key="frame" x="0.0" y="0.0" width="96" height="96"/>
+                                        <rect key="frame" x="0.0" y="0.0" width="60" height="60"/>
                                         <constraints>
-                                            <constraint firstAttribute="width" constant="96" id="agq-j3-x6L"/>
+                                            <constraint firstAttribute="width" constant="60" id="agq-j3-x6L"/>
+                                            <constraint firstAttribute="height" constant="60" id="yOJ-X1-U9U"/>
                                         </constraints>
                                     </imageView>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="tib-jZ-gSc">
-                                        <rect key="frame" x="96" y="0.0" width="250" height="96"/>
+                                        <rect key="frame" x="60" y="0.0" width="322" height="60"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                         <nil key="textColor"/>
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="EdN-A1-rMQ">
-                                        <rect key="frame" x="346" y="0.0" width="96" height="96"/>
+                                        <rect key="frame" x="382" y="0.0" width="60" height="60"/>
                                         <constraints>
-                                            <constraint firstAttribute="width" constant="96" id="dl1-GY-C9g"/>
+                                            <constraint firstAttribute="height" constant="60" id="aTd-fa-tYh"/>
+                                            <constraint firstAttribute="width" constant="60" id="kgT-PK-NST"/>
                                         </constraints>
                                     </imageView>
                                 </subviews>
@@ -47,6 +49,7 @@
                                     <constraint firstItem="EdN-A1-rMQ" firstAttribute="top" secondItem="z1x-yZ-3bH" secondAttribute="top" id="7WS-JJ-25e"/>
                                     <constraint firstItem="Squ-AN-tQs" firstAttribute="top" secondItem="z1x-yZ-3bH" secondAttribute="top" id="Pgf-un-eiO"/>
                                     <constraint firstItem="Squ-AN-tQs" firstAttribute="leading" secondItem="z1x-yZ-3bH" secondAttribute="leading" id="raT-iO-18f"/>
+                                    <constraint firstAttribute="trailing" secondItem="EdN-A1-rMQ" secondAttribute="trailing" id="xuz-lQ-0C1"/>
                                 </constraints>
                             </stackView>
                         </subviews>
@@ -55,7 +58,7 @@
                             <constraint firstAttribute="bottom" secondItem="z1x-yZ-3bH" secondAttribute="bottom" id="28m-Pg-AuK"/>
                             <constraint firstAttribute="trailing" secondItem="z1x-yZ-3bH" secondAttribute="trailing" id="9oL-N6-oP1"/>
                             <constraint firstItem="z1x-yZ-3bH" firstAttribute="leading" secondItem="5qs-NL-R6y" secondAttribute="leading" id="JM3-ZE-mI9"/>
-                            <constraint firstItem="z1x-yZ-3bH" firstAttribute="top" secondItem="5qs-NL-R6y" secondAttribute="top" id="j5C-K9-o88"/>
+                            <constraint firstItem="z1x-yZ-3bH" firstAttribute="top" secondItem="5qs-NL-R6y" secondAttribute="top" constant="18" id="j5C-K9-o88"/>
                         </constraints>
                     </view>
                 </subviews>
