@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="24506" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="DPR-Gs-3Rd">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="24506" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
     <device id="retina6_3" orientation="portrait" appearance="light"/>
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="24504"/>
@@ -17,7 +17,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Gmq-uI-I9u">
-                                <rect key="frame" x="0.0" y="178" width="402" height="1500"/>
+                                <rect key="frame" x="0.0" y="124" width="402" height="1500"/>
                                 <subviews>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="7Kf-Zc-tMf">
                                         <rect key="frame" x="0.0" y="0.0" width="402" height="1500"/>
@@ -122,13 +122,13 @@ The severity may range from mild unsteadiness to a higher risk of falls that imp
         <!--Tremor View Controller-->
         <scene sceneID="P4c-s9-PsO">
             <objects>
-                <viewController id="YGw-1n-8Co" customClass="TremorViewController" customModule="Parkinsons" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="TremorVC" useStoryboardIdentifierAsRestorationIdentifier="YES" id="YGw-1n-8Co" customClass="TremorViewController" customModule="Parkinsons" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="1hS-Du-Pfr">
                         <rect key="frame" x="0.0" y="0.0" width="402" height="874"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <segmentedControl opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="plain" selectedSegmentIndex="0" translatesAutoresizingMaskIntoConstraints="NO" id="xYP-v1-cNg">
-                                <rect key="frame" x="14" y="178" width="374" height="32"/>
+                                <rect key="frame" x="14" y="124" width="374" height="32"/>
                                 <segments>
                                     <segment title="D"/>
                                     <segment title="W"/>
@@ -141,19 +141,19 @@ The severity may range from mild unsteadiness to a higher risk of falls that imp
                                 </connections>
                             </segmentedControl>
                             <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Tremor Graph" translatesAutoresizingMaskIntoConstraints="NO" id="PRp-97-WcW">
-                                <rect key="frame" x="0.0" y="212" width="402" height="376"/>
+                                <rect key="frame" x="0.0" y="158" width="402" height="376"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="376" id="Hav-Pm-7vn"/>
                                 </constraints>
                             </imageView>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="About Tremors" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Ktj-iq-8ZT">
-                                <rect key="frame" x="32" y="612" width="370" height="29"/>
+                                <rect key="frame" x="32" y="558" width="370" height="29"/>
                                 <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="24"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="cxb-m1-Gba">
-                                <rect key="frame" x="15" y="651" width="372" height="104"/>
+                                <rect key="frame" x="15" y="597" width="372" height="104"/>
                                 <subviews>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="6" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="QNL-v3-11S">
                                         <rect key="frame" x="15" y="15.000000000000007" width="342" height="114.66666666666669"/>
@@ -201,43 +201,7 @@ The severity may range from mild unsteadiness to a higher risk of falls that imp
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="bdX-Q6-XH7" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="3541.7910447761192" y="114.64530892448512"/>
-        </scene>
-        <!--Navigation Controller-->
-        <scene sceneID="2Rt-5b-CMD">
-            <objects>
-                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="DPR-Gs-3Rd" sceneMemberID="viewController">
-                    <toolbarItems/>
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="3te-xj-v9l">
-                        <rect key="frame" x="0.0" y="124" width="402" height="54"/>
-                        <autoresizingMask key="autoresizingMask"/>
-                    </navigationBar>
-                    <nil name="viewControllers"/>
-                    <connections>
-                        <segue destination="Y6W-OH-hqX" kind="relationship" relationship="rootViewController" id="Hg4-tG-cLe"/>
-                    </connections>
-                </navigationController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="enb-rr-Qao" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="149" y="125"/>
-        </scene>
-        <!--Navigation Controller-->
-        <scene sceneID="WaJ-Md-ioG">
-            <objects>
-                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="Mbh-ek-g1X" sceneMemberID="viewController">
-                    <toolbarItems/>
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="DxK-3X-6LV">
-                        <rect key="frame" x="0.0" y="124" width="402" height="54"/>
-                        <autoresizingMask key="autoresizingMask"/>
-                    </navigationBar>
-                    <nil name="viewControllers"/>
-                    <connections>
-                        <segue destination="YGw-1n-8Co" kind="relationship" relationship="rootViewController" id="jO5-9U-aH0"/>
-                    </connections>
-                </navigationController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="8vh-jK-8MV" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="2679" y="115"/>
+            <point key="canvasLocation" x="2097" y="125"/>
         </scene>
     </scenes>
     <resources>

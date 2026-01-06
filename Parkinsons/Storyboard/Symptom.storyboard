@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="24506" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="uuW-P4-EWo">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="24506" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="Ssg-VC-bnf">
     <device id="retina6_12" orientation="portrait" appearance="light"/>
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="24504"/>
@@ -9,15 +9,7 @@
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
-        <!--Storyboard Reference-->
-        <scene sceneID="4pv-F0-HAc">
-            <objects>
-                <viewControllerPlaceholder id="Ah0-bU-gYH" sceneMemberID="viewController"/>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="qGx-sg-ti6" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="1642" y="-63"/>
-        </scene>
-        <!--Symptom View Controller-->
+        <!--Symptom Log-->
         <scene sceneID="cSd-F8-m2U">
             <objects>
                 <viewController id="uuW-P4-EWo" customClass="SymptomViewController" customModule="Parkinsons" customModuleProvider="target" sceneMemberID="viewController">
@@ -31,29 +23,15 @@
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="fI8-bd-GlA">
                                         <rect key="frame" x="0.0" y="0.0" width="393" height="1400"/>
                                         <subviews>
-                                            <navigationBar contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="dM0-4q-r52">
-                                                <rect key="frame" x="0.0" y="0.0" width="393" height="54"/>
-                                                <items>
-                                                    <navigationItem id="P5V-8h-i4k">
-                                                        <barButtonItem key="rightBarButtonItem" image="calendar" catalog="system" id="BnN-rM-4Cm"/>
-                                                    </navigationItem>
-                                                </items>
-                                            </navigationBar>
-                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Symptom Log" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="wrI-Rd-wjy">
-                                                <rect key="frame" x="16" y="10" width="181" height="34"/>
-                                                <fontDescription key="fontDescription" type="boldSystem" pointSize="28"/>
-                                                <nil key="textColor"/>
-                                                <nil key="highlightedColor"/>
-                                            </label>
                                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="fpH-ZP-h3e">
-                                                <rect key="frame" x="16" y="54" width="361" height="3"/>
+                                                <rect key="frame" x="16" y="0.0" width="361" height="3"/>
                                                 <color key="backgroundColor" systemColor="systemGray5Color"/>
                                                 <constraints>
                                                     <constraint firstAttribute="height" constant="3" id="tjb-Qn-VEQ"/>
                                                 </constraints>
                                             </view>
                                             <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="ZbZ-Mr-g82">
-                                                <rect key="frame" x="0.0" y="81" width="393" height="445"/>
+                                                <rect key="frame" x="0.0" y="27" width="393" height="445"/>
                                                 <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                                                 <constraints>
                                                     <constraint firstAttribute="height" constant="445" id="Oil-UI-RR7"/>
@@ -76,7 +54,7 @@
                                                 </cells>
                                             </collectionView>
                                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="n2t-av-6Wh">
-                                                <rect key="frame" x="16" y="540" width="361" height="837"/>
+                                                <rect key="frame" x="16" y="486" width="361" height="891"/>
                                                 <subviews>
                                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Symptoms Logged" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="D8p-TE-7pa">
                                                         <rect key="frame" x="16" y="24" width="210.33333333333334" height="28.666666666666671"/>
@@ -112,18 +90,13 @@
                                         </subviews>
                                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                                         <constraints>
-                                            <constraint firstItem="dM0-4q-r52" firstAttribute="top" secondItem="fI8-bd-GlA" secondAttribute="top" id="3a0-Fw-ERo"/>
+                                            <constraint firstItem="fpH-ZP-h3e" firstAttribute="top" secondItem="fI8-bd-GlA" secondAttribute="top" id="1kH-F8-eoj"/>
                                             <constraint firstItem="fpH-ZP-h3e" firstAttribute="leading" secondItem="fI8-bd-GlA" secondAttribute="leading" constant="16" id="6ST-Wh-I6V"/>
-                                            <constraint firstItem="wrI-Rd-wjy" firstAttribute="top" secondItem="fI8-bd-GlA" secondAttribute="top" constant="10" id="GT1-sy-xwD"/>
                                             <constraint firstAttribute="trailing" secondItem="n2t-av-6Wh" secondAttribute="trailing" constant="16" id="JXc-f2-xVU"/>
                                             <constraint firstAttribute="trailing" secondItem="fpH-ZP-h3e" secondAttribute="trailing" constant="16" id="Jqj-1S-hfb"/>
                                             <constraint firstAttribute="bottom" secondItem="n2t-av-6Wh" secondAttribute="bottom" constant="23" id="Xdc-D4-XJn"/>
-                                            <constraint firstItem="dM0-4q-r52" firstAttribute="leading" secondItem="fI8-bd-GlA" secondAttribute="leading" id="Y02-w3-tcr"/>
-                                            <constraint firstItem="wrI-Rd-wjy" firstAttribute="leading" secondItem="fI8-bd-GlA" secondAttribute="leading" constant="16" id="bl3-xo-X2K"/>
-                                            <constraint firstAttribute="trailing" secondItem="dM0-4q-r52" secondAttribute="trailing" id="cjn-ng-9XZ"/>
                                             <constraint firstItem="n2t-av-6Wh" firstAttribute="top" secondItem="ZbZ-Mr-g82" secondAttribute="bottom" constant="14" id="csZ-nw-dgY"/>
                                             <constraint firstItem="n2t-av-6Wh" firstAttribute="leading" secondItem="fI8-bd-GlA" secondAttribute="leading" constant="16" id="g3I-zu-Bgj"/>
-                                            <constraint firstItem="fpH-ZP-h3e" firstAttribute="top" secondItem="dM0-4q-r52" secondAttribute="bottom" id="lB5-k8-Phq"/>
                                             <constraint firstAttribute="height" constant="1400" id="qO9-hg-18f"/>
                                             <constraint firstItem="ZbZ-Mr-g82" firstAttribute="leading" secondItem="fI8-bd-GlA" secondAttribute="leading" id="rMz-1T-tiL"/>
                                             <constraint firstItem="ZbZ-Mr-g82" firstAttribute="top" secondItem="fpH-ZP-h3e" secondAttribute="bottom" constant="24" id="uYP-B9-tpi"/>
@@ -149,6 +122,9 @@
                             <constraint firstItem="7Bi-mp-zbI" firstAttribute="trailing" secondItem="hZO-CO-gnb" secondAttribute="trailing" id="nBu-bK-SZj"/>
                         </constraints>
                     </view>
+                    <navigationItem key="navigationItem" title="Symptom Log" style="browser" id="J61-4l-7gg">
+                        <barButtonItem key="rightBarButtonItem" image="calendar" catalog="system" id="BnN-rM-4Cm"/>
+                    </navigationItem>
                     <connections>
                         <outlet property="collectionView" destination="ZbZ-Mr-g82" id="Cbw-0u-5BS"/>
                         <outlet property="editAndSaveButton" destination="K65-6B-FHQ" id="VnQ-jq-01W"/>
@@ -157,6 +133,27 @@
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="FPA-B9-fXZ" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1886.2595419847328" y="130.98591549295776"/>
+        </scene>
+        <!--Navigation Controller-->
+        <scene sceneID="Til-1t-Xrs">
+            <objects>
+                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="Ssg-VC-bnf" sceneMemberID="viewController">
+                    <toolbarItems/>
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="gdi-uA-3YS">
+                        <rect key="frame" x="0.0" y="118" width="393" height="54"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                        <textAttributes key="titleTextAttributes">
+                            <fontDescription key="fontDescription" type="boldSystem" pointSize="28"/>
+                        </textAttributes>
+                    </navigationBar>
+                    <nil name="viewControllers"/>
+                    <connections>
+                        <segue destination="uuW-P4-EWo" kind="relationship" relationship="rootViewController" id="daY-gl-YOW"/>
+                    </connections>
+                </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="Xxk-b1-RZf" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="959.5419847328244" y="130.98591549295776"/>
         </scene>

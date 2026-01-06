@@ -237,11 +237,42 @@ extension SymptomViewController: UICollectionViewDataSource, UICollectionViewDel
     }
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        if indexPath.section == Section.calendar.rawValue {
+
+        guard let sectionType = Section(rawValue: indexPath.section) else { return }
+
+        switch sectionType {
+
+        case .calendar:
             selectedDate = dates[indexPath.row].date
             updateDataForSelectedDate()
+
+        case .tremor:
+            navigateToSymptomDetail(type: .tremor)
+
+        case .gait:
+            navigateToSymptomDetail(type: .gait)
         }
     }
+    private func navigateToSymptomDetail(type: Section) {
+
+        let storyboard = UIStoryboard(name: "SymptomRecording", bundle: nil)
+
+        let vc: UIViewController
+
+        switch type {
+        case .tremor:
+            vc = storyboard.instantiateViewController(withIdentifier: "TremorVC")
+
+        case .gait:
+            vc = storyboard.instantiateViewController(withIdentifier: "GaitVC")
+
+        default:
+            return
+        }
+
+        navigationController?.pushViewController(vc, animated: true)
+    }
+
 }
 
 // MARK: - Table View Data Source & Delegate

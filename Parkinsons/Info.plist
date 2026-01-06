@@ -17,7 +17,7 @@
 					<string>$(PRODUCT_MODULE_NAME).SceneDelegate</string>
 					<key>UISceneStoryboardFile</key>
 
-                    <string>SymptomRecording</string>
+                    <string>Symptom</string>
 
 				</dict>
 			</array>
