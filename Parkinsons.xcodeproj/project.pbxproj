@@ -30,6 +30,9 @@
 			exceptions = (
 				19423B7F2ED6BD5A0004C99E /* Exceptions for "Parkinsons" folder in "Parkinsons" target */,
 			);
+			explicitFolders = (
+				Login,
+			);
 			path = Parkinsons;
 			sourceTree = "<group>";
 		};
