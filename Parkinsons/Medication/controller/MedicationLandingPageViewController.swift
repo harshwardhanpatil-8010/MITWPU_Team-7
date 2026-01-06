@@ -17,8 +17,8 @@ class MedicationLandingPageViewController: UIViewController,
     // ---------------------------------------------------------
     @IBOutlet weak var collectionView: UICollectionView!
 
-    var todaysMedications: [MedicationDose] = []     // Doses scheduled for today
-    var allMedications: [Medication] = []            // All stored medications
+    var todaysMedications: [MedicationDose] = []
+    var allMedications: [Medication] = []
     var selectedDose: MedicationDose?
     var selectedMedication: Medication?
 
@@ -28,8 +28,8 @@ class MedicationLandingPageViewController: UIViewController,
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        configureCollectionView()    // Setup collection + layout
-        loadMedications()            // Initial load
+        configureCollectionView()
+        loadMedications()
         
         // Listen for updates from Add/Edit screens
         NotificationCenter.default.addObserver(
@@ -48,22 +48,21 @@ class MedicationLandingPageViewController: UIViewController,
     // ---------------------------------------------------------
     func didUpdateDoseStatus(_ dose: MedicationDose, status: DoseStatus) {
         
-        // Update in today's list
+       
         if let index = todaysMedications.firstIndex(where: { $0.id == dose.id }) {
             todaysMedications[index].status = status
         }
 
-        // Update in stored list
         if let medIndex = allMedications.firstIndex(where: { $0.id == dose.medicationID }),
            let doseIndex = allMedications[medIndex].doses.firstIndex(where: { $0.id == dose.id }) {
 
             allMedications[medIndex].doses[doseIndex].status = status
             
-            // Persist
+         
             MedicationDataStore.shared.updateMedication(allMedications[medIndex])
         }
 
-        // Rebuild today's list with updated states
+      
         loadMedications()
     }
 
@@ -71,9 +70,9 @@ class MedicationLandingPageViewController: UIViewController,
     // MARK: - Medication Sorting Helpers
     // ---------------------------------------------------------
     private func dosePriority(_ dose: MedicationDose, now: Date) -> Int {
-        if dose.status == .taken || dose.status == .skipped { return 2 }   // Completed
-        if dose.time > now { return 0 }                                    // Upcoming
-        return 1                                                           // Due
+        if dose.status == .taken || dose.status == .skipped { return 2 }
+        if dose.time > now { return 0 }
+        return 1
     }
 
     private func isMedicationDueToday(_ med: Medication, date: Date = Date()) -> Bool {
@@ -101,7 +100,7 @@ class MedicationLandingPageViewController: UIViewController,
 
         let now = Date()
 
-        // Sort by status group → then by time
+        
         todaysMedications.sort { a, b in
             let pA = dosePriority(a, now: now)
             let pB = dosePriority(b, now: now)
@@ -133,12 +132,12 @@ class MedicationLandingPageViewController: UIViewController,
     // ---------------------------------------------------------
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
 
-        // Section 0 → Today’s doses
+
         if indexPath.section == 0 {
             selectedDose = todaysMedications[indexPath.row]
             openSkipTakenModal(for: selectedDose!)
         }
-        // Section 1 → Open medication list
+     
         else {
             openEditMedicationScreen()
         }

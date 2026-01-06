@@ -7,7 +7,6 @@
 
 import UIKit
 
-// Delegate to pass back selected repeat option
 protocol RepeatSelectionDelegate: AnyObject {
     func didSelectRepeatOption(_ option: String)
 }
@@ -28,20 +27,19 @@ class RepeatViewController: UIViewController,
     // MARK: - Lifecycle
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        // Enable multiple day selection
+   
         RepeatTableView.allowsMultipleSelection = true
         
-        // UI styling
+    
         RepeatTableView.layer.cornerRadius = 10
         RepeatTableView.clipsToBounds = true
-        RepeatTableView.backgroundColor = UIColor.systemGray6
+//        RepeatTableView.backgroundColor = UIColor.systemGray6
         
-        // Set table view delegates
+       
         RepeatTableView.delegate = self
         RepeatTableView.dataSource = self
         
-        // Restore saved repeat option if user edited before
+       
         if let saved = AddMedicationDataStore.shared.repeatOption {
             selectedRepeat = saved
             updateSelection(saved)
@@ -50,12 +48,12 @@ class RepeatViewController: UIViewController,
     
     // MARK: - TableView DataSource
     
-    /// Number of rows = number of repeat types
+    
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return repeatList.count
     }
     
-    /// Configure each cell with repeat type (Everyday / weekdays)
+    
     func tableView(_ tableView: UITableView,
                    cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
@@ -76,7 +74,7 @@ class RepeatViewController: UIViewController,
         
         let tappedOption = repeatList[indexPath.row]
         
-        // 1. If "Everyday" selected → only allow this option
+    
         if tappedOption.name.lowercased() == "everyday" {
             for i in 0..<repeatList.count {
                 repeatList[i].isSelected = (i == indexPath.row)
@@ -86,15 +84,14 @@ class RepeatViewController: UIViewController,
             return
         }
         
-        // 2. If weekday selected → deselect "Everyday"
+        
         if repeatList.first?.name.lowercased() == "everyday" {
             repeatList[0].isSelected = false
         }
-        
-        // Toggle the selected weekday
+       
         repeatList[indexPath.row].isSelected.toggle()
         
-        // Build string of selected days
+        
         let selectedDays = repeatList
             .filter { $0.isSelected }
             .map { $0.name }
@@ -106,7 +103,7 @@ class RepeatViewController: UIViewController,
     
     // MARK: - Helper
     
-    /// Updates UI selection when user returns to this screen
+   
     func updateSelection(_ option: String) {
         for i in 0..<repeatList.count {
             repeatList[i].isSelected = (repeatList[i].name == option)
@@ -116,25 +113,23 @@ class RepeatViewController: UIViewController,
     
     // MARK: - Actions
     
-    /// Back button → return to previous screen
+    
     @IBAction func onBackPressed(_ sender: UIBarButtonItem) {
         navigationController?.popViewController(animated: true)
     }
-    
-    /// Tick button → save selected repeat option and close
+   
     @IBAction func onTickPressed(_ sender: Any) {
         
-        // Get selected days
+       
         let selectedDays = repeatList
             .filter { $0.isSelected }
             .map { $0.name }
-        
-        // Everyday selected → save all days 1–7
+ 
         if selectedDays.contains("Everyday") {
             AddMedicationDataStore.shared.repeatOption = "Everyday"
             AddMedicationDataStore.shared.selectedWeekdayNumbers = [1,2,3,4,5,6,7]
         } else {
-            // Map weekday names to weekday numbers
+          
             let weekdayMap: [String: Int] = [
                 "Sunday": 1,
                 "Monday": 2,
@@ -145,7 +140,7 @@ class RepeatViewController: UIViewController,
                 "Saturday": 7
             ]
             
-            // Convert selected names → numbers
+         
             let mapped = selectedDays.compactMap { weekdayMap[$0] }
             
             AddMedicationDataStore.shared.repeatOption =
@@ -153,10 +148,9 @@ class RepeatViewController: UIViewController,
             AddMedicationDataStore.shared.selectedWeekdayNumbers = mapped
         }
         
-        // Send final saved value back to parent screen
+       
         delegate?.didSelectRepeatOption(AddMedicationDataStore.shared.repeatOption!)
-        
-        // Close screen
+   
         navigationController?.popViewController(animated: true)
     }
 }

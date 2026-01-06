@@ -7,7 +7,7 @@
 
 import UIKit
 
-// Delegate used to pass selected unit + type back to previous screen
+
 protocol UnitsAndTypeDelegate: AnyObject {
     func didSelectUnitsAndType(unitText: String, selectedType: String)
 }
@@ -30,23 +30,21 @@ class UnitAndTypeViewController: UIViewController,
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        // UI Setup
+       
         unitTextField.layer.cornerRadius = 25
         unitTextField.clipsToBounds = true
         unitTextField.placeholder = "mg"
         unitTextField.delegate = self
 
-        // Setup table appearance
         TypeTableView.layer.cornerRadius = 10
         TypeTableView.clipsToBounds = true
         TypeTableView.backgroundColor = UIColor.systemGray6
         TypeTableView.delegate = self
         TypeTableView.dataSource = self
 
-        // Restore saved unit text
+   
         unitTextField.text = UnitAndTypeStore.shared.savedUnit
 
-        // Restore saved type selection
         if let savedType = UnitAndTypeStore.shared.savedType, !savedType.isEmpty {
             selectedType = savedType
 
@@ -79,12 +77,11 @@ class UnitAndTypeViewController: UIViewController,
 
         selectedType = unitAndType[indexPath.row].name
 
-        // Ensure only one type is selected
+        
         for i in 0..<unitAndType.count {
             unitAndType[i].isSelected = (i == indexPath.row)
         }
 
-        // Store selected type
         UnitAndTypeStore.shared.savedType = selectedType!
 
         tableView.reloadData()
@@ -92,7 +89,7 @@ class UnitAndTypeViewController: UIViewController,
 
     // MARK: - TextField Delegate
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
-        textField.resignFirstResponder() // hide keyboard
+        textField.resignFirstResponder()
         return true
     }
 
@@ -102,18 +99,17 @@ class UnitAndTypeViewController: UIViewController,
     }
 
     @IBAction func onTickPressed(_ sender: UIBarButtonItem) {
-        // Ensure both unit text and type are selected
+        
         guard let text = unitTextField.text,
               let type = selectedType else { return }
 
-        // Save selections
         UnitAndTypeStore.shared.savedUnit = text
         UnitAndTypeStore.shared.savedType = type
 
-        // Pass back selected values using delegate
+      
         delegate?.didSelectUnitsAndType(unitText: text, selectedType: type)
 
-        // Go back
+       
         navigationController?.popViewController(animated: true)
     }
 }

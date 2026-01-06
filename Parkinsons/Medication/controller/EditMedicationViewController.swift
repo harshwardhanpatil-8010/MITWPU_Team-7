@@ -43,30 +43,30 @@ class EditMedicationViewController: UIViewController,
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        reloadMedications()     // Refresh list
+        reloadMedications()
     }
 
     // ---------------------------------------------------------
     // MARK: - Data Reloading
     // ---------------------------------------------------------
-    func reloadMedications() {      // Reload medication list
+    func reloadMedications() {
         medications = MedicationDataStore.shared.medications
         collectionView.reloadData()
     }
 
-    func didUpdateMedication() {    // Delegate callback
+    func didUpdateMedication() {
         reloadMedications()
     }
 
     // ---------------------------------------------------------
     // MARK: - Actions
     // ---------------------------------------------------------
-    @IBAction func saveTapped(_ sender: UIBarButtonItem) {   // Save and close
+    @IBAction func saveTapped(_ sender: UIBarButtonItem) {
         delegate?.didUpdateMedication()
         dismiss(animated: true)
     }
 
-    @IBAction func backTapped(_ sender: Any) {               // Back button
+    @IBAction func backTapped(_ sender: Any) {
         dismiss(animated: true)
     }
 
@@ -96,12 +96,12 @@ class EditMedicationViewController: UIViewController,
 extension EditMedicationViewController: UICollectionViewDataSource {
 
     func collectionView(_ collectionView: UICollectionView,
-                        numberOfItemsInSection section: Int) -> Int {   // Count cells
+                        numberOfItemsInSection section: Int) -> Int {
         return medications.count
     }
 
     func collectionView(_ collectionView: UICollectionView,
-                        cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {  // Setup cell
+                        cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(
             withReuseIdentifier: "EditMedCell",
             for: indexPath
@@ -119,13 +119,13 @@ extension EditMedicationViewController: UICollectionViewDelegateFlowLayout {
 
     func collectionView(_ collectionView: UICollectionView,
                         layout collectionViewLayout: UICollectionViewLayout,
-                        sizeForItemAt indexPath: IndexPath) -> CGSize {    // Cell size
+                        sizeForItemAt indexPath: IndexPath) -> CGSize {
         return CGSize(width: collectionView.frame.width - 32, height: 110)
     }
 
     func collectionView(_ collectionView: UICollectionView,
                         layout collectionViewLayout: UICollectionViewLayout,
-                        insetForSectionAt section: Int) -> UIEdgeInsets {   // Section padding
+                        insetForSectionAt section: Int) -> UIEdgeInsets {   
         return UIEdgeInsets(top: 16, left: 16, bottom: 16, right: 16)
     }
 }

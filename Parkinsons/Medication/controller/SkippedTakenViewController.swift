@@ -36,46 +36,45 @@ class SkippedTakenViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        // Set screen title
+  
         let formatter = DateFormatter()
         formatter.dateFormat = "EEEE, d MMM"
         self.title = formatter.string(from: Date())
 
-        // Add close button
+        
         navigationItem.leftBarButtonItem = UIBarButtonItem(
             barButtonSystemItem: .close,
             target: self,
             action: #selector(handleBack)
         )
 
-        // Setup UI content
+      
         titleLabel.text = receivedTitle
         subtitleLabel.text = receivedSubtitle
         iconImageView.image = UIImage(named: receivedIconName ?? "")
 
-        // Rounded container
         uiview.applyCardStyle()
         
         
     }
 
     // MARK: - Navigation
-    @objc func handleBack() {      // Close screen
+    @objc func handleBack() {
         dismiss(animated: true)
     }
 
     // MARK: - Button Actions
-    @IBAction func skippedButtonTapped(_ sender: UIButton) {    // Select skipped
+    @IBAction func skippedButtonTapped(_ sender: UIButton) {
         selectedStatus = .skipped
         updateButtonUI()
     }
 
-    @IBAction func takenButtonTapped(_ sender: UIButton) {      // Select taken
+    @IBAction func takenButtonTapped(_ sender: UIButton) {
         selectedStatus = .taken
         updateButtonUI()
     }
 
-    @IBAction func tickButtonTapped(_ sender: UIButton) {       // Confirm update
+    @IBAction func tickButtonTapped(_ sender: UIButton) {
         guard let dose = selectedDose else { return }
 
         delegate?.didUpdateDoseStatus(dose, status: selectedStatus)
@@ -83,7 +82,7 @@ class SkippedTakenViewController: UIViewController {
     }
 
     // MARK: - UI Updates
-    func updateButtonUI() {     // Update selection UI
+    func updateButtonUI() {
 
         var skippedConfig: UIButton.Configuration
         var takenConfig: UIButton.Configuration
@@ -100,19 +99,18 @@ class SkippedTakenViewController: UIViewController {
             takenConfig = .tinted()
         }
 
-        // Set titles
+     
         skippedConfig.title = "Skipped"
         takenConfig.title = "Taken"
 
-        // Capsule style buttons
+       
         skippedConfig.cornerStyle = .capsule
         takenConfig.cornerStyle = .capsule
 
-        // Apply configs
+       
         skippedButton.configuration = skippedConfig
         takenButton.configuration = takenConfig
 
-        // Enable tick ONLY when selected
         tickButton.isEnabled = (selectedStatus != .none)
     }
 }

@@ -7,76 +7,144 @@
 
 import UIKit
 
-class LevelSelectionViewController: UIViewController {
+class LevelSelectionViewController: UIViewController,
+UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
 
-    
-    @IBOutlet weak var datePickerUIView: UIView!
-    
+    @IBOutlet weak var monthAndYearOutlet: UILabel!
     @IBOutlet weak var playButton: UIButton!
-    @IBOutlet weak var datePickerOutlet: UIDatePicker!
+    @IBOutlet weak var calendarViewOutlet: UIView!
+    @IBOutlet weak var collectionView: UICollectionView!
+    
+    private let calendar = Calendar.current
+    private var currentMonthDate = Date()
+    private var daysInMonth = 0
+    private var firstWeekday = 0
+    private var timer: Timer?
+
     override func viewDidLoad() {
         super.viewDidLoad()
-        datePickerUIView.applyCardStyle()
-        playButton.isEnabled = true
-        let calendar = Calendar.current
-        let now = Date()
+
+        collectionView.dataSource = self
+        collectionView.delegate = self
+        collectionView.isScrollEnabled = false
+
+        setupMonth()
         
-        let startOfMonth = calendar.date(from: calendar.dateComponents([.year,.month], from: now))!
-        let range = calendar.range(of: .day, in: .month, for: now)!
-        let endOfMonth = calendar.date(byAdding: .day, value: range.count - 1 ,to: startOfMonth)!
+         if let layout = collectionView.collectionViewLayout as? UICollectionViewFlowLayout {
+                layout.minimumInteritemSpacing = 0
+               layout.minimumLineSpacing = 0
+            }
+
+    }
+
+    private func setupMonth() {
+        daysInMonth = calendar.range(of: .day, in: .month, for: currentMonthDate)?.count ?? 0
+        let firstDay = calendar.date(from: calendar.dateComponents([.year, .month], from: currentMonthDate))!
+        firstWeekday = calendar.component(.weekday, from: firstDay) - 1
+
+        let formatter = DateFormatter()
+        formatter.dateFormat = "MMMM yyyy"
+        monthAndYearOutlet.text = formatter.string(from: currentMonthDate)
+
+        collectionView.reloadData()
+    }
+
+
+
+    func collectionView(_ collectionView: UICollectionView,
+                        numberOfItemsInSection section: Int) -> Int {
+        daysInMonth + firstWeekday
+    }
+
+    func collectionView(_ collectionView: UICollectionView,
+                        cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+
+        let cell = collectionView.dequeueReusableCell(
+            withReuseIdentifier: "DateCell",
+            for: indexPath
+        ) as! DateCell
+
+        if indexPath.item < firstWeekday {
+            cell.configureEmpty()
+            return cell
+        }
+
+        let day = indexPath.item - firstWeekday + 1
+        let date = calendar.date(bySetting: .day, value: day, of: currentMonthDate)!
+        let today = calendar.startOfDay(for: Date())
+        let cellDate = calendar.startOfDay(for: date)
+
+        let isToday = calendar.isDate(cellDate, inSameDayAs: today)
         
-        datePickerOutlet.minimumDate = startOfMonth
-        datePickerOutlet.maximumDate = min(endOfMonth, now)
-        datePickerOutlet.datePickerMode = .date
+        let isPast = calendar.compare(cellDate, to: today, toGranularity: .day) == .orderedAscending
+
+        cell.configure(
+            day: day,
+            isToday: isToday,
+            isPast: isPast
+        )
+
+
+
+        return cell
     }
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
-        playButton.isEnabled = true
-    }
+
+    func collectionView(_ collectionView: UICollectionView,
+                            layout collectionViewLayout: UICollectionViewLayout,
+                            sizeForItemAt indexPath: IndexPath) -> CGSize {
+            let width = collectionView.frame.width / 7
+          
+        return CGSize(width: width, height: width)
+        }
+
+
+        
+
     
-    @IBAction func startButtonTapped(_ sender: UIButton) {
-        sender.isEnabled = false
-        let date = datePickerOutlet.date
-        let manager = DailyGameManager.shared
-        
-        if manager.isOutsideCurrentMonth(date: date) {
-           alert("This date is in future. You can't play it yet")
-            sender.isEnabled = true
-            return
-        }
-        if manager.isFuture(date: date) {
-            alert("This levels are locked")
-            sender.isEnabled = true
-            return
-        }
-        
-        if manager.isCompleted(date: date) {
-            alert("Game for this day is already completed")
-            sender.isEnabled = true
-            return
-        }
-        
-        if manager.isAttempted(date: date) {
-            alert("You already attempted this day and cannot retry")
-            sender.isEnabled = true
-            return
-        }
-        
-        
-        let storyboard = UIStoryboard(name: "Match the Cards", bundle: nil)
-        let vc = storyboard.instantiateViewController(withIdentifier: "GameViewController") as! GameViewController
-        
-        vc.selectedDate = date
-        vc.level = manager.level(for: date)
-        
-        navigationController?.pushViewController(vc, animated: true)
-    }
-    
-    private func alert(_ text: String) {
-        let alert = UIAlertController(title: "Not Allowed", message: text, preferredStyle: .alert)
-        alert.addAction(UIAlertAction(title: "Dismiss", style: .default))
-        present(alert, animated: true)
-        }
+//    
+//    @IBAction func startButtonTapped(_ sender: UIButton) {
+//        sender.isEnabled = false
+//
+//        let manager = DailyGameManager.shared
+//        
+//        if manager.isOutsideCurrentMonth(date: date) {
+//           alert("This date is in future. You can't play it yet")
+//            sender.isEnabled = true
+//            return
+//        }
+//        if manager.isFuture(date: date) {
+//            alert("This levels are locked")
+//            sender.isEnabled = true
+//            return
+//        }
+//        
+//        if manager.isCompleted(date: date) {
+//            alert("Game for this day is already completed")
+//            sender.isEnabled = true
+//            return
+//        }
+//        
+//        if manager.isAttempted(date: date) {
+//            alert("You already attempted this day and cannot retry")
+//            sender.isEnabled = true
+//            return
+//        }
+//        
+//        
+//        let storyboard = UIStoryboard(name: "Match the Cards", bundle: nil)
+//        let vc = storyboard.instantiateViewController(withIdentifier: "GameViewController") as! GameViewController
+//        
+//        vc.selectedDate = date
+//        vc.level = manager.level(for: date)
+//        
+//        navigationController?.pushViewController(vc, animated: true)
+//    }
+//    
+//    private func alert(_ text: String) {
+//        let alert = UIAlertController(title: "Not Allowed", message: text, preferredStyle: .alert)
+//        alert.addAction(UIAlertAction(title: "Dismiss", style: .default))
+//        present(alert, animated: true)
+//        }
     /*
     // MARK: - Navigation
 

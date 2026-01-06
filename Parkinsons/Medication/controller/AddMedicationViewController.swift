@@ -56,31 +56,31 @@ class AddMedicationViewController: UIViewController,
         medicationNameTextField.delegate = self
         strengthLabel.delegate = self
         
-        // setup UI + hide delete button if adding new medication
+       
         deleteButton.isHidden = !isEditMode
         backgroundView.layer.cornerRadius = 16
         
-        // configure tableView and stepper
+     
         doseTableView.dataSource = self
         doseTableView.delegate = self
         doseStepper.value = Double(doseArray.count)
         
-        // enable tapping on stacks
+        
         repeatStack.isUserInteractionEnabled = true
         unitandTypeStack.isUserInteractionEnabled = true
         
-        // pre-fill UI when editing existing medication
+ 
         if isEditMode {
             fillFieldsForEditing()
             deleteButton.isHidden = false
         }
         
-        // load last selected repeat value
+     
         if let savedRepeat = AddMedicationDataStore.shared.repeatOption {
             repeatLabel.text = savedRepeat
         }
         
-        // add tap gesture for repeat selection
+       
         repeatStack.addGestureRecognizer(
             UITapGestureRecognizer(target: self, action: #selector(repeatStackTapped))
         )
@@ -93,7 +93,7 @@ class AddMedicationViewController: UIViewController,
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
-        // refresh displayed units & type (only when adding new)
+        
         if !isEditMode {
             unitLabel.text = UnitAndTypeStore.shared.savedUnit ?? "mg"
             strengthUnitLabel.text = UnitAndTypeStore.shared.savedUnit ?? "mg"
@@ -112,12 +112,12 @@ class AddMedicationViewController: UIViewController,
     // MARK: - Helpers
     // ---------------------------------------------------------
     
-    /// Updates label color if showing placeholder text
+   
     func updateLabelPlaceholderStyle(label: UILabel, placeholder: String) {
         label.textColor = (label.text == placeholder) ? .systemGray2 : .label
     }
     
-    /// Returns SF Symbol name based on medication type
+    
     func iconForType(_ type: String) -> String {
         switch type.lowercased() {
         case "capsule": return "capsuleM"
@@ -134,7 +134,7 @@ class AddMedicationViewController: UIViewController,
         }
     }
     
-    /// Loads all medication fields when editing an existing medication
+   
     func fillFieldsForEditing() {
         guard let med = medicationToEdit else { return }
         
@@ -165,12 +165,12 @@ class AddMedicationViewController: UIViewController,
         updateStepperValue()
     }
     
-    /// Syncs stepper value after modifying dose count
+   
     func updateStepperValue() {
         doseStepper.value = Double(doseArray.count)
     }
     
-    /// Renumbers dose labels after deleting rows
+    
     func renumberDoses() {
         for i in 0..<doseArray.count {
             if let cell = doseTableView.cellForRow(at: IndexPath(row: i, section: 0))
@@ -184,13 +184,10 @@ class AddMedicationViewController: UIViewController,
     // MARK: - Actions
     // ---------------------------------------------------------
     
-    /// Handles back button press
     @IBAction func backButtonTapped(_ sender: Any) {
         dismiss(animated: true, completion: nil)
     }
-    
-    /// Opens Units + Type screen using push navigation
-
+   
     
     @IBAction func onUnitStackTapped(_ sender: UITapGestureRecognizer) {
                 let storyboard = UIStoryboard(name: "Medication", bundle: nil)
@@ -210,7 +207,7 @@ class AddMedicationViewController: UIViewController,
 //        navigationController?.pushViewController(vc, animated: true)
 //    }
     
-    /// Opens Repeat screen using push navigation
+   
     @IBAction func repeatStackTapped(_ sender: Any) {
         let storyboard = UIStoryboard(name: "Medication", bundle: nil)
         guard let vc = storyboard.instantiateViewController(withIdentifier: "RepeatVC")
@@ -220,7 +217,7 @@ class AddMedicationViewController: UIViewController,
         navigationController?.pushViewController(vc, animated: true)
     }
     
-    /// Handles stepper increase/decrease to add/remove dose rows
+    
     @IBAction func doseStepperChanged(_ sender: UIStepper) {
         let newCount = Int(sender.value)
         
@@ -233,14 +230,14 @@ class AddMedicationViewController: UIViewController,
         doseTableView.reloadData()
     }
     
-    /// Deletes medication in edit mode
+   
     @IBAction func deleteMedication(_ sender: UIButton) {
         guard let med = medicationToEdit else { return }
         MedicationDataStore.shared.deleteMedication(med.id)
         dismiss(animated: true)
     }
     
-    /// Saves medication (new or updated)
+  
     @IBAction func onTickPressed(_ sender: UIBarButtonItem) {
         let strengthValue = Int(strengthLabel.text ?? "")
         guard let name = medicationNameTextField.text, !name.isEmpty else { return }
@@ -248,7 +245,6 @@ class AddMedicationViewController: UIViewController,
         let medicationID = isEditMode ? medicationToEdit.id : UUID()
         let repeatText = repeatLabel.text ?? "Everyday"
         
-        // determine schedule rule
         let schedule: RepeatRule
         switch repeatText.lowercased() {
         case "everyday": schedule = .everyday
@@ -256,7 +252,6 @@ class AddMedicationViewController: UIViewController,
         default: schedule = .weekly(AddMedicationDataStore.shared.selectedWeekdayNumbers)
         }
         
-        // build all dose objects
         let updatedDoses = doseArray.map { date in
             MedicationDose(
                 id: UUID(),
@@ -265,8 +260,7 @@ class AddMedicationViewController: UIViewController,
                 medicationID: medicationID
             )
         }
-        
-        // update existing medication
+       
         if isEditMode {
             MedicationDataStore.shared.updateMedication(
                 originalID: medicationToEdit.id,
@@ -278,7 +272,7 @@ class AddMedicationViewController: UIViewController,
                 newStrength: strengthValue
             )
         }
-        // create new medication
+    
         else {
             let newMedication = Medication(
                 id: medicationID,
@@ -304,7 +298,7 @@ class AddMedicationViewController: UIViewController,
 // ---------------------------------------------------------
 extension AddMedicationViewController {
     
-    /// Receives selected unit + type from UnitAndTypeVC
+
     func didSelectUnitsAndType(unitText: String, selectedType: String) {
         unitLabel.text = unitText
         typeLabel.text = selectedType
@@ -314,8 +308,7 @@ extension AddMedicationViewController {
         typeLabel.textColor = .label
         strengthUnitLabel.textColor = .label
     }
-    
-    /// Receives selected repeat option from RepeatVC
+
     func didSelectRepeatOption(_ option: String) {
         repeatLabel.text = option
         repeatLabel.textColor = .label
@@ -323,7 +316,6 @@ extension AddMedicationViewController {
     }
 
     
-    /// Updates dose time when user changes time picker
     func didUpdateTime(cell: DoseTableViewCell, newTime: Date) {
         if let indexPath = doseTableView.indexPath(for: cell) {
             doseArray[indexPath.row] = newTime
@@ -335,13 +327,11 @@ extension AddMedicationViewController {
 // MARK: - TableView DataSource + Delegate
 // ---------------------------------------------------------
 extension AddMedicationViewController {
-    
-    /// Number of dose rows
+
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         doseArray.count
     }
-    
-    /// Configure each dose row
+
     func tableView(_ tableView: UITableView,
                    cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
@@ -354,8 +344,7 @@ extension AddMedicationViewController {
         
         return cell
     }
-    
-    /// Handles delete button inside dose row
+ 
     func didTapDelete(cell: DoseTableViewCell) {
         guard let indexPath = doseTableView.indexPath(for: cell) else { return }
         
