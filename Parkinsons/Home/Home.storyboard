@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
+
 <document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="24506" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="hog-PK-88T">
+
     <device id="retina6_12" orientation="portrait" appearance="light"/>
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="24504"/>
@@ -712,12 +714,24 @@
         <!--MedicationLandingPageViewController-->
         <scene sceneID="FZc-cv-gWO">
             <objects>
+
                 <viewControllerPlaceholder storyboardIdentifier="MedicationLandingPageViewController" storyboardName="Medication" referencedIdentifier="MedicationLandingPageViewController" id="Blt-i4-BjM" sceneMemberID="viewController">
                     <tabBarItem key="tabBarItem" title="Item" id="g8a-u1-633"/>
                 </viewControllerPlaceholder>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="W7h-gM-04j" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+
             </objects>
             <point key="canvasLocation" x="1108" y="543"/>
+        </scene>
+        <!--MedicationLandingPageViewController-->
+        <scene sceneID="bQx-gG-zFB">
+            <objects>
+                <viewControllerPlaceholder storyboardName="Medication" referencedIdentifier="MedicationLandingPageViewController" id="uFr-Ek-nIo" sceneMemberID="viewController">
+                    <tabBarItem key="tabBarItem" title="Item" id="WeL-mP-DeM"/>
+                </viewControllerPlaceholder>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="aJJ-Af-8IQ" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="132" y="532"/>
         </scene>
         <!--Home-->
         <scene sceneID="B9H-BA-D7G">
@@ -809,7 +823,7 @@
             <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
         </systemColor>
         <systemColor name="systemGray5Color">
-            <color red="0.8980392157" green="0.8980392157" blue="0.91764705879999997" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <color red="0.89803921568627454" green="0.89803921568627454" blue="0.91764705882352937" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </systemColor>
     </resources>
 </document>

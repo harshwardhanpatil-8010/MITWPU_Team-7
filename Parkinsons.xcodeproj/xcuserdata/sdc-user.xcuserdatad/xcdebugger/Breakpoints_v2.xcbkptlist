@@ -1,6 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Bucket
+<<<<<<< HEAD
    uuid = "D716AF76-ED0E-43F8-B0DA-56AA299C6E63"
+=======
+   uuid = "15F45D48-31F7-4D5C-9019-055806DDFC8C"
+>>>>>>> origin/Unnatti
    type = "1"
    version = "2.0">
 </Bucket>
