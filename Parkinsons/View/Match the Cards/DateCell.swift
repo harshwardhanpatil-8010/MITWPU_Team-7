@@ -17,7 +17,7 @@ class DateCell: UICollectionViewCell {
         super.prepareForReuse()
 
         labelBackgroundView.backgroundColor = .clear
-        dateLabel.textColor = .black
+        dateLabel.textColor = .label
         dateLabel.tintColor = .clear
         dateLabel.text = ""
     }
@@ -38,15 +38,21 @@ class DateCell: UICollectionViewCell {
        }
 
     func configure(day: Int, isToday: Bool, isPast: Bool) {
-        dateLabel.isEnabled = true
         dateLabel.text = "\(day)"
 
         if isToday {
             labelBackgroundView.backgroundColor = .systemBlue
             dateLabel.textColor = .white
+            dateLabel.isEnabled = true
         } else {
             labelBackgroundView.backgroundColor = .clear
-            dateLabel.textColor = isPast ? .black : .lightGray
+            if isPast {
+                dateLabel.textColor = .label
+                dateLabel.isEnabled = true
+            } else {
+                dateLabel.textColor = .secondaryLabel
+                dateLabel.isEnabled = false
+            }
         }
     }
 
@@ -54,7 +60,7 @@ class DateCell: UICollectionViewCell {
            
        func configureEmpty() {
            dateLabel.text = ""
-            dateLabel.textColor = .black
+            dateLabel.textColor = .label
             labelBackgroundView.backgroundColor = .clear
        }
     }

@@ -12,10 +12,7 @@ UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
 
     @IBOutlet weak var monthAndYearOutlet: UILabel!
     @IBOutlet weak var playButton: UIButton!
-   
     @IBOutlet weak var calendarViewOutlet: UIView!
-    
-    
     @IBOutlet weak var collectionView: UICollectionView!
     
     private let calendar = Calendar.current
@@ -33,9 +30,10 @@ UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
 
         setupMonth()
         
-        if let layout = collectionView.collectionViewLayout as? UICollectionViewFlowLayout {
-            layout.estimatedItemSize = .zero
-        }
+         if let layout = collectionView.collectionViewLayout as? UICollectionViewFlowLayout {
+                layout.minimumInteritemSpacing = 0
+               layout.minimumLineSpacing = 0
+            }
 
     }
 
@@ -76,22 +74,9 @@ UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
         let today = calendar.startOfDay(for: Date())
         let cellDate = calendar.startOfDay(for: date)
 
-        let currentMonth = calendar.dateComponents([.year, .month], from: today)
-        let showingMonth = calendar.dateComponents([.year, .month], from: currentMonthDate)
-
-        let isSameMonth = currentMonth.year == showingMonth.year &&
-                          currentMonth.month == showingMonth.month
-
         let isToday = calendar.isDate(cellDate, inSameDayAs: today)
-
-        let isPast: Bool
-        if isSameMonth {
-            // Only compare days inside the current month
-            isPast = cellDate < today
-        } else {
-            // Entire month logic
-            isPast = currentMonthDate < today
-        }
+        
+        let isPast = calendar.compare(cellDate, to: today, toGranularity: .day) == .orderedAscending
 
         cell.configure(
             day: day,
@@ -105,14 +90,13 @@ UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
     }
 
     func collectionView(_ collectionView: UICollectionView,
-                        layout collectionViewLayout: UICollectionViewLayout,
-                        sizeForItemAt indexPath: IndexPath) -> CGSize {
+                            layout collectionViewLayout: UICollectionViewLayout,
+                            sizeForItemAt indexPath: IndexPath) -> CGSize {
+            let width = collectionView.frame.width / 7
+          
+        return CGSize(width: width, height: width)
+        }
 
-        CGSize(width: collectionView.frame.width / 7,
-               height: collectionView.frame.height / 6)
-    }
-
-    
 
         
 
