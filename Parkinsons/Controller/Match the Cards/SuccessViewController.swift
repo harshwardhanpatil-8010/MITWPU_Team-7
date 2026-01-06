@@ -25,8 +25,15 @@ class SuccessViewController: UIViewController {
         super.viewWillAppear(animated)
         navigationItem.hidesBackButton = true
         navigationItem.rightBarButtonItem = nil
+        tabBarController?.tabBar.isHidden = true
     }
 
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        tabBarController?.tabBar.isHidden = false
+    }
+    
+    
     private func showConfetti() {
          let confettiLayer = CAEmitterLayer()
          confettiLayer.emitterPosition = CGPoint(x: view.bounds.midX, y: -10)

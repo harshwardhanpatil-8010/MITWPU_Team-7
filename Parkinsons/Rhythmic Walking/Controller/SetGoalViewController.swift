@@ -133,6 +133,11 @@ class SetGoalViewController: UIViewController, UITableViewDataSource, UIPickerVi
         super.viewWillAppear(animated)
         DataStore.shared.cleanupOldSessions()
         sessionTableView.reloadData()
+        tabBarController?.tabBar.isHidden = true
+    }
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        tabBarController?.tabBar.isHidden = false
     }
 
     /*

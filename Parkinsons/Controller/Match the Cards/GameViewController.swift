@@ -57,11 +57,14 @@ class GameViewController: UIViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         interactionsEnabled = true
+        tabBarController?.tabBar.isHidden = true
     }
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
         stopTimer()
+        tabBarController?.tabBar.isHidden = false
     }
+
     
     private struct Difficulty {
         let pairs: Int

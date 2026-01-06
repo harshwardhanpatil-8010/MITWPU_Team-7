@@ -86,7 +86,12 @@ class SessionRunningViewController: UIViewController {
         super.viewWillDisappear(animated)
     }
 
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        tabBarController?.tabBar.isHidden = true
+    }
 
+ 
     
     
     @IBAction func pauseTapped(_ sender: Any) {
