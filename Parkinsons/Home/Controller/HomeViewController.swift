@@ -88,7 +88,9 @@ class HomeViewController: UIViewController, UICollectionViewDelegate , SymptomLo
         
         // Set the main layout
         mainCollectionView.setCollectionViewLayout(generateLayout(), animated: true)
-        dates = HomeDataStore.shared.getDates()
+
+         dates = HomeDataStore.shared.getDates()
+
         autoSelectToday()
         
     }
@@ -367,17 +369,17 @@ class HomeViewController: UIViewController, UICollectionViewDelegate , SymptomLo
     // MARK: - CollectionView Delegate Selection Control
     
     // ⭐️ NEW: This disables clicking on future dates
-    func collectionView(_ collectionView: UICollectionView, shouldSelectItemAt indexPath: IndexPath) -> Bool {
-        if homeSections[indexPath.section] == .calendar {
-            let cellDate = dates[indexPath.row].date
-            let today = Calendar.current.startOfDay(for: Date())
-            let targetDate = Calendar.current.startOfDay(for: cellDate)
-            
-            // If the date is after today, don't allow selection
-            return targetDate <= today
-        }
-        return true
-    }
+//    func collectionView(_ collectionView: UICollectionView, shouldSelectItemAt indexPath: IndexPath) -> Bool {
+//        if homeSections[indexPath.section] == .calendar {
+//            let cellDate = dates[indexPath.row].date
+//            let today = Calendar.current.startOfDay(for: Date())
+//            let targetDate = Calendar.current.startOfDay(for: cellDate)
+//            
+//            // If the date is after today, don't allow selection
+//            return targetDate <= today
+//        }
+//        return true
+//    }
 
 //
 //    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
@@ -478,19 +480,16 @@ extension HomeViewController: UICollectionViewDataSource {
         
         switch sectionType {
         case .calendar:
-            let cell = mainCollectionView.dequeueReusableCell(withReuseIdentifier: "calendar_cell", for: indexPath) as! CalenderCollectionViewCell
-            let model = dates[indexPath.row]
-            let isSelected = Calendar.current.isDate(model.date, inSameDayAs: selectedDate)
-            let isToday = Calendar.current.isDate(model.date, inSameDayAs: Date())
-            
-            // ⭐️ VISUAL FEEDBACK: Dim future dates
-            let today = Calendar.current.startOfDay(for: Date())
-            let cellDay = Calendar.current.startOfDay(for: model.date)
-            let isFuture = cellDay > today
-            
-            cell.configure(with: model, isSelected: isSelected, isToday: isToday)
-            cell.contentView.alpha = isFuture ? 0.3 : 1.0
-            return cell
+                   let cell = mainCollectionView.dequeueReusableCell(withReuseIdentifier: "calendar_cell", for: indexPath) as! CalenderCollectionViewCell
+                   let model = dates[indexPath.row]
+                   let isSelected = Calendar.current.isDate(model.date, inSameDayAs: selectedDate)
+                   let isToday = Calendar.current.isDate(model.date, inSameDayAs: Date())
+                   
+                   
+                   
+                   cell.configure(with: model, isSelected: isSelected, isToday: isToday)
+                   cell.contentView.alpha = 1.0
+                   return cell
             
         case .medications:
             let cell = mainCollectionView.dequeueReusableCell(withReuseIdentifier: "medication_card_cell", for: indexPath) as! MedicationCardCollectionViewCell

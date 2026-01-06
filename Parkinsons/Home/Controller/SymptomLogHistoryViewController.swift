@@ -89,7 +89,8 @@ extension SymptomLogHistoryViewController: UITableViewDataSource {
             return UITableViewCell()
         }
         
-        cell.configure(with: rating)
+        // Pass 'false' here because History mode is read-only
+        cell.configure(with: rating, isEditable: false)
         
         return cell
     }

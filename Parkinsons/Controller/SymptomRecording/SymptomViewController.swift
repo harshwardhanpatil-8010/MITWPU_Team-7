@@ -2,25 +2,36 @@ import UIKit
 
 class SymptomViewController: UIViewController {
 
+    // MARK: - Outlets
     @IBOutlet weak var collectionView: UICollectionView!
-    
+    @IBOutlet weak var editAndSaveButton: UIButton!
     @IBOutlet weak var symptomBackground: UIView!
     @IBOutlet weak var tableView: UITableView!
+    
+    // MARK: - Properties
     var dates: [DateModel] = []
     var selectedDate: Date = Date()
     var currentDayLogs: [SymptomRating] = []
     
-    // ADD CaseIterable HERE to fix the error
     enum Section: Int, CaseIterable {
         case calendar = 0
         case tremor = 1
-        case gait = 2 // Separate case
+        case gait = 2
     }
+    
+    enum ViewMode {
+        case history // Viewing existing logs (SymptomDetailCell)
+        case entry   // Adding/Editing logs (SymptomRatingCell)
+    }
+
+    var currentMode: ViewMode = .history
+    
+    // MARK: - Lifecycle
     override func viewDidLoad() {
         super.viewDidLoad()
         
         dates = HomeDataStore.shared.getDates()
-        
+        tableView.separatorStyle = .none
         registerCells()
         collectionView.dataSource = self
         collectionView.delegate = self
@@ -28,55 +39,88 @@ class SymptomViewController: UIViewController {
         
         autoSelectToday()
         
-        // 1. Set the table view data source
-                tableView.dataSource = self
-                tableView.delegate = self
+        tableView.dataSource = self
+        tableView.delegate = self
                 
-                // 2. Fetch data for the initial selected date
-                updateDataForSelectedDate()
-                setupSymptomBackgroundUI()
+        updateDataForSelectedDate()
+        setupSymptomBackgroundUI()
     }
+    
+    // MARK: - UI Setup
     func setupSymptomBackgroundUI() {
-        // 1. Corner Radius
         symptomBackground.layer.cornerRadius = 20
-        
-        // 2. Shadow Properties
         symptomBackground.layer.shadowColor = UIColor.black.cgColor
-        symptomBackground.layer.shadowOffset = CGSize(width: 0, height: 4) // Positioning
-        symptomBackground.layer.shadowOpacity = 0.1 // Transparency (0.0 to 1.0)
-        symptomBackground.layer.shadowRadius = 10 // Blur spread
-        
-        // 3. Important: Ensure masksToBounds is false so the shadow is visible
+        symptomBackground.layer.shadowOffset = CGSize(width: 0, height: 4)
+        symptomBackground.layer.shadowOpacity = 0.1
+        symptomBackground.layer.shadowRadius = 10
         symptomBackground.layer.masksToBounds = false
     }
-    func updateDataForSelectedDate() {
-            // Fetch the entry from your Manager using the selectedDate
-            if let entry = SymptomLogManager.shared.getLogEntry(for: selectedDate) {
-                self.currentDayLogs = entry.ratings
-            } else {
-                // No data for this day
-                self.currentDayLogs = []
-            }
-            
-            // Refresh the UI
-            tableView.reloadData()
-            collectionView.reloadData()
-        }
     
     func registerCells() {
+        // CollectionView Cells
         collectionView.register(UINib(nibName: "CalenderCollectionViewCell", bundle: nil), forCellWithReuseIdentifier: "calendar_cell")
         collectionView.register(UINib(nibName: "tremorCard", bundle: nil), forCellWithReuseIdentifier: "tremor_cell")
-        collectionView.register(UINib(nibName: "gaitCard", bundle: nil), forCellWithReuseIdentifier: "gait_cell") // Registered
-        
+        collectionView.register(UINib(nibName: "gaitCard", bundle: nil), forCellWithReuseIdentifier: "gait_cell")
         collectionView.register(SectionHeaderView.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: "HeaderView")
         
-        let nib = UINib(nibName: "SymptomDetailCell", bundle: nil)
-            tableView.register(nib, forCellReuseIdentifier: SymptomDetailCell.reuseIdentifier)
-            
-            tableView.dataSource = self
-            tableView.delegate = self
+        // TableView Cells
+        let detailNib = UINib(nibName: "SymptomDetailCell", bundle: nil)
+        tableView.register(detailNib, forCellReuseIdentifier: SymptomDetailCell.reuseIdentifier)
+        
+        let ratingNib = UINib(nibName: "SymptomRatingCell", bundle: nil)
+        tableView.register(ratingNib, forCellReuseIdentifier: "SymptomRatingCell")
     }
 
+    // MARK: - Data Management
+    func updateDataForSelectedDate() {
+        if let entry = SymptomLogManager.shared.getLogEntry(for: selectedDate) {
+            self.currentDayLogs = entry.ratings
+            self.currentMode = .history
+            editAndSaveButton.setTitle("Edit", for: .normal)
+        } else {
+            // No data: Go to entry mode automatically and load default list
+            loadDefaultSymptoms()
+            self.currentMode = .entry
+            editAndSaveButton.setTitle("Save", for: .normal)
+        }
+        
+        tableView.reloadData()
+        collectionView.reloadData()
+    }
+
+    private func loadDefaultSymptoms() {
+        self.currentDayLogs = [
+            SymptomRating(name: "Slowed Movement", iconName: "SlowedMovement", selectedIntensity: .notPresent),
+            SymptomRating(name: "Tremor", iconName: "tremor", selectedIntensity: .notPresent),
+            SymptomRating(name: "Loss of Balance", iconName: "lossOfBalance", selectedIntensity: .notPresent),
+            SymptomRating(name: "Facial Stiffness", iconName: "stiffFace", selectedIntensity: .notPresent),
+            SymptomRating(name: "Body Stiffness", iconName: "bodyStiffness", selectedIntensity: .notPresent),
+            SymptomRating(name: "Gait Disturbance", iconName: "walking", selectedIntensity: .notPresent),
+            SymptomRating(name: "Insomnia", iconName: "insomnia", selectedIntensity: .notPresent)
+        ]
+    }
+
+    // MARK: - Actions
+    @IBAction func editAndSaveTapped(_ sender: UIButton) {
+        if currentMode == .history {
+            currentMode = .entry
+            editAndSaveButton.setTitle("Save", for: .normal)
+            
+            if currentDayLogs.isEmpty {
+                loadDefaultSymptoms()
+            }
+        } else {
+            // Save logic
+            let newEntry = SymptomLogEntry(date: selectedDate, ratings: currentDayLogs)
+            SymptomLogManager.shared.saveLogEntry(newEntry)
+            
+            currentMode = .history
+            editAndSaveButton.setTitle("Edit", for: .normal)
+        }
+        tableView.reloadData()
+    }
+    
+    // MARK: - Layout
     func generateLayout() -> UICollectionViewLayout {
         return UICollectionViewCompositionalLayout { sectionIndex, env in
             guard let sectionType = Section(rawValue: sectionIndex) else { return nil }
@@ -85,14 +129,12 @@ class SymptomViewController: UIViewController {
             case .calendar:
                 let itemSize = NSCollectionLayoutSize(widthDimension: .absolute(60), heightDimension: .absolute(70))
                 let item = NSCollectionLayoutItem(layoutSize: itemSize)
-                
                 let groupSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: .absolute(100))
                 let group = NSCollectionLayoutGroup.horizontal(layoutSize: groupSize, subitem: item, count: 7)
-                
                 let section = NSCollectionLayoutSection(group: group)
                 section.orthogonalScrollingBehavior = .continuous
                 section.interGroupSpacing = 4
-                section.contentInsets = NSDirectionalEdgeInsets(top: 0, leading: 16, bottom: 0, trailing: 16)
+                section.contentInsets = NSDirectionalEdgeInsets(top: 10, leading: 16, bottom: 0, trailing: 16)
                 
                 let headerSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: .absolute(30))
                 let calendarHeader = NSCollectionLayoutBoundarySupplementaryItem(
@@ -104,27 +146,22 @@ class SymptomViewController: UIViewController {
                 return section
                 
             case .tremor:
-                // Full width card layout
                 let itemSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: .estimated(130))
                 let item = NSCollectionLayoutItem(layoutSize: itemSize)
-                
                 let groupSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: .estimated(150))
                 let group = NSCollectionLayoutGroup.vertical(layoutSize: groupSize, subitems: [item])
-                
                 let section = NSCollectionLayoutSection(group: group)
-                section.contentInsets = NSDirectionalEdgeInsets(top: 20, leading: 16, bottom: 20, trailing: 16)
+                section.contentInsets = NSDirectionalEdgeInsets(top: 10, leading: 16, bottom: 20, trailing: 16)
                 return section
+                
             case .gait:
-                        // SEPARATE CASE FOR GAIT
-                        let itemSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: .estimated(130))
-                        let item = NSCollectionLayoutItem(layoutSize: itemSize)
-                        let groupSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: .estimated(130))
-                        let group = NSCollectionLayoutGroup.vertical(layoutSize: groupSize, subitems: [item])
-                        let section = NSCollectionLayoutSection(group: group)
-                        
-                        // Less top inset here so it sits nicely below the Tremor card
-                        section.contentInsets = NSDirectionalEdgeInsets(top: 5, leading: 16, bottom: 0, trailing: 16)
-                        return section
+                let itemSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: .estimated(130))
+                let item = NSCollectionLayoutItem(layoutSize: itemSize)
+                let groupSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: .estimated(130))
+                let group = NSCollectionLayoutGroup.vertical(layoutSize: groupSize, subitems: [item])
+                let section = NSCollectionLayoutSection(group: group)
+                section.contentInsets = NSDirectionalEdgeInsets(top: 5, leading: 16, bottom: 0, trailing: 16)
+                return section
             }
         }
     }
@@ -147,7 +184,7 @@ class SymptomViewController: UIViewController {
     }
 }
 
-// MARK: - Data Source & Delegate
+// MARK: - Collection View Data Source & Delegate
 extension SymptomViewController: UICollectionViewDataSource, UICollectionViewDelegate {
     
     func numberOfSections(in collectionView: UICollectionView) -> Int {
@@ -177,16 +214,13 @@ extension SymptomViewController: UICollectionViewDataSource, UICollectionViewDel
             
         case .tremor:
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "tremor_cell", for: indexPath) as! tremorCard
-            // Configuration for your tremor card
-            //cell.avgLabel.text = "15%"
-            cell.configure(average: "12%")
+            cell.configure(average: "12")
             return cell
             
         case .gait:
-                // SEPARATE CASE FOR GAIT CELL
-                let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "gait_cell", for: indexPath) as! gaitCard
-                cell.configure(range: "45 - 77")
-                return cell
+            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "gait_cell", for: indexPath) as! gaitCard
+            cell.configure(range: "45 - 77")
+            return cell
         }
     }
     
@@ -203,16 +237,42 @@ extension SymptomViewController: UICollectionViewDataSource, UICollectionViewDel
     }
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        if indexPath.section == Section.calendar.rawValue {
+
+        guard let sectionType = Section(rawValue: indexPath.section) else { return }
+
+        switch sectionType {
+
+        case .calendar:
             selectedDate = dates[indexPath.row].date
-            
-            // 1. Reload collection view for the header/cards
-            collectionView.reloadData()
-            
-            // 2. Reload the table view to show symptoms for the new selectedDate
-            tableView.reloadData()
+            updateDataForSelectedDate()
+
+        case .tremor:
+            navigateToSymptomDetail(type: .tremor)
+
+        case .gait:
+            navigateToSymptomDetail(type: .gait)
         }
     }
+    private func navigateToSymptomDetail(type: Section) {
+
+        let storyboard = UIStoryboard(name: "SymptomRecording", bundle: nil)
+
+        let vc: UIViewController
+
+        switch type {
+        case .tremor:
+            vc = storyboard.instantiateViewController(withIdentifier: "TremorVC")
+
+        case .gait:
+            vc = storyboard.instantiateViewController(withIdentifier: "GaitVC")
+
+        default:
+            return
+        }
+
+        navigationController?.pushViewController(vc, animated: true)
+    }
+
 }
 
 // MARK: - Table View Data Source & Delegate
@@ -223,17 +283,36 @@ extension SymptomViewController: UITableViewDataSource, UITableViewDelegate {
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        guard let cell = tableView.dequeueReusableCell(withIdentifier: SymptomDetailCell.reuseIdentifier, for: indexPath) as? SymptomDetailCell else {
-            return UITableViewCell()
-        }
-        
         let rating = currentDayLogs[indexPath.row]
-        cell.configure(with: rating)
         
-        return cell
+        if currentMode == .entry {
+            // Show the expanded cell with buttons
+            guard let cell = tableView.dequeueReusableCell(withIdentifier: "SymptomRatingCell", for: indexPath) as? SymptomRatingCell else {
+                return UITableViewCell()
+            }
+            cell.delegate = self
+            cell.configure(with: rating)
+            return cell
+        } else {
+            // Show the compact history cell
+            guard let cell = tableView.dequeueReusableCell(withIdentifier: SymptomDetailCell.reuseIdentifier, for: indexPath) as? SymptomDetailCell else {
+                return UITableViewCell()
+            }
+            cell.configure(with: rating, isEditable: false)
+            return cell
+        }
     }
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return 70 // Height for SymptomDetailCell
+        return currentMode == .entry ? 130 : 70
+    }
+}
+
+// MARK: - SymptomRatingCellDelegate
+extension SymptomViewController: SymptomRatingCellDelegate {
+    func didSelectIntensity(_ intensity: SymptomRating.Intensity, in cell: SymptomRatingCell) {
+        guard let indexPath = tableView.indexPath(for: cell) else { return }
+        // Update local data source
+        currentDayLogs[indexPath.row].selectedIntensity = intensity
     }
 }
