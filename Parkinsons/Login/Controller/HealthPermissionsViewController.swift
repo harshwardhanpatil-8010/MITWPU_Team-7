@@ -56,12 +56,25 @@ class HealthPermissionsViewController: UIViewController, UITableViewDelegate, UI
     
     func navigateToNextScreen() {
         let homeStoryboard = UIStoryboard(name: "Home", bundle: nil)
+<<<<<<< HEAD:Parkinsons/Login/Controller/HealthPermissionsViewController.swift
         guard let mainTabBarController = homeStoryboard.instantiateInitialViewController() else{
             return
         }
         if let window = view.window {
             window.rootViewController = mainTabBarController
             UIView.transition(with: window, duration: 0.3, options: .transitionCrossDissolve, animations: nil)
+=======
+        
+        guard let mainTabBarController = homeStoryboard.instantiateInitialViewController() else {
+            print("Could not instantiate initial view controller from Home storyboard.")
+            return
+        }
+        
+        // Change the root view controller to the main app interface
+        if let window = view.window {
+            window.rootViewController = mainTabBarController
+            UIView.transition(with: window, duration: 0.3, options: .transitionCrossDissolve, animations: nil, completion: nil)
+>>>>>>> 7d17d64 (new):Parkinsons/Controller/Login/HealthPermissionsViewController.swift
         }
     }
 
