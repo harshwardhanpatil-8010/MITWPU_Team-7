@@ -16,17 +16,17 @@ class DateCell: UICollectionViewCell {
     override func prepareForReuse() {
         super.prepareForReuse()
 
-        labelBackgroundView.backgroundColor = .clear
+        labelBackgroundView.backgroundColor = UIColor.clear
        
-        dateLabel.tintColor = .clear
+        dateLabel.tintColor = UIColor.clear
         dateLabel.text = ""
     }
 
     override func awakeFromNib() {
         super.awakeFromNib()
         dateLabel.isEnabled = true
-        contentView.tintColor = .clear
-        dateLabel.tintColor = .clear
+        contentView.tintColor = UIColor.clear
+        dateLabel.tintColor = UIColor.clear
     }
 
     
@@ -37,22 +37,26 @@ class DateCell: UICollectionViewCell {
            labelBackgroundView.clipsToBounds = true
        }
 
-    func configure(day: Int, isToday: Bool, isPast: Bool) {
+    func configure(day: Int, isToday: Bool, isPast: Bool, isCompleted: Bool) {
         dateLabel.text = "\(day)"
-
-        if isToday {
-            labelBackgroundView.backgroundColor = .systemBlue
-            dateLabel.textColor = .white
+        
+        if isCompleted {
+            labelBackgroundView.backgroundColor = UIColor.systemGreen
+            dateLabel.textColor = UIColor.white
+            dateLabel.isEnabled = true
+        } else if isToday {
+            labelBackgroundView.backgroundColor = UIColor.systemBlue
+            dateLabel.textColor = UIColor.white
             dateLabel.isEnabled = true
         } else {
-            labelBackgroundView.backgroundColor = .clear
-//            if isPast {
-//                dateLabel.textColor = .label
-//                dateLabel.isEnabled = true
-//            } else {
-//                dateLabel.textColor = .secondaryLabel
-//                dateLabel.isEnabled = false
-//            }
+            labelBackgroundView.backgroundColor = UIColor.clear
+            if isPast {
+                dateLabel.textColor = UIColor.label
+                dateLabel.isEnabled = true
+            } else {
+                dateLabel.textColor = UIColor.secondaryLabel
+                dateLabel.isEnabled = false
+            }
         }
     }
 
@@ -60,8 +64,8 @@ class DateCell: UICollectionViewCell {
            
        func configureEmpty() {
            dateLabel.text = ""
-            dateLabel.textColor = .label
-            labelBackgroundView.backgroundColor = .clear
+            dateLabel.textColor = UIColor.label
+            labelBackgroundView.backgroundColor = UIColor.clear
        }
     }
 

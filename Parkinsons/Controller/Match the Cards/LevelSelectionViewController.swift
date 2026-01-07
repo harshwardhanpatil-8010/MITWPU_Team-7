@@ -41,6 +41,7 @@ UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         tabBarController?.tabBar.isHidden = true
+        collectionView.reloadData()
     }
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
@@ -89,23 +90,22 @@ UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
         let cellDate = calendar.startOfDay(for: date)
 
         let isToday = calendar.isDate(cellDate, inSameDayAs: today)
+        let isCompleted = DailyGameManager.shared.isCompleted(date: cellDate)
         
         let isPast = calendar.compare(cellDate, to: today, toGranularity: .day) == .orderedAscending
 
         cell.configure(
             day: day,
             isToday: isToday,
-            isPast: false
+            isPast: isPast,
+            isCompleted: isCompleted
         )
 
         if let selDate = selectedDate, calendar.isDate(cellDate, inSameDayAs: selDate) {
-            cell.backgroundColor = .systemBlue
+            cell.backgroundColor = UIColor.systemBlue
             cell.layer.cornerRadius = cell.frame.height / 2
             cell.clipsToBounds = true
-        } else {
-            cell.backgroundColor = .clear
-            cell.layer.cornerRadius = 0
-            cell.clipsToBounds = false
+            cell.dateLabel.textColor = UIColor.white
         }
         
         let shouldEnable = calendar.compare(cellDate, to: today, toGranularity: .day) != .orderedDescending
@@ -149,31 +149,26 @@ UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
 
     
     
-    @IBAction func startButtonTapped(_ sender: UIButton) {
+    @IBAction func startButtonTapped(_ sender: Any) {
         guard let date = selectedDate else {
             alert("Please select a date to play.")
             return
         }
 
-        sender.isEnabled = false
-
         let manager = DailyGameManager.shared
         
         if manager.isFuture(date: date) {
            alert("This date is in future. You can't play it yet")
-            sender.isEnabled = true
             return
         }
         
         if manager.isCompleted(date: date) {
             alert("Game for this day is already completed")
-            sender.isEnabled = true
             return
         }
         
         if manager.isAttempted(date: date) {
             alert("You already attempted this day and cannot retry")
-            sender.isEnabled = true
             return
         }
         
