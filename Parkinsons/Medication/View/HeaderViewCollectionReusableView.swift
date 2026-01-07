@@ -29,7 +29,7 @@ class HeaderViewCollectionReusableView: UICollectionReusableView {
     
     func configureHeader(text: String, showEdit: Bool){
         headerLabel.text = text
-        headerLabel.font = UIFont.boldSystemFont(ofSize: 20)
+      
         editButton.isHidden = !showEdit
     }
 }

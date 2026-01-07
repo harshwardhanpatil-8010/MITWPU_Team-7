@@ -21,7 +21,7 @@
                         <rect key="frame" x="0.0" y="0.0" width="244" height="50"/>
                         <subviews>
                             <stackView opaque="NO" contentMode="scaleToFill" spacing="10" translatesAutoresizingMaskIntoConstraints="NO" id="R0t-4f-nU4">
-                                <rect key="frame" x="16.000000000000007" y="5" width="107.66666666666669" height="40"/>
+                                <rect key="frame" x="15.999999999999993" y="5" width="106.33333333333331" height="40"/>
                                 <subviews>
                                     <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="C3R-tk-ter">
                                         <rect key="frame" x="0.0" y="0.0" width="55" height="40"/>
@@ -31,17 +31,17 @@
                                         </constraints>
                                     </imageView>
                                     <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" alignment="top" spacing="2" translatesAutoresizingMaskIntoConstraints="NO" id="cbT-t5-wLd">
-                                        <rect key="frame" x="65" y="0.0" width="42.666666666666657" height="40"/>
+                                        <rect key="frame" x="65" y="0.0" width="41.333333333333343" height="40"/>
                                         <subviews>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" text="Label" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="bZr-NN-Fvk">
-                                                <rect key="frame" x="0.0" y="0.0" width="42.666666666666664" height="22.333333333333332"/>
-                                                <fontDescription key="fontDescription" type="system" weight="medium" pointSize="17"/>
+                                                <rect key="frame" x="0.0" y="0.0" width="41.333333333333336" height="22.333333333333332"/>
+                                                <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
                                                 <nil key="textColor"/>
                                                 <nil key="highlightedColor"/>
                                             </label>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" verticalCompressionResistancePriority="751" text="Label" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Sri-9j-3WN">
                                                 <rect key="frame" x="0.0" y="24.333333333333332" width="33" height="15.666666666666668"/>
-                                                <fontDescription key="fontDescription" type="system" pointSize="13"/>
+                                                <fontDescription key="fontDescription" style="UICTFontTextStyleFootnote"/>
                                                 <color key="textColor" systemColor="systemGrayColor"/>
                                                 <nil key="highlightedColor"/>
                                             </label>

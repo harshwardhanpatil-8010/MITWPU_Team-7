@@ -163,7 +163,7 @@ class MedicationLandingPageViewController: UIViewController,
         )
 
         let section = NSCollectionLayoutSection(group: group)
-        section.contentInsets = NSDirectionalEdgeInsets(top: 5, leading: 15, bottom: 20, trailing: 15)
+        section.contentInsets = NSDirectionalEdgeInsets(top: 0, leading: 15, bottom: 20, trailing: 15)
 
         section.boundarySupplementaryItems = [
             NSCollectionLayoutBoundarySupplementaryItem(
@@ -175,6 +175,23 @@ class MedicationLandingPageViewController: UIViewController,
                 alignment: .top
             )
         ]
+        let header = NSCollectionLayoutBoundarySupplementaryItem(
+            layoutSize: NSCollectionLayoutSize(
+                widthDimension: .fractionalWidth(1.0),
+                heightDimension: .absolute(30)
+            ),
+            elementKind: UICollectionView.elementKindSectionHeader,
+            alignment: .top
+        )
+
+        header.contentInsets = NSDirectionalEdgeInsets(
+            top: 0,
+            leading: 0,
+            bottom: 4,   // spacing BELOW header
+            trailing: 0
+        )
+
+        section.boundarySupplementaryItems = [header]
         return section
     }
 
@@ -196,19 +213,32 @@ class MedicationLandingPageViewController: UIViewController,
         )
 
         let section = NSCollectionLayoutSection(group: group)
-        section.contentInsets = NSDirectionalEdgeInsets(top: 5, leading: 15, bottom: 20, trailing: 15)
-        section.boundarySupplementaryItems = [
-            NSCollectionLayoutBoundarySupplementaryItem(
-                layoutSize: NSCollectionLayoutSize(
-                    widthDimension: .fractionalWidth(1.0),
-                    heightDimension: .absolute(40)
-                ),
-                elementKind: UICollectionView.elementKindSectionHeader,
-                alignment: .top
-            )
-        ]
+        section.contentInsets = NSDirectionalEdgeInsets(
+            top: 0, leading: 15, bottom: 20, trailing: 15
+        )
+
+        // 🔹 ADD THIS HERE
+        let header = NSCollectionLayoutBoundarySupplementaryItem(
+            layoutSize: NSCollectionLayoutSize(
+                widthDimension: .fractionalWidth(1.0),
+                heightDimension: .absolute(30)
+            ),
+            elementKind: UICollectionView.elementKindSectionHeader,
+            alignment: .top
+        )
+
+        header.contentInsets = NSDirectionalEdgeInsets(
+            top: 0,
+            leading: 0,
+            bottom: 4,   // spacing BELOW header
+            trailing: 0
+        )
+
+        section.boundarySupplementaryItems = [header]
+
         return section
     }
+
 
     func createLayout() -> UICollectionViewLayout {
         return UICollectionViewCompositionalLayout { sectionIndex, env in
