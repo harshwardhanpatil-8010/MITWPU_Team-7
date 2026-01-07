@@ -23,6 +23,7 @@ class SummaryViewController: UIViewController {
     var medicationTakenCount: Int = 1
     var medicationScheduledCount: Int = 2
     
+    // Note: progressPercentage here acts as a fallback if WorkoutManager is empty
     var exerciseData: [ExerciseModel] = [
         ExerciseModel(title: "10-Min Workout", detail: "Completed", progressPercentage: 100, progressColorHex: "0088FF"),
         ExerciseModel(title: "Rhythmic Walking", detail: "Missed", progressPercentage: 0, progressColorHex: "90AF81")
@@ -40,11 +41,32 @@ class SummaryViewController: UIViewController {
         mainCollectionView.setCollectionViewLayout(generateSummaryLayout(), animated: false)
         loadDataForSelectedDate()
         
+        // --- UPDATED TITLE LOGIC ---
         if let date = dateToDisplay {
             let formatter = DateFormatter()
             formatter.dateFormat = "d MMMM yyyy"
             let dateString = formatter.string(from: date)
-            summaryTitleLabel.text = "Summary \n\(dateString)"
+            
+            let fullString = "Summary \n\(dateString)"
+            let attributedString = NSMutableAttributedString(string: fullString)
+            
+            // 1. Define the Bold style for "Summary"
+            let boldAttributes: [NSAttributedString.Key: Any] = [
+                .font: UIFont.systemFont(ofSize: 20, weight: .bold)
+            ]
+            
+            // 2. Define the Regular style for the Date
+            let regularAttributes: [NSAttributedString.Key: Any] = [
+                .font: UIFont.systemFont(ofSize: 17, weight: .regular),
+                .foregroundColor: UIColor.secondaryLabel // Optional: makes the date look cleaner
+            ]
+            
+            // 3. Apply styles to specific ranges
+            attributedString.addAttributes(boldAttributes, range: NSRange(location: 0, length: 7))
+            attributedString.addAttributes(regularAttributes, range: NSRange(location: 8, length: dateString.count + 1))
+            
+            summaryTitleLabel.attributedText = attributedString
+            summaryTitleLabel.numberOfLines = 0 // Allows the label to wrap to the second line
         } else {
             summaryTitleLabel.text = "Summary (No date selected)"
         }
@@ -56,19 +78,12 @@ class SummaryViewController: UIViewController {
     
     func registerCells() {
         mainCollectionView.register(UINib(nibName: "medicationSummary", bundle: nil), forCellWithReuseIdentifier: "MedicationSummaryCell")
-        
         mainCollectionView.register(UINib(nibName: "ExerciseCardCell", bundle: nil), forCellWithReuseIdentifier: "exercise_card_cell")
-        
-        mainCollectionView.register(
-            SectionHeaderView.self,
-            forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader,
-            withReuseIdentifier: "HeaderView"
-        )
+        mainCollectionView.register(SectionHeaderView.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: "HeaderView")
         mainCollectionView.register(UICollectionViewCell.self, forCellWithReuseIdentifier: "placeholder_cell")
     }
     
     func generateSummaryLayout() -> UICollectionViewLayout {
-        
         return UICollectionViewCompositionalLayout { (sectionIndex, env) -> NSCollectionLayoutSection? in
             guard sectionIndex < self.summarySections.count else { return nil }
             let sectionType = self.summarySections[sectionIndex]
@@ -77,57 +92,30 @@ class SummaryViewController: UIViewController {
             case .medicationsSummary:
                 let itemSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: .fractionalHeight(1.0))
                 let item = NSCollectionLayoutItem(layoutSize: itemSize)
-                
-                let groupSize = NSCollectionLayoutSize(
-                    widthDimension: .fractionalWidth(1.0),
-                    heightDimension: .absolute(80)
-                )
+                let groupSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: .absolute(80))
                 let group = NSCollectionLayoutGroup.horizontal(layoutSize: groupSize, subitems: [item])
-                
                 let section = NSCollectionLayoutSection(group: group)
                 section.contentInsets = NSDirectionalEdgeInsets(top: 8, leading: 16, bottom: 24, trailing: 16)
-                section.orthogonalScrollingBehavior = .none
                 
                 let headerSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: .absolute(30))
-                let header = NSCollectionLayoutBoundarySupplementaryItem(
-                    layoutSize: headerSize,
-                    elementKind: UICollectionView.elementKindSectionHeader,
-                    alignment: .top
-                )
+                let header = NSCollectionLayoutBoundarySupplementaryItem(layoutSize: headerSize, elementKind: UICollectionView.elementKindSectionHeader, alignment: .top)
                 section.boundarySupplementaryItems = [header]
-                
                 return section
                 
             case .exercises:
                 let itemSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(0.5), heightDimension: .fractionalHeight(1.0))
                 let item = NSCollectionLayoutItem(layoutSize: itemSize)
-                
                 item.contentInsets = NSDirectionalEdgeInsets(top: 0, leading: 2, bottom: 0, trailing: 4)
                 
-                let groupHeight: CGFloat = 190
-                
-                let groupSize = NSCollectionLayoutSize(
-                    widthDimension: .fractionalWidth(1.0),
-                    heightDimension: .absolute(groupHeight)
-                )
+                let groupSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: .absolute(190))
                 let group = NSCollectionLayoutGroup.horizontal(layoutSize: groupSize, subitems: [item, item])
-                
                 let section = NSCollectionLayoutSection(group: group)
-                section.interGroupSpacing = 0
                 section.contentInsets = NSDirectionalEdgeInsets(top: 8, leading: 16, bottom: 24, trailing: 16)
                 
-                section.orthogonalScrollingBehavior = .none
-                
                 let headerSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: .absolute(30))
-                let header = NSCollectionLayoutBoundarySupplementaryItem(
-                    layoutSize: headerSize,
-                    elementKind: UICollectionView.elementKindSectionHeader,
-                    alignment: .top
-                )
+                let header = NSCollectionLayoutBoundarySupplementaryItem(layoutSize: headerSize, elementKind: UICollectionView.elementKindSectionHeader, alignment: .top)
                 section.boundarySupplementaryItems = [header]
-                
                 return section
-                
             }
         }
     }
@@ -142,10 +130,8 @@ extension SummaryViewController: UICollectionViewDataSource, UICollectionViewDel
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         switch summarySections[section] {
-        case .medicationsSummary:
-            return 1
-        case .exercises:
-            return exerciseData.count
+        case .medicationsSummary: return 1
+        case .exercises: return exerciseData.count
         }
     }
     
@@ -164,36 +150,36 @@ extension SummaryViewController: UICollectionViewDataSource, UICollectionViewDel
             guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "exercise_card_cell", for: indexPath) as? ExerciseCardCell else {
                 fatalError("Could not dequeue ExerciseCardCell")
             }
-            let model = exerciseData[indexPath.item]
-            cell.configure(with: model)
-            return cell
             
+            let model = exerciseData[indexPath.item]
+            
+            // --- RING FILLING LOGIC ---
+            // Fetch real-time data from the WorkoutManager
+            let completedCount = WorkoutManager.shared.completedToday.count
+            let totalCount = WorkoutManager.shared.getTodayWorkout().count
+            
+            // Apply the progress to the UI Ring
+            cell.setProgress(completed: completedCount, total: totalCount)
+            
+            // Configure the static elements (Title, Colors)
+            cell.configure(with: model)
+            
+            return cell
         }
     }
     
     func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
-        
-        guard kind == UICollectionView.elementKindSectionHeader else {
-            return UICollectionReusableView()
-        }
-        
-        let header = collectionView.dequeueReusableSupplementaryView(
-            ofKind: kind,
-            withReuseIdentifier: "HeaderView",
-            for: indexPath
-        ) as! SectionHeaderView
-        
+        guard kind == UICollectionView.elementKindSectionHeader else { return UICollectionReusableView() }
+        let header = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: "HeaderView", for: indexPath) as! SectionHeaderView
         let sectionType = summarySections[indexPath.section]
         
         switch sectionType {
         case .exercises:
             header.configure(title: "Guided Exercise")
-            header.setTitleAlignment(.left)
         case .medicationsSummary:
             header.configure(title: "Medications Log")
-            header.setTitleAlignment(.left)
         }
-        
+        header.setTitleAlignment(.left)
         return header
     }
 }
