@@ -9,14 +9,14 @@ class _0minworkoutGoodJobViewController: UIViewController {
     
     var completed: Int = 0
     var totalWorkoutSeconds: TimeInterval = 0
-
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         navigationItem.hidesBackButton = true
         
         completedExerciseNumberLabel.text = "\(completed)"
         skippedExerciseNumber.text = "\(WorkoutManager.shared.SkippedToday.count)"
-
+        
         let minutes = Int(totalWorkoutSeconds) / 60
         let seconds = Int(totalWorkoutSeconds) % 60
         totalTimeLabel.text = String(format: "%02d:%02d", minutes, seconds)
@@ -31,9 +31,6 @@ class _0minworkoutGoodJobViewController: UIViewController {
         super.viewWillDisappear(animated)
         tabBarController?.tabBar.isHidden = false
     }
-
-
-    // MARK: - Feedback Actions
     
     @IBAction func easyButtonTapped(_ sender: Any) {
         saveFeedbackAndExit(feedback: "Easy")
@@ -47,21 +44,46 @@ class _0minworkoutGoodJobViewController: UIViewController {
         saveFeedbackAndExit(feedback: "Hard")
     }
     
-    // MARK: - Helper Methods
-    
     private func saveFeedbackAndExit(feedback: String) {
         WorkoutManager.shared.lastFeedback = feedback
-        
         WorkoutManager.shared.completedToday.removeAll()
         WorkoutManager.shared.SkippedToday.removeAll()
-        
-        let generator = UINotificationFeedbackGenerator()
-        generator.notificationOccurred(.success)
-        
-        if let nav = self.navigationController {
-            nav.popToRootViewController(animated: true)
-        } else {
-            self.dismiss(animated: true, completion: nil)
+
+        UINotificationFeedbackGenerator().notificationOccurred(.success)
+        let alert = UIAlertController(
+            title: "Workout Complete!",
+            message: "Great job! Your feedback has been saved. We will adjust tomorrow's exercises to better fit your needs.",
+            preferredStyle: .alert
+        )
+
+        let okAction = UIAlertAction(title: "Got it!", style: .default) { [weak self] _ in
+            guard let self = self else { return }
+
+            let storyboard = UIStoryboard(name: "10 minworkout", bundle: nil)
+            guard let finishVC = storyboard.instantiateViewController(
+                withIdentifier: "exerciseLandingPage") as? _0minworkoutLandingPageViewController else {
+                return
+            }
+
+            // CASE 1: Inside Navigation Stack
+            if let nav = self.navigationController {
+                nav.setViewControllers([finishVC], animated: true)
+            }
+            // CASE 2: Presented Modally
+            else if let window = self.view.window {
+                let nav = UINavigationController(rootViewController: finishVC)
+                window.rootViewController = nav
+                UIView.transition(
+                    with: window,
+                    duration: 0.3,
+                    options: .transitionCrossDissolve,
+                    animations: nil
+                )
+            }
         }
+
+        alert.addAction(okAction)
+        present(alert, animated: true)
     }
+
 }

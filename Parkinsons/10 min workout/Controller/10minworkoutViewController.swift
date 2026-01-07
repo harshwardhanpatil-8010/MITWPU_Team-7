@@ -301,6 +301,39 @@ class _0minworkoutViewController: UIViewController {
 //        }
 //    }
     
+//    func checkForSkippedExercises() {
+//        let skippedIDs = WorkoutManager.shared.SkippedToday
+//        
+//        if !isRevisitingSkipped && !skippedIDs.isEmpty {
+//            let alert = UIAlertController(
+//                title: "Skipped Exercises",
+//                message: "Would you like to try the exercises you skipped?",
+//                preferredStyle: .alert
+//            )
+//            
+//            alert.addAction(UIAlertAction(title: "Maybe later", style: .cancel) { [weak self] _ in
+//                self?.navigateToLandingPage()
+//            })
+//            
+//            alert.addAction(UIAlertAction(title: "Yes", style: .default) { [weak self] _ in
+//                guard let self = self else { return }
+//                
+//                self.isRevisitingSkipped = true
+//                
+//                if let firstSkipIndex = self.exercises.firstIndex(where: { skippedIDs.contains($0.id) }) {
+//                    self.currentIndex = firstSkipIndex
+//                    
+//                    DispatchQueue.main.async {
+//                        self.configureExercise()
+//                    }
+//                }
+//            })
+//            
+//            present(alert, animated: true)
+//        } else {
+//            showCompletion()
+//        }
+//    }
     func checkForSkippedExercises() {
         let skippedIDs = WorkoutManager.shared.SkippedToday
         
@@ -312,24 +345,33 @@ class _0minworkoutViewController: UIViewController {
             )
             
             alert.addAction(UIAlertAction(title: "Maybe later", style: .cancel) { [weak self] _ in
-                self?.navigateToLandingPage()
+                self?.showCompletion()
             })
             
             alert.addAction(UIAlertAction(title: "Yes", style: .default) { [weak self] _ in
                 guard let self = self else { return }
-                
                 self.isRevisitingSkipped = true
                 
                 if let firstSkipIndex = self.exercises.firstIndex(where: { skippedIDs.contains($0.id) }) {
                     self.currentIndex = firstSkipIndex
                     
-                    DispatchQueue.main.async {
-                        self.configureExercise()
+                    // FIX: If we are inside the RestScreen, we need to pop back to THIS controller
+                    if self.navigationController?.topViewController != self {
+                        self.navigationController?.popToViewController(self, animated: true)
                     }
+                    
+                    self.configureExercise()
+                } else {
+                    self.showCompletion()
                 }
             })
             
-            present(alert, animated: true)
+            // Ensure we present the alert on the currently visible screen
+            if let topVC = navigationController?.topViewController {
+                topVC.present(alert, animated: true)
+            } else {
+                present(alert, animated: true)
+            }
         } else {
             showCompletion()
         }
@@ -342,7 +384,29 @@ extension _0minworkoutViewController: RestScreenDelegate {
         totalWorkoutSeconds += seconds
     }
 
+//    func restCompleted(nextIndex: Int) {
+//        if !isRevisitingSkipped {
+//            if nextIndex < exercises.count {
+//                currentIndex = nextIndex
+//                configureExercise()
+//            } else {
+//                checkForSkippedExercises()
+//            }
+//        } else {
+//            let skippedIDs = WorkoutManager.shared.SkippedToday
+//            let remaining = exercises.enumerated().filter { $0.offset > currentIndex && skippedIDs.contains($0.element.id) }
+//            
+//            if let nextSkip = remaining.first {
+//                currentIndex = nextSkip.offset
+//                configureExercise()
+//            } else {
+//                showCompletion()
+//            }
+//        }
+//    }
     func restCompleted(nextIndex: Int) {
+        let skippedIDs = WorkoutManager.shared.SkippedToday
+        
         if !isRevisitingSkipped {
             if nextIndex < exercises.count {
                 currentIndex = nextIndex
@@ -351,11 +415,12 @@ extension _0minworkoutViewController: RestScreenDelegate {
                 checkForSkippedExercises()
             }
         } else {
-            let skippedIDs = WorkoutManager.shared.SkippedToday
-            let remaining = exercises.enumerated().filter { $0.offset > currentIndex && skippedIDs.contains($0.element.id) }
+            let nextSkip = exercises.enumerated().first { (index, exercise) in
+                return index > currentIndex && skippedIDs.contains(exercise.id)
+            }
             
-            if let nextSkip = remaining.first {
-                currentIndex = nextSkip.offset
+            if let next = nextSkip {
+                currentIndex = next.offset
                 configureExercise()
             } else {
                 showCompletion()

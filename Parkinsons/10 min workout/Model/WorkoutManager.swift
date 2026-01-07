@@ -163,7 +163,7 @@ class WorkoutManager {
         if exercise.category == .warmup || exercise.category == .cooldown {
             switch feedback {
             case "Easy":     modified.reps = 60
-            case "Moderate": modified.reps = 50
+            case "Moderate": modified.reps = 40
             case "Hard":     modified.reps = 30
             default:         modified.reps = 40
             }
