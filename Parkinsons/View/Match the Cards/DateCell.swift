@@ -10,62 +10,63 @@ import UIKit
 class DateCell: UICollectionViewCell {
 
     @IBOutlet weak var labelBackgroundView: UIView!
-    
     @IBOutlet weak var dateLabel: UILabel!
-    
-    override func prepareForReuse() {
-        super.prepareForReuse()
 
-        labelBackgroundView.backgroundColor = UIColor.clear
-       
-        dateLabel.tintColor = UIColor.clear
-        dateLabel.text = ""
-    }
-
-    override func awakeFromNib() {
-        super.awakeFromNib()
-        dateLabel.isEnabled = true
-        contentView.tintColor = UIColor.clear
-        dateLabel.tintColor = UIColor.clear
-    }
-
-    
     override func layoutSubviews() {
-           super.layoutSubviews()
+        super.layoutSubviews()
+        labelBackgroundView.layer.cornerRadius =
+            labelBackgroundView.bounds.width / 2
+    }
 
-           labelBackgroundView.layer.cornerRadius = labelBackgroundView.bounds.width / 2
-           labelBackgroundView.clipsToBounds = true
-       }
+    override func prepareForReuse() {
+        labelBackgroundView.backgroundColor = .clear
+        labelBackgroundView.layer.borderWidth = 0
+        dateLabel.textColor = .label
+    }
 
-    func configure(day: Int, isToday: Bool, isPast: Bool, isCompleted: Bool) {
+    func configure(day: Int,
+                   isToday: Bool,
+                   isSelected: Bool,
+                   isCompleted: Bool,
+                   showTodayOutline: Bool,
+                   enabled: Bool) {
+
         dateLabel.text = "\(day)"
-        
+        isUserInteractionEnabled = enabled
+
         if isCompleted {
-            labelBackgroundView.backgroundColor = UIColor.systemGreen
-            dateLabel.textColor = UIColor.white
-            dateLabel.isEnabled = true
-        } else if isToday {
-            labelBackgroundView.backgroundColor = UIColor.systemBlue
-            dateLabel.textColor = UIColor.white
-            dateLabel.isEnabled = true
-        } else {
-            labelBackgroundView.backgroundColor = UIColor.clear
-            if isPast {
-                dateLabel.textColor = UIColor.label
-                dateLabel.isEnabled = true
-            } else {
-                dateLabel.textColor = UIColor.secondaryLabel
-                dateLabel.isEnabled = false
-            }
+            labelBackgroundView.backgroundColor = .systemGreen
+            dateLabel.textColor = .white
+            return
         }
+
+        if isSelected {
+            labelBackgroundView.backgroundColor = .systemBlue
+            dateLabel.textColor = .white
+            return
+        }
+
+        if isToday {
+            if showTodayOutline {
+                labelBackgroundView.backgroundColor = .clear
+                labelBackgroundView.layer.borderWidth = 2
+                labelBackgroundView.layer.borderColor =
+                    UIColor.systemBlue.cgColor
+                dateLabel.textColor = .systemBlue
+            } else {
+                labelBackgroundView.backgroundColor = .systemBlue
+                dateLabel.textColor = .white
+            }
+            return
+        }
+
+        labelBackgroundView.backgroundColor = .clear
+        dateLabel.textColor = enabled ? .black : .secondaryLabel
     }
 
-
-           
-       func configureEmpty() {
-           dateLabel.text = ""
-            dateLabel.textColor = UIColor.label
-            labelBackgroundView.backgroundColor = UIColor.clear
-       }
+    func configureEmpty() {
+        dateLabel.text = ""
+        labelBackgroundView.backgroundColor = .clear
+        isUserInteractionEnabled = false
     }
-
+}

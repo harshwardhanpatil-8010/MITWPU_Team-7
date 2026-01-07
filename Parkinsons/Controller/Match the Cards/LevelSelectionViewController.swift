@@ -11,15 +11,18 @@ class LevelSelectionViewController: UIViewController,
 UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
 
     @IBOutlet weak var monthAndYearOutlet: UILabel!
-    @IBOutlet weak var playButton: UIButton!
-    @IBOutlet weak var calendarViewOutlet: UIView!
     @IBOutlet weak var collectionView: UICollectionView!
-    
-    private let calendar = Calendar.current
-    private var currentMonthDate = Date()
+
+    private var calendar: Calendar = {
+        var c = Calendar(identifier: .gregorian)
+        c.firstWeekday = 2
+        return c
+    }()
+
+    private let today = Calendar(identifier: .gregorian).startOfDay(for: Date())
+    private var firstDayOfMonth: Date!
+    private var firstWeekdayOffset = 0
     private var daysInMonth = 0
-    private var firstWeekday = 0
-    private var timer: Timer?
     private var selectedDate: Date?
 
     override func viewDidLoad() {
@@ -29,42 +32,42 @@ UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
         collectionView.delegate = self
         collectionView.isScrollEnabled = false
 
+        configureLayout()
         setupMonth()
-        
-         if let layout = collectionView.collectionViewLayout as? UICollectionViewFlowLayout {
-                layout.minimumInteritemSpacing = 0
-               layout.minimumLineSpacing = 0
-            }
+    }
 
-    }
-    
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
-        tabBarController?.tabBar.isHidden = true
-        collectionView.reloadData()
-    }
-    override func viewWillDisappear(_ animated: Bool) {
-        super.viewWillDisappear(animated)
-        tabBarController?.tabBar.isHidden = false
+    private func configureLayout() {
+        guard let layout = collectionView.collectionViewLayout as? UICollectionViewFlowLayout else { return }
+
+        let width = collectionView.bounds.width / 7
+        layout.itemSize = CGSize(width: width, height: width)
+        layout.minimumInteritemSpacing = 0
+        layout.minimumLineSpacing = 0
+        layout.estimatedItemSize = .zero
     }
 
     private func setupMonth() {
-        daysInMonth = calendar.range(of: .day, in: .month, for: currentMonthDate)?.count ?? 0
-        let firstDay = calendar.date(from: calendar.dateComponents([.year, .month], from: currentMonthDate))!
-        firstWeekday = calendar.component(.weekday, from: firstDay) - 1
+        let now = Date()
+
+        let comps = calendar.dateComponents([.year, .month], from: now)
+        firstDayOfMonth = calendar.date(from: comps)!
+
+        daysInMonth = calendar.range(of: .day, in: .month, for: firstDayOfMonth)!.count
+
+        let weekday = calendar.component(.weekday, from: firstDayOfMonth)
+        firstWeekdayOffset = (weekday - calendar.firstWeekday + 7) % 7
 
         let formatter = DateFormatter()
+        formatter.calendar = calendar
         formatter.dateFormat = "MMMM yyyy"
-        monthAndYearOutlet.text = formatter.string(from: currentMonthDate)
+        monthAndYearOutlet.text = formatter.string(from: firstDayOfMonth)
 
         collectionView.reloadData()
     }
 
-
-
     func collectionView(_ collectionView: UICollectionView,
                         numberOfItemsInSection section: Int) -> Int {
-        daysInMonth + firstWeekday
+        daysInMonth + firstWeekdayOffset
     }
 
     func collectionView(_ collectionView: UICollectionView,
@@ -75,126 +78,66 @@ UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
             for: indexPath
         ) as! DateCell
 
-        if indexPath.item < firstWeekday {
+        if indexPath.item < firstWeekdayOffset {
             cell.configureEmpty()
-            cell.backgroundColor = .clear
-            cell.layer.cornerRadius = 0
-            cell.clipsToBounds = false
-            cell.isUserInteractionEnabled = false
             return cell
         }
 
-        let day = indexPath.item - firstWeekday + 1
-        let date = calendar.date(bySetting: .day, value: day, of: currentMonthDate)!
-        let today = calendar.startOfDay(for: Date())
+        let day = indexPath.item - firstWeekdayOffset + 1
+        let date = calendar.date(byAdding: .day,
+                                 value: day - 1,
+                                 to: firstDayOfMonth)!
+
         let cellDate = calendar.startOfDay(for: date)
 
         let isToday = calendar.isDate(cellDate, inSameDayAs: today)
+        let isFuture = cellDate > today
         let isCompleted = DailyGameManager.shared.isCompleted(date: cellDate)
-        
-        let isPast = calendar.compare(cellDate, to: today, toGranularity: .day) == .orderedAscending
+        let isSelected = selectedDate != nil &&
+            calendar.isDate(cellDate, inSameDayAs: selectedDate!)
+        let showTodayOutline = isToday && selectedDate != nil && !isSelected
 
         cell.configure(
             day: day,
             isToday: isToday,
-            isPast: isPast,
-            isCompleted: isCompleted
+            isSelected: isSelected,
+            isCompleted: isCompleted,
+            showTodayOutline: showTodayOutline,
+            enabled: !isFuture
         )
-
-        if let selDate = selectedDate, calendar.isDate(cellDate, inSameDayAs: selDate) {
-            cell.backgroundColor = UIColor.systemBlue
-            cell.layer.cornerRadius = cell.frame.height / 2
-            cell.clipsToBounds = true
-            cell.dateLabel.textColor = UIColor.white
-        }
-        
-        let shouldEnable = calendar.compare(cellDate, to: today, toGranularity: .day) != .orderedDescending
-        cell.isUserInteractionEnabled = shouldEnable
-
 
         return cell
     }
 
-    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        if indexPath.item < firstWeekday {
-            selectedDate = nil
-            collectionView.reloadData()
-            return
-        }
-        let day = indexPath.item - firstWeekday + 1
-        let date = calendar.date(bySetting: .day, value: day, of: currentMonthDate)!
-        
-        let today = calendar.startOfDay(for: Date())
+    func collectionView(_ collectionView: UICollectionView,
+                        didSelectItemAt indexPath: IndexPath) {
+
+        guard indexPath.item >= firstWeekdayOffset else { return }
+
+        let day = indexPath.item - firstWeekdayOffset + 1
+        let date = calendar.date(byAdding: .day,
+                                 value: day - 1,
+                                 to: firstDayOfMonth)!
+
         let cellDate = calendar.startOfDay(for: date)
 
-        if calendar.compare(cellDate, to: today, toGranularity: .day) == .orderedDescending {
-            // It's a future date, do not select
-            return
-        }
+        if cellDate > today { return }
 
-        selectedDate = date
+        selectedDate = cellDate
         collectionView.reloadData()
     }
 
-    func collectionView(_ collectionView: UICollectionView,
-                            layout collectionViewLayout: UICollectionViewLayout,
-                            sizeForItemAt indexPath: IndexPath) -> CGSize {
-            let width = collectionView.frame.width / 7
-          
-        return CGSize(width: width, height: width)
-        }
+    @IBAction func playButtonTapped(_ sender: UIButton) {
+        guard let date = selectedDate else { return }
+        if DailyGameManager.shared.isCompleted(date: date) { return }
 
+        let vc = storyboard!.instantiateViewController(
+            withIdentifier: "GameViewController"
+        ) as! GameViewController
 
-        
-
-    
-    
-    @IBAction func startButtonTapped(_ sender: Any) {
-        guard let date = selectedDate else {
-            alert("Please select a date to play.")
-            return
-        }
-
-        let manager = DailyGameManager.shared
-        
-        if manager.isFuture(date: date) {
-           alert("This date is in future. You can't play it yet")
-            return
-        }
-        
-        if manager.isCompleted(date: date) {
-            alert("Game for this day is already completed")
-            return
-        }
-        
-        if manager.isAttempted(date: date) {
-            alert("You already attempted this day and cannot retry")
-            return
-        }
-        
-        
-        let storyboard = UIStoryboard(name: "Match the Cards", bundle: nil)
-        let vc = storyboard.instantiateViewController(withIdentifier: "GameViewController") as! GameViewController
-        
         vc.selectedDate = date
-        vc.level = manager.level(for: date)
-        
+        vc.level = DailyGameManager.shared.level(for: date)
+
         navigationController?.pushViewController(vc, animated: true)
     }
-    
-    private func alert(_ text: String) {
-        let alert = UIAlertController(title: "Not Allowed", message: text, preferredStyle: .alert)
-        alert.addAction(UIAlertAction(title: "Dismiss", style: .default))
-        present(alert, animated: true)
-        }
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destination.
-        // Pass the selected object to the new view controller.
-    }
-    */
-
 }
