@@ -86,13 +86,16 @@ class HomeViewController: UIViewController, UICollectionViewDelegate , SymptomLo
         mainCollectionView.dataSource = self
         mainCollectionView.delegate = self
         
-        // Set the main layout
         mainCollectionView.setCollectionViewLayout(generateLayout(), animated: true)
 
          dates = HomeDataStore.shared.getDates()
 
         autoSelectToday()
         
+    }
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        mainCollectionView.reloadData()
     }
     
     @IBAction func profilePageButton(_ sender: Any) {
@@ -241,13 +244,11 @@ class HomeViewController: UIViewController, UICollectionViewDelegate , SymptomLo
                 
             case .therapeuticGames:
 
-                let itemSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(0.5), heightDimension: .fractionalHeight(1.0))
+                let itemSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1), heightDimension: .fractionalHeight(1.0))
                 let item = NSCollectionLayoutItem(layoutSize: itemSize)
                 item.contentInsets = NSDirectionalEdgeInsets(top: 0, leading: 2, bottom: 0, trailing: 4)
                 
-
-
-                let groupHeight: CGFloat = 170
+                let groupHeight: CGFloat = 80
                 let groupSize = NSCollectionLayoutSize(
                     widthDimension: .fractionalWidth(1.0),
                     heightDimension: .absolute(groupHeight)
@@ -256,9 +257,9 @@ class HomeViewController: UIViewController, UICollectionViewDelegate , SymptomLo
                 let group = NSCollectionLayoutGroup.horizontal(layoutSize: groupSize, subitems: [item, item])
                 
                 let section = NSCollectionLayoutSection(group: group)
-                section.contentInsets = NSDirectionalEdgeInsets(top: 8, leading: 16, bottom: 30, trailing: 16)
+                section.contentInsets = NSDirectionalEdgeInsets(top: 8, leading: 16, bottom: 24, trailing: 16)
 
-
+                section.interGroupSpacing = 10
                 section.orthogonalScrollingBehavior = .none
 
                 
@@ -512,23 +513,91 @@ extension HomeViewController: UICollectionViewDataSource {
 //            cell.configure(with: model)
 //
 //            return cell
+            
+            
+//        case .exercises:
+//            let cell = mainCollectionView.dequeueReusableCell(
+//                withReuseIdentifier: "exercise_card_cell",
+//                for: indexPath
+//            ) as! ExerciseCardCell
+//
+//            let model = exerciseData[indexPath.row]
+//            
+//            // 1. Pass the progress data
+//            let completed = WorkoutManager.shared.completedToday.count
+//            let total = WorkoutManager.shared.getTodayWorkout().count
+//            cell.setProgress(completed: completed, total: total)
+//            
+//            // 2. Pass the model (which now includes the hex color logic)
+//            cell.configure(with: model)
+//
+//            return cell
+//
+//        case .exercises:
+//            let cell = mainCollectionView.dequeueReusableCell(withReuseIdentifier: "exercise_card_cell", for: indexPath) as! ExerciseCardCell
+//            var model = exerciseData[indexPath.row]
+//
+//            if indexPath.row == 0 {
+//                // --- 10-Min Workout Progress ---
+//                let completed = WorkoutManager.shared.completedToday.count
+//                let total = WorkoutManager.shared.exercises.count > 0 ? WorkoutManager.shared.exercises.count : 1
+//                cell.setProgress(completed: completed, total: total)
+//            }
+//            } else if indexPath.row == 1 {
+//                // --- Rhythmic Walking Progress ---
+//                // Get the latest session from your DataStore
+//                if let latestSession = DataStore.shared.sessions.first {
+//                    let elapsed = latestSession.elapsedSeconds
+//                    let goal = latestSession.requestedDurationSeconds > 0 ? latestSession.requestedDurationSeconds : 1
+//                    
+//                    // Pass the data to the circle
+//                    cell.setProgress(completed: elapsed, total: goal)
+//                } else {
+//                    // No session yet today
+//                    cell.setProgress(completed: 0, total: 1)
+//                }
+//            }
+            
+
+            
+//            cell.configure(with: model)
+//            return cell
+//            
         case .exercises:
-            let cell = mainCollectionView.dequeueReusableCell(
-                withReuseIdentifier: "exercise_card_cell",
-                for: indexPath
-            ) as! ExerciseCardCell
-
+            let cell = mainCollectionView.dequeueReusableCell(withReuseIdentifier: "exercise_card_cell", for: indexPath) as! ExerciseCardCell
             let model = exerciseData[indexPath.row]
-            
-            // 1. Pass the progress data
-            let completed = WorkoutManager.shared.completedToday.count
-            let total = WorkoutManager.shared.getTodayWorkout().count
-            cell.setProgress(completed: completed, total: total)
-            
-            // 2. Pass the model (which now includes the hex color logic)
-            cell.configure(with: model)
 
+            if indexPath.row == 0 {
+                let completed = WorkoutManager.shared.completedToday.count
+                let total = WorkoutManager.shared.exercises.count > 0 ? WorkoutManager.shared.exercises.count : 1
+                
+                cell.setProgress(completed: completed, total: total)
+                cell.configure(with: model)
+                
+            } else if indexPath.row == 1 {
+                // 1. Configure cell with basic info (Title, Icon, etc.)
+                cell.configure(with: model)
+                
+                if let lastSession = DataStore.shared.sessions.first {
+                    let done = Double(lastSession.elapsedSeconds)
+                    let goal = Double(lastSession.requestedDurationSeconds)
+                    
+                    // 2. Simple Percentage Calculation
+                    let percentage = Int((done / goal) * 100)
+                    
+                    // 3. Update Visuals
+                    cell.setProgress(completed: Int(done), total: Int(goal))
+                    
+                    // 4. FORCE the label to update
+                    // Assuming your label inside ExerciseCardCell is called 'percentageLabel'
+                    cell.progressLabel.text = "\(percentage)%"
+                } else {
+                    cell.setProgress(completed: 0, total: 1)
+                    cell.progressLabel.text = "0%"
+                }
+            }
             return cell
+            
             
         case .symptoms:
             let cell = mainCollectionView.dequeueReusableCell(withReuseIdentifier: "symptom_log_cell", for: indexPath) as! SymptomLogCell

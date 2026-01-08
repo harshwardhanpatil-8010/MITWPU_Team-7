@@ -108,7 +108,8 @@ import Foundation
 
 class WorkoutManager {
     static let shared = WorkoutManager()
-
+    var hasCheckedSafetyThisSession = false
+    
     var allMedsTaken: Bool = false
     var lastFeedback: String = "Moderate"
 

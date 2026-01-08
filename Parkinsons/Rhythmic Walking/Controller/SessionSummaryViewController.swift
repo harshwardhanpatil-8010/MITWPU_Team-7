@@ -93,11 +93,25 @@ class SessionSummaryViewController: UIViewController {
         walkingSteadinessPercent.text = "5 %"
     }
     
+//    @IBAction func doneButtonTapped(_ sender: Any) {
+//        dismiss(animated: true)
+//    }
+    
     @IBAction func doneButtonTapped(_ sender: Any) {
+        // 1. Ensure the session is saved to the DataStore
+        if let session = sessionData {
+            DataStore.shared.add(session)
+        }
+
+        // 2. Return to Home
+        // If it's a modal (presented), use dismiss. If it's in a navigation stack, use pop.
+//        if let nav = self.navigationController {
+//            nav.popToRootViewController(animated: true)
+//        } else {
+//            self.view.window?.rootViewController?.dismiss(animated: true, completion: nil)
+//        }
         dismiss(animated: true)
     }
-    
-
     /*
     // MARK: - Navigation
 
