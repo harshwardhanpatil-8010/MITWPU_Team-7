@@ -2,6 +2,7 @@ import UIKit
 
 class profileViewController: UIViewController {
 
+    @IBOutlet weak var backButton: UIBarButtonItem!
     @IBOutlet weak var editButton: UIBarButtonItem!
     @IBOutlet weak var logoBackground: UIView!
     @IBOutlet weak var logoLabel: UILabel!
@@ -32,6 +33,10 @@ class profileViewController: UIViewController {
         
         sexsSelector.setTitle(selectedSex, for: .normal)
         
+        isEditingMode = false
+            editButton.title = "Edit"
+            editButton.image = nil
+        
         updateUI(forEditing: false)
     }
 
@@ -44,15 +49,20 @@ class profileViewController: UIViewController {
         isEditingMode.toggle()
         
         if isEditingMode {
-            editButton.image = UIImage(systemName: "checkmark.circle.fill")
+            // --- SWITCH TO TICK (DONE STATE) ---
+            // Use the 'checkmark' SFSymbol
+            let config = UIImage.SymbolConfiguration(weight: .bold)
+            editButton.image = UIImage(systemName: "checkmark", withConfiguration: config)
             editButton.title = nil
+            editButton.style = .prominent // Makes it the primary action (Blue)
             
             updateUI(forEditing: true)
             
         } else {
-           
+            // --- SWITCH TO EDIT (VIEW STATE) ---
             editButton.image = nil
             editButton.title = "Edit"
+            editButton.style = .plain // Normal weight
             
             updateUI(forEditing: false)
             
@@ -60,10 +70,33 @@ class profileViewController: UIViewController {
                 nameBellowLogoLabel.text = newName
             }
             
-            // TODO: Implement your data saving logic here
+            // Your data saving logic
         }
     }
     
+    @IBAction func backButtonTapped(_ sender: UIBarButtonItem) {
+        if isEditingMode {
+                // Show an alert to confirm discarding changes
+                let alert = UIAlertController(
+                    title: "Discard Changes?",
+                    message: "You have unsaved changes. Are you sure you want to go back?",
+                    preferredStyle: .alert
+                )
+                
+                // "Stay" - Just closes the alert
+                alert.addAction(UIAlertAction(title: "Stay", style: .cancel))
+                
+                // "Discard" - Closes the modal
+                alert.addAction(UIAlertAction(title: "Discard", style: .destructive) { [weak self] _ in
+                    self?.dismiss(animated: true, completion: nil)
+                })
+                
+                present(alert, animated: true)
+            } else {
+                // If not editing, just close the modal immediately
+                self.dismiss(animated: true, completion: nil)
+            }
+    }
     func updateUI(forEditing isEditing: Bool) {
         let editableFields: [UIView] = [
             nameTextField,

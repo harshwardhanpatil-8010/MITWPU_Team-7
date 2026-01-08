@@ -7,7 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		1997F40C2EF007ED00E69B25 /* YouTubeiOSPlayerHelper in Frameworks */ = {isa = PBXBuildFile; productRef = 1997F40B2EF007ED00E69B25 /* YouTubeiOSPlayerHelper */; };
+		D0E11A9F2F0FD17F0018CE58 /* YouTubeiOSPlayerHelper in Frameworks */ = {isa = PBXBuildFile; productRef = D0E11A9E2F0FD17F0018CE58 /* YouTubeiOSPlayerHelper */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -43,7 +43,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				1997F40C2EF007ED00E69B25 /* YouTubeiOSPlayerHelper in Frameworks */,
+				D0E11A9F2F0FD17F0018CE58 /* YouTubeiOSPlayerHelper in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -86,7 +86,7 @@
 			);
 			name = Parkinsons;
 			packageProductDependencies = (
-				1997F40B2EF007ED00E69B25 /* YouTubeiOSPlayerHelper */,
+				D0E11A9E2F0FD17F0018CE58 /* YouTubeiOSPlayerHelper */,
 			);
 			productName = Parkinsons;
 			productReference = 19423B6D2ED6BD590004C99E /* Parkinsons.app */;
@@ -117,7 +117,7 @@
 			mainGroup = 19423B642ED6BD590004C99E;
 			minimizedProjectReferenceProxies = 1;
 			packageReferences = (
-				1997F40A2EF007ED00E69B25 /* XCRemoteSwiftPackageReference "youtube-ios-player-helper" */,
+				D0E11A9D2F0FD17F0018CE58 /* XCRemoteSwiftPackageReference "youtube-ios-player-helper" */,
 			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = 19423B6E2ED6BD590004C99E /* Products */;
@@ -357,9 +357,9 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
-		1997F40A2EF007ED00E69B25 /* XCRemoteSwiftPackageReference "youtube-ios-player-helper" */ = {
+		D0E11A9D2F0FD17F0018CE58 /* XCRemoteSwiftPackageReference "youtube-ios-player-helper" */ = {
 			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/youtube/youtube-ios-player-helper.git";
+			repositoryURL = "https://github.com/youtube/youtube-ios-player-helper";
 			requirement = {
 				kind = upToNextMajorVersion;
 				minimumVersion = 1.0.4;
@@ -368,9 +368,9 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
-		1997F40B2EF007ED00E69B25 /* YouTubeiOSPlayerHelper */ = {
+		D0E11A9E2F0FD17F0018CE58 /* YouTubeiOSPlayerHelper */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = 1997F40A2EF007ED00E69B25 /* XCRemoteSwiftPackageReference "youtube-ios-player-helper" */;
+			package = D0E11A9D2F0FD17F0018CE58 /* XCRemoteSwiftPackageReference "youtube-ios-player-helper" */;
 			productName = YouTubeiOSPlayerHelper;
 		};
 /* End XCSwiftPackageProductDependency section */
