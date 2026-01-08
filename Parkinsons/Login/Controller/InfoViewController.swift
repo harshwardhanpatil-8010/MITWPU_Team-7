@@ -14,7 +14,7 @@ class InfoViewController: UIViewController {
     @IBOutlet weak var stageLabel: UILabel!
     @IBOutlet weak var stageLabelButton: UIButton!
     @IBOutlet weak var genderLabelButton: UIButton!
-    @IBOutlet weak var dateLabel: UILabel!
+    
     @IBOutlet weak var genderLabel: UILabel!
 
     // Data for the Pickers
@@ -69,14 +69,7 @@ class InfoViewController: UIViewController {
     }
 
     // MARK: - IBAction (Maintained for clarity, though not strictly required for UIMenu)
-    
-    @IBAction func genderPicker(_ sender: Any) {
-        
-    }
-    
-    @IBAction func stagePicker(_ sender: Any) {
-    }
-    
+
     
     // MARK: - Date Picker (Implementation placeholder)
     

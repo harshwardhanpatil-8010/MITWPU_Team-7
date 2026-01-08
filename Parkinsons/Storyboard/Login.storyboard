@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="24412" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="MUD-Lc-7Fb">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="24506" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="MUD-Lc-7Fb">
     <device id="retina6_3" orientation="portrait" appearance="light"/>
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="24405"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="24504"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="System colors in document resources" minToolsVersion="11.0"/>
         <capability name="UIMenu" message="Requires Xcode 11 or later." minToolsVersion="11.0" requiredIntegratedClassName="UICommandDiff"/>
@@ -105,9 +105,6 @@
                                             </children>
                                         </menu>
                                         <state key="normal" title="Select" image="chevron.up.chevron.down" catalog="system"/>
-                                        <connections>
-                                            <action selector="genderPicker:" destination="Y6W-OH-hqX" eventType="touchUpInside" id="4eo-0F-Llt"/>
-                                        </connections>
                                     </button>
                                 </subviews>
                                 <constraints>
@@ -168,9 +165,6 @@
                                             </children>
                                         </menu>
                                         <state key="normal" title="Button" image="chevron.up.chevron.down" catalog="system"/>
-                                        <connections>
-                                            <action selector="stagePicker:" destination="Y6W-OH-hqX" eventType="touchUpInside" id="FSM-Cz-v01"/>
-                                        </connections>
                                     </button>
                                 </subviews>
                                 <constraints>
@@ -220,11 +214,10 @@
                     </view>
                     <navigationItem key="navigationItem" id="doI-kY-B6J"/>
                     <connections>
-                        <outlet property="dateLabel" destination="S3U-dv-2x3" id="2rt-Xh-o2Y"/>
-                        <outlet property="genderLabel" destination="AhP-yj-hmv" id="ryd-Sh-jEE"/>
-                        <outlet property="genderLabelButton" destination="nNS-GJ-clA" id="cdQ-es-vQh"/>
-                        <outlet property="stageLabel" destination="T87-T9-8Y6" id="VCC-rY-mG0"/>
-                        <outlet property="stageLabelButton" destination="6QB-oF-Gml" id="IU9-ji-i0M"/>
+                        <outlet property="genderLabel" destination="AhP-yj-hmv" id="ZUn-bG-8tH"/>
+                        <outlet property="genderLabelButton" destination="wE9-ws-7pp" id="tyx-js-HpU"/>
+                        <outlet property="stageLabel" destination="T87-T9-8Y6" id="iYl-aU-5wX"/>
+                        <outlet property="stageLabelButton" destination="Yac-E0-hKB" id="u3r-nw-Ewd"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Ief-a0-LHa" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
@@ -268,7 +261,7 @@
                                     <color key="baseForegroundColor" systemColor="tintColor"/>
                                 </buttonConfiguration>
                                 <connections>
-                                    <action selector="turnOnAllButtonTapped:" destination="OSu-5Z-dQg" eventType="touchUpInside" id="47x-38-7vz"/>
+                                    <action selector="turnOnAllButtonTapped:" destination="OSu-5Z-dQg" eventType="touchUpInside" id="In0-ky-qDL"/>
                                 </connections>
                             </button>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Allow &quot;App&quot; to read " textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="NSE-75-Ybq">
@@ -496,7 +489,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="0bQ-sn-HSX" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="3103" y="125"/>
+            <point key="canvasLocation" x="2925" y="135"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="xjr-Lx-lJJ">
