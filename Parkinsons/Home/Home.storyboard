@@ -102,17 +102,13 @@
                                 <rect key="frame" x="0.0" y="0.0" width="393" height="793"/>
                                 <subviews>
                                     <view contentMode="scaleToFill" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="lse-ik-cY0">
-                                        <rect key="frame" x="-8" y="133" width="393" height="1400"/>
+                                        <rect key="frame" x="0.0" y="127" width="393" height="1400"/>
                                         <subviews>
                                             <navigationBar contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="zue-hZ-5cI">
                                                 <rect key="frame" x="0.0" y="8" width="393" height="54"/>
                                                 <items>
                                                     <navigationItem id="TsU-S7-AhP">
-                                                        <barButtonItem key="leftBarButtonItem" image="chevron.left" catalog="system" style="plain" id="Vpz-Cf-Jh3">
-                                                            <connections>
-                                                                <action selector="backButtonTapped:" destination="E2u-Yx-rAh" id="wEO-MF-uB9"/>
-                                                            </connections>
-                                                        </barButtonItem>
+                                                        <barButtonItem key="leftBarButtonItem" image="chevron.left" catalog="system" style="plain" id="Vpz-Cf-Jh3"/>
                                                         <barButtonItem key="rightBarButtonItem" title="Edit" style="plain" id="Zbd-dP-A9u">
                                                             <connections>
                                                                 <action selector="editButtonTapped:" destination="E2u-Yx-rAh" id="4qG-72-mNc"/>
