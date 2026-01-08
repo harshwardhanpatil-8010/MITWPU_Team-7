@@ -108,7 +108,11 @@
                                                 <rect key="frame" x="0.0" y="8" width="393" height="54"/>
                                                 <items>
                                                     <navigationItem id="TsU-S7-AhP">
-                                                        <barButtonItem key="leftBarButtonItem" image="chevron.left" catalog="system" style="plain" id="Vpz-Cf-Jh3"/>
+                                                        <barButtonItem key="leftBarButtonItem" image="chevron.left" catalog="system" style="plain" id="Vpz-Cf-Jh3">
+                                                            <connections>
+                                                                <action selector="backButtonTapped:" destination="E2u-Yx-rAh" id="Fn1-Sb-lmn"/>
+                                                            </connections>
+                                                        </barButtonItem>
                                                         <barButtonItem key="rightBarButtonItem" title="Edit" style="plain" id="Zbd-dP-A9u">
                                                             <connections>
                                                                 <action selector="editButtonTapped:" destination="E2u-Yx-rAh" id="4qG-72-mNc"/>
