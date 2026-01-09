@@ -135,10 +135,46 @@ UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
         collectionView.reloadData()
     }
 
+//    @IBAction func playButtonTapped(_ sender: UIButton) {
+//        guard let date = selectedDate else { return }
+//        if DailyGameManager.shared.isCompleted(date: date) { return }
+//
+//        let vc = storyboard!.instantiateViewController(
+//            withIdentifier: "GameViewController"
+//        ) as! GameViewController
+//
+//        vc.selectedDate = date
+//        vc.level = DailyGameManager.shared.level(for: date)
+//
+//        navigationController?.pushViewController(vc, animated: true)
+//    }
     @IBAction func playButtonTapped(_ sender: UIButton) {
         guard let date = selectedDate else { return }
-        if DailyGameManager.shared.isCompleted(date: date) { return }
 
+        if DailyGameManager.shared.isCompleted(date: date) {
+
+            let alert = UIAlertController(
+                title: "Challenge Completed",
+                message: "You have already completed this daily challenge. Do you want to play again?",
+                preferredStyle: .alert
+            )
+
+            let yesAction = UIAlertAction(title: "Yes", style: .default) { _ in
+                self.navigateToGame(with: date)
+            }
+
+            let noAction = UIAlertAction(title: "No", style: .cancel, handler: nil)
+
+            alert.addAction(yesAction)
+            alert.addAction(noAction)
+
+            present(alert, animated: true, completion: nil)
+            
+        } else {
+            navigateToGame(with: date)
+        }
+    }
+    private func navigateToGame(with date: Date) {
         let vc = storyboard!.instantiateViewController(
             withIdentifier: "GameViewController"
         ) as! GameViewController

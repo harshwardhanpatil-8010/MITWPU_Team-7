@@ -268,11 +268,22 @@ class GameViewController: UIViewController {
         super.viewDidAppear(animated)
         startGame()
     }
-
+//
+//    override func viewDidLayoutSubviews() {
+//        super.viewDidLayoutSubviews()
+//        updateLayout()
+//        contentContainer.layer.cornerRadius = 12 // Adjust this number for more/less roundness
+//        contentContainer.layer.masksToBounds = true
+//    }
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
         updateLayout()
+        // REMOVED: contentContainer.layer... (This belongs in the Cell class)
     }
+
+    // ... inside extension GameViewController ...
+
+
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         tabBarController?.tabBar.isHidden = true
@@ -294,13 +305,13 @@ class GameViewController: UIViewController {
         case 1...3: return (2, 3)
         case 4...6: return (2, 4)
         case 7...9: return (3, 4)
-        case 10...12: return (4, 4)
-        case 13...15: return (3, 6)
-        case 16...18: return (4, 5)
-        case 19...21: return (4, 6)
-        case 22...24: return (5, 6)
-        case 25...27: return (5, 8)
-        default: return (6, 8)
+        case 10...12: return (3, 6)
+        case 13...15: return (4, 5)
+        case 16...18: return (5, 6)
+        case 19...21: return (6, 6)
+        case 22...24: return (6, 6)
+        case 25...27: return (6, 6)
+        default: return (6, 6)
         }
     }
 
@@ -309,7 +320,7 @@ class GameViewController: UIViewController {
             "🤖","🔥","🌈","🐶","🚀","🍕","⚡️","🎧",
             "🏖️","🌙","⭐️","🐰","🐢","🍎","🎈","🎉",
             "🍀","🐠","🦋","🎮","🐸","🍩","🧠","🎯",
-            "🎲","🧩","🎵","🚴","🛸","🌋","🍔","🥑"
+            "🎲","🧩","🎵","🚴","🛸","🌋","🍔","🥑", "❤️", "🧤","🌸"
         ]
 
         let grid = gridForLevel(level)
@@ -462,6 +473,7 @@ extension GameViewController: UICollectionViewDataSource, UICollectionViewDelega
         cell.configure(with: cards[indexPath.item])
         return cell
     }
+
 
     func collectionView(_ collectionView: UICollectionView,
                         didSelectItemAt indexPath: IndexPath) {

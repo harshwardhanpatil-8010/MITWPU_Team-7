@@ -3,7 +3,7 @@
 //  Parkinsons
 //
 //  Created by SDC-USER on 11/12/25.
-//
+
 
 import UIKit
 
@@ -21,14 +21,22 @@ class MatchTheCardCollectionViewCell: UICollectionViewCell {
         frontLabel.isHidden = true
         backImageView.isHidden = false
         showingFront = false
-        contentContainer.layer.cornerRadius = 20
+
+        
+        
+        // 1. Ensure no "pointed" corners
+        contentContainer.layer.cornerRadius = 15
         contentContainer.clipsToBounds = true
-        contentContainer.layer.borderColor = UIColor.purple.cgColor
-        contentContainer.layer.borderWidth = 1.0
-        frontLabel.layer.cornerRadius = 20
+        
+        frontLabel.layer.cornerRadius = 15
         frontLabel.clipsToBounds = true
-        backImageView.layer.cornerRadius = 20
+        
+        backImageView.layer.cornerRadius = 15
         backImageView.clipsToBounds = true
+        
+        // Initial border state
+        contentContainer.layer.borderWidth = 1.0
+        contentContainer.layer.borderColor = UIColor.systemGray5.cgColor
     }
     override func prepareForReuse() {
         super.prepareForReuse()
@@ -37,8 +45,8 @@ class MatchTheCardCollectionViewCell: UICollectionViewCell {
         isUserInteractionEnabled = true
 
         contentContainer.isHidden = false
-        contentContainer.layer.borderWidth = 1.0
-        contentContainer.layer.borderColor = UIColor.purple.cgColor
+        contentContainer.layer.borderWidth = 0.5
+        contentContainer.layer.borderColor = UIColor.orange.cgColor
 
         frontLabel.isHidden = true
         backImageView.isHidden = false
@@ -73,7 +81,77 @@ class MatchTheCardCollectionViewCell: UICollectionViewCell {
         frontLabel.isHidden = !card.isFlipped
         backImageView.isHidden = card.isFlipped
     }
-    
+//
+//
+//import UIKit
+//
+//class MatchTheCardCollectionViewCell: UICollectionViewCell {
+//    @IBOutlet weak var contentContainer: UIView!
+//    @IBOutlet weak var frontLabel: UILabel!
+//    @IBOutlet weak var backImageView: UIImageView!
+//    
+//    private var showingFront: Bool = false
+//    
+//    override func awakeFromNib() {
+//        super.awakeFromNib()
+//        
+//        // 1. Ensure no "pointed" corners
+//        contentContainer.layer.cornerRadius = 15
+//        contentContainer.clipsToBounds = true
+//        
+//        frontLabel.layer.cornerRadius = 15
+//        frontLabel.clipsToBounds = true
+//        
+//        backImageView.layer.cornerRadius = 15
+//        backImageView.clipsToBounds = true
+//        
+//        // Initial border state
+//        contentContainer.layer.borderWidth = 1.0
+//        contentContainer.layer.borderColor = UIColor.systemGray5.cgColor
+//    }
+//
+//    override func prepareForReuse() {
+//        super.prepareForReuse()
+//        alpha = 1.0
+//        isUserInteractionEnabled = true
+//        contentContainer.isHidden = false
+//        
+//        // Reset border to default, not orange, so it only shows orange when selected
+//        contentContainer.layer.borderWidth = 1.0
+//        contentContainer.layer.borderColor = UIColor.systemGray5.cgColor
+//
+//        frontLabel.isHidden = true
+//        backImageView.isHidden = false
+//        showingFront = false
+//    }
+//
+//    // UPDATED: Added isSelected parameter
+//    func configure(with card: Card, isSelected: Bool) {
+//        frontLabel.text = card.content
+//        
+//        // 2. Handle Matched State Visuals
+//        if card.isMatched {
+//            frontLabel.isHidden = false
+//            backImageView.isHidden = true
+//            contentView.alpha = 0.4 // Slightly faded
+//        } else {
+//            contentView.alpha = 1.0
+//            frontLabel.isHidden = !card.isFlipped
+//            backImageView.isHidden = card.isFlipped
+//        }
+//
+//        // 3. Selection Logic (Applies to ALL cards)
+//        if isSelected {
+//            contentContainer.layer.borderWidth = 3.0 // Thicker to stand out
+//            contentContainer.layer.borderColor = UIColor.orange.cgColor
+//        } else {
+//            contentContainer.layer.borderWidth = 1.0
+//            contentContainer.layer.borderColor = card.isMatched ? UIColor.clear.cgColor : UIColor.systemGray5.cgColor
+//        }
+//    }
+//    
+//    // ... keep your flip() and revealForHint() methods as they are ...
+
     func flip(toFront: Bool, animated: Bool) {
         if showingFront == toFront {
             return

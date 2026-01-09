@@ -15,7 +15,15 @@ class SuccessViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-     timeTakenLabel.text = "\(timeTaken!)Secs"
+        if timeTaken < 60 {
+            timeTakenLabel.text = "Time taken: \(timeTaken!)s"
+        }
+        else{
+            let minutes = timeTaken / 60
+            let seconds = timeTaken % 60
+            timeTakenLabel.text = "Time taken: \(minutes)min \(seconds)s"
+        }
+     
         showConfetti()
         
 
