@@ -22,6 +22,10 @@ class SetGoalViewController: UIViewController, UITableViewDataSource, UIPickerVi
     @IBOutlet weak var paceBeatUIView: UIView!
     @IBOutlet weak var sessionTableView: UITableView!
 
+    
+    @IBOutlet weak var noSessionsOutlet: UIStackView!
+    
+    
     var startTapsCount: Int = 0
     private let paces = ["Slow", "Moderate", "Fast"]
     private var beats: [String] = []
@@ -133,8 +137,18 @@ class SetGoalViewController: UIViewController, UITableViewDataSource, UIPickerVi
         super.viewWillAppear(animated)
         DataStore.shared.cleanupOldSessions()
         sessionTableView.reloadData()
+    
+        if DataStore.shared.sessions.isEmpty {
+            noSessionsOutlet.isHidden = false
+            sessionTableView.isHidden = true
+        } else {
+            noSessionsOutlet.isHidden = true
+            sessionTableView.isHidden = false
+        }
+        
         tabBarController?.tabBar.isHidden = true
     }
+
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
         tabBarController?.tabBar.isHidden = false
@@ -164,11 +178,9 @@ class SetGoalViewController: UIViewController, UITableViewDataSource, UIPickerVi
         let h = dataForColumn1[DurationPicker.selectedRow(inComponent: 0)]
         let m = dataForColumn2[DurationPicker.selectedRow(inComponent: 1)]
         let total = (h * 3600) + (m * 60)
-
-        guard total > 0 else{
-            return
-        }
-
+        
+        guard total > 0 else { return }
+        
         let newSession = RhythmicSession(
             id: UUID(),
             startDate: Date(),
@@ -180,13 +192,16 @@ class SetGoalViewController: UIViewController, UITableViewDataSource, UIPickerVi
             steps: 0,
             distanceKMeters: 0
         )
-
+        
         DataStore.shared.add(newSession)
+        
         sessionTableView.reloadData()
         
+        noSessionsOutlet.isHidden = true
+        sessionTableView.isHidden = false
+        
         let storyboard = UIStoryboard(name: "Rhythmic Walking", bundle: nil)
-        guard let destVC = storyboard.instantiateViewController(withIdentifier: "SessionRunningVC") as? SessionRunningViewController else { return
-        }
+        guard let destVC = storyboard.instantiateViewController(withIdentifier: "SessionRunningVC") as? SessionRunningViewController else { return }
         
         let bpm = bpmForPace(selectedPace)
         destVC.totalSessionDuration = total

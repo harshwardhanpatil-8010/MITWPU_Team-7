@@ -1,10 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="24412" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="Al1-Zq-pB3">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="24506" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="Al1-Zq-pB3">
     <device id="retina6_3" orientation="portrait" appearance="light"/>
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="24405"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="24504"/>
         <capability name="Image references" minToolsVersion="12.0"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="Stack View standard spacing" minToolsVersion="9.0"/>
         <capability name="System colors in document resources" minToolsVersion="11.0"/>
         <capability name="UIMenu" message="Requires Xcode 11 or later." minToolsVersion="11.0" requiredIntegratedClassName="UICommandDiff"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
@@ -338,6 +339,23 @@
                                     <action selector="startButtonTapped:" destination="JJ7-RS-Dhn" eventType="touchUpInside" id="jPZ-xJ-1DO"/>
                                 </connections>
                             </button>
+                            <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="2" translatesAutoresizingMaskIntoConstraints="NO" id="CYa-Y5-2Us">
+                                <rect key="frame" x="16" y="757" width="370" height="47.666666666666629"/>
+                                <subviews>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="No sessions yet." textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="cNR-Tj-pqp">
+                                        <rect key="frame" x="0.0" y="0.0" width="370" height="26.333333333333332"/>
+                                        <fontDescription key="fontDescription" style="UICTFontTextStyleTitle2"/>
+                                        <color key="textColor" white="0.66666666666666663" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Start walking." textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="WCa-3l-04w">
+                                        <rect key="frame" x="0.0" y="28.333333333333371" width="370" height="19.333333333333329"/>
+                                        <fontDescription key="fontDescription" style="UICTFontTextStyleCallout"/>
+                                        <color key="textColor" white="0.66666666666666663" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                </subviews>
+                            </stackView>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="3TP-Xy-pH0"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
@@ -348,6 +366,7 @@
                             <constraint firstItem="TQm-Gl-XGU" firstAttribute="leading" secondItem="3TP-Xy-pH0" secondAttribute="leading" constant="16" id="A8K-Lp-DJV"/>
                             <constraint firstItem="TQm-Gl-XGU" firstAttribute="top" secondItem="FiG-dd-r8F" secondAttribute="bottom" constant="15" id="FOy-YA-Epm"/>
                             <constraint firstItem="h9o-v8-NA3" firstAttribute="centerX" secondItem="Lh1-y2-G85" secondAttribute="centerX" id="Gtg-Q5-wvc"/>
+                            <constraint firstItem="CYa-Y5-2Us" firstAttribute="leading" secondItem="3TP-Xy-pH0" secondAttribute="leading" constant="16" id="IDK-hE-u24"/>
                             <constraint firstItem="Lh1-y2-G85" firstAttribute="top" secondItem="9dr-tt-Ogk" secondAttribute="bottom" constant="15" id="Ifz-mM-c1S"/>
                             <constraint firstItem="9dr-tt-Ogk" firstAttribute="top" secondItem="VPN-t2-Ehx" secondAttribute="bottom" constant="30" id="OaQ-15-Ay8"/>
                             <constraint firstItem="M23-Ec-ACv" firstAttribute="leading" secondItem="3TP-Xy-pH0" secondAttribute="leading" constant="16" id="P26-RQ-5xr"/>
@@ -359,8 +378,10 @@
                             <constraint firstItem="3TP-Xy-pH0" firstAttribute="trailing" secondItem="TQm-Gl-XGU" secondAttribute="trailing" constant="16" id="hVg-2w-PMq"/>
                             <constraint firstItem="9dr-tt-Ogk" firstAttribute="leading" secondItem="3TP-Xy-pH0" secondAttribute="leading" constant="16" id="iDT-ns-ckv"/>
                             <constraint firstItem="9dr-tt-Ogk" firstAttribute="leading" secondItem="Lh1-y2-G85" secondAttribute="leading" id="ioT-TW-Z0v"/>
+                            <constraint firstItem="CYa-Y5-2Us" firstAttribute="top" secondItem="9dr-tt-Ogk" secondAttribute="bottom" constant="32" id="ixA-kX-Nce"/>
                             <constraint firstItem="FiG-dd-r8F" firstAttribute="leading" secondItem="3TP-Xy-pH0" secondAttribute="leading" constant="16" id="jw6-Pg-Bzh"/>
                             <constraint firstItem="h9o-v8-NA3" firstAttribute="leading" secondItem="wuG-Ru-sbe" secondAttribute="leading" id="lxT-cu-14g"/>
+                            <constraint firstItem="3TP-Xy-pH0" firstAttribute="trailing" secondItem="CYa-Y5-2Us" secondAttribute="trailing" constant="16" id="nqi-Vu-ESI"/>
                             <constraint firstItem="h9o-v8-NA3" firstAttribute="top" secondItem="wuG-Ru-sbe" secondAttribute="top" constant="62" id="r0m-UL-Tao"/>
                             <constraint firstItem="VPN-t2-Ehx" firstAttribute="top" secondItem="TQm-Gl-XGU" secondAttribute="bottom" constant="30" id="skp-dB-5FH"/>
                             <constraint firstItem="3TP-Xy-pH0" firstAttribute="trailing" secondItem="Lh1-y2-G85" secondAttribute="trailing" constant="16" id="tEV-Pf-rmr"/>
@@ -382,6 +403,7 @@
                         <outlet property="DurationPicker" destination="7my-Zg-LmF" id="Bsb-35-MkX"/>
                         <outlet property="beatButton" destination="de9-BB-80J" id="DoN-2e-ybr"/>
                         <outlet property="datePickerUIView" destination="FiG-dd-r8F" id="rPz-ux-s1X"/>
+                        <outlet property="noSessionsOutlet" destination="CYa-Y5-2Us" id="8ld-cu-Tfn"/>
                         <outlet property="paceBeatUIView" destination="TQm-Gl-XGU" id="pcs-Cm-pwW"/>
                         <outlet property="paceButton" destination="LV8-JM-8wq" id="MfW-eU-VET"/>
                         <outlet property="sessionTableView" destination="Lh1-y2-G85" id="1RI-Sd-SF3"/>
@@ -607,12 +629,25 @@
                                     <constraint firstAttribute="width" constant="370" id="xQx-cH-GTS"/>
                                 </constraints>
                             </view>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Gait Summary" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Hn6-io-Bef">
-                                <rect key="frame" x="16" y="409.66666666666669" width="370" height="24"/>
-                                <fontDescription key="fontDescription" type="boldSystem" pointSize="20"/>
-                                <nil key="textColor"/>
-                                <nil key="highlightedColor"/>
-                            </label>
+                            <stackView opaque="NO" contentMode="scaleToFill" distribution="equalCentering" spacingType="standard" translatesAutoresizingMaskIntoConstraints="NO" id="SIZ-1w-V2L">
+                                <rect key="frame" x="16" y="409.66666666666669" width="370" height="34.333333333333314"/>
+                                <subviews>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Gait Summary" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Hn6-io-Bef">
+                                        <rect key="frame" x="0.0" y="0.0" width="133.66666666666666" height="34.333333333333336"/>
+                                        <fontDescription key="fontDescription" type="boldSystem" pointSize="20"/>
+                                        <nil key="textColor"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="f0P-ke-J3Z">
+                                        <rect key="frame" x="320.33333333333331" y="0.0" width="49.666666666666686" height="34.333333333333336"/>
+                                        <state key="normal" title="Button"/>
+                                        <buttonConfiguration key="configuration" style="plain" image="info.circle" catalog="system"/>
+                                        <connections>
+                                            <segue destination="4L8-MZ-kMD" kind="presentation" id="ZPk-zm-vtR"/>
+                                        </connections>
+                                    </button>
+                                </subviews>
+                            </stackView>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="e0m-sN-ZMg">
                                 <rect key="frame" x="16" y="453.66666666666674" width="370" height="217"/>
                                 <subviews>
@@ -711,19 +746,19 @@
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                         <constraints>
                             <constraint firstItem="fjf-0o-Z0T" firstAttribute="trailing" secondItem="gti-xA-aRh" secondAttribute="trailing" constant="16" id="26t-6F-JE3"/>
-                            <constraint firstItem="e0m-sN-ZMg" firstAttribute="top" secondItem="Hn6-io-Bef" secondAttribute="bottom" constant="20" id="6Qv-PJ-jIi"/>
                             <constraint firstItem="gti-xA-aRh" firstAttribute="leading" secondItem="fjf-0o-Z0T" secondAttribute="leading" constant="16" id="9zf-xI-j0v"/>
                             <constraint firstAttribute="trailing" secondItem="STB-Xg-ece" secondAttribute="trailing" id="EjF-ff-XKq"/>
-                            <constraint firstItem="fjf-0o-Z0T" firstAttribute="trailing" secondItem="Hn6-io-Bef" secondAttribute="trailing" constant="16" id="PmH-Dx-lFB"/>
                             <constraint firstItem="e0m-sN-ZMg" firstAttribute="leading" secondItem="fjf-0o-Z0T" secondAttribute="leading" constant="16" id="VuF-qI-6El"/>
                             <constraint firstItem="cAf-Ek-EGe" firstAttribute="top" secondItem="STB-Xg-ece" secondAttribute="bottom" constant="16" id="WAb-b3-DeC"/>
                             <constraint firstItem="fjf-0o-Z0T" firstAttribute="trailing" secondItem="e0m-sN-ZMg" secondAttribute="trailing" constant="16" id="Ytw-Ux-lPx"/>
+                            <constraint firstItem="SIZ-1w-V2L" firstAttribute="top" secondItem="gti-xA-aRh" secondAttribute="bottom" constant="62.670000000000002" id="dZK-To-9gz"/>
                             <constraint firstItem="cAf-Ek-EGe" firstAttribute="leading" secondItem="fjf-0o-Z0T" secondAttribute="leading" constant="16" id="dlt-60-23o"/>
                             <constraint firstItem="gti-xA-aRh" firstAttribute="top" secondItem="cAf-Ek-EGe" secondAttribute="bottom" constant="20" id="hF4-wX-cLO"/>
-                            <constraint firstItem="Hn6-io-Bef" firstAttribute="top" secondItem="gti-xA-aRh" secondAttribute="bottom" constant="62.5" id="khr-r6-qQS"/>
-                            <constraint firstItem="Hn6-io-Bef" firstAttribute="leading" secondItem="fjf-0o-Z0T" secondAttribute="leading" constant="16" id="qpb-4w-5ab"/>
+                            <constraint firstItem="fjf-0o-Z0T" firstAttribute="trailing" secondItem="SIZ-1w-V2L" secondAttribute="trailing" constant="16" id="o5t-qD-saw"/>
                             <constraint firstItem="fjf-0o-Z0T" firstAttribute="trailing" secondItem="cAf-Ek-EGe" secondAttribute="trailing" constant="16" id="rZQ-z9-jLR"/>
+                            <constraint firstItem="SIZ-1w-V2L" firstAttribute="leading" secondItem="fjf-0o-Z0T" secondAttribute="leading" constant="16" id="sKq-xZ-0gA"/>
                             <constraint firstItem="STB-Xg-ece" firstAttribute="top" secondItem="bBS-zW-oR2" secondAttribute="top" constant="16" id="xfz-al-ezO"/>
+                            <constraint firstItem="e0m-sN-ZMg" firstAttribute="top" secondItem="SIZ-1w-V2L" secondAttribute="bottom" constant="9.6699999999999999" id="ze7-xo-YYE"/>
                             <constraint firstItem="STB-Xg-ece" firstAttribute="leading" secondItem="bBS-zW-oR2" secondAttribute="leading" id="zf7-YB-V1M"/>
                         </constraints>
                     </view>
@@ -747,6 +782,109 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="XwU-fe-0Bp" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="6337.3134328358201" y="-454.46224256292902"/>
+        </scene>
+        <!--Gait Summary Info View Controller-->
+        <scene sceneID="myx-yR-NaW">
+            <objects>
+                <viewController id="4L8-MZ-kMD" customClass="GaitSummaryInfoViewController" customModule="Parkinsons" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="zqc-TN-dQe">
+                        <rect key="frame" x="0.0" y="0.0" width="402" height="812"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <navigationBar contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="UoD-D7-rc3">
+                                <rect key="frame" x="0.0" y="78" width="402" height="44"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="44" id="D3W-ct-k5F"/>
+                                </constraints>
+                                <items>
+                                    <navigationItem title="Gait Summary" id="RPS-Ca-MhP">
+                                        <barButtonItem key="leftBarButtonItem" systemItem="cancel" id="yWt-YV-9TJ">
+                                            <connections>
+                                                <action selector="closeButton:" destination="4L8-MZ-kMD" id="p0L-us-QWM"/>
+                                            </connections>
+                                        </barButtonItem>
+                                    </navigationItem>
+                                </items>
+                            </navigationBar>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="j7v-Z6-bcm">
+                                <rect key="frame" x="16" y="154" width="402" height="101.66666666666669"/>
+                                <string key="text">Gait Summary is a concise analytical overview of an individual’s walking pattern, describing how they move while walking. It combines key walking metrics such as step length, walking asymmetry, and walking steadiness to assess mobility, balance, and stability.</string>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="stepsLength" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="2nr-uc-G32">
+                                <rect key="frame" x="16" y="287.66666666666669" width="370" height="21"/>
+                                <fontDescription key="fontDescription" style="UICTFontTextStyleHeadline"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="woP-rw-IIH">
+                                <rect key="frame" x="16" y="316.66666666666669" width="370" height="61"/>
+                                <string key="text">Average distance covered in one step.
+Longer step length usually means better leg strength and flexibility.</string>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Walking Asymmetry" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="UjB-sc-IVv">
+                                <rect key="frame" x="16" y="409.66666666666669" width="370" height="21"/>
+                                <fontDescription key="fontDescription" style="UICTFontTextStyleHeadline"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Walking Asymmetry measures imbalance between left and right steps. Lower percentage means better balance." lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="f9T-wS-ye0">
+                                <rect key="frame" x="16" y="438.66666666666669" width="370" height="61"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Walking Steadiness" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="d1I-Eu-G02">
+                                <rect key="frame" x="16" y="531.66666666666663" width="370" height="21"/>
+                                <fontDescription key="fontDescription" style="UICTFontTextStyleHeadline"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Walking Steadiness reflects walking stability. Good steadiness means lower fall risk." lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="03i-m7-EY0">
+                                <rect key="frame" x="16" y="560.66666666666663" width="370" height="40.666666666666629"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                        </subviews>
+                        <viewLayoutGuide key="safeArea" id="1Tr-aI-QiR"/>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                        <constraints>
+                            <constraint firstItem="03i-m7-EY0" firstAttribute="leading" secondItem="1Tr-aI-QiR" secondAttribute="leading" constant="16" id="0Rm-xf-Gko"/>
+                            <constraint firstItem="d1I-Eu-G02" firstAttribute="top" secondItem="f9T-wS-ye0" secondAttribute="bottom" constant="32" id="18U-ek-Vdh"/>
+                            <constraint firstItem="1Tr-aI-QiR" firstAttribute="trailing" secondItem="2nr-uc-G32" secondAttribute="trailing" constant="16" id="4IM-Ck-hYK"/>
+                            <constraint firstItem="1Tr-aI-QiR" firstAttribute="trailing" secondItem="UjB-sc-IVv" secondAttribute="trailing" constant="16" id="5Ki-CX-AcR"/>
+                            <constraint firstItem="j7v-Z6-bcm" firstAttribute="top" secondItem="UoD-D7-rc3" secondAttribute="bottom" constant="32" id="7an-1z-JfX"/>
+                            <constraint firstItem="UoD-D7-rc3" firstAttribute="leading" secondItem="1Tr-aI-QiR" secondAttribute="leading" id="9G4-Jo-l6I"/>
+                            <constraint firstItem="UjB-sc-IVv" firstAttribute="top" secondItem="woP-rw-IIH" secondAttribute="bottom" constant="32" id="CZ4-V9-YI1"/>
+                            <constraint firstItem="2nr-uc-G32" firstAttribute="top" secondItem="j7v-Z6-bcm" secondAttribute="bottom" constant="32" id="Ghc-R0-e9e"/>
+                            <constraint firstItem="f9T-wS-ye0" firstAttribute="top" secondItem="UjB-sc-IVv" secondAttribute="bottom" constant="8" id="MSL-bN-SQl"/>
+                            <constraint firstItem="f9T-wS-ye0" firstAttribute="leading" secondItem="1Tr-aI-QiR" secondAttribute="leading" constant="16" id="NeE-Ir-mue"/>
+                            <constraint firstItem="d1I-Eu-G02" firstAttribute="leading" secondItem="1Tr-aI-QiR" secondAttribute="leading" constant="16" id="Oqp-HX-Bz5"/>
+                            <constraint firstItem="UjB-sc-IVv" firstAttribute="leading" secondItem="1Tr-aI-QiR" secondAttribute="leading" constant="16" id="PqW-TM-mu3"/>
+                            <constraint firstItem="woP-rw-IIH" firstAttribute="leading" secondItem="1Tr-aI-QiR" secondAttribute="leading" constant="16" id="RLp-Ct-qRx"/>
+                            <constraint firstItem="UoD-D7-rc3" firstAttribute="top" secondItem="1Tr-aI-QiR" secondAttribute="top" constant="16" id="Tmd-nJ-718"/>
+                            <constraint firstItem="UoD-D7-rc3" firstAttribute="centerX" secondItem="2nr-uc-G32" secondAttribute="centerX" id="YpQ-nM-bP0"/>
+                            <constraint firstItem="1Tr-aI-QiR" firstAttribute="trailing" secondItem="woP-rw-IIH" secondAttribute="trailing" constant="16" id="cW0-Bh-dDr"/>
+                            <constraint firstItem="1Tr-aI-QiR" firstAttribute="trailing" secondItem="d1I-Eu-G02" secondAttribute="trailing" constant="16" id="dpz-JG-aPO"/>
+                            <constraint firstItem="1Tr-aI-QiR" firstAttribute="trailing" secondItem="f9T-wS-ye0" secondAttribute="trailing" constant="16" id="iCY-pm-1tz"/>
+                            <constraint firstItem="j7v-Z6-bcm" firstAttribute="trailing" secondItem="1Tr-aI-QiR" secondAttribute="trailing" constant="16" id="izS-Hh-QhW"/>
+                            <constraint firstItem="03i-m7-EY0" firstAttribute="top" secondItem="d1I-Eu-G02" secondAttribute="bottom" constant="8" id="lK3-5B-fHC"/>
+                            <constraint firstItem="j7v-Z6-bcm" firstAttribute="leading" secondItem="1Tr-aI-QiR" secondAttribute="leading" constant="16" id="ldH-3u-ltY"/>
+                            <constraint firstItem="2nr-uc-G32" firstAttribute="leading" secondItem="1Tr-aI-QiR" secondAttribute="leading" constant="16" id="pE1-Nz-riw"/>
+                            <constraint firstItem="1Tr-aI-QiR" firstAttribute="trailing" secondItem="03i-m7-EY0" secondAttribute="trailing" constant="16" id="s8m-lH-aH3"/>
+                            <constraint firstItem="woP-rw-IIH" firstAttribute="top" secondItem="2nr-uc-G32" secondAttribute="bottom" constant="8" id="xAe-Sp-zT4"/>
+                        </constraints>
+                    </view>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="JkZ-9d-xYG" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="7074.6268656716411" y="-454.46224256292902"/>
         </scene>
         <!--countdown-->
         <scene sceneID="DmB-x1-6Cr">
@@ -811,19 +949,19 @@
     <resources>
         <image name="info.circle" catalog="system" width="128" height="123"/>
         <systemColor name="linkColor">
-            <color red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <color red="0.0" green="0.47843137254901963" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </systemColor>
         <systemColor name="separatorColor">
-            <color red="0.23529411759999999" green="0.23529411759999999" blue="0.26274509800000001" alpha="0.28999999999999998" colorSpace="custom" customColorSpace="sRGB"/>
+            <color red="0.23529411764705882" green="0.23529411764705882" blue="0.2627450980392157" alpha="0.12" colorSpace="custom" customColorSpace="sRGB"/>
         </systemColor>
         <systemColor name="systemBackgroundColor">
             <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
         </systemColor>
         <systemColor name="systemGreenColor">
-            <color red="0.20392156859999999" green="0.78039215689999997" blue="0.34901960780000002" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <color red="0.20392156862745098" green="0.7803921568627451" blue="0.34901960784313724" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </systemColor>
         <systemColor name="systemRedColor">
-            <color red="1" green="0.23137254900000001" blue="0.18823529410000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <color red="1" green="0.2196078431372549" blue="0.23529411764705882" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </systemColor>
     </resources>
 </document>

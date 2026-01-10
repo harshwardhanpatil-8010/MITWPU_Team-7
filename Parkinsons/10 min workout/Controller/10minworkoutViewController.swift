@@ -257,9 +257,11 @@ class _0minworkoutViewController: UIViewController {
         if let vc = sb.instantiateViewController(withIdentifier: "GoodJobViewController") as? _0minworkoutGoodJobViewController {
             vc.completed = WorkoutManager.shared.completedToday.count
             vc.totalWorkoutSeconds = totalWorkoutSeconds
-            navigationController?.setViewControllers([vc], animated: true)
+            navigationController?.pushViewController(vc, animated: true)
         }
     }
+
+
 
     func updateProgressBars() {
         guard progressBars != nil else { return }
