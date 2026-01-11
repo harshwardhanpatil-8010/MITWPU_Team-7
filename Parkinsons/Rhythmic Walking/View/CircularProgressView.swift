@@ -54,12 +54,42 @@ import UIKit
         progressLayer.strokeEnd = 1
         layer.addSublayer(progressLayer)
     }
+
+
+
     
     private var centerPoint: CGPoint {
         CGPoint(x: bounds.midX, y: bounds.midY)
     }
     
-    func setProgress(_ progress: CGFloat) {
-        progressLayer.strokeEnd = progress
-    }
+//    func setProgress(_ progress: CGFloat) {
+//        progressLayer.strokeEnd = progress
+//    }
+     func setProgress(_ progress: CGFloat) {
+         progressLayer.strokeEnd = min(max(progress, 0), 1)
+     }
+
+     
+     override func layoutSubviews() {
+         super.layoutSubviews()
+         updatePath()
+     }
+
+     private func updatePath() {
+         let circularPath = UIBezierPath(
+             arcCenter: centerPoint,
+             radius: min(bounds.width, bounds.height) / 2,
+//             radius: (min(bounds.width, bounds.height) - lineWidth) / 2,
+             startAngle: -.pi / 2,
+             endAngle: 3 * .pi / 2,
+             clockwise: true
+         )
+
+         trackLayer.path = circularPath.cgPath
+         progressLayer.path = circularPath.cgPath
+     }
+
+
+
+
 }

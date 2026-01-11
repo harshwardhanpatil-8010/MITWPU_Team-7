@@ -58,7 +58,7 @@ class HomeViewController: UIViewController, UICollectionViewDelegate , SymptomLo
         TherapeuticGameModel(
             title: "Mimic the Emoji",
             description: "Complete your daily challenge!",
-            iconName: "smiley"
+            iconName: "mimicTheEmoji"
         ),
         TherapeuticGameModel(
             title: "Match the Cards",

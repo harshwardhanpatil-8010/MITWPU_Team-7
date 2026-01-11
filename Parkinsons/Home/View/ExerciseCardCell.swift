@@ -74,5 +74,6 @@ class ExerciseCardCell: UICollectionViewCell {
         backgroundCardView.layer.shadowRadius = 3
         backgroundCardView.layer.shadowOffset = CGSize(width: 0, height: 1)
     }
+
     
 }

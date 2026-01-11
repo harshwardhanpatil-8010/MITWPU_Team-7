@@ -47,6 +47,7 @@ class SessionSummaryViewController: UIViewController {
         GaitUIView.applyCardStyle()
         loadData()
         progressView.progressColor = UIColor(hex: "90AF81")
+        progressView.lineWidth = 15
         progressView.trackColor = .systemGray5
         navigationItem.hidesBackButton = true
         navigationController?.interactivePopGestureRecognizer?.isEnabled = false

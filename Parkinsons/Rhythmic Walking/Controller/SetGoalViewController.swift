@@ -120,6 +120,7 @@ class SetGoalViewController: UIViewController, UITableViewDataSource, UIPickerVi
         super.viewDidLoad()
         DurationPicker.dataSource = self
         DurationPicker.delegate = self
+        DurationPicker.selectRow(10, inComponent: 1, animated: false)
         datePickerUIView.applyCardStyle()
         sessionTableView.dataSource = self
         sessionTableView.layer.cornerRadius = 30

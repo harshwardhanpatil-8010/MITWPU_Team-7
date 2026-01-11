@@ -5,15 +5,13 @@ import UIKit
 class _0minworkoutLandingPageViewController: UIViewController, UICollectionViewDelegate {
 
     @IBOutlet weak var startButtonOutlet: UIButton!
-    @IBOutlet weak var circularProgressView: UIView!
+    @IBOutlet weak var progressContainer: UIView!
     @IBOutlet weak var exerciseNumberLabel: UILabel!
     @IBOutlet weak var collectionView: UICollectionView!
 
     var exercises: [WorkoutExercise] = []
+    
     private var progressView: CircularProgressView!
-//    let finishedCount = WorkoutManager.shared.completedToday.count + WorkoutManager.shared.SkippedToday.count
-    // Replace: let finishedCount = ...
-    // With this:
     private var finishedCount: Int {
         return WorkoutManager.shared.completedToday.count + WorkoutManager.shared.SkippedToday.count
     }
@@ -24,51 +22,21 @@ class _0minworkoutLandingPageViewController: UIViewController, UICollectionViewD
         let completedGroup = exercises.filter { completedSet.contains($0.id) }
         return topGroup + completedGroup
     }
-
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        
-//        WorkoutManager.shared.getTodayWorkout()
-
-        self.exercises = WorkoutManager.shared.exercises
-        
-        
-        setupProgressView()
-        setupCollectionView()
-        updateProgress()
-        updateButtonUI()
-    }
-
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
-        self.exercises = WorkoutManager.shared.exercises
-        collectionView.reloadData()
-        
-        let currentProgress = WorkoutManager.shared.completedToday.count + WorkoutManager.shared.SkippedToday.count
-//        if currentProgress == 0 && !hasCheckedSafety {
-//            hasCheckedSafety = true
-//            checkMedTaken()
-//        }
-        if currentProgress == 0 && !WorkoutManager.shared.hasCheckedSafetyThisSession {
-            WorkoutManager.shared.hasCheckedSafetyThisSession = true
-            checkMedTaken()
-        }
-        updateProgress()
-        updateButtonUI()
-        self.navigationController?.setNavigationBarHidden(false, animated: animated)
-        tabBarController?.tabBar.isHidden = true
-    }
-    override func viewWillDisappear(_ animated: Bool) {
-        super.viewWillDisappear(animated)
-        tabBarController?.tabBar.isHidden = false
-    }
-   
-
+//    private func setupProgressView() {
+//        progressView = CircularProgressView(frame: progressContainer.bounds)
+//        progressView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
+//        progressContainer.addSubview(progressView)
+//        progressView.progressColor = UIColor(hex: "#0088FF")
+//        progressView.trackColor = .systemGray5
+//    }
+    
     private func setupProgressView() {
-        progressView = CircularProgressView(frame: circularProgressView.bounds)
+        progressView = CircularProgressView(frame: progressContainer.bounds)
         progressView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
-        circularProgressView.addSubview(progressView)
-        progressView.progressColor = .systemBlue
+        progressContainer.addSubview(progressView)
+        
+        // Set colors AFTER adding to view hierarchy
+        progressView.progressColor = UIColor(hex: "#0088FF")
         progressView.trackColor = .systemGray5
     }
 
@@ -103,6 +71,61 @@ class _0minworkoutLandingPageViewController: UIViewController, UICollectionViewD
         return UICollectionViewCompositionalLayout(section: section)
     }
 
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        setupProgressView()
+        self.exercises = WorkoutManager.shared.exercises
+        setupCollectionView()
+        updateProgress()
+        updateButtonUI()
+    }
+    
+
+//    override func viewDidLayoutSubviews() {
+//        super.viewDidLayoutSubviews()
+//
+//        progressView.frame = progressContainer.bounds
+//
+//        progressView.trackColor = .systemGray5
+//        progressView.progressColor = UIColor(hex: "#0088FF")
+//
+//    }
+
+
+
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        self.exercises = WorkoutManager.shared.exercises
+        collectionView.reloadData()
+        
+        let currentProgress = WorkoutManager.shared.completedToday.count + WorkoutManager.shared.SkippedToday.count
+//        if currentProgress == 0 && !hasCheckedSafety {
+//            hasCheckedSafety = true
+//            checkMedTaken()
+//        }
+        if currentProgress == 0 && !WorkoutManager.shared.hasCheckedSafetyThisSession {
+            WorkoutManager.shared.hasCheckedSafetyThisSession = true
+            checkMedTaken()
+        }
+        updateProgress()
+        updateButtonUI()
+        self.navigationController?.setNavigationBarHidden(false, animated: animated)
+        tabBarController?.tabBar.isHidden = true
+    }
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        tabBarController?.tabBar.isHidden = false
+    }
+   
+
+//    private func setupProgressView() {
+//        progressView = CircularProgressView(frame: circularProgressView.bounds)
+//        progressView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
+//        circularProgressView.addSubview(progressView)
+////        progressView.progressColor = .systemBlue
+//        
+//    }
+
     func updateProgress() {
         self.view.layoutIfNeeded()
         
@@ -121,26 +144,47 @@ class _0minworkoutLandingPageViewController: UIViewController, UICollectionViewD
         }
     }
 
-    
+//    
+//    func updateButtonUI() {
+//        let finishedCount = WorkoutManager.shared.completedToday.count + WorkoutManager.shared.SkippedToday.count
+//        let skippedCount = WorkoutManager.shared.SkippedToday.count
+//        let total = exercises.count
+//        
+//        if finishedCount == 0 {
+//            startButtonOutlet.setTitle("Start Workout", for: .normal)
+//            startButtonOutlet.isEnabled = true
+//        }
+//        else if finishedCount < total || (finishedCount == total && skippedCount > 0) {
+//            startButtonOutlet.setTitle("Resume Workout", for: .normal)
+//            startButtonOutlet.isEnabled = true
+//        }
+//        else {
+//            startButtonOutlet.setTitle("Workout Completed", for: .normal)
+//            startButtonOutlet.isEnabled = false
+//        }
+//    }
+
     func updateButtonUI() {
-        let finishedCount = WorkoutManager.shared.completedToday.count + WorkoutManager.shared.SkippedToday.count
+        let completedCount = WorkoutManager.shared.completedToday.count
         let skippedCount = WorkoutManager.shared.SkippedToday.count
         let total = exercises.count
         
-        if finishedCount == 0 {
+        if completedCount == 0 && skippedCount == 0 {
             startButtonOutlet.setTitle("Start Workout", for: .normal)
             startButtonOutlet.isEnabled = true
         }
-        else if finishedCount < total || (finishedCount == total && skippedCount > 0) {
+        
+        else if completedCount < total {
             startButtonOutlet.setTitle("Resume Workout", for: .normal)
             startButtonOutlet.isEnabled = true
         }
+        
         else {
             startButtonOutlet.setTitle("Workout Completed", for: .normal)
             startButtonOutlet.isEnabled = false
         }
     }
-
+    
 //    @IBAction func StartWorkoutTapped(_ sender: Any) {
 //        
 //        let sb = UIStoryboard(name: "10 minworkout", bundle: nil)
@@ -168,12 +212,31 @@ class _0minworkoutLandingPageViewController: UIViewController, UICollectionViewD
 //        }
 //    }
     
+    
+    
+//    @IBAction func StartWorkoutTapped(_ sender: Any) {
+//        let sb = UIStoryboard(name: "10 minworkout", bundle: nil)
+//        if let vc = sb.instantiateViewController(withIdentifier: "10minworkoutCountdownViewController") as? _0minworkoutCountdownViewController {
+//            
+//            // Logic: Find the first exercise ID that is NOT in completedToday.
+//            // This will automatically find the first skipped OR first never-touched exercise.
+//            let firstIncompleteIndex = exercises.firstIndex { exercise in
+//                !WorkoutManager.shared.completedToday.contains(exercise.id)
+//            } ?? 0
+//
+//            vc.startingIndex = firstIncompleteIndex
+//            vc.exercises = WorkoutManager.shared.exercises
+//            self.navigationController?.pushViewController(vc, animated: true)
+//        }
+//    }
+    
+    
     @IBAction func StartWorkoutTapped(_ sender: Any) {
         let sb = UIStoryboard(name: "10 minworkout", bundle: nil)
         if let vc = sb.instantiateViewController(withIdentifier: "10minworkoutCountdownViewController") as? _0minworkoutCountdownViewController {
             
-            // Logic: Find the first exercise ID that is NOT in completedToday.
-            // This will automatically find the first skipped OR first never-touched exercise.
+            // Find the first exercise that hasn't been COMPLETED
+            // (This includes those that were skipped)
             let firstIncompleteIndex = exercises.firstIndex { exercise in
                 !WorkoutManager.shared.completedToday.contains(exercise.id)
             } ?? 0

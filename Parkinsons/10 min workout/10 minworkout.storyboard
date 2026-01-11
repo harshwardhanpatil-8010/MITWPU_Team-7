@@ -244,7 +244,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="QvK-xH-w2J" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="5672" y="138"/>
+            <point key="canvasLocation" x="4207" y="835"/>
         </scene>
         <!--10 min Workout-->
         <scene sceneID="hG1-va-qNN">
@@ -275,11 +275,12 @@
                                         </subviews>
                                     </stackView>
                                 </subviews>
-                                <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="130" id="H2N-RK-kTo"/>
                                     <constraint firstAttribute="width" constant="130" id="ItL-Jk-YkZ"/>
                                     <constraint firstItem="xWr-wC-5H9" firstAttribute="centerY" secondItem="bmk-RZ-sGy" secondAttribute="centerY" id="Sn0-Vt-cVU"/>
+                                    <constraint firstAttribute="width" secondItem="bmk-RZ-sGy" secondAttribute="height" multiplier="1:1" id="XTD-LZ-2cn"/>
                                     <constraint firstItem="xWr-wC-5H9" firstAttribute="centerX" secondItem="bmk-RZ-sGy" secondAttribute="centerX" id="tTX-xB-oWQ"/>
                                 </constraints>
                             </view>
@@ -340,9 +341,9 @@
                     </view>
                     <navigationItem key="navigationItem" title="10 min Workout" id="uWL-aI-44F"/>
                     <connections>
-                        <outlet property="circularProgressView" destination="bmk-RZ-sGy" id="bSx-gd-ena"/>
                         <outlet property="collectionView" destination="8Ik-1f-ItZ" id="K0F-dX-F1i"/>
                         <outlet property="exerciseNumberLabel" destination="EZX-J2-hy3" id="3h1-tO-cTJ"/>
+                        <outlet property="progressContainer" destination="bmk-RZ-sGy" id="bSx-gd-ena"/>
                         <outlet property="startButtonOutlet" destination="xbg-g6-n8k" id="9Nw-5h-WIx"/>
                     </connections>
                 </viewController>
