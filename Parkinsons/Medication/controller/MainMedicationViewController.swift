@@ -1,106 +1,167 @@
-//
-//  MainMedicationViewController.swift
-//  Parkinsons
-//
-//  Created by SDC-USER on 09/01/26.
-//
-
 import UIKit
+import Foundation
 
-class MainMedicationViewController: UIViewController{
+final class MainMedicationViewController: UIViewController {
 
+    // MARK: - Outlets
     @IBOutlet weak var medSegment: UISegmentedControl!
     @IBOutlet weak var medicationCollectionView: UICollectionView!
+
+    // MARK: - Segment Type
     enum SegmentType {
-            case today
-            case myMedication
-        }
+        case today
+        case myMedication
+    }
+
+    // MARK: - Properties
+    private let todayViewModel = TodayMedicationViewModel()
     private var currentSegment: SegmentType = .today
     private var myMedications: [Medication] = []
+
+    // MARK: - Lifecycle
     override func viewDidLoad() {
         super.viewDidLoad()
         setupCollectionView()
-            myMedications = MedicationDataStore.shared.medications
-
-            updateUIForSegment()
         loadMedications()
-        // Do any additional setup after loading the view.
+        updateUIForSegment()
+        self.definesPresentationContext = true
+
     }
+
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        loadMedications()
+    }
+
+    // MARK: - Data
+    private func loadMedications() {
+        myMedications = MedicationDataStore.shared.medications
+
+        if currentSegment == .today {
+            todayViewModel.loadTodayMedications(from: myMedications)
+        }
+
+        medicationCollectionView.reloadData()
+    }
+
+    // MARK: - Setup
+//    private func updateDose(_ dose: TodayDoseItem, status: DoseLogStatus) {
+//        MedicationDataStore.shared.updateDoseStatus(
+//            medicationID: dose.medicationID,
+//            scheduledTime: dose.scheduledTime,
+//            status: status
+//        )
+//
+//        todayViewModel.loadTodayMedications(
+//            from: MedicationDataStore.shared.medications
+//        )
+//        medicationCollectionView.reloadData()
+//    }
+    private func presentDoseAlert(for dose: TodayDoseItem) {
+
+        let alert = UIAlertController(
+            title: dose.medicationName,
+            message: "Did you take the medicine?",
+            preferredStyle: .alert
+        )
+
+        let takenAction = UIAlertAction(title: "Taken", style: .default) { [weak self] _ in
+            self?.updateDose(dose, status: .taken)
+        }
+
+        let skippedAction = UIAlertAction(title: "Skipped", style: .destructive) { [weak self] _ in
+            self?.updateDose(dose, status: .skipped)
+        }
+
+        let cancelAction = UIAlertAction(title: "✕ Cancel", style: .cancel)
+
+        alert.addAction(takenAction)
+        alert.addAction(skippedAction)
+        alert.addAction(cancelAction)
+
+        present(alert, animated: true)
+    }
+
+
+    private func setupCollectionView() {
+        medicationCollectionView.dataSource = self
+        medicationCollectionView.delegate = self
+        medicationCollectionView.backgroundColor = .clear
+
+        medicationCollectionView.register(
+            UINib(nibName: "TodayMedicationCollectionViewCell", bundle: nil),
+            forCellWithReuseIdentifier: "TodayMedicationCollectionViewCell"
+        )
+
+        medicationCollectionView.register(
+            UINib(nibName: "MyMedicationCollectionViewCell", bundle: nil),
+            forCellWithReuseIdentifier: "MyMedicationCollectionViewCell"
+        )
+    }
+
+    // MARK: - Segment Handling
+    @IBAction func segmentChanged(_ sender: UISegmentedControl) {
+        currentSegment = sender.selectedSegmentIndex == 0 ? .today : .myMedication
+        loadMedications()
+        updateUIForSegment()
+    }
+
     private func updateUIForSegment() {
-
-        switch currentSegment {
-
-        case .today:
-            navigationItem.rightBarButtonItem = nil   // No Edit button
-            medicationCollectionView.reloadData()      // Will be empty
-
-        case .myMedication:
-            navigationItem.rightBarButtonItem = UIBarButtonItem(
+        navigationItem.rightBarButtonItem =
+            currentSegment == .myMedication
+            ? UIBarButtonItem(
                 title: "Edit",
                 style: .plain,
                 target: self,
                 action: #selector(editTapped)
             )
-            medicationCollectionView.reloadData()
-        }
+            : nil
     }
+
+    // MARK: - Actions
+    @IBAction func plusButtonTapped(_ sender: Any) {
+        let storyboard = UIStoryboard(name: "Medication", bundle: nil)
+        let vc = storyboard.instantiateViewController(
+            withIdentifier: "AddMedVC"
+        ) as! AddMedicationViewController
+
+        let nav = UINavigationController(rootViewController: vc)
+        nav.modalPresentationStyle = .formSheet
+        present(nav, animated: true)
+    }
+
     @objc private func editTapped() {
-        print("Edit My Medication tapped")
+        let storyboard = UIStoryboard(name: "Medication", bundle: nil)
+        let vc = storyboard.instantiateViewController(
+            withIdentifier: "EditMedicationViewController"
+        ) as! EditMedicationViewController
+
+        vc.medications = myMedications
+
+        let nav = UINavigationController(rootViewController: vc)
+        nav.modalPresentationStyle = .formSheet
+        present(nav, animated: true)
     }
-    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+}
+
+// MARK: - UICollectionViewDataSource
+extension MainMedicationViewController: UICollectionViewDataSource {
+
+    func numberOfSections(in collectionView: UICollectionView) -> Int {
+        return 1
+    }
+
+    func collectionView(
+        _ collectionView: UICollectionView,
+        numberOfItemsInSection section: Int
+    ) -> Int {
 
         switch currentSegment {
         case .today:
-            return 0   // 👈 EMPTY for now
+            return todayViewModel.todayDoses.count
         case .myMedication:
             return myMedications.count
         }
-    }
-
-
-    @IBAction func segmentChanged(_ sender: UISegmentedControl) {
-        if sender.selectedSegmentIndex == 0 {
-                currentSegment = .today
-            } else {
-                currentSegment = .myMedication
-            }
-
-            updateUIForSegment()
-    }
-    private func setupCollectionView() {
-        medicationCollectionView.dataSource = self
-//        medicationCollectionView.delegate = self
-
-        medicationCollectionView.register(
-                UINib(nibName: "MyMedicationCollectionViewCell", bundle: nil),
-                forCellWithReuseIdentifier: "MyMedicationCollectionViewCell"
-            )
-
-        medicationCollectionView.backgroundColor = .clear
-        }
-
-        // MARK: - Data
-        private func loadMedications() {
-            myMedications = MedicationDataStore.shared.medications
-            medicationCollectionView.reloadData()
-        }
-    
-
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destination.
-        // Pass the selected object to the new view controller.
-    }
-    */
-
-}
-extension MainMedicationViewController: UICollectionViewDataSource {
-
-    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return myMedications.count
     }
 
     func collectionView(
@@ -108,37 +169,135 @@ extension MainMedicationViewController: UICollectionViewDataSource {
         cellForItemAt indexPath: IndexPath
     ) -> UICollectionViewCell {
 
-        guard let cell = collectionView.dequeueReusableCell(
-            withReuseIdentifier: "MyMedicationCollectionViewCell",
-            for: indexPath
-        ) as? MyMedicationCollectionViewCell else {
-            return UICollectionViewCell()
-        }
+        switch currentSegment {
 
-        let medication = myMedications[indexPath.item]
-        cell.configure(with: medication)
-        return cell
+        case .today:
+            let cell = collectionView.dequeueReusableCell(
+                withReuseIdentifier: "TodayMedicationCollectionViewCell",
+                for: indexPath
+            ) as! TodayMedicationCollectionViewCell
+
+            cell.configure(with: todayViewModel.todayDoses[indexPath.item])
+            return cell
+
+        case .myMedication:
+            let cell = collectionView.dequeueReusableCell(
+                withReuseIdentifier: "MyMedicationCollectionViewCell",
+                for: indexPath
+            ) as! MyMedicationCollectionViewCell
+
+            cell.configure(with: myMedications[indexPath.item])
+            return cell
+        }
     }
 }
-//extension MainMedicationViewController: UICollectionViewDelegateFlowLayout {
+
+// MARK: - UICollectionViewDelegateFlowLayout
+extension MainMedicationViewController: UICollectionViewDelegateFlowLayout {
+
+    func collectionView(
+        _ collectionView: UICollectionView,
+        layout collectionViewLayout: UICollectionViewLayout,
+        insetForSectionAt section: Int
+    ) -> UIEdgeInsets {
+        .zero
+    }
+
+    func collectionView(
+        _ collectionView: UICollectionView,
+        layout collectionViewLayout: UICollectionViewLayout,
+        sizeForItemAt indexPath: IndexPath
+    ) -> CGSize {
+        CGSize(width: collectionView.bounds.width, height: 120)
+    }
+
+    func collectionView(
+        _ collectionView: UICollectionView,
+        layout collectionViewLayout: UICollectionViewLayout,
+        minimumLineSpacingForSectionAt section: Int
+    ) -> CGFloat {
+        8
+    }
+}
+
+// MARK: - UICollectionViewDelegate (Tap Handling)
+extension MainMedicationViewController: UICollectionViewDelegate {
+
+    func collectionView(
+        _ collectionView: UICollectionView,
+        didSelectItemAt indexPath: IndexPath
+    ) {
+        guard currentSegment == .today else { return }
+
+        let dose = todayViewModel.todayDoses[indexPath.item]
+        presentDoseAlert(for: dose)
+    }
+
+//    private func presentDosePopover(for dose: TodayDoseItem) {
+//        let vc = DoseActionPopoverViewController()
+//        vc.dose = dose
 //
-//    func collectionView(
-//        _ collectionView: UICollectionView,
-//        layout collectionViewLayout: UICollectionViewLayout,
-//        sizeForItemAt indexPath: IndexPath
-//    ) -> CGSize {
+//        vc.onActionSelected = { [weak self] status in
+//            self?.updateDose(dose, status: status)
+//        }
 //
-//        return CGSize(
-//            width: collectionView.bounds.width,
-//            height: 120
+//        if let sheet = vc.sheetPresentationController {
+//            sheet.detents = [.medium()]
+//            sheet.prefersGrabberVisible = true
+//            sheet.preferredCornerRadius = 16
+//        }
+//
+//        present(vc, animated: true)
+//    }
+
+
+}
+
+// MARK: - Dose Action Sheet
+extension MainMedicationViewController {
+
+    private func presentDoseActionSheet(for dose: TodayDoseItem) {
+
+        let alert = UIAlertController(
+            title: dose.medicationName,
+            message: "Did you take this medication?",
+            preferredStyle: .actionSheet
+        )
+
+        let takenAction = UIAlertAction(title: "Taken", style: .default) { _ in
+            self.updateDose(dose, status: .taken)
+        }
+
+        let skippedAction = UIAlertAction(title: "Skipped", style: .default) { _ in
+            self.updateDose(dose, status: .skipped)
+        }
+
+        let cancelAction = UIAlertAction(title: "✕ Close", style: .cancel)
+
+        alert.addAction(takenAction)
+        alert.addAction(skippedAction)
+        alert.addAction(cancelAction)
+
+        present(alert, animated: true)
+    }
+    private func updateDose(_ dose: TodayDoseItem, status: DoseLogStatus) {
+        MedicationDataStore.shared.updateDoseStatus(
+            medicationID: dose.medicationID,
+            scheduledTime: dose.scheduledTime,
+            status: status
+        )
+
+        loadMedications() // reloads data + reloads collection view
+    }
+
+
+//    private func updateDose(_ dose: TodayDoseItem, status: DoseLogStatus) {
+//        MedicationDataStore.shared.updateDoseStatus(
+//            medicationID: dose.medicationID,
+//            scheduledTime: dose.scheduledTime,
+//            status: status
 //        )
-//    }
 //
-//    func collectionView(
-//        _ collectionView: UICollectionView,
-//        layout collectionViewLayout: UICollectionViewLayout,
-//        minimumLineSpacingForSectionAt section: Int
-//    ) -> CGFloat {
-//        return 16
+//        loadMedications()
 //    }
-//}
+}

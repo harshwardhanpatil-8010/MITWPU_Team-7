@@ -287,6 +287,11 @@ class AddMedicationViewController: UIViewController,
             )
             MedicationDataStore.shared.addMedication(newMedication)
         }
+        NotificationCenter.default.post(
+            name: Notification.Name("MedicationUpdated"),
+            object: nil
+        )
+
         
         delegate?.didUpdateMedication()
         dismiss(animated: true)

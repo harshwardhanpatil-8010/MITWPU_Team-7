@@ -134,7 +134,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="4Iy-ch-W3k">
-                                <rect key="frame" x="16" y="306" width="370" height="500"/>
+                                <rect key="frame" x="16" y="254" width="370" height="552"/>
                                 <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                                 <collectionViewFlowLayout key="collectionViewLayout" automaticEstimatedItemSize="YES" minimumLineSpacing="10" minimumInteritemSpacing="10" id="uP8-5i-eWe">
                                     <size key="itemSize" width="128" height="128"/>
@@ -179,9 +179,12 @@
                                 <buttonConfiguration key="configuration" style="filled" cornerStyle="capsule">
                                     <imageReference key="image" image="plus" catalog="system" symbolScale="large"/>
                                 </buttonConfiguration>
+                                <connections>
+                                    <action selector="plusButtonTapped:" destination="abu-7L-A82" eventType="touchUpInside" id="yDn-6c-un9"/>
+                                </connections>
                             </button>
                             <segmentedControl opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="plain" selectedSegmentIndex="0" translatesAutoresizingMaskIntoConstraints="NO" id="CM0-Fn-crM">
-                                <rect key="frame" x="16" y="260" width="370" height="32"/>
+                                <rect key="frame" x="16" y="208" width="370" height="32"/>
                                 <segments>
                                     <segment title="Today's Medications"/>
                                     <segment title="All Medications"/>

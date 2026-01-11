@@ -104,4 +104,54 @@ class MedicationDataStore: ObservableObject {
             saveToStorage()
         }
     }
+    
+    // MARK: - Update Dose Status (Taken / Skipped)
+    func updateDoseStatus(
+        medicationID: UUID,
+        scheduledTime: Date,
+        status: DoseStatus
+    ) {
+        guard let medIndex = medications.firstIndex(where: { $0.id == medicationID }) else {
+            return
+        }
+
+        // Find the dose matching scheduled time (hour & minute)
+        if let doseIndex = medications[medIndex].doses.firstIndex(where: {
+            Calendar.current.isDate(
+                $0.time,
+                equalTo: scheduledTime,
+                toGranularity: .minute
+            )
+        }) {
+            medications[medIndex].doses[doseIndex].status = status
+            saveToStorage()
+        }
+    }
+
 }
+extension MedicationDataStore {
+
+    func updateDoseStatus(
+        medicationID: UUID,
+        scheduledTime: Date,
+        status: DoseLogStatus
+    ) {
+        guard let medIndex = medications.firstIndex(where: { $0.id == medicationID }) else {
+            return
+        }
+
+        let doseStatus = DoseStatus(from: status)
+
+        for i in medications[medIndex].doses.indices {
+            let doseTime = medications[medIndex].doses[i].time
+
+            if Calendar.current.isDate(doseTime, equalTo: scheduledTime, toGranularity: .minute) {
+                medications[medIndex].doses[i].status = doseStatus
+                break
+            }
+        }
+
+        saveToStorage()
+    }
+}
+
