@@ -38,12 +38,17 @@ class SummaryViewController: UIViewController {
         super.viewDidLoad()
         setupUI()
     }
-    
+    //--- Changes 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         // This is where the magic happens:
         // Every time you come back to this screen, it fetches the latest saved data.
+        self.navigationController?.setNavigationBarHidden(true, animated: animated)
         loadDataForSelectedDate()
+    }
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        self.navigationController?.setNavigationBarHidden(false, animated: animated)
     }
     
     // MARK: - Setup & Data Loading
