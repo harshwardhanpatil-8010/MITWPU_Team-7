@@ -641,6 +641,18 @@ extension HomeViewController: UICollectionViewDataSource {
         }
         return header
     }
+    // MARK: - Navigation Actions
+    @IBAction func calendarBarButtonItemTapped(_ sender: UIBarButtonItem) {
+        // This assumes your CalendarViewController is in a Storyboard named "Main" or "Home"
+        // If you made it via code, use: let vc = CalendarViewController()
+        let storyboard = UIStoryboard(name: "Home", bundle: nil)
+        guard let vc = storyboard.instantiateViewController(withIdentifier: "CalendarViewController") as? CalendarViewController else { return }
+        
+        // Wrap in Nav Controller so we can have a 'Close' or 'Done' button
+        let nav = UINavigationController(rootViewController: vc)
+        nav.modalPresentationStyle = .pageSheet// Or .pageSheet based on your preference
+        present(nav, animated: true)
+    }
 }
 
 // MARK: - Helper Extension

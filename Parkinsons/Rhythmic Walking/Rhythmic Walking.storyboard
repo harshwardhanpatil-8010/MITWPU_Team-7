@@ -825,7 +825,7 @@
                                 <nil key="highlightedColor"/>
                             </label>
                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" alignment="top" spacing="7" translatesAutoresizingMaskIntoConstraints="NO" id="OXg-ya-6hZ">
-                                <rect key="frame" x="16" y="303.33333333333331" width="370" height="97.333333333333314"/>
+                                <rect key="frame" x="16" y="303.33333333333331" width="370" height="91.666666666666686"/>
                                 <subviews>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Step Length" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="2nr-uc-G32">
                                         <rect key="frame" x="0.0" y="0.0" width="96.333333333333329" height="20.333333333333332"/>
@@ -833,11 +833,10 @@
                                         <nil key="textColor"/>
                                         <nil key="highlightedColor"/>
                                     </label>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="4" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="woP-rw-IIH">
-                                        <rect key="frame" x="0.0" y="27.333333333333371" width="370" height="70"/>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="6" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="woP-rw-IIH">
+                                        <rect key="frame" x="0.0" y="27.333333333333371" width="370" height="64.333333333333329"/>
                                         <constraints>
                                             <constraint firstAttribute="width" constant="370" id="jGi-j3-M8Q"/>
-                                            <constraint firstAttribute="height" constant="70" id="t4Q-RD-kyt"/>
                                         </constraints>
                                         <string key="text">It is the average distance covered in one step.
 Longer step length usually means better leg strength and flexibility.</string>
@@ -848,7 +847,7 @@ Longer step length usually means better leg strength and flexibility.</string>
                                 </subviews>
                             </stackView>
                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" alignment="top" spacing="7" translatesAutoresizingMaskIntoConstraints="NO" id="iWF-Ha-7lU">
-                                <rect key="frame" x="16" y="431.66666666666669" width="370" height="91.666666666666686"/>
+                                <rect key="frame" x="16" y="426" width="370" height="91.666666666666629"/>
                                 <subviews>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Walking Asymmetry" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="UjB-sc-IVv">
                                         <rect key="frame" x="0.0" y="0.0" width="159" height="20.333333333333332"/>
@@ -867,17 +866,17 @@ Longer step length usually means better leg strength and flexibility.</string>
                                     </label>
                                 </subviews>
                             </stackView>
-                            <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="7" translatesAutoresizingMaskIntoConstraints="NO" id="aXt-H8-tuy">
-                                <rect key="frame" x="16" y="554.33333333333337" width="370" height="69.666666666666629"/>
+                            <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" alignment="top" spacing="7" translatesAutoresizingMaskIntoConstraints="NO" id="aXt-H8-tuy">
+                                <rect key="frame" x="16" y="548.66666666666663" width="370" height="69.666666666666629"/>
                                 <subviews>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Walking Steadiness" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="d1I-Eu-G02">
-                                        <rect key="frame" x="0.0" y="0.0" width="370" height="20.333333333333332"/>
+                                        <rect key="frame" x="0.0" y="0.0" width="155" height="20.333333333333332"/>
                                         <fontDescription key="fontDescription" style="UICTFontTextStyleHeadline"/>
                                         <nil key="textColor"/>
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Walking Steadiness reflects walking stability. Good steadiness indicates lower fall risk." lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="03i-m7-EY0">
-                                        <rect key="frame" x="0.0" y="27.333333333333261" width="370" height="42.333333333333343"/>
+                                        <rect key="frame" x="0.0" y="27.333333333333375" width="370" height="42.333333333333343"/>
                                         <constraints>
                                             <constraint firstAttribute="width" constant="370" id="dRz-rl-tuX"/>
                                         </constraints>
@@ -895,14 +894,14 @@ Longer step length usually means better leg strength and flexibility.</string>
                                 </constraints>
                             </view>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="iSS-ld-vJw">
-                                <rect key="frame" x="16" y="415.66666666666669" width="370" height="1"/>
+                                <rect key="frame" x="16" y="410" width="370" height="1"/>
                                 <color key="backgroundColor" systemColor="separatorColor"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="1" id="ebp-AY-2I3"/>
                                 </constraints>
                             </view>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="75K-pV-oP3">
-                                <rect key="frame" x="16" y="538.33333333333337" width="370" height="1"/>
+                                <rect key="frame" x="16" y="532.66666666666663" width="370" height="1"/>
                                 <color key="backgroundColor" systemColor="separatorColor"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="1" id="207-JW-LxM"/>
@@ -942,21 +941,6 @@ Longer step length usually means better leg strength and flexibility.</string>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="JkZ-9d-xYG" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="7074.6268656716411" y="-454.46224256292902"/>
-        </scene>
-        <!--View Controller-->
-        <scene sceneID="1ne-Za-Ae7">
-            <objects>
-                <viewController id="ZyZ-Ln-0ny" sceneMemberID="viewController">
-                    <view key="view" contentMode="scaleToFill" id="byU-fH-mw4">
-                        <rect key="frame" x="0.0" y="0.0" width="402" height="874"/>
-                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <viewLayoutGuide key="safeArea" id="Jmy-gI-0H6"/>
-                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
-                    </view>
-                </viewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="daS-Sp-C2e" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="7871.6417910447753" y="-454.46224256292902"/>
         </scene>
         <!--countdown-->
         <scene sceneID="DmB-x1-6Cr">

@@ -59,7 +59,7 @@ class SessionRunningViewController: UIViewController {
         title = "Rhythmic Walking"
         setupProgressView()
         progressView.progressColor = UIColor(hex: "90AF81")
-        progressView.trackColor = .systemGray5
+        progressView.trackColor = UIColor(hex: "90AF81", alpha: 0.3)
         beatButton.titleLabel?.text = selectedBeat
         paceButton.titleLabel?.text = selectedPace
         beatPaceUIView.applyCardStyle()

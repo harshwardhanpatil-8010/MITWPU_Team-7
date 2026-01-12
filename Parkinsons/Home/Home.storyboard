@@ -31,7 +31,11 @@
                                                     <segue destination="E2u-Yx-rAh" kind="presentation" id="oOE-qe-0J9"/>
                                                 </connections>
                                             </barButtonItem>
-                                            <barButtonItem image="calendar" catalog="system" id="me4-gr-dWf"/>
+                                            <barButtonItem image="calendar" catalog="system" id="me4-gr-dWf">
+                                                <connections>
+                                                    <action selector="calendarBarButtonItemTapped:" destination="Y6W-OH-hqX" id="Qrf-RH-LZY"/>
+                                                </connections>
+                                            </barButtonItem>
                                             <barButtonItem image="tree" catalog="system" id="3yv-DS-dHf"/>
                                         </rightBarButtonItems>
                                     </navigationItem>
@@ -419,7 +423,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="n9w-et-OYO" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="9312.2137404580153" y="-501.4084507042254"/>
+            <point key="canvasLocation" x="9111" y="-532"/>
         </scene>
         <!--Symptom Log Detail View Controller-->
         <scene sceneID="mFU-7C-uHf">
@@ -480,7 +484,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="IzF-I0-bpW" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="9158.0152671755714" y="426.76056338028172"/>
+            <point key="canvasLocation" x="9111" y="131"/>
         </scene>
         <!--Symptom Log History View Controller-->
         <scene sceneID="o37-3S-GnY">
@@ -539,7 +543,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="qat-LT-xbk" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="10017.557251908396" y="224.64788732394368"/>
+            <point key="canvasLocation" x="9934" y="131"/>
         </scene>
         <!--View Controller-->
         <scene sceneID="nDf-XQ-a5Q">
@@ -776,6 +780,52 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dD9-A6-ep0" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="6710.6870229007627" y="745.07042253521126"/>
+        </scene>
+        <!--Calendar View Controller-->
+        <scene sceneID="DOP-pw-nKm">
+            <objects>
+                <viewController storyboardIdentifier="CalendarViewController" useStoryboardIdentifierAsRestorationIdentifier="YES" id="YxW-ZH-lhD" customClass="CalendarViewController" customModule="Parkinsons" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="h36-Sr-ApG">
+                        <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="KeU-1H-fum">
+                                <rect key="frame" x="16" y="118" width="361" height="666"/>
+                                <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                                <collectionViewFlowLayout key="collectionViewLayout" automaticEstimatedItemSize="YES" minimumLineSpacing="10" minimumInteritemSpacing="10" id="rDz-gM-6Ai">
+                                    <size key="itemSize" width="128" height="128"/>
+                                    <size key="headerReferenceSize" width="0.0" height="0.0"/>
+                                    <size key="footerReferenceSize" width="0.0" height="0.0"/>
+                                    <inset key="sectionInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
+                                </collectionViewFlowLayout>
+                                <cells>
+                                    <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="calendar_cell" id="0zx-T9-tdE">
+                                        <rect key="frame" x="0.0" y="0.0" width="128" height="128"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                        <collectionViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" id="rDj-cs-6ye">
+                                            <rect key="frame" x="0.0" y="0.0" width="128" height="128"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                        </collectionViewCellContentView>
+                                    </collectionViewCell>
+                                </cells>
+                            </collectionView>
+                        </subviews>
+                        <viewLayoutGuide key="safeArea" id="vtw-88-3Sr"/>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                        <constraints>
+                            <constraint firstItem="vtw-88-3Sr" firstAttribute="bottom" secondItem="KeU-1H-fum" secondAttribute="bottom" id="Eps-lh-UvP"/>
+                            <constraint firstItem="KeU-1H-fum" firstAttribute="leading" secondItem="vtw-88-3Sr" secondAttribute="leading" constant="16" id="KZQ-qK-KHe"/>
+                            <constraint firstItem="KeU-1H-fum" firstAttribute="top" secondItem="vtw-88-3Sr" secondAttribute="top" id="ar1-Sy-L8V"/>
+                            <constraint firstItem="vtw-88-3Sr" firstAttribute="trailing" secondItem="KeU-1H-fum" secondAttribute="trailing" constant="16" id="zrU-JT-vEJ"/>
+                        </constraints>
+                    </view>
+                    <connections>
+                        <outlet property="collectionView" destination="KeU-1H-fum" id="ZiD-8B-1l8"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="olq-8w-mXC" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="7527.480916030534" y="802.81690140845069"/>
         </scene>
         <!--Medication-->
         <scene sceneID="e6q-vS-CMc">

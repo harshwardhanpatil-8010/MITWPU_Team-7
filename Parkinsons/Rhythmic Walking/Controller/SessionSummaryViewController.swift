@@ -48,7 +48,7 @@ class SessionSummaryViewController: UIViewController {
         loadData()
         progressView.progressColor = UIColor(hex: "90AF81")
         progressView.lineWidth = 15
-        progressView.trackColor = .systemGray5
+        progressView.trackColor = UIColor(hex: "90AF81", alpha: 0.3)
         navigationItem.hidesBackButton = true
         navigationController?.interactivePopGestureRecognizer?.isEnabled = false
 

@@ -22,13 +22,6 @@ class _0minworkoutLandingPageViewController: UIViewController, UICollectionViewD
         let completedGroup = exercises.filter { completedSet.contains($0.id) }
         return topGroup + completedGroup
     }
-//    private func setupProgressView() {
-//        progressView = CircularProgressView(frame: progressContainer.bounds)
-//        progressView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
-//        progressContainer.addSubview(progressView)
-//        progressView.progressColor = UIColor(hex: "#0088FF")
-//        progressView.trackColor = .systemGray5
-//    }
     
     private func setupProgressView() {
         progressView = CircularProgressView(frame: progressContainer.bounds)
@@ -36,8 +29,8 @@ class _0minworkoutLandingPageViewController: UIViewController, UICollectionViewD
         progressContainer.addSubview(progressView)
         
         // Set colors AFTER adding to view hierarchy
-        progressView.progressColor = UIColor(hex: "#0088FF")
-        progressView.trackColor = .systemGray5
+        progressView.progressColor = UIColor(hex: "0088FF")
+        progressView.trackColor = UIColor(hex: "0088FF", alpha: 0.3)
     }
 
     private func setupCollectionView() {
