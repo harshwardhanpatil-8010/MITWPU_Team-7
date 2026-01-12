@@ -72,7 +72,9 @@
         <!--Medication-->
         <scene sceneID="s0d-6b-0kx">
             <objects>
-                <viewController storyboardIdentifier="MedicationLandingPageViewController" id="Y6W-OH-hqX" customClass="MedicationLandingPageViewController" customModule="Parkinsons" customModuleProvider="target" sceneMemberID="viewController">
+
+                <viewController storyboardIdentifier="MedicationLandingPage" id="Y6W-OH-hqX" customClass="MedicationLandingPageViewController" customModule="Parkinsons" customModuleProvider="target" sceneMemberID="viewController">
+
                     <view key="view" contentMode="scaleToFill" id="5EZ-qb-Rvc">
                         <rect key="frame" x="0.0" y="0.0" width="402" height="874"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -839,7 +841,9 @@
         <!--Navigation Controller-->
         <scene sceneID="hfF-cK-8nf">
             <objects>
-                <navigationController storyboardIdentifier="MedicationNavigationController" automaticallyAdjustsScrollViewInsets="NO" useStoryboardIdentifierAsRestorationIdentifier="YES" id="9NG-xS-5eY" sceneMemberID="viewController">
+
+                <navigationController storyboardIdentifier="MedicationNavigationController" automaticallyAdjustsScrollViewInsets="NO" id="NG0-rI-gBc" sceneMemberID="viewController">
+
                     <toolbarItems/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" largeTitles="YES" id="NaC-Fu-nLn">
                         <rect key="frame" x="0.0" y="124" width="402" height="106"/>

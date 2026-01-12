@@ -26,7 +26,7 @@
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="feature1" translatesAutoresizingMaskIntoConstraints="NO" id="FKK-h6-PZP">
+                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="cards" translatesAutoresizingMaskIntoConstraints="NO" id="FKK-h6-PZP">
                                 <rect key="frame" x="52.666666666666657" y="35" width="70" height="70"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="70" id="TwZ-RR-uu1"/>
@@ -73,7 +73,7 @@
         </collectionViewCell>
     </objects>
     <resources>
-        <image name="feature1" width="1024" height="1024"/>
+        <image name="cards" width="616" height="294"/>
         <systemColor name="systemBackgroundColor">
             <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
         </systemColor>

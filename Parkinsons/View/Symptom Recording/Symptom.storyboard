@@ -129,7 +129,7 @@
         <!--Navigation Controller-->
         <scene sceneID="KpW-OK-0Ap">
             <objects>
-                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="EUD-4w-XwR" sceneMemberID="viewController">
+                <navigationController storyboardIdentifier="SymptomNavigationController" automaticallyAdjustsScrollViewInsets="NO" useStoryboardIdentifierAsRestorationIdentifier="YES" id="EUD-4w-XwR" sceneMemberID="viewController">
                     <toolbarItems/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" largeTitles="YES" id="sjl-YV-krA">
                         <rect key="frame" x="0.0" y="118" width="393" height="106"/>

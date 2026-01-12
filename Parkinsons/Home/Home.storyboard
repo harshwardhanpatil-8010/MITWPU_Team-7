@@ -1,7 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-
 <document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="24506" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="hog-PK-88T">
-
     <device id="retina6_12" orientation="portrait" appearance="light"/>
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="24504"/>
@@ -22,31 +20,14 @@
                         <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <navigationBar contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Byu-25-vaf">
-                                <rect key="frame" x="0.0" y="64" width="393" height="54"/>
-                                <items>
-                                    <navigationItem id="cGT-K2-nk3">
-                                        <rightBarButtonItems>
-                                            <barButtonItem image="person.crop.circle" catalog="system" id="nGr-RC-mcb">
-                                                <connections>
-                                                    <action selector="profilePageButton:" destination="Y6W-OH-hqX" id="NsW-46-3IR"/>
-                                                    <segue destination="E2u-Yx-rAh" kind="presentation" id="oOE-qe-0J9"/>
-                                                </connections>
-                                            </barButtonItem>
-                                            <barButtonItem image="calendar" catalog="system" id="me4-gr-dWf"/>
-                                            <barButtonItem image="tree" catalog="system" id="3yv-DS-dHf"/>
-                                        </rightBarButtonItems>
-                                    </navigationItem>
-                                </items>
-                            </navigationBar>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Hello John" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="FrP-at-w4U">
-                                <rect key="frame" x="16" y="125.99999999999999" width="158.66666666666666" height="38.333333333333329"/>
+                                <rect key="frame" x="16" y="180" width="158.66666666666666" height="38.333333333333343"/>
                                 <fontDescription key="fontDescription" type="boldSystem" pointSize="32"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="VtX-jr-dYm">
-                                <rect key="frame" x="0.0" y="180.33333333333331" width="393" height="671.66666666666674"/>
+                                <rect key="frame" x="0.0" y="234.33333333333334" width="393" height="500.66666666666663"/>
                                 <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                                 <collectionViewFlowLayout key="collectionViewLayout" automaticEstimatedItemSize="YES" minimumLineSpacing="10" minimumInteritemSpacing="10" id="mZc-ho-9sF">
                                     <size key="itemSize" width="393" height="114"/>
@@ -70,19 +51,27 @@
                         <viewLayoutGuide key="safeArea" id="vDu-zF-Fre"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                         <constraints>
-                            <constraint firstAttribute="trailing" secondItem="Byu-25-vaf" secondAttribute="trailing" id="1yb-AN-3sf"/>
-                            <constraint firstAttribute="bottom" secondItem="VtX-jr-dYm" secondAttribute="bottom" id="B5w-an-NBA"/>
+                            <constraint firstItem="VtX-jr-dYm" firstAttribute="bottom" secondItem="vDu-zF-Fre" secondAttribute="bottom" id="3lE-GU-a3d"/>
                             <constraint firstItem="VtX-jr-dYm" firstAttribute="trailing" secondItem="vDu-zF-Fre" secondAttribute="trailing" id="DeS-lh-Vfv"/>
                             <constraint firstItem="FrP-at-w4U" firstAttribute="leading" secondItem="vDu-zF-Fre" secondAttribute="leading" constant="16" id="Ecr-DK-ukg"/>
                             <constraint firstItem="VtX-jr-dYm" firstAttribute="leading" secondItem="vDu-zF-Fre" secondAttribute="leading" id="SOd-hS-iEF"/>
-                            <constraint firstItem="FrP-at-w4U" firstAttribute="top" secondItem="Byu-25-vaf" secondAttribute="bottom" constant="8" id="Tkg-ZY-iCl"/>
-                            <constraint firstItem="Byu-25-vaf" firstAttribute="leading" secondItem="5EZ-qb-Rvc" secondAttribute="leading" id="dFa-6W-iY5"/>
-                            <constraint firstItem="Byu-25-vaf" firstAttribute="top" secondItem="5EZ-qb-Rvc" secondAttribute="top" constant="64" id="jRM-9L-YBu"/>
+                            <constraint firstItem="FrP-at-w4U" firstAttribute="top" secondItem="vDu-zF-Fre" secondAttribute="top" constant="8" id="Tkg-ZY-iCl"/>
                             <constraint firstItem="VtX-jr-dYm" firstAttribute="top" secondItem="FrP-at-w4U" secondAttribute="bottom" constant="16" id="rNb-zN-VVF"/>
                         </constraints>
                     </view>
                     <toolbarItems/>
-                    <navigationItem key="navigationItem" id="13M-zZ-Bf8"/>
+                    <navigationItem key="navigationItem" id="13M-zZ-Bf8">
+                        <rightBarButtonItems>
+                            <barButtonItem image="person.crop.circle" catalog="system" id="nGr-RC-mcb">
+                                <connections>
+                                    <action selector="profilePageButton:" destination="Y6W-OH-hqX" id="NsW-46-3IR"/>
+                                    <segue destination="E2u-Yx-rAh" kind="presentation" id="oOE-qe-0J9"/>
+                                </connections>
+                            </barButtonItem>
+                            <barButtonItem image="calendar" catalog="system" id="me4-gr-dWf"/>
+                            <barButtonItem image="tree" catalog="system" id="3yv-DS-dHf"/>
+                        </rightBarButtonItems>
+                    </navigationItem>
                     <simulatedToolbarMetrics key="simulatedBottomBarMetrics"/>
                     <connections>
                         <outlet property="mainCollectionView" destination="VtX-jr-dYm" id="GSP-ou-Zpg"/>
@@ -421,7 +410,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="n9w-et-OYO" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="9312.2137404580153" y="-501.4084507042254"/>
+            <point key="canvasLocation" x="8282" y="-542"/>
         </scene>
         <!--Symptom Log Detail View Controller-->
         <scene sceneID="mFU-7C-uHf">
@@ -482,7 +471,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="IzF-I0-bpW" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="9158.0152671755714" y="426.76056338028172"/>
+            <point key="canvasLocation" x="9120" y="131"/>
         </scene>
         <!--Symptom Log History View Controller-->
         <scene sceneID="o37-3S-GnY">
@@ -541,7 +530,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="qat-LT-xbk" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="10017.557251908396" y="224.64788732394368"/>
+            <point key="canvasLocation" x="9984" y="131"/>
         </scene>
         <!--View Controller-->
         <scene sceneID="nDf-XQ-a5Q">
@@ -709,19 +698,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="lIU-N8-fil" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="12029.770992366412" y="439.43661971830988"/>
-        </scene>
-        <!--MedicationLandingPageViewController-->
-        <scene sceneID="FZc-cv-gWO">
-            <objects>
-
-                <viewControllerPlaceholder storyboardIdentifier="MedicationLandingPageViewController" storyboardName="Medication" referencedIdentifier="MedicationLandingPageViewController" id="Blt-i4-BjM" sceneMemberID="viewController">
-                    <tabBarItem key="tabBarItem" title="Item" id="g8a-u1-633"/>
-                </viewControllerPlaceholder>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="W7h-gM-04j" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
-
-            </objects>
-            <point key="canvasLocation" x="1108" y="543"/>
+            <point key="canvasLocation" x="10869" y="131"/>
         </scene>
         <!--MedicationLandingPageViewController-->
         <scene sceneID="bQx-gG-zFB">
@@ -732,6 +709,16 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="aJJ-Af-8IQ" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="132" y="532"/>
+        </scene>
+        <!--SymptomNavigationController-->
+        <scene sceneID="mUL-Ic-H2l">
+            <objects>
+                <viewControllerPlaceholder storyboardName="Symptom" referencedIdentifier="SymptomNavigationController" id="Lag-sg-ew0" sceneMemberID="viewController">
+                    <navigationItem key="navigationItem" id="wk1-uk-gYJ"/>
+                </viewControllerPlaceholder>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="aYZ-hB-yES" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="5083.2061068702287" y="1188.7323943661972"/>
         </scene>
         <!--Home-->
         <scene sceneID="B9H-BA-D7G">
@@ -765,6 +752,7 @@
                     <connections>
                         <segue destination="nLe-cF-Rbs" kind="relationship" relationship="viewControllers" id="5u2-8H-9Wc"/>
                         <segue destination="wIr-ag-Mds" kind="relationship" relationship="viewControllers" id="quZ-Wb-rpZ"/>
+                        <segue destination="bwp-oz-6zm" kind="relationship" relationship="viewControllers" id="Dbz-ic-YHR"/>
                     </connections>
                 </tabBarController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="cFk-lH-maA" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
@@ -779,7 +767,7 @@
                 </viewControllerPlaceholder>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dD9-A6-ep0" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="6710.6870229007627" y="745.07042253521126"/>
+            <point key="canvasLocation" x="7228" y="784"/>
         </scene>
         <!--Medication-->
         <scene sceneID="e6q-vS-CMc">
@@ -798,7 +786,26 @@
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="V1w-bt-eoP" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="5808" y="930"/>
+            <point key="canvasLocation" x="6601" y="915"/>
+        </scene>
+        <!--Symptoms-->
+        <scene sceneID="XfD-PV-QLI">
+            <objects>
+                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="bwp-oz-6zm" sceneMemberID="viewController">
+                    <tabBarItem key="tabBarItem" title="Symptoms" image="list.bullet.clipboard" catalog="system" selectedImage="list.bullet.clipboard.fill" id="rvJ-Q2-SpB"/>
+                    <toolbarItems/>
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="zhG-9Z-sou">
+                        <rect key="frame" x="0.0" y="118" width="393" height="54"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                    </navigationBar>
+                    <nil name="viewControllers"/>
+                    <connections>
+                        <segue destination="Lag-sg-ew0" kind="relationship" relationship="rootViewController" id="vpU-AU-Jb6"/>
+                    </connections>
+                </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="IsS-fC-IPj" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="5698" y="898"/>
         </scene>
     </scenes>
     <resources>
@@ -808,6 +815,8 @@
         <image name="faceMild" width="258" height="224"/>
         <image name="house" catalog="system" width="128" height="104"/>
         <image name="house.fill" catalog="system" width="128" height="104"/>
+        <image name="list.bullet.clipboard" catalog="system" width="98" height="128"/>
+        <image name="list.bullet.clipboard.fill" catalog="system" width="98" height="128"/>
         <image name="menu" width="1072" height="210"/>
         <image name="moderateFace" width="246" height="220"/>
         <image name="person.crop.circle" catalog="system" width="128" height="123"/>
@@ -823,7 +832,7 @@
             <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
         </systemColor>
         <systemColor name="systemGray5Color">
-            <color red="0.89803921568627454" green="0.89803921568627454" blue="0.91764705882352937" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <color red="0.8980392157" green="0.8980392157" blue="0.91764705879999997" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </systemColor>
     </resources>
 </document>
