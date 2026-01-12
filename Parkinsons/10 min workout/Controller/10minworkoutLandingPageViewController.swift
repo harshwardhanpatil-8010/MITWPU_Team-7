@@ -32,6 +32,7 @@ class _0minworkoutLandingPageViewController: UIViewController, UICollectionViewD
         
         
         setupProgressView()
+        
         setupCollectionView()
         updateProgress()
         updateButtonUI()
@@ -60,8 +61,8 @@ class _0minworkoutLandingPageViewController: UIViewController, UICollectionViewD
         progressView = CircularProgressView(frame: circularProgressView.bounds)
         progressView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
         circularProgressView.addSubview(progressView)
-        progressView.progressColor = .systemBlue
-        progressView.trackColor = .systemGray5
+        progressView.progressColor = UIColor(hex: "#0088FF")
+        progressView.trackColor = UIColor(hex: "#0088FF", alpha:0.3)
     }
 
     private func setupCollectionView() {

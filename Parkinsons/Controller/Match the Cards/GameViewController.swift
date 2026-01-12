@@ -360,11 +360,11 @@ class GameViewController: UIViewController {
 
     private func startTimer() {
         secondsElapsed = 0
-        timeLabel.text = "0s"
+        timeLabel.text = "Time: 0s"
         timer?.invalidate()
         timer = Timer.scheduledTimer(withTimeInterval: 1, repeats: true) { _ in
             self.secondsElapsed += 1
-            self.timeLabel.text = "\(self.secondsElapsed)s"
+            self.timeLabel.text = "Time: \(self.secondsElapsed)s"
         }
     }
 
