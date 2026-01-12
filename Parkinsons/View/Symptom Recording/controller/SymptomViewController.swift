@@ -9,6 +9,7 @@ class SymptomViewController: UIViewController {
     @IBOutlet weak var tableView: UITableView!
     
     // MARK: - Properties
+    @IBOutlet weak var tableViewHeightConstraint: NSLayoutConstraint!
     var dates: [DateModel] = []
     var selectedDate: Date = Date()
     var currentDayLogs: [SymptomRating] = []
@@ -30,6 +31,8 @@ class SymptomViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+       // tableView.isScrollEnabled = false
+        
         dates = HomeDataStore.shared.getDates()
         tableView.separatorStyle = .none
         registerCells()
@@ -42,10 +45,18 @@ class SymptomViewController: UIViewController {
         tableView.dataSource = self
         tableView.delegate = self
                 
+        setupTableViewUI() // Call it here
         updateDataForSelectedDate()
         setupSymptomBackgroundUI()
     }
-    
+    func setupTableViewUI() {
+        tableView.layer.cornerRadius = 20
+        tableView.layer.masksToBounds = true
+        
+        // Optional: If you want the table to match the background's look
+        // without its own border, keep it clear.
+        tableView.backgroundColor = .clear
+    }
     // MARK: - UI Setup
     func setupSymptomBackgroundUI() {
         symptomBackground.layer.cornerRadius = 20
@@ -55,7 +66,21 @@ class SymptomViewController: UIViewController {
         symptomBackground.layer.shadowRadius = 10
         symptomBackground.layer.masksToBounds = false
     }
-    
+    func updateTableViewHeight() {
+        let rowHeight: CGFloat = (currentMode == .entry) ? 130 : 70
+        let totalRows = CGFloat(currentDayLogs.count)
+        
+        // Calculate total height
+        let calculatedHeight = totalRows * rowHeight
+        
+        // Apply to your constraint
+        tableViewHeightConstraint.constant = calculatedHeight
+        
+        // Animate the background stretching
+        UIView.animate(withDuration: 0.3) {
+            self.view.layoutIfNeeded()
+        }
+    }
     func registerCells() {
         // CollectionView Cells
         collectionView.register(UINib(nibName: "CalenderCollectionViewCell", bundle: nil), forCellWithReuseIdentifier: "calendar_cell")
@@ -85,6 +110,7 @@ class SymptomViewController: UIViewController {
         }
         
         tableView.reloadData()
+        updateTableViewHeight() // Added this
         collectionView.reloadData()
     }
 
@@ -118,6 +144,7 @@ class SymptomViewController: UIViewController {
             editAndSaveButton.setTitle("Edit", for: .normal)
         }
         tableView.reloadData()
+        updateTableViewHeight() // Added this
     }
     
     // MARK: - Layout
