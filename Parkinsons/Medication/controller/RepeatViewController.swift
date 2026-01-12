@@ -31,7 +31,7 @@ class RepeatViewController: UIViewController,
         RepeatTableView.allowsMultipleSelection = true
         
     
-        RepeatTableView.layer.cornerRadius = 10
+        RepeatTableView.layer.cornerRadius = 25
         RepeatTableView.clipsToBounds = true
 //        RepeatTableView.backgroundColor = UIColor.systemGray6
         

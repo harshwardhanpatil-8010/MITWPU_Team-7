@@ -776,10 +776,10 @@
             </objects>
             <point key="canvasLocation" x="5698.4732824427483" y="130.98591549295776"/>
         </scene>
-        <!--MedicationNavigationController-->
+        <!--medicationNavigation-->
         <scene sceneID="lMa-Ge-cVQ">
             <objects>
-                <viewControllerPlaceholder storyboardName="Medication" referencedIdentifier="MedicationNavigationController" id="xFp-SB-aAy" sceneMemberID="viewController">
+                <viewControllerPlaceholder storyboardName="Medication" referencedIdentifier="medicationNavigation" id="xFp-SB-aAy" sceneMemberID="viewController">
                     <navigationItem key="navigationItem" id="5Cz-cD-DW6"/>
                 </viewControllerPlaceholder>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dD9-A6-ep0" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
@@ -803,7 +803,7 @@
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="V1w-bt-eoP" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="5808" y="930"/>
+            <point key="canvasLocation" x="5256" y="815"/>
         </scene>
     </scenes>
     <resources>

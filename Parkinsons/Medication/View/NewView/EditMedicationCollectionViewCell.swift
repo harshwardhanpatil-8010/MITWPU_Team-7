@@ -22,11 +22,11 @@ class EditMedicationCollectionViewCell: UICollectionViewCell {
         super.awakeFromNib()
         
         // Round card corners
-        cardView.layer.cornerRadius = 16
-        cardView.clipsToBounds = true
+//        cardView.layer.cornerRadius = 16
+//        cardView.clipsToBounds = true
         
         // Apply shadow + card styling
-        applyCardStyle()
+        cardView.applyCardStyle()
     }
     
     // MARK: - UI Helpers

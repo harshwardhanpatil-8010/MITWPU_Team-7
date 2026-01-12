@@ -4,7 +4,6 @@
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="24504"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
-        <capability name="System colors in document resources" minToolsVersion="11.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <objects>
@@ -14,39 +13,32 @@
             <rect key="frame" x="0.0" y="0.0" width="320" height="50"/>
             <autoresizingMask key="autoresizingMask"/>
             <subviews>
-                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="wFR-rm-kC7">
-                    <rect key="frame" x="0.0" y="0.0" width="320" height="50"/>
+                <stackView opaque="NO" contentMode="scaleToFill" spacing="182" translatesAutoresizingMaskIntoConstraints="NO" id="r16-kR-Rgx">
+                    <rect key="frame" x="0.0" y="0.0" width="320" height="16"/>
                     <subviews>
                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="UBJ-mg-gLC">
-                            <rect key="frame" x="8" y="15" width="312" height="21"/>
+                            <rect key="frame" x="0.0" y="0.0" width="43.333333333333336" height="16"/>
                             <fontDescription key="fontDescription" style="UICTFontTextStyleHeadline"/>
                             <nil key="textColor"/>
                             <nil key="highlightedColor"/>
                         </label>
-                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="qRH-k3-k8I">
-                            <rect key="frame" x="258" y="8" width="54" height="35"/>
+                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="trailing" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="qRH-k3-k8I">
+                            <rect key="frame" x="225.33333333333334" y="0.0" width="94.666666666666657" height="16"/>
                             <state key="normal" title="Button"/>
                             <buttonConfiguration key="configuration" style="plain" title="Edit"/>
+                            <connections>
+                                <action selector="editTapped:" destination="U6b-Vx-4bR" eventType="touchUpInside" id="10q-3M-EdO"/>
+                            </connections>
                         </button>
                     </subviews>
-                    <color key="backgroundColor" systemColor="systemBackgroundColor"/>
-                    <constraints>
-                        <constraint firstItem="UBJ-mg-gLC" firstAttribute="leading" secondItem="wFR-rm-kC7" secondAttribute="leading" constant="8" id="KdV-JG-fS7"/>
-                        <constraint firstAttribute="bottom" secondItem="qRH-k3-k8I" secondAttribute="bottom" constant="7" id="UZi-3O-vJV"/>
-                        <constraint firstAttribute="bottom" secondItem="UBJ-mg-gLC" secondAttribute="bottom" constant="14" id="i0S-ez-cjC"/>
-                        <constraint firstAttribute="trailing" secondItem="qRH-k3-k8I" secondAttribute="trailing" constant="8" id="iu0-m5-qUe"/>
-                        <constraint firstItem="qRH-k3-k8I" firstAttribute="top" secondItem="wFR-rm-kC7" secondAttribute="top" constant="8" id="m55-eE-gJ4"/>
-                        <constraint firstItem="UBJ-mg-gLC" firstAttribute="top" secondItem="wFR-rm-kC7" secondAttribute="top" constant="15" id="sTl-UI-KZY"/>
-                        <constraint firstAttribute="trailing" secondItem="UBJ-mg-gLC" secondAttribute="trailing" id="xMg-vJ-Z5K"/>
-                    </constraints>
-                </view>
+                </stackView>
             </subviews>
             <viewLayoutGuide key="safeArea" id="VXr-Tz-HHm"/>
             <constraints>
-                <constraint firstItem="wFR-rm-kC7" firstAttribute="trailing" secondItem="VXr-Tz-HHm" secondAttribute="trailing" id="014-6r-gb3"/>
-                <constraint firstAttribute="bottom" secondItem="wFR-rm-kC7" secondAttribute="bottom" id="BGI-yg-szf"/>
-                <constraint firstItem="wFR-rm-kC7" firstAttribute="top" secondItem="U6b-Vx-4bR" secondAttribute="top" id="fTC-KS-hzO"/>
-                <constraint firstItem="wFR-rm-kC7" firstAttribute="leading" secondItem="VXr-Tz-HHm" secondAttribute="leading" id="qoB-As-AoR"/>
+                <constraint firstItem="VXr-Tz-HHm" firstAttribute="bottom" secondItem="r16-kR-Rgx" secondAttribute="bottom" id="2aZ-f6-Uac"/>
+                <constraint firstItem="r16-kR-Rgx" firstAttribute="leading" secondItem="VXr-Tz-HHm" secondAttribute="leading" id="NtD-fe-Umb"/>
+                <constraint firstItem="VXr-Tz-HHm" firstAttribute="trailing" secondItem="r16-kR-Rgx" secondAttribute="trailing" id="ZkY-ht-Oex"/>
+                <constraint firstItem="r16-kR-Rgx" firstAttribute="top" secondItem="U6b-Vx-4bR" secondAttribute="top" id="rks-LY-Vit"/>
             </constraints>
             <connections>
                 <outlet property="editButton" destination="qRH-k3-k8I" id="YYF-5m-KYS"/>
@@ -55,9 +47,4 @@
             <point key="canvasLocation" x="116.03053435114504" y="153.52112676056339"/>
         </collectionReusableView>
     </objects>
-    <resources>
-        <systemColor name="systemBackgroundColor">
-            <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-        </systemColor>
-    </resources>
 </document>

@@ -25,20 +25,30 @@ class UnitAndTypeViewController: UIViewController,
     // MARK: - Properties
     weak var delegate: UnitsAndTypeDelegate?
     var selectedType: String?
+    override func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
+        unitTextField.layer.cornerRadius = unitTextField.frame.height / 2
+    }
 
     // MARK: - Lifecycle
     override func viewDidLoad() {
         super.viewDidLoad()
 
-       
-        unitTextField.layer.cornerRadius = 25
-        unitTextField.clipsToBounds = true
-        unitTextField.placeholder = "mg"
+        let paddingView = UIView(frame: CGRect(x: 0, y: 0, width: 16, height: 0))
+        unitTextField.leftView = paddingView
+        unitTextField.leftViewMode = .always
+
+//        unitTextField.layer.cornerRadius = 25
+//        unitTextField.clipsToBounds = true
+        unitTextField.borderStyle = .none
+        unitTextField.layer.backgroundColor = UIColor.secondarySystemBackground.cgColor
+        unitTextField.layer.borderWidth = 0
+//        unitTextField.placeholder = "mg"
         unitTextField.delegate = self
 
-        TypeTableView.layer.cornerRadius = 10
+        TypeTableView.layer.cornerRadius = 25
         TypeTableView.clipsToBounds = true
-        TypeTableView.backgroundColor = UIColor.systemGray6
+//        TypeTableView.backgroundColor = UIColor.systemGray6
         TypeTableView.delegate = self
         TypeTableView.dataSource = self
 

@@ -34,12 +34,20 @@ struct TodayTimeSection {
 }
 
 // MARK: - Logged Section (bottom section)
-struct LoggedDoseItem {
+
+
+struct LoggedDoseItem: Identifiable {
     let id: UUID
     let medicationName: String
-    let scheduledTime: Date
+    let medicationForm: String   // ✅ ADD
+    let loggedTime: Date
     let status: DoseLogStatus
+    let iconName: String
 }
+
+
+
+
 //extension DoseLogStatus {
 //    init(from status: DoseStatus) {
 //        switch status {
