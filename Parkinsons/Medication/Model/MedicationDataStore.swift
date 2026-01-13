@@ -33,10 +33,10 @@ class MedicationDataStore: ObservableObject {
     @Published var medications: [Medication] = [] {
         didSet {
             saveToStorage()
-            NotificationCenter.default.post(
-                name: Notification.Name("MedicationUpdated"),
-                object: nil
-            )
+//            NotificationCenter.default.post(
+//                name: Notification.Name("MedicationUpdated"),
+//                object: nil
+//            )
         }
     }
 

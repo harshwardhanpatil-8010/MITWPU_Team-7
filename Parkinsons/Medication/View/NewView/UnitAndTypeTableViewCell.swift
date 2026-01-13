@@ -29,7 +29,7 @@ class UnitAndTypeTableViewCell: UITableViewCell {
 
         if type.isSelected {
             typeStatus.image = UIImage(systemName: "checkmark")
-            typeStatus.tintColor = .systemGreen
+            typeStatus.tintColor = .systemBlue
         } else {
             typeStatus.image = nil     // Remove previous image
         }

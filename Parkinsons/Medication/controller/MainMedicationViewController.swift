@@ -29,7 +29,6 @@ final class MainMedicationViewController: UIViewController {
         setupCollectionView()
         loadMedications()
         updateUIForSegment()
-
         self.definesPresentationContext = true
         if let layout = medicationCollectionView.collectionViewLayout as? UICollectionViewFlowLayout {
             layout.headerReferenceSize = .zero
@@ -40,10 +39,10 @@ final class MainMedicationViewController: UIViewController {
 
     }
 
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
-        loadMedications()
-    }
+//    override func viewWillAppear(_ animated: Bool) {
+//        super.viewWillAppear(animated)
+//        loadMedications()
+//    }
 
     // MARK: - Data
     private func updateNoMedicationState() {
@@ -162,6 +161,13 @@ final class MainMedicationViewController: UIViewController {
         loadMedications()
         updateUIForSegment()
     }
+    @objc private func medicationUpdated() {
+        loadMedications()
+    }
+    deinit {
+        NotificationCenter.default.removeObserver(self)
+    }
+
     private func updateLoggedStatus(_ item: LoggedDoseItem, status: DoseLogStatus) {
         DoseLogDataStore.shared.updateLogStatus(
             logID: item.id,
@@ -209,7 +215,9 @@ final class MainMedicationViewController: UIViewController {
         let vc = storyboard.instantiateViewController(
             withIdentifier: "AddMedVC"
         ) as! AddMedicationViewController
-
+        
+        vc.delegate = self
+        
         let nav = UINavigationController(rootViewController: vc)
         nav.modalPresentationStyle = .formSheet
         present(nav, animated: true)
@@ -491,5 +499,10 @@ extension MainMedicationViewController: MedicationSectionHeaderViewDelegate {
     func didTapEditLoggedSection() {
         isEditingLogged.toggle()
         medicationCollectionView.reloadSections(IndexSet(integer: 1))
+    }
+}
+extension MainMedicationViewController: AddMedicationDelegate {
+    func didUpdateMedication() {
+        loadMedications()
     }
 }

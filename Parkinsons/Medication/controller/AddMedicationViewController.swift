@@ -22,6 +22,8 @@ class AddMedicationViewController: UIViewController,
     // ---------------------------------------------------------
     // MARK: - Properties
     // ---------------------------------------------------------
+    private var originalMedicationSnapshot: Medication?
+
     weak var delegate: AddMedicationDelegate?
     var isEditMode = false
     var medicationToEdit: Medication!
@@ -31,6 +33,7 @@ class AddMedicationViewController: UIViewController,
     // ---------------------------------------------------------
     // MARK: - Outlets
     // ---------------------------------------------------------
+    @IBOutlet weak var tickButton: UIBarButtonItem!
     @IBOutlet weak var backgroundView: UIView!
     @IBOutlet weak var strengthLabel: UITextField!
     @IBOutlet weak var deleteButton: UIButton!
@@ -50,6 +53,20 @@ class AddMedicationViewController: UIViewController,
     // ---------------------------------------------------------
     override func viewDidLoad() {
         super.viewDidLoad()
+        tickButton.isEnabled = false
+        medicationNameTextField.delegate = self
+
+            medicationNameTextField.addTarget(
+                self,
+                action: #selector(medicationNameChanged),
+                for: .editingChanged
+            )
+        strengthLabel.addTarget(
+            self,
+            action: #selector(anyFieldChanged),
+            for: .editingChanged
+        )
+
         let tap = UITapGestureRecognizer(target: self, action: #selector(dismissKeyboard))
         view.addGestureRecognizer(tap)
 
@@ -88,6 +105,14 @@ class AddMedicationViewController: UIViewController,
     @objc func dismissKeyboard() {
         view.endEditing(true)
     }
+    @objc private func medicationNameChanged() {
+        evaluateTickButtonState()
+    }
+    @objc private func anyFieldChanged() {
+        evaluateTickButtonState()
+    }
+
+
 
     
     override func viewWillAppear(_ animated: Bool) {
@@ -117,6 +142,33 @@ class AddMedicationViewController: UIViewController,
         label.textColor = (label.text == placeholder) ? .systemGray2 : .label
     }
     
+    func didSelectUnitsAndType(unitText: String, selectedType: String) {
+        unitLabel.text = unitText
+        typeLabel.text = selectedType
+        strengthUnitLabel.text = unitText
+
+        unitLabel.textColor = .label
+        typeLabel.textColor = .label
+        strengthUnitLabel.textColor = .label
+
+        evaluateTickButtonState()
+    }
+    
+    func didSelectRepeatOption(_ option: String) {
+        repeatLabel.text = option
+        repeatLabel.textColor = .label
+
+        evaluateTickButtonState()
+    }
+    
+    func didUpdateTime(cell: DoseTableViewCell, newTime: Date) {
+        if let indexPath = doseTableView.indexPath(for: cell) {
+            doseArray[indexPath.row] = newTime
+            evaluateTickButtonState()
+        }
+    }
+
+    
     
     func iconForType(_ type: String) -> String {
         switch type.lowercased() {
@@ -137,7 +189,8 @@ class AddMedicationViewController: UIViewController,
    
     func fillFieldsForEditing() {
         guard let med = medicationToEdit else { return }
-        
+//        tickButton.isEnabled = true
+
         medicationNameTextField.text = med.name
         
         typeLabel.text = med.form
@@ -163,7 +216,51 @@ class AddMedicationViewController: UIViewController,
         doseTableView.reloadData()
         
         updateStepperValue()
+        
+        originalMedicationSnapshot = medicationToEdit
+        tickButton.isEnabled = false // ❌ disabled until change
+
     }
+    private func evaluateTickButtonState() {
+        if !isEditMode {
+            let text = medicationNameTextField.text ?? ""
+            tickButton.isEnabled = !text.trimmingCharacters(in: .whitespaces).isEmpty
+            return
+        }
+
+        guard let original = originalMedicationSnapshot else {
+            tickButton.isEnabled = false
+            return
+        }
+
+        let nameChanged =
+            medicationNameTextField.text != original.name
+
+        let strengthChanged =
+            Int(strengthLabel.text ?? "") != original.strength
+
+        let unitChanged =
+            unitLabel.text != original.unit
+
+        let typeChanged =
+            typeLabel.text != original.form
+
+        let repeatChanged =
+            repeatLabel.text != original.schedule.displayString()
+
+        let dosesChanged =
+            doseArray.map { $0.timeIntervalSince1970 } !=
+            original.doses.map { $0.time.timeIntervalSince1970 }
+
+        tickButton.isEnabled =
+            nameChanged ||
+            strengthChanged ||
+            unitChanged ||
+            typeChanged ||
+            repeatChanged ||
+            dosesChanged
+    }
+
     
    
     func updateStepperValue() {
@@ -228,12 +325,15 @@ class AddMedicationViewController: UIViewController,
         }
         
         doseTableView.reloadData()
+        evaluateTickButtonState()
+
     }
     
    
     @IBAction func deleteMedication(_ sender: UIButton) {
         guard let med = medicationToEdit else { return }
         MedicationDataStore.shared.deleteMedication(med.id)
+        delegate?.didUpdateMedication()
         dismiss(animated: true)
     }
     
@@ -287,10 +387,10 @@ class AddMedicationViewController: UIViewController,
             )
             MedicationDataStore.shared.addMedication(newMedication)
         }
-        NotificationCenter.default.post(
-            name: Notification.Name("MedicationUpdated"),
-            object: nil
-        )
+//        NotificationCenter.default.post(
+//            name: Notification.Name("MedicationUpdated"),
+//            object: nil
+//        )
 
         
         delegate?.didUpdateMedication()
@@ -301,32 +401,32 @@ class AddMedicationViewController: UIViewController,
 // ---------------------------------------------------------
 // MARK: - Extensions (Delegates)
 // ---------------------------------------------------------
-extension AddMedicationViewController {
-    
-
-    func didSelectUnitsAndType(unitText: String, selectedType: String) {
-        unitLabel.text = unitText
-        typeLabel.text = selectedType
-        strengthUnitLabel.text = unitText
-        
-        unitLabel.textColor = .label
-        typeLabel.textColor = .label
-        strengthUnitLabel.textColor = .label
-    }
-
-    func didSelectRepeatOption(_ option: String) {
-        repeatLabel.text = option
-        repeatLabel.textColor = .label
-        AddMedicationDataStore.shared.repeatOption = option
-    }
-
-    
-    func didUpdateTime(cell: DoseTableViewCell, newTime: Date) {
-        if let indexPath = doseTableView.indexPath(for: cell) {
-            doseArray[indexPath.row] = newTime
-        }
-    }
-}
+//extension AddMedicationViewController {
+//    
+//
+//    func didSelectUnitsAndType(unitText: String, selectedType: String) {
+//        unitLabel.text = unitText
+//        typeLabel.text = selectedType
+//        strengthUnitLabel.text = unitText
+//        
+//        unitLabel.textColor = .label
+//        typeLabel.textColor = .label
+//        strengthUnitLabel.textColor = .label
+//    }
+//
+//    func didSelectRepeatOption(_ option: String) {
+//        repeatLabel.text = option
+//        repeatLabel.textColor = .label
+//        AddMedicationDataStore.shared.repeatOption = option
+//    }
+//
+//    
+//    func didUpdateTime(cell: DoseTableViewCell, newTime: Date) {
+//        if let indexPath = doseTableView.indexPath(for: cell) {
+//            doseArray[indexPath.row] = newTime
+//        }
+//    }
+//}
 
 // ---------------------------------------------------------
 // MARK: - TableView DataSource + Delegate
@@ -358,5 +458,7 @@ extension AddMedicationViewController {
         doseStepper.value = Double(doseArray.count)
         
         renumberDoses()
+        evaluateTickButtonState()
+
     }
 }
