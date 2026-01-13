@@ -157,9 +157,10 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = 9A8UG2N5Y8;
+				DEVELOPMENT_TEAM = MV45GDP3M3;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = Parkinsons/Info.plist;
+				INFOPLIST_KEY_NSCameraUsageDescription = "This app needs camera access to help you mimic emojis for the game.";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = Login.storyboard;
 				INFOPLIST_KEY_UIMainStoryboardFile = Main;
@@ -170,7 +171,7 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = com.harshwardhanpatil.Parkinsons;
+				PRODUCT_BUNDLE_IDENTIFIER = com.nevin.Parkinsons;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				STRING_CATALOG_GENERATE_SYMBOLS = YES;
 				SWIFT_APPROACHABLE_CONCURRENCY = YES;
@@ -189,9 +190,10 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = 9A8UG2N5Y8;
+				DEVELOPMENT_TEAM = MV45GDP3M3;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = Parkinsons/Info.plist;
+				INFOPLIST_KEY_NSCameraUsageDescription = "This app needs camera access to help you mimic emojis for the game.";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = Login.storyboard;
 				INFOPLIST_KEY_UIMainStoryboardFile = Main;
@@ -202,7 +204,7 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = com.harshwardhanpatil.Parkinsons;
+				PRODUCT_BUNDLE_IDENTIFIER = com.nevin.Parkinsons;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				STRING_CATALOG_GENERATE_SYMBOLS = YES;
 				SWIFT_APPROACHABLE_CONCURRENCY = YES;
