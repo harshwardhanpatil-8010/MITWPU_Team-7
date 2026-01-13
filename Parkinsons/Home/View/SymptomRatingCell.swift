@@ -114,7 +114,7 @@ class SymptomRatingCell: UITableViewCell {
 extension SymptomRating.Intensity {
     var displayName: String {
         switch self {
-        case .notPresent: return "None"
+        case .notPresent: return "Not Present"
         case .mild:       return "Mild"
         case .moderate:   return "Moderate"
         case .severe:     return "Severe"
