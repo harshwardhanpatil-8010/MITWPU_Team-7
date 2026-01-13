@@ -81,66 +81,93 @@
                         <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <navigationBar contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="lM6-9O-KdX">
-                                <rect key="frame" x="0.0" y="90" width="393" height="44"/>
-                                <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxY="YES"/>
+                            <navigationBar contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="lM6-9O-KdX">
+                                <rect key="frame" x="0.0" y="48" width="393" height="44"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="44" id="QKj-X6-dYg"/>
+                                </constraints>
                                 <items>
                                     <navigationItem title="Mimic the Emoji" id="z6m-xk-XRM">
                                         <barButtonItem key="leftBarButtonItem" systemItem="cancel" id="SVP-A7-xg2"/>
                                     </navigationItem>
                                 </items>
                             </navigationBar>
-                            <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="HOV-OP-pNe">
-                                <rect key="frame" x="16" y="155" width="351" height="608"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="HOV-OP-pNe">
+                                <rect key="frame" x="16" y="108" width="361" height="655"/>
                                 <subviews>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Emoji Name" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="2yR-gs-8Aa">
-                                        <rect key="frame" x="0.0" y="8" width="343" height="21"/>
-                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Emoji Name" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="2yR-gs-8Aa">
+                                        <rect key="frame" x="0.0" y="8.0000000000000018" width="361" height="28.666666666666671"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="24"/>
                                         <nil key="textColor"/>
                                         <nil key="highlightedColor"/>
                                     </label>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Match your expression to the emoji below!" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="QvR-QT-Vbo">
-                                        <rect key="frame" x="8" y="41" width="335" height="21"/>
-                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Match your expression to the emoji below!" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="QvR-QT-Vbo">
+                                        <rect key="frame" x="0.0" y="40.666666666666657" width="361" height="19.333333333333329"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="16"/>
                                         <nil key="textColor"/>
                                         <nil key="highlightedColor"/>
                                     </label>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Level Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="kEP-ye-1el">
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Level Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="kEP-ye-1el">
                                         <rect key="frame" x="8" y="70" width="90" height="22"/>
-                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="18"/>
                                         <nil key="textColor"/>
                                         <nil key="highlightedColor"/>
                                     </label>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Time Left Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="KEs-o7-xL3">
-                                        <rect key="frame" x="219" y="69" width="124" height="22"/>
-                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Time Left Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="KEs-o7-xL3">
+                                        <rect key="frame" x="229" y="70" width="124" height="22"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="18"/>
                                         <nil key="textColor"/>
                                         <nil key="highlightedColor"/>
                                     </label>
-                                    <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="6jm-hg-c4y" customClass="CameraPreviewView" customModule="Parkinsons" customModuleProvider="target">
-                                        <rect key="frame" x="8" y="107" width="335" height="493"/>
-                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="6jm-hg-c4y" customClass="CameraPreviewView" customModule="Parkinsons" customModuleProvider="target">
+                                        <rect key="frame" x="8" y="108" width="345" height="539"/>
                                         <color key="backgroundColor" systemColor="systemOrangeColor"/>
                                     </view>
                                 </subviews>
-                                <color key="backgroundColor" systemColor="systemBrownColor"/>
+                                <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                                <constraints>
+                                    <constraint firstAttribute="trailing" secondItem="KEs-o7-xL3" secondAttribute="trailing" constant="8" id="36y-cc-NoE"/>
+                                    <constraint firstItem="kEP-ye-1el" firstAttribute="leading" secondItem="HOV-OP-pNe" secondAttribute="leading" constant="8" id="5Hc-Xq-Q4n"/>
+                                    <constraint firstItem="2yR-gs-8Aa" firstAttribute="top" secondItem="HOV-OP-pNe" secondAttribute="top" constant="8" id="8oQ-aK-u1M"/>
+                                    <constraint firstAttribute="bottom" secondItem="6jm-hg-c4y" secondAttribute="bottom" constant="8" id="C2D-XI-OxW"/>
+                                    <constraint firstItem="6jm-hg-c4y" firstAttribute="top" secondItem="kEP-ye-1el" secondAttribute="bottom" constant="16" id="KYA-iW-5C2"/>
+                                    <constraint firstAttribute="trailing" secondItem="6jm-hg-c4y" secondAttribute="trailing" constant="8" id="Vd9-u0-uAM"/>
+                                    <constraint firstAttribute="trailing" secondItem="2yR-gs-8Aa" secondAttribute="trailing" id="Wuw-AP-FDe"/>
+                                    <constraint firstAttribute="trailing" secondItem="QvR-QT-Vbo" secondAttribute="trailing" id="XKh-WN-HXN"/>
+                                    <constraint firstItem="KEs-o7-xL3" firstAttribute="top" secondItem="QvR-QT-Vbo" secondAttribute="bottom" constant="10" id="YeX-YJ-Fk2"/>
+                                    <constraint firstItem="kEP-ye-1el" firstAttribute="top" secondItem="QvR-QT-Vbo" secondAttribute="bottom" constant="10" id="jFl-O0-PUl"/>
+                                    <constraint firstItem="6jm-hg-c4y" firstAttribute="leading" secondItem="HOV-OP-pNe" secondAttribute="leading" constant="8" id="k5t-t4-KW4"/>
+                                    <constraint firstItem="QvR-QT-Vbo" firstAttribute="leading" secondItem="HOV-OP-pNe" secondAttribute="leading" id="pAZ-FO-Fga"/>
+                                    <constraint firstItem="2yR-gs-8Aa" firstAttribute="leading" secondItem="HOV-OP-pNe" secondAttribute="leading" id="w4T-Z5-PHl"/>
+                                    <constraint firstItem="QvR-QT-Vbo" firstAttribute="top" secondItem="2yR-gs-8Aa" secondAttribute="bottom" constant="4" id="xjm-wF-Jhh"/>
+                                </constraints>
                             </view>
-                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="9mw-Qg-v0y">
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="9mw-Qg-v0y">
                                 <rect key="frame" x="57" y="771" width="269" height="35"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <state key="normal" title="Button"/>
                                 <buttonConfiguration key="configuration" style="filled" title="Button"/>
                             </button>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="GfA-Yt-JmV"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                        <constraints>
+                            <constraint firstItem="9mw-Qg-v0y" firstAttribute="leading" secondItem="GfA-Yt-JmV" secondAttribute="leading" constant="57" id="Bri-9t-Jaf"/>
+                            <constraint firstItem="GfA-Yt-JmV" firstAttribute="trailing" secondItem="9mw-Qg-v0y" secondAttribute="trailing" constant="67" id="G5E-Dd-8NK"/>
+                            <constraint firstItem="lM6-9O-KdX" firstAttribute="leading" secondItem="PVl-rL-XER" secondAttribute="leading" id="Nz7-HV-LYZ"/>
+                            <constraint firstItem="HOV-OP-pNe" firstAttribute="leading" secondItem="GfA-Yt-JmV" secondAttribute="leading" constant="16" id="Ru0-4k-S7N"/>
+                            <constraint firstItem="lM6-9O-KdX" firstAttribute="leading" secondItem="GfA-Yt-JmV" secondAttribute="leading" id="c1d-v2-6SZ"/>
+                            <constraint firstItem="lM6-9O-KdX" firstAttribute="top" secondItem="PVl-rL-XER" secondAttribute="top" constant="48" id="cGz-xP-c2Y"/>
+                            <constraint firstItem="9mw-Qg-v0y" firstAttribute="top" secondItem="HOV-OP-pNe" secondAttribute="bottom" constant="8" id="iey-dS-otz"/>
+                            <constraint firstAttribute="bottomMargin" secondItem="9mw-Qg-v0y" secondAttribute="bottom" constant="-22" id="jb0-85-9hT"/>
+                            <constraint firstItem="GfA-Yt-JmV" firstAttribute="trailing" secondItem="HOV-OP-pNe" secondAttribute="trailing" constant="16" id="nxE-6k-VbA"/>
+                            <constraint firstItem="HOV-OP-pNe" firstAttribute="top" secondItem="lM6-9O-KdX" secondAttribute="bottom" constant="16" id="pqx-md-uCg"/>
+                            <constraint firstItem="lM6-9O-KdX" firstAttribute="centerX" secondItem="HOV-OP-pNe" secondAttribute="centerX" id="qYi-0B-Mwh"/>
+                            <constraint firstItem="lM6-9O-KdX" firstAttribute="trailing" secondItem="GfA-Yt-JmV" secondAttribute="trailing" id="t8h-Nc-ybP"/>
+                            <constraint firstAttribute="bottom" secondItem="9mw-Qg-v0y" secondAttribute="bottom" constant="46" id="ujH-vg-cGX"/>
+                        </constraints>
                     </view>
                     <connections>
+                        <outlet property="backgroundCard" destination="HOV-OP-pNe" id="QbN-px-NPT"/>
                         <outlet property="cameraContainerView" destination="6jm-hg-c4y" id="W5Q-5b-62H"/>
                     </connections>
                 </viewController>
@@ -172,9 +199,6 @@
         <image name="Trophy Image" width="960" height="1088"/>
         <systemColor name="systemBackgroundColor">
             <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-        </systemColor>
-        <systemColor name="systemBrownColor">
-            <color red="0.63529411759999999" green="0.51764705879999995" blue="0.36862745099999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </systemColor>
         <systemColor name="systemOrangeColor">
             <color red="1" green="0.58431372550000005" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
