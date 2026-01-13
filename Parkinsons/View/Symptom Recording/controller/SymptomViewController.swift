@@ -31,7 +31,7 @@ class SymptomViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-       // tableView.isScrollEnabled = false
+       //tableView.isScrollEnabled = true
         
         dates = HomeDataStore.shared.getDates()
         tableView.separatorStyle = .none

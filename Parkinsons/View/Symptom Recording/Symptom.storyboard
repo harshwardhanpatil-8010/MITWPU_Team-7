@@ -21,7 +21,7 @@
                                 <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
                                 <subviews>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="fI8-bd-GlA">
-                                        <rect key="frame" x="0.0" y="0.0" width="393" height="2000"/>
+                                        <rect key="frame" x="0.0" y="0.0" width="393" height="1500"/>
                                         <subviews>
                                             <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="ZbZ-Mr-g82">
                                                 <rect key="frame" x="0.0" y="27" width="393" height="445"/>
@@ -47,7 +47,7 @@
                                                 </cells>
                                             </collectionView>
                                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="n2t-av-6Wh">
-                                                <rect key="frame" x="16" y="486" width="361" height="625"/>
+                                                <rect key="frame" x="16" y="486" width="361" height="514"/>
                                                 <subviews>
                                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Symptoms Logged" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="D8p-TE-7pa">
                                                         <rect key="frame" x="16" y="24" width="177" height="24"/>
@@ -99,10 +99,10 @@
                                         <constraints>
                                             <constraint firstItem="ZbZ-Mr-g82" firstAttribute="top" secondItem="fI8-bd-GlA" secondAttribute="top" constant="27" id="2ep-8E-F2f"/>
                                             <constraint firstAttribute="trailing" secondItem="n2t-av-6Wh" secondAttribute="trailing" constant="16" id="JXc-f2-xVU"/>
-                                            <constraint firstAttribute="bottom" secondItem="n2t-av-6Wh" secondAttribute="bottom" constant="889" id="Xdc-D4-XJn"/>
+                                            <constraint firstAttribute="bottom" secondItem="n2t-av-6Wh" secondAttribute="bottom" constant="500" id="Xdc-D4-XJn"/>
                                             <constraint firstItem="n2t-av-6Wh" firstAttribute="top" secondItem="ZbZ-Mr-g82" secondAttribute="bottom" constant="14" id="csZ-nw-dgY"/>
                                             <constraint firstItem="n2t-av-6Wh" firstAttribute="leading" secondItem="fI8-bd-GlA" secondAttribute="leading" constant="16" id="g3I-zu-Bgj"/>
-                                            <constraint firstAttribute="height" constant="2000" id="qO9-hg-18f"/>
+                                            <constraint firstAttribute="height" constant="1500" id="qO9-hg-18f"/>
                                             <constraint firstItem="ZbZ-Mr-g82" firstAttribute="leading" secondItem="fI8-bd-GlA" secondAttribute="leading" id="rMz-1T-tiL"/>
                                             <constraint firstAttribute="trailing" secondItem="ZbZ-Mr-g82" secondAttribute="trailing" id="z8W-hW-5Iw"/>
                                         </constraints>
