@@ -11,9 +11,10 @@ import Foundation
 struct ExerciseModel {
     let title: String
     let detail: String
-    let progressPercentage: Int
+    var progressPercentage: Int
    
     let progressColorHex: String
+//    let trackColorHex: String
 }
 var exerciseData: [ExerciseModel] = [
     ExerciseModel(
@@ -21,6 +22,7 @@ var exerciseData: [ExerciseModel] = [
         detail: "Repeat everyday",
         progressPercentage: 67,
         progressColorHex: "0088FF" // Updated
+        
     ),
     ExerciseModel(
         title: "Rhythmic Walking",

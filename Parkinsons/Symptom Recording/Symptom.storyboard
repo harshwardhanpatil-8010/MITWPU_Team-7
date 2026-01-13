@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="24506" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="EUD-4w-XwR">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="24506" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
     <device id="retina6_12" orientation="portrait" appearance="light"/>
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="24504"/>
@@ -12,7 +12,7 @@
         <!--Symptom Log-->
         <scene sceneID="cSd-F8-m2U">
             <objects>
-                <viewController id="uuW-P4-EWo" customClass="SymptomViewController" customModule="Parkinsons" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="symptom" useStoryboardIdentifierAsRestorationIdentifier="YES" id="uuW-P4-EWo" customClass="SymptomViewController" customModule="Parkinsons" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="hRj-r1-r9a">
                         <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -125,24 +125,6 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="FPA-B9-fXZ" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="2692" y="131"/>
-        </scene>
-        <!--Navigation Controller-->
-        <scene sceneID="KpW-OK-0Ap">
-            <objects>
-                <navigationController storyboardIdentifier="SymptomNavigationController" automaticallyAdjustsScrollViewInsets="NO" useStoryboardIdentifierAsRestorationIdentifier="YES" id="EUD-4w-XwR" sceneMemberID="viewController">
-                    <toolbarItems/>
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" largeTitles="YES" id="sjl-YV-krA">
-                        <rect key="frame" x="0.0" y="118" width="393" height="106"/>
-                        <autoresizingMask key="autoresizingMask"/>
-                    </navigationBar>
-                    <nil name="viewControllers"/>
-                    <connections>
-                        <segue destination="uuW-P4-EWo" kind="relationship" relationship="rootViewController" id="Acu-Go-VUu"/>
-                    </connections>
-                </navigationController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="Zn4-61-jKQ" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="1886.2595419847328" y="130.98591549295776"/>
         </scene>
     </scenes>
     <resources>

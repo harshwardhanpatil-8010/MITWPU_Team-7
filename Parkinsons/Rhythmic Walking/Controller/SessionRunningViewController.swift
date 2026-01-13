@@ -36,6 +36,10 @@ class SessionRunningViewController: UIViewController {
         progressView = CircularProgressView(frame: circularContainer.bounds)
         progressView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
         circularContainer.addSubview(progressView)
+        progressView.progressColor = UIColor(hex: "90AF81")
+        progressView.trackColor = UIColor(hex: "90AF81")
+        
+
     }
     private func updateDisplay(hours: Int, minutes: Int) {
         timeLabel.text = String(format: "%02d:%02d:%02d", hours, minutes, 0)
@@ -58,8 +62,6 @@ class SessionRunningViewController: UIViewController {
         super.viewDidLoad()
         title = "Rhythmic Walking"
         setupProgressView()
-        progressView.progressColor = UIColor(hex: "90AF81")
-        progressView.trackColor = .systemGray5
         beatButton.titleLabel?.text = selectedBeat
         paceButton.titleLabel?.text = selectedPace
         beatPaceUIView.applyCardStyle()

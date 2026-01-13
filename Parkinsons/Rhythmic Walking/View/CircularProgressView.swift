@@ -20,7 +20,12 @@ import UIKit
             progressLayer.lineWidth = lineWidth
         }
     }
-    
+     var trackOpacity: Float = 1.0 {
+         didSet {
+             trackLayer.opacity = trackOpacity
+         }
+     }
+
     override init(frame: CGRect) {
         super.init(frame: frame)
         setupLayers()
@@ -31,35 +36,67 @@ import UIKit
         setupLayers()
     }
     
-    private func setupLayers() {
-        let circularPath = UIBezierPath(
-            arcCenter: centerPoint,
-            radius: bounds.width / 2,
-            startAngle: -.pi / 2,
-            endAngle: 3 * .pi / 2,
-            clockwise: true
-        )
-        
-        trackLayer.path = circularPath.cgPath
-        trackLayer.strokeColor = trackColor.cgColor
-        trackLayer.lineWidth = lineWidth
-        trackLayer.fillColor = UIColor.clear.cgColor
-        layer.addSublayer(trackLayer)
-        
-        progressLayer.path = circularPath.cgPath
-        progressLayer.strokeColor = progressColor.cgColor
-        progressLayer.lineWidth = lineWidth
-        progressLayer.lineCap = .round
-        progressLayer.fillColor = UIColor.clear.cgColor
-        progressLayer.strokeEnd = 1
-        layer.addSublayer(progressLayer)
-    }
+     private func setupLayers() {
+         let circularPath = UIBezierPath(
+             arcCenter: centerPoint,
+             radius: bounds.width / 2,
+             startAngle: -.pi / 2,
+             endAngle: 3 * .pi / 2,
+             clockwise: true
+         )
+
+         trackLayer.path = circularPath.cgPath
+         trackLayer.strokeColor = trackColor.cgColor
+         trackLayer.lineWidth = lineWidth
+         trackLayer.fillColor = UIColor.clear.cgColor
+         trackLayer.opacity = 0.5         // ✅ EXPLICIT OPACITY
+         layer.addSublayer(trackLayer)
+
+         progressLayer.path = circularPath.cgPath
+         progressLayer.strokeColor = progressColor.cgColor
+         progressLayer.lineWidth = lineWidth
+         progressLayer.lineCap = .round
+         progressLayer.fillColor = UIColor.clear.cgColor
+         progressLayer.strokeEnd = 0
+         layer.addSublayer(progressLayer)
+     }
+
+
+
+
     
     private var centerPoint: CGPoint {
         CGPoint(x: bounds.midX, y: bounds.midY)
     }
     
-    func setProgress(_ progress: CGFloat) {
-        progressLayer.strokeEnd = progress
-    }
+//    func setProgress(_ progress: CGFloat) {
+//        progressLayer.strokeEnd = progress
+//    }
+     func setProgress(_ progress: CGFloat) {
+         progressLayer.strokeEnd = min(max(progress, 0), 1)
+     }
+
+     
+     override func layoutSubviews() {
+         super.layoutSubviews()
+         updatePath()
+     }
+
+     private func updatePath() {
+         let circularPath = UIBezierPath(
+             arcCenter: centerPoint,
+             radius: min(bounds.width, bounds.height) / 2,
+//             radius: (min(bounds.width, bounds.height) - lineWidth) / 2,
+             startAngle: -.pi / 2,
+             endAngle: 3 * .pi / 2,
+             clockwise: true
+         )
+
+         trackLayer.path = circularPath.cgPath
+         progressLayer.path = circularPath.cgPath
+     }
+
+
+
+
 }
