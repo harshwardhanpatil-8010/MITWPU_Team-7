@@ -15,35 +15,28 @@ class TodayMedicationCollectionViewCell: UICollectionViewCell {
     @IBOutlet weak var timeAmPmLabel: UILabel!
     @IBOutlet weak var timeLabel: UILabel!
     @IBOutlet weak var medContainerView: UIView!
+
     override func awakeFromNib() {
         super.awakeFromNib()
-        // Initialization code
         medContainerView.applyCardStyle()
     }
+
     func configure(with dose: TodayDoseItem) {
+        medNameLabel.text = dose.medicationName
+        medUnitAndTypeLabel.text = dose.medicationForm
+        medFormImage.image = UIImage(named: dose.iconName)
 
-            medNameLabel.text = dose.medicationName
-            medUnitAndTypeLabel.text = dose.medicationForm
+        let formatter = DateFormatter()
+        formatter.dateFormat = "h:mm"
+        timeLabel.text = formatter.string(from: dose.scheduledTime)
+        formatter.dateFormat = "a"
+        timeAmPmLabel.text = formatter.string(from: dose.scheduledTime)
 
-            // Icon
-            medFormImage.image = UIImage(named: dose.iconName)
-
-            // Time formatting
-            let formatter = DateFormatter()
-            formatter.dateFormat = "h:mm"
-
-            timeLabel.text = formatter.string(from: dose.scheduledTime)
-
-            formatter.dateFormat = "a"
-            timeAmPmLabel.text = formatter.string(from: dose.scheduledTime)
-
-            // Optional visual state (future-proof)
-            switch dose.logStatus {
-            case .none:
-                medContainerView.alpha = 1.0
-            case .taken, .skipped:
-                medContainerView.alpha = 0.5
-            }
+        switch dose.logStatus {
+        case .none:
+            medContainerView.alpha = 1.0
+        case .taken, .skipped:
+            medContainerView.alpha = 0.5
         }
-
+    }
 }

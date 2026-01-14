@@ -231,8 +231,15 @@
                             <constraint firstItem="4Iy-ch-W3k" firstAttribute="bottom" secondItem="kVY-vC-8WU" secondAttribute="bottom" id="sfh-GM-Wn4"/>
                         </constraints>
                     </view>
-                    <navigationItem key="navigationItem" title="Medication" largeTitleDisplayMode="always" id="Oyi-RR-vDW"/>
+                    <navigationItem key="navigationItem" title="Medication" largeTitleDisplayMode="always" id="Oyi-RR-vDW">
+                        <barButtonItem key="rightBarButtonItem" systemItem="edit" id="fAA-HL-1DQ">
+                            <connections>
+                                <action selector="editButtonTapped:" destination="abu-7L-A82" id="iHO-3K-1Zh"/>
+                            </connections>
+                        </barButtonItem>
+                    </navigationItem>
                     <connections>
+                        <outlet property="editButton" destination="fAA-HL-1DQ" id="WsN-Ns-hMR"/>
                         <outlet property="medSegment" destination="CM0-Fn-crM" id="kW8-cX-9rb"/>
                         <outlet property="medicationCollectionView" destination="4Iy-ch-W3k" id="KIS-fQ-Pfy"/>
                         <outlet property="noMedicationLabel" destination="ltb-5X-u4N" id="hvO-zZ-DDI"/>
@@ -976,6 +983,7 @@
         <!--Navigation Controller-->
         <scene sceneID="rTu-u9-rFE">
             <objects>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="5xg-ow-2wM" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
                 <navigationController storyboardIdentifier="medicationNavigation" automaticallyAdjustsScrollViewInsets="NO" useStoryboardIdentifierAsRestorationIdentifier="YES" id="hWx-Hg-8gb" sceneMemberID="viewController">
                     <toolbarItems/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" largeTitles="YES" id="gdO-hL-bWV">
@@ -987,7 +995,6 @@
                         <segue destination="abu-7L-A82" kind="relationship" relationship="rootViewController" id="WzL-oh-NCa"/>
                     </connections>
                 </navigationController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="5xg-ow-2wM" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="5483.5820895522384" y="282.83752860411897"/>
         </scene>

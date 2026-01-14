@@ -15,14 +15,13 @@ class MyMedicationCollectionViewCell: UICollectionViewCell {
     @IBOutlet weak var medRepeat: UILabel!
     @IBOutlet weak var medUnitandForm: UILabel!
     @IBOutlet weak var medTitle: UILabel!
+
     override func awakeFromNib() {
         super.awakeFromNib()
-        // Initialization code
         medContainer.layer.cornerRadius = 16
-        medContainer.applyCardStyle()
     }
-
 }
+
 extension MyMedicationCollectionViewCell {
 
     func configure(with medication: Medication) {
@@ -30,9 +29,6 @@ extension MyMedicationCollectionViewCell {
         medUnitandForm.text = medication.form
         medRepeat.text = medication.schedule.displayString()
         medFrequency.text = "\(medication.doses.count)x day"
-
-        medImage.image = UIImage(named: medication.iconName)
-            ?? UIImage(systemName: "pills")
-
+        medImage.image = UIImage(named: medication.iconName) ?? UIImage(systemName: "pills")
     }
 }

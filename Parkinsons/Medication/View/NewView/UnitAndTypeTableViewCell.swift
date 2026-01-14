@@ -12,15 +12,13 @@ class UnitAndTypeTableViewCell: UITableViewCell {
     @IBOutlet weak var typeStatus: UIImageView!
     @IBOutlet weak var typeName: UILabel!
     @IBOutlet weak var typeImage: UIImageView!
+
     override func awakeFromNib() {
         super.awakeFromNib()
-        // Initialization code
     }
 
     override func setSelected(_ selected: Bool, animated: Bool) {
         super.setSelected(selected, animated: animated)
-
-        // Configure the view for the selected state
     }
     
     func configureCell(type: UnitAndType) {
@@ -31,8 +29,7 @@ class UnitAndTypeTableViewCell: UITableViewCell {
             typeStatus.image = UIImage(systemName: "checkmark")
             typeStatus.tintColor = .systemBlue
         } else {
-            typeStatus.image = nil     // Remove previous image
+            typeStatus.image = nil
         }
     }
-
 }

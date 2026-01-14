@@ -11,25 +11,23 @@ class RepeatTableViewCell: UITableViewCell {
 
     @IBOutlet weak var repeatStatus: UIImageView!
     @IBOutlet weak var repeatLabel: UILabel!
+
     override func awakeFromNib() {
         super.awakeFromNib()
-        // Initialization code
     }
 
     override func setSelected(_ selected: Bool, animated: Bool) {
         super.setSelected(selected, animated: animated)
-
-        // Configure the view for the selected state
     }
-    func configureCell(type: Repeat) {
+
+    func configureCell(type: RepeatOption) {
         repeatLabel.text = type.name
 
         if type.isSelected {
             repeatStatus.image = UIImage(systemName: "checkmark")
             repeatStatus.tintColor = .systemBlue
         } else {
-            repeatStatus.image = nil     // Remove previous image
+            repeatStatus.image = nil
         }
     }
-
 }

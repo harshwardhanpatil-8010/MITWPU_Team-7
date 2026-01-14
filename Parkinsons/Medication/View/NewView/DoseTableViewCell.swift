@@ -7,8 +7,6 @@
 
 import UIKit
 
-// MARK: - Delegate Protocol
-
 protocol DoseTableViewCellDelegate: AnyObject {
     func didTapDelete(cell: DoseTableViewCell)
     func didUpdateTime(cell: DoseTableViewCell, newTime: Date)
@@ -16,29 +14,22 @@ protocol DoseTableViewCellDelegate: AnyObject {
 
 class DoseTableViewCell: UITableViewCell {
 
-    // MARK: - Outlets
-    @IBOutlet weak var timePicker: UIDatePicker!   // User selects dose time
-    @IBOutlet weak var doseNumberLabel: UILabel!   // Shows "Dose 1", "Dose 2", etc.
-    @IBOutlet weak var doseLabel: UILabel!         // Shows dose details (optional)
-    @IBOutlet weak var deleteButton: UIButton!     // Delete dose button
+    @IBOutlet weak var timePicker: UIDatePicker!
+    @IBOutlet weak var doseNumberLabel: UILabel!
+    @IBOutlet weak var doseLabel: UILabel!
+    @IBOutlet weak var deleteButton: UIButton!
 
-    // MARK: - Delegate
     weak var delegate: DoseTableViewCellDelegate?
 
-    // MARK: - Lifecycle
     override func awakeFromNib() {
         super.awakeFromNib()
-        // Initial setup if needed
     }
 
-    // MARK: - Actions
     @IBAction func deleteTapped(_ sender: UIButton) {
-        // Notify the delegate that delete button was pressed
         delegate?.didTapDelete(cell: self)
     }
 
     @IBAction func timeChanged(_ sender: UIDatePicker) {
-        // Notify the delegate when dose time is updated
         delegate?.didUpdateTime(cell: self, newTime: sender.date)
     }
 }

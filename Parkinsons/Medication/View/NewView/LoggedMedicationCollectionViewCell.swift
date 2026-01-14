@@ -21,11 +21,9 @@ class LoggedMedicationCollectionViewCell: UICollectionViewCell {
 
     override func awakeFromNib() {
         super.awakeFromNib()
-//        medContainerView.applyCardStyle()
-
         let tap = UITapGestureRecognizer(target: self, action: #selector(handleStatusTap))
         medStatusImage.addGestureRecognizer(tap)
-        medStatusImage.isUserInteractionEnabled = false // default OFF
+        medStatusImage.isUserInteractionEnabled = false
     }
 
     func configure(with item: LoggedDoseItem) {

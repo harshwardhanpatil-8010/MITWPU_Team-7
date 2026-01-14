@@ -9,28 +9,24 @@ import UIKit
 
 class HeaderViewCollectionReusableView: UICollectionReusableView {
     @IBOutlet weak var editButton: UIButton!
-    
     @IBOutlet weak var headerLabel: UILabel!
+
     override func awakeFromNib() {
         super.awakeFromNib()
-        // Initialization code
         editButton.isHidden = true
         editButton.isUserInteractionEnabled = true
         self.isUserInteractionEnabled = true
         bringSubviewToFront(editButton)
-
     }
+
     var onEditTapped: (() -> Void)?
 
-        @IBAction func editButtonTapped(_ sender: UIButton) {
-            onEditTapped?()
-        }
-    
-    
-    func configureHeader(text: String, showEdit: Bool){
+    @IBAction func editButtonTapped(_ sender: UIButton) {
+        onEditTapped?()
+    }
+
+    func configureHeader(text: String, showEdit: Bool) {
         headerLabel.text = text
-      
         editButton.isHidden = !showEdit
     }
 }
-

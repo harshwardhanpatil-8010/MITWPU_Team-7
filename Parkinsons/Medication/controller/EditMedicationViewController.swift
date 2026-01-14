@@ -7,31 +7,20 @@
 
 import UIKit
 
-// MARK: - Edit Medication Screen
 class EditMedicationViewController: UIViewController,
                                     UICollectionViewDelegate,
                                     AddMedicationDelegate {
 
-    // ---------------------------------------------------------
-    // MARK: - Properties
-    // ---------------------------------------------------------
     var medications: [Medication] = []
     weak var delegate: AddMedicationDelegate?
 
-    // ---------------------------------------------------------
-    // MARK: - Outlets
-    // ---------------------------------------------------------
     @IBOutlet weak var backButton: UIBarButtonItem!
     @IBOutlet weak var saveButton: UIBarButtonItem!
     @IBOutlet weak var collectionView: UICollectionView!
 
-    // ---------------------------------------------------------
-    // MARK: - Lifecycle
-    // ---------------------------------------------------------
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        // Setup collection view
         collectionView.dataSource = self
         collectionView.delegate = self
 
@@ -46,9 +35,6 @@ class EditMedicationViewController: UIViewController,
         reloadMedications()
     }
 
-    // ---------------------------------------------------------
-    // MARK: - Data Reloading
-    // ---------------------------------------------------------
     func reloadMedications() {
         medications = MedicationDataStore.shared.medications
         collectionView.reloadData()
@@ -58,9 +44,6 @@ class EditMedicationViewController: UIViewController,
         reloadMedications()
     }
 
-    // ---------------------------------------------------------
-    // MARK: - Actions
-    // ---------------------------------------------------------
     @IBAction func saveTapped(_ sender: UIBarButtonItem) {
         delegate?.didUpdateMedication()
         dismiss(animated: true)
@@ -70,9 +53,6 @@ class EditMedicationViewController: UIViewController,
         dismiss(animated: true)
     }
 
-    // ---------------------------------------------------------
-    // MARK: - Collection Selection
-    // ---------------------------------------------------------
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         let selected = medications[indexPath.row]
 
@@ -90,9 +70,6 @@ class EditMedicationViewController: UIViewController,
     }
 }
 
-//
-// MARK: - CollectionView DataSource
-//
 extension EditMedicationViewController: UICollectionViewDataSource {
 
     func collectionView(_ collectionView: UICollectionView,
@@ -112,9 +89,6 @@ extension EditMedicationViewController: UICollectionViewDataSource {
     }
 }
 
-//
-// MARK: - CollectionView Layout
-//
 extension EditMedicationViewController: UICollectionViewDelegateFlowLayout {
     func collectionView(
         _ collectionView: UICollectionView,
@@ -124,7 +98,6 @@ extension EditMedicationViewController: UICollectionViewDelegateFlowLayout {
         return CGSize(
             width: collectionView.bounds.width,
             height: 80
-            
         )
     }
 
@@ -141,9 +114,6 @@ extension EditMedicationViewController: UICollectionViewDelegateFlowLayout {
         layout collectionViewLayout: UICollectionViewLayout,
         minimumLineSpacingForSectionAt section: Int
     ) -> CGFloat {
-        return 8
+        return -7
     }
-
-
 }
-
