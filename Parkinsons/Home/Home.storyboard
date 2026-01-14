@@ -35,6 +35,7 @@
                                             <barButtonItem image="calendar" catalog="system" id="me4-gr-dWf">
                                                 <connections>
                                                     <action selector="calendarBarButtonItemTapped:" destination="Y6W-OH-hqX" id="Qrf-RH-LZY"/>
+                                                    <segue destination="YxW-ZH-lhD" kind="presentation" id="8cO-Jt-PpU"/>
                                                 </connections>
                                             </barButtonItem>
                                             <barButtonItem image="tree" catalog="system" id="3yv-DS-dHf"/>
@@ -105,7 +106,7 @@
                                     <view contentMode="scaleToFill" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="lse-ik-cY0">
                                         <rect key="frame" x="0.0" y="127" width="393" height="1400"/>
                                         <subviews>
-                                            <navigationBar contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="zue-hZ-5cI">
+                                            <navigationBar contentMode="scaleToFill" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="zue-hZ-5cI">
                                                 <rect key="frame" x="0.0" y="8" width="393" height="54"/>
                                                 <items>
                                                     <navigationItem id="TsU-S7-AhP">
@@ -122,10 +123,10 @@
                                                     </navigationItem>
                                                 </items>
                                             </navigationBar>
-                                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="YCm-Cl-pvf">
+                                            <view contentMode="scaleToFill" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="YCm-Cl-pvf">
                                                 <rect key="frame" x="136" y="78" width="129" height="129"/>
                                                 <subviews>
-                                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="JD" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="1md-zb-Ckb">
+                                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" text="JD" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="1md-zb-Ckb">
                                                         <rect key="frame" x="29" y="35" width="71" height="58"/>
                                                         <fontDescription key="fontDescription" type="boldSystem" pointSize="48"/>
                                                         <nil key="textColor"/>
@@ -312,7 +313,6 @@
                                             <constraint firstItem="V1K-Ng-q0q" firstAttribute="top" secondItem="CEx-36-I22" secondAttribute="bottom" constant="18" id="0GU-CT-gdJ"/>
                                             <constraint firstItem="CEx-36-I22" firstAttribute="leading" secondItem="lse-ik-cY0" secondAttribute="leading" constant="16" id="2n0-Ui-WWI"/>
                                             <constraint firstItem="YCm-Cl-pvf" firstAttribute="top" secondItem="zue-hZ-5cI" secondAttribute="bottom" constant="16" id="4ID-Iz-xLC"/>
-                                            <constraint firstItem="YCm-Cl-pvf" firstAttribute="top" secondItem="zue-hZ-5cI" secondAttribute="bottom" constant="16" id="4OJ-Zr-nSO"/>
                                             <constraint firstAttribute="trailing" secondItem="LWa-Ap-rd7" secondAttribute="trailing" constant="16" id="9h8-Xa-62q"/>
                                             <constraint firstItem="4Wy-8v-TYq" firstAttribute="leading" secondItem="lse-ik-cY0" secondAttribute="leading" constant="16" id="Bc9-yR-clj"/>
                                             <constraint firstAttribute="height" constant="1400" id="JRs-5n-CKC"/>
@@ -329,7 +329,7 @@
                                             <constraint firstItem="zue-hZ-5cI" firstAttribute="leading" secondItem="lse-ik-cY0" secondAttribute="leading" id="pbh-qK-aXF"/>
                                             <constraint firstItem="CEx-36-I22" firstAttribute="top" secondItem="LWa-Ap-rd7" secondAttribute="bottom" constant="18" id="sIA-6a-ab3"/>
                                             <constraint firstAttribute="trailing" secondItem="4Wy-8v-TYq" secondAttribute="trailing" constant="16" id="veQ-dB-7s7"/>
-                                            <constraint firstItem="zue-hZ-5cI" firstAttribute="top" secondItem="lse-ik-cY0" secondAttribute="top" constant="8" id="w6M-I8-XAx"/>
+                                            <constraint firstItem="zue-hZ-5cI" firstAttribute="top" secondItem="lse-ik-cY0" secondAttribute="top" constant="16" id="w6M-I8-XAx"/>
                                         </constraints>
                                     </view>
                                 </subviews>
@@ -373,7 +373,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="9yg-n2-ccj" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="8283.2061068702278" y="130.98591549295776"/>
+            <point key="canvasLocation" x="8149" y="-519"/>
         </scene>
         <!--Summary View Controller-->
         <scene sceneID="bd1-Y6-B2i">
@@ -783,11 +783,11 @@
             <objects>
                 <viewController storyboardIdentifier="CalendarViewController" useStoryboardIdentifierAsRestorationIdentifier="YES" id="YxW-ZH-lhD" customClass="CalendarViewController" customModule="Parkinsons" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="h36-Sr-ApG">
-                        <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
+                        <rect key="frame" x="0.0" y="0.0" width="393" height="793"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="KeU-1H-fum">
-                                <rect key="frame" x="0.0" y="118" width="393" height="666"/>
+                                <rect key="frame" x="0.0" y="86" width="393" height="707"/>
                                 <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                                 <collectionViewFlowLayout key="collectionViewLayout" automaticEstimatedItemSize="YES" minimumLineSpacing="10" minimumInteritemSpacing="10" id="rDz-gM-6Ai">
                                     <size key="itemSize" width="128" height="128"/>
@@ -806,23 +806,40 @@
                                     </collectionViewCell>
                                 </cells>
                             </collectionView>
+                            <navigationBar contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="oUP-u9-xgX">
+                                <rect key="frame" x="0.0" y="16" width="393" height="54"/>
+                                <items>
+                                    <navigationItem id="TjQ-3H-qkg">
+                                        <barButtonItem key="leftBarButtonItem" title="Item" image="xmark" catalog="system" id="fvK-bz-YBx">
+                                            <connections>
+                                                <action selector="cancelButtonTapped:" destination="YxW-ZH-lhD" id="7sq-nz-AgW"/>
+                                            </connections>
+                                        </barButtonItem>
+                                    </navigationItem>
+                                </items>
+                            </navigationBar>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="vtw-88-3Sr"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                         <constraints>
+                            <constraint firstItem="oUP-u9-xgX" firstAttribute="top" secondItem="vtw-88-3Sr" secondAttribute="top" constant="16" id="7S4-aP-Hzp"/>
+                            <constraint firstItem="KeU-1H-fum" firstAttribute="top" secondItem="oUP-u9-xgX" secondAttribute="bottom" constant="16" id="BjQ-l2-ZOP"/>
                             <constraint firstItem="vtw-88-3Sr" firstAttribute="bottom" secondItem="KeU-1H-fum" secondAttribute="bottom" id="Eps-lh-UvP"/>
                             <constraint firstItem="KeU-1H-fum" firstAttribute="leading" secondItem="vtw-88-3Sr" secondAttribute="leading" id="KZQ-qK-KHe"/>
-                            <constraint firstItem="KeU-1H-fum" firstAttribute="top" secondItem="vtw-88-3Sr" secondAttribute="top" id="ar1-Sy-L8V"/>
+                            <constraint firstItem="oUP-u9-xgX" firstAttribute="trailing" secondItem="KeU-1H-fum" secondAttribute="trailing" id="fiy-TY-LT4"/>
+                            <constraint firstItem="oUP-u9-xgX" firstAttribute="leading" secondItem="KeU-1H-fum" secondAttribute="leading" id="qGp-B7-oOd"/>
                             <constraint firstItem="vtw-88-3Sr" firstAttribute="trailing" secondItem="KeU-1H-fum" secondAttribute="trailing" id="zrU-JT-vEJ"/>
                         </constraints>
                     </view>
+                    <toolbarItems/>
+                    <simulatedToolbarMetrics key="simulatedBottomBarMetrics"/>
                     <connections>
                         <outlet property="collectionView" destination="KeU-1H-fum" id="ZiD-8B-1l8"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="olq-8w-mXC" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="7527.480916030534" y="802.81690140845069"/>
+            <point key="canvasLocation" x="7417.5572519083962" y="-519.0140845070423"/>
         </scene>
         <!--Medication-->
         <scene sceneID="e6q-vS-CMc">
@@ -830,8 +847,8 @@
                 <navigationController automaticallyAdjustsScrollViewInsets="NO" id="wIr-ag-Mds" sceneMemberID="viewController">
                     <tabBarItem key="tabBarItem" title="Medication" image="pill" catalog="system" selectedImage="pill.fill" id="VjS-7T-15O"/>
                     <toolbarItems/>
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="2Do-JR-cEm">
-                        <rect key="frame" x="0.0" y="118" width="393" height="54"/>
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" largeTitles="YES" id="2Do-JR-cEm">
+                        <rect key="frame" x="0.0" y="118" width="393" height="106"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
                     <nil name="viewControllers"/>
@@ -849,8 +866,8 @@
                 <navigationController automaticallyAdjustsScrollViewInsets="NO" id="bwp-oz-6zm" sceneMemberID="viewController">
                     <tabBarItem key="tabBarItem" title="Symptoms" image="list.bullet.clipboard" catalog="system" selectedImage="list.bullet.clipboard.fill" id="rvJ-Q2-SpB"/>
                     <toolbarItems/>
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="zhG-9Z-sou">
-                        <rect key="frame" x="0.0" y="118" width="393" height="54"/>
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" largeTitles="YES" id="zhG-9Z-sou">
+                        <rect key="frame" x="0.0" y="118" width="393" height="106"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
                     <nil name="viewControllers"/>
@@ -881,6 +898,7 @@
         <image name="sun.max.fill" catalog="system" width="128" height="125"/>
         <image name="tree" catalog="system" width="128" height="118"/>
         <image name="xMark" width="258" height="228"/>
+        <image name="xmark" catalog="system" width="128" height="113"/>
         <namedColor name="AccentColor">
             <color red="0.0" green="0.46000000000000002" blue="0.89000000000000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </namedColor>

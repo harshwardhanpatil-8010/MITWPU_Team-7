@@ -38,7 +38,7 @@ class MedicationLandingPageViewController: UIViewController,
             name: Notification.Name("MedicationUpdated"),
             object: nil
         )
-        
+        navigationController?.navigationItem.largeTitleDisplayMode = .always
         
     }
     

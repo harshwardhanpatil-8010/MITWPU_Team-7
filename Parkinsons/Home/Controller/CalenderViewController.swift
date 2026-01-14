@@ -5,11 +5,14 @@ class CalendarViewController: UIViewController {
     @IBOutlet weak var collectionView: UICollectionView!
     var sections: [MonthSection] = []
     var selectedDate: Date = Date()
-
+    
+    
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         setupCalendarData()
         setupCollectionView()
+        
     }
 
     override func viewDidAppear(_ animated: Bool) {
@@ -126,9 +129,12 @@ class CalendarViewController: UIViewController {
         
         collectionView.collectionViewLayout = layout
     }
-
-
+    @IBAction func cancelButtonTapped(_ sender: Any) {
+        self.dismiss(animated: true, completion: nil)
+    }
 }
+
+
 
 extension CalendarViewController: UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
     
