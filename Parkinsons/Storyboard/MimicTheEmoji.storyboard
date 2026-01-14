@@ -113,20 +113,25 @@
                                         <nil key="textColor"/>
                                         <nil key="highlightedColor"/>
                                     </label>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Time Left Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="KEs-o7-xL3">
-                                        <rect key="frame" x="229" y="70" width="124" height="22"/>
-                                        <fontDescription key="fontDescription" type="system" pointSize="18"/>
-                                        <nil key="textColor"/>
-                                        <nil key="highlightedColor"/>
-                                    </label>
-                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="6jm-hg-c4y" customClass="CameraPreviewView" customModule="Parkinsons" customModuleProvider="target">
+                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="6jm-hg-c4y" customClass="ARView" customModule="RealityKit">
                                         <rect key="frame" x="8" y="108" width="345" height="539"/>
+                                        <subviews>
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Emoji" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="KEs-o7-xL3">
+                                                <rect key="frame" x="92" y="34" width="71" height="36"/>
+                                                <fontDescription key="fontDescription" type="system" pointSize="30"/>
+                                                <nil key="textColor"/>
+                                                <nil key="highlightedColor"/>
+                                            </label>
+                                        </subviews>
                                         <color key="backgroundColor" systemColor="systemOrangeColor"/>
+                                        <constraints>
+                                            <constraint firstItem="KEs-o7-xL3" firstAttribute="top" secondItem="6jm-hg-c4y" secondAttribute="top" constant="34" id="AG2-Oe-dPL"/>
+                                            <constraint firstItem="KEs-o7-xL3" firstAttribute="leading" secondItem="6jm-hg-c4y" secondAttribute="leading" constant="92" id="wMj-eW-t4D"/>
+                                        </constraints>
                                     </view>
                                 </subviews>
                                 <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                                 <constraints>
-                                    <constraint firstAttribute="trailing" secondItem="KEs-o7-xL3" secondAttribute="trailing" constant="8" id="36y-cc-NoE"/>
                                     <constraint firstItem="kEP-ye-1el" firstAttribute="leading" secondItem="HOV-OP-pNe" secondAttribute="leading" constant="8" id="5Hc-Xq-Q4n"/>
                                     <constraint firstItem="2yR-gs-8Aa" firstAttribute="top" secondItem="HOV-OP-pNe" secondAttribute="top" constant="8" id="8oQ-aK-u1M"/>
                                     <constraint firstAttribute="bottom" secondItem="6jm-hg-c4y" secondAttribute="bottom" constant="8" id="C2D-XI-OxW"/>
@@ -134,7 +139,6 @@
                                     <constraint firstAttribute="trailing" secondItem="6jm-hg-c4y" secondAttribute="trailing" constant="8" id="Vd9-u0-uAM"/>
                                     <constraint firstAttribute="trailing" secondItem="2yR-gs-8Aa" secondAttribute="trailing" id="Wuw-AP-FDe"/>
                                     <constraint firstAttribute="trailing" secondItem="QvR-QT-Vbo" secondAttribute="trailing" id="XKh-WN-HXN"/>
-                                    <constraint firstItem="KEs-o7-xL3" firstAttribute="top" secondItem="QvR-QT-Vbo" secondAttribute="bottom" constant="10" id="YeX-YJ-Fk2"/>
                                     <constraint firstItem="kEP-ye-1el" firstAttribute="top" secondItem="QvR-QT-Vbo" secondAttribute="bottom" constant="10" id="jFl-O0-PUl"/>
                                     <constraint firstItem="6jm-hg-c4y" firstAttribute="leading" secondItem="HOV-OP-pNe" secondAttribute="leading" constant="8" id="k5t-t4-KW4"/>
                                     <constraint firstItem="QvR-QT-Vbo" firstAttribute="leading" secondItem="HOV-OP-pNe" secondAttribute="leading" id="pAZ-FO-Fga"/>
@@ -169,6 +173,8 @@
                     <connections>
                         <outlet property="backgroundCard" destination="HOV-OP-pNe" id="QbN-px-NPT"/>
                         <outlet property="cameraContainerView" destination="6jm-hg-c4y" id="W5Q-5b-62H"/>
+                        <outlet property="emojiLabel" destination="KEs-o7-xL3" id="h2i-jr-Nbm"/>
+                        <outlet property="emojiNameLabel" destination="2yR-gs-8Aa" id="BTv-CT-XA6"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="o16-SH-qtw" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
