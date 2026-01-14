@@ -24,14 +24,14 @@
                                 <rect key="frame" x="0.0" y="18" width="442" height="60"/>
                                 <subviews>
                                     <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="Squ-AN-tQs">
-                                        <rect key="frame" x="0.0" y="0.0" width="60" height="60"/>
+                                        <rect key="frame" x="10" y="0.0" width="60" height="60"/>
                                         <constraints>
                                             <constraint firstAttribute="width" constant="60" id="agq-j3-x6L"/>
                                             <constraint firstAttribute="height" constant="60" id="yOJ-X1-U9U"/>
                                         </constraints>
                                     </imageView>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="tib-jZ-gSc">
-                                        <rect key="frame" x="60" y="0.0" width="322" height="60"/>
+                                        <rect key="frame" x="70" y="0.0" width="312" height="60"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                         <nil key="textColor"/>
                                         <nil key="highlightedColor"/>
@@ -48,7 +48,7 @@
                                     <constraint firstAttribute="trailing" secondItem="EdN-A1-rMQ" secondAttribute="trailing" id="5Rm-1c-1ge"/>
                                     <constraint firstItem="EdN-A1-rMQ" firstAttribute="top" secondItem="z1x-yZ-3bH" secondAttribute="top" id="7WS-JJ-25e"/>
                                     <constraint firstItem="Squ-AN-tQs" firstAttribute="top" secondItem="z1x-yZ-3bH" secondAttribute="top" id="Pgf-un-eiO"/>
-                                    <constraint firstItem="Squ-AN-tQs" firstAttribute="leading" secondItem="z1x-yZ-3bH" secondAttribute="leading" id="raT-iO-18f"/>
+                                    <constraint firstItem="Squ-AN-tQs" firstAttribute="leading" secondItem="z1x-yZ-3bH" secondAttribute="leading" constant="10" id="gSt-i4-5sa"/>
                                     <constraint firstAttribute="trailing" secondItem="EdN-A1-rMQ" secondAttribute="trailing" id="xuz-lQ-0C1"/>
                                 </constraints>
                             </stackView>

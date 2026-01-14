@@ -2,7 +2,7 @@ import UIKit
 
 class tremorCard: UICollectionViewCell {
 
-    @IBOutlet weak var avgLabel: UILabel!
+//    @IBOutlet weak var avgLabel: UILabel!
     @IBOutlet weak var cardBackground: UIView!
     
     override func awakeFromNib() {
@@ -17,7 +17,7 @@ class tremorCard: UICollectionViewCell {
     
     func setupCardStyle() {
         // Exact same parameters from MedicationCardCollectionViewCell
-        let cornerRadius: CGFloat = 16
+        let cornerRadius: CGFloat = 25
         let shadowColor: UIColor = .black
         let shadowOpacity: Float = 0.15
         let shadowRadius: CGFloat = 3
@@ -33,7 +33,7 @@ class tremorCard: UICollectionViewCell {
     }
     
     // Optional: Add a configure method like your other cells
-    func configure(average: String) {
-        avgLabel.text = average
-    }
+//    func configure(average: String) {
+//        avgLabel.text = average
+//    }
 }

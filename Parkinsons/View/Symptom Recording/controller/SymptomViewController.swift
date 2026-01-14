@@ -50,16 +50,16 @@ class SymptomViewController: UIViewController {
         setupSymptomBackgroundUI()
     }
     func setupTableViewUI() {
-        tableView.layer.cornerRadius = 20
+        tableView.layer.cornerRadius = 25
         tableView.layer.masksToBounds = true
         
         // Optional: If you want the table to match the background's look
         // without its own border, keep it clear.
-        tableView.backgroundColor = .clear
+//        tableView.backgroundColor = .clear
     }
     // MARK: - UI Setup
     func setupSymptomBackgroundUI() {
-        symptomBackground.layer.cornerRadius = 20
+        symptomBackground.layer.cornerRadius = 25
         symptomBackground.layer.shadowColor = UIColor.black.cgColor
         symptomBackground.layer.shadowOffset = CGSize(width: 0, height: 4)
         symptomBackground.layer.shadowOpacity = 0.1
@@ -241,7 +241,7 @@ extension SymptomViewController: UICollectionViewDataSource, UICollectionViewDel
             
         case .tremor:
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "tremor_cell", for: indexPath) as! tremorCard
-            cell.configure(average: "12")
+//            cell.configure(average: "12")
             return cell
             
         case .gait:

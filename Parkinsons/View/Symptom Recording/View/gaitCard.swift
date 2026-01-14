@@ -25,7 +25,7 @@ class gaitCard: UICollectionViewCell {
     
     func setupCardStyle() {
         // Standardized shadow parameters from your other cards
-        let cornerRadius: CGFloat = 16
+        let cornerRadius: CGFloat = 25
         let shadowColor: UIColor = .black
         let shadowOpacity: Float = 0.15
         let shadowRadius: CGFloat = 3
