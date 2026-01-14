@@ -29,7 +29,11 @@ class CalendarViewController: UIViewController {
     }
 
     func setupCalendarData() {
-        let calendar = Calendar.current
+        sections.removeAll()
+        
+        var calendar = Calendar.current
+        calendar.firstWeekday = 2
+        
         let currentYear = calendar.component(.year, from: Date())
         
         for month in 1...12 {
@@ -37,19 +41,15 @@ class CalendarViewController: UIViewController {
             guard let startDate = calendar.date(from: components),
                   let range = calendar.range(of: .day, in: .month, for: startDate) else { continue }
             
-            // Calculate offset (0 for Sunday, 1 for Monday...)
-            // Based on your image starting with Sunday (S)
-            let firstWeekday = calendar.component(.weekday, from: startDate)
-            let offset = firstWeekday - 1
+            let weekday = calendar.component(.weekday, from: startDate)
+            let offset = (weekday - calendar.firstWeekday + 7) % 7
             
             var monthDays: [DayModel] = []
             
-            // 1. Add Dummy Days to shift the 1st of the month to the correct column
             for _ in 0..<offset {
                 monthDays.append(DayModel(date: Date.distantPast, isDummy: true))
             }
             
-            // 2. Add Actual Days
             for day in range {
                 var dComp = components
                 dComp.day = day
@@ -59,7 +59,7 @@ class CalendarViewController: UIViewController {
                 }
             }
             
-            let monthName = DateFormatter().monthSymbols[month-1]
+            let monthName = DateFormatter().monthSymbols[month - 1]
             sections.append(MonthSection(monthName: monthName, days: monthDays))
         }
     }
@@ -118,13 +118,15 @@ class CalendarViewController: UIViewController {
         
         let layout = UICollectionViewFlowLayout()
         layout.scrollDirection = .vertical
-        layout.sectionInset = UIEdgeInsets(top: 8, left: 12, bottom: 50, right: 12)
+        
+        layout.sectionInset = UIEdgeInsets(top: 8, left: 16, bottom: 50, right: 16)
+        layout.minimumInteritemSpacing = 12
         layout.minimumLineSpacing = 18
-        layout.minimumInteritemSpacing = 10
         layout.sectionHeadersPinToVisibleBounds = true
         
         collectionView.collectionViewLayout = layout
     }
+
 
 }
 
@@ -182,7 +184,10 @@ extension CalendarViewController: UICollectionViewDataSource, UICollectionViewDe
 //        return CGSize(width: width, height: 65) // Increased height for better capsule shape
 //    }
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        let totalSpacing: CGFloat = 12 + 12 + (6 * 10)
+        let leftInset: CGFloat = 16
+        let rightInset: CGFloat = 16
+        let interItemSpacing: CGFloat = 12
+        let totalSpacing = leftInset + rightInset + (interItemSpacing * 6)
         let width = (collectionView.frame.width - totalSpacing) / 7
         return CGSize(width: width, height: 70)
     }

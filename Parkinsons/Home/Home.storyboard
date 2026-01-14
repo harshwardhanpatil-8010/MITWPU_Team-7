@@ -787,7 +787,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="KeU-1H-fum">
-                                <rect key="frame" x="16" y="118" width="361" height="666"/>
+                                <rect key="frame" x="0.0" y="118" width="393" height="666"/>
                                 <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                                 <collectionViewFlowLayout key="collectionViewLayout" automaticEstimatedItemSize="YES" minimumLineSpacing="10" minimumInteritemSpacing="10" id="rDz-gM-6Ai">
                                     <size key="itemSize" width="128" height="128"/>
@@ -797,10 +797,10 @@
                                 </collectionViewFlowLayout>
                                 <cells>
                                     <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="calendar_cell" id="0zx-T9-tdE">
-                                        <rect key="frame" x="0.0" y="0.0" width="128" height="128"/>
+                                        <rect key="frame" x="0.0" y="0.0" width="127.99999999999997" height="128"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <collectionViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" id="rDj-cs-6ye">
-                                            <rect key="frame" x="0.0" y="0.0" width="128" height="128"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="127.99999999999997" height="128"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                         </collectionViewCellContentView>
                                     </collectionViewCell>
@@ -811,9 +811,9 @@
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                         <constraints>
                             <constraint firstItem="vtw-88-3Sr" firstAttribute="bottom" secondItem="KeU-1H-fum" secondAttribute="bottom" id="Eps-lh-UvP"/>
-                            <constraint firstItem="KeU-1H-fum" firstAttribute="leading" secondItem="vtw-88-3Sr" secondAttribute="leading" constant="16" id="KZQ-qK-KHe"/>
+                            <constraint firstItem="KeU-1H-fum" firstAttribute="leading" secondItem="vtw-88-3Sr" secondAttribute="leading" id="KZQ-qK-KHe"/>
                             <constraint firstItem="KeU-1H-fum" firstAttribute="top" secondItem="vtw-88-3Sr" secondAttribute="top" id="ar1-Sy-L8V"/>
-                            <constraint firstItem="vtw-88-3Sr" firstAttribute="trailing" secondItem="KeU-1H-fum" secondAttribute="trailing" constant="16" id="zrU-JT-vEJ"/>
+                            <constraint firstItem="vtw-88-3Sr" firstAttribute="trailing" secondItem="KeU-1H-fum" secondAttribute="trailing" id="zrU-JT-vEJ"/>
                         </constraints>
                     </view>
                     <connections>
