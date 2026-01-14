@@ -108,7 +108,7 @@ class CalendarViewController: UIViewController {
 //        collectionView.collectionViewLayout = layout
 //    }
     private func setupCollectionView() {
-        collectionView.register(UINib(nibName: "CalenderCollectionViewCell", bundle: nil), forCellWithReuseIdentifier: "calendar_cell")
+        collectionView.register(UINib(nibName: "DataCapsuleCell", bundle: nil), forCellWithReuseIdentifier: "date_capsule_cell")
         
         let headerNib = UINib(nibName: "MonthHeaderViewCollectionReusableView", bundle: nil)
         collectionView.register(headerNib, forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: "MonthHeaderView")
@@ -117,17 +117,15 @@ class CalendarViewController: UIViewController {
         collectionView.delegate = self
         
         let layout = UICollectionViewFlowLayout()
-        layout.scrollDirection = .vertical // Keeping the scrolling as it is
-        
-        // Using leading/trailing: 8 (from your compositional code snippet)
-        layout.sectionInset = UIEdgeInsets(top: 8, left: 0, bottom: 50, right: 0)
-        
-        layout.minimumLineSpacing = 15
-        layout.minimumInteritemSpacing = 0
+        layout.scrollDirection = .vertical
+        layout.sectionInset = UIEdgeInsets(top: 8, left: 12, bottom: 50, right: 12)
+        layout.minimumLineSpacing = 18
+        layout.minimumInteritemSpacing = 10
         layout.sectionHeadersPinToVisibleBounds = true
         
         collectionView.collectionViewLayout = layout
     }
+
 }
 
 extension CalendarViewController: UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
@@ -141,18 +139,16 @@ extension CalendarViewController: UICollectionViewDataSource, UICollectionViewDe
     }
 
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "calendar_cell", for: indexPath) as! CalenderCollectionViewCell
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "date_capsule_cell", for: indexPath) as! DateCapsuleCell
         let dayData = sections[indexPath.section].days[indexPath.item]
-        
-        // Hide dummy cells
         cell.isHidden = dayData.isDummy
         if dayData.isDummy { return cell }
-        
+
         let dateModel = DateModel(date: dayData.date, dayString: "", dateString: dayData.dayNumber)
         let isToday = Calendar.current.isDateInToday(dayData.date)
-        
         cell.configure(with: dateModel, isSelected: dayData.isSelected, isToday: isToday)
         return cell
+
     }
 
     func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
@@ -186,14 +182,12 @@ extension CalendarViewController: UICollectionViewDataSource, UICollectionViewDe
 //        return CGSize(width: width, height: 65) // Increased height for better capsule shape
 //    }
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        // Math to ensure 7 items per row with 8pt padding on each side
-        // (Total Width - Left Inset - Right Inset) / 7
-        let availableWidth = collectionView.frame.width - 33
-        let width = availableWidth / 7
-        
-        // Use the 65 height from your compositional layout snippet
-        return CGSize(width: width, height: 65)
+        let totalSpacing: CGFloat = 12 + 12 + (6 * 10)
+        let width = (collectionView.frame.width - totalSpacing) / 7
+        return CGSize(width: width, height: 70)
     }
+
+
 
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, referenceSizeForHeaderInSection section: Int) -> CGSize {
         return CGSize(width: collectionView.frame.width, height: 70)
