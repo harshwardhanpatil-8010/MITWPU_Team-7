@@ -39,24 +39,29 @@
                             <constraint firstAttribute="height" constant="60" id="p8E-ze-xRg"/>
                         </constraints>
                     </stackView>
+
                     <stackView opaque="NO" contentMode="scaleToFill" distribution="fillEqually" spacing="73" translatesAutoresizingMaskIntoConstraints="NO" id="BjV-7k-KgU">
                         <rect key="frame" x="40" y="50" width="408" height="48"/>
                         <subviews>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="4ca-j6-DNZ">
                                 <rect key="frame" x="0.0" y="0.0" width="47.333333333333336" height="48"/>
+
                                 <state key="normal" title="Button"/>
                                 <buttonConfiguration key="configuration" style="plain" image="Screenshot 2025-11-10 at 2.07.21 PM 2" cornerStyle="capsule">
                                     <preferredSymbolConfiguration key="preferredSymbolConfigurationForImage" scale="large"/>
                                 </buttonConfiguration>
                             </button>
                             <button opaque="NO" tag="1" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="FHs-rj-cap">
+
                                 <rect key="frame" x="120.33333333333333" y="0.0" width="47.333333333333329" height="48"/>
+
                                 <state key="normal" title="Button"/>
                                 <buttonConfiguration key="configuration" style="plain" image="notPresent 2" cornerStyle="capsule">
                                     <preferredSymbolConfiguration key="preferredSymbolConfigurationForImage" scale="large"/>
                                 </buttonConfiguration>
                             </button>
                             <button opaque="NO" tag="2" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="iA3-mb-ddc">
+
                                 <rect key="frame" x="240.66666666666669" y="0.0" width="47" height="48"/>
                                 <state key="normal" title="Button"/>
                                 <buttonConfiguration key="configuration" style="plain" image="severe" cornerStyle="capsule">
@@ -64,7 +69,9 @@
                                 </buttonConfiguration>
                             </button>
                             <button opaque="NO" tag="3" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="JyC-eg-JtR">
+
                                 <rect key="frame" x="360.66666666666669" y="0.0" width="47.333333333333314" height="48"/>
+
                                 <state key="normal" title="Button"/>
                                 <buttonConfiguration key="configuration" style="plain" image="notPresent" cornerStyle="capsule">
                                     <preferredSymbolConfiguration key="preferredSymbolConfigurationForImage" scale="large"/>
@@ -75,8 +82,10 @@
                 </subviews>
                 <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                 <constraints>
+
                     <constraint firstAttribute="trailing" secondItem="BjV-7k-KgU" secondAttribute="trailing" constant="40" id="Cwm-ru-VGl"/>
                     <constraint firstItem="BjV-7k-KgU" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" constant="40" id="MAY-lU-mo2"/>
+
                     <constraint firstItem="BjV-7k-KgU" firstAttribute="top" secondItem="2jV-sj-mAD" secondAttribute="bottom" constant="-10" id="SNq-h2-DXO"/>
                     <constraint firstItem="2jV-sj-mAD" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" id="cnW-D8-cCf"/>
                     <constraint firstAttribute="trailing" secondItem="2jV-sj-mAD" secondAttribute="trailing" constant="16" id="hQU-df-JfV"/>

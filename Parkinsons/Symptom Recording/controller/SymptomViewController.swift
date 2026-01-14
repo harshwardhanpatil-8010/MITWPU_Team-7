@@ -9,6 +9,7 @@ class SymptomViewController: UIViewController {
     @IBOutlet weak var tableView: UITableView!
     
     // MARK: - Properties
+    @IBOutlet weak var tableViewHeightConstraint: NSLayoutConstraint!
     var dates: [DateModel] = []
     var selectedDate: Date = Date()
     var currentDayLogs: [SymptomRating] = []
@@ -30,6 +31,8 @@ class SymptomViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+       //tableView.isScrollEnabled = true
+        
         dates = HomeDataStore.shared.getDates()
         tableView.separatorStyle = .none
         registerCells()
@@ -42,20 +45,42 @@ class SymptomViewController: UIViewController {
         tableView.dataSource = self
         tableView.delegate = self
                 
+        setupTableViewUI() // Call it here
         updateDataForSelectedDate()
         setupSymptomBackgroundUI()
     }
-    
+    func setupTableViewUI() {
+        tableView.layer.cornerRadius = 25
+        tableView.layer.masksToBounds = true
+        
+        // Optional: If you want the table to match the background's look
+        // without its own border, keep it clear.
+//        tableView.backgroundColor = .clear
+    }
     // MARK: - UI Setup
     func setupSymptomBackgroundUI() {
-        symptomBackground.layer.cornerRadius = 20
+        symptomBackground.layer.cornerRadius = 25
         symptomBackground.layer.shadowColor = UIColor.black.cgColor
         symptomBackground.layer.shadowOffset = CGSize(width: 0, height: 4)
         symptomBackground.layer.shadowOpacity = 0.1
         symptomBackground.layer.shadowRadius = 10
         symptomBackground.layer.masksToBounds = false
     }
-    
+    func updateTableViewHeight() {
+        let rowHeight: CGFloat = (currentMode == .entry) ? 130 : 70
+        let totalRows = CGFloat(currentDayLogs.count)
+        
+        // Calculate total height
+        let calculatedHeight = totalRows * rowHeight
+        
+        // Apply to your constraint
+        tableViewHeightConstraint.constant = calculatedHeight
+        
+        // Animate the background stretching
+        UIView.animate(withDuration: 0.3) {
+            self.view.layoutIfNeeded()
+        }
+    }
     func registerCells() {
         // CollectionView Cells
         collectionView.register(UINib(nibName: "CalenderCollectionViewCell", bundle: nil), forCellWithReuseIdentifier: "calendar_cell")
@@ -85,6 +110,7 @@ class SymptomViewController: UIViewController {
         }
         
         tableView.reloadData()
+        updateTableViewHeight() // Added this
         collectionView.reloadData()
     }
 
@@ -118,6 +144,7 @@ class SymptomViewController: UIViewController {
             editAndSaveButton.setTitle("Edit", for: .normal)
         }
         tableView.reloadData()
+        updateTableViewHeight() // Added this
     }
     
     // MARK: - Layout
@@ -214,7 +241,7 @@ extension SymptomViewController: UICollectionViewDataSource, UICollectionViewDel
             
         case .tremor:
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "tremor_cell", for: indexPath) as! tremorCard
-            cell.configure(average: "12")
+//            cell.configure(average: "12")
             return cell
             
         case .gait:

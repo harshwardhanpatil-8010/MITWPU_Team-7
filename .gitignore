@@ -1,4 +1,9 @@
 xcuserdata/
 *.xcuserstate
+<<<<<<< HEAD
 xcuserdata/
 *.xcuserstate
+=======
+*.xcuserstate
+*.xcuserdata
+>>>>>>> origin/NevinA

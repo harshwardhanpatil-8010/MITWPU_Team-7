@@ -624,21 +624,31 @@ extension HomeViewController: UICollectionViewDataSource {
             let dateString = formattedDateString(for: selectedDate)
             let isToday = Calendar.current.isDateInToday(selectedDate)
             header.configure(title: isToday ? "Today, \(dateString)" : dateString)
-
             header.setTitleAlignment(.center)
+            
+            header.setFont(size: 17, weight: .regular)
+
         case .medications:
             header.configure(title: "Upcoming Medications")
             header.setTitleAlignment(.left)
+            header.setFont(size: 20, weight: .bold)
+            
         case .exercises:
             header.configure(title: "Guided Exercise")
             header.setTitleAlignment(.left)
+            header.setFont(size: 20, weight: .bold)
+            
         case .symptoms:
             header.configure(title: "Symptoms")
             header.setTitleAlignment(.left)
+            header.setFont(size: 20, weight: .bold) // Keep standard
+            
         case .therapeuticGames:
             header.configure(title: "Therapeutic Games")
             header.setTitleAlignment(.left)
+            header.setFont(size: 20, weight: .bold) // Keep standard
         }
+        
         return header
     }
     // MARK: - Navigation Actions
