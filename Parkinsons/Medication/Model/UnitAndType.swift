@@ -6,10 +6,10 @@
 //
 
 import Foundation
-struct UnitAndType{
+
+struct UnitAndType {
     var name: String
-    var image : String
-//    var status: String
+    var image: String
     var isSelected: Bool
 }
 
@@ -25,4 +25,3 @@ var unitAndType: [UnitAndType] = [
     UnitAndType(name: "Powder", image: "powder", isSelected: false),
     UnitAndType(name: "Spray", image: "spray", isSelected: false)
 ]
-

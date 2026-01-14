@@ -13,7 +13,6 @@ enum DoseLogStatus {
     case skipped
 }
 
-// MARK: - Mapping between UI & Stored status
 extension DoseLogStatus {
     init(from status: DoseStatus) {
         switch status {

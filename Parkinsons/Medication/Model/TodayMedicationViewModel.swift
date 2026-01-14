@@ -3,31 +3,8 @@ import UIKit
 
 final class TodayMedicationViewModel {
 
-    // MARK: - Today (upcoming)
     private(set) var todayDoses: [TodayDoseItem] = []
 
-//    func loadTodayMedications(from medications: [Medication]) {
-//        todayDoses.removeAll()
-//
-//        for med in medications {
-//            guard isMedicationDueToday(med) else { continue }
-//
-//            for dose in med.doses {
-//                let item = TodayDoseItem(
-//                    id: UUID(),
-//                    medicationID: med.id,
-//                    medicationName: med.name,
-//                    medicationForm: med.form,
-//                    iconName: med.iconName,
-//                    scheduledTime: normalizeDoseTime(dose.time),
-//                    logStatus: DoseLogStatus(from: dose.status)
-//                ) 
-//                todayDoses.append(item)
-//            }
-//        }
-//
-//        todayDoses.sort { $0.scheduledTime < $1.scheduledTime }
-//    }
     func loadTodayMedications(from medications: [Medication]) {
         todayDoses.removeAll()
 
@@ -39,7 +16,6 @@ final class TodayMedicationViewModel {
 
             for dose in med.doses {
 
-                // 🚫 Skip if already logged today
                 let alreadyLogged = todayLogs.contains {
                     $0.medicationID == med.id &&
                     Calendar.current.isDate(
@@ -68,8 +44,6 @@ final class TodayMedicationViewModel {
         todayDoses.sort { $0.scheduledTime < $1.scheduledTime }
     }
 
-
-    // MARK: - Logged (history)
     private(set) var loggedDoses: [LoggedDoseItem] = []
 
     func loadLoggedDoses(
@@ -89,25 +63,20 @@ final class TodayMedicationViewModel {
             let item = LoggedDoseItem(
                 id: log.id,
                 medicationName: med.name,
-                medicationForm: med.form,        // ✅ PASS FORM
+                medicationForm: med.form,
                 loggedTime: log.loggedAt,
                 status: DoseLogStatus(from: log.status),
                 iconName: med.iconName
             )
 
-
-
             loggedDoses.append(item)
         }
 
-        loggedDoses.sort { (lhs: LoggedDoseItem, rhs: LoggedDoseItem) in
+        loggedDoses.sort { lhs, rhs in
             lhs.loggedTime > rhs.loggedTime
         }
-
     }
 
-
-    // MARK: - Helpers
     private func normalizeDoseTime(_ date: Date) -> Date {
         let cal = Calendar.current
         let comp = cal.dateComponents([.hour, .minute], from: date)

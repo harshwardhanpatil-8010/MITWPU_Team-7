@@ -1,6 +1,5 @@
 import Foundation
 
-// MARK: - A Single Medication Dose
 struct MedicationDose: Codable, Identifiable {
     let id: UUID
     var time: Date
@@ -8,10 +7,9 @@ struct MedicationDose: Codable, Identifiable {
     var medicationID: UUID
 }
 
-// MARK: - Repeat Rule
-enum RepeatRule: Codable {
+enum RepeatRule: Codable, Equatable {
     case everyday
-    case weekly([Int]) // 1 = Sunday ... 7 = Saturday
+    case weekly([Int])
     case none
 
     private enum CodingKeys: String, CodingKey {
@@ -52,7 +50,6 @@ enum RepeatRule: Codable {
     }
 }
 
-// MARK: - Medication Model
 struct Medication: Codable {
     let id: UUID
     var name: String
@@ -64,19 +61,14 @@ struct Medication: Codable {
     var doses: [MedicationDose]
     let createdAt: Date
 }
-// ---------------------------------------------------------
-// MARK: - RepeatRule Display Helper
-// ---------------------------------------------------------
-extension RepeatRule {
 
+extension RepeatRule {
     func displayString() -> String {
         switch self {
         case .everyday:
             return "Everyday"
-
         case .none:
             return "None"
-
         case .weekly(let days):
             if Set(days) == Set([1,2,3,4,5,6,7]) {
                 return "Everyday"

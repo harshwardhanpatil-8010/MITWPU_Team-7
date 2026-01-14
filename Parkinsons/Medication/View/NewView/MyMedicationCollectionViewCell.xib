@@ -27,10 +27,10 @@
                                     <constraint firstAttribute="width" constant="46" id="e53-6M-zJp"/>
                                 </constraints>
                             </imageView>
-                            <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="6" translatesAutoresizingMaskIntoConstraints="NO" id="IEk-l3-o8O">
-                                <rect key="frame" x="78" y="12" width="271" height="40"/>
+                            <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="4" translatesAutoresizingMaskIntoConstraints="NO" id="IEk-l3-o8O">
+                                <rect key="frame" x="78" y="13" width="271" height="38"/>
                                 <subviews>
-                                    <stackView opaque="NO" contentMode="scaleToFill" spacing="55" translatesAutoresizingMaskIntoConstraints="NO" id="AFw-hs-TLf">
+                                    <stackView opaque="NO" contentMode="scaleToFill" spacing="53" translatesAutoresizingMaskIntoConstraints="NO" id="AFw-hs-TLf">
                                         <rect key="frame" x="0.0" y="0.0" width="271" height="16"/>
                                         <subviews>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Rea-dE-vWo">
@@ -38,12 +38,12 @@
                                                 <constraints>
                                                     <constraint firstAttribute="width" constant="166" id="4fc-Ba-CG1"/>
                                                 </constraints>
-                                                <fontDescription key="fontDescription" type="system" weight="medium" pointSize="17"/>
+                                                <fontDescription key="fontDescription" type="system" weight="medium" pointSize="15"/>
                                                 <nil key="textColor"/>
                                                 <nil key="highlightedColor"/>
                                             </label>
                                             <stackView opaque="NO" contentMode="scaleToFill" spacing="3" translatesAutoresizingMaskIntoConstraints="NO" id="EeK-95-e3n" userLabel="calenderStack">
-                                                <rect key="frame" x="221" y="0.0" width="50" height="16"/>
+                                                <rect key="frame" x="219" y="0.0" width="52" height="16"/>
                                                 <subviews>
                                                     <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="calendar" catalog="system" translatesAutoresizingMaskIntoConstraints="NO" id="ZMR-iF-hdh">
                                                         <rect key="frame" x="0.0" y="1.6666666666666643" width="16" height="13.000000000000004"/>
@@ -54,7 +54,7 @@
                                                         </constraints>
                                                     </imageView>
                                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="k6V-d6-6V6">
-                                                        <rect key="frame" x="19" y="0.0" width="31" height="16"/>
+                                                        <rect key="frame" x="19" y="0.0" width="33" height="16"/>
                                                         <fontDescription key="fontDescription" type="system" pointSize="12"/>
                                                         <nil key="textColor"/>
                                                         <nil key="highlightedColor"/>
@@ -67,12 +67,12 @@
                                             </stackView>
                                         </subviews>
                                     </stackView>
-                                    <stackView opaque="NO" contentMode="scaleToFill" spacing="94" translatesAutoresizingMaskIntoConstraints="NO" id="yvn-RW-sEf">
-                                        <rect key="frame" x="0.0" y="22" width="271" height="18"/>
+                                    <stackView opaque="NO" contentMode="scaleToFill" spacing="18" translatesAutoresizingMaskIntoConstraints="NO" id="yvn-RW-sEf">
+                                        <rect key="frame" x="0.0" y="20" width="271" height="18"/>
                                         <subviews>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="X4s-VS-b8f">
-                                                <rect key="frame" x="0.0" y="0.0" width="139.66666666666666" height="18"/>
-                                                <fontDescription key="fontDescription" type="system" pointSize="15"/>
+                                                <rect key="frame" x="0.0" y="0.0" width="215.66666666666666" height="18"/>
+                                                <fontDescription key="fontDescription" type="system" pointSize="13"/>
                                                 <nil key="textColor"/>
                                                 <nil key="highlightedColor"/>
                                             </label>
@@ -99,13 +99,23 @@
                             <constraint firstItem="bC5-TP-Gjd" firstAttribute="leading" secondItem="idh-Bp-Thq" secondAttribute="leading" constant="16" id="xwC-aJ-Td9"/>
                         </constraints>
                     </view>
+                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="OqY-lp-iUB">
+                        <rect key="frame" x="10" y="68" width="350" height="1"/>
+                        <color key="backgroundColor" systemColor="systemGray5Color"/>
+                        <constraints>
+                            <constraint firstAttribute="height" constant="1" id="Frf-ap-1OK"/>
+                        </constraints>
+                    </view>
                 </subviews>
             </view>
             <viewLayoutGuide key="safeArea" id="uHJ-XR-guj"/>
             <constraints>
                 <constraint firstAttribute="trailing" secondItem="idh-Bp-Thq" secondAttribute="trailing" constant="2.5" id="6st-eN-UKW"/>
+                <constraint firstItem="OqY-lp-iUB" firstAttribute="top" secondItem="FUb-hL-kyX" secondAttribute="top" constant="68" id="9UA-qf-dY3"/>
+                <constraint firstItem="OqY-lp-iUB" firstAttribute="leading" secondItem="FUb-hL-kyX" secondAttribute="leading" constant="10" id="Vn3-nu-WnU"/>
                 <constraint firstAttribute="bottom" secondItem="idh-Bp-Thq" secondAttribute="bottom" constant="8" id="Y6u-6O-6mS"/>
                 <constraint firstItem="idh-Bp-Thq" firstAttribute="leading" secondItem="FUb-hL-kyX" secondAttribute="leading" constant="2.5" id="bNJ-7q-rOW"/>
+                <constraint firstAttribute="trailing" secondItem="OqY-lp-iUB" secondAttribute="trailing" constant="10" id="r5F-Oo-upK"/>
                 <constraint firstItem="idh-Bp-Thq" firstAttribute="top" secondItem="FUb-hL-kyX" secondAttribute="top" constant="8" id="yqR-Gh-rBv"/>
             </constraints>
             <connections>
@@ -117,13 +127,16 @@
                 <outlet property="medTitle" destination="Rea-dE-vWo" id="gim-yE-kzl"/>
                 <outlet property="medUnitandForm" destination="X4s-VS-b8f" id="zgI-Aa-BOr"/>
             </connections>
-            <point key="canvasLocation" x="296.94656488549617" y="164.78873239436621"/>
+            <point key="canvasLocation" x="275" y="165"/>
         </collectionViewCell>
     </objects>
     <resources>
         <image name="calendar" catalog="system" width="128" height="107"/>
         <systemColor name="systemBackgroundColor">
             <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+        </systemColor>
+        <systemColor name="systemGray5Color">
+            <color red="0.8980392157" green="0.8980392157" blue="0.91764705879999997" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </systemColor>
     </resources>
 </document>
