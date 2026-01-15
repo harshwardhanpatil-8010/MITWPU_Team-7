@@ -20,7 +20,15 @@ class profileViewController: UIViewController {
     
     var selectedSex: String = "Male" {
         didSet {
+            // 1. Standard update for older button styles
             sexsSelector.setTitle(selectedSex, for: .normal)
+            
+            // 2. Update for modern iOS 15+ "Configuration" styles
+            if #available(iOS 15.0, *) {
+                var config = sexsSelector.configuration
+                config?.title = selectedSex
+                sexsSelector.configuration = config
+            }
         }
     }
 
