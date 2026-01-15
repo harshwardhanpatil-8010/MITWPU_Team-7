@@ -13,6 +13,7 @@ class SummaryViewController: UIViewController {
     @IBOutlet weak var summaryTitleLabel: UILabel!
     @IBOutlet weak var mainCollectionView: UICollectionView!
     
+    @IBOutlet weak var closeBarButton: UIBarButtonItem!
     // MARK: - Properties
     var dateToDisplay: Date?
     var currentSymptomLog: SymptomLogEntry?
@@ -101,7 +102,11 @@ class SummaryViewController: UIViewController {
         summaryTitleLabel.attributedText = attributedString
         summaryTitleLabel.numberOfLines = 0
     }
-
+    // MARK: - Actions
+    @IBAction func closeButtonTapped(_ sender: Any) {
+        self.dismiss(animated: true, completion: nil)
+    }
+    
     func generateSummaryLayout() -> UICollectionViewLayout {
         return UICollectionViewCompositionalLayout { (sectionIndex, env) -> NSCollectionLayoutSection? in
             guard sectionIndex < self.summarySections.count else { return nil }

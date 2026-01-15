@@ -648,7 +648,7 @@ extension HomeViewController: UICollectionViewDataSource {
             header.configure(title: isToday ? "Today, \(dateString)" : dateString)
             header.setTitleAlignment(.center)
             
-            header.setFont(size: 17, weight: .regular)
+            header.setFont(size: 17, weight: .bold)
 
         case .medications:
             header.configure(title: "Upcoming Medications")
