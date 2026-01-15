@@ -22,6 +22,7 @@ var gaitDemoInfo: GaitSummary = .init(stepLengthMeters: 0.8, walkingAsymmetryPer
 
 struct RhythmicSession: Codable, Identifiable {
     let id: UUID
+    let sessionNumber: Int
     let startDate: Date
     var endDate: Date?
     var requestedDurationSeconds: Int
@@ -52,5 +53,5 @@ struct RhythmicSession: Codable, Identifiable {
 //        
 //    }
 }
-var WalkingSessionDemo: RhythmicSession = .init(id: UUID(), startDate: Date(), endDate: nil, requestedDurationSeconds: 0, elapsedSeconds: 0, beat: "4/4", pace: "Slow", steps: 2431, distanceKMeters: 2.6)
+//var WalkingSessionDemo: RhythmicSession = .init(id: UUID(), startDate: Date(), endDate: nil, requestedDurationSeconds: 0, elapsedSeconds: 0, beat: "4/4", pace: "Slow", steps: 2431, distanceKMeters: 2.6)
 

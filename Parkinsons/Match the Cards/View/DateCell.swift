@@ -133,6 +133,8 @@ class DateCell: UICollectionViewCell {
             // you might want it filled or clear.
             // Based on your issue, let's keep it clear and text black:
             dateLabel.textColor = .orange
+            labelBackgroundView.layer.borderWidth = 2
+            labelBackgroundView.layer.borderColor = UIColor.orange.cgColor
         } else {
             dateLabel.textColor = enabled ? .black : .systemGray4
         }

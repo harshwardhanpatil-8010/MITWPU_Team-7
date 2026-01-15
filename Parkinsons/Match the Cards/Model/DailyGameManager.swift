@@ -34,6 +34,17 @@ class DailyGameManager {
         let b = calendar.dateComponents([.year, .month], from: now)
         return a.year != b.year || a.month != b.month
     }
+        // You should use UserDefaults to make this persist after closing the app
+    func saveCompletion(date: Date, time: Int) {
+        let key = "completionTime_\(date.description)"
+        UserDefaults.standard.set(time, forKey: key)
+    }
+        
+    func getCompletionTime(for date: Date) -> Int? {
+        let key = "completionTime_\(date.description)"
+        let time = UserDefaults.standard.integer(forKey: key)
+        return time > 0 ? time : nil
+    }
 
     private func key(_ date: Date) -> String {
         let c = calendar.dateComponents([.year, .month, .day], from: date)

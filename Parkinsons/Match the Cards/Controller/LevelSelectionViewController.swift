@@ -12,7 +12,11 @@ UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
 
     @IBOutlet weak var monthAndYearOutlet: UILabel!
     @IBOutlet weak var collectionView: UICollectionView!
-
+    @IBOutlet weak var completedLabel: UILabel!
+    
+    @IBOutlet weak var imageView: UIImageView!
+    
+    
     private var calendar: Calendar = {
         var c = Calendar(identifier: .gregorian)
         c.firstWeekday = 2
@@ -34,9 +38,12 @@ UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
 
         configureLayout()
         setupMonth()
+        updateCompletionCount()
     }
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
+        updateCompletionCount()
+        collectionView.reloadData()
         tabBarController?.tabBar.isHidden = true
     }
     override func viewWillDisappear(_ animated: Bool) {
@@ -69,10 +76,42 @@ UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
         formatter.calendar = calendar
         formatter.dateFormat = "MMMM yyyy"
         monthAndYearOutlet.text = formatter.string(from: firstDayOfMonth)
-
+        selectedDate = today
         collectionView.reloadData()
     }
+//    private func updateCompletionCount() {
+//        var completedCount = 0
+//        
+//        for dayOffset in 0..<daysInMonth {
+//            if let date = calendar.date(byAdding: .day, value: dayOffset, to: firstDayOfMonth) {
+//                let startOfDate = calendar.startOfDay(for: date)
+//                if DailyGameManager.shared.isCompleted(date: startOfDate) {
+//                    completedCount += 1
+//                }
+//            }
+//        }
+//        
+//        // Update the label text
+//        completedLabel.text = " \(completedCount)/\(daysInMonth)"
+//    }
 
+    private func updateCompletionCount() {
+        let completedCount = (0..<daysInMonth).filter { dayOffset in
+            guard let date = calendar.date(byAdding: .day, value: dayOffset, to: firstDayOfMonth) else { return false }
+            return DailyGameManager.shared.isCompleted(date: calendar.startOfDay(for: date))
+        }.count
+
+        if completedCount == 0 {
+            completedLabel.text = "Select a date to start playing"
+            completedLabel.textColor = .systemOrange
+            imageView.isHidden = true
+        } else {
+            completedLabel.text = "\(completedCount)/\(daysInMonth)"
+            completedLabel.textColor = .label
+            imageView.isHidden = false
+        }
+    }
+    
     func collectionView(_ collectionView: UICollectionView,
                         numberOfItemsInSection section: Int) -> Int {
         daysInMonth + firstWeekdayOffset
@@ -113,7 +152,6 @@ UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
             showTodayOutline: showTodayOutline,
             enabled: !isFuture
         )
-
         return cell
     }
 

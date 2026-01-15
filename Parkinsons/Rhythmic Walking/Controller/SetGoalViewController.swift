@@ -7,7 +7,7 @@
 
 import UIKit
 
-class SetGoalViewController: UIViewController, UITableViewDataSource, UIPickerViewDataSource, UIPickerViewDelegate {
+class SetGoalViewController: UIViewController, UITableViewDataSource, UIPickerViewDataSource, UIPickerViewDelegate, UITableViewDelegate {
     
     @IBOutlet weak var datePickerUIView: UIView!
     
@@ -87,15 +87,38 @@ class SetGoalViewController: UIViewController, UITableViewDataSource, UIPickerVi
         let hrs = walked / 3600
         let mins = walked % 3600 / 60
         let secs = walked % 60
+        let displayNum = session.sessionNumber
         
         if hrs == 0 {
-            cell.textLabel?.text = "Session \(sessionNumber)\t\t\t\t\t\t \(mins)min \(secs)s"
+            cell.textLabel?.text = "Session \(displayNum)\t\t\t\t\t\t \(mins)min \(secs)s"
         }
         else{
-            cell.textLabel?.text = "Session \(sessionNumber)\t\t\t\t\t\t\(hrs)hrs \(mins)min"
+            cell.textLabel?.text = "Session \(displayNum)\t\t\t\t\t\t\(hrs)hrs \(mins)min"
         }
         
         return cell
+    }
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        // 1. Deselect the row for a clean UI transition
+        tableView.deselectRow(at: indexPath, animated: true)
+        
+        // 2. Get the specific session data for the tapped row
+        let selectedSession = DataStore.shared.sessions[indexPath.row]
+        
+        // 3. Instantiate the Summary View Controller from the storyboard
+        let storyboard = UIStoryboard(name: "Rhythmic Walking", bundle: nil)
+        guard let summaryVC = storyboard.instantiateViewController(withIdentifier: "SessionSummaryVC") as? SessionSummaryViewController else {
+            return
+        }
+        
+        // 4. Pass the data to the summary view
+        summaryVC.sessionData = selectedSession
+        
+        // 5. Present the view controller
+        // If you want it to look like the start button tap, use a Navigation Controller wrapper
+        let nav = UINavigationController(rootViewController: summaryVC)
+        nav.modalPresentationStyle = .formSheet
+        present(nav, animated: true)
     }
     
     
@@ -130,6 +153,7 @@ class SetGoalViewController: UIViewController, UITableViewDataSource, UIPickerVi
         updateButtons()
         paceBeatUIView.applyCardStyle()
         updateStartButtonState()
+        sessionTableView.delegate = self
 
         // Do any additional setup after loading the view.
     }
@@ -181,9 +205,10 @@ class SetGoalViewController: UIViewController, UITableViewDataSource, UIPickerVi
         let total = (h * 3600) + (m * 60)
         
         guard total > 0 else { return }
-        
+        let nextSessionNumber = DataStore.shared.sessions.count + 1
         let newSession = RhythmicSession(
             id: UUID(),
+            sessionNumber: nextSessionNumber,
             startDate: Date(),
             endDate: nil,
             requestedDurationSeconds: total,

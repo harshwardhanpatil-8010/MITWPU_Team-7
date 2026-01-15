@@ -23,7 +23,8 @@ class SuccessViewController: UIViewController {
             let seconds = timeTaken % 60
             timeTakenLabel.text = "Time taken: \(minutes)min \(seconds)s"
         }
-     
+        let today = Calendar.current.startOfDay(for: Date())
+            DailyGameManager.shared.saveCompletion(date: today, time: timeTaken)
         showConfetti()
         
 
