@@ -176,8 +176,37 @@ extension SummaryViewController: UICollectionViewDataSource, UICollectionViewDel
         case .exercises:
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "exercise_card_cell", for: indexPath) as! ExerciseCardCell
             let model = exerciseData[indexPath.item]
-            cell.setProgress(completed: WorkoutManager.shared.completedToday.count, total: WorkoutManager.shared.getTodayWorkout().count)
+            
+            // 1. Configure the basics (Title, Subtitle, Colors)
             cell.configure(with: model)
+            
+            if indexPath.item == 0 {
+                // --- 10-Min Workout Data ---
+                let completed = WorkoutManager.shared.completedToday.count
+                let total = WorkoutManager.shared.getTodayWorkout().count > 0 ? WorkoutManager.shared.getTodayWorkout().count : 7
+                
+                // This will show the "0/7" format seen in your screenshots
+                cell.setProgress(completed: completed, total: total)
+                
+            } else if indexPath.item == 1 {
+                // --- Rhythmic Walking Data ---
+                if let lastSession = DataStore.shared.sessions.first {
+                    let done = Double(lastSession.elapsedSeconds)
+                    let goal = Double(lastSession.requestedDurationSeconds) > 0 ? Double(lastSession.requestedDurationSeconds) : 60.0
+                    
+                    // Set the actual ring fill
+                    cell.setProgress(completed: Int(done), total: Int(goal))
+                    
+                    // MATCH HOME VIEW: Calculate and force the percentage label
+                    let percentage = Int((done / goal) * 100)
+                    cell.progressLabel.text = "\(percentage)%"
+                } else {
+                    // Default if no data exists
+                    cell.setProgress(completed: 0, total: 1)
+                    cell.progressLabel.text = "0%"
+                }
+            }
+            
             return cell
         }
     }
