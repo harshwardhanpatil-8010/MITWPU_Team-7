@@ -20,7 +20,7 @@ class InfoModalViewController: UIViewController {
      override func viewDidLoad() {
          super.viewDidLoad()
          configureExercise()
-         
+         setupCloseButton()
         
      }
      
@@ -34,8 +34,12 @@ class InfoModalViewController: UIViewController {
          stepsToPerformLabel.attributedText = formatAsNumberedList(exercise.stepsToPerform)
      }
      
-    @IBAction func closeButtonTapped(_ sender: Any) {
-        dismiss(animated: true)
+    func setupCloseButton() {
+        let action = UIAction { [weak self] _ in
+            self?.navigationController?.dismiss(animated: true)
+        }
+        let closeButton = UIBarButtonItem(systemItem: .close, primaryAction: action)
+        navigationItem.leftBarButtonItem = closeButton
     }
     
      func formatAsNumberedList(_ input: Any?) -> NSAttributedString {
