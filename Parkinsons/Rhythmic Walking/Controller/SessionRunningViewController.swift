@@ -19,7 +19,6 @@ class SessionRunningViewController: UIViewController {
     
     
     
-    
     var totalSessionDuration: Int = 0
     var selectedBeat: String?
     var selectedPace: String?
@@ -81,7 +80,6 @@ class SessionRunningViewController: UIViewController {
             timerModel.start()
         }
         updatePauseButtonUI()
-        // Do any additional setup after loading the view.
     }
     
     override func viewWillDisappear(_ animated: Bool) {
@@ -94,7 +92,6 @@ class SessionRunningViewController: UIViewController {
     }
 
  
-    
     
     @IBAction func pauseTapped(_ sender: Any) {
         guard let timerModel = timerModel else { return }

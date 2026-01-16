@@ -860,6 +860,7 @@
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                         <constraints>
                             <constraint firstItem="P6Q-Ah-Waw" firstAttribute="trailing" secondItem="86f-LH-JwT" secondAttribute="trailing" id="IzP-AK-EEl"/>
+                            <constraint firstItem="86f-LH-JwT" firstAttribute="top" secondItem="KpT-vc-seY" secondAttribute="bottom" constant="-45" id="JYQ-Qd-VAY"/>
                             <constraint firstItem="2bR-8X-e0Q" firstAttribute="top" secondItem="P6Q-Ah-Waw" secondAttribute="top" constant="20" id="XdZ-08-6qG"/>
                             <constraint firstItem="KpT-vc-seY" firstAttribute="top" secondItem="2bR-8X-e0Q" secondAttribute="bottom" constant="15" id="Z3D-NZ-6oT"/>
                             <constraint firstAttribute="bottom" secondItem="KpT-vc-seY" secondAttribute="bottom" constant="309" id="bW6-Rj-9WO"/>
@@ -867,7 +868,6 @@
                             <constraint firstItem="2bR-8X-e0Q" firstAttribute="leading" secondItem="P6Q-Ah-Waw" secondAttribute="leading" constant="16" id="nMk-Td-LFX"/>
                             <constraint firstItem="KpT-vc-seY" firstAttribute="trailing" secondItem="P6Q-Ah-Waw" secondAttribute="trailing" id="nvh-mg-unz"/>
                             <constraint firstItem="P6Q-Ah-Waw" firstAttribute="trailing" secondItem="2bR-8X-e0Q" secondAttribute="trailing" constant="16" id="og9-jA-DOf"/>
-                            <constraint firstItem="86f-LH-JwT" firstAttribute="top" secondItem="KpT-vc-seY" secondAttribute="bottom" constant="-45" id="pjM-sT-j57"/>
                             <constraint firstItem="KpT-vc-seY" firstAttribute="leading" secondItem="P6Q-Ah-Waw" secondAttribute="leading" id="tfo-Kv-19B"/>
                             <constraint firstItem="86f-LH-JwT" firstAttribute="leading" secondItem="P6Q-Ah-Waw" secondAttribute="leading" id="x6v-tr-pkE"/>
                         </constraints>

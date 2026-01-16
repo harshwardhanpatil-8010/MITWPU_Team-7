@@ -1,15 +1,12 @@
-//
-//  DailyGameManager.swift
-//  Parkinsons
-//
-//  Created by SDC-USER on 12/12/25.
-//
 
 import Foundation
 
-class DailyGameManager {
+final class DailyGameManager {
+
     static let shared = DailyGameManager()
+
     private let calendar = Calendar.current
+
     private init() {}
 
     func level(for date: Date) -> Int {
@@ -17,11 +14,11 @@ class DailyGameManager {
     }
 
     func isCompleted(date: Date) -> Bool {
-        UserDefaults.standard.bool(forKey: key(date) + "_completed")
+        UserDefaults.standard.bool(forKey: completionKey(for: date))
     }
 
     func markCompleted(date: Date) {
-        UserDefaults.standard.set(true, forKey: key(date) + "_completed")
+        UserDefaults.standard.set(true, forKey: completionKey(for: date))
     }
 
     func isFuture(date: Date) -> Bool {
@@ -35,8 +32,22 @@ class DailyGameManager {
         return a.year != b.year || a.month != b.month
     }
 
-    private func key(_ date: Date) -> String {
+    func saveCompletion(date: Date, time: Int) {
+        UserDefaults.standard.set(time, forKey: timeKey(for: date))
+    }
+
+    func getCompletionTime(for date: Date) -> Int? {
+        let time = UserDefaults.standard.integer(forKey: timeKey(for: date))
+        return time > 0 ? time : nil
+    }
+
+    private func completionKey(for date: Date) -> String {
         let c = calendar.dateComponents([.year, .month, .day], from: date)
-        return "game_\(c.year!)_\(c.month!)_\(c.day!)"
+        return "game_\(c.year!)_\(c.month!)_\(c.day!)_completed"
+    }
+
+    private func timeKey(for date: Date) -> String {
+        let c = calendar.dateComponents([.year, .month, .day], from: date)
+        return "game_\(c.year!)_\(c.month!)_\(c.day!)_time"
     }
 }

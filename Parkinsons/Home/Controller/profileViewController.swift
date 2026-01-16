@@ -6,7 +6,6 @@ class profileViewController: UIViewController {
     @IBOutlet weak var editButton: UIBarButtonItem!
     @IBOutlet weak var logoBackground: UIView!
     @IBOutlet weak var logoLabel: UILabel!
-    @IBOutlet weak var nameBellowLogoLabel: UILabel!
     @IBOutlet weak var nameLabel: UILabel!
     @IBOutlet weak var emergencyNoLabel: UILabel!
     @IBOutlet weak var dateOfBirthLabel: UILabel!
@@ -15,12 +14,22 @@ class profileViewController: UIViewController {
     @IBOutlet weak var emergencyNoTextField: UITextField!
     @IBOutlet weak var dateOfBirthSelector: UIDatePicker!
     @IBOutlet weak var sexsSelector: UIButton!
-
+    
+    @IBOutlet weak var stackViewBackground: UIStackView!
+    
     var isEditingMode: Bool = false
     
     var selectedSex: String = "Male" {
         didSet {
+            // 1. Standard update for older button styles
             sexsSelector.setTitle(selectedSex, for: .normal)
+            
+            // 2. Update for modern iOS 15+ "Configuration" styles
+            if #available(iOS 15.0, *) {
+                var config = sexsSelector.configuration
+                config?.title = selectedSex
+                sexsSelector.configuration = config
+            }
         }
     }
 
@@ -29,14 +38,14 @@ class profileViewController: UIViewController {
         
         logoBackground.layer.cornerRadius = logoBackground.frame.size.height / 2
         logoBackground.clipsToBounds = true
-        logoBackground.backgroundColor = .systemGray4
         
         sexsSelector.setTitle(selectedSex, for: .normal)
+        stackViewBackground.layer.cornerRadius = 20
+        stackViewBackground.clipsToBounds = true
         
         isEditingMode = false
             editButton.title = "Edit"
-            editButton.image = nil
-        
+        emergencyNoTextField.borderStyle = .none
         updateUI(forEditing: false)
     }
 
@@ -66,11 +75,9 @@ class profileViewController: UIViewController {
             
             updateUI(forEditing: false)
             
-            if let newName = nameTextField.text, !newName.isEmpty {
-                nameBellowLogoLabel.text = newName
+            UIView.animate(withDuration: 0.3) {
+                self.updateUI(forEditing: self.isEditingMode)
             }
-            
-            // Your data saving logic
         }
     }
     
@@ -111,6 +118,19 @@ class profileViewController: UIViewController {
             if let textField = field as? UITextField {
                 textField.borderStyle = isEditing ? .roundedRect : .none
                 textField.textAlignment = .right
+                if isEditing {
+                    textField.textColor = .systemBlue
+                }
+                else {
+                    textField.textColor = .label
+                }
+            }
+            if let picker = field as? UIDatePicker {
+                        picker.tintColor = isEditing ? .systemBlue : .label
+                    }
+            
+            if let button = field as? UIButton {
+                button.setTitleColor(isEditing ? .systemBlue : .label, for: .normal)
             }
             
             if !isEditing {
@@ -118,6 +138,43 @@ class profileViewController: UIViewController {
             }
         }
     }
+//    func updateUI(forEditing isEditing: Bool) {
+//        let editableFields: [UIView] = [
+//            nameTextField,
+//            emergencyNoTextField,
+//            dateOfBirthSelector,
+//            sexsSelector
+//        ]
+//        
+//        // Define your colors
+//        let activeColor = UIColor.systemGray6 // A soft light gray for editing mode
+//        let inactiveColor = UIColor.clear      // Transparent when just viewing
+//        
+//        for field in editableFields {
+//            field.isUserInteractionEnabled = isEditing
+//            if let textField = field as? UITextField {
+//                textField.borderStyle = isEditing ? .roundedRect : .none
+//                textField.backgroundColor = isEditing ? activeColor : inactiveColor
+//                textField.textAlignment = .right
+//                if isEditing {
+//                    textField.textColor = .systemBlue
+//                }
+//                else {
+//                    textField.textColor = .label
+//                }
+//                
+//            }
+//            if let button = field as? UIButton {
+//                button.backgroundColor = isEditing ? activeColor : inactiveColor
+//                button.layer.cornerRadius = 5
+//                button.setTitleColor(isEditing ? .systemBlue : .label, for: .normal)
+//            }
+//        }
+//        
+//        if !isEditing {
+//            view.endEditing(true)
+//        }
+//    }
     
     @IBAction func sexSelectorTapped(_ sender: UIButton) {
         guard isEditingMode else { return }
