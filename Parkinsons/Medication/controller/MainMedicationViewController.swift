@@ -250,12 +250,20 @@ extension MainMedicationViewController: UICollectionViewDataSource {
             ) as! MedicationSectionHeaderView
 
             if indexPath.section == 0 {
+
+                let hasMoreThanThreeUpcoming = upcomingDoses.count > 3
+
                 header.configure(
                     title: "Today Medications",
-                    actionTitle: nil,
-                    action: nil
+                    actionTitle: hasMoreThanThreeUpcoming
+                        ? (isShowingAllUpcoming ? "Show Less" : "Show All")
+                        : nil,
+                    action: hasMoreThanThreeUpcoming ? .showAll : nil,
+                    isExpanded: isShowingAllUpcoming
                 )
-            } else {
+            }
+
+             else {
                 header.configure(
                     title: "Logged",
                     actionTitle: "Edit",
@@ -346,21 +354,13 @@ extension MainMedicationViewController: UICollectionViewDataSource {
 }
 
 extension MainMedicationViewController: UICollectionViewDelegateFlowLayout {
-
     func collectionView(
         _ collectionView: UICollectionView,
         layout collectionViewLayout: UICollectionViewLayout,
-        insetForSectionAt section: Int
-    ) -> UIEdgeInsets {
-        if currentSegment == .myMedication {
-            return UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0)
-        }
-
-        if currentSegment == .today && section == 1 {
-            return UIEdgeInsets(top: 4, left: 0, bottom: 4, right: 0)
-        }
-
-        return .zero
+        referenceSizeForHeaderInSection section: Int
+    ) -> CGSize {
+        guard currentSegment == .today else { return .zero }
+        return CGSize(width: collectionView.bounds.width, height: 36)
     }
     func collectionView(
         _ collectionView: UICollectionView,
@@ -376,6 +376,22 @@ extension MainMedicationViewController: UICollectionViewDelegateFlowLayout {
 
         return .zero
     }
+    func collectionView(
+        _ collectionView: UICollectionView,
+        layout collectionViewLayout: UICollectionViewLayout,
+        insetForSectionAt section: Int
+    ) -> UIEdgeInsets {
+        if currentSegment == .myMedication {
+            return UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0)
+        }
+
+        if currentSegment == .today && section == 1 {
+            return UIEdgeInsets(top: 4, left: 0, bottom: 4, right: 0)
+        }
+
+        return .zero
+    }
+    
 
     func collectionView(
         _ collectionView: UICollectionView,
@@ -410,15 +426,7 @@ extension MainMedicationViewController: UICollectionViewDelegateFlowLayout {
 }
 
 extension MainMedicationViewController: UICollectionViewDelegate {
-    func collectionView(
-        _ collectionView: UICollectionView,
-        layout collectionViewLayout: UICollectionViewLayout,
-        referenceSizeForHeaderInSection section: Int
-    ) -> CGSize {
-        guard currentSegment == .today else { return .zero }
-        return CGSize(width: collectionView.bounds.width, height: 36)
-    }
-
+    
     func collectionView(
         _ collectionView: UICollectionView,
         didSelectItemAt indexPath: IndexPath

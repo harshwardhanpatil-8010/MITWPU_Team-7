@@ -17,18 +17,18 @@
                     <rect key="frame" x="0.0" y="0.0" width="320" height="16"/>
                     <subviews>
                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="UBJ-mg-gLC">
-                            <rect key="frame" x="0.0" y="0.0" width="236" height="16"/>
+                            <rect key="frame" x="0.0" y="0.0" width="260" height="16"/>
                             <constraints>
-                                <constraint firstAttribute="width" constant="236" id="EXy-4t-F74"/>
+                                <constraint firstAttribute="width" constant="260" id="EXy-4t-F74"/>
                             </constraints>
                             <fontDescription key="fontDescription" style="UICTFontTextStyleHeadline"/>
                             <nil key="textColor"/>
                             <nil key="highlightedColor"/>
                         </label>
-                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="qRH-k3-k8I">
-                            <rect key="frame" x="236" y="0.0" width="68" height="16"/>
+                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="trailing" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="qRH-k3-k8I">
+                            <rect key="frame" x="260" y="0.0" width="44" height="16"/>
                             <state key="normal" title="Button"/>
-                            <buttonConfiguration key="configuration" style="plain" title="Label"/>
+                            <buttonConfiguration key="configuration" style="plain" title="Show All"/>
                             <connections>
                                 <action selector="actionTapped:" destination="U6b-Vx-4bR" eventType="touchUpInside" id="4GC-oe-bFw"/>
                             </connections>
