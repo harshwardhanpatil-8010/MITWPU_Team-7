@@ -70,23 +70,20 @@ class RestScreenViewController: UIViewController {
             if index < allExercises.count {
                 let exerciseID = allExercises[index].id
                 
-                // Priority 1: Was it completed?
                 if WorkoutManager.shared.completedToday.contains(exerciseID) {
                     bar.progress = 1.0
                     bar.progressTintColor = .systemBlue
                 }
-                // Priority 2: Was it skipped?
-                else if WorkoutManager.shared.SkippedToday.contains(exerciseID) {
+                else if WorkoutManager.shared.skippedToday.contains(exerciseID) {
                     bar.progress = 1.0
                     bar.progressTintColor = .systemGray4
                 }
-                // Priority 3: Is this the exercise we are currently resting AFTER?
-                // In your flow, if you just finished exercise 0, currentIndex is 0.
+                
                 else if index == currentIndex {
                     bar.progress = 1.0
                     bar.progressTintColor = UIColor.systemBlue.withAlphaComponent(0.3)
                 }
-                // Priority 4: Future exercises
+  
                 else {
                     bar.progress = 0.0
                     bar.trackTintColor = .systemGray5
@@ -114,7 +111,6 @@ class RestScreenViewController: UIViewController {
         guard !isCompleting else { return }
         isCompleting = true
         
-        // 1. Tell the delegate to update the index
         delegate?.restCompleted(nextIndex: currentIndex + 1)
        
         let transition = CATransition()

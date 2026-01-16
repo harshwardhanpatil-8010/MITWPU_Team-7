@@ -69,7 +69,7 @@ class SummaryViewController: UIViewController {
         mainCollectionView.setCollectionViewLayout(generateSummaryLayout(), animated: false)
     }
     
-    @objc func loadDataForSelectedDate() {
+     func loadDataForSelectedDate() {
         let targetDate = dateToDisplay ?? Date()
         
         // Fetch the data from your Manager (the data you just saved)

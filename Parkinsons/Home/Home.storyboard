@@ -90,7 +90,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Ief-a0-LHa" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="7551.9083969465646" y="130.98591549295776"/>
+            <point key="canvasLocation" x="7418" y="131"/>
         </scene>
         <!--Profile View Controller-->
         <scene sceneID="TTy-7d-Wv7">
@@ -475,9 +475,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="AhG-Fs-kFv" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-
             <point key="canvasLocation" x="9111" y="-532"/>
-
         </scene>
         <!--Symptom Log Detail View Controller-->
         <scene sceneID="mFU-7C-uHf">
@@ -770,12 +768,10 @@
         <!--symptom-->
         <scene sceneID="mUL-Ic-H2l">
             <objects>
-
                 <viewControllerPlaceholder storyboardName="Symptom" referencedIdentifier="symptom" id="Lag-sg-ew0" sceneMemberID="viewController">
                     <navigationItem key="navigationItem" id="wk1-uk-gYJ"/>
                 </viewControllerPlaceholder>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="aYZ-hB-yES" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
-
             </objects>
             <point key="canvasLocation" x="5083.2061068702287" y="1188.7323943661972"/>
         </scene>

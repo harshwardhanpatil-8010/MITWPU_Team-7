@@ -1,9 +1,4 @@
-//
-//  FullScreenYTPlayerView.swift
-//  Parkinsons
-//
-//  Created by SDC-USER on 07/12/25.
-//
+
 
 import UIKit
 import YouTubeiOSPlayerHelper
@@ -14,7 +9,7 @@ class FullScreenYTPlayerView: YTPlayerView {
     override func layoutSubviews() {
         super.layoutSubviews()
         
-        // Find the internal WebView and inject CSS to force "Full Frame"
+        
         guard let web = subviews.first(where: { $0 is WKWebView }) as? WKWebView else { return }
         
         let js = """

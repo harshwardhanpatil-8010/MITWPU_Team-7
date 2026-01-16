@@ -9,7 +9,6 @@ class _0minworkoutCountdownViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-//        setupCloseButton()
         startCountDown()
     }
     override func viewWillAppear(_ animated: Bool) {
@@ -50,9 +49,5 @@ class _0minworkoutCountdownViewController: UIViewController {
         navigationController?.pushViewController(vc, animated: true)
     }
 
-//    func setupCloseButton() {
-//        navigationItem.leftBarButtonItem = UIBarButtonItem(image: UIImage(systemName: "xmark"), style: .plain, target: self, action: #selector(closeTapped))
-//    }
-//
-//    @objc func closeTapped() { showQuitWorkoutAlert() }
+
 }

@@ -136,6 +136,9 @@
                                     </label>
                                 </subviews>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <accessibility key="accessibilityConfiguration">
+                                    <accessibilityTraits key="traits" notEnabled="YES"/>
+                                </accessibility>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="150" id="ZMP-Gy-eMQ"/>
                                     <constraint firstItem="LCW-Gi-XyK" firstAttribute="centerY" secondItem="gOA-rD-FOf" secondAttribute="centerY" id="cPv-yq-hjP"/>
@@ -175,7 +178,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="jm5-Xy-JZp" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="4943" y="138"/>
+            <point key="canvasLocation" x="5922" y="138"/>
         </scene>
         <!--Info Modal View Controller-->
         <scene sceneID="WSV-ha-It8">
@@ -215,6 +218,19 @@
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
+                            <navigationBar contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="xpR-C1-lq6">
+                                <rect key="frame" x="0.0" y="18" width="402" height="44"/>
+                                <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxY="YES"/>
+                                <items>
+                                    <navigationItem id="aYk-jL-XRi">
+                                        <barButtonItem key="rightBarButtonItem" systemItem="cancel" id="T27-fJ-HSi">
+                                            <connections>
+                                                <action selector="closeButtonTapped:" destination="3xf-SQ-w14" id="Uzc-Hl-mLz"/>
+                                            </connections>
+                                        </barButtonItem>
+                                    </navigationItem>
+                                </items>
+                            </navigationBar>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="Rcy-Ox-yD7"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
@@ -244,7 +260,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="QvK-xH-w2J" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="4207" y="835"/>
+            <point key="canvasLocation" x="5006" y="834"/>
         </scene>
         <!--10 min Workout-->
         <scene sceneID="hG1-va-qNN">
@@ -297,7 +313,8 @@
                                 </constraints>
                                 <buttonConfiguration key="configuration" style="filled" title="Start" cornerStyle="capsule"/>
                                 <connections>
-                                    <action selector="StartWorkoutTapped:" destination="Ndm-wp-35y" eventType="touchUpInside" id="ddt-Az-HaB"/>
+                                    <action selector="StartWorkoutTapped:" destination="Ndm-wp-35y" eventType="touchUpInside" id="nOS-eH-3nN"/>
+                                    <segue destination="f2T-cn-qUt" kind="show" id="0Pi-HN-7mB"/>
                                 </connections>
                             </button>
                             <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="8Ik-1f-ItZ">
@@ -390,7 +407,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="hPz-QG-MXe" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="3509" y="138"/>
+            <point key="canvasLocation" x="3406" y="138"/>
         </scene>
         <!--0minworkout Good Job View Controller-->
         <scene sceneID="hrK-dw-KUr">
@@ -656,7 +673,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="5T6-RI-xm1" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="6688" y="138"/>
+            <point key="canvasLocation" x="6840" y="138"/>
         </scene>
         <!--10 min Workout-->
         <scene sceneID="czI-ub-xzR">
@@ -667,7 +684,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <stackView opaque="NO" contentMode="scaleToFill" alignment="center" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="2bR-8X-e0Q">
-                                <rect key="frame" x="16" y="144" width="370" height="20.333333333333343"/>
+                                <rect key="frame" x="16" y="198" width="370" height="20.333333333333343"/>
                                 <subviews>
                                     <stackView opaque="NO" contentMode="scaleToFill" distribution="fillEqually" alignment="center" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="mjt-iX-ntm">
                                         <rect key="frame" x="0.0" y="8.3333333333333428" width="294" height="4"/>
@@ -710,8 +727,12 @@
                                 </constraints>
                             </stackView>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="KpT-vc-seY" customClass="FullScreenYTPlayerView" customModule="Parkinsons" customModuleProvider="target">
-                                <rect key="frame" x="0.0" y="179.33333333333334" width="402" height="385.66666666666663"/>
+                                <rect key="frame" x="0.0" y="233.33333333333334" width="402" height="331.66666666666663"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <accessibility key="accessibilityConfiguration">
+                                    <accessibilityTraits key="traits" notEnabled="YES"/>
+                                    <bool key="isElement" value="NO"/>
+                                </accessibility>
                             </view>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="86f-LH-JwT">
                                 <rect key="frame" x="0.0" y="520" width="402" height="354"/>
@@ -763,7 +784,7 @@
                                         </constraints>
                                         <buttonConfiguration key="configuration" style="filled" title="Done" cornerStyle="capsule"/>
                                         <connections>
-                                            <action selector="doneButtonTapped:" destination="kfw-Zk-5lP" eventType="touchUpInside" id="4f0-ra-WhN"/>
+                                            <action selector="doneButtonTapped:" destination="kfw-Zk-5lP" eventType="touchUpInside" id="SUV-ah-ZsU"/>
                                         </connections>
                                     </button>
                                     <stackView opaque="NO" contentMode="scaleToFill" spacing="114" translatesAutoresizingMaskIntoConstraints="NO" id="R4O-VU-23N">
@@ -782,7 +803,7 @@
                                                 <state key="normal" title="Button"/>
                                                 <buttonConfiguration key="configuration" style="tinted" title="Skip" cornerStyle="capsule"/>
                                                 <connections>
-                                                    <action selector="skipButtonTapped:" destination="kfw-Zk-5lP" eventType="touchUpInside" id="AYp-KI-fJK"/>
+                                                    <action selector="skipButtonTapped:" destination="kfw-Zk-5lP" eventType="touchUpInside" id="IK5-Wc-Sd2"/>
                                                 </connections>
                                             </button>
                                         </subviews>
@@ -805,7 +826,8 @@
                                                 <state key="normal" title="Button"/>
                                                 <buttonConfiguration key="configuration" style="plain" image="info.circle" catalog="system"/>
                                                 <connections>
-                                                    <segue destination="3xf-SQ-w14" kind="presentation" id="QJZ-tS-z6s"/>
+                                                    <action selector="infoButtonTapped:" destination="kfw-Zk-5lP" eventType="touchUpInside" id="jcs-4F-Jd4"/>
+                                                    <segue destination="3xf-SQ-w14" kind="presentation" id="vPb-yE-SXo"/>
                                                 </connections>
                                             </button>
                                         </subviews>
@@ -850,7 +872,13 @@
                             <constraint firstItem="86f-LH-JwT" firstAttribute="leading" secondItem="P6Q-Ah-Waw" secondAttribute="leading" id="x6v-tr-pkE"/>
                         </constraints>
                     </view>
-                    <navigationItem key="navigationItem" title="10 min Workout" largeTitleDisplayMode="always" id="jxq-l5-aKD"/>
+                    <navigationItem key="navigationItem" title="10 min Workout" largeTitleDisplayMode="always" id="jxq-l5-aKD">
+                        <barButtonItem key="leftBarButtonItem" systemItem="stop" id="Otj-gB-ZKA">
+                            <connections>
+                                <action selector="closeButtonTapped:" destination="kfw-Zk-5lP" id="HA6-OB-kpm"/>
+                            </connections>
+                        </barButtonItem>
+                    </navigationItem>
                     <connections>
                         <outlet property="backgroundView" destination="86f-LH-JwT" id="WEb-0B-c4e"/>
                         <outlet property="exerciseCompletedLabel" destination="Fjj-BF-fVz" id="JA1-oN-2vF"/>
@@ -870,7 +898,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="qra-DB-Pu2" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="4207.4626865671644" y="137.98627002288328"/>
+            <point key="canvasLocation" x="5126.8656716417909" y="137.98627002288328"/>
         </scene>
         <!--Item-->
         <scene sceneID="akw-Wg-PfW">
@@ -890,6 +918,24 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="WFO-5P-xaf" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="1751" y="138"/>
+        </scene>
+        <!--Navigation Controller-->
+        <scene sceneID="pqn-kp-2aT">
+            <objects>
+                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="9Q2-Y5-COw" sceneMemberID="viewController">
+                    <toolbarItems/>
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="RyT-pL-ccG">
+                        <rect key="frame" x="0.0" y="124" width="402" height="54"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                    </navigationBar>
+                    <nil name="viewControllers"/>
+                    <connections>
+                        <segue destination="kfw-Zk-5lP" kind="relationship" relationship="rootViewController" id="iXh-O3-8L9"/>
+                    </connections>
+                </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="u0k-oV-4pa" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="4207.4626865671644" y="137.98627002288328"/>
         </scene>
     </scenes>
     <resources>
