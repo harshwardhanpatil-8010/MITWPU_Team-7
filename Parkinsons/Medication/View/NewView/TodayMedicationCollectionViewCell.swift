@@ -49,7 +49,7 @@ class TodayMedicationCollectionViewCell: UICollectionViewCell {
         case .dueNow:
             applyDueStyle(
                 text: "Due",
-                color: .systemYellow
+                color: .systemOrange
             )
 
         case .late:
@@ -61,7 +61,7 @@ class TodayMedicationCollectionViewCell: UICollectionViewCell {
         case .veryLate:
             applyDueStyle(
                 text: "Due",
-                color: .systemRed
+                color: .systemOrange
             )
 
         case .none:
@@ -72,9 +72,6 @@ class TodayMedicationCollectionViewCell: UICollectionViewCell {
         dueStatus.isHidden = false
         dueStatus.text = text
         dueStatus.textColor = color
-
-        medContainerView.layer.borderWidth = 1
-        medContainerView.layer.borderColor = color.withAlphaComponent(0.6).cgColor
     }
 
 

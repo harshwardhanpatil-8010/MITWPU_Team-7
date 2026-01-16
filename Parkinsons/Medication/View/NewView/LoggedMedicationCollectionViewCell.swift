@@ -53,7 +53,6 @@ class LoggedMedicationCollectionViewCell: UICollectionViewCell {
 
     func setEditing(_ editing: Bool) {
         medStatusImage.isUserInteractionEnabled = editing
-        medStatusImage.alpha = editing ? 1.0 : 0.4
     }
 
     @objc private func handleStatusTap() {

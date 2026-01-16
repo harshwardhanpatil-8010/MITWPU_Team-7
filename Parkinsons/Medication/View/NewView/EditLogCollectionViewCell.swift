@@ -43,11 +43,11 @@ class EditLogCollectionViewCell: UICollectionViewCell {
         }
     
     
-    @IBAction func skippedButtonTapped(_ sender: Any) {
+    @IBAction func skippedButtonTapped(_ sender: UIButton) {
         updateSelection(status: .skipped)
                 onStatusChange?(.skipped)
     }
-    @IBAction func takenButtontapped(_ sender: Any) {
+    @IBAction func takenButtontapped(_ sender: UIButton) {
         updateSelection(status: .taken)
                 onStatusChange?(.taken)
     }
