@@ -31,7 +31,7 @@ class _0minworkoutViewController: UIViewController {
         backgroundView.layer.cornerRadius = 35
         backgroundView.clipsToBounds = true
         
-       
+        
         if exercises.isEmpty {
             exercises = WorkoutManager.shared.getTodayWorkout()
         }
