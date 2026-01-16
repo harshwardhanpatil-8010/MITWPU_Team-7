@@ -21,9 +21,6 @@ class LoggedMedicationCollectionViewCell: UICollectionViewCell {
 
     override func awakeFromNib() {
         super.awakeFromNib()
-        let tap = UITapGestureRecognizer(target: self, action: #selector(handleStatusTap))
-        medStatusImage.addGestureRecognizer(tap)
-        medStatusImage.isUserInteractionEnabled = false
     }
 
     func configure(with item: LoggedDoseItem) {
@@ -53,9 +50,5 @@ class LoggedMedicationCollectionViewCell: UICollectionViewCell {
 
     func setEditing(_ editing: Bool) {
         medStatusImage.isUserInteractionEnabled = editing
-    }
-
-    @objc private func handleStatusTap() {
-        onStatusTap?()
     }
 }

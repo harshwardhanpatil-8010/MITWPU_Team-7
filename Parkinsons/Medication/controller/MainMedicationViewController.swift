@@ -36,7 +36,7 @@ final class MainMedicationViewController: UIViewController {
     private let todayViewModel = TodayMedicationViewModel()
     private var currentSegment: SegmentType = .today
     private var myMedications: [Medication] = []
-
+    private var didBecomeActiveObserver: NSObjectProtocol?
     override func viewDidLoad() {
         super.viewDidLoad()
         setupCollectionView()
@@ -46,16 +46,19 @@ final class MainMedicationViewController: UIViewController {
         if let layout = medicationCollectionView.collectionViewLayout as? UICollectionViewFlowLayout {
             layout.headerReferenceSize = .zero
         }
-        NotificationCenter.default.addObserver(
-            self,
-            selector: #selector(appDidBecomeActive),
-            name: UIApplication.didBecomeActiveNotification,
-            object: nil
-        )
+        didBecomeActiveObserver = NotificationCenter.default.addObserver(
+               forName: UIApplication.didBecomeActiveNotification,
+               object: nil,
+               queue: .main
+           ) { [weak self] _ in
+               self?.loadMedications()
+           }
 
     }
-    @objc private func appDidBecomeActive() {
-        loadMedications()
+    deinit {
+        if let observer = didBecomeActiveObserver {
+            NotificationCenter.default.removeObserver(observer)
+        }
     }
 
     private func updateNoMedicationState() {
@@ -157,14 +160,6 @@ final class MainMedicationViewController: UIViewController {
         currentSegment = sender.selectedSegmentIndex == 0 ? .today : .myMedication
         loadMedications()
         updateUIForSegment()
-    }
-
-    @objc private func medicationUpdated() {
-        loadMedications()
-    }
-
-    deinit {
-        NotificationCenter.default.removeObserver(self)
     }
 
     private func updateLoggedStatus(_ item: LoggedDoseItem, status: DoseLogStatus) {

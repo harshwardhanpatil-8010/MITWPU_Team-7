@@ -17,17 +17,24 @@ class MedicationLandingPageViewController: UIViewController,
     var allMedications: [Medication] = []
     var selectedDose: MedicationDose?
     var selectedMedication: Medication?
-
+    private var medicationObserver: NSObjectProtocol?
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         configureCollectionView()
         loadMedications()
-        NotificationCenter.default.addObserver(
-            self,
-            selector: #selector(loadMedications),
-            name: Notification.Name("MedicationUpdated"),
-            object: nil
-        )
+        medicationObserver = NotificationCenter.default.addObserver(
+                forName: Notification.Name("MedicationUpdated"),
+                object: nil,
+                queue: .main
+            ) { [weak self] _ in
+                self?.loadMedications()
+            }
+    }
+    deinit {
+        if let observer = medicationObserver {
+            NotificationCenter.default.removeObserver(observer)
+        }
     }
 
     func didUpdateDoseStatus(_ dose: MedicationDose, status: DoseStatus) {
