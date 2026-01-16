@@ -74,6 +74,13 @@
                                     <constraint firstAttribute="width" constant="1" id="jQ3-Vm-5sq"/>
                                 </constraints>
                             </view>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Due" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="679-C5-l4D">
+                                <rect key="frame" x="304" y="22" width="31" height="21"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
                         </subviews>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                         <constraints>
@@ -102,6 +109,7 @@
             </constraints>
             <size key="customSize" width="361" height="70"/>
             <connections>
+                <outlet property="dueStatus" destination="679-C5-l4D" id="wOg-Eq-vy0"/>
                 <outlet property="medContainerView" destination="KdT-eD-ouF" id="cZo-yu-tj6"/>
                 <outlet property="medFormImage" destination="1wX-Ww-BLa" id="foa-zU-ryx"/>
                 <outlet property="medNameLabel" destination="SAr-Pr-jTF" id="f8e-MA-cMM"/>

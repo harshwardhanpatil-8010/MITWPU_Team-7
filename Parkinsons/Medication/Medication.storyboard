@@ -638,6 +638,64 @@
             </objects>
             <point key="canvasLocation" x="3985.0746268656712" y="-446.22425629290615"/>
         </scene>
+        <!--Edit Log View Controller-->
+        <scene sceneID="g12-fj-TW9">
+            <objects>
+                <viewController storyboardIdentifier="EditLogViewController" useStoryboardIdentifierAsRestorationIdentifier="YES" id="XIF-p3-QUO" customClass="EditLogViewController" customModule="Parkinsons" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="rqo-00-neW">
+                        <rect key="frame" x="0.0" y="0.0" width="402" height="874"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="Sge-ik-YHJ">
+                                <rect key="frame" x="0.0" y="124" width="402" height="682"/>
+                                <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                                <collectionViewFlowLayout key="collectionViewLayout" automaticEstimatedItemSize="YES" minimumLineSpacing="10" minimumInteritemSpacing="10" id="Agr-EJ-sbI">
+                                    <size key="itemSize" width="128" height="128"/>
+                                    <size key="headerReferenceSize" width="0.0" height="0.0"/>
+                                    <size key="footerReferenceSize" width="0.0" height="0.0"/>
+                                    <inset key="sectionInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
+                                </collectionViewFlowLayout>
+                                <cells>
+                                    <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="EditLogCell" id="Iol-13-WHg">
+                                        <rect key="frame" x="0.0" y="0.0" width="128" height="128"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                        <collectionViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" id="t10-Hf-w2b">
+                                            <rect key="frame" x="0.0" y="0.0" width="128" height="128"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                        </collectionViewCellContentView>
+                                    </collectionViewCell>
+                                </cells>
+                            </collectionView>
+                        </subviews>
+                        <viewLayoutGuide key="safeArea" id="Zqv-Ep-FPR"/>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                        <constraints>
+                            <constraint firstItem="Sge-ik-YHJ" firstAttribute="top" secondItem="Zqv-Ep-FPR" secondAttribute="top" id="bOy-iz-Ls9"/>
+                            <constraint firstItem="Sge-ik-YHJ" firstAttribute="leading" secondItem="Zqv-Ep-FPR" secondAttribute="leading" id="k3h-7F-ajI"/>
+                            <constraint firstItem="Zqv-Ep-FPR" firstAttribute="trailing" secondItem="Sge-ik-YHJ" secondAttribute="trailing" id="mwQ-h2-Ah2"/>
+                            <constraint firstItem="Zqv-Ep-FPR" firstAttribute="bottom" secondItem="Sge-ik-YHJ" secondAttribute="bottom" id="ylo-yw-dAi"/>
+                        </constraints>
+                    </view>
+                    <navigationItem key="navigationItem" id="kkY-cS-quH">
+                        <barButtonItem key="leftBarButtonItem" systemItem="cancel" id="sbt-Ur-dMf">
+                            <connections>
+                                <action selector="cancelTapped:" destination="XIF-p3-QUO" id="icH-i6-fFf"/>
+                            </connections>
+                        </barButtonItem>
+                        <barButtonItem key="rightBarButtonItem" style="done" systemItem="done" id="HdU-K3-Ih7">
+                            <connections>
+                                <action selector="saveTapped:" destination="XIF-p3-QUO" id="Dla-Is-ICY"/>
+                            </connections>
+                        </barButtonItem>
+                    </navigationItem>
+                    <connections>
+                        <outlet property="collectionView" destination="Sge-ik-YHJ" id="6g5-Wa-K8S"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="lwl-hX-e6j" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="6807.4626865671635" y="-406.40732265446223"/>
+        </scene>
         <!--Skipped Taken View Controller-->
         <scene sceneID="l34-Ew-KHS">
             <objects>
@@ -983,7 +1041,6 @@
         <!--Navigation Controller-->
         <scene sceneID="rTu-u9-rFE">
             <objects>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="5xg-ow-2wM" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
                 <navigationController storyboardIdentifier="medicationNavigation" automaticallyAdjustsScrollViewInsets="NO" useStoryboardIdentifierAsRestorationIdentifier="YES" id="hWx-Hg-8gb" sceneMemberID="viewController">
                     <toolbarItems/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" largeTitles="YES" id="gdO-hL-bWV">
@@ -995,6 +1052,7 @@
                         <segue destination="abu-7L-A82" kind="relationship" relationship="rootViewController" id="WzL-oh-NCa"/>
                     </connections>
                 </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="5xg-ow-2wM" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="5483.5820895522384" y="282.83752860411897"/>
         </scene>

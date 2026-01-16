@@ -13,7 +13,24 @@ final class MainMedicationViewController: UIViewController {
         case today
         case myMedication
     }
-    
+
+    private var isShowingAllUpcoming = false
+    private var dueDoses: [TodayDoseItem] {
+        todayViewModel.todayDoses.filter { $0.isDue }
+    }
+
+    private var upcomingDoses: [TodayDoseItem] {
+        todayViewModel.todayDoses.filter { !$0.isDue }
+    }
+
+    private var visibleUpcomingDoses: [TodayDoseItem] {
+        if isShowingAllUpcoming {
+            return upcomingDoses
+        } else {
+            return Array(upcomingDoses.prefix(3))
+        }
+    }
+
     private var loggedDoses: [LoggedDoseItem] = []
     private var isEditingLogged = false
     private let todayViewModel = TodayMedicationViewModel()
@@ -238,7 +255,7 @@ extension MainMedicationViewController: UICollectionViewDataSource {
     ) -> Int {
         if currentSegment == .today {
             return section == 0
-                ? todayViewModel.todayDoses.count
+                ? dueDoses.count + visibleUpcomingDoses.count
                 : loggedDoses.count
         }
         return myMedications.count
@@ -255,7 +272,16 @@ extension MainMedicationViewController: UICollectionViewDataSource {
                     for: indexPath
                 ) as! TodayMedicationCollectionViewCell
 
-                cell.configure(with: todayViewModel.todayDoses[indexPath.item])
+                let item: TodayDoseItem
+
+                if indexPath.item < dueDoses.count {
+                    item = dueDoses[indexPath.item]
+                } else {
+                    item = visibleUpcomingDoses[indexPath.item - dueDoses.count]
+                }
+
+                cell.configure(with: item)
+
                 return cell
             }
 
@@ -372,9 +398,19 @@ extension MainMedicationViewController {
 extension MainMedicationViewController: MedicationSectionHeaderViewDelegate {
 
     func didTapEditLoggedSection() {
-        isEditingLogged.toggle()
-        medicationCollectionView.reloadSections(IndexSet(integer: 1))
+        let storyboard = UIStoryboard(name: "Medication", bundle: nil)
+        let vc = storyboard.instantiateViewController(
+            withIdentifier: "EditLogViewController"
+        ) as! EditLogViewController
+
+        vc.loggedDoses = loggedDoses
+        vc.delegate = self
+
+        let nav = UINavigationController(rootViewController: vc)
+        nav.modalPresentationStyle = .formSheet
+        present(nav, animated: true)
     }
+
 }
 
 extension MainMedicationViewController: AddMedicationDelegate {
@@ -382,3 +418,11 @@ extension MainMedicationViewController: AddMedicationDelegate {
         loadMedications()
     }
 }
+extension MainMedicationViewController: EditLogDelegate {
+
+    func didUpdateLoggedDoses(_ updated: [LoggedDoseItem]) {
+        self.loggedDoses = updated
+        medicationCollectionView.reloadSections(IndexSet(integer: 1)) // Logged section
+    }
+}
+

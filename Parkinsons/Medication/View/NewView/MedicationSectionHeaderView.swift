@@ -9,10 +9,12 @@ import UIKit
 
 protocol MedicationSectionHeaderViewDelegate: AnyObject {
     func didTapEditLoggedSection()
+    func didTapShowAllToday()
 }
 
+
 class MedicationSectionHeaderView: UICollectionReusableView {
-    @IBOutlet weak var editButton: UIButton!
+    @IBOutlet weak var actionButton: UIButton!
     @IBOutlet weak var timeLabel: UILabel!
     weak var delegate: MedicationSectionHeaderViewDelegate?
 
@@ -20,12 +22,14 @@ class MedicationSectionHeaderView: UICollectionReusableView {
         super.awakeFromNib()
     }
 
-    func configure(title: String, showEdit: Bool) {
+    func configure(title: String, actionTitle: String?) {
         timeLabel.text = title
-        editButton.isHidden = !showEdit
+        actionButton.isHidden = actionTitle == nil
+        actionButton.setTitle(actionTitle, for: .normal)
     }
 
+
     @IBAction func editTapped(_ sender: Any) {
-        delegate?.didTapEditLoggedSection()
+        delegate?.didTapShowAllToday()
     }
 }

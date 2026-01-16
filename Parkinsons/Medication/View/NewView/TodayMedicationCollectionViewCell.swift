@@ -16,6 +16,7 @@ class TodayMedicationCollectionViewCell: UICollectionViewCell {
     @IBOutlet weak var timeLabel: UILabel!
     @IBOutlet weak var medContainerView: UIView!
 
+    @IBOutlet weak var dueStatus: UILabel!
     override func awakeFromNib() {
         super.awakeFromNib()
         medContainerView.applyCardStyle()

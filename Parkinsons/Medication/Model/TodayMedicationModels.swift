@@ -27,6 +27,11 @@ struct LoggedDoseItem: Identifiable {
     let medicationName: String
     let medicationForm: String
     let loggedTime: Date
-    let status: DoseLogStatus
+    var status: DoseLogStatus
     let iconName: String
+}
+extension TodayDoseItem {
+    var isDue: Bool {
+        scheduledTime <= Date() && logStatus == .none
+    }
 }
