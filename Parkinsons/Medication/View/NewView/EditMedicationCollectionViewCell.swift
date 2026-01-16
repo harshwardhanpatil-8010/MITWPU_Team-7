@@ -8,21 +8,18 @@
 import UIKit
 
 class EditMedicationCollectionViewCell: UICollectionViewCell {
-    
+
     @IBOutlet weak var scheduleLabel: UILabel!
     @IBOutlet weak var subtitleLabel: UILabel!
     @IBOutlet weak var titleLabel: UILabel!
     @IBOutlet weak var medIcon: UIImageView!
     @IBOutlet weak var cardView: UIView!
 
+    private let shortWeekdays = "MTWTFSS"
+
     override func awakeFromNib() {
         super.awakeFromNib()
         cardView.applyCardStyle()
-    }
-
-    private func weekdayName(_ n: Int) -> String {
-        let names = ["Sun","Mon","Tue","Wed","Thu","Fri","Sat"]
-        return names[n - 1]
     }
 
     func configure(with medication: Medication) {
@@ -33,10 +30,52 @@ class EditMedicationCollectionViewCell: UICollectionViewCell {
         switch medication.schedule {
         case .everyday:
             scheduleLabel.text = "Everyday"
+
         case .none:
             scheduleLabel.text = "None"
-        case .weekly(let days):
-            scheduleLabel.text = days.map { weekdayName($0) }.joined(separator: ", ")
+
+        case .weekly:
+            scheduleLabel.attributedText = medication.schedule.weekdayAttributedString()
+
+        }
+    }
+
+    private func makeWeekdayAttributedText(selectedDays: [Int]) -> NSAttributedString {
+        let attributed = NSMutableAttributedString(string: shortWeekdays)
+
+        let normalColor: UIColor = .systemGray3
+        let selectedColor: UIColor = .systemBlue
+
+        attributed.addAttribute(
+            .foregroundColor,
+            value: normalColor,
+            range: NSRange(location: 0, length: shortWeekdays.count)
+        )
+        
+        for day in selectedDays {
+            let index = weekdayIndex(from: day)
+            guard index >= 0 && index < shortWeekdays.count else { continue }
+
+            attributed.addAttribute(
+                .foregroundColor,
+                value: selectedColor,
+                range: NSRange(location: index, length: 1)
+            )
+        }
+
+        return attributed
+    }
+
+    private func weekdayIndex(from weekday: Int) -> Int {
+        switch weekday {
+        case 2: return 0
+        case 3: return 1
+        case 4: return 2
+        case 5: return 3
+        case 6: return 4
+        case 7: return 5
+        case 1: return 6
+        default: return -1
         }
     }
 }

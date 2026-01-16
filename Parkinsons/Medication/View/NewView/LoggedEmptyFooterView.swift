@@ -13,8 +13,12 @@ class LoggedEmptyFooterView: UICollectionReusableView {
 
     override func awakeFromNib() {
         super.awakeFromNib()
-        messageLabel.text = "No medications logged yet"
         messageLabel.textAlignment = .center
     }
+
+    func configure(message: String) {
+        messageLabel.text = message
+    }
 }
+
 

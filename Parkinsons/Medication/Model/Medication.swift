@@ -1,5 +1,5 @@
 import Foundation
-
+import UIKit
 struct MedicationDose: Codable, Identifiable {
     let id: UUID
     var time: Date
@@ -81,4 +81,39 @@ extension RepeatRule {
             }
         }
     }
+    
+    func weekdayAttributedString(
+            selectedColor: UIColor = .systemBlue,
+            unselectedColor: UIColor = .systemGray3,
+            font: UIFont = .systemFont(ofSize: 13, weight: .semibold)
+        ) -> NSAttributedString {
+
+            // Display order: Mon → Sun
+            let display: [(label: String, dayIndex: Int)] = [
+                ("M", 2),
+                ("T", 3),
+                ("W", 4),
+                ("T", 5),
+                ("F", 6),
+                ("S", 7),
+                ("S", 1)
+            ]
+
+            let result = NSMutableAttributedString()
+
+            guard case .weekly(let days) = self else {
+                return result
+            }
+
+            for item in display {
+                let isSelected = days.contains(item.dayIndex)
+                let attributes: [NSAttributedString.Key: Any] = [
+                    .foregroundColor: isSelected ? selectedColor : unselectedColor,
+                    .font: font
+                ]
+                result.append(NSAttributedString(string: item.label, attributes: attributes))
+            }
+
+            return result
+        }
 }

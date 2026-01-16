@@ -13,7 +13,9 @@ final class MainMedicationViewController: UIViewController {
         case today
         case myMedication
     }
-
+    private var allMedicationsLoggedToday: Bool {
+        dueDoses.isEmpty && upcomingDoses.isEmpty && !loggedDoses.isEmpty
+    }
     private var isShowingAllUpcoming = false
     private var displayedUpcomingDoses: [TodayDoseItem] {
         if isShowingAllUpcoming {
@@ -271,16 +273,23 @@ extension MainMedicationViewController: UICollectionViewDataSource {
         }
 
         if kind == UICollectionView.elementKindSectionFooter,
-           currentSegment == .today,
-           indexPath.section == 1,
-           loggedDoses.isEmpty {
+           currentSegment == .today {
 
             let footer = collectionView.dequeueReusableSupplementaryView(
                 ofKind: kind,
                 withReuseIdentifier: "LoggedEmptyFooterView",
                 for: indexPath
-            )
-            return footer
+            ) as! LoggedEmptyFooterView
+
+            if indexPath.section == 1 && loggedDoses.isEmpty {
+                footer.configure(message: "No medications logged yet")
+                return footer
+            }
+            
+            if indexPath.section == 0 && allMedicationsLoggedToday {
+                footer.configure(message: "All medications logged for today")
+                return footer
+            }
         }
 
         return UICollectionReusableView()
@@ -369,8 +378,13 @@ extension MainMedicationViewController: UICollectionViewDelegateFlowLayout {
             return CGSize(width: collectionView.bounds.width, height: 80)
         }
 
+        if section == 0 && allMedicationsLoggedToday {
+            return CGSize(width: collectionView.bounds.width, height: 80)
+        }
+
         return .zero
     }
+
     func collectionView(
         _ collectionView: UICollectionView,
         layout collectionViewLayout: UICollectionViewLayout,
