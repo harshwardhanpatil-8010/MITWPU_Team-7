@@ -734,7 +734,7 @@
                                     <bool key="isElement" value="NO"/>
                                 </accessibility>
                             </view>
-                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="86f-LH-JwT">
+                            <view clipsSubviews="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="86f-LH-JwT">
                                 <rect key="frame" x="0.0" y="520" width="402" height="354"/>
                                 <subviews>
                                     <stackView opaque="NO" contentMode="scaleToFill" distribution="fillProportionally" spacing="166" translatesAutoresizingMaskIntoConstraints="NO" id="Oda-1T-kam">
@@ -836,7 +836,7 @@
                                         </constraints>
                                     </stackView>
                                 </subviews>
-                                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <constraints>
                                     <constraint firstItem="Oda-1T-kam" firstAttribute="top" secondItem="tQQ-64-Gce" secondAttribute="bottom" constant="34" id="2YG-d8-U9r"/>
                                     <constraint firstItem="Oda-1T-kam" firstAttribute="centerX" secondItem="86f-LH-JwT" secondAttribute="centerX" id="4l9-IQ-eHR"/>
