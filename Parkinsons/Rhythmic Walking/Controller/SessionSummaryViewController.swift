@@ -10,24 +10,18 @@ import UIKit
 class SessionSummaryViewController: UIViewController {
 
     @IBOutlet weak var timeLabel: UILabel!
-    
     @IBOutlet weak var walkingUIView: UIView!
     @IBOutlet weak var GaitUIView: UIView!
-    
     @IBOutlet weak var timeContainer: UIView!
-    
     @IBOutlet weak var stepsTaken: UILabel!
     @IBOutlet weak var distanceCovered: UILabel!
     @IBOutlet weak var speed: UILabel!
     @IBOutlet weak var stepsLength: UILabel!
     @IBOutlet weak var walkingAsymmetry: UILabel!
     @IBOutlet weak var walkingSteadiness: UILabel!
-    
     @IBOutlet weak var stepLengthPercent: UILabel!
     @IBOutlet weak var walkingAsymmetryPercent: UILabel!
     @IBOutlet weak var walkingSteadinessPercent: UILabel!
-    
-    
     var sessionData: RhythmicSession?
     private var progressView: CircularProgressView!
     
@@ -38,7 +32,6 @@ class SessionSummaryViewController: UIViewController {
     }
 
 
-    
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -51,49 +44,8 @@ class SessionSummaryViewController: UIViewController {
         progressView.trackColor = UIColor(hex: "90AF81", alpha: 0.3)
         navigationItem.hidesBackButton = true
         navigationController?.interactivePopGestureRecognizer?.isEnabled = false
-
-        // Do any additional setup after loading the view.
     }
-    
-    
-    
-    
-//    func loadData() {
-//        if let session = sessionData {
-//            let elapsedSeconds = session.elapsedSeconds
-//            let requestedSeconds = session.requestedDurationSeconds
-//                    
-//            let hours = elapsedSeconds / 3600
-//            let minutes = (elapsedSeconds % 3600) / 60
-//            let seconds = elapsedSeconds % 60
-//                    
-//            timeLabel.text = String(format: "%02d:%02d:%02d", hours, minutes, seconds)
-//                    
-//            var progress: Float = 0.0
-//            if requestedSeconds > 0 {
-//                progress = Float(elapsedSeconds) / Float(requestedSeconds)
-//            }
-//            else if elapsedSeconds > 0 {
-//                progress = 1.0
-//            }
-//            progressView.setProgress(CGFloat(progress))
-//        }
-//        else {
-//            timeLabel.text = "00:00:00"
-//            progressView.setProgress(0.0)
-//        }
-//        
-//        stepsTaken.text = WalkingSessionDemo.steps.description
-//        distanceCovered.text = WalkingSessionDemo.distanceKMeters.description
-//        speed.text = "3 Km/h"
-//        stepsLength.text = gaitDemoInfo.stepLengthMeters.description
-//        walkingAsymmetry.text = gaitDemoInfo.walkingAsymmetryPercent.description
-//        walkingSteadiness.text = gaitDemoInfo.walkingSteadiness.description
-//        stepLengthPercent.text = "12 %"
-//        walkingAsymmetryPercent.text = "0.5 %"
-//        walkingSteadinessPercent.text = "5 %"
-//    }
-    
+
     
     func loadData() {
         guard let session = sessionData else {
@@ -101,8 +53,6 @@ class SessionSummaryViewController: UIViewController {
             progressView.setProgress(0.0)
             return
         }
-        
-        // Time and Progress calculation (Keep your existing logic here)
         let elapsedSeconds = session.elapsedSeconds
         let hours = elapsedSeconds / 3600
         let minutes = (elapsedSeconds % 3600) / 60
@@ -123,7 +73,6 @@ class SessionSummaryViewController: UIViewController {
         walkingAsymmetryPercent.text = "0.5 %"
         walkingSteadinessPercent.text = "5 %"
     }
-    
     
     @IBAction func doneButtonTapped(_ sender: Any) {
         dismiss(animated: true)

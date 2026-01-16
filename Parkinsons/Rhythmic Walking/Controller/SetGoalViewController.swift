@@ -10,21 +10,13 @@ import UIKit
 class SetGoalViewController: UIViewController, UITableViewDataSource, UIPickerViewDataSource, UIPickerViewDelegate, UITableViewDelegate {
     
     @IBOutlet weak var datePickerUIView: UIView!
-    
     @IBOutlet weak var DurationPicker: UIPickerView!
-    
     @IBOutlet weak var beatButton: UIButton!
-    
     @IBOutlet weak var paceButton: UIButton!
-    
-    
     @IBOutlet weak var startButton: UIButton!
     @IBOutlet weak var paceBeatUIView: UIView!
     @IBOutlet weak var sessionTableView: UITableView!
-
-    
     @IBOutlet weak var noSessionsOutlet: UIStackView!
-    
     
     var startTapsCount: Int = 0
     private let paces = ["Slow", "Moderate", "Fast"]
@@ -95,27 +87,16 @@ class SetGoalViewController: UIViewController, UITableViewDataSource, UIPickerVi
         else{
             cell.textLabel?.text = "Session \(displayNum)\t\t\t\t\t\t\(hrs)hrs \(mins)min"
         }
-        
         return cell
     }
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        // 1. Deselect the row for a clean UI transition
         tableView.deselectRow(at: indexPath, animated: true)
-        
-        // 2. Get the specific session data for the tapped row
         let selectedSession = DataStore.shared.sessions[indexPath.row]
-        
-        // 3. Instantiate the Summary View Controller from the storyboard
         let storyboard = UIStoryboard(name: "Rhythmic Walking", bundle: nil)
         guard let summaryVC = storyboard.instantiateViewController(withIdentifier: "SessionSummaryVC") as? SessionSummaryViewController else {
             return
         }
-        
-        // 4. Pass the data to the summary view
         summaryVC.sessionData = selectedSession
-        
-        // 5. Present the view controller
-        // If you want it to look like the start button tap, use a Navigation Controller wrapper
         let nav = UINavigationController(rootViewController: summaryVC)
         nav.modalPresentationStyle = .formSheet
         present(nav, animated: true)
@@ -154,8 +135,6 @@ class SetGoalViewController: UIViewController, UITableViewDataSource, UIPickerVi
         paceBeatUIView.applyCardStyle()
         updateStartButtonState()
         sessionTableView.delegate = self
-
-        // Do any additional setup after loading the view.
     }
 
     override func viewWillAppear(_ animated: Bool) {
@@ -196,7 +175,6 @@ class SetGoalViewController: UIViewController, UITableViewDataSource, UIPickerVi
         }
         infoVC.modalPresentationStyle = .pageSheet
         self.present(infoVC, animated: true, completion: nil)
-        
     }
     
     @IBAction func startButtonTapped(_ sender: Any) {

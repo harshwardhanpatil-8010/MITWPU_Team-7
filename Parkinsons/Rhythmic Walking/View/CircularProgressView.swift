@@ -4,8 +4,6 @@ import UIKit
     
     private let trackLayer = CAShapeLayer()
     private let progressLayer = CAShapeLayer()
-    
-    // MARK: - Customizable properties
     var trackColor: UIColor = .systemGray4 {
         didSet { trackLayer.strokeColor = trackColor.cgColor }
     }
@@ -49,7 +47,7 @@ import UIKit
          trackLayer.strokeColor = trackColor.cgColor
          trackLayer.lineWidth = lineWidth
          trackLayer.fillColor = UIColor.clear.cgColor
-         trackLayer.opacity = 0.5         // ✅ EXPLICIT OPACITY
+         trackLayer.opacity = 0.5
          layer.addSublayer(trackLayer)
 
          progressLayer.path = circularPath.cgPath
@@ -68,10 +66,7 @@ import UIKit
     private var centerPoint: CGPoint {
         CGPoint(x: bounds.midX, y: bounds.midY)
     }
-    
-//    func setProgress(_ progress: CGFloat) {
-//        progressLayer.strokeEnd = progress
-//    }
+     
      func setProgress(_ progress: CGFloat) {
          progressLayer.strokeEnd = min(max(progress, 0), 1)
      }
@@ -86,7 +81,6 @@ import UIKit
          let circularPath = UIBezierPath(
              arcCenter: centerPoint,
              radius: min(bounds.width, bounds.height) / 2,
-//             radius: (min(bounds.width, bounds.height) - lineWidth) / 2,
              startAngle: -.pi / 2,
              endAngle: 3 * .pi / 2,
              clockwise: true
@@ -95,8 +89,4 @@ import UIKit
          trackLayer.path = circularPath.cgPath
          progressLayer.path = circularPath.cgPath
      }
-
-
-
-
 }
