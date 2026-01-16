@@ -1,9 +1,3 @@
-//
-//  LevelSelectionViewController.swift
-//  Parkinsons
-//
-//  Created by SDC-USER on 08/12/25.
-//
 
 import UIKit
 
@@ -13,10 +7,8 @@ UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
     @IBOutlet weak var monthAndYearOutlet: UILabel!
     @IBOutlet weak var collectionView: UICollectionView!
     @IBOutlet weak var completedLabel: UILabel!
-    
     @IBOutlet weak var imageView: UIImageView!
-    
-    
+
     private var calendar: Calendar = {
         var c = Calendar(identifier: .gregorian)
         c.firstWeekday = 2
@@ -31,29 +23,32 @@ UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-
-        collectionView.dataSource = self
-        collectionView.delegate = self
-        collectionView.isScrollEnabled = false
-
-        configureLayout()
+        setupCollectionView()
         setupMonth()
         updateCompletionCount()
     }
+
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         updateCompletionCount()
         collectionView.reloadData()
         tabBarController?.tabBar.isHidden = true
     }
+
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
         tabBarController?.tabBar.isHidden = false
     }
 
+    private func setupCollectionView() {
+        collectionView.dataSource = self
+        collectionView.delegate = self
+        collectionView.isScrollEnabled = false
+        configureLayout()
+    }
+
     private func configureLayout() {
         guard let layout = collectionView.collectionViewLayout as? UICollectionViewFlowLayout else { return }
-
         let width = collectionView.bounds.width / 7
         layout.itemSize = CGSize(width: width, height: width)
         layout.minimumInteritemSpacing = 0
@@ -63,10 +58,9 @@ UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
 
     private func setupMonth() {
         let now = Date()
-
         let comps = calendar.dateComponents([.year, .month], from: now)
-        firstDayOfMonth = calendar.date(from: comps)!
 
+        firstDayOfMonth = calendar.date(from: comps)!
         daysInMonth = calendar.range(of: .day, in: .month, for: firstDayOfMonth)!.count
 
         let weekday = calendar.component(.weekday, from: firstDayOfMonth)
@@ -76,28 +70,14 @@ UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
         formatter.calendar = calendar
         formatter.dateFormat = "MMMM yyyy"
         monthAndYearOutlet.text = formatter.string(from: firstDayOfMonth)
+
         selectedDate = today
         collectionView.reloadData()
     }
-//    private func updateCompletionCount() {
-//        var completedCount = 0
-//        
-//        for dayOffset in 0..<daysInMonth {
-//            if let date = calendar.date(byAdding: .day, value: dayOffset, to: firstDayOfMonth) {
-//                let startOfDate = calendar.startOfDay(for: date)
-//                if DailyGameManager.shared.isCompleted(date: startOfDate) {
-//                    completedCount += 1
-//                }
-//            }
-//        }
-//        
-//        // Update the label text
-//        completedLabel.text = " \(completedCount)/\(daysInMonth)"
-//    }
 
     private func updateCompletionCount() {
-        let completedCount = (0..<daysInMonth).filter { dayOffset in
-            guard let date = calendar.date(byAdding: .day, value: dayOffset, to: firstDayOfMonth) else { return false }
+        let completedCount = (0..<daysInMonth).filter { offset in
+            guard let date = calendar.date(byAdding: .day, value: offset, to: firstDayOfMonth) else { return false }
             return DailyGameManager.shared.isCompleted(date: calendar.startOfDay(for: date))
         }.count
 
@@ -111,7 +91,7 @@ UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
             imageView.isHidden = false
         }
     }
-    
+
     func collectionView(_ collectionView: UICollectionView,
                         numberOfItemsInSection section: Int) -> Int {
         daysInMonth + firstWeekdayOffset
@@ -125,23 +105,19 @@ UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
             for: indexPath
         ) as! DateCell
 
-        if indexPath.item < firstWeekdayOffset {
+        guard indexPath.item >= firstWeekdayOffset else {
             cell.configureEmpty()
             return cell
         }
 
         let day = indexPath.item - firstWeekdayOffset + 1
-        let date = calendar.date(byAdding: .day,
-                                 value: day - 1,
-                                 to: firstDayOfMonth)!
-
+        let date = calendar.date(byAdding: .day, value: day - 1, to: firstDayOfMonth)!
         let cellDate = calendar.startOfDay(for: date)
 
         let isToday = calendar.isDate(cellDate, inSameDayAs: today)
         let isFuture = cellDate > today
         let isCompleted = DailyGameManager.shared.isCompleted(date: cellDate)
-        let isSelected = selectedDate != nil &&
-            calendar.isDate(cellDate, inSameDayAs: selectedDate!)
+        let isSelected = selectedDate.map { calendar.isDate(cellDate, inSameDayAs: $0) } ?? false
         let showTodayOutline = isToday && selectedDate != nil && !isSelected
 
         cell.configure(
@@ -152,6 +128,7 @@ UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
             showTodayOutline: showTodayOutline,
             enabled: !isFuture
         )
+
         return cell
     }
 
@@ -161,57 +138,39 @@ UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
         guard indexPath.item >= firstWeekdayOffset else { return }
 
         let day = indexPath.item - firstWeekdayOffset + 1
-        let date = calendar.date(byAdding: .day,
-                                 value: day - 1,
-                                 to: firstDayOfMonth)!
-
+        let date = calendar.date(byAdding: .day, value: day - 1, to: firstDayOfMonth)!
         let cellDate = calendar.startOfDay(for: date)
 
-        if cellDate > today { return }
+        guard cellDate <= today else { return }
 
         selectedDate = cellDate
         collectionView.reloadData()
     }
+    
 
-//    @IBAction func playButtonTapped(_ sender: UIButton) {
-//        guard let date = selectedDate else { return }
-//        if DailyGameManager.shared.isCompleted(date: date) { return }
-//
-//        let vc = storyboard!.instantiateViewController(
-//            withIdentifier: "GameViewController"
-//        ) as! GameViewController
-//
-//        vc.selectedDate = date
-//        vc.level = DailyGameManager.shared.level(for: date)
-//
-//        navigationController?.pushViewController(vc, animated: true)
-//    }
+    
     @IBAction func playButtonTapped(_ sender: UIButton) {
         guard let date = selectedDate else { return }
 
         if DailyGameManager.shared.isCompleted(date: date) {
-
             let alert = UIAlertController(
                 title: "Challenge Completed",
                 message: "You have already completed this daily challenge. Do you want to play again?",
                 preferredStyle: .alert
             )
 
-            let yesAction = UIAlertAction(title: "Yes", style: .default) { _ in
+            alert.addAction(UIAlertAction(title: "Yes", style: .default) { _ in
                 self.navigateToGame(with: date)
-            }
+            })
 
-            let noAction = UIAlertAction(title: "No", style: .cancel, handler: nil)
+            alert.addAction(UIAlertAction(title: "No", style: .cancel))
 
-            alert.addAction(yesAction)
-            alert.addAction(noAction)
-
-            present(alert, animated: true, completion: nil)
-            
+            present(alert, animated: true)
         } else {
             navigateToGame(with: date)
         }
     }
+
     private func navigateToGame(with date: Date) {
         let vc = storyboard!.instantiateViewController(
             withIdentifier: "GameViewController"
