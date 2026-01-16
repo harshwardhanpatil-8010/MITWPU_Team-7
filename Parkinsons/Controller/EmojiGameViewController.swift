@@ -12,9 +12,11 @@ class EmojiGameViewController: UIViewController {
     @IBOutlet weak var emojiNameLabel: UILabel!
 
     let arModel = EmojiARModel()
+    
+    // NEW: Store a shuffled version of the challenges
+    var shuffledChallenges: [EmojiChallenge] = []
     var currentLevel = 0
     
-    // Timer and Score state
     var score = 0
     var timer: Timer?
     var remainingTime = 30
@@ -34,13 +36,19 @@ class EmojiGameViewController: UIViewController {
 
     func startGame() {
         score = 0
+        skippedCount = 0
+        currentLevel = 0
+        
+        // 1. Shuffle the challenges from EmojiData
+        shuffledChallenges = EmojiData.challenges.shuffled()
+        
         updateScoreLabel()
         startTimer()
         nextChallenge()
     }
 
     func startTimer() {
-        timer?.invalidate() // Stop any existing timer
+        timer?.invalidate()
         remainingTime = 30
         updateTimerLabel()
         
@@ -56,24 +64,19 @@ class EmojiGameViewController: UIViewController {
         } else {
             timer?.invalidate()
             goToResults()
-            // Optional: Handle Game Over logic here
         }
     }
+    
     func goToResults() {
-            // Option A: If using Storyboards (Recommended)
-            // Make sure the "Identifier" for your result VC in Storyboard is "resultMimicTheEmoji"
-            if let resultVC = storyboard?.instantiateViewController(withIdentifier: "resultMimicTheEmoji") as? resultMimicTheEmoji {
-                
-                // Pass the data
-                resultVC.completedCount = self.score
-                resultVC.skippedCount = self.skippedCount
-                resultVC.timeTaken = 30
-                
-                // Navigate
-                resultVC.modalPresentationStyle = .fullScreen // Optional: makes it full screen
-                self.present(resultVC, animated: true, completion: nil)
-            }
+        if let resultVC = storyboard?.instantiateViewController(withIdentifier: "resultMimicTheEmoji") as? resultMimicTheEmoji {
+            resultVC.completedCount = self.score
+            resultVC.skippedCount = self.skippedCount
+            resultVC.timeTaken = 30
+            resultVC.modalPresentationStyle = .fullScreen
+            self.present(resultVC, animated: true, completion: nil)
         }
+    }
+
     func updateTimerLabel() {
         timeLeftLabel.text = "Time Left: \(remainingTime)"
     }
@@ -83,7 +86,13 @@ class EmojiGameViewController: UIViewController {
     }
 
     func nextChallenge() {
-        let challenge = EmojiData.challenges[currentLevel % EmojiData.challenges.count]
+        // 2. Safety check: If we run out of challenges, reshuffle and restart index
+        if currentLevel >= shuffledChallenges.count {
+            shuffledChallenges = EmojiData.challenges.shuffled()
+            currentLevel = 0
+        }
+        
+        let challenge = shuffledChallenges[currentLevel]
         arModel.currentChallenge = challenge
         emojiLabel.text = challenge.emoji
         emojiNameLabel.text = challenge.name
@@ -96,18 +105,16 @@ class EmojiGameViewController: UIViewController {
     }
 
     func handleSuccess() {
-        // Increase score
         score += 1
         updateScoreLabel()
 
-        // Trigger the Ring Animation
         if let scene = cameraContainerView.scene.anchors.first as? FaceRing.Scene {
             scene.notifications.ringAnimation.post()
         }
         
-        // Move to next emoji after a brief pause
         currentLevel += 1
-        DispatchQueue.main.asyncAfter(deadline: .now() + 1.5) {
+        // Pause briefly so the user sees the success animation before the emoji changes
+        DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
             self.nextChallenge()
         }
     }
@@ -117,10 +124,8 @@ class EmojiGameViewController: UIViewController {
         backgroundCard.backgroundColor = .white
         cameraContainerView.layer.cornerRadius = 20
         cameraContainerView.clipsToBounds = true
-        
         emojiLabel.font = UIFont.systemFont(ofSize: 150)
         
-        // Ensure the button is connected to the action if not using Storyboard
         skipButton.addTarget(self, action: #selector(skipButtonTapped(_:)), for: .touchUpInside)
     }
 }
