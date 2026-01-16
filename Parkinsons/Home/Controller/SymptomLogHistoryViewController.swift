@@ -23,7 +23,6 @@ class SymptomLogHistoryViewController: UIViewController , SymptomLogDetailDelega
     }
     
     private func setupCustomHeader() {
-        // Only set the initial title here, actions are connected via IBAction
     }
     
     private func updateTitle() {
@@ -51,7 +50,6 @@ class SymptomLogHistoryViewController: UIViewController , SymptomLogDetailDelega
         let storyboard = UIStoryboard(name: "Home", bundle: nil)
         
         guard let symptomVC = storyboard.instantiateViewController(withIdentifier: "SymptomLogDetailViewController") as? SymptomLogDetailViewController else {
-            print("Error: Could not instantiate SymptomLogDetailViewController.")
             return
         }
         
@@ -74,8 +72,6 @@ class SymptomLogHistoryViewController: UIViewController , SymptomLogDetailDelega
     }
 }
 
-// MARK: - UITableViewDataSource
-
 extension SymptomLogHistoryViewController: UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -89,14 +85,11 @@ extension SymptomLogHistoryViewController: UITableViewDataSource {
             return UITableViewCell()
         }
         
-        // Pass 'false' here because History mode is read-only
         cell.configure(with: rating, isEditable: false)
         
         return cell
     }
 }
-
-// MARK: - SymptomLogDetailDelegate
 
 extension SymptomLogHistoryViewController {
     
@@ -114,6 +107,6 @@ extension SymptomLogHistoryViewController {
     }
     
     func symptomLogDidCancel() {
-        // The modal is dismissed inside the SymptomLogDetailViewController.
+        
     }
 }

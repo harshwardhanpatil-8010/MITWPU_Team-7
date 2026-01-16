@@ -27,6 +27,15 @@ class profileViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        setupInitialUI()
+    }
+
+    override func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
+        logoBackground.layer.cornerRadius = logoBackground.frame.size.height / 2
+    }
+    
+    private func setupInitialUI() {
         logoBackground.layer.cornerRadius = logoBackground.frame.size.height / 2
         logoBackground.clipsToBounds = true
         logoBackground.backgroundColor = .systemGray4
@@ -34,69 +43,54 @@ class profileViewController: UIViewController {
         sexsSelector.setTitle(selectedSex, for: .normal)
         
         isEditingMode = false
-            editButton.title = "Edit"
-            editButton.image = nil
+        editButton.title = "Edit"
+        editButton.image = nil
         
         updateUI(forEditing: false)
-    }
-
-    override func viewDidLayoutSubviews() {
-        super.viewDidLayoutSubviews()
-        logoBackground.layer.cornerRadius = logoBackground.frame.size.height / 2
     }
 
     @IBAction func editButtonTapped(_ sender: UIBarButtonItem) {
         isEditingMode.toggle()
         
         if isEditingMode {
-            // --- SWITCH TO TICK (DONE STATE) ---
-            // Use the 'checkmark' SFSymbol
             let config = UIImage.SymbolConfiguration(weight: .bold)
             editButton.image = UIImage(systemName: "checkmark", withConfiguration: config)
             editButton.title = nil
-            editButton.style = .prominent // Makes it the primary action (Blue)
+            editButton.style = .prominent
             
             updateUI(forEditing: true)
-            
         } else {
-            // --- SWITCH TO EDIT (VIEW STATE) ---
             editButton.image = nil
             editButton.title = "Edit"
-            editButton.style = .plain // Normal weight
+            editButton.style = .plain
             
             updateUI(forEditing: false)
             
             if let newName = nameTextField.text, !newName.isEmpty {
                 nameBellowLogoLabel.text = newName
             }
-            
-            // Your data saving logic
         }
     }
     
     @IBAction func backButtonTapped(_ sender: UIBarButtonItem) {
         if isEditingMode {
-                // Show an alert to confirm discarding changes
-                let alert = UIAlertController(
-                    title: "Discard Changes?",
-                    message: "You have unsaved changes. Are you sure you want to go back?",
-                    preferredStyle: .alert
-                )
-                
-                // "Stay" - Just closes the alert
-                alert.addAction(UIAlertAction(title: "Stay", style: .cancel))
-                
-                // "Discard" - Closes the modal
-                alert.addAction(UIAlertAction(title: "Discard", style: .destructive) { [weak self] _ in
-                    self?.dismiss(animated: true, completion: nil)
-                })
-                
-                present(alert, animated: true)
-            } else {
-                // If not editing, just close the modal immediately
-                self.dismiss(animated: true, completion: nil)
-            }
+            let alert = UIAlertController(
+                title: "Discard Changes?",
+                message: "You have unsaved changes. Are you sure you want to go back?",
+                preferredStyle: .alert
+            )
+            
+            alert.addAction(UIAlertAction(title: "Stay", style: .cancel))
+            alert.addAction(UIAlertAction(title: "Discard", style: .destructive) { [weak self] _ in
+                self?.dismiss(animated: true)
+            })
+            
+            present(alert, animated: true)
+        } else {
+            self.dismiss(animated: true)
+        }
     }
+
     func updateUI(forEditing isEditing: Bool) {
         let editableFields: [UIView] = [
             nameTextField,
@@ -112,10 +106,10 @@ class profileViewController: UIViewController {
                 textField.borderStyle = isEditing ? .roundedRect : .none
                 textField.textAlignment = .right
             }
-            
-            if !isEditing {
-                view.endEditing(true)
-            }
+        }
+        
+        if !isEditing {
+            view.endEditing(true)
         }
     }
     
@@ -123,7 +117,6 @@ class profileViewController: UIViewController {
         guard isEditingMode else { return }
         
         let actionSheet = UIAlertController(title: "Select Sex", message: nil, preferredStyle: .actionSheet)
-        
         let sexes = ["Male", "Female", "Other", "Prefer not to say"]
         
         for sex in sexes {

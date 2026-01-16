@@ -7,25 +7,23 @@ class SummaryViewController: UIViewController {
         case medicationsSummary
         case exercises
     }
-    
-    // MARK: - Outlets
+   
     @IBOutlet weak var symptomTableView: UITableView!
     @IBOutlet weak var summaryTitleLabel: UILabel!
     @IBOutlet weak var mainCollectionView: UICollectionView!
-    
     @IBOutlet weak var closeBarButton: UIBarButtonItem!
-    // MARK: - Properties
+   
     var dateToDisplay: Date?
     var currentSymptomLog: SymptomLogEntry?
     let summarySections = Section.allCases
     
-    // Medication & Exercise Data
-    var medicationData: MedicationModel = MedicationModel(
+    var medicationData = MedicationModel(
         name: "Carbidopa",
         time: "9:00 AM",
         detail: "1 capsule",
         iconName: "Medication"
     )
+    
     var medicationTakenCount: Int = 1
     var medicationScheduledCount: Int = 2
     
@@ -33,8 +31,7 @@ class SummaryViewController: UIViewController {
         ExerciseModel(title: "10-Min Workout", detail: "Completed", progressPercentage: 100, progressColorHex: "0088FF"),
         ExerciseModel(title: "Rhythmic Walking", detail: "Missed", progressPercentage: 0, progressColorHex: "90AF81")
     ]
-    
-    // MARK: - Lifecycle
+   
     override func viewDidLoad() {
         super.viewDidLoad()
         setupUI()
@@ -42,25 +39,26 @@ class SummaryViewController: UIViewController {
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        // This is where the magic happens:
-        // Every time you come back to this screen, it fetches the latest saved data.
-        self.navigationController?.setNavigationBarHidden(true, animated: animated)
+        navigationController?.setNavigationBarHidden(true, animated: animated)
         loadDataForSelectedDate()
     }
     
-    // MARK: - Setup & Data Loading
     private func setupUI() {
         view.backgroundColor = .systemBackground
-        
-        // Setup TableView
+        setupTableView()
+        setupCollectionView()
+    }
+    
+    private func setupTableView() {
         symptomTableView.dataSource = self
         symptomTableView.delegate = self
         symptomTableView.register(UINib(nibName: "SymptomDetailCell", bundle: nil), forCellReuseIdentifier: SymptomDetailCell.reuseIdentifier)
         symptomTableView.rowHeight = 60.0
         symptomTableView.separatorStyle = .none
-        symptomTableView.isScrollEnabled = false // Table sits inside the view
-        
-        // Setup CollectionView
+        symptomTableView.isScrollEnabled = false
+    }
+    
+    private func setupCollectionView() {
         mainCollectionView.dataSource = self
         mainCollectionView.delegate = self
         mainCollectionView.register(UINib(nibName: "medicationSummary", bundle: nil), forCellWithReuseIdentifier: "MedicationSummaryCell")
@@ -72,11 +70,8 @@ class SummaryViewController: UIViewController {
     
     @objc func loadDataForSelectedDate() {
         let targetDate = dateToDisplay ?? Date()
+        currentSymptomLog = SymptomLogManager.shared.getLogEntry(for: targetDate)
         
-        // Fetch the data from your Manager (the data you just saved)
-        self.currentSymptomLog = SymptomLogManager.shared.getLogEntry(for: targetDate)
-        
-        // Update the UI components
         updateTitleUI(with: targetDate)
         symptomTableView.reloadData()
         mainCollectionView.reloadData()
@@ -102,9 +97,9 @@ class SummaryViewController: UIViewController {
         summaryTitleLabel.attributedText = attributedString
         summaryTitleLabel.numberOfLines = 0
     }
-    // MARK: - Actions
+
     @IBAction func closeButtonTapped(_ sender: Any) {
-        self.dismiss(animated: true, completion: nil)
+        dismiss(animated: true)
     }
     
     func generateSummaryLayout() -> UICollectionViewLayout {
@@ -112,24 +107,24 @@ class SummaryViewController: UIViewController {
             guard sectionIndex < self.summarySections.count else { return nil }
             let sectionType = self.summarySections[sectionIndex]
             
+            let section: NSCollectionLayoutSection
+            
             switch sectionType {
             case .medicationsSummary:
                 let item = NSCollectionLayoutItem(layoutSize: .init(widthDimension: .fractionalWidth(1.0), heightDimension: .fractionalHeight(1.0)))
                 let group = NSCollectionLayoutGroup.horizontal(layoutSize: .init(widthDimension: .fractionalWidth(1.0), heightDimension: .absolute(80)), subitems: [item])
-                let section = NSCollectionLayoutSection(group: group)
-                section.contentInsets = .init(top: 8, leading: 16, bottom: 24, trailing: 16)
-                section.boundarySupplementaryItems = [self.createHeaderItem()]
-                return section
+                section = NSCollectionLayoutSection(group: group)
                 
             case .exercises:
                 let item = NSCollectionLayoutItem(layoutSize: .init(widthDimension: .fractionalWidth(0.5), heightDimension: .fractionalHeight(1.0)))
                 item.contentInsets = .init(top: 0, leading: 2, bottom: 0, trailing: 4)
                 let group = NSCollectionLayoutGroup.horizontal(layoutSize: .init(widthDimension: .fractionalWidth(1.0), heightDimension: .absolute(190)), subitems: [item, item])
-                let section = NSCollectionLayoutSection(group: group)
-                section.contentInsets = .init(top: 8, leading: 16, bottom: 24, trailing: 16)
-                section.boundarySupplementaryItems = [self.createHeaderItem()]
-                return section
+                section = NSCollectionLayoutSection(group: group)
             }
+            
+            section.contentInsets = .init(top: 8, leading: 16, bottom: 24, trailing: 16)
+            section.boundarySupplementaryItems = [self.createHeaderItem()]
+            return section
         }
     }
     
@@ -142,7 +137,6 @@ class SummaryViewController: UIViewController {
     }
 }
 
-// MARK: - UITableViewDataSource
 extension SummaryViewController: UITableViewDataSource, UITableViewDelegate {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return currentSymptomLog?.ratings.count ?? 0
@@ -158,7 +152,6 @@ extension SummaryViewController: UITableViewDataSource, UITableViewDelegate {
     }
 }
 
-// MARK: - UICollectionViewDataSource
 extension SummaryViewController: UICollectionViewDataSource, UICollectionViewDelegate {
     func numberOfSections(in collectionView: UICollectionView) -> Int {
         return summarySections.count
@@ -173,45 +166,38 @@ extension SummaryViewController: UICollectionViewDataSource, UICollectionViewDel
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let sectionType = summarySections[indexPath.section]
+        
         switch sectionType {
         case .medicationsSummary:
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "MedicationSummaryCell", for: indexPath) as! MedicationSummaryCell
             cell.configure(with: medicationData, totalTaken: medicationTakenCount, totalScheduled: medicationScheduledCount)
             return cell
+            
         case .exercises:
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "exercise_card_cell", for: indexPath) as! ExerciseCardCell
             let model = exerciseData[indexPath.item]
             
-            // 1. Configure the basics (Title, Subtitle, Colors)
-            cell.configure(with: model)
-            
             if indexPath.item == 0 {
-                // --- 10-Min Workout Data ---
                 let completed = WorkoutManager.shared.completedToday.count
-                let total = WorkoutManager.shared.getTodayWorkout().count > 0 ? WorkoutManager.shared.getTodayWorkout().count : 7
-                
-                // This will show the "0/7" format seen in your screenshots
+                let total = max(WorkoutManager.shared.getTodayWorkout().count, 7)
                 cell.setProgress(completed: completed, total: total)
                 
-            } else if indexPath.item == 1 {
-                // --- Rhythmic Walking Data ---
+
+                cell.configure(with: model)
+                
+            } else {
+            
+                cell.configure(with: model) // Apply model first
                 if let lastSession = DataStore.shared.sessions.first {
-                    let done = Double(lastSession.elapsedSeconds)
-                    let goal = Double(lastSession.requestedDurationSeconds) > 0 ? Double(lastSession.requestedDurationSeconds) : 60.0
-                    
-                    // Set the actual ring fill
-                    cell.setProgress(completed: Int(done), total: Int(goal))
-                    
-                    // MATCH HOME VIEW: Calculate and force the percentage label
-                    let percentage = Int((done / goal) * 100)
-                    cell.progressLabel.text = "\(percentage)%"
+                    let done = lastSession.elapsedSeconds
+                    let goal = lastSession.requestedDurationSeconds > 0 ? lastSession.requestedDurationSeconds : 60
+                    cell.setProgress(completed: done, total: goal)
+                    cell.progressLabel.text = "\(Int((Double(done) / Double(goal)) * 100))%"
                 } else {
-                    // Default if no data exists
                     cell.setProgress(completed: 0, total: 1)
                     cell.progressLabel.text = "0%"
                 }
             }
-            
             return cell
         }
     }
