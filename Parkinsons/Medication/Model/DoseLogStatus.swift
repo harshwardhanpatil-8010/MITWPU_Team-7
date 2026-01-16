@@ -12,6 +12,12 @@ enum DoseLogStatus {
     case taken
     case skipped
 }
+enum DueState {
+    case none
+    case dueNow
+    case late
+    case veryLate   
+}
 
 extension DoseLogStatus {
     init(from status: DoseStatus) {

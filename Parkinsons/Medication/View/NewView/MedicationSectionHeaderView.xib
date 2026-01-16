@@ -13,23 +13,32 @@
             <rect key="frame" x="0.0" y="0.0" width="320" height="50"/>
             <autoresizingMask key="autoresizingMask"/>
             <subviews>
-                <stackView opaque="NO" contentMode="scaleToFill" spacing="182" translatesAutoresizingMaskIntoConstraints="NO" id="r16-kR-Rgx">
+                <stackView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="r16-kR-Rgx">
                     <rect key="frame" x="0.0" y="0.0" width="320" height="16"/>
                     <subviews>
                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="UBJ-mg-gLC">
-                            <rect key="frame" x="0.0" y="0.0" width="43.333333333333336" height="16"/>
+                            <rect key="frame" x="0.0" y="0.0" width="236" height="16"/>
+                            <constraints>
+                                <constraint firstAttribute="width" constant="236" id="EXy-4t-F74"/>
+                            </constraints>
                             <fontDescription key="fontDescription" style="UICTFontTextStyleHeadline"/>
                             <nil key="textColor"/>
                             <nil key="highlightedColor"/>
                         </label>
-                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="trailing" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="qRH-k3-k8I">
-                            <rect key="frame" x="225.33333333333334" y="0.0" width="94.666666666666657" height="16"/>
+                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="qRH-k3-k8I">
+                            <rect key="frame" x="236" y="0.0" width="68" height="16"/>
                             <state key="normal" title="Button"/>
                             <buttonConfiguration key="configuration" style="plain" title="Label"/>
                             <connections>
-                                <action selector="editTapped:" destination="U6b-Vx-4bR" eventType="touchUpInside" id="10q-3M-EdO"/>
+                                <action selector="actionTapped:" destination="U6b-Vx-4bR" eventType="touchUpInside" id="4GC-oe-bFw"/>
                             </connections>
                         </button>
+                        <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="5kS-o4-ij7">
+                            <rect key="frame" x="304" y="0.0" width="16" height="16"/>
+                            <constraints>
+                                <constraint firstAttribute="width" constant="16" id="AkN-Mg-QWx"/>
+                            </constraints>
+                        </imageView>
                     </subviews>
                 </stackView>
             </subviews>
@@ -42,6 +51,7 @@
             </constraints>
             <connections>
                 <outlet property="actionButton" destination="qRH-k3-k8I" id="YYF-5m-KYS"/>
+                <outlet property="arrowImageView" destination="5kS-o4-ij7" id="Ph8-jk-tmg"/>
                 <outlet property="timeLabel" destination="UBJ-mg-gLC" id="jwA-xB-PUW"/>
             </connections>
             <point key="canvasLocation" x="116.03053435114504" y="153.52112676056339"/>

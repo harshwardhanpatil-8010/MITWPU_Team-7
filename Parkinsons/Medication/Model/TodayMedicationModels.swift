@@ -15,7 +15,43 @@ struct TodayDoseItem {
     let iconName: String
     let scheduledTime: Date
     var logStatus: DoseLogStatus
+
+    var isDue: Bool {
+        let now = Date()
+
+        guard Calendar.current.isDateInToday(scheduledTime) else {
+            return false
+        }
+
+        return scheduledTime <= now && logStatus == .none
+    }
 }
+extension TodayDoseItem {
+
+    var dueState: DueState {
+    
+        guard logStatus == .none else { return .none }
+
+        let now = Date()
+        let diff = now.timeIntervalSince(scheduledTime) // seconds
+
+    
+        if diff < 0 {
+            return .none
+        }
+
+        let hoursLate = diff / 3600
+
+        if hoursLate < 2 {
+            return .dueNow
+        } else if hoursLate < 6 {
+            return .late
+        } else {
+            return .veryLate
+        }
+    }
+}
+
 
 struct TodayTimeSection {
     let time: Date
@@ -30,8 +66,4 @@ struct LoggedDoseItem: Identifiable {
     var status: DoseLogStatus
     let iconName: String
 }
-extension TodayDoseItem {
-    var isDue: Bool {
-        scheduledTime <= Date() && logStatus == .none
-    }
-}
+

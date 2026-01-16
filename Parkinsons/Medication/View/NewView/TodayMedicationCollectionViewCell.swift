@@ -33,11 +33,50 @@ class TodayMedicationCollectionViewCell: UICollectionViewCell {
         formatter.dateFormat = "a"
         timeAmPmLabel.text = formatter.string(from: dose.scheduledTime)
 
-        switch dose.logStatus {
-        case .none:
-            medContainerView.alpha = 1.0
-        case .taken, .skipped:
+       
+        dueStatus.isHidden = true
+        medContainerView.alpha = 1.0
+        medContainerView.layer.borderWidth = 0
+
+        
+        if dose.logStatus != .none {
             medContainerView.alpha = 0.5
+            return
+        }
+
+      
+        switch dose.dueState {
+        case .dueNow:
+            applyDueStyle(
+                text: "Due",
+                color: .systemYellow
+            )
+
+        case .late:
+            applyDueStyle(
+                text: "Due",
+                color: .systemOrange
+            )
+
+        case .veryLate:
+            applyDueStyle(
+                text: "Due",
+                color: .systemRed
+            )
+
+        case .none:
+            break
         }
     }
+    private func applyDueStyle(text: String, color: UIColor) {
+        dueStatus.isHidden = false
+        dueStatus.text = text
+        dueStatus.textColor = color
+
+        medContainerView.layer.borderWidth = 1
+        medContainerView.layer.borderColor = color.withAlphaComponent(0.6).cgColor
+    }
+
+
+
 }
