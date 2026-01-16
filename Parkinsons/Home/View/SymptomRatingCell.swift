@@ -20,7 +20,7 @@ class SymptomRatingCell: UITableViewCell {
         label.textAlignment = .center
         label.layer.cornerRadius = 15
         label.layer.masksToBounds = true
-        label.alpha = 0 // Initially completely invisible
+        label.alpha = 0
         return label
     }()
 
@@ -35,7 +35,6 @@ class SymptomRatingCell: UITableViewCell {
     @objc private func ratingButtonTapped(_ sender: UIButton) {
         guard let intensity = SymptomRating.Intensity(rawValue: sender.tag) else { return }
         
-        // Show the bubble with animation only when a button is physically tapped
         showBubble(above: sender, text: intensity.displayName, animated: true)
         
         delegate?.didSelectIntensity(intensity, in: self)
@@ -54,7 +53,6 @@ class SymptomRatingCell: UITableViewCell {
         let buttonFrameInCell = button.convert(button.bounds, to: self.contentView)
         
         let calculatedCenterX = buttonFrameInCell.midX
-        // Using +10 keeps it closer to the button than +15 or +20, preventing clipping
         let calculatedCenterY = buttonFrameInCell.maxY + 8
         
         bubbleLabel.center = CGPoint(x: calculatedCenterX, y: calculatedCenterY)
@@ -77,16 +75,13 @@ class SymptomRatingCell: UITableViewCell {
         symptomLabel.text = rating.name
         symptomIcon.image = UIImage(named: rating.iconName ?? "questionmark.circle.fill")
         
-        // Start with bubble hidden
         bubbleLabel.alpha = 0
         
         ratingButtons.forEach { button in
             guard let buttonIntensity = SymptomRating.Intensity(rawValue: button.tag) else { return }
             
-            // If rating.selectedIntensity is nil, isSelected will be false for everyone
             let isSelected = (buttonIntensity == rating.selectedIntensity)
             
-            // ... (your existing icon switching logic) ...
             let baseIconName: String
             switch buttonIntensity {
             case .mild: baseIconName = "mild"
@@ -101,7 +96,6 @@ class SymptomRatingCell: UITableViewCell {
                 let selectedColor: UIColor = (buttonIntensity == .notPresent) ? .systemRed : .systemBlue
                 button.tintColor = selectedColor
                 
-                // This will now only run if a button was actually clicked/saved
                 showBubble(above: button, text: buttonIntensity.displayName, animated: false)
             } else {
                 button.tintColor = .systemGray
@@ -110,7 +104,6 @@ class SymptomRatingCell: UITableViewCell {
     }
 }
 
-// Fixed Extension - Place this at the very bottom of the file
 extension SymptomRating.Intensity {
     var displayName: String {
         switch self {

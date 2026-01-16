@@ -18,7 +18,7 @@ class ExerciseCardCell: UICollectionViewCell {
 
     private var progressView: CircularProgressViewHome!
     
-    // ⭐️ Store the color from the model to use it during setProgress
+   
     private var themeColor: UIColor = UIColor(hex: "#0088FF")
 
     override func awakeFromNib() {
