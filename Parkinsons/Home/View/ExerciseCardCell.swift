@@ -18,15 +18,15 @@ class ExerciseCardCell: UICollectionViewCell {
 
     private var progressView: CircularProgressViewHome!
     
-    // ⭐️ Store the color from the model to use it during setProgress
+   
     private var themeColor: UIColor = UIColor(hex: "#0088FF")
 
     override func awakeFromNib() {
         super.awakeFromNib()
         self.clipsToBounds = false
         self.contentView.clipsToBounds = false
-        
         setupCircularProgress()
+        progressView.trackColor = themeColor.withAlphaComponent(0.3)
         setupCardStyle()
     }
     
@@ -38,29 +38,59 @@ class ExerciseCardCell: UICollectionViewCell {
         progressRingContainer.backgroundColor = .clear
     }
 
-    func setProgress(completed: Int, total: Int) {
-        progressLabel.text = "\(completed)/\(total)"
-        let progress = total == 0 ? 0 : CGFloat(completed) / CGFloat(total)
-        progressView.setProgress(progress)
-
-        // ⭐️ Use themeColor instead of hardcoded .systemBlue
-        if completed == total && total > 0 {
-            progressView.progressColor = .systemGreen // Optional: Keep green for 100% completion
-        } else {
-            progressView.progressColor = themeColor
-        }
-    }
+//    func setProgress(completed: Int, total: Int) {
+//        progressLabel.text = "\(completed)/\(total)"
+//        let progress = total == 0 ? 0 : CGFloat(completed) / CGFloat(total)
+//        progressView.setProgress(progress)
+//
+//        // ⭐️ Use themeColor instead of hardcoded .systemBlue
+//        if completed == total && total > 0 {
+//            progressView.progressColor = .systemGreen // Optional: Keep green for 100% completion
+//        } else {
+//            progressView.progressColor = themeColor
+//        }
+//    }
+//    
+//    func configure(with model: ExerciseModel) {
+//        titleLabel.text = model.title
+//        detailLabel.text = model.detail
+//        
+//        // ⭐️ Convert hex string from model to UIColor and store it
+//        self.themeColor = UIColor(hex: model.progressColorHex)
+//        
+//        // Apply to the UI
+//        progressView.progressColor = self.themeColor
+//        progressView.trackColor = .systemGray5
+//    }
     
     func configure(with model: ExerciseModel) {
         titleLabel.text = model.title
         detailLabel.text = model.detail
         
-        // ⭐️ Convert hex string from model to UIColor and store it
-        self.themeColor = UIColor(hex: model.progressColorHex)
+        // 1. Convert hex string and store it
+        let color = UIColor(hex: model.progressColorHex)
+        self.themeColor = color
         
-        // Apply to the UI
-        progressView.progressColor = self.themeColor
-        progressView.trackColor = .systemGray5
+        // 2. Apply to the UI
+        progressView.progressColor = color
+        
+        // 3. Set the track color to have 0.3 alpha of the theme color
+        progressView.trackColor = color.withAlphaComponent(0.2)
+    }
+
+    func setProgress(completed: Int, total: Int) {
+        progressLabel.text = "\(completed)/\(total)"
+        let progress = total == 0 ? 0 : CGFloat(completed) / CGFloat(total)
+        progressView.setProgress(progress)
+
+        if completed == total && total > 0 {
+            progressView.progressColor = .systemGreen
+            // Optional: Make the track green too for a consistent look
+            progressView.trackColor = UIColor.systemGreen.withAlphaComponent(0.2)
+        } else {
+            progressView.progressColor = themeColor
+            progressView.trackColor = themeColor.withAlphaComponent(0.2)
+        }
     }
         
     func setupCardStyle() {

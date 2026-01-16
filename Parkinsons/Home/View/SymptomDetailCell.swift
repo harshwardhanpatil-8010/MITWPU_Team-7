@@ -8,7 +8,6 @@ class SymptomDetailCell: UITableViewCell {
     
     static let reuseIdentifier = "SymptomDetailCell"
 
-    // 1. Add the closure to notify the ViewController of changes
     var onRatingChanged: ((SymptomRating.Intensity) -> Void)?
 
     private func imageForIntensity(_ intensity: SymptomRating.Intensity?) -> UIImage? {
@@ -24,15 +23,12 @@ class SymptomDetailCell: UITableViewCell {
         return UIImage(named: assetName)
     }
 
-    // 2. Update signature to include isEditable
     func configure(with rating: SymptomRating, isEditable: Bool) {
         symptomNameLabel.text = rating.name
         
-        // Symptom Icon
         symptomIconImageView.image = UIImage(named: rating.iconName ?? "doc.text.image")
         symptomIconImageView.tintColor = .label
         
-        // Intensity Logic
         if let intensity = rating.selectedIntensity {
             intensityIconImageView.isHidden = false
             intensityIconImageView.image = imageForIntensity(intensity)
@@ -47,7 +43,6 @@ class SymptomDetailCell: UITableViewCell {
             intensityIconImageView.isHidden = true
         }
         
-        // 3. Handle UI changes for "Edit Mode"
         if isEditable {
             self.backgroundColor = UIColor.systemGray6 // Light gray to show it's "active"
             self.accessoryType = .disclosureIndicator  // Shows a small arrow >

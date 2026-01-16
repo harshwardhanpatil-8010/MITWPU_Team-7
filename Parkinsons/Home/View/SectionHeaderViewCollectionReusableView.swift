@@ -11,7 +11,6 @@ class SectionHeaderView: UICollectionReusableView {
         super.init(frame: frame)
         
         titleLabel.translatesAutoresizingMaskIntoConstraints = false
-        // Keep your default style here
         titleLabel.font = UIFont.systemFont(ofSize: 20, weight: .bold)
         titleLabel.textColor = .black
         addSubview(titleLabel)
@@ -55,7 +54,6 @@ class SectionHeaderView: UICollectionReusableView {
         titleLabel.textAlignment = alignment
     }
 
-    // ⭐️ ADD THIS: New function to change font dynamically
     func setFont(size: CGFloat, weight: UIFont.Weight) {
         titleLabel.font = UIFont.systemFont(ofSize: size, weight: weight)
     }

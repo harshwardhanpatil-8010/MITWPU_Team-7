@@ -106,7 +106,6 @@
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="lse-ik-cY0">
                                         <rect key="frame" x="0.0" y="0.0" width="393" height="1400"/>
                                         <subviews>
-
                                             <navigationBar contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="zue-hZ-5cI">
                                                 <rect key="frame" x="0.0" y="16" width="393" height="54"/>
                                                 <items>
@@ -371,10 +370,9 @@
                                         <constraints>
                                             <constraint firstItem="V1K-Ng-q0q" firstAttribute="top" secondItem="CEx-36-I22" secondAttribute="bottom" constant="20" id="0GU-CT-gdJ"/>
                                             <constraint firstItem="CEx-36-I22" firstAttribute="leading" secondItem="lse-ik-cY0" secondAttribute="leading" constant="16" id="2n0-Ui-WWI"/>
-
                                             <constraint firstItem="YCm-Cl-pvf" firstAttribute="top" secondItem="zue-hZ-5cI" secondAttribute="bottom" constant="25" id="4OJ-Zr-nSO"/>
                                             <constraint firstAttribute="trailing" secondItem="LWa-Ap-rd7" secondAttribute="trailing" constant="16" id="7kC-eC-taH"/>
-                     <constraint firstAttribute="height" constant="1400" id="JRs-5n-CKC"/>
+                                            <constraint firstAttribute="height" constant="1400" id="JRs-5n-CKC"/>
                                             <constraint firstItem="CEx-36-I22" firstAttribute="top" secondItem="LWa-Ap-rd7" secondAttribute="bottom" constant="20" id="KjW-Mj-8xt"/>
                                             <constraint firstItem="LWa-Ap-rd7" firstAttribute="leading" secondItem="lse-ik-cY0" secondAttribute="leading" constant="16" id="QcR-Ab-zr0"/>
                                             <constraint firstAttribute="trailing" secondItem="V1K-Ng-q0q" secondAttribute="trailing" constant="16" id="UYQ-me-jm6"/>
@@ -384,7 +382,6 @@
                                             <constraint firstItem="YCm-Cl-pvf" firstAttribute="leading" secondItem="lse-ik-cY0" secondAttribute="leading" constant="136" id="gjN-1o-oFC"/>
                                             <constraint firstItem="V1K-Ng-q0q" firstAttribute="leading" secondItem="lse-ik-cY0" secondAttribute="leading" constant="16" id="nYC-2z-ygh"/>
                                             <constraint firstItem="zue-hZ-5cI" firstAttribute="leading" secondItem="lse-ik-cY0" secondAttribute="leading" id="pbh-qK-aXF"/>
-
                                             <constraint firstItem="zue-hZ-5cI" firstAttribute="top" secondItem="lse-ik-cY0" secondAttribute="top" constant="16" id="w6M-I8-XAx"/>
                                         </constraints>
                                     </view>
@@ -429,9 +426,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="9yg-n2-ccj" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-
             <point key="canvasLocation" x="8281.6793893129761" y="130.98591549295776"/>
-
         </scene>
         <!--Summary View Controller-->
         <scene sceneID="JX6-DI-2Z2">
@@ -445,7 +440,7 @@
                                 <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
                                 <subviews>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="mTm-Yk-S5Z">
-                                        <rect key="frame" x="0.0" y="0.0" width="393" height="1400"/>
+                                        <rect key="frame" x="0.0" y="0.0" width="393" height="1000"/>
                                         <subviews>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="aS2-ck-cYL">
                                                 <rect key="frame" x="0.0" y="24" width="393" height="20.333333333333329"/>
@@ -477,10 +472,10 @@
                                                 </cells>
                                             </collectionView>
                                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="-1" estimatedSectionHeaderHeight="-1" sectionFooterHeight="-1" estimatedSectionFooterHeight="-1" translatesAutoresizingMaskIntoConstraints="NO" id="yPm-mc-eYY">
-                                                <rect key="frame" x="8" y="536" width="377" height="933"/>
+                                                <rect key="frame" x="8" y="536" width="377" height="423"/>
                                                 <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                                                 <constraints>
-                                                    <constraint firstAttribute="height" constant="933" id="BRw-ma-AoR"/>
+                                                    <constraint firstAttribute="height" constant="423" id="BRw-ma-AoR"/>
                                                 </constraints>
                                             </tableView>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Symptom Faced" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="zAz-VH-ul4">
@@ -489,6 +484,18 @@
                                                 <nil key="textColor"/>
                                                 <nil key="highlightedColor"/>
                                             </label>
+                                            <navigationBar contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="4Vc-ZU-xKC">
+                                                <rect key="frame" x="0.0" y="24" width="393" height="54"/>
+                                                <items>
+                                                    <navigationItem id="cGP-LO-sBi">
+                                                        <barButtonItem key="leftBarButtonItem" systemItem="cancel" id="XxA-9r-CJv">
+                                                            <connections>
+                                                                <action selector="closeButtonTapped:" destination="nNj-Yq-I9R" id="BH7-pY-nT5"/>
+                                                            </connections>
+                                                        </barButtonItem>
+                                                    </navigationItem>
+                                                </items>
+                                            </navigationBar>
                                         </subviews>
                                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                                         <constraints>
@@ -499,9 +506,12 @@
                                             <constraint firstItem="yPm-mc-eYY" firstAttribute="leading" secondItem="mTm-Yk-S5Z" secondAttribute="leading" constant="8" id="JYI-U8-AsB"/>
                                             <constraint firstItem="aS2-ck-cYL" firstAttribute="top" secondItem="mTm-Yk-S5Z" secondAttribute="top" constant="24" id="NRd-eE-4yQ"/>
                                             <constraint firstItem="3Sv-Y6-W7P" firstAttribute="top" secondItem="mTm-Yk-S5Z" secondAttribute="top" constant="96" id="SWH-zG-Psi"/>
-                                            <constraint firstAttribute="height" constant="1400" id="emh-2B-knG"/>
+                                            <constraint firstItem="4Vc-ZU-xKC" firstAttribute="top" secondItem="mTm-Yk-S5Z" secondAttribute="top" constant="24" id="YZa-mp-ReY"/>
+                                            <constraint firstItem="4Vc-ZU-xKC" firstAttribute="leading" secondItem="mTm-Yk-S5Z" secondAttribute="leading" id="bxL-Xx-1KY"/>
+                                            <constraint firstAttribute="height" constant="1000" id="emh-2B-knG"/>
                                             <constraint firstAttribute="trailing" secondItem="yPm-mc-eYY" secondAttribute="trailing" constant="8" id="i1F-Kq-Cm9"/>
                                             <constraint firstItem="aS2-ck-cYL" firstAttribute="leading" secondItem="mTm-Yk-S5Z" secondAttribute="leading" id="uSR-dE-6zo"/>
+                                            <constraint firstAttribute="trailing" secondItem="4Vc-ZU-xKC" secondAttribute="trailing" id="uwU-V0-AQg"/>
                                             <constraint firstItem="yPm-mc-eYY" firstAttribute="top" secondItem="zAz-VH-ul4" secondAttribute="bottom" id="wKl-GA-Bnl"/>
                                             <constraint firstItem="3Sv-Y6-W7P" firstAttribute="leading" secondItem="mTm-Yk-S5Z" secondAttribute="leading" constant="8" id="z8U-OH-elB"/>
                                         </constraints>
@@ -526,6 +536,7 @@
                         </constraints>
                     </view>
                     <connections>
+                        <outlet property="closeBarButton" destination="XxA-9r-CJv" id="RLn-BN-Nyi"/>
                         <outlet property="mainCollectionView" destination="3Sv-Y6-W7P" id="4ah-0k-mvp"/>
                         <outlet property="summaryTitleLabel" destination="aS2-ck-cYL" id="7o4-J2-TV9"/>
                         <outlet property="symptomTableView" destination="yPm-mc-eYY" id="WfJ-z9-zPQ"/>
@@ -533,7 +544,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="AhG-Fs-kFv" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="9111" y="-532"/>
+            <point key="canvasLocation" x="9110.6870229007636" y="-532.3943661971831"/>
         </scene>
         <!--Symptom Log Detail View Controller-->
         <scene sceneID="mFU-7C-uHf">
@@ -836,6 +847,7 @@
         <!--Today-->
         <scene sceneID="B9H-BA-D7G">
             <objects>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="yhd-xZ-krt" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
                 <navigationController storyboardIdentifier="home" automaticallyAdjustsScrollViewInsets="NO" useStoryboardIdentifierAsRestorationIdentifier="YES" id="nLe-cF-Rbs" sceneMemberID="viewController">
                     <tabBarItem key="tabBarItem" title="Today" image="sun.max" catalog="system" selectedImage="sun.max.fill" id="cFu-hJ-Xek"/>
                     <toolbarItems/>
@@ -848,13 +860,13 @@
                         <segue destination="Y6W-OH-hqX" kind="relationship" relationship="rootViewController" id="Hlp-be-Isu"/>
                     </connections>
                 </navigationController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="yhd-xZ-krt" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="6625.1908396946565" y="130.98591549295776"/>
         </scene>
         <!--Tab Bar Controller-->
         <scene sceneID="54R-SX-i29">
             <objects>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="cFk-lH-maA" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
                 <tabBarController automaticallyAdjustsScrollViewInsets="NO" id="hog-PK-88T" sceneMemberID="viewController">
                     <toolbarItems/>
                     <tabBar key="tabBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="7kf-VR-hGf">
@@ -865,10 +877,9 @@
                     <connections>
                         <segue destination="nLe-cF-Rbs" kind="relationship" relationship="viewControllers" id="5u2-8H-9Wc"/>
                         <segue destination="wIr-ag-Mds" kind="relationship" relationship="viewControllers" id="quZ-Wb-rpZ"/>
-                        <segue destination="bwp-oz-6zm" kind="relationship" relationship="viewControllers" id="Dbz-ic-YHR"/>
+                        <segue destination="bwp-oz-6zm" kind="relationship" relationship="viewControllers" id="0fH-PV-KRf"/>
                     </connections>
                 </tabBarController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="cFk-lH-maA" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="5698.4732824427483" y="130.98591549295776"/>
         </scene>
@@ -948,6 +959,7 @@
         <!--Medication-->
         <scene sceneID="e6q-vS-CMc">
             <objects>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="V1w-bt-eoP" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
                 <navigationController automaticallyAdjustsScrollViewInsets="NO" id="wIr-ag-Mds" sceneMemberID="viewController">
                     <tabBarItem key="tabBarItem" title="Medication" image="pill" catalog="system" selectedImage="pill.fill" id="VjS-7T-15O"/>
                     <toolbarItems/>
@@ -960,13 +972,13 @@
                         <segue destination="xFp-SB-aAy" kind="relationship" relationship="rootViewController" id="FnI-hR-iA1"/>
                     </connections>
                 </navigationController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="V1w-bt-eoP" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="6601" y="915"/>
         </scene>
         <!--Symptoms-->
         <scene sceneID="XfD-PV-QLI">
             <objects>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="IsS-fC-IPj" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
                 <navigationController automaticallyAdjustsScrollViewInsets="NO" id="bwp-oz-6zm" sceneMemberID="viewController">
                     <tabBarItem key="tabBarItem" title="Symptoms" image="list.bullet.clipboard" catalog="system" selectedImage="list.bullet.clipboard.fill" id="rvJ-Q2-SpB"/>
                     <toolbarItems/>
@@ -979,9 +991,8 @@
                         <segue destination="Lag-sg-ew0" kind="relationship" relationship="rootViewController" id="vpU-AU-Jb6"/>
                     </connections>
                 </navigationController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="IsS-fC-IPj" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="5698" y="898"/>
+            <point key="canvasLocation" x="4338" y="710"/>
         </scene>
     </scenes>
     <resources>

@@ -2,13 +2,11 @@ import UIKit
 
 class SymptomViewController: UIViewController {
 
-    // MARK: - Outlets
     @IBOutlet weak var collectionView: UICollectionView!
     @IBOutlet weak var editAndSaveButton: UIButton!
     @IBOutlet weak var symptomBackground: UIView!
     @IBOutlet weak var tableView: UITableView!
     
-    // MARK: - Properties
     @IBOutlet weak var tableViewHeightConstraint: NSLayoutConstraint!
     var dates: [DateModel] = []
     var selectedDate: Date = Date()
@@ -21,17 +19,16 @@ class SymptomViewController: UIViewController {
     }
     
     enum ViewMode {
-        case history // Viewing existing logs (SymptomDetailCell)
-        case entry   // Adding/Editing logs (SymptomRatingCell)
+        case history
+        case entry
     }
 
     var currentMode: ViewMode = .history
     
-    // MARK: - Lifecycle
     override func viewDidLoad() {
         super.viewDidLoad()
         
-       //tableView.isScrollEnabled = true
+     
         
         dates = HomeDataStore.shared.getDates()
         tableView.separatorStyle = .none
@@ -45,20 +42,26 @@ class SymptomViewController: UIViewController {
         tableView.dataSource = self
         tableView.delegate = self
                 
-        setupTableViewUI() // Call it here
+        setupTableViewUI()
         updateDataForSelectedDate()
         setupSymptomBackgroundUI()
+    }
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        
+        collectionView.reloadData()
+        
+        DispatchQueue.main.async {
+            self.scrollToSelectedDate(animated: false)
+        }
     }
     func setupTableViewUI() {
         tableView.layer.cornerRadius = 25
         tableView.layer.masksToBounds = true
         
-        // Optional: If you want the table to match the background's look
-        // without its own border, keep it clear.
-//        tableView.backgroundColor = .clear
+      
     }
-    // MARK: - UI Setup
-    func setupSymptomBackgroundUI() {
+        func setupSymptomBackgroundUI() {
         symptomBackground.layer.cornerRadius = 25
         symptomBackground.layer.shadowColor = UIColor.black.cgColor
         symptomBackground.layer.shadowOffset = CGSize(width: 0, height: 4)
@@ -70,25 +73,21 @@ class SymptomViewController: UIViewController {
         let rowHeight: CGFloat = (currentMode == .entry) ? 130 : 70
         let totalRows = CGFloat(currentDayLogs.count)
         
-        // Calculate total height
         let calculatedHeight = totalRows * rowHeight
         
-        // Apply to your constraint
         tableViewHeightConstraint.constant = calculatedHeight
         
-        // Animate the background stretching
         UIView.animate(withDuration: 0.3) {
             self.view.layoutIfNeeded()
         }
     }
     func registerCells() {
-        // CollectionView Cells
+        
         collectionView.register(UINib(nibName: "CalenderCollectionViewCell", bundle: nil), forCellWithReuseIdentifier: "calendar_cell")
         collectionView.register(UINib(nibName: "tremorCard", bundle: nil), forCellWithReuseIdentifier: "tremor_cell")
         collectionView.register(UINib(nibName: "gaitCard", bundle: nil), forCellWithReuseIdentifier: "gait_cell")
         collectionView.register(SectionHeaderView.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: "HeaderView")
-        
-        // TableView Cells
+       
         let detailNib = UINib(nibName: "SymptomDetailCell", bundle: nil)
         tableView.register(detailNib, forCellReuseIdentifier: SymptomDetailCell.reuseIdentifier)
         
@@ -96,21 +95,20 @@ class SymptomViewController: UIViewController {
         tableView.register(ratingNib, forCellReuseIdentifier: "SymptomRatingCell")
     }
 
-    // MARK: - Data Management
     func updateDataForSelectedDate() {
         if let entry = SymptomLogManager.shared.getLogEntry(for: selectedDate) {
             self.currentDayLogs = entry.ratings
             self.currentMode = .history
             editAndSaveButton.setTitle("Edit", for: .normal)
         } else {
-            // No data: Go to entry mode automatically and load default list
+            
             loadDefaultSymptoms()
             self.currentMode = .entry
             editAndSaveButton.setTitle("Save", for: .normal)
         }
         
         tableView.reloadData()
-        updateTableViewHeight() // Added this
+        updateTableViewHeight()
         collectionView.reloadData()
     }
 
@@ -126,7 +124,7 @@ class SymptomViewController: UIViewController {
         ]
     }
 
-    // MARK: - Actions
+   
     @IBAction func editAndSaveTapped(_ sender: UIButton) {
         if currentMode == .history {
             currentMode = .entry
@@ -136,7 +134,6 @@ class SymptomViewController: UIViewController {
                 loadDefaultSymptoms()
             }
         } else {
-            // Save logic
             let newEntry = SymptomLogEntry(date: selectedDate, ratings: currentDayLogs)
             SymptomLogManager.shared.saveLogEntry(newEntry)
             
@@ -144,10 +141,9 @@ class SymptomViewController: UIViewController {
             editAndSaveButton.setTitle("Edit", for: .normal)
         }
         tableView.reloadData()
-        updateTableViewHeight() // Added this
+        updateTableViewHeight()
     }
-    
-    // MARK: - Layout
+   
     func generateLayout() -> UICollectionViewLayout {
         return UICollectionViewCompositionalLayout { sectionIndex, env in
             guard let sectionType = Section(rawValue: sectionIndex) else { return nil }
@@ -192,15 +188,12 @@ class SymptomViewController: UIViewController {
             }
         }
     }
-    
-    // MARK: - Helper Methods
+   
     func autoSelectToday() {
         if let index = dates.firstIndex(where: { Calendar.current.isDate($0.date, inSameDayAs: Date()) }) {
             selectedDate = dates[index].date
-            DispatchQueue.main.async {
-                let indexPath = IndexPath(item: index, section: 0)
-                self.collectionView.selectItem(at: indexPath, animated: false, scrollPosition: .centeredHorizontally)
-            }
+            // Use the new centralized helper
+            scrollToSelectedDate(animated: false)
         }
     }
 
@@ -211,7 +204,6 @@ class SymptomViewController: UIViewController {
     }
 }
 
-// MARK: - Collection View Data Source & Delegate
 extension SymptomViewController: UICollectionViewDataSource, UICollectionViewDelegate {
     
     func numberOfSections(in collectionView: UICollectionView) -> Int {
@@ -264,13 +256,24 @@ extension SymptomViewController: UICollectionViewDataSource, UICollectionViewDel
     }
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-
         guard let sectionType = Section(rawValue: indexPath.section) else { return }
 
         switch sectionType {
-
         case .calendar:
-            selectedDate = dates[indexPath.row].date
+            let newDate = dates[indexPath.row].date
+            selectedDate = newDate
+            
+            if let header = collectionView.supplementaryView(forElementKind: UICollectionView.elementKindSectionHeader, at: IndexPath(item: 0, section: 0)) as? SectionHeaderView {
+                let dateString = formattedDateString(for: selectedDate)
+                let isToday = Calendar.current.isDateInToday(selectedDate)
+                header.configure(title: isToday ? "Today, \(dateString)" : dateString)
+            }
+            
+            let visibleCalendarIndices = collectionView.indexPathsForVisibleItems.filter { $0.section == Section.calendar.rawValue }
+            collectionView.reloadItems(at: visibleCalendarIndices)
+
+            collectionView.scrollToItem(at: indexPath, at: .centeredHorizontally, animated: true)
+            
             updateDataForSelectedDate()
 
         case .tremor:
@@ -278,6 +281,16 @@ extension SymptomViewController: UICollectionViewDataSource, UICollectionViewDel
 
         case .gait:
             navigateToSymptomDetail(type: .gait)
+        }
+    }
+    func scrollToSelectedDate(animated: Bool) {
+        if let index = dates.firstIndex(where: { Calendar.current.isDate($0.date, inSameDayAs: selectedDate) }) {
+            let indexPath = IndexPath(item: index, section: Section.calendar.rawValue)
+            
+            collectionView.layoutIfNeeded()
+            
+            collectionView.scrollToItem(at: indexPath, at: .centeredHorizontally, animated: animated)
+            collectionView.selectItem(at: indexPath, animated: animated, scrollPosition: [])
         }
     }
     private func navigateToSymptomDetail(type: Section) {
@@ -302,7 +315,6 @@ extension SymptomViewController: UICollectionViewDataSource, UICollectionViewDel
 
 }
 
-// MARK: - Table View Data Source & Delegate
 extension SymptomViewController: UITableViewDataSource, UITableViewDelegate {
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -313,7 +325,6 @@ extension SymptomViewController: UITableViewDataSource, UITableViewDelegate {
         let rating = currentDayLogs[indexPath.row]
         
         if currentMode == .entry {
-            // Show the expanded cell with buttons
             guard let cell = tableView.dequeueReusableCell(withIdentifier: "SymptomRatingCell", for: indexPath) as? SymptomRatingCell else {
                 return UITableViewCell()
             }
@@ -321,7 +332,6 @@ extension SymptomViewController: UITableViewDataSource, UITableViewDelegate {
             cell.configure(with: rating)
             return cell
         } else {
-            // Show the compact history cell
             guard let cell = tableView.dequeueReusableCell(withIdentifier: SymptomDetailCell.reuseIdentifier, for: indexPath) as? SymptomDetailCell else {
                 return UITableViewCell()
             }
@@ -335,11 +345,10 @@ extension SymptomViewController: UITableViewDataSource, UITableViewDelegate {
     }
 }
 
-// MARK: - SymptomRatingCellDelegate
 extension SymptomViewController: SymptomRatingCellDelegate {
     func didSelectIntensity(_ intensity: SymptomRating.Intensity, in cell: SymptomRatingCell) {
         guard let indexPath = tableView.indexPath(for: cell) else { return }
-        // Update local data source
+       
         currentDayLogs[indexPath.row].selectedIntensity = intensity
     }
 }
