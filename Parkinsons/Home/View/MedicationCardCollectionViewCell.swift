@@ -1,3 +1,8 @@
+protocol MedicationCardDelegate: AnyObject {
+    func didTapTaken(for dose: TodayDoseItem)
+    func didTapSkipped(for dose: TodayDoseItem)
+}
+
 import UIKit
 
 class MedicationCardCollectionViewCell: UICollectionViewCell {
@@ -9,9 +14,17 @@ class MedicationCardCollectionViewCell: UICollectionViewCell {
     @IBOutlet weak var iconImageView: UIImageView!
     @IBOutlet weak var takenButton: UIButton!
     @IBOutlet weak var skippedButton: UIButton!
-
+    
+    weak var delegate: MedicationCardDelegate?
+    private var currentDose: TodayDoseItem?
+    
     override func awakeFromNib() {
         super.awakeFromNib()
+        
+        // Ensure the cell and its background allow touches
+        self.isUserInteractionEnabled = true
+        self.contentView.isUserInteractionEnabled = true
+        BackgroundMedication.isUserInteractionEnabled = true
         
         self.clipsToBounds = false
         self.contentView.clipsToBounds = false
@@ -24,52 +37,49 @@ class MedicationCardCollectionViewCell: UICollectionViewCell {
     
     override func layoutSubviews() {
         super.layoutSubviews()
-        
         iconImageView.layer.cornerRadius = iconImageView.frame.height / 2.0
         iconImageView.clipsToBounds = true
     }
-    
+
+    @IBAction func takenTapped(_ sender: Any) {
+        print("Button Action: Taken Tapped")
+        guard let dose = currentDose else { return }
+        delegate?.didTapTaken(for: dose)
+    }
+
+    @IBAction func skippedTapped(_ sender: Any) {
+        print("Button Action: Skipped Tapped")
+        guard let dose = currentDose else { return }
+        delegate?.didTapSkipped(for: dose)
+    }
+
     func setupCardStyle() {
-        let cornerRadius: CGFloat = 23
-        let shadowColor: UIColor = .black
-        let shadowOpacity: Float = 0.15
-        let shadowRadius: CGFloat = 3
-        let shadowOffset: CGSize = .init(width: 0, height: 1)
-
-        BackgroundMedication.layer.cornerRadius = cornerRadius
+        BackgroundMedication.layer.cornerRadius = 23
         BackgroundMedication.layer.masksToBounds = false
-
-        BackgroundMedication.layer.shadowColor = shadowColor.cgColor
-        BackgroundMedication.layer.shadowOpacity = shadowOpacity
-        BackgroundMedication.layer.shadowRadius = shadowRadius
-        BackgroundMedication.layer.shadowOffset = shadowOffset
+        BackgroundMedication.layer.shadowColor = UIColor.black.cgColor
+        BackgroundMedication.layer.shadowOpacity = 0.15
+        BackgroundMedication.layer.shadowRadius = 3
+        BackgroundMedication.layer.shadowOffset = CGSize(width: 0, height: 1)
     }
     
-    // MedicationCardCollectionViewCell.swift
-
     func configure(with dose: TodayDoseItem) {
-        // 1. Format the Date into a String (e.g., "10:00 AM")
+        self.currentDose = dose // CRITICAL: Must store this to pass back to delegate
+        
         let formatter = DateFormatter()
         formatter.dateFormat = "h:mm a"
-        let timeString = formatter.string(from: dose.scheduledTime)
+        timeLabel.text = formatter.string(from: dose.scheduledTime)
         
-        // 2. Set the labels
         nameLabel.text = dose.medicationName
-        timeLabel.text = timeString
         detailLabel.text = dose.medicationForm
-        
-        // 3. Set the icon
         iconImageView.image = UIImage(named: dose.iconName)
         
-        // 4. Handle the "Logged" state (Alpha Fading)
+        // Logic for disappearing/fading
         if dose.logStatus != .none {
-            self.contentView.alpha = 0.5
-            takenButton.isHidden = true
-            skippedButton.isHidden = true
+            self.contentView.alpha = 0.0 // Change to 0.0 to make it fully "disappear"
+            self.isHidden = true
         } else {
             self.contentView.alpha = 1.0
-            takenButton.isHidden = false
-            skippedButton.isHidden = false
+            self.isHidden = false
         }
     }
 }

@@ -115,26 +115,41 @@ class HomeViewController: UIViewController, UICollectionViewDelegate, SymptomLog
 //        mainCollectionView.reloadData()
 //    }
     private func loadRealMedicationData() {
-        // 1. Get real meds from the store
         let myMedications = MedicationDataStore.shared.medications
-        
-        // 2. Use the ViewModel to calculate what's due today
         todayViewModel.loadTodayMedications(from: myMedications)
         
-        // 3. Load logs to see what was already taken/skipped
         todayViewModel.loadLoggedDoses(
             medications: myMedications,
             logs: DoseLogDataStore.shared.logs,
             for: Date()
         )
         
-        // 4. Combine Due and Upcoming doses for the Home display
-        let due = todayViewModel.todayDoses.filter { $0.isDue }
-        let upcoming = todayViewModel.todayDoses.filter { !$0.isDue }
-        self.todayDoses = due + upcoming
+        // --- THIS FILTER IS WHAT MAKES THE CARD DISAPPEAR ---
+        let unloggedDoses = todayViewModel.todayDoses.filter { dose in
+            !todayViewModel.loggedDoses.contains(where: { $0.id == dose.id })
+        }
         
-        // 5. Refresh the UI
-        mainCollectionView.reloadData()
+        self.todayDoses = unloggedDoses
+        self.mainCollectionView.reloadData()
+    }
+    private func updateDose(_ dose: TodayDoseItem, status: DoseLogStatus) {
+        let log = DoseLog(
+            id: UUID(),
+            medicationID: dose.medicationID,
+            doseID: dose.id,
+            scheduledTime: dose.scheduledTime,
+            loggedAt: Date(),
+            status: DoseStatus(from: status),
+            day: Date().startOfDay
+        )
+
+        DoseLogDataStore.shared.logDose(log)
+        
+        // Refresh the home screen immediately
+        loadRealMedicationData()
+        
+        // Broadcast to other screens (like the Medication tab) to update as well
+        NotificationCenter.default.post(name: NSNotification.Name("MedicationLogged"), object: nil)
     }
     func setupSeparator() {
         view.addSubview(separatorView)
@@ -394,13 +409,9 @@ extension HomeViewController: UICollectionViewDataSource {
             
         case .medications:
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "MedicationCardCell", for: indexPath) as! MedicationCardCollectionViewCell
-            
-            // Get the dynamic data item
             let doseItem = todayDoses[indexPath.row]
-            
-            // Pass the dynamic data into the old cell
             cell.configure(with: doseItem)
-            
+            cell.delegate = self // This MUST be set
             return cell
             
         case .exercises:
@@ -483,5 +494,14 @@ extension HomeViewController {
         let formatter = DateFormatter()
         formatter.dateFormat = "d MMMM yyyy"
         return formatter.string(from: date)
+    }
+}
+extension HomeViewController: MedicationCardDelegate {
+    func didTapTaken(for dose: TodayDoseItem) {
+        updateDose(dose, status: .taken)
+    }
+    
+    func didTapSkipped(for dose: TodayDoseItem) {
+        updateDose(dose, status: .skipped)
     }
 }

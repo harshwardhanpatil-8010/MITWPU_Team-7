@@ -55,6 +55,14 @@ final class MainMedicationViewController: UIViewController {
            ) { [weak self] _ in
                self?.loadMedications()
            }
+        
+        NotificationCenter.default.addObserver(
+                self,
+                selector: #selector(refreshData),
+                name: NSNotification.Name("MedicationLogged"),
+                object: nil
+            )
+        
 
     }
     deinit {
@@ -62,7 +70,10 @@ final class MainMedicationViewController: UIViewController {
             NotificationCenter.default.removeObserver(observer)
         }
     }
-
+    @objc private func refreshData() {
+        // Call your existing load function
+        self.loadMedications()
+    }
     private func updateNoMedicationState() {
         let shouldShowLabel: Bool
 
