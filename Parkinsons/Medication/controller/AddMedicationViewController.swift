@@ -56,16 +56,20 @@ class AddMedicationViewController: UIViewController,
         tickButton.isEnabled = false
         medicationNameTextField.delegate = self
 
-        medicationNameTextField.addTarget(
-            self,
-            action: #selector(medicationNameChanged),
+        medicationNameTextField.addAction(
+            UIAction { [weak self] _ in
+                self?.evaluateTickButtonState()
+            },
             for: .editingChanged
         )
-        strengthLabel.addTarget(
-            self,
-            action: #selector(anyFieldChanged),
+
+        strengthLabel.addAction(
+            UIAction { [weak self] _ in
+                self?.evaluateTickButtonState()
+            },
             for: .editingChanged
         )
+
 
         let tap = UITapGestureRecognizer(target: self, action: #selector(dismissKeyboard))
         view.addGestureRecognizer(tap)
@@ -100,15 +104,6 @@ class AddMedicationViewController: UIViewController,
     @objc func dismissKeyboard() {
         view.endEditing(true)
     }
-    
-    @objc private func medicationNameChanged() {
-        evaluateTickButtonState()
-    }
-    
-    @objc private func anyFieldChanged() {
-        evaluateTickButtonState()
-    }
-    
     func updateLabelPlaceholderStyle(label: UILabel, placeholder: String) {
         label.textColor = (label.text == placeholder) ? .systemGray2 : .label
     }

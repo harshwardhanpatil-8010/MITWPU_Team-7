@@ -13,13 +13,32 @@ final class MainMedicationViewController: UIViewController {
         case today
         case myMedication
     }
-    
+    private var allMedicationsLoggedToday: Bool {
+        dueDoses.isEmpty && upcomingDoses.isEmpty && !loggedDoses.isEmpty
+    }
+    private var isShowingAllUpcoming = false
+    private var displayedUpcomingDoses: [TodayDoseItem] {
+        if isShowingAllUpcoming {
+            return upcomingDoses
+        } else {
+            return Array(upcomingDoses.prefix(3))
+        }
+    }
+
+    private var dueDoses: [TodayDoseItem] {
+        todayViewModel.todayDoses.filter { $0.isDue }
+    }
+
+    private var upcomingDoses: [TodayDoseItem] {
+        todayViewModel.todayDoses.filter { !$0.isDue }
+    }
+
     private var loggedDoses: [LoggedDoseItem] = []
     private var isEditingLogged = false
     private let todayViewModel = TodayMedicationViewModel()
     private var currentSegment: SegmentType = .today
     private var myMedications: [Medication] = []
-
+    private var didBecomeActiveObserver: NSObjectProtocol?
     override func viewDidLoad() {
         super.viewDidLoad()
         setupCollectionView()
@@ -28,6 +47,19 @@ final class MainMedicationViewController: UIViewController {
         self.definesPresentationContext = true
         if let layout = medicationCollectionView.collectionViewLayout as? UICollectionViewFlowLayout {
             layout.headerReferenceSize = .zero
+        }
+        didBecomeActiveObserver = NotificationCenter.default.addObserver(
+               forName: UIApplication.didBecomeActiveNotification,
+               object: nil,
+               queue: .main
+           ) { [weak self] _ in
+               self?.loadMedications()
+           }
+
+    }
+    deinit {
+        if let observer = didBecomeActiveObserver {
+            NotificationCenter.default.removeObserver(observer)
         }
     }
 
@@ -117,20 +149,19 @@ final class MainMedicationViewController: UIViewController {
             forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader,
             withReuseIdentifier: "MedicationSectionHeaderView"
         )
+        
+        medicationCollectionView.register(
+            UINib(nibName: "LoggedEmptyFooterView", bundle: nil),
+            forSupplementaryViewOfKind: UICollectionView.elementKindSectionFooter,
+            withReuseIdentifier: "LoggedEmptyFooterView"
+        )
+
     }
 
     @IBAction func segmentChanged(_ sender: UISegmentedControl) {
         currentSegment = sender.selectedSegmentIndex == 0 ? .today : .myMedication
         loadMedications()
         updateUIForSegment()
-    }
-
-    @objc private func medicationUpdated() {
-        loadMedications()
-    }
-
-    deinit {
-        NotificationCenter.default.removeObserver(self)
     }
 
     private func updateLoggedStatus(_ item: LoggedDoseItem, status: DoseLogStatus) {
@@ -170,16 +201,18 @@ final class MainMedicationViewController: UIViewController {
     
     @IBAction func editButtonTapped(_ sender: Any) {
         let storyboard = UIStoryboard(name: "Medication", bundle: nil)
-           let vc = storyboard.instantiateViewController(
-               withIdentifier: "EditMedicationViewController"
-           ) as! EditMedicationViewController
+        let vc = storyboard.instantiateViewController(
+            withIdentifier: "EditMedicationViewController"
+        ) as! EditMedicationViewController
 
-           vc.medications = myMedications
+        vc.medications = myMedications
+        vc.delegate = self  
 
-           let nav = UINavigationController(rootViewController: vc)
-           nav.modalPresentationStyle = .formSheet
-           present(nav, animated: true)
+        let nav = UINavigationController(rootViewController: vc)
+        nav.modalPresentationStyle = .formSheet
+        present(nav, animated: true)
     }
+
     
     
 
@@ -206,27 +239,63 @@ extension MainMedicationViewController: UICollectionViewDataSource {
         at indexPath: IndexPath
     ) -> UICollectionReusableView {
 
-        guard kind == UICollectionView.elementKindSectionHeader else {
-            return UICollectionReusableView()
+        if kind == UICollectionView.elementKindSectionHeader {
+            let header = collectionView.dequeueReusableSupplementaryView(
+                ofKind: kind,
+                withReuseIdentifier: "MedicationSectionHeaderView",
+                for: indexPath
+            ) as! MedicationSectionHeaderView
+
+            if indexPath.section == 0 {
+
+                let hasMoreThanThreeUpcoming = upcomingDoses.count > 3
+
+                header.configure(
+                    title: "Today Medications",
+                    actionTitle: hasMoreThanThreeUpcoming
+                        ? (isShowingAllUpcoming ? "Show Less" : "Show All")
+                        : nil,
+                    action: hasMoreThanThreeUpcoming ? .showAll : nil,
+                    isExpanded: isShowingAllUpcoming
+                )
+            }
+
+             else {
+                header.configure(
+                    title: "Logged",
+                    actionTitle: "Edit",
+                    action: .edit
+                )
+            }
+
+            header.delegate = self
+            return header
         }
 
-        let header = collectionView.dequeueReusableSupplementaryView(
-            ofKind: kind,
-            withReuseIdentifier: "MedicationSectionHeaderView",
-            for: indexPath
-        ) as! MedicationSectionHeaderView
+        if kind == UICollectionView.elementKindSectionFooter,
+           currentSegment == .today {
 
-        if currentSegment == .today {
-            if indexPath.section == 0 {
-                header.configure(title: "Upcoming Medications", showEdit: false)
-            } else {
-                header.configure(title: "Logged", showEdit: true)
-                header.delegate = self
+            let footer = collectionView.dequeueReusableSupplementaryView(
+                ofKind: kind,
+                withReuseIdentifier: "LoggedEmptyFooterView",
+                for: indexPath
+            ) as! LoggedEmptyFooterView
+
+            if indexPath.section == 1 && loggedDoses.isEmpty {
+                footer.configure(message: "No medications logged yet")
+                return footer
+            }
+            
+            if indexPath.section == 0 && allMedicationsLoggedToday {
+                footer.configure(message: "All medications logged for today")
+                return footer
             }
         }
 
-        return header
+        return UICollectionReusableView()
     }
+
+
 
     func numberOfSections(in collectionView: UICollectionView) -> Int {
         return currentSegment == .today ? 2 : 1
@@ -238,7 +307,7 @@ extension MainMedicationViewController: UICollectionViewDataSource {
     ) -> Int {
         if currentSegment == .today {
             return section == 0
-                ? todayViewModel.todayDoses.count
+                ? dueDoses.count + displayedUpcomingDoses.count
                 : loggedDoses.count
         }
         return myMedications.count
@@ -255,7 +324,16 @@ extension MainMedicationViewController: UICollectionViewDataSource {
                     for: indexPath
                 ) as! TodayMedicationCollectionViewCell
 
-                cell.configure(with: todayViewModel.todayDoses[indexPath.item])
+                let item: TodayDoseItem
+
+                if indexPath.item < dueDoses.count {
+                    item = dueDoses[indexPath.item]
+                } else {
+                    item = displayedUpcomingDoses[indexPath.item - dueDoses.count]
+                }
+
+                cell.configure(with: item)
+
                 return cell
             }
 
@@ -280,6 +358,32 @@ extension MainMedicationViewController: UICollectionViewDataSource {
 }
 
 extension MainMedicationViewController: UICollectionViewDelegateFlowLayout {
+    func collectionView(
+        _ collectionView: UICollectionView,
+        layout collectionViewLayout: UICollectionViewLayout,
+        referenceSizeForHeaderInSection section: Int
+    ) -> CGSize {
+        guard currentSegment == .today else { return .zero }
+        return CGSize(width: collectionView.bounds.width, height: 36)
+    }
+    func collectionView(
+        _ collectionView: UICollectionView,
+        layout collectionViewLayout: UICollectionViewLayout,
+        referenceSizeForFooterInSection section: Int
+    ) -> CGSize {
+
+        guard currentSegment == .today else { return .zero }
+
+        if section == 1 && loggedDoses.isEmpty {
+            return CGSize(width: collectionView.bounds.width, height: 80)
+        }
+
+        if section == 0 && allMedicationsLoggedToday {
+            return CGSize(width: collectionView.bounds.width, height: 80)
+        }
+
+        return .zero
+    }
 
     func collectionView(
         _ collectionView: UICollectionView,
@@ -296,6 +400,7 @@ extension MainMedicationViewController: UICollectionViewDelegateFlowLayout {
 
         return .zero
     }
+    
 
     func collectionView(
         _ collectionView: UICollectionView,
@@ -330,15 +435,7 @@ extension MainMedicationViewController: UICollectionViewDelegateFlowLayout {
 }
 
 extension MainMedicationViewController: UICollectionViewDelegate {
-    func collectionView(
-        _ collectionView: UICollectionView,
-        layout collectionViewLayout: UICollectionViewLayout,
-        referenceSizeForHeaderInSection section: Int
-    ) -> CGSize {
-        guard currentSegment == .today else { return .zero }
-        return CGSize(width: collectionView.bounds.width, height: 36)
-    }
-
+    
     func collectionView(
         _ collectionView: UICollectionView,
         didSelectItemAt indexPath: IndexPath
@@ -346,9 +443,16 @@ extension MainMedicationViewController: UICollectionViewDelegate {
         guard currentSegment == .today else { return }
         guard indexPath.section == 0 else { return }
 
-        let dose = todayViewModel.todayDoses[indexPath.item]
+        let dose: TodayDoseItem
+        if indexPath.item < dueDoses.count {
+            dose = dueDoses[indexPath.item]
+        } else {
+            dose = displayedUpcomingDoses[indexPath.item - dueDoses.count]
+        }
+
         presentDoseAlert(for: dose)
     }
+
 }
 
 extension MainMedicationViewController {
@@ -371,10 +475,28 @@ extension MainMedicationViewController {
 
 extension MainMedicationViewController: MedicationSectionHeaderViewDelegate {
 
-    func didTapEditLoggedSection() {
-        isEditingLogged.toggle()
-        medicationCollectionView.reloadSections(IndexSet(integer: 1))
+    func didTapShowAllToday() {
+        isShowingAllUpcoming.toggle()
+
+        medicationCollectionView.performBatchUpdates {
+            medicationCollectionView.reloadSections(IndexSet(integer: 0))
+        }
     }
+
+    func didTapEditLoggedSection() {
+        let storyboard = UIStoryboard(name: "Medication", bundle: nil)
+        let vc = storyboard.instantiateViewController(
+            withIdentifier: "EditLogViewController"
+        ) as! EditLogViewController
+
+        vc.loggedDoses = loggedDoses
+        vc.delegate = self
+
+        let nav = UINavigationController(rootViewController: vc)
+        nav.modalPresentationStyle = .formSheet
+        present(nav, animated: true)
+    }
+
 }
 
 extension MainMedicationViewController: AddMedicationDelegate {
@@ -382,3 +504,11 @@ extension MainMedicationViewController: AddMedicationDelegate {
         loadMedications()
     }
 }
+extension MainMedicationViewController: EditLogDelegate {
+
+    func didUpdateLoggedDoses(_ updated: [LoggedDoseItem]) {
+        self.loggedDoses = updated
+        medicationCollectionView.reloadSections(IndexSet(integer: 1)) // Logged section
+    }
+}
+

@@ -60,11 +60,11 @@
                                             <constraint firstAttribute="width" constant="46" id="VTg-Xj-Flf"/>
                                         </constraints>
                                     </imageView>
-                                    <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="7" translatesAutoresizingMaskIntoConstraints="NO" id="Aj1-KL-sjf">
+                                    <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="Aj1-KL-sjf">
                                         <rect key="frame" x="129" y="0.0" width="185.33333333333337" height="46"/>
                                         <subviews>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="HIQ-Hl-jqi">
-                                                <rect key="frame" x="0.0" y="0.0" width="185.33333333333334" height="23.333333333333332"/>
+                                                <rect key="frame" x="0.0" y="0.0" width="185.33333333333334" height="30.333333333333332"/>
                                                 <fontDescription key="fontDescription" type="system" weight="medium" pointSize="15"/>
                                                 <nil key="textColor"/>
                                                 <nil key="highlightedColor"/>
@@ -79,6 +79,9 @@
                                     </stackView>
                                     <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="yPz-TV-Rta">
                                         <rect key="frame" x="323.33333333333337" y="0.0" width="25" height="46"/>
+                                        <accessibility key="accessibilityConfiguration">
+                                            <accessibilityTraits key="traits" image="YES" notEnabled="YES"/>
+                                        </accessibility>
                                         <gestureRecognizers/>
                                         <constraints>
                                             <constraint firstAttribute="width" constant="25" id="bBh-F8-dBo"/>
