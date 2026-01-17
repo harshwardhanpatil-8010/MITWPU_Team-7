@@ -45,10 +45,31 @@ class MedicationCardCollectionViewCell: UICollectionViewCell {
         BackgroundMedication.layer.shadowOffset = shadowOffset
     }
     
-    func configure(with model: MedicationModel) {
-        timeLabel.text = model.time
-        nameLabel.text = model.name
-        detailLabel.text = model.detail
+    // MedicationCardCollectionViewCell.swift
 
+    func configure(with dose: TodayDoseItem) {
+        // 1. Format the Date into a String (e.g., "10:00 AM")
+        let formatter = DateFormatter()
+        formatter.dateFormat = "h:mm a"
+        let timeString = formatter.string(from: dose.scheduledTime)
+        
+        // 2. Set the labels
+        nameLabel.text = dose.medicationName
+        timeLabel.text = timeString
+        detailLabel.text = dose.medicationForm
+        
+        // 3. Set the icon
+        iconImageView.image = UIImage(named: dose.iconName)
+        
+        // 4. Handle the "Logged" state (Alpha Fading)
+        if dose.logStatus != .none {
+            self.contentView.alpha = 0.5
+            takenButton.isHidden = true
+            skippedButton.isHidden = true
+        } else {
+            self.contentView.alpha = 1.0
+            takenButton.isHidden = false
+            skippedButton.isHidden = false
+        }
     }
 }

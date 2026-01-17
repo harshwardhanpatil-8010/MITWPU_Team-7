@@ -10,6 +10,9 @@ enum Section: Int, CaseIterable {
 
 class HomeViewController: UIViewController, UICollectionViewDelegate, SymptomLogCellDelegate, SymptomLogDetailDelegate {
     
+    private let todayViewModel = TodayMedicationViewModel()
+    private var todayDoses: [TodayDoseItem] = []
+    
     @IBOutlet weak var mainCollectionView: UICollectionView!
     
     let homeSections = Section.allCases
@@ -69,6 +72,7 @@ class HomeViewController: UIViewController, UICollectionViewDelegate, SymptomLog
         mainCollectionView.setCollectionViewLayout(generateLayout(), animated: true)
         
         dates = HomeDataStore.shared.getDates()
+        loadRealMedicationData()
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -88,7 +92,39 @@ class HomeViewController: UIViewController, UICollectionViewDelegate, SymptomLog
         nav.modalPresentationStyle = .pageSheet
         present(nav, animated: true)
     }
-    
+    func refreshMedicationData() {
+        let allMeds = MedicationDataStore.shared.medications
+        todayViewModel.loadTodayMedications(from: allMeds)
+        
+        // Combine due and upcoming doses just like in MainMedicationViewController
+        let due = todayViewModel.todayDoses.filter { $0.isDue }
+        let upcoming = todayViewModel.todayDoses.filter { !$0.isDue }
+        self.todayDoses = due + upcoming
+        
+        mainCollectionView.reloadData()
+    }
+    private func loadRealMedicationData() {
+        // 1. Get real meds from the store
+        let myMedications = MedicationDataStore.shared.medications
+        
+        // 2. Use the ViewModel to calculate what's due today
+        todayViewModel.loadTodayMedications(from: myMedications)
+        
+        // 3. Load logs to see what was already taken/skipped
+        todayViewModel.loadLoggedDoses(
+            medications: myMedications,
+            logs: DoseLogDataStore.shared.logs,
+            for: Date()
+        )
+        
+        // 4. Combine Due and Upcoming doses for the Home display
+        let due = todayViewModel.todayDoses.filter { $0.isDue }
+        let upcoming = todayViewModel.todayDoses.filter { !$0.isDue }
+        self.todayDoses = due + upcoming
+        
+        // 5. Refresh the UI
+        mainCollectionView.reloadData()
+    }
     func setupSeparator() {
         view.addSubview(separatorView)
         NSLayoutConstraint.activate([
@@ -101,7 +137,8 @@ class HomeViewController: UIViewController, UICollectionViewDelegate, SymptomLog
     
     func registerCells() {
         mainCollectionView.register(UINib(nibName: "CalenderCollectionViewCell", bundle: nil), forCellWithReuseIdentifier: "calendar_cell")
-        mainCollectionView.register(UINib(nibName: "MedicationCardCollectionViewCell", bundle: nil), forCellWithReuseIdentifier: "medication_card_cell")
+        mainCollectionView.register(UINib(nibName: "MedicationCardCollectionViewCell", bundle: nil),
+                                    forCellWithReuseIdentifier: "MedicationCardCell")
         mainCollectionView.register(UINib(nibName: "ExerciseCardCell", bundle: nil), forCellWithReuseIdentifier: "exercise_card_cell")
         mainCollectionView.register(UINib(nibName: "SymptomLogCell", bundle: nil), forCellWithReuseIdentifier: "symptom_log_cell")
         mainCollectionView.register(UINib(nibName: "TherapeuticGameCell", bundle: nil), forCellWithReuseIdentifier: "therapeutic_game_cell")
@@ -142,13 +179,17 @@ class HomeViewController: UIViewController, UICollectionViewDelegate, SymptomLog
             case .medications:
                 let itemSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: .fractionalHeight(1.0))
                 let item = NSCollectionLayoutItem(layoutSize: itemSize)
-                let groupSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(0.9), heightDimension: .absolute(100))
+                
+                // Using absolute 120 to match the TodayMedicationCollectionViewCell design
+                let groupSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(0.9), heightDimension: .absolute(120))
                 let group = NSCollectionLayoutGroup.horizontal(layoutSize: groupSize, subitems: [item])
+                
                 let section = NSCollectionLayoutSection(group: group)
+                section.orthogonalScrollingBehavior = .groupPaging // Allows side-scrolling for multiple meds
                 section.interGroupSpacing = 12
                 section.contentInsets = NSDirectionalEdgeInsets(top: 8, leading: 16, bottom: 24, trailing: 16)
-                section.orthogonalScrollingBehavior = .continuous
                 
+                // Add the header (Upcoming Medications)
                 let headerSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: .absolute(30))
                 let header = NSCollectionLayoutBoundarySupplementaryItem(
                     layoutSize: headerSize,
@@ -156,7 +197,8 @@ class HomeViewController: UIViewController, UICollectionViewDelegate, SymptomLog
                     alignment: .top
                 )
                 section.boundarySupplementaryItems = [header]
-                return section
+                
+                return section // This is the line that was missing!
                 
             case .exercises:
                 let itemSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(0.5), heightDimension: .fractionalHeight(1.0))
@@ -319,7 +361,8 @@ extension HomeViewController: UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         switch homeSections[section] {
         case .calendar: return dates.count
-        case .medications: return medicationData.count
+        case .medications:
+            return todayDoses.count
         case .exercises: return exerciseData.count
         case .symptoms: return 1
         case .therapeuticGames: return therapeuticGamesData.count
@@ -339,8 +382,14 @@ extension HomeViewController: UICollectionViewDataSource {
             return cell
             
         case .medications:
-            let cell = mainCollectionView.dequeueReusableCell(withReuseIdentifier: "medication_card_cell", for: indexPath) as! MedicationCardCollectionViewCell
-            cell.configure(with: medicationData[indexPath.row])
+            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "MedicationCardCell", for: indexPath) as! MedicationCardCollectionViewCell
+            
+            // Get the dynamic data item
+            let doseItem = todayDoses[indexPath.row]
+            
+            // Pass the dynamic data into the old cell
+            cell.configure(with: doseItem)
+            
             return cell
             
         case .exercises:
