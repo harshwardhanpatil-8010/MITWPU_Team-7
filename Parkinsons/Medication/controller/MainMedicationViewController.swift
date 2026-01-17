@@ -470,6 +470,7 @@ extension MainMedicationViewController {
 
         DoseLogDataStore.shared.logDose(log)
         loadMedications()
+        NotificationCenter.default.post(name: NSNotification.Name("MedicationLogged"), object: nil)
     }
 }
 

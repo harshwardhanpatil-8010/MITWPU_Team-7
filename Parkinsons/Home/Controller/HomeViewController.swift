@@ -73,6 +73,17 @@ class HomeViewController: UIViewController, UICollectionViewDelegate, SymptomLog
         
         dates = HomeDataStore.shared.getDates()
         loadRealMedicationData()
+        
+        NotificationCenter.default.addObserver(
+                self,
+                selector: #selector(refreshMedicationData),
+                name: NSNotification.Name("MedicationLogged"),
+                object: nil
+            )
+        
+    }
+    @objc private func refreshMedicationData() {
+        loadRealMedicationData()
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -92,17 +103,17 @@ class HomeViewController: UIViewController, UICollectionViewDelegate, SymptomLog
         nav.modalPresentationStyle = .pageSheet
         present(nav, animated: true)
     }
-    func refreshMedicationData() {
-        let allMeds = MedicationDataStore.shared.medications
-        todayViewModel.loadTodayMedications(from: allMeds)
-        
-        // Combine due and upcoming doses just like in MainMedicationViewController
-        let due = todayViewModel.todayDoses.filter { $0.isDue }
-        let upcoming = todayViewModel.todayDoses.filter { !$0.isDue }
-        self.todayDoses = due + upcoming
-        
-        mainCollectionView.reloadData()
-    }
+//    func refreshMedicationData() {
+//        let allMeds = MedicationDataStore.shared.medications
+//        todayViewModel.loadTodayMedications(from: allMeds)
+//        
+//        // Combine due and upcoming doses just like in MainMedicationViewController
+//        let due = todayViewModel.todayDoses.filter { $0.isDue }
+//        let upcoming = todayViewModel.todayDoses.filter { !$0.isDue }
+//        self.todayDoses = due + upcoming
+//        
+//        mainCollectionView.reloadData()
+//    }
     private func loadRealMedicationData() {
         // 1. Get real meds from the store
         let myMedications = MedicationDataStore.shared.medications
