@@ -503,6 +503,7 @@ extension MainMedicationViewController: MedicationSectionHeaderViewDelegate {
 extension MainMedicationViewController: AddMedicationDelegate {
     func didUpdateMedication() {
         loadMedications()
+        NotificationCenter.default.post(name: NSNotification.Name("MedicationLogged"), object: nil)
     }
 }
 extension MainMedicationViewController: EditLogDelegate {
