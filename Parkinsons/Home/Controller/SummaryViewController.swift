@@ -40,7 +40,6 @@ class SummaryViewController: UIViewController {
             }
     }
     deinit {
-        // We clean up here using the variable we stored
         if let observer = medicationObserver {
             NotificationCenter.default.removeObserver(observer)
         }
@@ -82,15 +81,12 @@ class SummaryViewController: UIViewController {
         let targetDate = dateToDisplay ?? Date()
         currentSymptomLog = SymptomLogManager.shared.getLogEntry(for: targetDate)
         
-        // 1. Fetch fresh data from shared stores
         let allMeds = MedicationDataStore.shared.medications
         let allLogs = DoseLogDataStore.shared.logs
         
-        // 2. Load and assign logged doses
         todayViewModel.loadLoggedDoses(medications: allMeds, logs: allLogs, for: targetDate)
         self.loggedDoses = todayViewModel.loggedDoses
         
-        // 3. Update summary totals
         self.totalScheduled = loggedDoses.count
         self.totalTaken = loggedDoses.filter { $0.status == .taken }.count
         
@@ -98,24 +94,21 @@ class SummaryViewController: UIViewController {
             let formatter = DateFormatter()
             formatter.dateFormat = "h:mm a"
             
-            // Find the original log to get the correct scheduledTime
             let originalLog = allLogs.first(where: { $0.id == firstLogged.id })
             let dateToFormat = originalLog?.scheduledTime ?? firstLogged.loggedTime
             let timeString = formatter.string(from: dateToFormat)
             
-            // 4. Create the model with the updated status (.taken or .skipped)
             self.primaryMedication = MedicationModel(
                 name: firstLogged.medicationName,
                 time: timeString,
                 detail: firstLogged.medicationForm,
                 iconName: firstLogged.iconName,
-                status: firstLogged.status // This is now the updated status from the DB
+                status: firstLogged.status
             )
         } else {
             self.primaryMedication = nil
         }
         
-        // 5. Refresh the UI
         updateTitleUI(with: targetDate)
         symptomTableView.reloadData()
         mainCollectionView.reloadData()
@@ -180,7 +173,6 @@ class SummaryViewController: UIViewController {
     }
 }
 
-// MARK: - TableView Extensions
 extension SummaryViewController: UITableViewDataSource, UITableViewDelegate {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return currentSymptomLog?.ratings.count ?? 0
@@ -196,7 +188,6 @@ extension SummaryViewController: UITableViewDataSource, UITableViewDelegate {
     }
 }
 
-// MARK: - CollectionView Extensions
 extension SummaryViewController: UICollectionViewDataSource, UICollectionViewDelegate {
     func numberOfSections(in collectionView: UICollectionView) -> Int {
         return summarySections.count

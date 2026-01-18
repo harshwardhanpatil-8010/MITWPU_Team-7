@@ -21,7 +21,6 @@ class MedicationCardCollectionViewCell: UICollectionViewCell {
     override func awakeFromNib() {
         super.awakeFromNib()
         
-        // Ensure the cell and its background allow touches
         self.isUserInteractionEnabled = true
         self.contentView.isUserInteractionEnabled = true
         BackgroundMedication.isUserInteractionEnabled = true

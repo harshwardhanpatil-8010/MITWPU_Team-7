@@ -50,17 +50,13 @@ class MedicationSummaryCell: UICollectionViewCell {
         detailLabel.text = model.detail
         medicationIconImageView.image = UIImage(named: model.iconName)
         
-        // Check the INDIVIDUAL status first
         if model.status == .skipped {
-            // Individual Skip: Red X
             statusLabel.attributedText = imageAttachment(systemName: "xmark")
             statusLabel.textColor = .systemRed
         } else if model.status == .taken {
-            // Individual Taken: Green Check
             statusLabel.attributedText = imageAttachment(systemName: "checkmark")
             statusLabel.textColor = .systemGreen
         } else {
-            // Fallback to your progress logic if status is none
             if totalScheduled == 0 {
                 statusLabel.text = "--"
                 statusLabel.textColor = .systemGray
