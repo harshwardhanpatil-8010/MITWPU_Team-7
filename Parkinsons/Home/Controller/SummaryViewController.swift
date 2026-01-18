@@ -72,23 +72,22 @@ class SummaryViewController: UIViewController {
         let allMeds = MedicationDataStore.shared.medications
         let allLogs = DoseLogDataStore.shared.logs
         
-        // Load logged doses for the specific selected date
         todayViewModel.loadLoggedDoses(medications: allMeds, logs: allLogs, for: targetDate)
         self.loggedDoses = todayViewModel.loggedDoses
         
-        // Calculate totals for the summary card
         self.totalScheduled = loggedDoses.count
         self.totalTaken = loggedDoses.filter { $0.status == .taken }.count
         
-        // Map the first item found to the MedicationModel for the UI
         if let firstLogged = loggedDoses.first {
-            // We know 'medicationName' and 'iconName' exist from your MainVC code.
-            // We will use empty strings for time and detail if the compiler doesn't recognize the others,
-            // or try these specific common names:
+            // 1. Create a formatter to turn the Date into a string like "9:00 AM"
+            let formatter = DateFormatter()
+            formatter.dateFormat = "h:mm a"
+            let timeString = formatter.string(from: firstLogged.loggedTime)
+            
             self.primaryMedication = MedicationModel(
                 name: firstLogged.medicationName,
-                time: "ok", // We can hardcode this or find the property below
-                detail: "",     // We can leave this empty for the summary card
+                time: timeString, // Fixed: use the formatted string
+                detail: firstLogged.medicationForm, // Fixed: using medicationForm instead of dosage
                 iconName: firstLogged.iconName
             )
         } else {
