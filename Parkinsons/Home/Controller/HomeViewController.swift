@@ -15,6 +15,8 @@ class HomeViewController: UIViewController, UICollectionViewDelegate, SymptomLog
     
     @IBOutlet weak var mainCollectionView: UICollectionView!
     
+    private var medicationLoggedObserver: NSObjectProtocol?
+    
     let homeSections = Section.allCases
     private let separatorView: UIView = {
         let view = UIView()
@@ -74,16 +76,19 @@ class HomeViewController: UIViewController, UICollectionViewDelegate, SymptomLog
         dates = HomeDataStore.shared.getDates()
         loadRealMedicationData()
         
-        NotificationCenter.default.addObserver(
-                self,
-                selector: #selector(refreshMedicationData),
-                name: NSNotification.Name("MedicationLogged"),
-                object: nil
-            )
-        
+        medicationLoggedObserver = NotificationCenter.default.addObserver(
+            forName: NSNotification.Name("MedicationLogged"),
+            object: nil,
+            queue: .main
+        ) { [weak self] _ in
+            self?.loadRealMedicationData()
+        }
     }
-    @objc private func refreshMedicationData() {
-        loadRealMedicationData()
+    
+    deinit {
+        if let observer = medicationLoggedObserver {
+            NotificationCenter.default.removeObserver(observer)
+        }
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -103,17 +108,6 @@ class HomeViewController: UIViewController, UICollectionViewDelegate, SymptomLog
         nav.modalPresentationStyle = .pageSheet
         present(nav, animated: true)
     }
-//    func refreshMedicationData() {
-//        let allMeds = MedicationDataStore.shared.medications
-//        todayViewModel.loadTodayMedications(from: allMeds)
-//        
-//        // Combine due and upcoming doses just like in MainMedicationViewController
-//        let due = todayViewModel.todayDoses.filter { $0.isDue }
-//        let upcoming = todayViewModel.todayDoses.filter { !$0.isDue }
-//        self.todayDoses = due + upcoming
-//        
-//        mainCollectionView.reloadData()
-//    }
     private func loadRealMedicationData() {
         let myMedications = MedicationDataStore.shared.medications
         todayViewModel.loadTodayMedications(from: myMedications)
@@ -124,7 +118,6 @@ class HomeViewController: UIViewController, UICollectionViewDelegate, SymptomLog
             for: Date()
         )
         
-        // --- THIS FILTER IS WHAT MAKES THE CARD DISAPPEAR ---
         let unloggedDoses = todayViewModel.todayDoses.filter { dose in
             !todayViewModel.loggedDoses.contains(where: { $0.id == dose.id })
         }
@@ -144,11 +137,9 @@ class HomeViewController: UIViewController, UICollectionViewDelegate, SymptomLog
         )
 
         DoseLogDataStore.shared.logDose(log)
-        
-        // Refresh the home screen immediately
+       
         loadRealMedicationData()
-        
-        // Broadcast to other screens (like the Medication tab) to update as well
+      
         NotificationCenter.default.post(name: NSNotification.Name("MedicationLogged"), object: nil)
     }
     func setupSeparator() {
@@ -206,16 +197,14 @@ class HomeViewController: UIViewController, UICollectionViewDelegate, SymptomLog
                 let itemSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: .fractionalHeight(1.0))
                 let item = NSCollectionLayoutItem(layoutSize: itemSize)
                 
-                // Using absolute 120 to match the TodayMedicationCollectionViewCell design
                 let groupSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(0.9), heightDimension: .absolute(120))
                 let group = NSCollectionLayoutGroup.horizontal(layoutSize: groupSize, subitems: [item])
                 
                 let section = NSCollectionLayoutSection(group: group)
-                section.orthogonalScrollingBehavior = .groupPaging // Allows side-scrolling for multiple meds
+                section.orthogonalScrollingBehavior = .groupPaging
                 section.interGroupSpacing = 12
                 section.contentInsets = NSDirectionalEdgeInsets(top: 8, leading: 16, bottom: 24, trailing: 16)
                 
-                // Add the header (Upcoming Medications)
                 let headerSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: .absolute(30))
                 let header = NSCollectionLayoutBoundarySupplementaryItem(
                     layoutSize: headerSize,
@@ -224,7 +213,7 @@ class HomeViewController: UIViewController, UICollectionViewDelegate, SymptomLog
                 )
                 section.boundarySupplementaryItems = [header]
                 
-                return section // This is the line that was missing!
+                return section
                 
             case .exercises:
                 let itemSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(0.5), heightDimension: .fractionalHeight(1.0))
@@ -411,7 +400,7 @@ extension HomeViewController: UICollectionViewDataSource {
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "MedicationCardCell", for: indexPath) as! MedicationCardCollectionViewCell
             let doseItem = todayDoses[indexPath.row]
             cell.configure(with: doseItem)
-            cell.delegate = self // This MUST be set
+            cell.delegate = self
             return cell
             
         case .exercises:

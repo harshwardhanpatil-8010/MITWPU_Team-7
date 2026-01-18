@@ -63,7 +63,7 @@ class MedicationCardCollectionViewCell: UICollectionViewCell {
     }
     
     func configure(with dose: TodayDoseItem) {
-        self.currentDose = dose // CRITICAL: Must store this to pass back to delegate
+        self.currentDose = dose 
         
         let formatter = DateFormatter()
         formatter.dateFormat = "h:mm a"
@@ -73,9 +73,8 @@ class MedicationCardCollectionViewCell: UICollectionViewCell {
         detailLabel.text = dose.medicationForm
         iconImageView.image = UIImage(named: dose.iconName)
         
-        // Logic for disappearing/fading
         if dose.logStatus != .none {
-            self.contentView.alpha = 0.0 // Change to 0.0 to make it fully "disappear"
+            self.contentView.alpha = 0.0
             self.isHidden = true
         } else {
             self.contentView.alpha = 1.0
