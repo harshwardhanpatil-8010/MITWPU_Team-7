@@ -61,8 +61,25 @@ extension EditLogViewController: UICollectionViewDataSource {
         let item = loggedDoses[indexPath.item]
         cell.configure(with: item)
 
+        // --- UPDATED CLOSURE ---
         cell.onStatusChange = { [weak self] newStatus in
-            self?.loggedDoses[indexPath.item].status = newStatus
+            guard let self = self else { return }
+            
+            // 1. Update the local array used by this CollectionView
+            self.loggedDoses[indexPath.item].status = newStatus
+            
+            // 2. Update the Source of Truth (Database/DataStore)
+            // This ensures the SummaryViewController sees the change
+            DoseLogDataStore.shared.updateLogStatus(
+                logID: item.id,
+                status: DoseStatus(from: newStatus)
+            )
+            
+            // 3. Notify the rest of the app (MainMedicationVC) to refresh
+            NotificationCenter.default.post(
+                name: NSNotification.Name("MedicationLogged"),
+                object: nil
+            )
         }
 
         return cell

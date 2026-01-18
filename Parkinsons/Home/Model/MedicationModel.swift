@@ -11,5 +11,5 @@ struct MedicationModel {
     let time: String
     let detail: String 
     let iconName: String
-    
+    var status: DoseLogStatus = .none // Add this property
 }

@@ -22,7 +22,7 @@ class SummaryViewController: UIViewController {
     private var totalScheduled: Int = 0
     private var totalTaken: Int = 0
     private var primaryMedication: MedicationModel?
-    
+    private var medicationObserver: NSObjectProtocol?
     var exerciseData: [ExerciseModel] = [
         ExerciseModel(title: "10-Min Workout", detail: "Completed", progressPercentage: 100, progressColorHex: "0088FF"),
         ExerciseModel(title: "Rhythmic Walking", detail: "Missed", progressPercentage: 0, progressColorHex: "90AF81")
@@ -31,12 +31,26 @@ class SummaryViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         setupUI()
+        medicationObserver = NotificationCenter.default.addObserver(
+                forName: NSNotification.Name("MedicationLogged"),
+                object: nil,
+                queue: .main
+            ) { [weak self] _ in
+                self?.loadDataForSelectedDate()
+            }
+    }
+    deinit {
+        // We clean up here using the variable we stored
+        if let observer = medicationObserver {
+            NotificationCenter.default.removeObserver(observer)
+        }
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         navigationController?.setNavigationBarHidden(true, animated: animated)
         loadDataForSelectedDate()
+        
     }
     
     private func setupUI() {
@@ -68,32 +82,40 @@ class SummaryViewController: UIViewController {
         let targetDate = dateToDisplay ?? Date()
         currentSymptomLog = SymptomLogManager.shared.getLogEntry(for: targetDate)
         
-        // --- Real Medication Logic ---
+        // 1. Fetch fresh data from shared stores
         let allMeds = MedicationDataStore.shared.medications
         let allLogs = DoseLogDataStore.shared.logs
         
+        // 2. Load and assign logged doses
         todayViewModel.loadLoggedDoses(medications: allMeds, logs: allLogs, for: targetDate)
         self.loggedDoses = todayViewModel.loggedDoses
         
+        // 3. Update summary totals
         self.totalScheduled = loggedDoses.count
         self.totalTaken = loggedDoses.filter { $0.status == .taken }.count
         
         if let firstLogged = loggedDoses.first {
-            // 1. Create a formatter to turn the Date into a string like "9:00 AM"
             let formatter = DateFormatter()
             formatter.dateFormat = "h:mm a"
-            let timeString = formatter.string(from: firstLogged.loggedTime)
             
+            // Find the original log to get the correct scheduledTime
+            let originalLog = allLogs.first(where: { $0.id == firstLogged.id })
+            let dateToFormat = originalLog?.scheduledTime ?? firstLogged.loggedTime
+            let timeString = formatter.string(from: dateToFormat)
+            
+            // 4. Create the model with the updated status (.taken or .skipped)
             self.primaryMedication = MedicationModel(
                 name: firstLogged.medicationName,
-                time: timeString, // Fixed: use the formatted string
-                detail: firstLogged.medicationForm, // Fixed: using medicationForm instead of dosage
-                iconName: firstLogged.iconName
+                time: timeString,
+                detail: firstLogged.medicationForm,
+                iconName: firstLogged.iconName,
+                status: firstLogged.status // This is now the updated status from the DB
             )
         } else {
             self.primaryMedication = nil
         }
         
+        // 5. Refresh the UI
         updateTitleUI(with: targetDate)
         symptomTableView.reloadData()
         mainCollectionView.reloadData()

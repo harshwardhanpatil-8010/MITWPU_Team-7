@@ -48,30 +48,29 @@ class MedicationSummaryCell: UICollectionViewCell {
         
         nameLabel.text = model.name
         detailLabel.text = model.detail
-        
         medicationIconImageView.image = UIImage(named: model.iconName)
-        medicationIconImageView.backgroundColor = .systemBlue
-        medicationIconImageView.tintColor = .white
         
-        // Reset label state
-        statusLabel.text = nil
-        
-        if totalScheduled == 0 {
-            statusLabel.attributedText = nil
-            statusLabel.text = "--"
-            statusLabel.textColor = .systemGray
-        } else if totalTaken == totalScheduled {
-            // Full completion: Green Circle Checkmark
-            statusLabel.attributedText = imageAttachment(systemName: "checkmark.circle.fill")
-            statusLabel.textColor = .systemGreen
-        } else if totalTaken > 0 {
-            // Partial: Orange Checkmark
-            statusLabel.attributedText = imageAttachment(systemName: "checkmark")
-            statusLabel.textColor = .systemOrange
-        } else {
-            // Missed/None: Red X
+        // Check the INDIVIDUAL status first
+        if model.status == .skipped {
+            // Individual Skip: Red X
             statusLabel.attributedText = imageAttachment(systemName: "xmark")
             statusLabel.textColor = .systemRed
+        } else if model.status == .taken {
+            // Individual Taken: Green Check
+            statusLabel.attributedText = imageAttachment(systemName: "checkmark")
+            statusLabel.textColor = .systemGreen
+        } else {
+            // Fallback to your progress logic if status is none
+            if totalScheduled == 0 {
+                statusLabel.text = "--"
+                statusLabel.textColor = .systemGray
+            } else if totalTaken == totalScheduled {
+                statusLabel.attributedText = imageAttachment(systemName: "checkmark.circle.fill")
+                statusLabel.textColor = .systemGreen
+            } else {
+                statusLabel.attributedText = imageAttachment(systemName: "checkmark")
+                statusLabel.textColor = .systemOrange
+            }
         }
     }
 
