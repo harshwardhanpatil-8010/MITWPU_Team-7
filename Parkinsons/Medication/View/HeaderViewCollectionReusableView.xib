@@ -19,12 +19,12 @@
                         <constraint firstAttribute="width" constant="184" id="I9r-42-zjc"/>
                         <constraint firstAttribute="height" constant="30" id="zmc-GF-BkK"/>
                     </constraints>
-                    <fontDescription key="fontDescription" style="UICTFontTextStyleHeadline"/>
+                    <fontDescription key="fontDescription" type="boldSystem" pointSize="20"/>
                     <nil key="textColor"/>
                     <nil key="highlightedColor"/>
                 </label>
-                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="4b6-nz-hF6">
-                    <rect key="frame" x="348" y="-3" width="54" height="35"/>
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="trailing" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="4b6-nz-hF6">
+                    <rect key="frame" x="237" y="-3" width="165" height="35"/>
                     <state key="normal" title="Button"/>
                     <buttonConfiguration key="configuration" style="plain" title="Edit"/>
                     <connections>
@@ -38,6 +38,7 @@
                 <constraint firstItem="ux9-pa-3bZ" firstAttribute="top" secondItem="U6b-Vx-4bR" secondAttribute="top" id="H7m-M3-Xga"/>
                 <constraint firstAttribute="trailing" secondItem="4b6-nz-hF6" secondAttribute="trailing" id="JtZ-KS-qcL"/>
                 <constraint firstItem="4b6-nz-hF6" firstAttribute="top" secondItem="U6b-Vx-4bR" secondAttribute="top" constant="-3" id="cbY-9G-bpe"/>
+                <constraint firstItem="4b6-nz-hF6" firstAttribute="leading" secondItem="ux9-pa-3bZ" secondAttribute="trailing" constant="50" id="pCt-Pd-I8I"/>
             </constraints>
             <connections>
                 <outlet property="editButton" destination="4b6-nz-hF6" id="n6q-FB-6lJ"/>

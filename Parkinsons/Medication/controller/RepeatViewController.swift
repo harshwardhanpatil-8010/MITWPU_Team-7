@@ -28,9 +28,11 @@ class RepeatViewController: UIViewController,
         repeatList = RepeatOption.defaultList()
         RepeatTableView.layer.cornerRadius = 25
         RepeatTableView.clipsToBounds = true
+        RepeatTableView.layer.masksToBounds = true
         RepeatTableView.allowsMultipleSelection = true
         RepeatTableView.delegate = self
         RepeatTableView.dataSource = self
+        RepeatTableView.layer.maskedCorners = [.layerMinXMinYCorner, .layerMaxXMinYCorner, .layerMinXMaxYCorner, .layerMaxXMaxYCorner]
 
         if let schedule = preselectedSchedule {
             restoreSelection(from: schedule)
@@ -51,13 +53,13 @@ class RepeatViewController: UIViewController,
             }
         case .weekly(let days):
             let weekdayMap: [Int: String] = [
-                1: "Sunday",
-                2: "Monday",
-                3: "Tuesday",
-                4: "Wednesday",
-                5: "Thursday",
-                6: "Friday",
-                7: "Saturday"
+                1: "Every Sunday",
+                2: "Every Monday",
+                3: "Every Tuesday",
+                4: "Every Wednesday",
+                5: "Every Thursday",
+                6: "Every Friday",
+                7: "Every Saturday"
             ]
             for day in days {
                 if let name = weekdayMap[day],
@@ -102,6 +104,7 @@ class RepeatViewController: UIViewController,
         tableView.reloadData()
     }
 
+
     @IBAction func onBackPressed(_ sender: UIBarButtonItem) {
         navigationController?.popViewController(animated: true)
     }
@@ -114,8 +117,8 @@ class RepeatViewController: UIViewController,
             rule = .everyday
         } else {
             let map: [String:Int] = [
-                "Sunday":1,"Monday":2,"Tuesday":3,
-                "Wednesday":4,"Thursday":5,"Friday":6,"Saturday":7
+                "Every Sunday":1,"Every Monday":2,"Every Tuesday":3,
+                "Every Wednesday":4,"Every Thursday":5,"Every Friday":6,"Every Saturday":7
             ]
             let days = selectedDays.compactMap { map[$0] }
             rule = days.isEmpty ? .none : .weekly(days)
@@ -135,13 +138,13 @@ extension RepeatOption {
     static func defaultList() -> [RepeatOption] {
         return [
             .init(name: "Everyday", isSelected: false),
-            .init(name: "Sunday", isSelected: false),
-            .init(name: "Monday", isSelected: false),
-            .init(name: "Tuesday", isSelected: false),
-            .init(name: "Wednesday", isSelected: false),
-            .init(name: "Thursday", isSelected: false),
-            .init(name: "Friday", isSelected: false),
-            .init(name: "Saturday", isSelected: false)
+            .init(name: "Every Sunday", isSelected: false),
+            .init(name: "Every Monday", isSelected: false),
+            .init(name: "Every Tuesday", isSelected: false),
+            .init(name: "Every Wednesday", isSelected: false),
+            .init(name: "Every Thursday", isSelected: false),
+            .init(name: "Every Friday", isSelected: false),
+            .init(name: "Every Saturday", isSelected: false)
         ]
     }
 }

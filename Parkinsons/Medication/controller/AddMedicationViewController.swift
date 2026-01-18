@@ -26,9 +26,9 @@ class AddMedicationViewController: UIViewController,
     
     private var originalMedicationSnapshot: Medication?
     private var selectedRepeatRule: RepeatRule = .everyday
-    private let unitPlaceholder = "Mg"
-    private let typePlaceholder = "Capsule"
-    private let repeatPlaceholder = "Everyday"
+    private let unitPlaceholder = "Add unit,"
+    private let typePlaceholder = "Select type"
+    private let repeatPlaceholder = "Select days"
 
     weak var delegate: AddMedicationDelegate?
     var isEditMode: Bool = false
@@ -113,7 +113,7 @@ class AddMedicationViewController: UIViewController,
         typeLabel.attributedText = nil
         strengthUnitLabel.attributedText = nil
 
-        unitLabel.text = unitText
+        unitLabel.text = "\(unitText),"
         typeLabel.text = selectedType
         strengthUnitLabel.text = unitText
 
@@ -127,7 +127,7 @@ class AddMedicationViewController: UIViewController,
     private func resetUnitAndTypeUI() {
         unitLabel.text = unitPlaceholder
         typeLabel.text = typePlaceholder
-        strengthUnitLabel.text = unitPlaceholder
+        strengthUnitLabel.text = "Units"
 
         unitLabel.textColor = .placeholderText
         typeLabel.textColor = .placeholderText
