@@ -1,37 +1,33 @@
 import UIKit
 
-// MARK: - Summary View Controller
 class SummaryViewController: UIViewController {
     
     enum Section: Int, CaseIterable {
         case medicationsSummary
         case exercises
     }
-   
+    
     @IBOutlet weak var symptomTableView: UITableView!
     @IBOutlet weak var summaryTitleLabel: UILabel!
     @IBOutlet weak var mainCollectionView: UICollectionView!
     @IBOutlet weak var closeBarButton: UIBarButtonItem!
-   
+    
     var dateToDisplay: Date?
     var currentSymptomLog: SymptomLogEntry?
     let summarySections = Section.allCases
     
-    var medicationData = MedicationModel(
-        name: "Carbidopa",
-        time: "9:00 AM",
-        detail: "1 capsule",
-        iconName: "Medication"
-    )
-    
-    var medicationTakenCount: Int = 1
-    var medicationScheduledCount: Int = 2
+    // MARK: - Real Data Properties
+    private let todayViewModel = TodayMedicationViewModel()
+    private var loggedDoses: [LoggedDoseItem] = []
+    private var totalScheduled: Int = 0
+    private var totalTaken: Int = 0
+    private var primaryMedication: MedicationModel?
     
     var exerciseData: [ExerciseModel] = [
         ExerciseModel(title: "10-Min Workout", detail: "Completed", progressPercentage: 100, progressColorHex: "0088FF"),
         ExerciseModel(title: "Rhythmic Walking", detail: "Missed", progressPercentage: 0, progressColorHex: "90AF81")
     ]
-   
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         setupUI()
@@ -68,9 +64,36 @@ class SummaryViewController: UIViewController {
         mainCollectionView.setCollectionViewLayout(generateSummaryLayout(), animated: false)
     }
     
-     func loadDataForSelectedDate() {
+    func loadDataForSelectedDate() {
         let targetDate = dateToDisplay ?? Date()
         currentSymptomLog = SymptomLogManager.shared.getLogEntry(for: targetDate)
+        
+        // --- Real Medication Logic ---
+        let allMeds = MedicationDataStore.shared.medications
+        let allLogs = DoseLogDataStore.shared.logs
+        
+        // Load logged doses for the specific selected date
+        todayViewModel.loadLoggedDoses(medications: allMeds, logs: allLogs, for: targetDate)
+        self.loggedDoses = todayViewModel.loggedDoses
+        
+        // Calculate totals for the summary card
+        self.totalScheduled = loggedDoses.count
+        self.totalTaken = loggedDoses.filter { $0.status == .taken }.count
+        
+        // Map the first item found to the MedicationModel for the UI
+        if let firstLogged = loggedDoses.first {
+            // We know 'medicationName' and 'iconName' exist from your MainVC code.
+            // We will use empty strings for time and detail if the compiler doesn't recognize the others,
+            // or try these specific common names:
+            self.primaryMedication = MedicationModel(
+                name: firstLogged.medicationName,
+                time: "ok", // We can hardcode this or find the property below
+                detail: "",     // We can leave this empty for the summary card
+                iconName: firstLogged.iconName
+            )
+        } else {
+            self.primaryMedication = nil
+        }
         
         updateTitleUI(with: targetDate)
         symptomTableView.reloadData()
@@ -106,7 +129,6 @@ class SummaryViewController: UIViewController {
         return UICollectionViewCompositionalLayout { (sectionIndex, env) -> NSCollectionLayoutSection? in
             guard sectionIndex < self.summarySections.count else { return nil }
             let sectionType = self.summarySections[sectionIndex]
-            
             let section: NSCollectionLayoutSection
             
             switch sectionType {
@@ -137,6 +159,7 @@ class SummaryViewController: UIViewController {
     }
 }
 
+// MARK: - TableView Extensions
 extension SummaryViewController: UITableViewDataSource, UITableViewDelegate {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return currentSymptomLog?.ratings.count ?? 0
@@ -152,6 +175,7 @@ extension SummaryViewController: UITableViewDataSource, UITableViewDelegate {
     }
 }
 
+// MARK: - CollectionView Extensions
 extension SummaryViewController: UICollectionViewDataSource, UICollectionViewDelegate {
     func numberOfSections(in collectionView: UICollectionView) -> Int {
         return summarySections.count
@@ -170,7 +194,13 @@ extension SummaryViewController: UICollectionViewDataSource, UICollectionViewDel
         switch sectionType {
         case .medicationsSummary:
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "MedicationSummaryCell", for: indexPath) as! MedicationSummaryCell
-            cell.configure(with: medicationData, totalTaken: medicationTakenCount, totalScheduled: medicationScheduledCount)
+            
+            if let model = primaryMedication {
+                cell.configure(with: model, totalTaken: totalTaken, totalScheduled: totalScheduled)
+            } else {
+                let emptyModel = MedicationModel(name: "No Medications", time: "--:--", detail: "None logged", iconName: "pill")
+                cell.configure(with: emptyModel, totalTaken: 0, totalScheduled: 0)
+            }
             return cell
             
         case .exercises:
@@ -181,13 +211,9 @@ extension SummaryViewController: UICollectionViewDataSource, UICollectionViewDel
                 let completed = WorkoutManager.shared.completedToday.count
                 let total = max(WorkoutManager.shared.getTodayWorkout().count, 7)
                 cell.setProgress(completed: completed, total: total)
-                
-
                 cell.configure(with: model)
-                
             } else {
-            
-                cell.configure(with: model) // Apply model first
+                cell.configure(with: model)
                 if let lastSession = DataStore.shared.sessions.first {
                     let done = lastSession.elapsedSeconds
                     let goal = lastSession.requestedDurationSeconds > 0 ? lastSession.requestedDurationSeconds : 60

@@ -14,10 +14,8 @@ class MedicationSummaryCell: UICollectionViewCell {
     
     override func awakeFromNib() {
         super.awakeFromNib()
-        
         self.clipsToBounds = false
         self.contentView.clipsToBounds = false
-        
         setupCardStyle()
         
         medicationIconImageView.layer.cornerRadius = medicationIconImageView.frame.height / 2.0
@@ -26,33 +24,24 @@ class MedicationSummaryCell: UICollectionViewCell {
 
     func setupCardStyle() {
         let cornerRadius: CGFloat = 12
-        let shadowColor: UIColor = .black
-        let shadowOpacity: Float = 0.1
-        let shadowRadius: CGFloat = 8
-        let shadowOffset: CGSize = .init(width: 0, height: 4)
-
         backgroundCardView.layer.cornerRadius = cornerRadius
         backgroundCardView.layer.masksToBounds = false
-
-        backgroundCardView.layer.shadowColor = shadowColor.cgColor
-        backgroundCardView.layer.shadowOpacity = shadowOpacity
-        backgroundCardView.layer.shadowRadius = shadowRadius
-        backgroundCardView.layer.shadowOffset = shadowOffset
+        backgroundCardView.layer.shadowColor = UIColor.black.cgColor
+        backgroundCardView.layer.shadowOpacity = 0.1
+        backgroundCardView.layer.shadowRadius = 8
+        backgroundCardView.layer.shadowOffset = CGSize(width: 0, height: 4)
     }
 
     override func layoutSubviews() {
         super.layoutSubviews()
-        
         backgroundCardView.layer.shadowPath = UIBezierPath(
             roundedRect: backgroundCardView.bounds,
             cornerRadius: backgroundCardView.layer.cornerRadius
         ).cgPath
-        
         medicationIconImageView.layer.cornerRadius = medicationIconImageView.frame.height / 2.0
     }
     
     func configure(with model: MedicationModel, totalTaken: Int, totalScheduled: Int) {
-        
         let timeParts = model.time.split(separator: " ")
         timeLabel.text = String(timeParts.first ?? "9:00")
         amPmLabel.text = String(timeParts.last ?? "AM")
@@ -64,33 +53,32 @@ class MedicationSummaryCell: UICollectionViewCell {
         medicationIconImageView.backgroundColor = .systemBlue
         medicationIconImageView.tintColor = .white
         
-        let totalRemaining = totalScheduled - totalTaken
+        // Reset label state
+        statusLabel.text = nil
         
         if totalScheduled == 0 {
-            statusLabel.text = "No meds scheduled"
+            statusLabel.attributedText = nil
+            statusLabel.text = "--"
             statusLabel.textColor = .systemGray
         } else if totalTaken == totalScheduled {
-            let checkmarkImage = UIImage(systemName: "checkmark.circle.fill")
-            let checkmarkAttachment = NSTextAttachment(image: checkmarkImage!)
-            
-            let attributedString = NSMutableAttributedString(string: "")
-            attributedString.append(NSAttributedString(attachment: checkmarkAttachment))
-            attributedString.append(NSAttributedString(string: " Completed"))
-            
-            statusLabel.attributedText = attributedString
+            // Full completion: Green Circle Checkmark
+            statusLabel.attributedText = imageAttachment(systemName: "checkmark.circle.fill")
             statusLabel.textColor = .systemGreen
-            
         } else if totalTaken > 0 {
-            statusLabel.attributedText = nil
-            statusLabel.text = "Taken"
+            // Partial: Orange Checkmark
+            statusLabel.attributedText = imageAttachment(systemName: "checkmark")
             statusLabel.textColor = .systemOrange
         } else {
-            statusLabel.attributedText = nil
-
-            statusLabel.text = "Missed"
-
-
+            // Missed/None: Red X
+            statusLabel.attributedText = imageAttachment(systemName: "xmark")
             statusLabel.textColor = .systemRed
         }
+    }
+
+    private func imageAttachment(systemName: String) -> NSAttributedString {
+        let attachment = NSTextAttachment()
+        let configuration = UIImage.SymbolConfiguration(pointSize: 18, weight: .bold)
+        attachment.image = UIImage(systemName: systemName, withConfiguration: configuration)
+        return NSAttributedString(attachment: attachment)
     }
 }
