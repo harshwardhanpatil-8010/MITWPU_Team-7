@@ -154,17 +154,20 @@ class HomeViewController: UIViewController, UICollectionViewDelegate, SymptomLog
     
     func registerCells() {
         mainCollectionView.register(UINib(nibName: "CalenderCollectionViewCell", bundle: nil), forCellWithReuseIdentifier: "calendar_cell")
-        mainCollectionView.register(UINib(nibName: "MedicationCardCollectionViewCell", bundle: nil),
-                                    forCellWithReuseIdentifier: "MedicationCardCell")
+        mainCollectionView.register(UINib(nibName: "MedicationCardCollectionViewCell", bundle: nil), forCellWithReuseIdentifier: "MedicationCardCell")
         mainCollectionView.register(UINib(nibName: "ExerciseCardCell", bundle: nil), forCellWithReuseIdentifier: "exercise_card_cell")
         mainCollectionView.register(UINib(nibName: "SymptomLogCell", bundle: nil), forCellWithReuseIdentifier: "symptom_log_cell")
         mainCollectionView.register(UINib(nibName: "TherapeuticGameCell", bundle: nil), forCellWithReuseIdentifier: "therapeutic_game_cell")
         
-        mainCollectionView.register(
-            SectionHeaderView.self,
-            forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader,
-            withReuseIdentifier: "HeaderView"
-        )
+        // --- ADD THIS LINE TO FIX THE CRASH ---
+        // If SectionHeaderView is a class (not a XIB), use this:
+        mainCollectionView.register(SectionHeaderView.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: "HeaderView")
+        
+        // OR, if SectionHeaderView is a .xib file, use this instead:
+        // mainCollectionView.register(UINib(nibName: "SectionHeaderView", bundle: nil), forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: "HeaderView")
+
+        // Keep your footer registration as is
+        mainCollectionView.register(UICollectionReusableView.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionFooter, withReuseIdentifier: "EmptyMedicationFooter")
     }
   
     func generateLayout() -> UICollectionViewLayout {
@@ -197,7 +200,7 @@ class HomeViewController: UIViewController, UICollectionViewDelegate, SymptomLog
                 let itemSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: .fractionalHeight(1.0))
                 let item = NSCollectionLayoutItem(layoutSize: itemSize)
                 
-                let groupSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(0.9), heightDimension: .absolute(120))
+                let groupSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(0.9), heightDimension: .absolute(90))
                 let group = NSCollectionLayoutGroup.horizontal(layoutSize: groupSize, subitems: [item])
                 
                 let section = NSCollectionLayoutSection(group: group)
@@ -211,7 +214,17 @@ class HomeViewController: UIViewController, UICollectionViewDelegate, SymptomLog
                     elementKind: UICollectionView.elementKindSectionHeader,
                     alignment: .top
                 )
-                section.boundarySupplementaryItems = [header]
+                // Calculate dynamic height: 90 if empty, 0 if not
+                let footerHeight: CGFloat = self.todayDoses.isEmpty ? 40 : 0
+                let footerSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: .absolute(footerHeight))
+                let footer = NSCollectionLayoutBoundarySupplementaryItem(
+                    layoutSize: footerSize,
+                    elementKind: UICollectionView.elementKindSectionFooter,
+                    alignment: .bottom
+                )
+
+                // Add both header and footer to the section
+                section.boundarySupplementaryItems = [header, footer]
                 
                 return section
                 
@@ -406,7 +419,7 @@ extension HomeViewController: UICollectionViewDataSource {
         case .exercises:
             let cell = mainCollectionView.dequeueReusableCell(withReuseIdentifier: "exercise_card_cell", for: indexPath) as! ExerciseCardCell
             let model = exerciseData[indexPath.row]
-
+            
             if indexPath.row == 0 {
                 let completed = WorkoutManager.shared.completedToday.count
                 let total = WorkoutManager.shared.exercises.count > 0 ? WorkoutManager.shared.exercises.count : 1
@@ -443,38 +456,65 @@ extension HomeViewController: UICollectionViewDataSource {
     }
     
     func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
-        guard kind == UICollectionView.elementKindSectionHeader else { return UICollectionReusableView() }
-        let header = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: "HeaderView", for: indexPath) as! SectionHeaderView
         let sectionType = homeSections[indexPath.section]
         
-        header.setTitleAlignment(.left)
-        header.setFont(size: 20, weight: .bold)
-
-        switch sectionType {
-        case .calendar:
-            let dateString = formattedDateString(for: selectedDate)
-            let isToday = Calendar.current.isDateInToday(selectedDate)
-            header.configure(title: isToday ? "Today, \(dateString)" : dateString)
-            header.setTitleAlignment(.center)
-            header.setFont(size: 17, weight: .bold)
-        case .medications:
-            header.configure(title: "Upcoming Medications")
-        case .exercises:
-            header.configure(title: "Guided Exercise")
-        case .symptoms:
-            header.configure(title: "Symptoms")
-        case .therapeuticGames:
-            header.configure(title: "Therapeutic Games")
+        // 1. Handle Headers
+        if kind == UICollectionView.elementKindSectionHeader {
+            let header = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: "HeaderView", for: indexPath) as! SectionHeaderView
+            
+            header.setTitleAlignment(.left)
+            header.setFont(size: 20, weight: .bold)
+            
+            switch sectionType {
+            case .calendar:
+                let dateString = formattedDateString(for: selectedDate)
+                let isToday = Calendar.current.isDateInToday(selectedDate)
+                header.configure(title: isToday ? "Today, \(dateString)" : dateString)
+                header.setTitleAlignment(.center)
+                header.setFont(size: 17, weight: .bold)
+            case .medications:
+                header.configure(title: "Upcoming Medications")
+            case .exercises:
+                header.configure(title: "Guided Exercise")
+            case .symptoms:
+                header.configure(title: "Symptoms")
+            case .therapeuticGames:
+                header.configure(title: "Therapeutic Games")
+            }
+            return header
         }
-        return header
-    }
-
-    @IBAction func calendarBarButtonItemTapped(_ sender: UIBarButtonItem) {
-        let storyboard = UIStoryboard(name: "Home", bundle: nil)
-        guard let vc = storyboard.instantiateViewController(withIdentifier: "CalendarViewController") as? CalendarViewController else { return }
-        let nav = UINavigationController(rootViewController: vc)
-        nav.modalPresentationStyle = .pageSheet
-        present(nav, animated: true)
+        
+        // 2. Handle Empty State Footer for Medications
+        if kind == UICollectionView.elementKindSectionFooter && sectionType == .medications {
+            let footer = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: "EmptyMedicationFooter", for: indexPath)
+            
+            // Clean up old subviews for cell reuse
+            footer.subviews.forEach { $0.removeFromSuperview() }
+            
+            if todayDoses.isEmpty {
+                let label = UILabel()
+                label.text = "No Medications Added Yet"
+                label.textColor = .systemGray2
+                label.font = .systemFont(ofSize: 24, weight: .medium)
+                label.textAlignment = .center
+                label.translatesAutoresizingMaskIntoConstraints = false
+                
+                footer.addSubview(label)
+                //footer.backgroundColor = .systemGray5.withAlphaComponent(0.4)
+               // footer.layer.cornerRadius = 12
+                
+                NSLayoutConstraint.activate([
+                    label.centerXAnchor.constraint(equalTo: footer.centerXAnchor),
+                    label.centerYAnchor.constraint(equalTo: footer.centerYAnchor, constant: -15)
+                ])
+            } else {
+                // Hide footer if there is data
+                footer.backgroundColor = .clear
+            }
+            return footer
+        }
+        
+        return UICollectionReusableView()
     }
 }
 

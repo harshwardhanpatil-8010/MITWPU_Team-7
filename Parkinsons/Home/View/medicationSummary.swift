@@ -51,29 +51,33 @@ class MedicationSummaryCell: UICollectionViewCell {
         medicationIconImageView.image = UIImage(named: model.iconName)
         
         if model.status == .skipped {
-            statusLabel.attributedText = imageAttachment(systemName: "xmark")
+            statusLabel.attributedText = imageAttachment(systemName: "xmark", color: .systemRed)
             statusLabel.textColor = .systemRed
         } else if model.status == .taken {
-            statusLabel.attributedText = imageAttachment(systemName: "checkmark")
+            statusLabel.attributedText = imageAttachment(systemName: "checkmark", color: .systemGreen)
             statusLabel.textColor = .systemGreen
         } else {
             if totalScheduled == 0 {
                 statusLabel.text = "--"
                 statusLabel.textColor = .systemGray
             } else if totalTaken == totalScheduled {
-                statusLabel.attributedText = imageAttachment(systemName: "checkmark.circle.fill")
+                statusLabel.attributedText = imageAttachment(systemName: "checkmark", color: .systemGreen)
                 statusLabel.textColor = .systemGreen
             } else {
-                statusLabel.attributedText = imageAttachment(systemName: "checkmark")
+                statusLabel.attributedText = imageAttachment(systemName: "checkmark", color: .systemGreen)
                 statusLabel.textColor = .systemOrange
             }
         }
     }
 
-    private func imageAttachment(systemName: String) -> NSAttributedString {
+    func imageAttachment(systemName: String, color: UIColor) -> NSAttributedString {
         let attachment = NSTextAttachment()
-        let configuration = UIImage.SymbolConfiguration(pointSize: 18, weight: .bold)
-        attachment.image = UIImage(systemName: systemName, withConfiguration: configuration)
+        
+        let config = UIImage.SymbolConfiguration(pointSize: 32, weight: .regular)
+        let image = UIImage(systemName: systemName, withConfiguration: config)?.withTintColor(color, renderingMode: .alwaysOriginal)
+        
+        attachment.image = image
+        
         return NSAttributedString(attachment: attachment)
     }
 }

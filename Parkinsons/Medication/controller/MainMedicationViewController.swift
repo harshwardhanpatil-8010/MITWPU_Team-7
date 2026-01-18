@@ -40,7 +40,6 @@ final class MainMedicationViewController: UIViewController {
     private var currentSegment: SegmentType = .today
     private var myMedications: [Medication] = []
     
-    // Store observer tokens to unregister them in deinit
     private var didBecomeActiveObserver: NSObjectProtocol?
     private var medicationLoggedObserver: NSObjectProtocol?
 

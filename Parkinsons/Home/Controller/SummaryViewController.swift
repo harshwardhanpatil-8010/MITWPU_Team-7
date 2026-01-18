@@ -16,7 +16,6 @@ class SummaryViewController: UIViewController {
     var currentSymptomLog: SymptomLogEntry?
     let summarySections = Section.allCases
     
-    // MARK: - Real Data Properties
     private let todayViewModel = TodayMedicationViewModel()
     private var loggedDoses: [LoggedDoseItem] = []
     private var totalScheduled: Int = 0
@@ -158,7 +157,7 @@ class SummaryViewController: UIViewController {
                 section = NSCollectionLayoutSection(group: group)
             }
             
-            section.contentInsets = .init(top: 8, leading: 16, bottom: 24, trailing: 16)
+            section.contentInsets = .init(top: 8, leading: 4, bottom: 24, trailing: 8)
             section.boundarySupplementaryItems = [self.createHeaderItem()]
             return section
         }
