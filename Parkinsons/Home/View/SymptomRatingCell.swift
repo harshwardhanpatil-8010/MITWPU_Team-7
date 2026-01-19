@@ -27,16 +27,26 @@ class SymptomRatingCell: UITableViewCell {
     override func awakeFromNib() {
         super.awakeFromNib()
         contentView.addSubview(bubbleLabel)
+        
+        setupButtonActions()
+    }
+    
+    private func setupButtonActions() {
         ratingButtons.forEach { button in
-            button.addTarget(self, action: #selector(ratingButtonTapped(_:)), for: .touchUpInside)
+            let action = UIAction { [weak self] action in
+                guard let self = self,
+                      let sender = action.sender as? UIButton,
+                      let intensity = SymptomRating.Intensity(rawValue: sender.tag) else { return }
+                
+                self.handleRatingSelection(intensity: intensity, from: sender)
+            }
+            button.addAction(action, for: .touchUpInside)
         }
     }
     
-    @objc private func ratingButtonTapped(_ sender: UIButton) {
-        guard let intensity = SymptomRating.Intensity(rawValue: sender.tag) else { return }
-        
-        showBubble(above: sender, text: intensity.displayName, animated: true)
-        
+    private func handleRatingSelection(intensity: SymptomRating.Intensity, from button: UIButton) {
+        // Now using the displayName from the extension below
+        showBubble(above: button, text: intensity.displayName, animated: true)
         delegate?.didSelectIntensity(intensity, in: self)
     }
 
@@ -50,13 +60,12 @@ class SymptomRatingCell: UITableViewCell {
         bubbleLabel.frame.size.width += padding
         bubbleLabel.frame.size.height = 30
         
+        // Calculate position relative to the cell's content view
         let buttonFrameInCell = button.convert(button.bounds, to: self.contentView)
-        
         let calculatedCenterX = buttonFrameInCell.midX
         let calculatedCenterY = buttonFrameInCell.maxY + 8
         
         bubbleLabel.center = CGPoint(x: calculatedCenterX, y: calculatedCenterY)
-        
         contentView.bringSubviewToFront(bubbleLabel)
         
         if animated {
@@ -89,13 +98,13 @@ class SymptomRatingCell: UITableViewCell {
             case .severe: baseIconName = "severe"
             case .notPresent: baseIconName = "notPresent"
             }
+            
             let finalIconName = isSelected ? baseIconName + ".fill" : baseIconName
             button.setImage(UIImage(systemName: finalIconName), for: .normal)
             
             if isSelected {
                 let selectedColor: UIColor = (buttonIntensity == .notPresent) ? .systemRed : .systemBlue
                 button.tintColor = selectedColor
-                
                 showBubble(above: button, text: buttonIntensity.displayName, animated: false)
             } else {
                 button.tintColor = .systemGray
@@ -103,7 +112,6 @@ class SymptomRatingCell: UITableViewCell {
         }
     }
 }
-
 extension SymptomRating.Intensity {
     var displayName: String {
         switch self {
