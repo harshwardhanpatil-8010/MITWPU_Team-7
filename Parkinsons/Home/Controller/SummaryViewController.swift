@@ -65,7 +65,33 @@ class SummaryViewController: UIViewController {
         symptomTableView.separatorStyle = .none
         symptomTableView.isScrollEnabled = false
     }
-    
+    private func updateSymptomTableBackground() {
+        let count = currentSymptomLog?.ratings.count ?? 0
+        
+        if count == 0 {
+            let containerView = UIView(frame: symptomTableView.bounds)
+            
+            let emptyLabel = UILabel()
+            emptyLabel.text = "No symptoms Logged"
+            emptyLabel.textColor = .secondaryLabel
+            emptyLabel.textAlignment = .center
+            emptyLabel.font = .systemFont(ofSize: 24, weight: .medium)
+            emptyLabel.translatesAutoresizingMaskIntoConstraints = false
+            
+            containerView.addSubview(emptyLabel)
+            
+            NSLayoutConstraint.activate([
+                emptyLabel.centerXAnchor.constraint(equalTo: containerView.centerXAnchor),
+                emptyLabel.centerYAnchor.constraint(equalTo: containerView.centerYAnchor, constant: -140),
+                emptyLabel.leadingAnchor.constraint(greaterThanOrEqualTo: containerView.leadingAnchor, constant: 20),
+                emptyLabel.trailingAnchor.constraint(lessThanOrEqualTo: containerView.trailingAnchor, constant: -20)
+            ])
+            
+            symptomTableView.backgroundView = containerView
+        } else {
+            symptomTableView.backgroundView = nil
+        }
+    }
     private func setupCollectionView() {
         mainCollectionView.dataSource = self
         mainCollectionView.delegate = self
@@ -110,6 +136,7 @@ class SummaryViewController: UIViewController {
         
         updateTitleUI(with: targetDate)
         symptomTableView.reloadData()
+        updateSymptomTableBackground()
         mainCollectionView.reloadData()
     }
     
@@ -121,9 +148,9 @@ class SummaryViewController: UIViewController {
         let fullString = "Summary \n\(dateString)"
         let attributedString = NSMutableAttributedString(string: fullString)
         
-        let boldAttributes: [NSAttributedString.Key: Any] = [.font: UIFont.systemFont(ofSize: 20, weight: .bold)]
+        let boldAttributes: [NSAttributedString.Key: Any] = [.font: UIFont.systemFont(ofSize: 17, weight: .medium)]
         let regularAttributes: [NSAttributedString.Key: Any] = [
-            .font: UIFont.systemFont(ofSize: 17, weight: .regular),
+            .font: UIFont.systemFont(ofSize: 12, weight: .semibold),
             .foregroundColor: UIColor.secondaryLabel
         ]
         
@@ -157,7 +184,7 @@ class SummaryViewController: UIViewController {
                 section = NSCollectionLayoutSection(group: group)
             }
             
-            section.contentInsets = .init(top: 8, leading: 4, bottom: 24, trailing: 8)
+            section.contentInsets = .init(top: 8, leading: 16, bottom: 24, trailing: 16)
             section.boundarySupplementaryItems = [self.createHeaderItem()]
             return section
         }
@@ -174,7 +201,8 @@ class SummaryViewController: UIViewController {
 
 extension SummaryViewController: UITableViewDataSource, UITableViewDelegate {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return currentSymptomLog?.ratings.count ?? 0
+        let count = currentSymptomLog?.ratings.count ?? 0
+            return count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
