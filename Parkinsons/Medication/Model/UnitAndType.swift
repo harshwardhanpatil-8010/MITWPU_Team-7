@@ -25,3 +25,11 @@ var unitAndType: [UnitAndType] = [
     UnitAndType(name: "Powder", image: "powder", isSelected: false),
     UnitAndType(name: "Spray", image: "spray", isSelected: false)
 ]
+extension UnitAndType {
+    static func icon(for type: String) -> String {
+        unitAndType.first {
+            $0.name.lowercased() == type.lowercased()
+        }?.image ?? "tablet"
+    }
+}
+

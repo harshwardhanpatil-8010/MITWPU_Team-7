@@ -65,7 +65,7 @@ final class TodayMedicationViewModel {
                 medicationName: med.name,
                 medicationForm: med.form,
                 loggedTime: log.loggedAt,
-                status: DoseLogStatus(from: log.status),
+                status: log.status,
                 iconName: med.iconName
             )
 
@@ -100,3 +100,4 @@ final class TodayMedicationViewModel {
         }
     }
 }
+

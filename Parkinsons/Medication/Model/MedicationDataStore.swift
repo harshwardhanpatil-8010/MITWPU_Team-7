@@ -6,22 +6,6 @@ class MedicationDataStore: ObservableObject {
     static let shared = MedicationDataStore()
     private let storageKey = "saved_medications"
 
-    static func iconForType(_ type: String) -> String {
-        switch type.lowercased() {
-        case "capsule": return "capsuleM"
-        case "tablet": return "tablet"
-        case "liquid": return "liquid"
-        case "cream": return "cream"
-        case "device": return "device"
-        case "drops": return "drops"
-        case "foam": return "foam"
-        case "gel": return "gel"
-        case "powder": return "powder"
-        case "spray": return "spray"
-        default: return "tablet"
-        }
-    }
-
     @Published var medications: [Medication] = [] {
         didSet {
             saveToStorage()
@@ -75,7 +59,7 @@ class MedicationDataStore: ObservableObject {
             medications[index].doses = newDoses
             medications[index].unit = newUnit
             medications[index].strength = newStrength
-            medications[index].iconName = MedicationDataStore.iconForType(newForm)
+            medications[index].iconName = UnitAndType.icon(for: newForm)
             saveToStorage()
         }
     }
@@ -98,28 +82,3 @@ class MedicationDataStore: ObservableObject {
     }
 }
 
-extension MedicationDataStore {
-
-    func updateDoseStatus(
-        medicationID: UUID,
-        scheduledTime: Date,
-        status: DoseLogStatus
-    ) {
-        guard let medIndex = medications.firstIndex(where: { $0.id == medicationID }) else {
-            return
-        }
-
-        let doseStatus = DoseStatus(from: status)
-
-        for i in medications[medIndex].doses.indices {
-            let doseTime = medications[medIndex].doses[i].time
-
-            if Calendar.current.isDate(doseTime, equalTo: scheduledTime, toGranularity: .minute) {
-                medications[medIndex].doses[i].status = doseStatus
-                break
-            }
-        }
-
-        saveToStorage()
-    }
-}

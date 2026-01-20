@@ -16,3 +16,4 @@ struct DoseLog: Codable, Identifiable {
     var status: DoseStatus
     let day: Date
 }
+

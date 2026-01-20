@@ -38,3 +38,4 @@ final class DoseLogDataStore {
         logs[index].status = status
     }
 }
+
