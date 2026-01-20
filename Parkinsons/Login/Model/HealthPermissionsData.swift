@@ -21,4 +21,3 @@ struct HealthPermissionSetting {
         self.iconColor = iconColor
     }
 }
-

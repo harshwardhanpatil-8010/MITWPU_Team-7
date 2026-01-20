@@ -44,4 +44,3 @@ class HealthPermissionTableViewCell: UITableViewCell {
         super.setSelected(selected, animated: animated)
     }
 }
-
