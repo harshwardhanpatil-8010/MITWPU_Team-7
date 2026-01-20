@@ -23,7 +23,7 @@ class MedicationSummaryCell: UICollectionViewCell {
     }
 
     func setupCardStyle() {
-        let cornerRadius: CGFloat = 12
+        let cornerRadius: CGFloat = 18
         backgroundCardView.layer.cornerRadius = cornerRadius
         backgroundCardView.layer.masksToBounds = false
         backgroundCardView.layer.shadowColor = UIColor.black.cgColor

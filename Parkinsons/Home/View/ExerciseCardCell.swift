@@ -64,7 +64,7 @@ class ExerciseCardCell: UICollectionViewCell {
     }
         
     func setupCardStyle() {
-        let cornerRadius: CGFloat = 23
+        let cornerRadius: CGFloat = 18
         backgroundCardView.layer.cornerRadius = cornerRadius
         backgroundCardView.layer.masksToBounds = false
 
