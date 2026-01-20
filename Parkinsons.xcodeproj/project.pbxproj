@@ -174,7 +174,7 @@
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = "";
+				DEVELOPMENT_TEAM = MV45GDP3M3;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = Parkinsons/Info.plist;
 				INFOPLIST_KEY_NSCameraUsageDescription = "This app needs camera access to help you mimic emojis for the game.";
@@ -209,7 +209,7 @@
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = "";
+				DEVELOPMENT_TEAM = MV45GDP3M3;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = Parkinsons/Info.plist;
 				INFOPLIST_KEY_NSCameraUsageDescription = "This app needs camera access to help you mimic emojis for the game.";

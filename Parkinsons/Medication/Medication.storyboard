@@ -437,7 +437,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="t7A-gk-CD4">
-                                <rect key="frame" x="16" y="240" width="370" height="566"/>
+                                <rect key="frame" x="16" y="241" width="370" height="565"/>
                                 <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                                 <collectionViewFlowLayout key="collectionViewLayout" automaticEstimatedItemSize="YES" minimumLineSpacing="10" minimumInteritemSpacing="10" id="XP9-fq-4sk">
                                     <size key="itemSize" width="128" height="128"/>
@@ -472,20 +472,6 @@
                                     </collectionViewCell>
                                 </cells>
                             </collectionView>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="KiJ-pe-Mx2">
-                                <rect key="frame" x="322" y="726" width="56" height="56"/>
-                                <constraints>
-                                    <constraint firstAttribute="width" constant="56" id="4Ce-qy-ncz"/>
-                                    <constraint firstAttribute="height" constant="56" id="zEc-bk-SWe"/>
-                                </constraints>
-                                <state key="normal" title="Button"/>
-                                <buttonConfiguration key="configuration" style="filled" cornerStyle="capsule">
-                                    <imageReference key="image" image="plus" catalog="system" symbolScale="large"/>
-                                </buttonConfiguration>
-                                <connections>
-                                    <action selector="plusButtonTapped:" destination="B3G-mm-JD0" eventType="touchUpInside" id="RVB-dA-CnB"/>
-                                </connections>
-                            </button>
                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="equalSpacing" alignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="Ua8-xd-Rtz">
                                 <rect key="frame" x="16" y="395.66666666666669" width="370" height="82.666666666666686"/>
                                 <subviews>
@@ -514,23 +500,36 @@
                                     <action selector="segmentChanged:" destination="B3G-mm-JD0" eventType="valueChanged" id="U78-iu-06g"/>
                                 </connections>
                             </segmentedControl>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="KiJ-pe-Mx2">
+                                <rect key="frame" x="322" y="726" width="56" height="56"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="56" id="4Ce-qy-ncz"/>
+                                    <constraint firstAttribute="height" constant="56" id="zEc-bk-SWe"/>
+                                </constraints>
+                                <state key="normal" title="Button"/>
+                                <buttonConfiguration key="configuration" style="filled" cornerStyle="capsule">
+                                    <imageReference key="image" image="plus" catalog="system" symbolScale="large"/>
+                                </buttonConfiguration>
+                                <connections>
+                                    <action selector="plusButtonTapped:" destination="B3G-mm-JD0" eventType="touchUpInside" id="X9O-kG-HLS"/>
+                                </connections>
+                            </button>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="xyJ-1q-QrA"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                         <constraints>
                             <constraint firstItem="Ua8-xd-Rtz" firstAttribute="centerY" secondItem="bjZ-Wf-C2i" secondAttribute="centerY" id="2np-Zw-4R8"/>
+                            <constraint firstItem="t7A-gk-CD4" firstAttribute="leading" secondItem="xyJ-1q-QrA" secondAttribute="leading" constant="16" id="3ZY-VT-2mL"/>
                             <constraint firstItem="Ua8-xd-Rtz" firstAttribute="centerX" secondItem="bjZ-Wf-C2i" secondAttribute="centerX" id="8yq-hU-dnB"/>
-                            <constraint firstItem="t7A-gk-CD4" firstAttribute="trailing" secondItem="xyJ-1q-QrA" secondAttribute="trailing" constant="-16" id="CIJ-Rn-6U0"/>
                             <constraint firstItem="xyJ-1q-QrA" firstAttribute="bottom" secondItem="t7A-gk-CD4" secondAttribute="bottom" id="H5i-GK-Ymv"/>
                             <constraint firstItem="Ua8-xd-Rtz" firstAttribute="leading" secondItem="xyJ-1q-QrA" secondAttribute="leading" constant="16" id="IeS-ET-Qng"/>
                             <constraint firstItem="xyJ-1q-QrA" firstAttribute="bottom" secondItem="KiJ-pe-Mx2" secondAttribute="bottom" constant="24" id="JIm-ds-ydi"/>
                             <constraint firstItem="xyJ-1q-QrA" firstAttribute="trailing" secondItem="K65-Ym-9su" secondAttribute="trailing" constant="16" id="Kbl-dL-4dz"/>
                             <constraint firstItem="K65-Ym-9su" firstAttribute="leading" secondItem="xyJ-1q-QrA" secondAttribute="leading" constant="16" id="M92-FQ-BMf"/>
-                            <constraint firstItem="t7A-gk-CD4" firstAttribute="leading" secondItem="xyJ-1q-QrA" secondAttribute="leading" constant="16" id="RoA-Ig-YZw"/>
-                            <constraint firstItem="t7A-gk-CD4" firstAttribute="top" secondItem="K65-Ym-9su" secondAttribute="bottom" constant="15" id="TQJ-PD-LgX"/>
+                            <constraint firstItem="t7A-gk-CD4" firstAttribute="top" secondItem="K65-Ym-9su" secondAttribute="bottom" constant="16" id="TQJ-PD-LgX"/>
                             <constraint firstItem="xyJ-1q-QrA" firstAttribute="trailing" secondItem="Ua8-xd-Rtz" secondAttribute="trailing" constant="16" id="VcY-o2-3JK"/>
-                            <constraint firstItem="t7A-gk-CD4" firstAttribute="bottom" secondItem="xyJ-1q-QrA" secondAttribute="bottom" id="b5h-8n-KBe"/>
                             <constraint firstItem="xyJ-1q-QrA" firstAttribute="trailing" secondItem="KiJ-pe-Mx2" secondAttribute="trailing" constant="24" id="dCv-ua-rhY"/>
+                            <constraint firstItem="t7A-gk-CD4" firstAttribute="trailing" secondItem="xyJ-1q-QrA" secondAttribute="trailing" constant="-16" id="ziT-i6-l4W"/>
                             <constraint firstItem="K65-Ym-9su" firstAttribute="top" secondItem="xyJ-1q-QrA" secondAttribute="top" constant="16" id="zwP-X5-XfS"/>
                         </constraints>
                     </view>

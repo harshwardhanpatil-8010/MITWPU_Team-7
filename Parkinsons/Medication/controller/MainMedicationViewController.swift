@@ -154,25 +154,25 @@ final class MainMedicationViewController: UIViewController {
         loadMedications()
     }
 
-    private func presentEditStatusSheet(for item: LoggedDoseItem) {
-        let alert = UIAlertController(
-            title: item.medicationName,
-            message: "Update status",
-            preferredStyle: .actionSheet
-        )
-
-        alert.addAction(UIAlertAction(title: "Taken", style: .default) { _ in
-            self.updateLoggedStatus(item, status: .taken)
-        })
-
-        alert.addAction(UIAlertAction(title: "Skipped", style: .destructive) { _ in
-            self.updateLoggedStatus(item, status: .skipped)
-        })
-
-        alert.addAction(UIAlertAction(title: "Cancel", style: .cancel))
-
-        present(alert, animated: true)
-    }
+//    private func presentEditStatusSheet(for item: LoggedDoseItem) {
+//        let alert = UIAlertController(
+//            title: item.medicationName,
+//            message: "Update status",
+//            preferredStyle: .actionSheet
+//        )
+//
+//        alert.addAction(UIAlertAction(title: "Taken", style: .default) { _ in
+//            self.updateLoggedStatus(item, status: .taken)
+//        })
+//
+//        alert.addAction(UIAlertAction(title: "Skipped", style: .destructive) { _ in
+//            self.updateLoggedStatus(item, status: .skipped)
+//        })
+//
+//        alert.addAction(UIAlertAction(title: "Cancel", style: .cancel))
+//
+//        present(alert, animated: true)
+//    }
 
     private func updateUIForSegment() {
         editButton.isHidden = (currentSegment != .myMedication)
@@ -271,10 +271,10 @@ extension MainMedicationViewController: UICollectionViewDelegateFlowLayout {
     }
 
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAt section: Int) -> UIEdgeInsets {
-        if currentSegment == .today && section == 1 {
+//        if currentSegment == .today && section == 1 {
             return UIEdgeInsets(top: 4, left: 0, bottom: 4, right: 0)
-        }
-        return .zero
+//        }
+//        return .zero
     }
 
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
@@ -283,7 +283,7 @@ extension MainMedicationViewController: UICollectionViewDelegateFlowLayout {
     }
 
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat {
-        return (currentSegment == .myMedication) ? -15 : -7
+        return (currentSegment == .myMedication) ? 0 : 0
     }
 }
 
