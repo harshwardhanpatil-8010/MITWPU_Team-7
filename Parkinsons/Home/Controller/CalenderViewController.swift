@@ -66,50 +66,6 @@ class CalendarViewController: UIViewController {
             sections.append(MonthSection(monthName: monthName, days: monthDays))
         }
     }
-
-//    private func setupCollectionView() {
-//        // Register Cell
-//        collectionView.register(UINib(nibName: "CalenderCollectionViewCell", bundle: nil), forCellWithReuseIdentifier: "calendar_cell")
-//
-//        // Register Header using the specific long filename from your project
-//        let headerNib = UINib(nibName: "MonthHeaderViewCollectionReusableView", bundle: nil)
-//        collectionView.register(headerNib, forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: "MonthHeaderView")
-//
-//        collectionView.dataSource = self
-//        collectionView.delegate = self
-//
-//        let layout = UICollectionViewFlowLayout()
-//        layout.scrollDirection = .vertical
-//        layout.minimumLineSpacing = 15
-//        layout.minimumInteritemSpacing = 2
-//        layout.sectionHeadersPinToVisibleBounds = true
-//        layout.sectionInset = UIEdgeInsets(top: -22, left: 0, bottom: 30, right: 0)
-//        collectionView.collectionViewLayout = layout
-//    }
-//    private func setupCollectionView() {
-//        // Register Cell and Header (keeping your current registration)
-//        collectionView.register(UINib(nibName: "CalenderCollectionViewCell", bundle: nil), forCellWithReuseIdentifier: "calendar_cell")
-//
-//        let headerNib = UINib(nibName: "MonthHeaderViewCollectionReusableView", bundle: nil)
-//        collectionView.register(headerNib, forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: "MonthHeaderView")
-//
-//        collectionView.dataSource = self
-//        collectionView.delegate = self
-//
-//        let layout = UICollectionViewFlowLayout()
-//        layout.scrollDirection = .vertical
-//
-//        // 1. Center the grid: We calculate insets so the leftover space is equal on both sides
-//        // 2. Add space between months: set the bottom inset to 40
-//        layout.sectionHeadersPinToVisibleBounds = true
-//        layout.sectionInset = UIEdgeInsets(top: -20, left: 0, bottom: 40, right: 0)
-//
-//        layout.minimumLineSpacing = 10
-//        layout.minimumInteritemSpacing = 0
-//        layout.sectionHeadersPinToVisibleBounds = true
-//
-//        collectionView.collectionViewLayout = layout
-//    }
     private func setupCollectionView() {
         collectionView.register(UINib(nibName: "DataCapsuleCell", bundle: nil), forCellWithReuseIdentifier: "date_capsule_cell")
         
@@ -164,31 +120,6 @@ extension CalendarViewController: UICollectionViewDataSource, UICollectionViewDe
         header.titleLabel.text = sections[indexPath.section].monthName
         return header
     }
-
-//    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-//        // Divide by 7 for the grid columns
-////        let width = collectionView.frame.width / 6.5
-//        let width: CGFloat = 55
-//        return CGSize(width: width, height: 50)
-//    }
-//    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-//        // Use the layout passed in to get section insets if it's a flow layout
-//        let flowLayout = collectionViewLayout as? UICollectionViewFlowLayout
-//        let leftInset = flowLayout?.sectionInset.left ?? 0
-//        let rightInset = flowLayout?.sectionInset.right ?? 0
-//        let totalPadding = leftInset + rightInset
-//        let availableWidth = collectionView.frame.width - totalPadding
-//
-//        // Divide exactly by 7 columns
-//        let width = floor(availableWidth / 7)
-//        return CGSize(width: width, height: 60)
-//    }
-    
-//    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-//        // (Screen Width - Left Inset - Right Inset) / 7
-//        let width = (collectionView.frame.width - 32) / 7
-//        return CGSize(width: width, height: 65) // Increased height for better capsule shape
-//    }
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         let leftInset: CGFloat = 16
         let rightInset: CGFloat = 16
@@ -208,7 +139,6 @@ extension CalendarViewController: UICollectionViewDataSource, UICollectionViewDe
         let dayData = sections[indexPath.section].days[indexPath.item]
         if dayData.isDummy { return }
 
-        // Logic for single selection
         for s in 0..<sections.count {
             for d in 0..<sections[s].days.count {
                 sections[s].days[d].isSelected = false

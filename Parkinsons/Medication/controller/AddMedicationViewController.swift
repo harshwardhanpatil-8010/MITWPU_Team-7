@@ -16,7 +16,7 @@ class AddMedicationViewController: UIViewController,
                                    UITableViewDataSource,
                                    DoseTableViewCellDelegate,
                                    UnitsAndTypeDelegate,
-                                   RepeatSelectionDelegate, UITextFieldDelegate {
+                                   RepeatSelectionDelegate {
     func didSelectRepeatRule(_ rule: RepeatRule) {
         selectedRepeatRule = rule
         repeatLabel.text = rule.displayString()
@@ -26,15 +26,14 @@ class AddMedicationViewController: UIViewController,
     
     private var originalMedicationSnapshot: Medication?
     private var selectedRepeatRule: RepeatRule = .everyday
-    private let unitPlaceholder = "Mg"
-    private let typePlaceholder = "Capsule"
-    private let repeatPlaceholder = "Everyday"
+    private let unitPlaceholder = "Add unit,"
+    private let typePlaceholder = "Select type"
+    private let repeatPlaceholder = "Select days"
 
     weak var delegate: AddMedicationDelegate?
     var isEditMode: Bool = false
     var medicationToEdit: Medication!
     var doseArray: [Date] = [Date()]
-    var doseCount: Int = 1
     
     @IBOutlet weak var tickButton: UIBarButtonItem!
     @IBOutlet weak var backgroundView: UIView!
@@ -54,24 +53,24 @@ class AddMedicationViewController: UIViewController,
     override func viewDidLoad() {
         super.viewDidLoad()
         tickButton.isEnabled = false
-        medicationNameTextField.delegate = self
 
-        medicationNameTextField.addTarget(
-            self,
-            action: #selector(medicationNameChanged),
+        medicationNameTextField.addAction(
+            UIAction { [weak self] _ in
+                self?.evaluateTickButtonState()
+            },
             for: .editingChanged
         )
-        strengthLabel.addTarget(
-            self,
-            action: #selector(anyFieldChanged),
+
+        strengthLabel.addAction(
+            UIAction { [weak self] _ in
+                self?.evaluateTickButtonState()
+            },
             for: .editingChanged
         )
+
 
         let tap = UITapGestureRecognizer(target: self, action: #selector(dismissKeyboard))
         view.addGestureRecognizer(tap)
-
-        medicationNameTextField.delegate = self
-        strengthLabel.delegate = self
         
         deleteButton.isHidden = !isEditMode
         backgroundView.layer.cornerRadius = 16
@@ -101,18 +100,6 @@ class AddMedicationViewController: UIViewController,
         view.endEditing(true)
     }
     
-    @objc private func medicationNameChanged() {
-        evaluateTickButtonState()
-    }
-    
-    @objc private func anyFieldChanged() {
-        evaluateTickButtonState()
-    }
-    
-    func updateLabelPlaceholderStyle(label: UILabel, placeholder: String) {
-        label.textColor = (label.text == placeholder) ? .systemGray2 : .label
-    }
-    
     func didSelectUnitsAndType(unitText: String, selectedType: String) {
         unitLabel.attributedText = nil
         typeLabel.attributedText = nil
@@ -132,7 +119,7 @@ class AddMedicationViewController: UIViewController,
     private func resetUnitAndTypeUI() {
         unitLabel.text = unitPlaceholder
         typeLabel.text = typePlaceholder
-        strengthUnitLabel.text = unitPlaceholder
+        strengthUnitLabel.text = "Units"
 
         unitLabel.textColor = .placeholderText
         typeLabel.textColor = .placeholderText
@@ -143,22 +130,6 @@ class AddMedicationViewController: UIViewController,
         if let indexPath = doseTableView.indexPath(for: cell) {
             doseArray[indexPath.row] = newTime
             evaluateTickButtonState()
-        }
-    }
-    
-    func iconForType(_ type: String) -> String {
-        switch type.lowercased() {
-        case "capsule": return "capsuleM"
-        case "tablet": return "tablet"
-        case "liquid": return "liquid"
-        case "cream": return "cream"
-        case "device": return "device"
-        case "drops": return "drops"
-        case "foam": return "foam"
-        case "gel": return "gel"
-        case "powder": return "powder"
-        case "spray": return "spray"
-        default: return "tablet"
         }
     }
     
@@ -208,10 +179,6 @@ class AddMedicationViewController: UIViewController,
         let dosesChanged = doseArray.map { $0.timeIntervalSince1970 } != original.doses.map { $0.time.timeIntervalSince1970 }
 
         tickButton.isEnabled = nameChanged || strengthChanged || unitChanged || typeChanged || repeatChanged || dosesChanged
-    }
-
-    func updateStepperValue() {
-        doseStepper.value = Double(doseArray.count)
     }
     
     func renumberDoses() {
@@ -290,7 +257,7 @@ class AddMedicationViewController: UIViewController,
                 form: typeLabel.text ?? "Capsule",
                 unit: unitLabel.text ?? "mg",
                 strength: strengthValue,
-                iconName: iconForType(typeLabel.text ?? "Capsule"),
+                iconName: UnitAndType.icon(for: typeLabel.text ?? "Capsule"),
                 schedule: schedule,
                 doses: updatedDoses,
                 createdAt: Date()
@@ -325,3 +292,4 @@ extension AddMedicationViewController {
         evaluateTickButtonState()
     }
 }
+

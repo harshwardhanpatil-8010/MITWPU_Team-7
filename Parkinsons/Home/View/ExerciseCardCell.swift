@@ -31,50 +31,21 @@ class ExerciseCardCell: UICollectionViewCell {
     }
     
     private func setupCircularProgress() {
-        // Initialize the progress view
         progressView = CircularProgressViewHome(frame: progressRingContainer.bounds)
         progressView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
         progressRingContainer.addSubview(progressView)
         progressRingContainer.backgroundColor = .clear
     }
 
-//    func setProgress(completed: Int, total: Int) {
-//        progressLabel.text = "\(completed)/\(total)"
-//        let progress = total == 0 ? 0 : CGFloat(completed) / CGFloat(total)
-//        progressView.setProgress(progress)
-//
-//        // ⭐️ Use themeColor instead of hardcoded .systemBlue
-//        if completed == total && total > 0 {
-//            progressView.progressColor = .systemGreen // Optional: Keep green for 100% completion
-//        } else {
-//            progressView.progressColor = themeColor
-//        }
-//    }
-//    
-//    func configure(with model: ExerciseModel) {
-//        titleLabel.text = model.title
-//        detailLabel.text = model.detail
-//        
-//        // ⭐️ Convert hex string from model to UIColor and store it
-//        self.themeColor = UIColor(hex: model.progressColorHex)
-//        
-//        // Apply to the UI
-//        progressView.progressColor = self.themeColor
-//        progressView.trackColor = .systemGray5
-//    }
-    
     func configure(with model: ExerciseModel) {
         titleLabel.text = model.title
         detailLabel.text = model.detail
         
-        // 1. Convert hex string and store it
         let color = UIColor(hex: model.progressColorHex)
         self.themeColor = color
         
-        // 2. Apply to the UI
         progressView.progressColor = color
         
-        // 3. Set the track color to have 0.3 alpha of the theme color
         progressView.trackColor = color.withAlphaComponent(0.2)
     }
 
@@ -85,7 +56,6 @@ class ExerciseCardCell: UICollectionViewCell {
 
         if completed == total && total > 0 {
             progressView.progressColor = .systemGreen
-            // Optional: Make the track green too for a consistent look
             progressView.trackColor = UIColor.systemGreen.withAlphaComponent(0.2)
         } else {
             progressView.progressColor = themeColor
@@ -98,7 +68,6 @@ class ExerciseCardCell: UICollectionViewCell {
         backgroundCardView.layer.cornerRadius = cornerRadius
         backgroundCardView.layer.masksToBounds = false
 
-        // Shadow properties
         backgroundCardView.layer.shadowColor = UIColor.black.cgColor
         backgroundCardView.layer.shadowOpacity = 0.15
         backgroundCardView.layer.shadowRadius = 3

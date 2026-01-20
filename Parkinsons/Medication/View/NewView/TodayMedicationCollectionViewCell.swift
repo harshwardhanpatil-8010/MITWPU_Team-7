@@ -16,6 +16,7 @@ class TodayMedicationCollectionViewCell: UICollectionViewCell {
     @IBOutlet weak var timeLabel: UILabel!
     @IBOutlet weak var medContainerView: UIView!
 
+    @IBOutlet weak var dueStatus: UILabel!
     override func awakeFromNib() {
         super.awakeFromNib()
         medContainerView.applyCardStyle()
@@ -29,14 +30,24 @@ class TodayMedicationCollectionViewCell: UICollectionViewCell {
         let formatter = DateFormatter()
         formatter.dateFormat = "h:mm"
         timeLabel.text = formatter.string(from: dose.scheduledTime)
+
         formatter.dateFormat = "a"
         timeAmPmLabel.text = formatter.string(from: dose.scheduledTime)
 
-        switch dose.logStatus {
-        case .none:
-            medContainerView.alpha = 1.0
-        case .taken, .skipped:
+        dueStatus.isHidden = true
+        medContainerView.alpha = 1.0
+        medContainerView.layer.borderWidth = 0
+
+        if dose.logStatus != .none {
             medContainerView.alpha = 0.5
+            return
         }
+
+        if dose.isDue {
+            dueStatus.isHidden = false
+            dueStatus.textColor = .systemOrange
+        }
+
     }
 }
+

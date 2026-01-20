@@ -16,3 +16,4 @@ class AddMedicationDataStore {
     var selectedWeekdayNumbers: [Int] = []
     private init() {}
 }
+

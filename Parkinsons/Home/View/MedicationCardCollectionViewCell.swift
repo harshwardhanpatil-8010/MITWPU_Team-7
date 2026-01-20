@@ -1,3 +1,8 @@
+protocol MedicationCardDelegate: AnyObject {
+    func didTapTaken(for dose: TodayDoseItem)
+    func didTapSkipped(for dose: TodayDoseItem)
+}
+
 import UIKit
 
 class MedicationCardCollectionViewCell: UICollectionViewCell {
@@ -9,9 +14,16 @@ class MedicationCardCollectionViewCell: UICollectionViewCell {
     @IBOutlet weak var iconImageView: UIImageView!
     @IBOutlet weak var takenButton: UIButton!
     @IBOutlet weak var skippedButton: UIButton!
-
+    
+    weak var delegate: MedicationCardDelegate?
+    private var currentDose: TodayDoseItem?
+    
     override func awakeFromNib() {
         super.awakeFromNib()
+        
+        self.isUserInteractionEnabled = true
+        self.contentView.isUserInteractionEnabled = true
+        BackgroundMedication.isUserInteractionEnabled = true
         
         self.clipsToBounds = false
         self.contentView.clipsToBounds = false
@@ -24,31 +36,48 @@ class MedicationCardCollectionViewCell: UICollectionViewCell {
     
     override func layoutSubviews() {
         super.layoutSubviews()
-        
         iconImageView.layer.cornerRadius = iconImageView.frame.height / 2.0
         iconImageView.clipsToBounds = true
     }
-    
+
+    @IBAction func takenTapped(_ sender: Any) {
+        print("Button Action: Taken Tapped")
+        guard let dose = currentDose else { return }
+        delegate?.didTapTaken(for: dose)
+    }
+
+    @IBAction func skippedTapped(_ sender: Any) {
+        print("Button Action: Skipped Tapped")
+        guard let dose = currentDose else { return }
+        delegate?.didTapSkipped(for: dose)
+    }
+
     func setupCardStyle() {
-        let cornerRadius: CGFloat = 23
-        let shadowColor: UIColor = .black
-        let shadowOpacity: Float = 0.15
-        let shadowRadius: CGFloat = 3
-        let shadowOffset: CGSize = .init(width: 0, height: 1)
-
-        BackgroundMedication.layer.cornerRadius = cornerRadius
+        BackgroundMedication.layer.cornerRadius = 23
         BackgroundMedication.layer.masksToBounds = false
-
-        BackgroundMedication.layer.shadowColor = shadowColor.cgColor
-        BackgroundMedication.layer.shadowOpacity = shadowOpacity
-        BackgroundMedication.layer.shadowRadius = shadowRadius
-        BackgroundMedication.layer.shadowOffset = shadowOffset
+        BackgroundMedication.layer.shadowColor = UIColor.black.cgColor
+        BackgroundMedication.layer.shadowOpacity = 0.15
+        BackgroundMedication.layer.shadowRadius = 3
+        BackgroundMedication.layer.shadowOffset = CGSize(width: 0, height: 1)
     }
     
-    func configure(with model: MedicationModel) {
-        timeLabel.text = model.time
-        nameLabel.text = model.name
-        detailLabel.text = model.detail
-
+    func configure(with dose: TodayDoseItem) {
+        self.currentDose = dose 
+        
+        let formatter = DateFormatter()
+        formatter.dateFormat = "h:mm a"
+        timeLabel.text = formatter.string(from: dose.scheduledTime)
+        
+        nameLabel.text = dose.medicationName
+        detailLabel.text = dose.medicationForm
+        iconImageView.image = UIImage(named: dose.iconName)
+        
+        if dose.logStatus != .none {
+            self.contentView.alpha = 0.0
+            self.isHidden = true
+        } else {
+            self.contentView.alpha = 1.0
+            self.isHidden = false
+        }
     }
 }

@@ -19,12 +19,20 @@ class SymptomLogCell: UICollectionViewCell {
         self.contentView.clipsToBounds = false
         
         setupCardStyle()
-        
+        setupButton()
+    }
+    
+    private func setupButton() {
         logNowButton.layer.cornerRadius = 15
         logNowButton.backgroundColor = UIColor.systemBlue
         logNowButton.setTitleColor(UIColor.white, for: .normal)
         
-        logNowButton.addTarget(self, action: #selector(logNowButtonTapped), for: .touchUpInside)
+        let action = UIAction { [weak self] _ in
+            guard let self = self else { return }
+            self.delegate?.symptomLogCellDidTapLogNow(self)
+        }
+        
+        logNowButton.addAction(action, for: .touchUpInside)
     }
     
     func setupCardStyle() {
@@ -41,10 +49,6 @@ class SymptomLogCell: UICollectionViewCell {
         backgroundCardView.layer.shadowOpacity = shadowOpacity
         backgroundCardView.layer.shadowRadius = shadowRadius
         backgroundCardView.layer.shadowOffset = shadowOffset
-    }
-    
-    @objc private func logNowButtonTapped() {
-        delegate?.symptomLogCellDidTapLogNow(self)
     }
 
     func configure(with message: String, buttonTitle: String) {

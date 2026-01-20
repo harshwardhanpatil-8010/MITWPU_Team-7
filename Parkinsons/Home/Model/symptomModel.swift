@@ -7,8 +7,6 @@
 
 import Foundation
 
-// MARK: - 1. Symptom Rating Model
-
 struct SymptomRating: Codable {
     let name: String
     let iconName: String?

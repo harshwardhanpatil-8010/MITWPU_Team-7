@@ -44,8 +44,8 @@ class SymptomDetailCell: UITableViewCell {
         }
         
         if isEditable {
-            self.backgroundColor = UIColor.systemGray6 // Light gray to show it's "active"
-            self.accessoryType = .disclosureIndicator  // Shows a small arrow >
+            self.backgroundColor = UIColor.systemGray6
+            self.accessoryType = .disclosureIndicator  
         } else {
             self.backgroundColor = .clear
             self.accessoryType = .none

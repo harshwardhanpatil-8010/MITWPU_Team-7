@@ -22,24 +22,7 @@ class SectionHeaderView: UICollectionReusableView {
             titleLabel.bottomAnchor.constraint(equalTo: bottomAnchor)
                     
         ])
-//        NSLayoutConstraint.activate([
-//            // 1. Title Label Constraints (Top of the header)
-//            titleLabel.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 16),
-//            titleLabel.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -16),
-//            titleLabel.topAnchor.constraint(equalTo: topAnchor, constant: 4),
-//            // Removed titleLabel.bottomAnchor to bottomAnchor to allow the arrow to sit below it
-//
-//            // 2. Arrow Image Constraints (Centered and Larger)
-//            arrowImageView.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: 2),
-//            arrowImageView.centerXAnchor.constraint(equalTo: centerXAnchor),
-//            
-//            // Increased size here
-//            arrowImageView.widthAnchor.constraint(equalToConstant: 20),
-//            arrowImageView.heightAnchor.constraint(equalToConstant: 20),
-//            
-//            // 3. Bottom Constraint (Pins everything together)
-//            arrowImageView.bottomAnchor.constraint(equalTo: bottomAnchor, constant: 2)
-//        ])
+
     }
     
     required init?(coder: NSCoder) {

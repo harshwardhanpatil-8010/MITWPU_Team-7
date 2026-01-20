@@ -7,7 +7,6 @@
 
 import Foundation
 
-// MARK: - Symptom Type
 enum SymptomType: String, CaseIterable, Codable {
     case slowedMovement = "Slowed Movement"
     case gaitDisturbance = "Gait Disturbance"
@@ -18,7 +17,6 @@ enum SymptomType: String, CaseIterable, Codable {
     case insomnia = "Insomnia"
 }
 
-// MARK: - Symptom Severity
 enum SymptomSeverity: String, Codable, CaseIterable {
     case mild = "Mild"
     case moderate = "Moderate"
@@ -26,7 +24,6 @@ enum SymptomSeverity: String, Codable, CaseIterable {
     case notPresent = "Not Present"
 }
 
-// MARK: - Symptom Log Model
 struct SymptomLog: Codable, Identifiable {
     let id: UUID
     let date: Date

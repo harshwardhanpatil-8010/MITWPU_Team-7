@@ -12,11 +12,10 @@ class EditMedicationViewController: UIViewController,
                                     AddMedicationDelegate {
 
     var medications: [Medication] = []
-    weak var delegate: AddMedicationDelegate?
 
     @IBOutlet weak var backButton: UIBarButtonItem!
-    @IBOutlet weak var saveButton: UIBarButtonItem!
     @IBOutlet weak var collectionView: UICollectionView!
+    weak var delegate: AddMedicationDelegate?
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -35,21 +34,19 @@ class EditMedicationViewController: UIViewController,
         reloadMedications()
     }
 
-    func reloadMedications() {
+    private func reloadMedications() {
         medications = MedicationDataStore.shared.medications
         collectionView.reloadData()
     }
 
+
     func didUpdateMedication() {
         reloadMedications()
-    }
-
-    @IBAction func saveTapped(_ sender: UIBarButtonItem) {
         delegate?.didUpdateMedication()
-        dismiss(animated: true)
     }
 
     @IBAction func backTapped(_ sender: Any) {
+        delegate?.didUpdateMedication()
         dismiss(animated: true)
     }
 
@@ -117,3 +114,4 @@ extension EditMedicationViewController: UICollectionViewDelegateFlowLayout {
         return -7
     }
 }
+

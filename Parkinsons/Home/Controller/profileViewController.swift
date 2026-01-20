@@ -21,10 +21,8 @@ class profileViewController: UIViewController {
     
     var selectedSex: String = "Male" {
         didSet {
-            // 1. Standard update for older button styles
             sexsSelector.setTitle(selectedSex, for: .normal)
             
-            // 2. Update for modern iOS 15+ "Configuration" styles
             if #available(iOS 15.0, *) {
                 var config = sexsSelector.configuration
                 config?.title = selectedSex
@@ -136,43 +134,7 @@ class profileViewController: UIViewController {
             view.endEditing(true)
         }
     }
-//    func updateUI(forEditing isEditing: Bool) {
-//        let editableFields: [UIView] = [
-//            nameTextField,
-//            emergencyNoTextField,
-//            dateOfBirthSelector,
-//            sexsSelector
-//        ]
-//        
-//        // Define your colors
-//        let activeColor = UIColor.systemGray6 // A soft light gray for editing mode
-//        let inactiveColor = UIColor.clear      // Transparent when just viewing
-//        
-//        for field in editableFields {
-//            field.isUserInteractionEnabled = isEditing
-//            if let textField = field as? UITextField {
-//                textField.borderStyle = isEditing ? .roundedRect : .none
-//                textField.backgroundColor = isEditing ? activeColor : inactiveColor
-//                textField.textAlignment = .right
-//                if isEditing {
-//                    textField.textColor = .systemBlue
-//                }
-//                else {
-//                    textField.textColor = .label
-//                }
-//                
-//            }
-//            if let button = field as? UIButton {
-//                button.backgroundColor = isEditing ? activeColor : inactiveColor
-//                button.layer.cornerRadius = 5
-//                button.setTitleColor(isEditing ? .systemBlue : .label, for: .normal)
-//            }
-//        }
-//        
-//        if !isEditing {
-//            view.endEditing(true)
-//        }
-//    }
+
     
     @IBAction func sexSelectorTapped(_ sender: UIButton) {
         guard isEditingMode else { return }

@@ -10,7 +10,12 @@ enum Section: Int, CaseIterable {
 
 class HomeViewController: UIViewController, UICollectionViewDelegate, SymptomLogCellDelegate, SymptomLogDetailDelegate {
     
+    private let todayViewModel = TodayMedicationViewModel()
+    private var todayDoses: [TodayDoseItem] = []
+    
     @IBOutlet weak var mainCollectionView: UICollectionView!
+    
+    private var medicationLoggedObserver: NSObjectProtocol?
     
     let homeSections = Section.allCases
     private let separatorView: UIView = {
@@ -69,6 +74,21 @@ class HomeViewController: UIViewController, UICollectionViewDelegate, SymptomLog
         mainCollectionView.setCollectionViewLayout(generateLayout(), animated: true)
         
         dates = HomeDataStore.shared.getDates()
+        loadRealMedicationData()
+        
+        medicationLoggedObserver = NotificationCenter.default.addObserver(
+            forName: NSNotification.Name("MedicationLogged"),
+            object: nil,
+            queue: .main
+        ) { [weak self] _ in
+            self?.loadRealMedicationData()
+        }
+    }
+    
+    deinit {
+        if let observer = medicationLoggedObserver {
+            NotificationCenter.default.removeObserver(observer)
+        }
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -88,7 +108,40 @@ class HomeViewController: UIViewController, UICollectionViewDelegate, SymptomLog
         nav.modalPresentationStyle = .pageSheet
         present(nav, animated: true)
     }
-    
+    private func loadRealMedicationData() {
+        let myMedications = MedicationDataStore.shared.medications
+        todayViewModel.loadTodayMedications(from: myMedications)
+        
+        todayViewModel.loadLoggedDoses(
+            medications: myMedications,
+            logs: DoseLogDataStore.shared.logs,
+            for: Date()
+        )
+        
+        let unloggedDoses = todayViewModel.todayDoses.filter { dose in
+            !todayViewModel.loggedDoses.contains(where: { $0.id == dose.id })
+        }
+        
+        self.todayDoses = unloggedDoses
+        self.mainCollectionView.reloadData()
+    }
+    private func updateDose(_ dose: TodayDoseItem, status: DoseStatus) {
+        let log = DoseLog(
+            id: UUID(),
+            medicationID: dose.medicationID,
+            doseID: dose.id,
+            scheduledTime: dose.scheduledTime,
+            loggedAt: Date(),
+            status:status,
+            day: Date().startOfDay
+        )
+
+        DoseLogDataStore.shared.logDose(log)
+       
+        loadRealMedicationData()
+      
+        NotificationCenter.default.post(name: NSNotification.Name("MedicationLogged"), object: nil)
+    }
     func setupSeparator() {
         view.addSubview(separatorView)
         NSLayoutConstraint.activate([
@@ -101,16 +154,14 @@ class HomeViewController: UIViewController, UICollectionViewDelegate, SymptomLog
     
     func registerCells() {
         mainCollectionView.register(UINib(nibName: "CalenderCollectionViewCell", bundle: nil), forCellWithReuseIdentifier: "calendar_cell")
-        mainCollectionView.register(UINib(nibName: "MedicationCardCollectionViewCell", bundle: nil), forCellWithReuseIdentifier: "medication_card_cell")
+        mainCollectionView.register(UINib(nibName: "MedicationCardCollectionViewCell", bundle: nil), forCellWithReuseIdentifier: "MedicationCardCell")
         mainCollectionView.register(UINib(nibName: "ExerciseCardCell", bundle: nil), forCellWithReuseIdentifier: "exercise_card_cell")
         mainCollectionView.register(UINib(nibName: "SymptomLogCell", bundle: nil), forCellWithReuseIdentifier: "symptom_log_cell")
         mainCollectionView.register(UINib(nibName: "TherapeuticGameCell", bundle: nil), forCellWithReuseIdentifier: "therapeutic_game_cell")
         
-        mainCollectionView.register(
-            SectionHeaderView.self,
-            forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader,
-            withReuseIdentifier: "HeaderView"
-        )
+        mainCollectionView.register(SectionHeaderView.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: "HeaderView")
+
+        mainCollectionView.register(UICollectionReusableView.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionFooter, withReuseIdentifier: "EmptyMedicationFooter")
     }
   
     func generateLayout() -> UICollectionViewLayout {
@@ -142,12 +193,14 @@ class HomeViewController: UIViewController, UICollectionViewDelegate, SymptomLog
             case .medications:
                 let itemSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: .fractionalHeight(1.0))
                 let item = NSCollectionLayoutItem(layoutSize: itemSize)
-                let groupSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(0.9), heightDimension: .absolute(100))
+                
+                let groupSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(0.9), heightDimension: .absolute(90))
                 let group = NSCollectionLayoutGroup.horizontal(layoutSize: groupSize, subitems: [item])
+                
                 let section = NSCollectionLayoutSection(group: group)
+                section.orthogonalScrollingBehavior = .groupPaging
                 section.interGroupSpacing = 12
                 section.contentInsets = NSDirectionalEdgeInsets(top: 8, leading: 16, bottom: 24, trailing: 16)
-                section.orthogonalScrollingBehavior = .continuous
                 
                 let headerSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: .absolute(30))
                 let header = NSCollectionLayoutBoundarySupplementaryItem(
@@ -155,7 +208,16 @@ class HomeViewController: UIViewController, UICollectionViewDelegate, SymptomLog
                     elementKind: UICollectionView.elementKindSectionHeader,
                     alignment: .top
                 )
-                section.boundarySupplementaryItems = [header]
+                let footerHeight: CGFloat = self.todayDoses.isEmpty ? 40 : 0
+                let footerSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: .absolute(footerHeight))
+                let footer = NSCollectionLayoutBoundarySupplementaryItem(
+                    layoutSize: footerSize,
+                    elementKind: UICollectionView.elementKindSectionFooter,
+                    alignment: .bottom
+                )
+
+                section.boundarySupplementaryItems = [header, footer]
+                
                 return section
                 
             case .exercises:
@@ -319,7 +381,8 @@ extension HomeViewController: UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         switch homeSections[section] {
         case .calendar: return dates.count
-        case .medications: return medicationData.count
+        case .medications:
+            return todayDoses.count
         case .exercises: return exerciseData.count
         case .symptoms: return 1
         case .therapeuticGames: return therapeuticGamesData.count
@@ -339,14 +402,16 @@ extension HomeViewController: UICollectionViewDataSource {
             return cell
             
         case .medications:
-            let cell = mainCollectionView.dequeueReusableCell(withReuseIdentifier: "medication_card_cell", for: indexPath) as! MedicationCardCollectionViewCell
-            cell.configure(with: medicationData[indexPath.row])
+            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "MedicationCardCell", for: indexPath) as! MedicationCardCollectionViewCell
+            let doseItem = todayDoses[indexPath.row]
+            cell.configure(with: doseItem)
+            cell.delegate = self
             return cell
             
         case .exercises:
             let cell = mainCollectionView.dequeueReusableCell(withReuseIdentifier: "exercise_card_cell", for: indexPath) as! ExerciseCardCell
             let model = exerciseData[indexPath.row]
-
+            
             if indexPath.row == 0 {
                 let completed = WorkoutManager.shared.completedToday.count
                 let total = WorkoutManager.shared.exercises.count > 0 ? WorkoutManager.shared.exercises.count : 1
@@ -383,38 +448,59 @@ extension HomeViewController: UICollectionViewDataSource {
     }
     
     func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
-        guard kind == UICollectionView.elementKindSectionHeader else { return UICollectionReusableView() }
-        let header = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: "HeaderView", for: indexPath) as! SectionHeaderView
         let sectionType = homeSections[indexPath.section]
         
-        header.setTitleAlignment(.left)
-        header.setFont(size: 20, weight: .bold)
-
-        switch sectionType {
-        case .calendar:
-            let dateString = formattedDateString(for: selectedDate)
-            let isToday = Calendar.current.isDateInToday(selectedDate)
-            header.configure(title: isToday ? "Today, \(dateString)" : dateString)
-            header.setTitleAlignment(.center)
-            header.setFont(size: 17, weight: .bold)
-        case .medications:
-            header.configure(title: "Upcoming Medications")
-        case .exercises:
-            header.configure(title: "Guided Exercise")
-        case .symptoms:
-            header.configure(title: "Symptoms")
-        case .therapeuticGames:
-            header.configure(title: "Therapeutic Games")
+        if kind == UICollectionView.elementKindSectionHeader {
+            let header = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: "HeaderView", for: indexPath) as! SectionHeaderView
+            
+            header.setTitleAlignment(.left)
+            header.setFont(size: 20, weight: .bold)
+            
+            switch sectionType {
+            case .calendar:
+                let dateString = formattedDateString(for: selectedDate)
+                let isToday = Calendar.current.isDateInToday(selectedDate)
+                header.configure(title: isToday ? "Today, \(dateString)" : dateString)
+                header.setTitleAlignment(.center)
+                header.setFont(size: 17, weight: .bold)
+            case .medications:
+                header.configure(title: "Upcoming Medications")
+            case .exercises:
+                header.configure(title: "Guided Exercise")
+            case .symptoms:
+                header.configure(title: "Symptoms")
+            case .therapeuticGames:
+                header.configure(title: "Therapeutic Games")
+            }
+            return header
         }
-        return header
-    }
-
-    @IBAction func calendarBarButtonItemTapped(_ sender: UIBarButtonItem) {
-        let storyboard = UIStoryboard(name: "Home", bundle: nil)
-        guard let vc = storyboard.instantiateViewController(withIdentifier: "CalendarViewController") as? CalendarViewController else { return }
-        let nav = UINavigationController(rootViewController: vc)
-        nav.modalPresentationStyle = .pageSheet
-        present(nav, animated: true)
+        
+        if kind == UICollectionView.elementKindSectionFooter && sectionType == .medications {
+            let footer = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: "EmptyMedicationFooter", for: indexPath)
+            
+            footer.subviews.forEach { $0.removeFromSuperview() }
+            
+            if todayDoses.isEmpty {
+                let label = UILabel()
+                label.text = "No Medications Added Yet"
+                label.textColor = .systemGray2
+                label.font = .systemFont(ofSize: 20, weight: .medium)
+                label.textAlignment = .center
+                label.translatesAutoresizingMaskIntoConstraints = false
+                
+                footer.addSubview(label)
+                
+                NSLayoutConstraint.activate([
+                    label.centerXAnchor.constraint(equalTo: footer.centerXAnchor),
+                    label.centerYAnchor.constraint(equalTo: footer.centerYAnchor, constant: -15)
+                ])
+            } else {
+                footer.backgroundColor = .clear
+            }
+            return footer
+        }
+        
+        return UICollectionReusableView()
     }
 }
 
@@ -423,5 +509,14 @@ extension HomeViewController {
         let formatter = DateFormatter()
         formatter.dateFormat = "d MMMM yyyy"
         return formatter.string(from: date)
+    }
+}
+extension HomeViewController: MedicationCardDelegate {
+    func didTapTaken(for dose: TodayDoseItem) {
+        updateDose(dose, status: .taken)
+    }
+    
+    func didTapSkipped(for dose: TodayDoseItem) {
+        updateDose(dose, status: .skipped)
     }
 }

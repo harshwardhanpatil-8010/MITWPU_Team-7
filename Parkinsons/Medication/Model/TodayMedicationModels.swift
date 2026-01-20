@@ -14,7 +14,17 @@ struct TodayDoseItem {
     let medicationForm: String
     let iconName: String
     let scheduledTime: Date
-    var logStatus: DoseLogStatus
+    var logStatus: DoseStatus
+
+    var isDue: Bool {
+        let now = Date()
+
+        guard Calendar.current.isDateInToday(scheduledTime) else {
+            return false
+        }
+
+        return scheduledTime <= now && logStatus == .none
+    }
 }
 
 struct TodayTimeSection {
@@ -27,6 +37,11 @@ struct LoggedDoseItem: Identifiable {
     let medicationName: String
     let medicationForm: String
     let loggedTime: Date
-    let status: DoseLogStatus
+    var status: DoseStatus
     let iconName: String
+}
+extension Date {
+    var startOfDay: Date {
+        return Calendar.current.startOfDay(for: self)
+    }
 }
