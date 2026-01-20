@@ -942,47 +942,6 @@ Longer step length usually means better leg strength and flexibility.</string>
             </objects>
             <point key="canvasLocation" x="7074.6268656716411" y="-454.46224256292902"/>
         </scene>
-        <!--countdown-->
-        <scene sceneID="DmB-x1-6Cr">
-            <objects>
-                <viewController storyboardIdentifier="10minworkoutCountdownViewController" useStoryboardIdentifierAsRestorationIdentifier="YES" id="7O2-SX-RfQ" userLabel="countdown" customClass="countdownViewController" customModule="Parkinsons" customModuleProvider="target" sceneMemberID="viewController">
-                    <view key="view" contentMode="scaleToFill" id="k0c-LS-uCK">
-                        <rect key="frame" x="0.0" y="0.0" width="402" height="874"/>
-                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <subviews>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Let's Begin" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="afL-f4-i0C">
-                                <rect key="frame" x="0.0" y="250" width="402" height="33"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="27"/>
-                                <nil key="textColor"/>
-                                <nil key="highlightedColor"/>
-                            </label>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="oWw-9w-A8z">
-                                <rect key="frame" x="0.0" y="382" width="402" height="153"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="128"/>
-                                <nil key="textColor"/>
-                                <nil key="highlightedColor"/>
-                            </label>
-                        </subviews>
-                        <viewLayoutGuide key="safeArea" id="izq-6S-pIO"/>
-                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
-                        <constraints>
-                            <constraint firstItem="izq-6S-pIO" firstAttribute="trailing" secondItem="oWw-9w-A8z" secondAttribute="trailing" id="0dO-4W-n0v"/>
-                            <constraint firstItem="afL-f4-i0C" firstAttribute="leading" secondItem="izq-6S-pIO" secondAttribute="leading" id="1s1-FE-uGr"/>
-                            <constraint firstItem="afL-f4-i0C" firstAttribute="top" secondItem="k0c-LS-uCK" secondAttribute="top" constant="250" id="7wg-7a-wsz"/>
-                            <constraint firstItem="oWw-9w-A8z" firstAttribute="leading" secondItem="izq-6S-pIO" secondAttribute="leading" id="okf-YA-2pK"/>
-                            <constraint firstItem="izq-6S-pIO" firstAttribute="trailing" secondItem="afL-f4-i0C" secondAttribute="trailing" id="vcf-fg-hP9"/>
-                            <constraint firstItem="oWw-9w-A8z" firstAttribute="top" secondItem="afL-f4-i0C" secondAttribute="bottom" constant="99" id="wxO-et-YXs"/>
-                        </constraints>
-                    </view>
-                    <navigationItem key="navigationItem" title="10 min Workout" id="8lW-nd-TTm"/>
-                    <connections>
-                        <outlet property="TimerLabel" destination="oWw-9w-A8z" id="qYU-N1-U9E"/>
-                    </connections>
-                </viewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="B5C-4A-uOd" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="45" y="-454"/>
-        </scene>
         <!--Navigation Controller-->
         <scene sceneID="MzC-kA-sqP">
             <objects>

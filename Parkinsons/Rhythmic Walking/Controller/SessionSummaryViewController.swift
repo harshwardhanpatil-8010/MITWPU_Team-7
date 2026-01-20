@@ -61,8 +61,7 @@ class SessionSummaryViewController: UIViewController {
         
         let progress = session.requestedDurationSeconds > 0 ? Float(elapsedSeconds) / Float(session.requestedDurationSeconds) : 1.0
         progressView.setProgress(CGFloat(progress))
-
-        // Use actual session data instead of Demo variables
+        
         stepsTaken.text = "2513"
         distanceCovered.text = "2 km"
         speed.text = "3 km/h"
