@@ -65,7 +65,9 @@
                                                     <constraint firstAttribute="width" constant="88" id="P7x-mS-6KD"/>
                                                 </constraints>
                                                 <state key="normal" title="Button"/>
-                                                <buttonConfiguration key="configuration" style="filled" title="Taken" cornerStyle="capsule"/>
+                                                <buttonConfiguration key="configuration" style="filled" title="Taken" cornerStyle="capsule">
+                                                    <backgroundConfiguration key="background"/>
+                                                </buttonConfiguration>
                                                 <connections>
                                                     <action selector="takenButtontapped:" destination="7m8-Ko-BfR" eventType="touchUpInside" id="GzJ-Cd-TRD"/>
                                                 </connections>

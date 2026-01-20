@@ -26,7 +26,7 @@
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="pxI-wK-qff" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="5643" y="283"/>
+            <point key="canvasLocation" x="6561.1940298507461" y="282.83752860411897"/>
         </scene>
         <!--Add Medication-->
         <scene sceneID="7RQ-9y-lmk">
@@ -386,7 +386,7 @@
                         </constraints>
                     </view>
                     <navigationItem key="navigationItem" title="Add Medication" id="jgo-eI-yxj">
-                        <barButtonItem key="leftBarButtonItem" image="chevron.left" catalog="system" id="qFU-3e-Lmr">
+                        <barButtonItem key="leftBarButtonItem" systemItem="cancel" id="qFU-3e-Lmr">
                             <connections>
                                 <action selector="backButtonTapped:" destination="tBS-zi-6JS" id="hpi-hi-CDV"/>
                             </connections>
@@ -426,7 +426,7 @@
                     </connections>
                 </tapGestureRecognizer>
             </objects>
-            <point key="canvasLocation" x="4895.5223880597014" y="282.83752860411897"/>
+            <point key="canvasLocation" x="5814.9253731343279" y="282.83752860411897"/>
         </scene>
         <!--Medication-->
         <scene sceneID="k6b-it-37H">
@@ -549,7 +549,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Ns3-hb-kou" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="6402.9850746268648" y="282.83752860411897"/>
+            <point key="canvasLocation" x="7322.3880597014922" y="282.83752860411897"/>
         </scene>
         <!--Unit and Type-->
         <scene sceneID="WtA-gJ-9Nr">
@@ -652,7 +652,7 @@
                         </constraints>
                     </view>
                     <navigationItem key="navigationItem" title="Unit and Type" id="lPn-v5-uXS">
-                        <barButtonItem key="leftBarButtonItem" title="Item" image="chevron.left" catalog="system" id="oZi-fR-dtV">
+                        <barButtonItem key="leftBarButtonItem" systemItem="cancel" id="oZi-fR-dtV">
                             <connections>
                                 <action selector="onBackPressed:" destination="KPh-yv-2EJ" id="dh6-2m-znF"/>
                             </connections>
@@ -671,7 +671,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="tk5-s9-6XR" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="7322.3880597014922" y="1010.5263157894736"/>
+            <point key="canvasLocation" x="10080.597014925372" y="1010.5263157894736"/>
         </scene>
         <!--Edit Medication-->
         <scene sceneID="Kuy-Zm-3hU">
@@ -712,7 +712,7 @@
                         </constraints>
                     </view>
                     <navigationItem key="navigationItem" title="Edit Medication" id="ohQ-ju-cjy">
-                        <barButtonItem key="leftBarButtonItem" image="chevron.left" catalog="system" id="Xd3-ix-z0w">
+                        <barButtonItem key="leftBarButtonItem" systemItem="cancel" id="Xd3-ix-z0w">
                             <connections>
                                 <action selector="backTapped:" destination="UPj-Yl-bkc" id="x8f-P0-fat"/>
                             </connections>
@@ -725,7 +725,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="HSL-Bj-ZW8" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="5814.9253731343279" y="995.42334096109835"/>
+            <point key="canvasLocation" x="6734.3283582089553" y="995.42334096109835"/>
         </scene>
         <!--Edit Log View Controller-->
         <scene sceneID="Yxa-Ck-7fb">
@@ -783,7 +783,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Dn8-Xj-nkd" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="7199" y="283"/>
+            <point key="canvasLocation" x="9037.313432835821" y="282.83752860411897"/>
         </scene>
         <!--Repeat-->
         <scene sceneID="B6i-X1-lRf">
@@ -848,7 +848,7 @@
                         </constraints>
                     </view>
                     <navigationItem key="navigationItem" title="Repeat" id="mQb-GF-MXD">
-                        <barButtonItem key="leftBarButtonItem" title="Item" image="chevron.backward" catalog="system" id="cCa-NO-NSU">
+                        <barButtonItem key="leftBarButtonItem" systemItem="cancel" id="cCa-NO-NSU">
                             <connections>
                                 <action selector="onBackPressed:" destination="Yai-s1-5wW" id="IGF-4R-YMA"/>
                             </connections>
@@ -866,36 +866,34 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="iCv-pa-bSF" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="6561.1940298507461" y="1010.5263157894736"/>
+            <point key="canvasLocation" x="8400" y="1010.5263157894736"/>
         </scene>
     </scenes>
     <resources>
-        <image name="chevron.backward" catalog="system" width="97" height="128"/>
-        <image name="chevron.left" catalog="system" width="97" height="128"/>
         <image name="chevron.right" catalog="system" width="97" height="128"/>
         <image name="minus" catalog="system" width="128" height="26"/>
         <image name="pills.fill" catalog="system" width="128" height="104"/>
         <image name="plus" catalog="system" width="128" height="113"/>
         <systemColor name="placeholderTextColor">
-            <color red="0.23529411764705882" green="0.23529411764705882" blue="0.2627450980392157" alpha="0.29803921568627451" colorSpace="custom" customColorSpace="sRGB"/>
+            <color red="0.23529411759999999" green="0.23529411759999999" blue="0.26274509800000001" alpha="0.29803921570000003" colorSpace="custom" customColorSpace="sRGB"/>
         </systemColor>
         <systemColor name="secondarySystemBackgroundColor">
-            <color red="0.94901960784313721" green="0.94901960784313721" blue="0.96862745098039216" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <color red="0.94901960780000005" green="0.94901960780000005" blue="0.96862745100000003" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </systemColor>
         <systemColor name="separatorColor">
-            <color red="0.23529411764705882" green="0.23529411764705882" blue="0.2627450980392157" alpha="0.12" colorSpace="custom" customColorSpace="sRGB"/>
+            <color red="0.23529411759999999" green="0.23529411759999999" blue="0.26274509800000001" alpha="0.28999999999999998" colorSpace="custom" customColorSpace="sRGB"/>
         </systemColor>
         <systemColor name="systemBackgroundColor">
             <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
         </systemColor>
         <systemColor name="systemGray2Color">
-            <color red="0.68235294117647061" green="0.68235294117647061" blue="0.69803921568627447" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <color red="0.68235294120000001" green="0.68235294120000001" blue="0.69803921570000005" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </systemColor>
         <systemColor name="systemGray5Color">
-            <color red="0.89803921568627454" green="0.89803921568627454" blue="0.91764705882352937" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <color red="0.8980392157" green="0.8980392157" blue="0.91764705879999997" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </systemColor>
         <systemColor name="systemRedColor">
-            <color red="1" green="0.2196078431372549" blue="0.23529411764705882" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <color red="1" green="0.23137254900000001" blue="0.18823529410000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </systemColor>
     </resources>
 </document>

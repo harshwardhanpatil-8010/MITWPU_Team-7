@@ -27,8 +27,8 @@
                                     <constraint firstAttribute="height" constant="46" id="uMh-rJ-I3l"/>
                                 </constraints>
                             </imageView>
-                            <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="7" translatesAutoresizingMaskIntoConstraints="NO" id="PJe-K8-KY5">
-                                <rect key="frame" x="78" y="12.666666666666668" width="276" height="38.666666666666657"/>
+                            <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="PJe-K8-KY5">
+                                <rect key="frame" x="78" y="16.333333333333329" width="276" height="31.666666666666671"/>
                                 <subviews>
                                     <stackView opaque="NO" contentMode="scaleToFill" spacing="15" translatesAutoresizingMaskIntoConstraints="NO" id="9UL-xj-Hwz">
                                         <rect key="frame" x="0.0" y="0.0" width="276" height="16"/>
@@ -71,7 +71,7 @@
                                         </constraints>
                                     </stackView>
                                     <stackView opaque="NO" contentMode="scaleToFill" spacing="94" translatesAutoresizingMaskIntoConstraints="NO" id="YEF-GG-wn9">
-                                        <rect key="frame" x="0.0" y="22.999999999999996" width="276" height="15.666666666666668"/>
+                                        <rect key="frame" x="0.0" y="16.000000000000004" width="276" height="15.666666666666668"/>
                                         <subviews>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Cnk-5B-2Ma">
                                                 <rect key="frame" x="0.0" y="0.0" width="276" height="15.666666666666666"/>
