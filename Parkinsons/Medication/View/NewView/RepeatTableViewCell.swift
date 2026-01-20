@@ -24,7 +24,7 @@ class RepeatTableViewCell: UITableViewCell {
         repeatLabel.text = type.name
 
         if type.isSelected {
-            repeatStatus.image = UIImage(systemName: "checkmarkmmmmmmmmmmm")
+            repeatStatus.image = UIImage(systemName: "checkmark")
             repeatStatus.tintColor = .systemBlue
         } else {
             repeatStatus.image = nil

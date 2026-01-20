@@ -159,14 +159,8 @@ class HomeViewController: UIViewController, UICollectionViewDelegate, SymptomLog
         mainCollectionView.register(UINib(nibName: "SymptomLogCell", bundle: nil), forCellWithReuseIdentifier: "symptom_log_cell")
         mainCollectionView.register(UINib(nibName: "TherapeuticGameCell", bundle: nil), forCellWithReuseIdentifier: "therapeutic_game_cell")
         
-        // --- ADD THIS LINE TO FIX THE CRASH ---
-        // If SectionHeaderView is a class (not a XIB), use this:
         mainCollectionView.register(SectionHeaderView.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: "HeaderView")
-        
-        // OR, if SectionHeaderView is a .xib file, use this instead:
-        // mainCollectionView.register(UINib(nibName: "SectionHeaderView", bundle: nil), forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: "HeaderView")
 
-        // Keep your footer registration as is
         mainCollectionView.register(UICollectionReusableView.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionFooter, withReuseIdentifier: "EmptyMedicationFooter")
     }
   
@@ -214,7 +208,6 @@ class HomeViewController: UIViewController, UICollectionViewDelegate, SymptomLog
                     elementKind: UICollectionView.elementKindSectionHeader,
                     alignment: .top
                 )
-                // Calculate dynamic height: 90 if empty, 0 if not
                 let footerHeight: CGFloat = self.todayDoses.isEmpty ? 40 : 0
                 let footerSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: .absolute(footerHeight))
                 let footer = NSCollectionLayoutBoundarySupplementaryItem(
@@ -223,7 +216,6 @@ class HomeViewController: UIViewController, UICollectionViewDelegate, SymptomLog
                     alignment: .bottom
                 )
 
-                // Add both header and footer to the section
                 section.boundarySupplementaryItems = [header, footer]
                 
                 return section
@@ -458,7 +450,6 @@ extension HomeViewController: UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
         let sectionType = homeSections[indexPath.section]
         
-        // 1. Handle Headers
         if kind == UICollectionView.elementKindSectionHeader {
             let header = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: "HeaderView", for: indexPath) as! SectionHeaderView
             
@@ -484,31 +475,26 @@ extension HomeViewController: UICollectionViewDataSource {
             return header
         }
         
-        // 2. Handle Empty State Footer for Medications
         if kind == UICollectionView.elementKindSectionFooter && sectionType == .medications {
             let footer = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: "EmptyMedicationFooter", for: indexPath)
             
-            // Clean up old subviews for cell reuse
             footer.subviews.forEach { $0.removeFromSuperview() }
             
             if todayDoses.isEmpty {
                 let label = UILabel()
                 label.text = "No Medications Added Yet"
                 label.textColor = .systemGray2
-                label.font = .systemFont(ofSize: 24, weight: .medium)
+                label.font = .systemFont(ofSize: 20, weight: .medium)
                 label.textAlignment = .center
                 label.translatesAutoresizingMaskIntoConstraints = false
                 
                 footer.addSubview(label)
-                //footer.backgroundColor = .systemGray5.withAlphaComponent(0.4)
-               // footer.layer.cornerRadius = 12
                 
                 NSLayoutConstraint.activate([
                     label.centerXAnchor.constraint(equalTo: footer.centerXAnchor),
                     label.centerYAnchor.constraint(equalTo: footer.centerYAnchor, constant: -15)
                 ])
             } else {
-                // Hide footer if there is data
                 footer.backgroundColor = .clear
             }
             return footer

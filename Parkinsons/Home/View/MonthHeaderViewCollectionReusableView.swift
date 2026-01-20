@@ -7,14 +7,6 @@
 
 import UIKit
 
-//class MonthHeaderViewCollectionReusableView: UICollectionReusableView {
-//
-//    override func awakeFromNib() {
-//        super.awakeFromNib()
-//        // Initialization code
-//    }
-//    
-//}
 
 class MonthHeaderViewCollectionReusableView: UICollectionReusableView {
     @IBOutlet weak var titleLabel: UILabel!
