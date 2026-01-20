@@ -7,11 +7,15 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		19C7FADF2F1F4DA600A3A885 /* ARKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 19C7FADE2F1F4DA600A3A885 /* ARKit.framework */; };
+		19C7FAE12F1F4DB700A3A885 /* RealityKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 19C7FAE02F1F4DB700A3A885 /* RealityKit.framework */; };
 		D0E11A9F2F0FD17F0018CE58 /* YouTubeiOSPlayerHelper in Frameworks */ = {isa = PBXBuildFile; productRef = D0E11A9E2F0FD17F0018CE58 /* YouTubeiOSPlayerHelper */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
 		19423B6D2ED6BD590004C99E /* Parkinsons.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Parkinsons.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		19C7FADE2F1F4DA600A3A885 /* ARKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ARKit.framework; path = System/Library/Frameworks/ARKit.framework; sourceTree = SDKROOT; };
+		19C7FAE02F1F4DB700A3A885 /* RealityKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = RealityKit.framework; path = System/Library/Frameworks/RealityKit.framework; sourceTree = SDKROOT; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
@@ -43,6 +47,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				19C7FAE12F1F4DB700A3A885 /* RealityKit.framework in Frameworks */,
+				19C7FADF2F1F4DA600A3A885 /* ARKit.framework in Frameworks */,
 				D0E11A9F2F0FD17F0018CE58 /* YouTubeiOSPlayerHelper in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -54,6 +60,7 @@
 			isa = PBXGroup;
 			children = (
 				19423B6F2ED6BD590004C99E /* Parkinsons */,
+				19C7FADD2F1F4DA500A3A885 /* Frameworks */,
 				19423B6E2ED6BD590004C99E /* Products */,
 			);
 			sourceTree = "<group>";
@@ -64,6 +71,15 @@
 				19423B6D2ED6BD590004C99E /* Parkinsons.app */,
 			);
 			name = Products;
+			sourceTree = "<group>";
+		};
+		19C7FADD2F1F4DA500A3A885 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				19C7FAE02F1F4DB700A3A885 /* RealityKit.framework */,
+				19C7FADE2F1F4DA600A3A885 /* ARKit.framework */,
+			);
+			name = Frameworks;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
