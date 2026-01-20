@@ -7,9 +7,9 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		1955C2882F1FA55F007AD1CE /* YouTubeiOSPlayerHelper in Frameworks */ = {isa = PBXBuildFile; productRef = 19591E602F1F6359005E6535 /* YouTubeiOSPlayerHelper */; };
 		19C7FADF2F1F4DA600A3A885 /* ARKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 19C7FADE2F1F4DA600A3A885 /* ARKit.framework */; };
 		19C7FAE12F1F4DB700A3A885 /* RealityKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 19C7FAE02F1F4DB700A3A885 /* RealityKit.framework */; };
+		84CC6C322F1FDBCE000E0A58 /* YouTubeiOSPlayerHelper in Frameworks */ = {isa = PBXBuildFile; productRef = 84CC6C312F1FDBCE000E0A58 /* YouTubeiOSPlayerHelper */; };
 		D0E11A9F2F0FD17F0018CE58 /* (null) in Frameworks */ = {isa = PBXBuildFile; };
 /* End PBXBuildFile section */
 
@@ -48,10 +48,10 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				1955C2882F1FA55F007AD1CE /* YouTubeiOSPlayerHelper in Frameworks */,
 				19C7FAE12F1F4DB700A3A885 /* RealityKit.framework in Frameworks */,
 				19C7FADF2F1F4DA600A3A885 /* ARKit.framework in Frameworks */,
 				D0E11A9F2F0FD17F0018CE58 /* (null) in Frameworks */,
+				84CC6C322F1FDBCE000E0A58 /* YouTubeiOSPlayerHelper in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -104,7 +104,7 @@
 			);
 			name = Parkinsons;
 			packageProductDependencies = (
-				19591E602F1F6359005E6535 /* YouTubeiOSPlayerHelper */,
+				84CC6C312F1FDBCE000E0A58 /* YouTubeiOSPlayerHelper */,
 			);
 			productName = Parkinsons;
 			productReference = 19423B6D2ED6BD590004C99E /* Parkinsons.app */;
@@ -135,7 +135,7 @@
 			mainGroup = 19423B642ED6BD590004C99E;
 			minimizedProjectReferenceProxies = 1;
 			packageReferences = (
-				19591E5F2F1F6359005E6535 /* XCRemoteSwiftPackageReference "youtube-ios-player-helper" */,
+				84CC6C302F1FDBCE000E0A58 /* XCRemoteSwiftPackageReference "youtube-ios-player-helper" */,
 			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = 19423B6E2ED6BD590004C99E /* Products */;
@@ -181,10 +181,10 @@
 				INFOPLIST_FILE = Parkinsons/Info.plist;
 				INFOPLIST_KEY_NSCameraUsageDescription = "This app needs camera access to help you mimic emojis for the game.";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
-				INFOPLIST_KEY_UILaunchStoryboardName = Login.storyboard;
+				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen.storyboard;
 				INFOPLIST_KEY_UIMainStoryboardFile = Login;
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -216,10 +216,10 @@
 				INFOPLIST_FILE = Parkinsons/Info.plist;
 				INFOPLIST_KEY_NSCameraUsageDescription = "This app needs camera access to help you mimic emojis for the game.";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
-				INFOPLIST_KEY_UILaunchStoryboardName = Login.storyboard;
+				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen.storyboard;
 				INFOPLIST_KEY_UIMainStoryboardFile = Login;
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -381,9 +381,9 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
-		19591E5F2F1F6359005E6535 /* XCRemoteSwiftPackageReference "youtube-ios-player-helper" */ = {
+		84CC6C302F1FDBCE000E0A58 /* XCRemoteSwiftPackageReference "youtube-ios-player-helper" */ = {
 			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/youtube/youtube-ios-player-helper.git";
+			repositoryURL = "https://github.com/youtube/youtube-ios-player-helper";
 			requirement = {
 				kind = upToNextMajorVersion;
 				minimumVersion = 1.0.4;
@@ -392,9 +392,9 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
-		19591E602F1F6359005E6535 /* YouTubeiOSPlayerHelper */ = {
+		84CC6C312F1FDBCE000E0A58 /* YouTubeiOSPlayerHelper */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = 19591E5F2F1F6359005E6535 /* XCRemoteSwiftPackageReference "youtube-ios-player-helper" */;
+			package = 84CC6C302F1FDBCE000E0A58 /* XCRemoteSwiftPackageReference "youtube-ios-player-helper" */;
 			productName = YouTubeiOSPlayerHelper;
 		};
 /* End XCSwiftPackageProductDependency section */

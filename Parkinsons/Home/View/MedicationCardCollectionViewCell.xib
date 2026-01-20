@@ -17,6 +17,23 @@
                 <rect key="frame" x="0.0" y="0.0" width="397" height="88"/>
                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                 <subviews>
+                    <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" alignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="XeW-xP-LHr">
+                        <rect key="frame" x="16" y="13.666666666666668" width="365" height="60.666666666666643"/>
+                        <subviews>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="No Medications Added Yet." textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="7xa-k1-rBG">
+                                <rect key="frame" x="75.333333333333329" y="0.0" width="214.66666666666669" height="20.333333333333332"/>
+                                <fontDescription key="fontDescription" style="UICTFontTextStyleHeadline"/>
+                                <color key="textColor" systemColor="systemGray2Color"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Your medication reminders will appear here once added" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="mhj-Kh-dnW">
+                                <rect key="frame" x="24" y="20.333333333333332" width="317" height="40.333333333333343"/>
+                                <fontDescription key="fontDescription" style="UICTFontTextStyleCallout"/>
+                                <color key="textColor" systemColor="systemGray2Color"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                        </subviews>
+                    </stackView>
                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="d2F-1Q-w9l">
                         <rect key="frame" x="0.0" y="0.0" width="397" height="88"/>
                         <subviews>
@@ -99,8 +116,12 @@
                 <constraint firstAttribute="trailing" secondItem="d2F-1Q-w9l" secondAttribute="trailing" id="QUr-dO-MY7"/>
                 <constraint firstAttribute="bottom" secondItem="d2F-1Q-w9l" secondAttribute="bottom" symbolic="YES" id="Xk7-ew-hbZ"/>
                 <constraint firstItem="d2F-1Q-w9l" firstAttribute="leading" secondItem="gTV-IL-0wX" secondAttribute="leading" id="Xwu-ek-HyD"/>
+                <constraint firstItem="XeW-xP-LHr" firstAttribute="centerX" secondItem="gTV-IL-0wX" secondAttribute="centerX" id="gT6-MG-yJh"/>
+                <constraint firstItem="XeW-xP-LHr" firstAttribute="leading" secondItem="gTV-IL-0wX" secondAttribute="leading" constant="16" id="mkz-45-ogl"/>
                 <constraint firstAttribute="trailing" secondItem="d2F-1Q-w9l" secondAttribute="trailing" id="qrO-21-x2E"/>
                 <constraint firstAttribute="bottom" secondItem="d2F-1Q-w9l" secondAttribute="bottom" id="rcm-1k-uST"/>
+                <constraint firstAttribute="trailing" secondItem="XeW-xP-LHr" secondAttribute="trailing" constant="16" id="sE8-UH-VQ0"/>
+                <constraint firstItem="XeW-xP-LHr" firstAttribute="centerY" secondItem="gTV-IL-0wX" secondAttribute="centerY" id="whe-gf-apV"/>
                 <constraint firstItem="d2F-1Q-w9l" firstAttribute="top" secondItem="gTV-IL-0wX" secondAttribute="top" id="wiI-lF-5EK"/>
             </constraints>
             <size key="customSize" width="397" height="76"/>
@@ -109,6 +130,7 @@
                 <outlet property="detailLabel" destination="y68-j8-HlM" id="PMN-o4-xld"/>
                 <outlet property="iconImageView" destination="ddK-gT-akj" id="GXz-Fw-1wf"/>
                 <outlet property="nameLabel" destination="H9H-0u-Yyt" id="r45-Zs-T15"/>
+                <outlet property="noMedicationLabelStack" destination="XeW-xP-LHr" id="M9C-H7-FdL"/>
                 <outlet property="skippedButton" destination="S9C-h3-rMm" id="kcR-Pb-7sc"/>
                 <outlet property="takenButton" destination="ov8-Gj-nfi" id="Q9H-90-2l2"/>
                 <outlet property="timeLabel" destination="qIE-uB-JZ7" id="Feh-2W-vu7"/>
@@ -120,6 +142,9 @@
         <image name="Medication" width="122" height="102"/>
         <systemColor name="systemBackgroundColor">
             <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+        </systemColor>
+        <systemColor name="systemGray2Color">
+            <color red="0.68235294117647061" green="0.68235294117647061" blue="0.69803921568627447" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </systemColor>
     </resources>
 </document>

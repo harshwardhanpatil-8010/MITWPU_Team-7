@@ -123,7 +123,8 @@ class HomeViewController: UIViewController, UICollectionViewDelegate, SymptomLog
         }
         
         self.todayDoses = unloggedDoses
-        self.mainCollectionView.reloadData()
+        self.mainCollectionView.reloadSections(IndexSet(integer: Section.medications.rawValue))
+
     }
     private func updateDose(_ dose: TodayDoseItem, status: DoseStatus) {
         let log = DoseLog(
@@ -161,7 +162,6 @@ class HomeViewController: UIViewController, UICollectionViewDelegate, SymptomLog
         
         mainCollectionView.register(SectionHeaderView.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: "HeaderView")
 
-        mainCollectionView.register(UICollectionReusableView.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionFooter, withReuseIdentifier: "EmptyMedicationFooter")
     }
   
     func generateLayout() -> UICollectionViewLayout {
@@ -174,7 +174,7 @@ class HomeViewController: UIViewController, UICollectionViewDelegate, SymptomLog
                 let itemSize = NSCollectionLayoutSize(widthDimension: .absolute(60), heightDimension: .absolute(65))
                 let item = NSCollectionLayoutItem(layoutSize: itemSize)
                 let groupSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: .absolute(100))
-                let group = NSCollectionLayoutGroup.horizontal(layoutSize: groupSize, subitem: item, count: 7)
+                let group = NSCollectionLayoutGroup.horizontal(layoutSize: groupSize, repeatingSubitem: item, count: 7)
                 let section = NSCollectionLayoutSection(group: group)
                 section.orthogonalScrollingBehavior = .continuous
                 section.interGroupSpacing = 1
@@ -208,16 +208,7 @@ class HomeViewController: UIViewController, UICollectionViewDelegate, SymptomLog
                     elementKind: UICollectionView.elementKindSectionHeader,
                     alignment: .top
                 )
-                let footerHeight: CGFloat = self.todayDoses.isEmpty ? 40 : 0
-                let footerSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: .absolute(footerHeight))
-                let footer = NSCollectionLayoutBoundarySupplementaryItem(
-                    layoutSize: footerSize,
-                    elementKind: UICollectionView.elementKindSectionFooter,
-                    alignment: .bottom
-                )
-
-                section.boundarySupplementaryItems = [header, footer]
-                
+                section.boundarySupplementaryItems = [header]
                 return section
                 
             case .exercises:
@@ -382,7 +373,7 @@ extension HomeViewController: UICollectionViewDataSource {
         switch homeSections[section] {
         case .calendar: return dates.count
         case .medications:
-            return todayDoses.count
+            return todayDoses.isEmpty ? 1 : todayDoses.count
         case .exercises: return exerciseData.count
         case .symptoms: return 1
         case .therapeuticGames: return therapeuticGamesData.count
@@ -403,10 +394,17 @@ extension HomeViewController: UICollectionViewDataSource {
             
         case .medications:
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "MedicationCardCell", for: indexPath) as! MedicationCardCollectionViewCell
-            let doseItem = todayDoses[indexPath.row]
-            cell.configure(with: doseItem)
-            cell.delegate = self
+            
+            if todayDoses.isEmpty {
+                cell.configureEmptyState()
+                cell.delegate = nil
+            } else {
+                let doseItem = todayDoses[indexPath.row]
+                cell.configure(with: doseItem)
+                cell.delegate = self
+            }
             return cell
+
             
         case .exercises:
             let cell = mainCollectionView.dequeueReusableCell(withReuseIdentifier: "exercise_card_cell", for: indexPath) as! ExerciseCardCell
@@ -474,32 +472,6 @@ extension HomeViewController: UICollectionViewDataSource {
             }
             return header
         }
-        
-        if kind == UICollectionView.elementKindSectionFooter && sectionType == .medications {
-            let footer = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: "EmptyMedicationFooter", for: indexPath)
-            
-            footer.subviews.forEach { $0.removeFromSuperview() }
-            
-            if todayDoses.isEmpty {
-                let label = UILabel()
-                label.text = "No Medications Added Yet"
-                label.textColor = .systemGray2
-                label.font = .systemFont(ofSize: 20, weight: .medium)
-                label.textAlignment = .center
-                label.translatesAutoresizingMaskIntoConstraints = false
-                
-                footer.addSubview(label)
-                
-                NSLayoutConstraint.activate([
-                    label.centerXAnchor.constraint(equalTo: footer.centerXAnchor),
-                    label.centerYAnchor.constraint(equalTo: footer.centerYAnchor, constant: -15)
-                ])
-            } else {
-                footer.backgroundColor = .clear
-            }
-            return footer
-        }
-        
         return UICollectionReusableView()
     }
 }
@@ -520,3 +492,4 @@ extension HomeViewController: MedicationCardDelegate {
         updateDose(dose, status: .skipped)
     }
 }
+
