@@ -125,14 +125,14 @@ class HomeViewController: UIViewController, UICollectionViewDelegate, SymptomLog
         self.todayDoses = unloggedDoses
         self.mainCollectionView.reloadData()
     }
-    private func updateDose(_ dose: TodayDoseItem, status: DoseLogStatus) {
+    private func updateDose(_ dose: TodayDoseItem, status: DoseStatus) {
         let log = DoseLog(
             id: UUID(),
             medicationID: dose.medicationID,
             doseID: dose.id,
             scheduledTime: dose.scheduledTime,
             loggedAt: Date(),
-            status: DoseStatus(from: status),
+            status:status,
             day: Date().startOfDay
         )
 

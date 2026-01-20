@@ -7,3 +7,7 @@ xcuserdata/
 *.xcuserstate
 *.xcuserdata
 >>>>>>> origin/NevinA
+
+# Xcode junk
+xcuserdata/
+*.xcuserstate

@@ -21,7 +21,7 @@
                                 <rect key="frame" x="0.0" y="-32" width="393" height="792"/>
                                 <subviews>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="fI8-bd-GlA">
-                                        <rect key="frame" x="0.0" y="-279" width="393" height="1344"/>
+                                        <rect key="frame" x="0.0" y="-279" width="393" height="1364.6666666666667"/>
                                         <subviews>
                                             <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="ZbZ-Mr-g82">
                                                 <rect key="frame" x="0.0" y="320" width="393" height="477"/>
@@ -47,7 +47,7 @@
                                                 </cells>
                                             </collectionView>
                                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="n2t-av-6Wh">
-                                                <rect key="frame" x="16" y="810" width="361" height="514"/>
+                                                <rect key="frame" x="16" y="810" width="361" height="534.66666666666652"/>
                                                 <subviews>
                                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Symptoms Logged" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="D8p-TE-7pa">
                                                         <rect key="frame" x="16" y="14" width="177" height="24"/>
@@ -63,10 +63,10 @@
                                                         </constraints>
                                                     </imageView>
                                                     <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="-1" estimatedSectionHeaderHeight="-1" sectionFooterHeight="-1" estimatedSectionFooterHeight="-1" translatesAutoresizingMaskIntoConstraints="NO" id="yTi-J9-lgr">
-                                                        <rect key="frame" x="0.0" y="146.33333333333337" width="361" height="360"/>
+                                                        <rect key="frame" x="0.0" y="146.33333333333337" width="361" height="380"/>
                                                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                                                         <constraints>
-                                                            <constraint firstAttribute="height" constant="360" id="IU8-OF-q2t"/>
+                                                            <constraint firstAttribute="height" constant="380" id="IU8-OF-q2t"/>
                                                         </constraints>
                                                     </tableView>
                                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="trailing" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="K65-6B-FHQ">

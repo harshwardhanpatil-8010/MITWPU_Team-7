@@ -192,7 +192,6 @@ class SymptomViewController: UIViewController {
     func autoSelectToday() {
         if let index = dates.firstIndex(where: { Calendar.current.isDate($0.date, inSameDayAs: Date()) }) {
             selectedDate = dates[index].date
-            // Use the new centralized helper
             scrollToSelectedDate(animated: false)
         }
     }
@@ -233,7 +232,6 @@ extension SymptomViewController: UICollectionViewDataSource, UICollectionViewDel
             
         case .tremor:
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "tremor_cell", for: indexPath) as! tremorCard
-//            cell.configure(average: "12")
             return cell
             
         case .gait:
