@@ -20,23 +20,9 @@ class GaitViewController: UIViewController {
     }
 
     private func setupNavigationBar() {
-        // Title
         title = "Gait Disturbance"
-
-        // Back button
-        let backButton = UIBarButtonItem(
-            image: UIImage(systemName: "chevron.left"),
-            style: .plain,
-            target: self,
-            action: #selector(backTapped)
-        )
-
-        navigationItem.leftBarButtonItem = backButton
     }
 
-    @objc private func backTapped() {
-        navigationController?.popViewController(animated: true)
-    }
     @IBAction func segmentChanged(_ sender: UISegmentedControl) {
         switch sender.selectedSegmentIndex {
                 case 0:
@@ -60,4 +46,12 @@ class GaitViewController: UIViewController {
                 }
     }
 }
+
+
+
+
+
+
+
+
 
