@@ -1,7 +1,7 @@
 
 
 import UIKit
-import YouTubeiOSPlayerHelper
+
 
 protocol RestScreenDelegate: AnyObject {
     func recordRestDuration(seconds: TimeInterval)

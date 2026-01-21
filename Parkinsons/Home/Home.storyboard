@@ -555,7 +555,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <navigationBar contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="h5z-ar-B3I">
-                                <rect key="frame" x="0.0" y="24" width="393" height="54"/>
+                                <rect key="frame" x="0.0" y="16" width="393" height="54"/>
                                 <items>
                                     <navigationItem title="Select Symptoms Faced " id="3Go-gq-UtH">
                                         <barButtonItem key="leftBarButtonItem" systemItem="cancel" id="z9v-MU-We9">
@@ -573,13 +573,13 @@
                                 </items>
                             </navigationBar>
                             <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="menu" translatesAutoresizingMaskIntoConstraints="NO" id="hjW-es-esd">
-                                <rect key="frame" x="0.0" y="122" width="393" height="56"/>
+                                <rect key="frame" x="0.0" y="114" width="393" height="56"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="56" id="frN-bC-iJd"/>
                                 </constraints>
                             </imageView>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="-1" estimatedSectionHeaderHeight="-1" sectionFooterHeight="-1" estimatedSectionFooterHeight="-1" translatesAutoresizingMaskIntoConstraints="NO" id="ahp-LW-ZVV">
-                                <rect key="frame" x="0.0" y="202" width="393" height="650"/>
+                                <rect key="frame" x="0.0" y="194" width="393" height="658"/>
                                 <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                                 <color key="sectionIndexBackgroundColor" systemColor="systemBackgroundColor"/>
                             </tableView>
@@ -591,7 +591,7 @@
                             <constraint firstItem="h5z-ar-B3I" firstAttribute="leading" secondItem="lWh-u5-ctl" secondAttribute="leading" id="4HD-fG-Sfu"/>
                             <constraint firstAttribute="trailing" secondItem="h5z-ar-B3I" secondAttribute="trailing" id="AnK-go-WJy"/>
                             <constraint firstItem="hjW-es-esd" firstAttribute="leading" secondItem="uVB-e3-yhL" secondAttribute="leading" id="D5n-4d-wbs"/>
-                            <constraint firstItem="h5z-ar-B3I" firstAttribute="top" secondItem="lWh-u5-ctl" secondAttribute="top" constant="24" id="FnM-W3-EbJ"/>
+                            <constraint firstItem="h5z-ar-B3I" firstAttribute="top" secondItem="lWh-u5-ctl" secondAttribute="top" constant="16" id="FnM-W3-EbJ"/>
                             <constraint firstAttribute="bottom" secondItem="ahp-LW-ZVV" secondAttribute="bottom" id="HOr-ZS-hhk"/>
                             <constraint firstItem="hjW-es-esd" firstAttribute="top" secondItem="h5z-ar-B3I" secondAttribute="bottom" constant="44" id="IxP-2x-s91"/>
                             <constraint firstItem="uVB-e3-yhL" firstAttribute="trailing" secondItem="hjW-es-esd" secondAttribute="trailing" id="W1o-SZ-60a"/>
@@ -616,7 +616,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <navigationBar contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="NAd-oK-Q3X">
-                                <rect key="frame" x="0.0" y="142" width="393" height="54"/>
+                                <rect key="frame" x="0.0" y="16" width="393" height="54"/>
                                 <items>
                                     <navigationItem title="Symptoms Faced" id="mpG-u9-BoK">
                                         <barButtonItem key="leftBarButtonItem" systemItem="cancel" id="ZMR-F9-C0N">
@@ -633,13 +633,13 @@
                                 </items>
                             </navigationBar>
                             <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="menu" translatesAutoresizingMaskIntoConstraints="NO" id="1M3-vW-8uJ">
-                                <rect key="frame" x="10" y="220" width="373" height="56"/>
+                                <rect key="frame" x="10" y="94" width="373" height="56"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="56" id="Kcq-eh-TK0"/>
                                 </constraints>
                             </imageView>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="-1" estimatedSectionHeaderHeight="-1" sectionFooterHeight="-1" estimatedSectionFooterHeight="-1" translatesAutoresizingMaskIntoConstraints="NO" id="pce-WE-gnS">
-                                <rect key="frame" x="0.0" y="316" width="393" height="536"/>
+                                <rect key="frame" x="0.0" y="190" width="393" height="662"/>
                                 <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                             </tableView>
                         </subviews>
@@ -649,7 +649,7 @@
                             <constraint firstItem="1M3-vW-8uJ" firstAttribute="top" secondItem="NAd-oK-Q3X" secondAttribute="bottom" constant="24" id="0bA-A8-A9G"/>
                             <constraint firstItem="pce-WE-gnS" firstAttribute="trailing" secondItem="KKN-FN-dEh" secondAttribute="trailing" id="BRG-SL-MY5"/>
                             <constraint firstItem="1M3-vW-8uJ" firstAttribute="leading" secondItem="KKN-FN-dEh" secondAttribute="leading" constant="10" id="FYY-rm-0n5"/>
-                            <constraint firstItem="NAd-oK-Q3X" firstAttribute="top" secondItem="KKN-FN-dEh" secondAttribute="top" constant="24" id="Toa-v2-agv"/>
+                            <constraint firstItem="NAd-oK-Q3X" firstAttribute="top" secondItem="GyM-51-CCQ" secondAttribute="top" constant="16" id="Toa-v2-agv"/>
                             <constraint firstItem="pce-WE-gnS" firstAttribute="top" secondItem="1M3-vW-8uJ" secondAttribute="bottom" constant="40" id="XkW-hx-DIB"/>
                             <constraint firstItem="NAd-oK-Q3X" firstAttribute="leading" secondItem="KKN-FN-dEh" secondAttribute="leading" id="eIf-uG-5Hm"/>
                             <constraint firstItem="pce-WE-gnS" firstAttribute="leading" secondItem="KKN-FN-dEh" secondAttribute="leading" id="kLa-Q0-pFT"/>

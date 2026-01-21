@@ -60,6 +60,7 @@ class SessionRunningViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         title = "Rhythmic Walking"
+        isModalInPresentation = true 
         setupProgressView()
         beatButton.titleLabel?.text = selectedBeat
         paceButton.titleLabel?.text = selectedPace

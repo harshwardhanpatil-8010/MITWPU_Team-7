@@ -48,7 +48,7 @@ class _0minworkoutGoodJobViewController: UIViewController {
         
         let alert = UIAlertController(
             title: "Workout Complete!",
-            message: "Great job! Your feedback has been saved.",
+            message: "Great job! Your feedback has been saved. We will adjust tomorrow's exercises to better fit your needs.",
             preferredStyle: .alert
         )
         
