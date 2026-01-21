@@ -13,7 +13,6 @@ class EmojiGameViewController: UIViewController {
 
     let arModel = EmojiARModel()
     
-    // NEW: Store a shuffled version of the challenges
     var shuffledChallenges: [EmojiChallenge] = []
     var currentLevel = 0
     
@@ -39,7 +38,6 @@ class EmojiGameViewController: UIViewController {
         skippedCount = 0
         currentLevel = 0
         
-        // 1. Shuffle the challenges from EmojiData
         shuffledChallenges = EmojiData.challenges.shuffled()
         
         updateScoreLabel()
@@ -86,7 +84,7 @@ class EmojiGameViewController: UIViewController {
     }
 
     func nextChallenge() {
-        // 2. Safety check: If we run out of challenges, reshuffle and restart index
+        
         if currentLevel >= shuffledChallenges.count {
             shuffledChallenges = EmojiData.challenges.shuffled()
             currentLevel = 0
@@ -113,7 +111,6 @@ class EmojiGameViewController: UIViewController {
         }
         
         currentLevel += 1
-        // Pause briefly so the user sees the success animation before the emoji changes
         DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
             self.nextChallenge()
         }

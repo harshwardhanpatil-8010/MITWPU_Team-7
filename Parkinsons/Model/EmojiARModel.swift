@@ -12,7 +12,6 @@ class EmojiARModel: NSObject, ARSessionDelegate {
     func setup(view: ARView) {
         self.arView = view
         
-        // This ensures the session exists before we touch it
         guard let session = view.session as ARSession? else {
             print("Error: The view is not a proper ARView")
             return

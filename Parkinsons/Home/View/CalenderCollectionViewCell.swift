@@ -8,7 +8,7 @@ class CalenderCollectionViewCell: UICollectionViewCell {
 
     override func awakeFromNib() {
         super.awakeFromNib()
-=        self.clipsToBounds = false
+        self.clipsToBounds = false
         self.contentView.clipsToBounds = false
         
         setupShadow()
