@@ -29,7 +29,7 @@ class AddMedicationViewController: UIViewController,
     private let unitPlaceholder = "Add unit,"
     private let typePlaceholder = "Select type"
     private let repeatPlaceholder = "Select days"
-
+    
     weak var delegate: AddMedicationDelegate?
     var isEditMode: Bool = false
     var medicationToEdit: Medication!
@@ -53,22 +53,22 @@ class AddMedicationViewController: UIViewController,
     override func viewDidLoad() {
         super.viewDidLoad()
         tickButton.isEnabled = false
-
+        
         medicationNameTextField.addAction(
             UIAction { [weak self] _ in
                 self?.evaluateTickButtonState()
             },
             for: .editingChanged
         )
-
+        
         strengthLabel.addAction(
             UIAction { [weak self] _ in
                 self?.evaluateTickButtonState()
             },
             for: .editingChanged
         )
-
-
+        
+        
         let tap = UITapGestureRecognizer(target: self, action: #selector(dismissKeyboard))
         view.addGestureRecognizer(tap)
         
@@ -104,15 +104,15 @@ class AddMedicationViewController: UIViewController,
         unitLabel.attributedText = nil
         typeLabel.attributedText = nil
         strengthUnitLabel.attributedText = nil
-
+        
         unitLabel.text = unitText
         typeLabel.text = selectedType
         strengthUnitLabel.text = unitText
-
+        
         unitLabel.textColor = .label
         typeLabel.textColor = .label
         strengthUnitLabel.textColor = .label
-
+        
         evaluateTickButtonState()
     }
     
@@ -120,7 +120,7 @@ class AddMedicationViewController: UIViewController,
         unitLabel.text = unitPlaceholder
         typeLabel.text = typePlaceholder
         strengthUnitLabel.text = "Units"
-
+        
         unitLabel.textColor = .placeholderText
         typeLabel.textColor = .placeholderText
         strengthUnitLabel.textColor = .placeholderText
@@ -135,49 +135,49 @@ class AddMedicationViewController: UIViewController,
     
     func fillFieldsForEditing() {
         guard let med = medicationToEdit else { return }
-
+        
         medicationNameTextField.text = med.name
         typeLabel.text = med.form
         unitLabel.text = med.unit
         strengthUnitLabel.text = med.unit
-
+        
         typeLabel.textColor = .label
         unitLabel.textColor = .label
         strengthUnitLabel.textColor = .label
-
+        
         if let strength = med.strength {
             strengthLabel.text = "\(strength)"
         }
-
+        
         selectedRepeatRule = med.schedule
         repeatLabel.text = med.schedule.displayString()
         repeatLabel.textColor = .label
-
+        
         doseArray = med.doses.map { $0.time }
         doseTableView.reloadData()
         originalMedicationSnapshot = med
         tickButton.isEnabled = false
     }
-
+    
     private func evaluateTickButtonState() {
         if !isEditMode {
             let text = medicationNameTextField.text ?? ""
             tickButton.isEnabled = !text.trimmingCharacters(in: .whitespaces).isEmpty
             return
         }
-
+        
         guard let original = originalMedicationSnapshot else {
             tickButton.isEnabled = false
             return
         }
-
+        
         let nameChanged = medicationNameTextField.text != original.name
         let strengthChanged = Int(strengthLabel.text ?? "") != original.strength
         let unitChanged = unitLabel.text != original.unit
         let typeChanged = typeLabel.text != original.form
         let repeatChanged = selectedRepeatRule != original.schedule
         let dosesChanged = doseArray.map { $0.timeIntervalSince1970 } != original.doses.map { $0.time.timeIntervalSince1970 }
-
+        
         tickButton.isEnabled = nameChanged || strengthChanged || unitChanged || typeChanged || repeatChanged || dosesChanged
     }
     
@@ -188,7 +188,7 @@ class AddMedicationViewController: UIViewController,
             }
         }
     }
-
+    
     @IBAction func backButtonTapped(_ sender: Any) {
         dismiss(animated: true, completion: nil)
     }
@@ -200,14 +200,14 @@ class AddMedicationViewController: UIViewController,
         vc.delegate = self
         vc.selectedUnit = unitLabel.textColor == .label ? unitLabel.text : nil
         vc.selectedType = typeLabel.textColor == .label ? typeLabel.text : nil
-
+        
         navigationController?.pushViewController(vc, animated: true)
     }
     
     @IBAction func repeatStackTapped(_ sender: Any) {
         let storyboard = UIStoryboard(name: "Medication", bundle: nil)
         guard let vc = storyboard.instantiateViewController(withIdentifier: "RepeatVC") as? RepeatViewController else { return }
-
+        
         vc.delegate = self
         vc.preselectedSchedule = selectedRepeatRule
         navigationController?.pushViewController(vc, animated: true)
@@ -234,12 +234,29 @@ class AddMedicationViewController: UIViewController,
     @IBAction func onTickPressed(_ sender: UIBarButtonItem) {
         let strengthValue = Int(strengthLabel.text ?? "")
         guard let name = medicationNameTextField.text, !name.isEmpty else { return }
+        
         let medicationID = isEditMode ? medicationToEdit.id : UUID()
         let schedule = selectedRepeatRule
-        let updatedDoses = doseArray.map { date in
-            MedicationDose(id: UUID(), time: date, status: .none, medicationID: medicationID)
+        
+        let updatedDoses = doseArray.enumerated().map { (index, date) -> MedicationDose in
+            if isEditMode, index < medicationToEdit.doses.count {
+                let existingDose = medicationToEdit.doses[index]
+                return MedicationDose(
+                    id: existingDose.id,
+                    time: date,
+                    status: .none,
+                    medicationID: medicationID
+                )
+            } else {
+                return MedicationDose(
+                    id: UUID(),
+                    time: date,
+                    status: .none,
+                    medicationID: medicationID
+                )
+            }
         }
-       
+        
         if isEditMode {
             MedicationDataStore.shared.updateMedication(
                 originalID: medicationToEdit.id,
@@ -264,7 +281,7 @@ class AddMedicationViewController: UIViewController,
             )
             MedicationDataStore.shared.addMedication(newMedication)
         }
-
+        
         delegate?.didUpdateMedication()
         dismiss(animated: true)
     }

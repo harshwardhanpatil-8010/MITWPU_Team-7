@@ -543,7 +543,7 @@
                                 <rect key="frame" x="16" y="130" width="370" height="217"/>
                                 <subviews>
                                     <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" alignment="top" spacing="25" translatesAutoresizingMaskIntoConstraints="NO" id="3hw-41-b1U">
-                                        <rect key="frame" x="21" y="15" width="122" height="190"/>
+                                        <rect key="frame" x="21" y="15" width="168" height="190"/>
                                         <subviews>
                                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="FB1-gS-lvt">
                                                 <rect key="frame" x="0.0" y="0.0" width="83.666666666666671" height="46.666666666666664"/>
@@ -635,7 +635,7 @@
                                     <constraint firstAttribute="trailing" secondItem="5fK-qA-YpB" secondAttribute="trailing" constant="21" id="Cfv-wq-Y3I"/>
                                     <constraint firstAttribute="height" constant="217" id="Ko2-av-aJS"/>
                                     <constraint firstItem="3hw-41-b1U" firstAttribute="top" secondItem="gti-xA-aRh" secondAttribute="top" constant="15" id="QBh-4b-kc4"/>
-                                    <constraint firstItem="5fK-qA-YpB" firstAttribute="leading" secondItem="3hw-41-b1U" secondAttribute="trailing" constant="96" id="W91-qG-gII"/>
+                                    <constraint firstItem="5fK-qA-YpB" firstAttribute="leading" secondItem="3hw-41-b1U" secondAttribute="trailing" constant="50" id="W91-qG-gII"/>
                                     <constraint firstItem="5fK-qA-YpB" firstAttribute="centerY" secondItem="gti-xA-aRh" secondAttribute="centerY" id="kQ9-Yh-D2x"/>
                                     <constraint firstAttribute="width" constant="370" id="xQx-cH-GTS"/>
                                 </constraints>
