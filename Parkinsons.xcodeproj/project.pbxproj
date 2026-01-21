@@ -35,9 +35,6 @@
 			exceptions = (
 				19423B7F2ED6BD5A0004C99E /* Exceptions for "Parkinsons" folder in "Parkinsons" target */,
 			);
-			explicitFolders = (
-				Login,
-			);
 			path = Parkinsons;
 			sourceTree = "<group>";
 		};
@@ -192,9 +189,7 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-
 				PRODUCT_BUNDLE_IDENTIFIER = com.unnatti.Parkinsons;
-
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				STRING_CATALOG_GENERATE_SYMBOLS = YES;

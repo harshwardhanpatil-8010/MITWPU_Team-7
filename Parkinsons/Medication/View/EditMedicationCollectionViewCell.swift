@@ -20,6 +20,7 @@ class EditMedicationCollectionViewCell: UICollectionViewCell {
     override func awakeFromNib() {
         super.awakeFromNib()
         cardView.applyCardStyle()
+        cardView.layer.cornerRadius = 20
     }
 
     func configure(with medication: Medication) {

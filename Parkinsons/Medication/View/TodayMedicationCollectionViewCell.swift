@@ -20,6 +20,7 @@ class TodayMedicationCollectionViewCell: UICollectionViewCell {
     override func awakeFromNib() {
         super.awakeFromNib()
         medContainerView.applyCardStyle()
+        medContainerView.layer.cornerRadius = 20
     }
 
     func configure(with dose: TodayDoseItem) {

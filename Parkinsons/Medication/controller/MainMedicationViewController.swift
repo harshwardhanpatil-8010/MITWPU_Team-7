@@ -266,7 +266,9 @@ extension MainMedicationViewController: UICollectionViewDelegateFlowLayout {
     }
 
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAt section: Int) -> UIEdgeInsets {
-            return UIEdgeInsets(top: 0, left: 0, bottom: 8, right: 0)
+
+            return UIEdgeInsets(top: 4, left: 0, bottom: 4, right: 0)
+
     }
 
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
@@ -303,6 +305,7 @@ extension MainMedicationViewController {
 
         DoseLogDataStore.shared.logDose(log)
         loadMedications()
+        NotificationCenter.default.post(name: NSNotification.Name("MedicationLogged"), object: nil)
     }
 }
 
