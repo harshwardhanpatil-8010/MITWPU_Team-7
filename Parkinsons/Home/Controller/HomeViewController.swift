@@ -478,15 +478,28 @@ extension HomeViewController: UICollectionViewDataSource {
         if kind == UICollectionView.elementKindSectionFooter && sectionType == .medications {
             let footer = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: "EmptyMedicationFooter", for: indexPath)
             
+            // Clear previous labels
             footer.subviews.forEach { $0.removeFromSuperview() }
             
-            if todayDoses.isEmpty {
+            // 1. Check if the master list is actually empty
+            let noMedicationsCreated = MedicationDataStore.shared.medications.isEmpty
+            
+            // 2. Check if there are no more doses left to take today
+            let allDosesProcessed = todayDoses.isEmpty
+            
+            if allDosesProcessed {
                 let label = UILabel()
-                label.text = "No Medications Added Yet"
                 label.textColor = .systemGray2
                 label.font = .systemFont(ofSize: 20, weight: .medium)
                 label.textAlignment = .center
                 label.translatesAutoresizingMaskIntoConstraints = false
+                
+                // Decide which text to show
+                if noMedicationsCreated {
+                    label.text = "No Medications Added Yet"
+                } else {
+                    label.text = "All medications Logged!"
+                }
                 
                 footer.addSubview(label)
                 
@@ -494,12 +507,10 @@ extension HomeViewController: UICollectionViewDataSource {
                     label.centerXAnchor.constraint(equalTo: footer.centerXAnchor),
                     label.centerYAnchor.constraint(equalTo: footer.centerYAnchor, constant: -15)
                 ])
-            } else {
-                footer.backgroundColor = .clear
             }
+            
             return footer
         }
-        
         return UICollectionReusableView()
     }
 }

@@ -17,6 +17,8 @@ class profileViewController: UIViewController {
     
     @IBOutlet weak var stackViewBackground: UIStackView!
     
+    @IBOutlet weak var symptomButton: UIButton!
+    @IBOutlet weak var medicationButton: UIButton!
     var isEditingMode: Bool = false
     
     var selectedSex: String = "Male" {
@@ -36,7 +38,27 @@ class profileViewController: UIViewController {
         
         setupInitialUI()
     }
+    @IBAction func pastSymptomRecordsNavigation(_ sender: Any) {
+        // Ensure the name "Symptom" matches your .storyboard file name exactly
+        let storyboard = UIStoryboard(name: "Symptom", bundle: nil)
+        
+        if let symptomVC = storyboard.instantiateViewController(withIdentifier: "symptom") as? SymptomViewController {
+            // This creates the card/sheet effect instead of full screen
+            symptomVC.modalPresentationStyle = .pageSheet
+            self.present(symptomVC, animated: true, completion: nil)
+        }
+    }
 
+    @IBAction func medicationNavigation(_ sender: Any) {
+        // Ensure the name "Medication" matches your .storyboard file name exactly
+        let storyboard = UIStoryboard(name: "Medication", bundle: nil)
+        
+        if let medicationVC = storyboard.instantiateViewController(withIdentifier: "MainMedicationVC") as? MainMedicationViewController {
+            // This creates the card/sheet effect instead of full screen
+            medicationVC.modalPresentationStyle = .pageSheet
+            self.present(medicationVC, animated: true, completion: nil)
+        }
+    }
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
         logoBackground.layer.cornerRadius = logoBackground.frame.size.height / 2
