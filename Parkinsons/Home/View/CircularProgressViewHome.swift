@@ -12,7 +12,6 @@ import UIKit
     private let trackLayer = CAShapeLayer()
     private let progressLayer = CAShapeLayer()
     
-    // MARK: - Customizable properties
     var trackColor: UIColor = .systemGray4 {
         didSet { trackLayer.strokeColor = trackColor.cgColor }
     }

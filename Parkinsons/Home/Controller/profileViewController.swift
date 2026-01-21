@@ -60,7 +60,6 @@ class profileViewController: UIViewController {
                 nameBellowLogoLabel.text = newName
             }
             
-            // TODO: Implement your data saving logic here
         }
     }
     

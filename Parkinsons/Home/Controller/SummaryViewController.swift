@@ -1,6 +1,5 @@
 import UIKit
 
-// MARK: - Summary View Controller
 class SummaryViewController: UIViewController {
     
     enum Section: Int, CaseIterable {
@@ -8,17 +7,14 @@ class SummaryViewController: UIViewController {
         case exercises
     }
     
-    // MARK: - Outlets
     @IBOutlet weak var symptomTableView: UITableView!
     @IBOutlet weak var summaryTitleLabel: UILabel!
     @IBOutlet weak var mainCollectionView: UICollectionView!
     
-    // MARK: - Properties
     var dateToDisplay: Date?
     var currentSymptomLog: SymptomLogEntry?
     let summarySections = Section.allCases
     
-    // Medication & Exercise Data
     var medicationData: MedicationModel = MedicationModel(
         name: "Carbidopa",
         time: "9:00 AM",
@@ -33,7 +29,6 @@ class SummaryViewController: UIViewController {
         ExerciseModel(title: "Rhythmic Walking", detail: "Missed", progressPercentage: 0, progressColorHex: "90AF81")
     ]
     
-    // MARK: - Lifecycle
     override func viewDidLoad() {
         super.viewDidLoad()
         setupUI()
@@ -41,25 +36,20 @@ class SummaryViewController: UIViewController {
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        // This is where the magic happens:
-        // Every time you come back to this screen, it fetches the latest saved data.
         self.navigationController?.setNavigationBarHidden(true, animated: animated)
         loadDataForSelectedDate()
     }
     
-    // MARK: - Setup & Data Loading
     private func setupUI() {
         view.backgroundColor = .systemBackground
         
-        // Setup TableView
         symptomTableView.dataSource = self
         symptomTableView.delegate = self
         symptomTableView.register(UINib(nibName: "SymptomDetailCell", bundle: nil), forCellReuseIdentifier: SymptomDetailCell.reuseIdentifier)
         symptomTableView.rowHeight = 60.0
         symptomTableView.separatorStyle = .none
-        symptomTableView.isScrollEnabled = false // Table sits inside the view
+        symptomTableView.isScrollEnabled = false
         
-        // Setup CollectionView
         mainCollectionView.dataSource = self
         mainCollectionView.delegate = self
         mainCollectionView.register(UINib(nibName: "medicationSummary", bundle: nil), forCellWithReuseIdentifier: "MedicationSummaryCell")
@@ -72,10 +62,8 @@ class SummaryViewController: UIViewController {
     @objc func loadDataForSelectedDate() {
         let targetDate = dateToDisplay ?? Date()
         
-        // Fetch the data from your Manager (the data you just saved)
         self.currentSymptomLog = SymptomLogManager.shared.getLogEntry(for: targetDate)
         
-        // Update the UI components
         updateTitleUI(with: targetDate)
         symptomTableView.reloadData()
         mainCollectionView.reloadData()
@@ -137,7 +125,6 @@ class SummaryViewController: UIViewController {
     }
 }
 
-// MARK: - UITableViewDataSource
 extension SummaryViewController: UITableViewDataSource, UITableViewDelegate {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return currentSymptomLog?.ratings.count ?? 0
@@ -153,7 +140,6 @@ extension SummaryViewController: UITableViewDataSource, UITableViewDelegate {
     }
 }
 
-// MARK: - UICollectionViewDataSource
 extension SummaryViewController: UICollectionViewDataSource, UICollectionViewDelegate {
     func numberOfSections(in collectionView: UICollectionView) -> Int {
         return summarySections.count

@@ -7,13 +7,9 @@
 
 import Foundation
 
-// MARK: - 1. Symptom Rating Model
-
 struct SymptomRating: Codable {
     let name: String
     let iconName: String?
-    //var level: Int
-    // Change this line:
     var selectedIntensity: Intensity? = nil
     
     enum Intensity: Int, Codable, CaseIterable {

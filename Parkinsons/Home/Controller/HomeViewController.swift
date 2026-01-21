@@ -11,27 +11,24 @@ enum Section: Int, CaseIterable {
 }
 
 
-// Make sure SymptomLogDetailDelegate is defined in HomeViewController.swift
-// or imported from SymptomLogDetailViewController.swift
+
 
 class HomeViewController: UIViewController, UICollectionViewDelegate , SymptomLogCellDelegate, SymptomLogDetailDelegate {
 
     
     @IBOutlet weak var mainCollectionView: UICollectionView!
     
-    // MARK: - Section Definition and Data
     
     let homeSections = Section.allCases
     private let separatorView: UIView = {
         let view = UIView()
-        view.backgroundColor = UIColor.systemGray4 // Use a light gray color
+        view.backgroundColor = UIColor.systemGray4
         view.translatesAutoresizingMaskIntoConstraints = false
         return view
     }()
 
     var hasLoggedSymptomsToday: Bool = false {
         didSet {
-            // When the status changes, reload the section
             if let index = homeSections.firstIndex(of: .symptoms) {
                 mainCollectionView.reloadSections(IndexSet(integer: index))
             } else {
@@ -86,7 +83,6 @@ class HomeViewController: UIViewController, UICollectionViewDelegate , SymptomLo
         mainCollectionView.dataSource = self
         mainCollectionView.delegate = self
         
-        // Set the main layout
         mainCollectionView.setCollectionViewLayout(generateLayout(), animated: true)
 
          dates = HomeDataStore.shared.getDates()
@@ -116,7 +112,6 @@ class HomeViewController: UIViewController, UICollectionViewDelegate , SymptomLo
 
     }
     
-    // MARK: - 3. Cell and Supplementary View Registration
     func registerCells(){
 
         mainCollectionView.register(UINib(nibName: "CalenderCollectionViewCell", bundle: nil), forCellWithReuseIdentifier: "calendar_cell")
@@ -134,7 +129,6 @@ class HomeViewController: UIViewController, UICollectionViewDelegate , SymptomLo
         )
     }
 
-    // MARK: - 4. Refactored Compositional Layout
     func generateLayout() -> UICollectionViewLayout {
         let layout = UICollectionViewCompositionalLayout { [weak self] sectionIndex, env in
             guard let self = self else { return nil }
@@ -274,9 +268,7 @@ class HomeViewController: UIViewController, UICollectionViewDelegate , SymptomLo
         }
         return layout
     }
-    
-    // MARK: - SymptomLogDetailDelegate Methods
-    
+        
     func symptomLogDidComplete(with ratings: [SymptomRating]) {
 
         let newLogEntry = SymptomLogEntry(date: Date(), ratings: ratings)
@@ -289,9 +281,7 @@ class HomeViewController: UIViewController, UICollectionViewDelegate , SymptomLo
     func symptomLogDidCancel() {
         print("Symptom logging canceled.")
     }
-    
-    // MARK: - SymptomLogCellDelegate Method
-    
+        
     func symptomLogCellDidTapLogNow(_ cell: SymptomLogCell) {
         let storyboard = UIStoryboard(name: "Home", bundle: nil)
         if hasLoggedSymptomsToday {
@@ -321,7 +311,6 @@ class HomeViewController: UIViewController, UICollectionViewDelegate , SymptomLo
             case 0:
                 let storyboard = UIStoryboard(name: "Match the Cards", bundle: nil)
                 guard let vc = storyboard.instantiateViewController(withIdentifier: "matchTheCardsLandingPage") as? LevelSelectionViewController else {
-                    // ...
                     return
                 }
                
@@ -331,7 +320,6 @@ class HomeViewController: UIViewController, UICollectionViewDelegate , SymptomLo
                
                 let storyboard = UIStoryboard(name: "Match the Cards", bundle: nil)
                 guard let vc = storyboard.instantiateViewController(withIdentifier: "matchTheCardsLandingPage") as? LevelSelectionViewController else {
-                    // ...
                     return
                 }
                
@@ -365,59 +353,12 @@ class HomeViewController: UIViewController, UICollectionViewDelegate , SymptomLo
                 print("Exercise item at row \(row) not configured for navigation.")
             }
         }
-    
-    // MARK: - CollectionView Delegate Selection Control
-    
-    // ⭐️ NEW: This disables clicking on future dates
-//    func collectionView(_ collectionView: UICollectionView, shouldSelectItemAt indexPath: IndexPath) -> Bool {
-//        if homeSections[indexPath.section] == .calendar {
-//            let cellDate = dates[indexPath.row].date
-//            let today = Calendar.current.startOfDay(for: Date())
-//            let targetDate = Calendar.current.startOfDay(for: cellDate)
-//            
-//            // If the date is after today, don't allow selection
-//            return targetDate <= today
-//        }
-//        return true
-//    }
-
-//
-//    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-//          let sectionType = homeSections[indexPath.section]
-//
-//          switch sectionType {
-//          case .calendar:
-//             
-//              if let selectedIndexPath = collectionView.indexPathsForSelectedItems?.first, selectedIndexPath != indexPath {
-//                  collectionView.deselectItem(at: selectedIndexPath, animated: true)
-//              }
-//              selectedDate = dates[indexPath.row].date
-//              collectionView.reloadSections(IndexSet(integer: Section.calendar.rawValue))
-//
-//              let storyboard = UIStoryboard(name: "Home", bundle: nil)
-//              guard let summaryVC = storyboard.instantiateViewController(withIdentifier: "SummaryViewController") as? SummaryViewController else { return }
-//              summaryVC.dateToDisplay = selectedDate
-//              let navController = UINavigationController(rootViewController: summaryVC)
-//              navController.modalPresentationStyle = .pageSheet
-//              present(navController, animated: true, completion: nil)
-//
-//          case .exercises:
-//
-//              handleExerciseSelection(at: indexPath.row)
-//          case .therapeuticGames:
-//              handleGamesSelection(at: indexPath.row)
-//          default:
-//              collectionView.deselectItem(at: indexPath, animated: true)
-//
-//          }
-//      }
 
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         let sectionType = homeSections[indexPath.section]
 
         switch sectionType {
         case .calendar:
-            // Handle Calendar selection
             if let selectedIndexPath = collectionView.indexPathsForSelectedItems?.first, selectedIndexPath != indexPath {
                 collectionView.deselectItem(at: selectedIndexPath, animated: true)
             }
@@ -433,11 +374,9 @@ class HomeViewController: UIViewController, UICollectionViewDelegate , SymptomLo
             present(navController, animated: true, completion: nil)
 
         case .exercises:
-            // ⭐️ FIX: Call the exercise handler
             handleExerciseSelection(at: indexPath.row)
 
         case .therapeuticGames:
-            // ⭐️ FIX: Call the games handler
             handleGamesSelection(at: indexPath.row)
 
         default:
@@ -458,7 +397,6 @@ class HomeViewController: UIViewController, UICollectionViewDelegate , SymptomLo
     }
 }
 
-// MARK: - 5. Updated Data Source Extension
 extension HomeViewController: UICollectionViewDataSource {
     
     func numberOfSections(in collectionView: UICollectionView) -> Int {
@@ -495,23 +433,6 @@ extension HomeViewController: UICollectionViewDataSource {
             let cell = mainCollectionView.dequeueReusableCell(withReuseIdentifier: "medication_card_cell", for: indexPath) as! MedicationCardCollectionViewCell
             cell.configure(with: medicationData[indexPath.row])
             return cell
-            
-//        case .exercises:
-//
-//            let cell = mainCollectionView.dequeueReusableCell(
-//                withReuseIdentifier: "exercise_card_cell",
-//                for: indexPath
-//            ) as! ExerciseCardCell
-//
-//            let model = exerciseData[indexPath.row]
-//
-//            let completed = WorkoutManager.shared.completedToday.count
-//            let total = WorkoutManager.shared.getTodayWorkout().count
-//
-//            cell.setProgress(completed: completed, total: total)
-//            cell.configure(with: model)
-//
-//            return cell
         case .exercises:
             let cell = mainCollectionView.dequeueReusableCell(
                 withReuseIdentifier: "exercise_card_cell",
@@ -520,12 +441,10 @@ extension HomeViewController: UICollectionViewDataSource {
 
             let model = exerciseData[indexPath.row]
             
-            // 1. Pass the progress data
             let completed = WorkoutManager.shared.completedToday.count
             let total = WorkoutManager.shared.getTodayWorkout().count
             cell.setProgress(completed: completed, total: total)
             
-            // 2. Pass the model (which now includes the hex color logic)
             cell.configure(with: model)
 
             return cell
@@ -584,7 +503,6 @@ extension HomeViewController: UICollectionViewDataSource {
     }
 }
 
-// MARK: - Helper Extension
 extension HomeViewController {
     func formattedDateString(for date: Date) -> String {
         let formatter = DateFormatter()

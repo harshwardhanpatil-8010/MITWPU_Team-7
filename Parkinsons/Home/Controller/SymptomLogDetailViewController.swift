@@ -7,19 +7,15 @@ protocol SymptomLogDetailDelegate: AnyObject {
 
 class SymptomLogDetailViewController: UIViewController {
     
-    // MARK: - Outlets
     
     @IBOutlet weak var headerContainerView: UIView!
     @IBOutlet weak var tableView: UITableView!
     
-    // MARK: - Properties
     
     weak var delegate: SymptomLogDetailDelegate?
     
     var symptoms: [SymptomRating]!
     
-    // MARK: - Lifecycle
-
     override func viewDidLoad() {
         if self.symptoms == nil || self.symptoms.isEmpty {
             loadDefaultSymptoms()
@@ -29,9 +25,7 @@ class SymptomLogDetailViewController: UIViewController {
         
         setupTableViewFromStoryboard()
     }
-    
-    // MARK: - UI Setup
-    
+        
     private func loadDefaultSymptoms() {
         self.symptoms = [
             SymptomRating(name: "Slowed Movement", iconName: "ColourTortoise"),
@@ -49,12 +43,9 @@ class SymptomLogDetailViewController: UIViewController {
         tableView.delegate = self
         tableView.separatorStyle = .none
         
-        // Register the custom cell created from XIB
         tableView.register(UINib(nibName: "SymptomRatingCell", bundle: nil), forCellReuseIdentifier: "SymptomRatingCell")
     }
-    
-    // MARK: - Actions
-    
+        
     @IBAction func cancelButtonTapped(_ sender: UIBarButtonItem) {
         delegate?.symptomLogDidCancel()
         dismiss(animated: true, completion: nil)
@@ -65,8 +56,6 @@ class SymptomLogDetailViewController: UIViewController {
         dismiss(animated: true, completion: nil)
     }
 }
-
-// MARK: - UITableViewDataSource & UITableViewDelegate
 
 extension SymptomLogDetailViewController: UITableViewDataSource, UITableViewDelegate {
     
@@ -92,17 +81,11 @@ extension SymptomLogDetailViewController: UITableViewDataSource, UITableViewDele
     }
 }
 
-// MARK: - SymptomRatingCellDelegate
-
 extension SymptomLogDetailViewController: SymptomRatingCellDelegate {
     func didSelectIntensity(_ intensity: SymptomRating.Intensity, in cell: SymptomRatingCell) {
         guard let indexPath = tableView.indexPath(for: cell) else { return }
         
-        // Update the data model
         symptoms[indexPath.row].selectedIntensity = intensity
         
-        // Instead of reloading the whole row (which can flicker),
-        // just let the cell handle its own internal UI update.
-        // tableView.reloadRows(at: [indexPath], with: .none) // Comment this out
     }
 }

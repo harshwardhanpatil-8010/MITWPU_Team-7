@@ -20,12 +20,12 @@ var exerciseData: [ExerciseModel] = [
         title: "10-Min Workout",
         detail: "Repeat everyday",
         progressPercentage: 67,
-        progressColorHex: "0088FF" // Updated
+        progressColorHex: "0088FF"
     ),
     ExerciseModel(
         title: "Rhythmic Walking",
         detail: "2-3 times a week",
         progressPercentage: 25,
-        progressColorHex: "908FA1" // Updated
+        progressColorHex: "908FA1" 
     )
 ]

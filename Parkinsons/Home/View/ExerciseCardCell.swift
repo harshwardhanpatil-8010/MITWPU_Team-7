@@ -18,7 +18,6 @@ class ExerciseCardCell: UICollectionViewCell {
 
     private var progressView: CircularProgressViewHome!
     
-    // ⭐️ Store the color from the model to use it during setProgress
     private var themeColor: UIColor = .systemBlue
 
     override func awakeFromNib() {
@@ -31,7 +30,6 @@ class ExerciseCardCell: UICollectionViewCell {
     }
     
     private func setupCircularProgress() {
-        // Initialize the progress view
         progressView = CircularProgressViewHome(frame: progressRingContainer.bounds)
         progressView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
         progressRingContainer.addSubview(progressView)
@@ -43,7 +41,6 @@ class ExerciseCardCell: UICollectionViewCell {
         let progress = total == 0 ? 0 : CGFloat(completed) / CGFloat(total)
         progressView.setProgress(progress)
 
-        // ⭐️ Use themeColor instead of hardcoded .systemBlue
         if completed == total && total > 0 {
             progressView.progressColor = .systemGreen // Optional: Keep green for 100% completion
         } else {
@@ -55,10 +52,8 @@ class ExerciseCardCell: UICollectionViewCell {
         titleLabel.text = model.title
         detailLabel.text = model.detail
         
-        // ⭐️ Convert hex string from model to UIColor and store it
         self.themeColor = UIColor(hex: model.progressColorHex)
         
-        // Apply to the UI
         progressView.progressColor = self.themeColor
         progressView.trackColor = .systemGray5
     }
@@ -68,7 +63,6 @@ class ExerciseCardCell: UICollectionViewCell {
         backgroundCardView.layer.cornerRadius = cornerRadius
         backgroundCardView.layer.masksToBounds = false
 
-        // Shadow properties
         backgroundCardView.layer.shadowColor = UIColor.black.cgColor
         backgroundCardView.layer.shadowOpacity = 0.15
         backgroundCardView.layer.shadowRadius = 3

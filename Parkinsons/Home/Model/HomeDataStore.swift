@@ -9,10 +9,8 @@ import Foundation
 
 class HomeDataStore {
 
-    // Singleton
     static let shared = HomeDataStore()
 
-    // Stored Properties
     private(set) var dates: [DateModel] = []
 
     private let calendar = Calendar.current
@@ -22,12 +20,10 @@ class HomeDataStore {
         return f
     }()
 
-    // Init
     private init() {
         generate7DayCalendar()
     }
 
-    // Calendar Generation
     private func generate7DayCalendar() {
         let formatterDay = DateFormatter()
         formatterDay.dateFormat = "EEEEE"
@@ -54,7 +50,6 @@ class HomeDataStore {
 
   
     
-    // Public Accessors
     func getDates() -> [DateModel] {
         return dates
     }

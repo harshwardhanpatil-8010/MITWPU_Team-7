@@ -8,8 +8,7 @@ class CalenderCollectionViewCell: UICollectionViewCell {
 
     override func awakeFromNib() {
         super.awakeFromNib()
-        // Ensure the cell itself doesn't clip the shadow
-        self.clipsToBounds = false
+=        self.clipsToBounds = false
         self.contentView.clipsToBounds = false
         
         setupShadow()
@@ -18,10 +17,8 @@ class CalenderCollectionViewCell: UICollectionViewCell {
     private func setupShadow() {
         calenderBackground.layer.cornerRadius = 17.8
         
-        // 1. Shadows require masksToBounds to be false
         calenderBackground.layer.masksToBounds = false
         
-        // 2. Apply the shadow properties
         calenderBackground.layer.shadowColor = UIColor.black.cgColor
         calenderBackground.layer.shadowOpacity = 0.1
         calenderBackground.layer.shadowRadius = 3
@@ -32,12 +29,10 @@ class CalenderCollectionViewCell: UICollectionViewCell {
         calenderDay.text = model.dayString
         calenderDate.text = model.dateString
         
-        // Reset to default
-        calenderBackground.backgroundColor = .white // Shadow needs a background color to be visible
+        calenderBackground.backgroundColor = .white
         calenderDay.textColor = .lightGray
         calenderDate.textColor = .black
         
-        // Reset Border (if you used the blue border from earlier)
         calenderBackground.layer.borderWidth = 0
         calenderBackground.layer.borderColor = nil
 
@@ -52,7 +47,6 @@ class CalenderCollectionViewCell: UICollectionViewCell {
             calenderDay.textColor = .systemBlue
             calenderDate.textColor = .systemBlue
             
-            // Adding the blue border for "Today" as requested previously
             calenderBackground.layer.borderWidth = 2.0
             calenderBackground.layer.borderColor = UIColor.systemBlue.cgColor
             return
