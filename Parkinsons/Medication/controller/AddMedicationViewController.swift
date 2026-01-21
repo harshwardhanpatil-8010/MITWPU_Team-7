@@ -154,6 +154,9 @@ class AddMedicationViewController: UIViewController,
         repeatLabel.textColor = .label
 
         doseArray = med.doses.map { $0.time }
+
+        doseStepper.value = Double(doseArray.count)
+
         doseTableView.reloadData()
         originalMedicationSnapshot = med
         tickButton.isEnabled = false
