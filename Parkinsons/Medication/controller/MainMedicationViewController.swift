@@ -87,6 +87,7 @@ final class MainMedicationViewController: UIViewController {
 
         medicationCollectionView.reloadData()
         updateNoMedicationState()
+        updateUIForSegment()
     }
 
     private func updateNoMedicationState() {
@@ -154,29 +155,15 @@ final class MainMedicationViewController: UIViewController {
         loadMedications()
     }
 
-//    private func presentEditStatusSheet(for item: LoggedDoseItem) {
-//        let alert = UIAlertController(
-//            title: item.medicationName,
-//            message: "Update status",
-//            preferredStyle: .actionSheet
-//        )
-//
-//        alert.addAction(UIAlertAction(title: "Taken", style: .default) { _ in
-//            self.updateLoggedStatus(item, status: .taken)
-//        })
-//
-//        alert.addAction(UIAlertAction(title: "Skipped", style: .destructive) { _ in
-//            self.updateLoggedStatus(item, status: .skipped)
-//        })
-//
-//        alert.addAction(UIAlertAction(title: "Cancel", style: .cancel))
-//
-//        present(alert, animated: true)
-//    }
-
     private func updateUIForSegment() {
-        editButton.isHidden = (currentSegment != .myMedication)
+        if currentSegment == .myMedication {
+            editButton.isHidden = false
+            editButton.isEnabled = !myMedications.isEmpty
+        } else {
+            editButton.isHidden = true
+        }
     }
+
 
     @IBAction func editButtonTapped(_ sender: Any) {
         let storyboard = UIStoryboard(name: "Medication", bundle: nil)
@@ -206,7 +193,15 @@ extension MainMedicationViewController: UICollectionViewDataSource {
                 let hasMoreThanThreeUpcoming = upcomingDoses.count > 3
                 header.configure(title: "Today Medications", actionTitle: hasMoreThanThreeUpcoming ? (isShowingAllUpcoming ? "Show Less" : "Show All") : nil, action: hasMoreThanThreeUpcoming ? .showAll : nil, isExpanded: isShowingAllUpcoming)
             } else {
-                header.configure(title: "Logged", actionTitle: "Edit", action: .edit)
+                let isEditEnabled = !loggedDoses.isEmpty
+
+                header.configure(
+                    title: "Logged",
+                    actionTitle: "Edit",
+                    action: .edit,
+                    isActionEnabled: isEditEnabled
+                )
+
             }
             header.delegate = self
             return header
@@ -271,14 +266,13 @@ extension MainMedicationViewController: UICollectionViewDelegateFlowLayout {
     }
 
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAt section: Int) -> UIEdgeInsets {
-//        if currentSegment == .today && section == 1 {
-            return UIEdgeInsets(top: 4, left: 0, bottom: 4, right: 0)
-//        }
-//        return .zero
+            return UIEdgeInsets(top: 0, left: 0, bottom: 8, right: 0)
     }
 
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        let height: CGFloat = (currentSegment == .today && indexPath.section == 1) ? 80 : 120
+        let horizontalPadding: CGFloat = 40
+        _ = collectionView.bounds.width - horizontalPadding
+        let height: CGFloat =  80
         return CGSize(width: collectionView.bounds.width, height: height)
     }
 

@@ -37,7 +37,8 @@ extension MyMedicationCollectionViewCell {
             medRepeat.textColor = .label
 
         case .weekly:
-            medRepeat.attributedText = medication.schedule.weekdayAttributedString()
+            medRepeat.text = medication.schedule.displayString()
+
 
         case .none:
             medRepeat.text = "—"
