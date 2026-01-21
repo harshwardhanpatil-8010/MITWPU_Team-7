@@ -16,86 +16,19 @@
                         <rect key="frame" x="0.0" y="0.0" width="402" height="874"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Gmq-uI-I9u">
-                                <rect key="frame" x="0.0" y="124" width="402" height="1600"/>
+                            <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Gmq-uI-I9u">
+                                <rect key="frame" x="0.0" y="124" width="402" height="682"/>
                                 <subviews>
-                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="7Kf-Zc-tMf">
-                                        <rect key="frame" x="0.0" y="0.0" width="402" height="1600"/>
-                                        <subviews>
-                                            <segmentedControl opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="plain" selectedSegmentIndex="0" translatesAutoresizingMaskIntoConstraints="NO" id="raN-Ig-P22">
-                                                <rect key="frame" x="14" y="0.0" width="374" height="32"/>
-                                                <segments>
-                                                    <segment title="D"/>
-                                                    <segment title="W"/>
-                                                    <segment title="M"/>
-                                                    <segment title="6M"/>
-                                                    <segment title="Y"/>
-                                                </segments>
-                                                <connections>
-                                                    <action selector="segmentChanged:" destination="Y6W-OH-hqX" eventType="valueChanged" id="Erh-Vf-h7I"/>
-                                                </connections>
-                                            </segmentedControl>
-                                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Gait Graph" translatesAutoresizingMaskIntoConstraints="NO" id="l75-XB-8Bt">
-                                                <rect key="frame" x="0.0" y="31" width="402" height="376"/>
-                                                <constraints>
-                                                    <constraint firstAttribute="height" constant="376" id="7Yw-s2-PKt"/>
-                                                </constraints>
-                                            </imageView>
-                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="About Gait Disturbance" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ZeR-3n-3BC">
-                                                <rect key="frame" x="32" y="431" width="370" height="29"/>
-                                                <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="24"/>
-                                                <nil key="textColor"/>
-                                                <nil key="highlightedColor"/>
-                                            </label>
-                                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="sJN-Cb-KuH">
-                                                <rect key="frame" x="15" y="470" width="372" height="482"/>
-                                                <subviews>
-                                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" lineBreakMode="tailTruncation" numberOfLines="43" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="7Fn-35-UKb">
-                                                        <rect key="frame" x="16" y="15" width="340" height="324.66666666666669"/>
-                                                        <string key="text">Gait disturbance refers to difficulty in walking, which can appear as unsteady steps, slowed movement, shuffling, or imbalance while moving.
-
-It is a common symptom in neurological conditions like Parkinson’s disease, stroke, or multiple sclerosis. Gait issues can also arise from muscle weakness, joint problems, inner ear disorders, or age-related changes.
-
-The severity may range from mild unsteadiness to a higher risk of falls that impact daily activities. Factors such as fatigue, medications, and vision problems can worsen gait disturbance. Persistent or worsening gait changes should be medically evaluated.</string>
-                                                        <fontDescription key="fontDescription" type="system" pointSize="16"/>
-                                                        <nil key="textColor"/>
-                                                        <nil key="highlightedColor"/>
-                                                    </label>
-                                                </subviews>
-                                                <color key="backgroundColor" systemColor="systemBackgroundColor"/>
-                                                <constraints>
-                                                    <constraint firstItem="7Fn-35-UKb" firstAttribute="leading" secondItem="sJN-Cb-KuH" secondAttribute="leading" constant="16" id="4h3-y2-iIv"/>
-                                                    <constraint firstItem="7Fn-35-UKb" firstAttribute="top" secondItem="sJN-Cb-KuH" secondAttribute="top" constant="15" id="FHc-BT-DDi"/>
-                                                    <constraint firstAttribute="height" constant="482" id="V9m-J3-JNf"/>
-                                                    <constraint firstAttribute="trailing" secondItem="7Fn-35-UKb" secondAttribute="trailing" constant="16" id="rm2-hX-qdX"/>
-                                                </constraints>
-                                            </view>
-                                        </subviews>
+                                    <view contentMode="scaleToFill" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="BHr-FV-jXa">
+                                        <rect key="frame" x="81" y="0.0" width="240" height="128"/>
                                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
-                                        <constraints>
-                                            <constraint firstItem="sJN-Cb-KuH" firstAttribute="top" secondItem="ZeR-3n-3BC" secondAttribute="bottom" constant="10" id="8Py-BZ-ecJ"/>
-                                            <constraint firstItem="ZeR-3n-3BC" firstAttribute="top" secondItem="l75-XB-8Bt" secondAttribute="bottom" constant="24" id="8QX-Nt-1wq"/>
-                                            <constraint firstItem="l75-XB-8Bt" firstAttribute="leading" secondItem="7Kf-Zc-tMf" secondAttribute="leading" id="F8X-Nq-GBe"/>
-                                            <constraint firstItem="sJN-Cb-KuH" firstAttribute="leading" secondItem="7Kf-Zc-tMf" secondAttribute="leading" constant="15" id="LWH-gB-tUa"/>
-                                            <constraint firstAttribute="trailing" secondItem="sJN-Cb-KuH" secondAttribute="trailing" constant="15" id="Wgv-hl-oji"/>
-                                            <constraint firstAttribute="height" constant="1600" id="d9T-L5-ZWR"/>
-                                            <constraint firstAttribute="trailing" secondItem="raN-Ig-P22" secondAttribute="trailing" constant="14" id="kWc-eP-LmL"/>
-                                            <constraint firstAttribute="trailing" secondItem="ZeR-3n-3BC" secondAttribute="trailing" id="kYB-OM-W5R"/>
-                                            <constraint firstItem="l75-XB-8Bt" firstAttribute="top" secondItem="raN-Ig-P22" secondAttribute="bottom" id="mtf-hV-Owb"/>
-                                            <constraint firstAttribute="trailing" secondItem="l75-XB-8Bt" secondAttribute="trailing" id="nIz-7J-MTI"/>
-                                            <constraint firstItem="raN-Ig-P22" firstAttribute="leading" secondItem="7Kf-Zc-tMf" secondAttribute="leading" constant="14" id="oBY-DF-U9C"/>
-                                            <constraint firstItem="ZeR-3n-3BC" firstAttribute="leading" secondItem="7Kf-Zc-tMf" secondAttribute="leading" constant="32" id="plc-kt-xc7"/>
-                                            <constraint firstItem="raN-Ig-P22" firstAttribute="top" secondItem="7Kf-Zc-tMf" secondAttribute="top" id="zbz-lF-u6Q"/>
-                                        </constraints>
                                     </view>
                                 </subviews>
                                 <constraints>
-                                    <constraint firstItem="7Kf-Zc-tMf" firstAttribute="top" secondItem="Gmq-uI-I9u" secondAttribute="top" id="3vc-sW-b2V"/>
-                                    <constraint firstAttribute="trailing" secondItem="7Kf-Zc-tMf" secondAttribute="trailing" id="7GB-y3-C1R"/>
-                                    <constraint firstItem="7Kf-Zc-tMf" firstAttribute="leading" secondItem="Gmq-uI-I9u" secondAttribute="leading" id="aGg-Pc-41F"/>
-                                    <constraint firstAttribute="trailing" secondItem="7Kf-Zc-tMf" secondAttribute="trailing" id="dlU-Qb-AlE"/>
-                                    <constraint firstAttribute="height" constant="1600" id="eVb-bs-v9J"/>
-                                    <constraint firstAttribute="bottom" secondItem="7Kf-Zc-tMf" secondAttribute="bottom" id="q8L-UA-39Z"/>
+                                    <constraint firstAttribute="trailing" secondItem="BHr-FV-jXa" secondAttribute="trailing" id="75L-m8-PNo"/>
+                                    <constraint firstItem="BHr-FV-jXa" firstAttribute="top" secondItem="Gmq-uI-I9u" secondAttribute="top" id="BpI-Eo-cdS"/>
+                                    <constraint firstAttribute="bottom" secondItem="BHr-FV-jXa" secondAttribute="bottom" id="IeS-VA-YMb"/>
+                                    <constraint firstItem="BHr-FV-jXa" firstAttribute="leading" secondItem="Gmq-uI-I9u" secondAttribute="leading" id="NQ8-dE-Wg8"/>
                                 </constraints>
                             </scrollView>
                         </subviews>
@@ -103,7 +36,7 @@ The severity may range from mild unsteadiness to a higher risk of falls that imp
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                         <constraints>
                             <constraint firstItem="Gmq-uI-I9u" firstAttribute="leading" secondItem="vDu-zF-Fre" secondAttribute="leading" id="DCE-2c-yAO"/>
-                            <constraint firstItem="7Kf-Zc-tMf" firstAttribute="width" secondItem="5EZ-qb-Rvc" secondAttribute="width" id="Wpp-jT-Jas"/>
+                            <constraint firstItem="Gmq-uI-I9u" firstAttribute="bottom" secondItem="vDu-zF-Fre" secondAttribute="bottom" id="eyO-mH-0o2"/>
                             <constraint firstItem="Gmq-uI-I9u" firstAttribute="trailing" secondItem="vDu-zF-Fre" secondAttribute="trailing" id="yhT-A0-ubc"/>
                             <constraint firstItem="Gmq-uI-I9u" firstAttribute="top" secondItem="vDu-zF-Fre" secondAttribute="top" id="zPK-ko-Fhx"/>
                         </constraints>
@@ -117,7 +50,83 @@ The severity may range from mild unsteadiness to a higher risk of falls that imp
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Ief-a0-LHa" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1922" y="8"/>
+            <point key="canvasLocation" x="1920.8955223880596" y="7.5514874141876422"/>
+        </scene>
+        <!--View Controller-->
+        <scene sceneID="xLG-7Y-DGt">
+            <objects>
+                <viewController id="f5E-vY-8Lj" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="onZ-da-Ico">
+                        <rect key="frame" x="0.0" y="0.0" width="402" height="874"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <segmentedControl opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="plain" selectedSegmentIndex="0" translatesAutoresizingMaskIntoConstraints="NO" id="raN-Ig-P22">
+                                <rect key="frame" x="13" y="88" width="374" height="32"/>
+                                <segments>
+                                    <segment title="D"/>
+                                    <segment title="W"/>
+                                    <segment title="M"/>
+                                    <segment title="6M"/>
+                                    <segment title="Y"/>
+                                </segments>
+                                <connections>
+                                    <action selector="segmentChanged:" destination="Y6W-OH-hqX" eventType="valueChanged" id="Erh-Vf-h7I"/>
+                                </connections>
+                            </segmentedControl>
+                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Gait Graph" translatesAutoresizingMaskIntoConstraints="NO" id="l75-XB-8Bt">
+                                <rect key="frame" x="0.0" y="119" width="402" height="380"/>
+                            </imageView>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="About Gait Disturbance" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ZeR-3n-3BC">
+                                <rect key="frame" x="32" y="523" width="370" height="29"/>
+                                <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="24"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="sJN-Cb-KuH">
+                                <rect key="frame" x="15" y="562" width="372" height="339.66666666666674"/>
+                                <subviews>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" lineBreakMode="tailTruncation" numberOfLines="43" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="7Fn-35-UKb">
+                                        <rect key="frame" x="16" y="15" width="340" height="324.66666666666669"/>
+                                        <string key="text">Gait disturbance refers to difficulty in walking, which can appear as unsteady steps, slowed movement, shuffling, or imbalance while moving.
+
+It is a common symptom in neurological conditions like Parkinson’s disease, stroke, or multiple sclerosis. Gait issues can also arise from muscle weakness, joint problems, inner ear disorders, or age-related changes.
+
+The severity may range from mild unsteadiness to a higher risk of falls that impact daily activities. Factors such as fatigue, medications, and vision problems can worsen gait disturbance. Persistent or worsening gait changes should be medically evaluated.</string>
+                                        <fontDescription key="fontDescription" type="system" pointSize="16"/>
+                                        <nil key="textColor"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                </subviews>
+                                <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                                <constraints>
+                                    <constraint firstItem="7Fn-35-UKb" firstAttribute="leading" secondItem="sJN-Cb-KuH" secondAttribute="leading" constant="16" id="4h3-y2-iIv"/>
+                                    <constraint firstItem="7Fn-35-UKb" firstAttribute="top" secondItem="sJN-Cb-KuH" secondAttribute="top" constant="15" id="FHc-BT-DDi"/>
+                                    <constraint firstAttribute="trailing" secondItem="7Fn-35-UKb" secondAttribute="trailing" constant="16" id="rm2-hX-qdX"/>
+                                    <constraint firstAttribute="bottom" secondItem="7Fn-35-UKb" secondAttribute="bottom" id="vYD-3R-v1X"/>
+                                </constraints>
+                            </view>
+                        </subviews>
+                        <viewLayoutGuide key="safeArea" id="WtD-Xa-rgK"/>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                        <constraints>
+                            <constraint firstItem="raN-Ig-P22" firstAttribute="top" secondItem="onZ-da-Ico" secondAttribute="top" constant="88" id="8iv-Qm-Ofh"/>
+                            <constraint firstItem="l75-XB-8Bt" firstAttribute="top" secondItem="raN-Ig-P22" secondAttribute="bottom" id="ATX-5V-Fep"/>
+                            <constraint firstAttribute="trailing" secondItem="ZeR-3n-3BC" secondAttribute="trailing" id="Bee-P4-SiD"/>
+                            <constraint firstAttribute="trailing" secondItem="raN-Ig-P22" secondAttribute="trailing" constant="15" id="H2U-hK-een"/>
+                            <constraint firstAttribute="trailing" secondItem="sJN-Cb-KuH" secondAttribute="trailing" constant="15" id="IGw-XH-42J"/>
+                            <constraint firstItem="ZeR-3n-3BC" firstAttribute="leading" secondItem="onZ-da-Ico" secondAttribute="leading" constant="32" id="Ira-xX-Vjn"/>
+                            <constraint firstAttribute="trailing" secondItem="l75-XB-8Bt" secondAttribute="trailing" id="YHG-Mi-bli"/>
+                            <constraint firstItem="l75-XB-8Bt" firstAttribute="leading" secondItem="onZ-da-Ico" secondAttribute="leading" id="a3q-92-zku"/>
+                            <constraint firstItem="raN-Ig-P22" firstAttribute="leading" secondItem="onZ-da-Ico" secondAttribute="leading" constant="13" id="ehf-7X-2Sl"/>
+                            <constraint firstItem="ZeR-3n-3BC" firstAttribute="top" secondItem="l75-XB-8Bt" secondAttribute="bottom" constant="24" id="fhu-Bg-c3P"/>
+                            <constraint firstItem="sJN-Cb-KuH" firstAttribute="top" secondItem="ZeR-3n-3BC" secondAttribute="bottom" constant="10" id="j1j-04-eJy"/>
+                            <constraint firstItem="sJN-Cb-KuH" firstAttribute="leading" secondItem="onZ-da-Ico" secondAttribute="leading" constant="15" id="jwS-GY-zij"/>
+                        </constraints>
+                    </view>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="cSK-Mm-qwp" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="2712" y="25"/>
         </scene>
         <!--Tremor View Controller-->
         <scene sceneID="P4c-s9-PsO">

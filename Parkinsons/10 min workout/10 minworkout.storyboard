@@ -366,7 +366,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Let's Begin" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="wSf-Co-ErF">
-                                <rect key="frame" x="0.0" y="250.00000000000003" width="402" height="32.333333333333343"/>
+                                <rect key="frame" x="0.0" y="249.99999999999997" width="402" height="94.666666666666657"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="27"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
@@ -387,6 +387,7 @@
                             <constraint firstItem="65U-Ul-9tH" firstAttribute="centerY" secondItem="D3K-98-ReG" secondAttribute="centerY" id="S4B-fW-2Q4"/>
                             <constraint firstItem="65U-Ul-9tH" firstAttribute="leading" secondItem="vUh-5N-FKN" secondAttribute="leading" id="Y55-jv-iv4"/>
                             <constraint firstItem="wSf-Co-ErF" firstAttribute="leading" secondItem="vUh-5N-FKN" secondAttribute="leading" id="hp6-uS-CGW"/>
+                            <constraint firstItem="65U-Ul-9tH" firstAttribute="top" secondItem="wSf-Co-ErF" secondAttribute="bottom" constant="16" id="qD2-ga-XGc"/>
                             <constraint firstItem="vUh-5N-FKN" firstAttribute="trailing" secondItem="wSf-Co-ErF" secondAttribute="trailing" id="uZ2-WK-bQj"/>
                         </constraints>
                     </view>
