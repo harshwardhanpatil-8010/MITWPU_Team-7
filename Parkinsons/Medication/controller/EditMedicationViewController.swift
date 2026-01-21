@@ -111,7 +111,7 @@ extension EditMedicationViewController: UICollectionViewDelegateFlowLayout {
         layout collectionViewLayout: UICollectionViewLayout,
         minimumLineSpacingForSectionAt section: Int
     ) -> CGFloat {
-        return -7
+        return 0
     }
 }
 

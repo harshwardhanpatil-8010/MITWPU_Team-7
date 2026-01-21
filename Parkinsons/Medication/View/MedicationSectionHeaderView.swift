@@ -1,10 +1,3 @@
-//
-//  MedicationSectionHeaderView.swift
-//  Parkinsons
-//
-//  Created by Zeeshan Khan on 11/01/26.
-//
-
 import UIKit
 
 protocol MedicationSectionHeaderViewDelegate: AnyObject {
@@ -30,14 +23,16 @@ class MedicationSectionHeaderView: UICollectionReusableView {
         title: String,
         actionTitle: String?,
         action: HeaderAction?,
-        isExpanded: Bool = false
+        isExpanded: Bool = false,
+        isActionEnabled: Bool = true
     ) {
         timeLabel.text = title
         self.action = action
-
+        
         actionButton.isHidden = actionTitle == nil
         actionButton.setTitle(actionTitle, for: .normal)
-
+        actionButton.isEnabled = isActionEnabled
+        
         if action == .showAll {
             arrowImageView.isHidden = false
             arrowImageView.image = UIImage(
@@ -49,6 +44,8 @@ class MedicationSectionHeaderView: UICollectionReusableView {
     }
 
     @IBAction func actionTapped(_ sender: Any) {
+        guard actionButton.isEnabled else { return }
+
         switch action {
         case .showAll:
             delegate?.didTapShowAllToday()
@@ -59,4 +56,3 @@ class MedicationSectionHeaderView: UICollectionReusableView {
         }
     }
 }
-

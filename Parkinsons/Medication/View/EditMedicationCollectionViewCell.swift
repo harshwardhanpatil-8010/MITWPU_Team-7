@@ -9,13 +9,13 @@ import UIKit
 
 class EditMedicationCollectionViewCell: UICollectionViewCell {
 
+    @IBOutlet weak var frequencyLabel: UILabel!
     @IBOutlet weak var scheduleLabel: UILabel!
     @IBOutlet weak var subtitleLabel: UILabel!
     @IBOutlet weak var titleLabel: UILabel!
     @IBOutlet weak var medIcon: UIImageView!
     @IBOutlet weak var cardView: UIView!
 
-    private let shortWeekdays = "MTWTFSS"
 
     override func awakeFromNib() {
         super.awakeFromNib()
@@ -24,10 +24,10 @@ class EditMedicationCollectionViewCell: UICollectionViewCell {
 
     func configure(with medication: Medication) {
         titleLabel.text = medication.name
-        subtitleLabel.text = "1 \(medication.form.lowercased())"
+        subtitleLabel.text = medication.form
         medIcon.image = UIImage(named: medication.iconName) ?? UIImage(named: "tablet")
 
-
+        frequencyLabel.text = "\(medication.doses.count)x day"
         switch medication.schedule {
         case .everyday:
             scheduleLabel.text = "Everyday"
@@ -36,35 +36,8 @@ class EditMedicationCollectionViewCell: UICollectionViewCell {
             scheduleLabel.text = "None"
 
         case .weekly:
-            scheduleLabel.attributedText = medication.schedule.weekdayAttributedString()
-
+            scheduleLabel.text = medication.schedule.displayString()
         }
-    }
-
-    private func makeWeekdayAttributedText(selectedDays: [Int]) -> NSAttributedString {
-        let attributed = NSMutableAttributedString(string: shortWeekdays)
-
-        let normalColor: UIColor = .systemGray3
-        let selectedColor: UIColor = .systemBlue
-
-        attributed.addAttribute(
-            .foregroundColor,
-            value: normalColor,
-            range: NSRange(location: 0, length: shortWeekdays.count)
-        )
-        
-        for day in selectedDays {
-            let index = weekdayIndex(from: day)
-            guard index >= 0 && index < shortWeekdays.count else { continue }
-
-            attributed.addAttribute(
-                .foregroundColor,
-                value: selectedColor,
-                range: NSRange(location: index, length: 1)
-            )
-        }
-
-        return attributed
     }
 
     private func weekdayIndex(from weekday: Int) -> Int {
