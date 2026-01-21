@@ -20,9 +20,8 @@
                         <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <navigationBar contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Byu-25-vaf">
+                            <navigationBar contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Byu-25-vaf">
                                 <rect key="frame" x="0.0" y="64" width="393" height="54"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <items>
                                     <navigationItem id="cGT-K2-nk3">
                                         <rightBarButtonItems>
@@ -77,8 +76,11 @@
                             <constraint firstItem="VtX-jr-dYm" firstAttribute="trailing" secondItem="vDu-zF-Fre" secondAttribute="trailing" id="DeS-lh-Vfv"/>
                             <constraint firstItem="FrP-at-w4U" firstAttribute="leading" secondItem="vDu-zF-Fre" secondAttribute="leading" constant="16" id="Ecr-DK-ukg"/>
                             <constraint firstAttribute="bottom" secondItem="VtX-jr-dYm" secondAttribute="bottom" id="HwU-Zy-3Bh"/>
+                            <constraint firstItem="Byu-25-vaf" firstAttribute="leading" secondItem="5EZ-qb-Rvc" secondAttribute="leading" id="IBK-OZ-l2T"/>
                             <constraint firstItem="VtX-jr-dYm" firstAttribute="leading" secondItem="vDu-zF-Fre" secondAttribute="leading" id="SOd-hS-iEF"/>
                             <constraint firstItem="FrP-at-w4U" firstAttribute="top" secondItem="vDu-zF-Fre" secondAttribute="top" constant="8" id="Tkg-ZY-iCl"/>
+                            <constraint firstAttribute="trailing" secondItem="Byu-25-vaf" secondAttribute="trailing" id="Z7A-mf-PLD"/>
+                            <constraint firstItem="Byu-25-vaf" firstAttribute="top" secondItem="5EZ-qb-Rvc" secondAttribute="top" constant="64" id="Zls-CG-Xyr"/>
                             <constraint firstItem="VtX-jr-dYm" firstAttribute="top" secondItem="FrP-at-w4U" secondAttribute="bottom" constant="16" id="rNb-zN-VVF"/>
                         </constraints>
                     </view>

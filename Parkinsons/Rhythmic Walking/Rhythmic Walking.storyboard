@@ -49,9 +49,9 @@
                                 </constraints>
                             </view>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ZKp-LN-1Mx">
-                                <rect key="frame" x="16" y="739" width="370" height="52"/>
+                                <rect key="frame" x="16" y="743" width="370" height="48"/>
                                 <constraints>
-                                    <constraint firstAttribute="height" constant="52" id="VPe-Go-LR9"/>
+                                    <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="48" id="VPe-Go-LR9"/>
                                 </constraints>
                                 <state key="normal" title="Button"/>
                                 <buttonConfiguration key="configuration" style="filled" title="End Session" cornerStyle="capsule"/>
@@ -525,7 +525,6 @@
                                 <items>
                                     <navigationItem title="Rhythmic Walking" id="ArV-fx-Dhk">
                                         <barButtonItem key="rightBarButtonItem" style="done" systemItem="done" id="GpK-Th-Wrc">
-                                            <color key="tintColor" systemColor="linkColor"/>
                                             <connections>
                                                 <action selector="doneButtonTapped:" destination="Pur-Wm-rd9" id="06K-HW-g22"/>
                                             </connections>
@@ -963,20 +962,17 @@ Longer step length usually means better leg strength and flexibility.</string>
     </scenes>
     <resources>
         <image name="info.circle" catalog="system" width="128" height="123"/>
-        <systemColor name="linkColor">
-            <color red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-        </systemColor>
         <systemColor name="separatorColor">
-            <color red="0.23529411759999999" green="0.23529411759999999" blue="0.26274509800000001" alpha="0.28999999999999998" colorSpace="custom" customColorSpace="sRGB"/>
+            <color red="0.23529411764705882" green="0.23529411764705882" blue="0.2627450980392157" alpha="0.12" colorSpace="custom" customColorSpace="sRGB"/>
         </systemColor>
         <systemColor name="systemBackgroundColor">
             <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
         </systemColor>
         <systemColor name="systemGreenColor">
-            <color red="0.20392156859999999" green="0.78039215689999997" blue="0.34901960780000002" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <color red="0.20392156862745098" green="0.7803921568627451" blue="0.34901960784313724" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </systemColor>
         <systemColor name="systemRedColor">
-            <color red="1" green="0.23137254900000001" blue="0.18823529410000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <color red="1" green="0.2196078431372549" blue="0.23529411764705882" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </systemColor>
     </resources>
 </document>
