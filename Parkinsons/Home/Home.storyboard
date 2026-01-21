@@ -153,6 +153,9 @@
                                             <preferredSymbolConfiguration key="preferredSymbolConfigurationForImage" scale="large" weight="bold"/>
                                             <directionalEdgeInsets key="contentInsets" top="0.0" leading="0.0" bottom="0.0" trailing="0.0"/>
                                         </buttonConfiguration>
+                                        <connections>
+                                            <action selector="medicationNavigation:" destination="E2u-Yx-rAh" eventType="touchUpInside" id="Q10-Nx-bSo"/>
+                                        </connections>
                                     </button>
                                     <button opaque="NO" contentMode="scaleToFill" semanticContentAttribute="forceRightToLeft" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="V1K-Ng-q0q">
                                         <rect key="frame" x="16" y="594" width="361" height="54"/>
@@ -166,6 +169,9 @@
                                             <preferredSymbolConfiguration key="preferredSymbolConfigurationForImage" scale="large" weight="bold"/>
                                             <directionalEdgeInsets key="contentInsets" top="0.0" leading="0.0" bottom="0.0" trailing="0.0"/>
                                         </buttonConfiguration>
+                                        <connections>
+                                            <action selector="pastSymptomRecordsNavigation:" destination="E2u-Yx-rAh" eventType="touchUpInside" id="TJg-t3-cvU"/>
+                                        </connections>
                                     </button>
                                     <stackView opaque="NO" contentMode="scaleAspectFit" axis="vertical" alignment="center" spacing="2" translatesAutoresizingMaskIntoConstraints="NO" id="LWa-Ap-rd7">
                                         <rect key="frame" x="16" y="277" width="361" height="223"/>
@@ -173,10 +179,8 @@
                                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="blH-kP-fSd">
                                                 <rect key="frame" x="2" y="0.0" width="357" height="52"/>
                                                 <subviews>
-
                                                     <stackView opaque="NO" contentMode="scaleToFill" semanticContentAttribute="forceLeftToRight" distribution="fillProportionally" spacing="14" translatesAutoresizingMaskIntoConstraints="NO" id="Ugb-tD-oes">
                                                         <rect key="frame" x="16" y="0.0" width="325" height="52"/>
-
                                                         <subviews>
                                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Name" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="lwg-cG-ZcQ">
                                                                 <rect key="frame" x="0.0" y="0.0" width="111" height="52"/>
@@ -404,13 +408,11 @@
                         <outlet property="emergencyNoTextField" destination="9HG-en-02t" id="zxy-8b-YC8"/>
                         <outlet property="logoBackground" destination="YCm-Cl-pvf" id="Skh-jA-q4l"/>
                         <outlet property="logoLabel" destination="1md-zb-Ckb" id="KOw-9O-d4F"/>
-                        <outlet property="medicationButton" destination="CEx-36-I22" id="zld-0e-PxL"/>
                         <outlet property="nameLabel" destination="lwg-cG-ZcQ" id="GEz-5D-Lsw"/>
                         <outlet property="nameTextField" destination="QZK-0s-sSa" id="lMH-q9-dfo"/>
                         <outlet property="sexLabel" destination="7P3-0P-yh8" id="G6R-TY-kSb"/>
                         <outlet property="sexsSelector" destination="x2m-25-ZBh" id="mmO-Iw-x2O"/>
                         <outlet property="stackViewBackground" destination="LWa-Ap-rd7" id="02G-e1-G7I"/>
-                        <outlet property="symptomButton" destination="V1K-Ng-q0q" id="KlJ-Ub-UC2"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="9yg-n2-ccj" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
@@ -1006,7 +1008,7 @@
             <color red="0.0" green="0.46000000000000002" blue="0.89000000000000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </namedColor>
         <systemColor name="separatorColor">
-            <color red="0.23529411759999999" green="0.23529411759999999" blue="0.26274509800000001" alpha="0.28999999999999998" colorSpace="custom" customColorSpace="sRGB"/>
+            <color red="0.23529411764705882" green="0.23529411764705882" blue="0.2627450980392157" alpha="0.12" colorSpace="custom" customColorSpace="sRGB"/>
         </systemColor>
         <systemColor name="systemBackgroundColor">
             <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
