@@ -1,0 +1,13 @@
+xcuserdata/
+*.xcuserstate
+<<<<<<< HEAD
+xcuserdata/
+*.xcuserstate
+=======
+*.xcuserstate
+*.xcuserdata
+>>>>>>> origin/NevinA
+
+# Xcode junk
+xcuserdata/
+*.xcuserstate

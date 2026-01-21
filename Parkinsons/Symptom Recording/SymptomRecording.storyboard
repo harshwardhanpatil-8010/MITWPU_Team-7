@@ -1,0 +1,214 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="24506" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina6_3" orientation="portrait" appearance="light"/>
+    <dependencies>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="24504"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="System colors in document resources" minToolsVersion="11.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <scenes>
+        <!--Gait View Controller-->
+        <scene sceneID="s0d-6b-0kx">
+            <objects>
+                <viewController storyboardIdentifier="GaitVC" useStoryboardIdentifierAsRestorationIdentifier="YES" id="Y6W-OH-hqX" customClass="GaitViewController" customModule="Parkinsons" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="5EZ-qb-Rvc">
+                        <rect key="frame" x="0.0" y="0.0" width="402" height="874"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Gmq-uI-I9u">
+                                <rect key="frame" x="0.0" y="124" width="402" height="1600"/>
+                                <subviews>
+                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="7Kf-Zc-tMf">
+                                        <rect key="frame" x="0.0" y="0.0" width="402" height="1600"/>
+                                        <subviews>
+                                            <segmentedControl opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="plain" selectedSegmentIndex="0" translatesAutoresizingMaskIntoConstraints="NO" id="raN-Ig-P22">
+                                                <rect key="frame" x="14" y="0.0" width="374" height="32"/>
+                                                <segments>
+                                                    <segment title="D"/>
+                                                    <segment title="W"/>
+                                                    <segment title="M"/>
+                                                    <segment title="6M"/>
+                                                    <segment title="Y"/>
+                                                </segments>
+                                                <connections>
+                                                    <action selector="segmentChanged:" destination="Y6W-OH-hqX" eventType="valueChanged" id="Erh-Vf-h7I"/>
+                                                </connections>
+                                            </segmentedControl>
+                                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Gait Graph" translatesAutoresizingMaskIntoConstraints="NO" id="l75-XB-8Bt">
+                                                <rect key="frame" x="0.0" y="31" width="402" height="376"/>
+                                                <constraints>
+                                                    <constraint firstAttribute="height" constant="376" id="7Yw-s2-PKt"/>
+                                                </constraints>
+                                            </imageView>
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="About Gait Disturbance" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ZeR-3n-3BC">
+                                                <rect key="frame" x="32" y="431" width="370" height="29"/>
+                                                <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="24"/>
+                                                <nil key="textColor"/>
+                                                <nil key="highlightedColor"/>
+                                            </label>
+                                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="sJN-Cb-KuH">
+                                                <rect key="frame" x="15" y="470" width="372" height="482"/>
+                                                <subviews>
+                                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" lineBreakMode="tailTruncation" numberOfLines="43" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="7Fn-35-UKb">
+                                                        <rect key="frame" x="16" y="15" width="340" height="324.66666666666669"/>
+                                                        <string key="text">Gait disturbance refers to difficulty in walking, which can appear as unsteady steps, slowed movement, shuffling, or imbalance while moving.
+
+It is a common symptom in neurological conditions like Parkinson’s disease, stroke, or multiple sclerosis. Gait issues can also arise from muscle weakness, joint problems, inner ear disorders, or age-related changes.
+
+The severity may range from mild unsteadiness to a higher risk of falls that impact daily activities. Factors such as fatigue, medications, and vision problems can worsen gait disturbance. Persistent or worsening gait changes should be medically evaluated.</string>
+                                                        <fontDescription key="fontDescription" type="system" pointSize="16"/>
+                                                        <nil key="textColor"/>
+                                                        <nil key="highlightedColor"/>
+                                                    </label>
+                                                </subviews>
+                                                <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                                                <constraints>
+                                                    <constraint firstItem="7Fn-35-UKb" firstAttribute="leading" secondItem="sJN-Cb-KuH" secondAttribute="leading" constant="16" id="4h3-y2-iIv"/>
+                                                    <constraint firstItem="7Fn-35-UKb" firstAttribute="top" secondItem="sJN-Cb-KuH" secondAttribute="top" constant="15" id="FHc-BT-DDi"/>
+                                                    <constraint firstAttribute="height" constant="482" id="V9m-J3-JNf"/>
+                                                    <constraint firstAttribute="trailing" secondItem="7Fn-35-UKb" secondAttribute="trailing" constant="16" id="rm2-hX-qdX"/>
+                                                </constraints>
+                                            </view>
+                                        </subviews>
+                                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                                        <constraints>
+                                            <constraint firstItem="sJN-Cb-KuH" firstAttribute="top" secondItem="ZeR-3n-3BC" secondAttribute="bottom" constant="10" id="8Py-BZ-ecJ"/>
+                                            <constraint firstItem="ZeR-3n-3BC" firstAttribute="top" secondItem="l75-XB-8Bt" secondAttribute="bottom" constant="24" id="8QX-Nt-1wq"/>
+                                            <constraint firstItem="l75-XB-8Bt" firstAttribute="leading" secondItem="7Kf-Zc-tMf" secondAttribute="leading" id="F8X-Nq-GBe"/>
+                                            <constraint firstItem="sJN-Cb-KuH" firstAttribute="leading" secondItem="7Kf-Zc-tMf" secondAttribute="leading" constant="15" id="LWH-gB-tUa"/>
+                                            <constraint firstAttribute="trailing" secondItem="sJN-Cb-KuH" secondAttribute="trailing" constant="15" id="Wgv-hl-oji"/>
+                                            <constraint firstAttribute="height" constant="1600" id="d9T-L5-ZWR"/>
+                                            <constraint firstAttribute="trailing" secondItem="raN-Ig-P22" secondAttribute="trailing" constant="14" id="kWc-eP-LmL"/>
+                                            <constraint firstAttribute="trailing" secondItem="ZeR-3n-3BC" secondAttribute="trailing" id="kYB-OM-W5R"/>
+                                            <constraint firstItem="l75-XB-8Bt" firstAttribute="top" secondItem="raN-Ig-P22" secondAttribute="bottom" id="mtf-hV-Owb"/>
+                                            <constraint firstAttribute="trailing" secondItem="l75-XB-8Bt" secondAttribute="trailing" id="nIz-7J-MTI"/>
+                                            <constraint firstItem="raN-Ig-P22" firstAttribute="leading" secondItem="7Kf-Zc-tMf" secondAttribute="leading" constant="14" id="oBY-DF-U9C"/>
+                                            <constraint firstItem="ZeR-3n-3BC" firstAttribute="leading" secondItem="7Kf-Zc-tMf" secondAttribute="leading" constant="32" id="plc-kt-xc7"/>
+                                            <constraint firstItem="raN-Ig-P22" firstAttribute="top" secondItem="7Kf-Zc-tMf" secondAttribute="top" id="zbz-lF-u6Q"/>
+                                        </constraints>
+                                    </view>
+                                </subviews>
+                                <constraints>
+                                    <constraint firstItem="7Kf-Zc-tMf" firstAttribute="top" secondItem="Gmq-uI-I9u" secondAttribute="top" id="3vc-sW-b2V"/>
+                                    <constraint firstAttribute="trailing" secondItem="7Kf-Zc-tMf" secondAttribute="trailing" id="7GB-y3-C1R"/>
+                                    <constraint firstItem="7Kf-Zc-tMf" firstAttribute="leading" secondItem="Gmq-uI-I9u" secondAttribute="leading" id="aGg-Pc-41F"/>
+                                    <constraint firstAttribute="trailing" secondItem="7Kf-Zc-tMf" secondAttribute="trailing" id="dlU-Qb-AlE"/>
+                                    <constraint firstAttribute="height" constant="1600" id="eVb-bs-v9J"/>
+                                    <constraint firstAttribute="bottom" secondItem="7Kf-Zc-tMf" secondAttribute="bottom" id="q8L-UA-39Z"/>
+                                </constraints>
+                            </scrollView>
+                        </subviews>
+                        <viewLayoutGuide key="safeArea" id="vDu-zF-Fre"/>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                        <constraints>
+                            <constraint firstItem="Gmq-uI-I9u" firstAttribute="leading" secondItem="vDu-zF-Fre" secondAttribute="leading" id="DCE-2c-yAO"/>
+                            <constraint firstItem="7Kf-Zc-tMf" firstAttribute="width" secondItem="5EZ-qb-Rvc" secondAttribute="width" id="Wpp-jT-Jas"/>
+                            <constraint firstItem="Gmq-uI-I9u" firstAttribute="trailing" secondItem="vDu-zF-Fre" secondAttribute="trailing" id="yhT-A0-ubc"/>
+                            <constraint firstItem="Gmq-uI-I9u" firstAttribute="top" secondItem="vDu-zF-Fre" secondAttribute="top" id="zPK-ko-Fhx"/>
+                        </constraints>
+                    </view>
+                    <navigationItem key="navigationItem" id="wFG-UO-g4a"/>
+                    <connections>
+                        <outlet property="GaitCardView" destination="sJN-Cb-KuH" id="yL9-zI-580"/>
+                        <outlet property="GaitImageView" destination="l75-XB-8Bt" id="xLq-GY-b5D"/>
+                        <outlet property="GaitSegmentControl" destination="raN-Ig-P22" id="85e-FH-mJx"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="Ief-a0-LHa" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1922" y="8"/>
+        </scene>
+        <!--Tremor View Controller-->
+        <scene sceneID="P4c-s9-PsO">
+            <objects>
+                <viewController storyboardIdentifier="TremorVC" useStoryboardIdentifierAsRestorationIdentifier="YES" id="YGw-1n-8Co" customClass="TremorViewController" customModule="Parkinsons" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="1hS-Du-Pfr">
+                        <rect key="frame" x="0.0" y="0.0" width="402" height="874"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <segmentedControl opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="plain" selectedSegmentIndex="0" translatesAutoresizingMaskIntoConstraints="NO" id="xYP-v1-cNg">
+                                <rect key="frame" x="14" y="124" width="374" height="32"/>
+                                <segments>
+                                    <segment title="D"/>
+                                    <segment title="W"/>
+                                    <segment title="M"/>
+                                    <segment title="6M"/>
+                                    <segment title="Y"/>
+                                </segments>
+                                <connections>
+                                    <action selector="segmentChanged:" destination="YGw-1n-8Co" eventType="valueChanged" id="RIB-gt-8jt"/>
+                                </connections>
+                            </segmentedControl>
+                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Tremor Graph" translatesAutoresizingMaskIntoConstraints="NO" id="PRp-97-WcW">
+                                <rect key="frame" x="0.0" y="158" width="402" height="376"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="376" id="Hav-Pm-7vn"/>
+                                </constraints>
+                            </imageView>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="About Tremors" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Ktj-iq-8ZT">
+                                <rect key="frame" x="32" y="558" width="370" height="29"/>
+                                <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="24"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="cxb-m1-Gba">
+                                <rect key="frame" x="15" y="597" width="372" height="104"/>
+                                <subviews>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="6" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="QNL-v3-11S">
+                                        <rect key="frame" x="15" y="15.000000000000007" width="342" height="114.66666666666669"/>
+                                        <string key="text">Tremors are involuntary, rhythmic shaking movements of a part of the body, most often the hands, arms, head, or legs.
+
+
+</string>
+                                        <fontDescription key="fontDescription" type="system" pointSize="16"/>
+                                        <nil key="textColor"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                </subviews>
+                                <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                                <constraints>
+                                    <constraint firstAttribute="trailing" secondItem="QNL-v3-11S" secondAttribute="trailing" constant="15" id="Q6z-Mg-rzW"/>
+                                    <constraint firstItem="QNL-v3-11S" firstAttribute="leading" secondItem="cxb-m1-Gba" secondAttribute="leading" constant="15" id="a3N-ok-XMU"/>
+                                    <constraint firstAttribute="height" constant="104" id="bQu-17-6Zp"/>
+                                    <constraint firstItem="QNL-v3-11S" firstAttribute="top" secondItem="cxb-m1-Gba" secondAttribute="top" constant="15" id="flo-Kb-Pr3"/>
+                                </constraints>
+                            </view>
+                        </subviews>
+                        <viewLayoutGuide key="safeArea" id="1Zl-Xv-bPB"/>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                        <constraints>
+                            <constraint firstItem="Ktj-iq-8ZT" firstAttribute="trailing" secondItem="1Zl-Xv-bPB" secondAttribute="trailing" id="3Yb-ew-c5l"/>
+                            <constraint firstItem="xYP-v1-cNg" firstAttribute="top" secondItem="1Zl-Xv-bPB" secondAttribute="top" id="8lH-JB-Rhv"/>
+                            <constraint firstItem="1Zl-Xv-bPB" firstAttribute="trailing" secondItem="cxb-m1-Gba" secondAttribute="trailing" constant="15" id="AvH-x0-cOF"/>
+                            <constraint firstItem="Ktj-iq-8ZT" firstAttribute="top" secondItem="PRp-97-WcW" secondAttribute="bottom" constant="24" id="DUQ-fJ-b1D"/>
+                            <constraint firstItem="1Zl-Xv-bPB" firstAttribute="trailing" secondItem="xYP-v1-cNg" secondAttribute="trailing" constant="14" id="K1w-Wy-RWT"/>
+                            <constraint firstItem="PRp-97-WcW" firstAttribute="leading" secondItem="1Zl-Xv-bPB" secondAttribute="leading" id="WSb-oN-Xsm"/>
+                            <constraint firstItem="PRp-97-WcW" firstAttribute="trailing" secondItem="1Zl-Xv-bPB" secondAttribute="trailing" id="Xx8-cr-inO"/>
+                            <constraint firstItem="PRp-97-WcW" firstAttribute="top" secondItem="xYP-v1-cNg" secondAttribute="bottom" constant="3" id="cDp-aM-6xb"/>
+                            <constraint firstItem="xYP-v1-cNg" firstAttribute="leading" secondItem="1Zl-Xv-bPB" secondAttribute="leading" constant="14" id="gID-1j-tFd"/>
+                            <constraint firstItem="cxb-m1-Gba" firstAttribute="leading" secondItem="1Zl-Xv-bPB" secondAttribute="leading" constant="15" id="lzK-h3-I03"/>
+                            <constraint firstItem="Ktj-iq-8ZT" firstAttribute="leading" secondItem="1Zl-Xv-bPB" secondAttribute="leading" constant="32" id="rjl-l8-8e1"/>
+                            <constraint firstItem="cxb-m1-Gba" firstAttribute="top" secondItem="Ktj-iq-8ZT" secondAttribute="bottom" constant="10" id="t2v-gy-RWC"/>
+                        </constraints>
+                    </view>
+                    <navigationItem key="navigationItem" id="Vdw-Gb-ShS"/>
+                    <connections>
+                        <outlet property="TremorCardView" destination="cxb-m1-Gba" id="3df-IF-Zvm"/>
+                        <outlet property="TremorImageView" destination="PRp-97-WcW" id="VA9-p0-Pil"/>
+                        <outlet property="TremorSegmentControl" destination="xYP-v1-cNg" id="eS0-0D-9t9"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="bdX-Q6-XH7" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1209" y="8"/>
+        </scene>
+    </scenes>
+    <resources>
+        <image name="Gait Graph" width="401" height="380"/>
+        <image name="Tremor Graph" width="400" height="376"/>
+        <systemColor name="systemBackgroundColor">
+            <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+        </systemColor>
+    </resources>
+</document>
