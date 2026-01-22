@@ -500,7 +500,7 @@ extension HomeViewController: UICollectionViewDataSource {
                 
              
                 if noMedicationsCreated {
-                    label.text = "No Medications Added Yet"
+                    label.text = "No medications added yet."
                 } else {
                     label.text = "All medications Logged!"
                 }
