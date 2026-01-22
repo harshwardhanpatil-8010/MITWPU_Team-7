@@ -9,7 +9,7 @@ import UIKit
 
 class InfoModalViewController: UIViewController {
     
-    // MARK: - Outlets
+  
     @IBOutlet weak var descriptionLabel: UILabel!
     @IBOutlet weak var stepsToPerformLabel: UILabel!
     @IBOutlet weak var benefitsLabel: UILabel!

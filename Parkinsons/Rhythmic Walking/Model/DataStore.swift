@@ -69,14 +69,13 @@ class DataStore {
         let calendar = Calendar.current
         
         let lastRun = UserDefaults.standard.object(forKey: lastCleanupKey) as? Date
-        
-        // If never run before → run now
+ 
         guard let lastRun else {
             cleanupOldSessions()
             return
         }
         
-        // If last cleanup was not today → run again
+      
         if !calendar.isDateInToday(lastRun) {
             cleanupOldSessions()
         }
