@@ -584,30 +584,33 @@
                                 <nil key="highlightedColor"/>
                             </label>
                             <stackView opaque="NO" contentMode="scaleToFill" distribution="fillEqually" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="dHL-ck-CQC">
-                                <rect key="frame" x="16" y="717" width="370" height="49"/>
+                                <rect key="frame" x="16" y="717" width="370" height="48"/>
                                 <subviews>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="8SQ-QY-s5I">
-                                        <rect key="frame" x="0.0" y="0.0" width="118" height="49"/>
+                                        <rect key="frame" x="0.0" y="0.0" width="118" height="48"/>
                                         <buttonConfiguration key="configuration" style="filled" title="Easy" cornerStyle="capsule"/>
                                         <connections>
                                             <action selector="easyButtonTapped:" destination="TZO-vY-iUG" eventType="touchUpInside" id="GXU-BR-0lC"/>
                                         </connections>
                                     </button>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ux0-Xz-2li">
-                                        <rect key="frame" x="126" y="0.0" width="118" height="49"/>
+                                        <rect key="frame" x="126" y="0.0" width="118" height="48"/>
                                         <buttonConfiguration key="configuration" style="filled" title="Perfect" cornerStyle="capsule"/>
                                         <connections>
                                             <action selector="perfectButtonTapped:" destination="TZO-vY-iUG" eventType="touchUpInside" id="mDh-9r-lO3"/>
                                         </connections>
                                     </button>
                                     <button opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="249" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="cA4-km-A1S">
-                                        <rect key="frame" x="252" y="0.0" width="118" height="49"/>
+                                        <rect key="frame" x="252" y="0.0" width="118" height="48"/>
                                         <buttonConfiguration key="configuration" style="filled" title="Hard" cornerStyle="capsule"/>
                                         <connections>
                                             <action selector="hardButtonTapped:" destination="TZO-vY-iUG" eventType="touchUpInside" id="7Py-mG-5fJ"/>
                                         </connections>
                                     </button>
                                 </subviews>
+                                <constraints>
+                                    <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="48" id="9F8-sP-wEA"/>
+                                </constraints>
                             </stackView>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" verticalHuggingPriority="251" text="Good Job, John!" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="4TP-2J-blD">
                                 <rect key="frame" x="16" y="83" width="370" height="31.333333333333329"/>
@@ -620,7 +623,6 @@
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                         <constraints>
                             <constraint firstItem="xVr-vc-wZ8" firstAttribute="trailing" secondItem="Ygh-Xc-pTY" secondAttribute="trailing" constant="16" id="3VN-if-igz"/>
-                            <constraint firstItem="xVr-vc-wZ8" firstAttribute="bottom" secondItem="dHL-ck-CQC" secondAttribute="bottom" constant="40" id="4UX-hY-uOe"/>
                             <constraint firstItem="4TP-2J-blD" firstAttribute="leading" secondItem="xVr-vc-wZ8" secondAttribute="leading" constant="16" id="4Um-r1-jpp"/>
                             <constraint firstItem="4TP-2J-blD" firstAttribute="top" secondItem="WXM-8e-z9q" secondAttribute="top" constant="83" id="8rF-W1-hsp"/>
                             <constraint firstItem="dHL-ck-CQC" firstAttribute="leading" secondItem="xVr-vc-wZ8" secondAttribute="leading" constant="16" id="Ayg-x2-gdo"/>
@@ -907,7 +909,7 @@
         <image name="image 85" width="206" height="140"/>
         <image name="info.circle" catalog="system" width="128" height="123"/>
         <systemColor name="separatorColor">
-            <color red="0.23529411764705882" green="0.23529411764705882" blue="0.2627450980392157" alpha="0.12" colorSpace="custom" customColorSpace="sRGB"/>
+            <color red="0.23529411759999999" green="0.23529411759999999" blue="0.26274509800000001" alpha="0.28999999999999998" colorSpace="custom" customColorSpace="sRGB"/>
         </systemColor>
         <systemColor name="systemBackgroundColor">
             <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
