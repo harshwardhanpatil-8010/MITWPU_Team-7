@@ -11,7 +11,7 @@ class SectionHeaderView: UICollectionReusableView {
         super.init(frame: frame)
         
         titleLabel.translatesAutoresizingMaskIntoConstraints = false
-        titleLabel.font = UIFont.systemFont(ofSize: 20, weight: .bold)
+        titleLabel.font = UIFont.systemFont(ofSize: 17, weight: .bold)
         titleLabel.textColor = .black
         addSubview(titleLabel)
 

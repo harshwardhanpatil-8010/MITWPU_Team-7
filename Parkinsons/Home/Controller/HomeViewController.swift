@@ -483,13 +483,12 @@ extension HomeViewController: UICollectionViewDataSource {
         if kind == UICollectionView.elementKindSectionFooter && sectionType == .medications {
             let footer = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: "EmptyMedicationFooter", for: indexPath)
             
-            // Clear previous labels
+            
             footer.subviews.forEach { $0.removeFromSuperview() }
             
-            // 1. Check if the master list is actually empty
             let noMedicationsCreated = MedicationDataStore.shared.medications.isEmpty
             
-            // 2. Check if there are no more doses left to take today
+            
             let allDosesProcessed = todayDoses.isEmpty
             
             if allDosesProcessed {
@@ -499,7 +498,7 @@ extension HomeViewController: UICollectionViewDataSource {
                 label.textAlignment = .center
                 label.translatesAutoresizingMaskIntoConstraints = false
                 
-                // Decide which text to show
+             
                 if noMedicationsCreated {
                     label.text = "No Medications Added Yet"
                 } else {
