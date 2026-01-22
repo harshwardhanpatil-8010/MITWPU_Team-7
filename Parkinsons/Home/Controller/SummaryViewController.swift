@@ -23,8 +23,8 @@ class SummaryViewController: UIViewController {
     private var primaryMedication: MedicationModel?
     private var medicationObserver: NSObjectProtocol?
     var exerciseData: [ExerciseModel] = [
-        ExerciseModel(title: "10-Min Workout", detail: "Completed", progressPercentage: 100, progressColorHex: "0088FF"),
-        ExerciseModel(title: "Rhythmic Walking", detail: "Missed", progressPercentage: 0, progressColorHex: "90AF81")
+        ExerciseModel(title: "10-Min Workout", detail: "Completed", progressColorHex: "0088FF"),
+        ExerciseModel(title: "Rhythmic Walking", detail: "Missed",  progressColorHex: "90AF81")
     ]
     
     override func viewDidLoad() {

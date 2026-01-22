@@ -19,8 +19,8 @@ class SetGoalViewController: UIViewController, UITableViewDataSource, UIPickerVi
     @IBOutlet weak var noSessionsOutlet: UIStackView!
     
     var startTapsCount: Int = 0
-    private let paces = ["Slow", "Moderate", "Fast"]
-    private var beats: [String] = []
+   
+   
     private var selectedBeat = "Clock"
     private var selectedPace: String = "Slow"
     let dataForColumn1 = Array(00...05)

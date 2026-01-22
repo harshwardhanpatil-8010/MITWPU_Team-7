@@ -44,8 +44,8 @@ class HomeViewController: UIViewController, UICollectionViewDelegate, SymptomLog
     ]
     
     var exerciseData: [ExerciseModel] = [
-        ExerciseModel(title: "10-Min Workout", detail: "Repeat everyday", progressPercentage: 67, progressColorHex: "0088FF"),
-        ExerciseModel(title: "Rhythmic Walking", detail: "2-3 times a week", progressPercentage: 25, progressColorHex: "90AF81")
+        ExerciseModel(title: "10-Min Workout", detail: "Repeat everyday",  progressColorHex: "0088FF"),
+        ExerciseModel(title: "Rhythmic Walking", detail: "2-3 times a week", progressColorHex: "90AF81")
     ]
     
     var therapeuticGamesData: [TherapeuticGameModel] = [
