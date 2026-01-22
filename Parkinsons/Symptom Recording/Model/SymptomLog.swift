@@ -24,6 +24,25 @@ enum SymptomSeverity: String, Codable, CaseIterable {
     case notPresent = "Not Present"
 }
 
+struct SymptomRating: Codable {
+    let name: String
+    let iconName: String?
+   
+    var selectedIntensity: Intensity? = nil
+    
+    enum Intensity: Int, Codable, CaseIterable {
+        case mild = 0
+        case moderate = 1
+        case severe = 2
+        case notPresent = 3
+    }
+}
+
+struct SymptomLogEntry: Codable {
+    let date: Date
+    let ratings: [SymptomRating]
+}
+
 struct SymptomLog: Codable, Identifiable {
     let id: UUID
     let date: Date
