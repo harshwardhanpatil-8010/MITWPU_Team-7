@@ -85,38 +85,21 @@ class WorkoutManager {
     }
 
     private func getFullLibrary() -> [WorkoutExercise] {
-        return [
-            // --- WARM UP (2 Seated, 2 Standing) ---
-            WorkoutExercise(name: "Seated Trunk Rotations", reps: 12, videoID: "uOljoOvycuo", description: "Deliberate torso rotations.", category: .warmup, position: .seated, targetJoints: ["Spine"], benefits: "Reduces rigidity.", stepsToPerform: "Rotate torso slowly left to right."),
-            WorkoutExercise(name: "Seated Neck Tilts", reps: 12, videoID: "jyOk-2DmVnU", description: "Gentle neck stretching.", category: .warmup, position: .seated, targetJoints: ["Neck"], benefits: "Relieves neck tension.", stepsToPerform: "Tilt head side to side slowly."),
-            WorkoutExercise(name: "Standing Big Reach", reps: 12, videoID: "uOljoOvycuo", description: "Full body reach.", category: .warmup, position: .standing, targetJoints: ["Shoulder"], benefits: "Improves posture.", stepsToPerform: "Reach for the floor then the sky."),
-            WorkoutExercise(name: "Standing Side Stretch", reps: 12, videoID: "uOljoOvycuo", description: "Lateral rib stretch.", category: .warmup, position: .standing, targetJoints: ["Spine"], benefits: "Increases breathing capacity.", stepsToPerform: "Reach one arm over your head to the side."),
+        guard let url = Bundle.main.url(forResource: "workout_exercises", withExtension: "json") else {
+          
+            return []
+        }
 
-            // --- BALANCE (2 Seated, 2 Standing) ---
-            WorkoutExercise(name: "Seated Side Reach", reps: 12, videoID: "Wz5IXboB7zM", description: "Off-center reaching.", category: .balance, position: .seated, targetJoints: ["Trunk"], benefits: "Improves seated stability.", stepsToPerform: "Reach out to the side as far as safe."),
-            WorkoutExercise(name: "Seated Leg Hover", reps: 12, videoID: "Wz5IXboB7zM", description: "Core-based leg lifting.", category: .balance, position: .seated, targetJoints: ["Hip"], benefits: "Strengthens core balance.", stepsToPerform: "Lift one foot and hold without leaning back."),
-            WorkoutExercise(name: "Weight Shifts", reps: 12, videoID: "Wz5IXboB7zM", description: "Shifting center of gravity.", category: .balance, position: .standing, targetJoints: ["Ankle"], benefits: "Reduces fall risk.", stepsToPerform: "Slowly move weight from left foot to right."),
-            WorkoutExercise(name: "Tandem Stance", reps: 12, videoID: "Wz5IXboB7zM", description: "Heel-to-toe balance.", category: .balance, position: .standing, targetJoints: ["Ankle"], benefits: "Enhances gait stability.", stepsToPerform: "Place one foot directly in front of the other."),
-
-            // --- AEROBIC (2 Seated, 2 Standing) ---
-            WorkoutExercise(name: "Seated Marching", reps: 12, videoID: "March_ID", description: "Fast seated marching.", category: .aerobic, position: .seated, targetJoints: ["Hip"], benefits: "Boosts heart rate.", stepsToPerform: "Lift knees high and fast while seated."),
-            WorkoutExercise(name: "Seated Boxing", reps: 12, videoID: "March_ID", description: "Air punches with intent.", category: .aerobic, position: .seated, targetJoints: ["Shoulder"], benefits: "Improves coordination.", stepsToPerform: "Punch forward with large 'BIG' movements."),
-            WorkoutExercise(name: "High Knee March", reps: 12, videoID: "March_ID", description: "Vigorous standing march.", category: .aerobic, position: .standing, targetJoints: ["Knee"], benefits: "Triggers neuroplasticity (BDNF).", stepsToPerform: "March in place with high knees and arm swings."),
-            WorkoutExercise(name: "Standing Jumping Jacks", reps: 12, videoID: "March_ID", description: "Modified arm/leg jacks.", category: .aerobic, position: .standing, targetJoints: ["Shoulder", "Ankle"], benefits: "Whole body aerobic blast.", stepsToPerform: "Step side to side while swinging arms high."),
-
-            // --- STRENGTH (2 Seated, 2 Standing) ---
-            WorkoutExercise(name: "Seated Leg Extension", reps: 12, videoID: "zIFtb-R24Ec", description: "Knee straightening.", category: .strength, position: .seated, targetJoints: ["Knee"], benefits: "Strengthens quads.", stepsToPerform: "Straighten leg fully and squeeze thigh."),
-            WorkoutExercise(name: "Seated Bicep Curls", reps: 12, videoID: "zIFtb-R24Ec", description: "Arm strengthening.", category: .strength, position: .seated, targetJoints: ["Elbow"], benefits: "Improves arm function.", stepsToPerform: "Curl hands to shoulders with tension."),
-            WorkoutExercise(name: "Sit-to-Stand", reps: 12, videoID: "zIFtb-R24Ec", description: "Chair squats.", category: .strength, position: .standing, targetJoints: ["Knee", "Hip"], benefits: "Functional independence.", stepsToPerform: "Stand up from chair using legs only."),
-            WorkoutExercise(name: "Wall Push-ups", reps: 12, videoID: "zIFtb-R24Ec", description: "Vertical push-ups.", category: .strength, position: .standing, targetJoints: ["Shoulder", "Elbow"], benefits: "Upper body power.", stepsToPerform: "Push against a wall with controlled motion."),
-
-            // --- COOL DOWN (2 Seated, 2 Standing) ---
-            WorkoutExercise(name: "Box Breathing", reps: 12, videoID: "WRyPQO_u_qE", description: "Rhythmic breathing.", category: .cooldown, position: .seated, targetJoints: ["Lungs"], benefits: "Resets nervous system.", stepsToPerform: "Inhale 4s, Hold 4s, Exhale 4s, Hold 4s."),
-            WorkoutExercise(name: "Seated Wrist Stretch", reps: 12, videoID: "WRyPQO_u_qE", description: "Forearm release.", category: .cooldown, position: .seated, targetJoints: ["Wrist"], benefits: "Reduces hand tremors/rigidity.", stepsToPerform: "Gently pull fingers back toward forearm."),
-            WorkoutExercise(name: "Standing Calf Stretch", reps: 12, videoID: "WRyPQO_u_qE", description: "Wall-assisted stretch.", category: .cooldown, position: .standing, targetJoints: ["Ankle"], benefits: "Improves stride length.", stepsToPerform: "Lean against wall with one heel back."),
-            WorkoutExercise(name: "Standing Chest Opener", reps: 12, videoID: "WRyPQO_u_qE", description: "Heart opening stretch.", category: .cooldown, position: .standing, targetJoints: ["Shoulder"], benefits: "Corrects forward-leaning posture.", stepsToPerform: "Clasp hands behind back and look up.")
-        ]
+        do {
+            let data = try Data(contentsOf: url)
+            let exercises = try JSONDecoder().decode([WorkoutExercise].self, from: data)
+            return exercises
+        } catch {
+        
+            return []
+        }
     }
+
 }
 
 

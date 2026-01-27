@@ -9,8 +9,8 @@ import Foundation
 
 struct DoseLog: Codable, Identifiable {
     let id: UUID 
-    let medicationID: UUID //foreign key
-    let doseID: UUID //foreign key
+    let medicationID: UUID
+    let doseID: UUID 
     let scheduledTime: Date
     let loggedAt: Date
     var status: DoseStatus
