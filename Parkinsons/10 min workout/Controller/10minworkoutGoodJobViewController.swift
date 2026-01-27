@@ -45,6 +45,7 @@ class _0minworkoutGoodJobViewController: UIViewController {
     
     func saveFeedbackAndExit(feedback: String) {
         WorkoutManager.shared.lastFeedback = feedback
+        WorkoutManager.shared.updateStreak()
 
         let alert = UIAlertController(
             title: "Workout Complete!",
