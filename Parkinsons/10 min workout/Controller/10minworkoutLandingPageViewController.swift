@@ -152,8 +152,7 @@ class _0minworkoutLandingPageViewController: UIViewController, UICollectionViewD
         let sb = UIStoryboard(name: "10 minworkout", bundle: nil)
         if let vc = sb.instantiateViewController(withIdentifier: "10minworkoutCountdownViewController") as? _0minworkoutCountdownViewController {
             
-            // Find the first exercise that hasn't been COMPLETED
-            // (This includes those that were skipped)
+            
             let firstIncompleteIndex = exercises.firstIndex { exercise in
                 !WorkoutManager.shared.completedToday.contains(exercise.id)
             } ?? 0
