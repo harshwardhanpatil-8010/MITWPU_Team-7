@@ -183,7 +183,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="RFy-Lo-jl5" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="5540.2985074626858" y="-454.46224256292902"/>
+            <point key="canvasLocation" x="5482" y="-454"/>
         </scene>
         <!--Rhythmic Walking-->
         <scene sceneID="11U-OP-gRK">
@@ -414,7 +414,7 @@
                 <tapGestureRecognizer id="9eA-K0-rgw" userLabel="select beat"/>
                 <tapGestureRecognizer id="4y7-DN-1Jf"/>
             </objects>
-            <point key="canvasLocation" x="4682.0895522388055" y="-454.46224256292902"/>
+            <point key="canvasLocation" x="4621" y="-454"/>
         </scene>
         <!--Info View Controller-->
         <scene sceneID="R5Y-uo-jV3">
@@ -791,7 +791,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="XwU-fe-0Bp" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="6337.3134328358201" y="-454.46224256292902"/>
+            <point key="canvasLocation" x="6330" y="-454"/>
         </scene>
         <!--Gait Summary Info View Controller-->
         <scene sceneID="myx-yR-NaW">
@@ -939,7 +939,7 @@ Longer step length usually means better leg strength and flexibility.</string>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="JkZ-9d-xYG" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="7074.6268656716411" y="-454.46224256292902"/>
+            <point key="canvasLocation" x="7154" y="-454"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="MzC-kA-sqP">
@@ -963,16 +963,16 @@ Longer step length usually means better leg strength and flexibility.</string>
     <resources>
         <image name="info.circle" catalog="system" width="128" height="123"/>
         <systemColor name="separatorColor">
-            <color red="0.23529411764705882" green="0.23529411764705882" blue="0.2627450980392157" alpha="0.12" colorSpace="custom" customColorSpace="sRGB"/>
+            <color red="0.23529411759999999" green="0.23529411759999999" blue="0.26274509800000001" alpha="0.28999999999999998" colorSpace="custom" customColorSpace="sRGB"/>
         </systemColor>
         <systemColor name="systemBackgroundColor">
             <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
         </systemColor>
         <systemColor name="systemGreenColor">
-            <color red="0.20392156862745098" green="0.7803921568627451" blue="0.34901960784313724" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <color red="0.20392156859999999" green="0.78039215689999997" blue="0.34901960780000002" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </systemColor>
         <systemColor name="systemRedColor">
-            <color red="1" green="0.2196078431372549" blue="0.23529411764705882" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <color red="1" green="0.23137254900000001" blue="0.18823529410000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </systemColor>
     </resources>
 </document>

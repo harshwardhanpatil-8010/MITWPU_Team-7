@@ -53,14 +53,16 @@ class ExerciseCardCell: UICollectionViewCell {
         progressLabel.text = "\(completed)/\(total)"
         let progress = total == 0 ? 0 : CGFloat(completed) / CGFloat(total)
         progressView.setProgress(progress)
-
-        if completed == total && total > 0 {
-            progressView.progressColor = .systemGreen
-            progressView.trackColor = UIColor.systemGreen.withAlphaComponent(0.2)
-        } else {
-            progressView.progressColor = themeColor
-            progressView.trackColor = themeColor.withAlphaComponent(0.2)
-        }
+//
+//        if completed == total && total > 0 {
+//            progressView.progressColor = .systemGreen
+//            progressView.trackColor = UIColor.systemGreen.withAlphaComponent(0.2)
+//        } else {
+//            progressView.progressColor = themeColor
+//            progressView.trackColor = themeColor.withAlphaComponent(0.2)
+//        }
+        progressView.progressColor = themeColor
+        progressView.trackColor = themeColor.withAlphaComponent(0.2)
     }
         
     func setupCardStyle() {

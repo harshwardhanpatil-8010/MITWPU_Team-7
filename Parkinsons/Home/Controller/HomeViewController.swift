@@ -45,7 +45,7 @@ class HomeViewController: UIViewController, UICollectionViewDelegate, SymptomLog
     
     var exerciseData: [ExerciseModel] = [
         ExerciseModel(title: "10-Min Workout", detail: "Repeat everyday",  progressColorHex: "0088FF"),
-        ExerciseModel(title: "Rhythmic Walking", detail: "2-3 times a week", progressColorHex: "90AF81")
+        ExerciseModel(title: "Rhythmic Walking", detail: "Repeat everyday", progressColorHex: "90AF81")
     ]
     
     var therapeuticGamesData: [TherapeuticGameModel] = [
@@ -408,33 +408,68 @@ extension HomeViewController: UICollectionViewDataSource {
             cell.delegate = self
             return cell
             
+//        case .exercises:
+//            let cell = mainCollectionView.dequeueReusableCell(
+//                    withReuseIdentifier: "exercise_card_cell",
+//                    for: indexPath
+//                ) as! ExerciseCardCell
+//
+//                let model = exerciseData[indexPath.row]
+//                cell.configure(with: model)
+//
+//                if indexPath.row == 0 {
+//                    let completed = WorkoutManager.shared.completedToday.count
+//                    let total = max(WorkoutManager.shared.exercises.count, 1)
+//                    cell.setProgress(completed: completed, total: total)
+//
+//                } else if indexPath.row == 1 {
+//                    if let lastSession = DataStore.shared.sessions.first {
+//                        let done = Double(lastSession.elapsedSeconds)
+//                        let goal = Double(lastSession.requestedDurationSeconds)
+//                        let percentage = Int((done / max(goal, 1)) * 100)
+//
+//                        cell.setProgress(completed: Int(done), total: Int(goal))
+//                        cell.progressLabel.text = "\(percentage)%"
+//                    } else {
+//                        cell.setProgress(completed: 0, total: 1)
+//                        cell.progressLabel.text = "0%"
+//                    }
+//                }
+//            return cell
         case .exercises:
-            let cell = mainCollectionView.dequeueReusableCell(
-                    withReuseIdentifier: "exercise_card_cell",
-                    for: indexPath
-                ) as! ExerciseCardCell
+            let cell = mainCollectionView.dequeueReusableCell(withReuseIdentifier: "exercise_card_cell", for: indexPath) as! ExerciseCardCell
+            let model = exerciseData[indexPath.row]
+            cell.configure(with: model)
 
-                let model = exerciseData[indexPath.row]
-                cell.configure(with: model)
+            if indexPath.row == 0 {
+                let completed = WorkoutManager.shared.completedToday.count
+                let total = max(WorkoutManager.shared.exercises.count, 1)
+                cell.setProgress(completed: completed, total: total)
 
-                if indexPath.row == 0 {
-                    let completed = WorkoutManager.shared.completedToday.count
-                    let total = max(WorkoutManager.shared.exercises.count, 1)
-                    cell.setProgress(completed: completed, total: total)
+            } else if indexPath.row == 1 {
+                if let dailyGoal = DataStore.shared.dailyGoalSession,
+                   dailyGoal.requestedDurationSeconds >= 600 {
+                    
+                    let done = Double(dailyGoal.elapsedSeconds)
+                    let goal = Double(dailyGoal.requestedDurationSeconds)
+                    let percentage = Int((done / max(goal, 1)) * 100)
 
-                } else if indexPath.row == 1 {
-                    if let lastSession = DataStore.shared.sessions.first {
-                        let done = Double(lastSession.elapsedSeconds)
-                        let goal = Double(lastSession.requestedDurationSeconds)
-                        let percentage = Int((done / max(goal, 1)) * 100)
+                    cell.setProgress(completed: Int(done), total: Int(goal))
+                    cell.progressLabel.text = "\(percentage)%"
+                    
+                } else if let lastSession = DataStore.shared.sessions.first {
+                    let done = Double(lastSession.elapsedSeconds)
+                    let goal = Double(lastSession.requestedDurationSeconds)
+                    let percentage = Int((done / max(goal, 1)) * 100)
 
-                        cell.setProgress(completed: Int(done), total: Int(goal))
-                        cell.progressLabel.text = "\(percentage)%"
-                    } else {
-                        cell.setProgress(completed: 0, total: 1)
-                        cell.progressLabel.text = "0%"
-                    }
+                    cell.setProgress(completed: Int(done), total: Int(goal))
+                    cell.progressLabel.text = "\(percentage)%"
+                    
+                } else {
+                    cell.setProgress(completed: 0, total: 100)
+                    cell.progressLabel.text = "0%"
                 }
+            }
             return cell
             
         case .symptoms:

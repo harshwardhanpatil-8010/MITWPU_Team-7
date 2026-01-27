@@ -32,6 +32,7 @@ class SetGoalViewController: UIViewController, UITableViewDataSource, UIPickerVi
     }
     
     
+    
     func numberOfComponents(in pickerView: UIPickerView) -> Int {
         return 2
     }
@@ -74,7 +75,7 @@ class SetGoalViewController: UIViewController, UITableViewDataSource, UIPickerVi
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "sessionCell", for: indexPath)
         let session = DataStore.shared.sessions[indexPath.row]
-        let sessionNumber = DataStore.shared.sessions.count - indexPath.row
+        _ = DataStore.shared.sessions.count - indexPath.row
         let walked = session.elapsedSeconds
         let hrs = walked / 3600
         let mins = walked % 3600 / 60
@@ -119,6 +120,27 @@ class SetGoalViewController: UIViewController, UITableViewDataSource, UIPickerVi
             return 100
         }
     }
+    private func checkGoalStatus() {
+        if let goal = DataStore.shared.dailyGoalSession {
+            let isTenMinPlus = goal.requestedDurationSeconds >= 600 // 10 mins
+            let isIncomplete = goal.elapsedSeconds < goal.requestedDurationSeconds
+            
+            if isTenMinPlus && isIncomplete {
+                DurationPicker.isUserInteractionEnabled = false
+                DurationPicker.alpha = 0.3
+                startButton.setTitle("Resume", for: .normal)
+                
+                let h = goal.requestedDurationSeconds / 3600
+                let m = (goal.requestedDurationSeconds % 3600) / 60
+                DurationPicker.selectRow(h, inComponent: 0, animated: false)
+                DurationPicker.selectRow(m, inComponent: 1, animated: false)
+            } else {
+                DurationPicker.isUserInteractionEnabled = true
+                DurationPicker.alpha = 1.0
+                startButton.setTitle("Start", for: .normal)
+            }
+        }
+    }
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -141,6 +163,7 @@ class SetGoalViewController: UIViewController, UITableViewDataSource, UIPickerVi
         super.viewWillAppear(animated)
         DataStore.shared.cleanupOldSessions()
         sessionTableView.reloadData()
+        checkGoalStatus()
     
         if DataStore.shared.sessions.isEmpty {
             noSessionsOutlet.isHidden = false
@@ -177,48 +200,98 @@ class SetGoalViewController: UIViewController, UITableViewDataSource, UIPickerVi
         self.present(infoVC, animated: true, completion: nil)
     }
     
+//    @IBAction func startButtonTapped(_ sender: Any) {
+//        let h = dataForColumn1[DurationPicker.selectedRow(inComponent: 0)]
+//        let m = dataForColumn2[DurationPicker.selectedRow(inComponent: 1)]
+//        let total = (h * 3600) + (m * 60)
+//        
+//        guard total > 0 else { return }
+//        let nextSessionNumber = DataStore.shared.sessions.count + 1
+//        let newSession = RhythmicSession(
+//            id: UUID(),
+//            sessionNumber: nextSessionNumber,
+//            startDate: Date(),
+//            endDate: nil,
+//            requestedDurationSeconds: total,
+//            elapsedSeconds: 0,
+//            beat: selectedBeat,
+//            pace: selectedPace,
+//            steps: 0,
+//            distanceKMeters: 0
+//        )
+//        
+//        DataStore.shared.add(newSession)
+//        
+//        sessionTableView.reloadData()
+//        
+//        noSessionsOutlet.isHidden = true
+//        sessionTableView.isHidden = false
+//        
+//        let storyboard = UIStoryboard(name: "Rhythmic Walking", bundle: nil)
+//        guard let destVC = storyboard.instantiateViewController(withIdentifier: "SessionRunningVC") as? SessionRunningViewController else { return }
+//        
+//        let bpm = bpmForPace(selectedPace)
+//        destVC.totalSessionDuration = total
+//        destVC.hrs = h
+//        destVC.minn = m
+//        destVC.selectedBeat = selectedBeat
+//        destVC.selectedPace = selectedPace
+//        destVC.selectedBPM = bpm
+//        
+//        let nav = UINavigationController(rootViewController: destVC)
+//        nav.modalPresentationStyle = .formSheet
+//        present(nav, animated: true)
+//    }
+    
     @IBAction func startButtonTapped(_ sender: Any) {
-        let h = dataForColumn1[DurationPicker.selectedRow(inComponent: 0)]
-        let m = dataForColumn2[DurationPicker.selectedRow(inComponent: 1)]
-        let total = (h * 3600) + (m * 60)
-        
-        guard total > 0 else { return }
-        let nextSessionNumber = DataStore.shared.sessions.count + 1
-        let newSession = RhythmicSession(
-            id: UUID(),
-            sessionNumber: nextSessionNumber,
-            startDate: Date(),
-            endDate: nil,
-            requestedDurationSeconds: total,
-            elapsedSeconds: 0,
-            beat: selectedBeat,
-            pace: selectedPace,
-            steps: 0,
-            distanceKMeters: 0
-        )
-        
-        DataStore.shared.add(newSession)
-        
-        sessionTableView.reloadData()
-        
-        noSessionsOutlet.isHidden = true
-        sessionTableView.isHidden = false
-        
-        let storyboard = UIStoryboard(name: "Rhythmic Walking", bundle: nil)
-        guard let destVC = storyboard.instantiateViewController(withIdentifier: "SessionRunningVC") as? SessionRunningViewController else { return }
-        
-        let bpm = bpmForPace(selectedPace)
-        destVC.totalSessionDuration = total
-        destVC.hrs = h
-        destVC.minn = m
-        destVC.selectedBeat = selectedBeat
-        destVC.selectedPace = selectedPace
-        destVC.selectedBPM = bpm
-        
-        let nav = UINavigationController(rootViewController: destVC)
-        nav.modalPresentationStyle = .formSheet
-        present(nav, animated: true)
-    }
+            let h = dataForColumn1[DurationPicker.selectedRow(inComponent: 0)]
+            let m = dataForColumn2[DurationPicker.selectedRow(inComponent: 1)]
+            let total = (h * 3600) + (m * 60)
+            guard total > 0 else { return }
+
+            let sessionToRun: RhythmicSession
+
+            if let existingGoal = DataStore.shared.dailyGoalSession,
+               existingGoal.requestedDurationSeconds >= 600,
+               existingGoal.elapsedSeconds < existingGoal.requestedDurationSeconds {
+                sessionToRun = existingGoal
+            } else {
+                let nextNum = DataStore.shared.sessions.count + 1
+                let newSession = RhythmicSession(
+                    id: UUID(),
+                    sessionNumber: nextNum,
+                    startDate: Date(),
+                    endDate: nil,
+                    requestedDurationSeconds: total,
+                    elapsedSeconds: 0,
+                    beat: selectedBeat,
+                    pace: selectedPace,
+                    steps: 0,
+                    distanceKMeters: 0
+                )
+                DataStore.shared.add(newSession)
+                
+                if total >= 600 && DataStore.shared.dailyGoalSession == nil {
+                    DataStore.shared.setAsDailyGoal(newSession)
+                }
+                sessionToRun = newSession
+            }
+            let storyboard = UIStoryboard(name: "Rhythmic Walking", bundle: nil)
+            guard let destVC = storyboard.instantiateViewController(withIdentifier: "SessionRunningVC") as? SessionRunningViewController else { return }
+            
+            let remainingSeconds = sessionToRun.requestedDurationSeconds - sessionToRun.elapsedSeconds
+            destVC.totalSessionDuration = remainingSeconds // Start from where we left off
+            destVC.hrs = remainingSeconds / 3600
+            destVC.minn = (remainingSeconds % 3600) / 60
+            destVC.selectedBeat = sessionToRun.beat
+            destVC.selectedPace = sessionToRun.pace
+            destVC.selectedBPM = bpmForPace(sessionToRun.pace)
+            destVC.session = sessionToRun // Pass the session reference
+            
+            let nav = UINavigationController(rootViewController: destVC)
+            nav.modalPresentationStyle = .formSheet
+            present(nav, animated: true)
+        }
 
     func updateStartButtonState() {
         let h = dataForColumn1[DurationPicker.selectedRow(inComponent: 0)]

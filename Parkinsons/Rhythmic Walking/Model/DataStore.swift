@@ -10,6 +10,7 @@ import Foundation
 class DataStore {
     static let shared = DataStore()
     private let sessionsKey = "rhythmic_sessions_v1"
+    private let dailyGoalKey = "rhythmic_daily_goal_id"
     private let lastCleanupKey = "rhythmic_sessions_last_cleanup"
     
     private init() {
@@ -51,6 +52,14 @@ class DataStore {
         } catch {
             print("Failed to load sessions: \(error)")
         }
+    }
+    var dailyGoalSession: RhythmicSession? {
+        let goalIDString = UserDefaults.standard.string(forKey: dailyGoalKey)
+        return sessions.first(where: { $0.id.uuidString == goalIDString })
+    }
+
+    func setAsDailyGoal(_ session: RhythmicSession) {
+        UserDefaults.standard.set(session.id.uuidString, forKey: dailyGoalKey)
     }
 
     func cleanupOldSessions() {
