@@ -18,7 +18,9 @@ class EmojiGameViewController: UIViewController {
     
     var score = 0
     var timer: Timer?
-    var remainingTime = 30
+    
+   
+    var timeElapsed = 0
     var skippedCount = 0
 
     override func viewDidLoad() {
@@ -37,6 +39,7 @@ class EmojiGameViewController: UIViewController {
         score = 0
         skippedCount = 0
         currentLevel = 0
+        timeElapsed = 0
         
         shuffledChallenges = EmojiData.challenges.shuffled()
         
@@ -47,7 +50,6 @@ class EmojiGameViewController: UIViewController {
 
     func startTimer() {
         timer?.invalidate()
-        remainingTime = 30
         updateTimerLabel()
         
         timer = Timer.scheduledTimer(withTimeInterval: 1.0, repeats: true) { [weak self] _ in
@@ -56,27 +58,24 @@ class EmojiGameViewController: UIViewController {
     }
 
     func tick() {
-        if remainingTime > 0 {
-            remainingTime -= 1
-            updateTimerLabel()
-        } else {
-            timer?.invalidate()
-            goToResults()
-        }
+        timeElapsed += 1
+        updateTimerLabel()
     }
     
     func goToResults() {
         if let resultVC = storyboard?.instantiateViewController(withIdentifier: "resultMimicTheEmoji") as? resultMimicTheEmoji {
             resultVC.completedCount = self.score
             resultVC.skippedCount = self.skippedCount
-            resultVC.timeTaken = 30
+            
+            resultVC.timeTaken = self.timeElapsed
+            
             resultVC.modalPresentationStyle = .fullScreen
             self.present(resultVC, animated: true, completion: nil)
         }
     }
 
     func updateTimerLabel() {
-        timeLeftLabel.text = "Time Left: \(remainingTime)"
+        timeLeftLabel.text = "Time: \(timeElapsed)s"
     }
 
     func updateScoreLabel() {
@@ -84,16 +83,20 @@ class EmojiGameViewController: UIViewController {
     }
 
     func nextChallenge() {
+        let totalPlayed = score + skippedCount
         
-        if currentLevel >= shuffledChallenges.count {
-            shuffledChallenges = EmojiData.challenges.shuffled()
-            currentLevel = 0
+        if totalPlayed >= 10 {
+            timer?.invalidate()
+            goToResults()
+            return
         }
         
-        let challenge = shuffledChallenges[currentLevel]
-        arModel.currentChallenge = challenge
-        emojiLabel.text = challenge.emoji
-        emojiNameLabel.text = challenge.name
+        if currentLevel < shuffledChallenges.count {
+            let challenge = shuffledChallenges[currentLevel]
+            arModel.currentChallenge = challenge
+            emojiLabel.text = challenge.emoji
+            emojiNameLabel.text = challenge.name
+        }
     }
 
     @IBAction func skipButtonTapped(_ sender: UIButton) {
@@ -111,7 +114,7 @@ class EmojiGameViewController: UIViewController {
         }
         
         currentLevel += 1
-        DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.8) {
             self.nextChallenge()
         }
     }

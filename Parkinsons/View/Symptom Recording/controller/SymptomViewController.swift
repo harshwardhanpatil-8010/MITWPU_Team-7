@@ -21,8 +21,8 @@ class SymptomViewController: UIViewController {
     }
     
     enum ViewMode {
-        case history // Viewing existing logs (SymptomDetailCell)
-        case entry   // Adding/Editing logs (SymptomRatingCell)
+        case history
+        case entry  
     }
 
     var currentMode: ViewMode = .history
