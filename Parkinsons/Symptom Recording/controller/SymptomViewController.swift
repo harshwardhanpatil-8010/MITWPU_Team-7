@@ -11,7 +11,8 @@ class SymptomViewController: UIViewController {
     var dates: [DateModel] = []
     var selectedDate: Date = Date()
     var currentDayLogs: [SymptomRating] = []
-    
+    private var gaitRangeText: String?
+
     enum Section: Int, CaseIterable {
         case calendar = 0
         case tremor = 1
@@ -46,6 +47,63 @@ class SymptomViewController: UIViewController {
         updateDataForSelectedDate()
         setupSymptomBackgroundUI()
     }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+
+        requestHealthKitIfNeeded()
+    }
+
+    private func requestHealthKitIfNeeded() {
+        HealthKitManager.shared.requestAuthorization { granted in
+            DispatchQueue.main.async {
+                if granted {
+                    self.fetchGaitDataForSelectedDate()
+                } else {
+                    print("HealthKit permission denied")
+                }
+            }
+        }
+    }
+    private func fetchGaitDataForSelectedDate() {
+        let start = Calendar.current.startOfDay(for: selectedDate)
+        let end = Calendar.current.date(byAdding: .day, value: 1, to: start)!
+
+        HealthKitManager.shared.fetchWalkingSteadiness(from: start, to: end) { [weak self] steadiness in
+            DispatchQueue.main.async {
+                guard let self = self else { return }
+
+                if let value = steadiness {
+                    // Show as 0–100
+                    self.gaitRangeText = String(format: "%.0f / 100", value)
+                } else {
+                    self.gaitRangeText = "No data"
+                }
+
+                self.reloadGaitSection()
+            }
+        }
+    }
+
+    private func reloadGaitSection() {
+        collectionView.reloadSections(IndexSet(integer: Section.gait.rawValue))
+    }
+
+    private func updateGaitCard(rangeText: String) {
+
+        let gaitSectionIndex = Section.gait.rawValue
+        let indexPath = IndexPath(item: 0, section: gaitSectionIndex)
+
+        guard
+            let cell = collectionView.cellForItem(at: indexPath) as? gaitCard
+        else {
+            collectionView.reloadSections(IndexSet(integer: gaitSectionIndex))
+            return
+        }
+
+        cell.configure(range: rangeText)
+    }
+
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
@@ -236,8 +294,10 @@ extension SymptomViewController: UICollectionViewDataSource, UICollectionViewDel
             
         case .gait:
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "gait_cell", for: indexPath) as! gaitCard
-            cell.configure(range: "45 - 77")
+            // display steadiness
+            cell.configure(range: gaitRangeText ?? "Loading…")
             return cell
+
         }
     }
     
