@@ -226,6 +226,7 @@ class _0minworkoutViewController: UIViewController {
         if let vc = sb.instantiateViewController(withIdentifier: "RestScreenViewController") as? RestScreenViewController {
             vc.currentIndex = currentIndex
             vc.totalExercises = exercises.count
+            vc.totalTime = WorkoutManager.shared.restDuration
             vc.delegate = self
             navigationController?.pushViewController(vc, animated: true)
         }

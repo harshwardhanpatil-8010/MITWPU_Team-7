@@ -91,34 +91,41 @@ class WorkoutManager {
         var dailySet: [WorkoutExercise] = []
         let library = getFullLibrary()
         
-        // 1. Warmups (2)
-        let warmups = library.filter { $0.category == .warmup && $0.position == preferredPosition }
-        dailySet.append(contentsOf: (warmups.isEmpty ? library.filter { $0.category == .warmup } : warmups).shuffled().prefix(2).map { applyAlgorithm(to: $0) })
-        
-        // 2. Balance (1)
-        if let balance = library.filter({ $0.category == .balance && $0.position == preferredPosition }).randomElement() {
-            dailySet.append(applyAlgorithm(to: balance))
-        } else if let altBalance = library.filter({ $0.category == .balance }).randomElement() {
-            dailySet.append(applyAlgorithm(to: altBalance))
+        // Strictly follow the order: Warmups -> Balance -> Aerobic -> Strength -> Cooldowns
+        for category in ExerciseCategory.allCases {
+            let filteredLibrary = library.filter { $0.category == category }
+            
+            switch category {
+            case .warmup:
+                let warmups = filteredLibrary.filter { $0.position == preferredPosition }
+                dailySet.append(contentsOf: (warmups.isEmpty ? filteredLibrary : warmups).shuffled().prefix(2).map { applyAlgorithm(to: $0) })
+                
+            case .balance:
+                if let balance = filteredLibrary.filter({ $0.position == preferredPosition }).randomElement() {
+                    dailySet.append(applyAlgorithm(to: balance))
+                } else if let altBalance = filteredLibrary.randomElement() {
+                    dailySet.append(applyAlgorithm(to: altBalance))
+                }
+                
+            case .aerobic:
+                if let aerobic = filteredLibrary.filter({ $0.position == preferredPosition }).randomElement() {
+                    dailySet.append(applyAlgorithm(to: aerobic) )
+                } else if let altAerobic = filteredLibrary.randomElement() {
+                    dailySet.append(applyAlgorithm(to: altAerobic))
+                }
+                
+            case .strength:
+                if let strength = filteredLibrary.filter({ $0.position == preferredPosition }).randomElement() {
+                    dailySet.append(applyAlgorithm(to: strength))
+                } else if let altStrength = filteredLibrary.randomElement() {
+                    dailySet.append(applyAlgorithm(to: altStrength))
+                }
+                
+            case .cooldown:
+                let cooldowns = filteredLibrary.filter { $0.position == preferredPosition }
+                dailySet.append(contentsOf: (cooldowns.isEmpty ? filteredLibrary : cooldowns).shuffled().prefix(2).map { applyAlgorithm(to: $0) })
+            }
         }
-        
-        // 3. Aerobic (1)
-        if let aerobic = library.filter({ $0.category == .aerobic && $0.position == preferredPosition }).randomElement() {
-            dailySet.append(applyAlgorithm(to: aerobic) )
-        } else if let altAerobic = library.filter({ $0.category == .aerobic }).randomElement() {
-            dailySet.append(applyAlgorithm(to: altAerobic))
-        }
-        
-        // 4. Strength (1)
-        if let strength = library.filter({ $0.category == .strength && $0.position == preferredPosition }).randomElement() {
-            dailySet.append(applyAlgorithm(to: strength))
-        } else if let altStrength = library.filter({ $0.category == .strength }).randomElement() {
-            dailySet.append(applyAlgorithm(to: altStrength))
-        }
-        
-        // 5. Cooldowns (2)
-        let cooldowns = library.filter { $0.category == .cooldown && $0.position == preferredPosition }
-        dailySet.append(contentsOf: (cooldowns.isEmpty ? library.filter { $0.category == .cooldown } : cooldowns).shuffled().prefix(2).map { applyAlgorithm(to: $0) })
         
         self.exercises = dailySet
     }
@@ -193,21 +200,21 @@ class WorkoutManager {
         let adherenceMultiplier = getAdherenceMultiplier()
         let streakMultiplier = getStreakMultiplier()
         
-        // Base Reps Factor
+        // Base Multiplier
         var multiplier: Double = 1.0 * adherenceMultiplier * streakMultiplier
         
         // Feedback adjustment
         switch lastFeedback {
-        case "Easy":     multiplier += 0.2
-        case "Hard":     multiplier -= 0.2
+        case "Easy":     multiplier += 0.1
+        case "Hard":     multiplier -= 0.1
         default:         break
         }
         
         // Medication effect adjustment
         switch effect {
         case .optimal:    multiplier += 0.1
-        case .wearingOff: multiplier -= 0.1
-        case .offPeriod:  multiplier -= 0.3
+        case .wearingOff: multiplier -= 0.05
+        case .offPeriod:  multiplier -= 0.2
         }
         
         // Ensure multiplier doesn't go too low or too high for safety
@@ -216,12 +223,11 @@ class WorkoutManager {
         let baseReps = Double(exercise.reps)
         let adjustedReps = Int(baseReps * multiplier)
         
-        modified.reps = adjustedReps
-        
         // For warmup/cooldown which are usually timed (seconds)
         if exercise.category == .warmup || exercise.category == .cooldown {
-            // Keep it between 20s and 60s
-            modified.reps = max(20, min(60, adjustedReps))
+            // Keep it between 20s and 60s, rounded to nearest 5 for better UX
+            let rounded = Int(round(Double(adjustedReps) / 5.0) * 5.0)
+            modified.reps = max(20, min(60, rounded))
         } else {
             // Keep it between 5 and 20 reps
             modified.reps = max(5, min(20, adjustedReps))

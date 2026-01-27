@@ -56,6 +56,7 @@ class RestScreenViewController: UIViewController {
     private func setupUI() {
         let completedCount = WorkoutManager.shared.completedToday.count
         exerciseLabel.text = "\(completedCount) of \(totalExercises)"
+        timerLabel.text = "\(totalTime)"
         restStartTime = Date()
         updateProgressBars()
     }

@@ -16,12 +16,6 @@ class _0minworkoutLandingPageViewController: UIViewController, UICollectionViewD
         return WorkoutManager.shared.completedToday.count + WorkoutManager.shared.skippedToday.count
     }
     
-    private var currentSortedExercises: [WorkoutExercise] {
-        let completedSet = WorkoutManager.shared.completedToday
-        let topGroup = exercises.filter { !completedSet.contains($0.id) }
-        let completedGroup = exercises.filter { completedSet.contains($0.id) }
-        return topGroup + completedGroup
-    }
 
     private func setupProgressView() {
         progressView = CircularProgressView(frame: progressContainer.bounds)
@@ -91,11 +85,8 @@ class _0minworkoutLandingPageViewController: UIViewController, UICollectionViewD
         self.exercises = WorkoutManager.shared.exercises
         collectionView.reloadData()
         
-        let currentProgress = WorkoutManager.shared.completedToday.count + WorkoutManager.shared.skippedToday.count
-
-        if currentProgress == 0 && !WorkoutManager.shared.hasCheckedSafetyThisSession {
+        if finishedCount == 0 && !WorkoutManager.shared.hasCheckedSafetyThisSession {
             WorkoutManager.shared.hasCheckedSafetyThisSession = true
-            checkMedTaken()
         }
         updateProgress()
         updateButtonUI()
@@ -148,15 +139,25 @@ class _0minworkoutLandingPageViewController: UIViewController, UICollectionViewD
     }
     
 
+    override func shouldPerformSegue(withIdentifier identifier: String?, sender: Any?) -> Bool {
+        // If we haven't done the safety check and no progress made, do it now
+        if finishedCount == 0 && !WorkoutManager.shared.allMedsTaken {
+            showPushLimitsAlert()
+            return false // Interrupt segue to show alert
+        }
+        return true
+    }
+
     @IBAction func StartWorkoutTapped(_ sender: Any) {
-        let sb = UIStoryboard(name: "10 minworkout", bundle: nil)
-        if let vc = sb.instantiateViewController(withIdentifier: "10minworkoutCountdownViewController") as? _0minworkoutCountdownViewController {
-            
-            
+        // Handled by segue/shouldPerformSegue
+    }
+
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if let vc = segue.destination as? _0minworkoutCountdownViewController {
             let firstIncompleteIndex = exercises.firstIndex { exercise in
                 !WorkoutManager.shared.completedToday.contains(exercise.id)
             } ?? 0
-
+            
             vc.startingIndex = firstIncompleteIndex
             vc.exercises = WorkoutManager.shared.exercises
         }
@@ -171,16 +172,18 @@ class _0minworkoutLandingPageViewController: UIViewController, UICollectionViewD
             preferredStyle: .alert
         )
         
-        let standingAction = UIAlertAction(title: "Push Limits (Standing)", style: .default) { _ in
+        let standingAction = UIAlertAction(title: "Push Limits (Standing)", style: .default) { [weak self] _ in
             WorkoutManager.shared.userWantsToPushLimits = true
             WorkoutManager.shared.generateDailyWorkout()
-            self.refreshWorkoutList()
+            self?.refreshWorkoutList()
+            self?.navigateToWorkout()
         }
         
-        let seatedAction = UIAlertAction(title: "Play it Safe (Seated)", style: .default) { _ in
+        let seatedAction = UIAlertAction(title: "Play it Safe (Seated)", style: .default) { [weak self] _ in
             WorkoutManager.shared.userWantsToPushLimits = false
             WorkoutManager.shared.generateDailyWorkout()
-            self.refreshWorkoutList()
+            self?.refreshWorkoutList()
+            self?.navigateToWorkout()
         }
         
         alert.addAction(standingAction)
@@ -235,7 +238,7 @@ extension _0minworkoutLandingPageViewController: UICollectionViewDataSource {
             for: indexPath
         ) as! ExerciseListCollectionViewCell
 
-        let exercise = currentSortedExercises[indexPath.item]
+        let exercise = exercises[indexPath.item]
 
         cell.exerciseNameOutlet.text = exercise.name
         
