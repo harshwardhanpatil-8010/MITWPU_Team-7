@@ -7,6 +7,7 @@ class resultMimicTheEmoji: UIViewController {
     @IBOutlet weak var completedEmojiCount: UILabel!
     @IBOutlet weak var resultCardBackground: UIView!
     
+    @IBOutlet weak var finishButton: UIButton!
     var completedCount: Int = 0
         var skippedCount: Int = 0
         var timeTaken: Int = 30
@@ -38,4 +39,11 @@ class resultMimicTheEmoji: UIViewController {
             skippedEmojiCount.text = "\(skippedCount)"
             timeTakenCount.text = "\(timeTaken)"
         }
+    @IBAction func finishButtonTapped(_ sender: UIButton) {
+        let storyboard = UIStoryboard(name: "MimicTheEmoji", bundle: nil) // Ensure name matches your .storyboard file
+        guard let landingVC = storyboard.instantiateViewController(withIdentifier: "EmojiLandingScreen") as? EmojiLandingScreen else { return }
+        
+        landingVC.modalPresentationStyle = .fullScreen
+        self.present(landingVC, animated: true, completion: nil)
+    }
 }

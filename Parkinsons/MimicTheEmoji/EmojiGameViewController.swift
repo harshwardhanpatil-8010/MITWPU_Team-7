@@ -2,6 +2,7 @@ import UIKit
 import RealityKit
 
 class EmojiGameViewController: UIViewController {
+    public var selectedDate: Date?
 
     @IBOutlet weak var skipButton: UIButton!
     @IBOutlet weak var scoreLabel: UILabel!
@@ -26,7 +27,7 @@ class EmojiGameViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         setupUI()
-        
+        // selectedDate can be used to track the day's session if needed
         arModel.setup(view: cameraContainerView)
         arModel.onMatch = { [weak self] in
             self?.handleSuccess()
@@ -129,3 +130,4 @@ class EmojiGameViewController: UIViewController {
         skipButton.addTarget(self, action: #selector(skipButtonTapped(_:)), for: .touchUpInside)
     }
 }
+
