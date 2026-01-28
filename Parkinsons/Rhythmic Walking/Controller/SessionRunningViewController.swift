@@ -320,6 +320,8 @@ class SessionRunningViewController: UIViewController {
         
         timerModel.delegate = self
         timerModel.start()
+        
+        startAudio()
         updatePauseButtonUI()
     }
     
@@ -327,12 +329,28 @@ class SessionRunningViewController: UIViewController {
         super.viewWillAppear(animated)
         tabBarController?.tabBar.isHidden = true
     }
+    private func startAudio() {
+            let beatFile = selectedBeat ?? "clock"
+            let bpm = selectedBPM ?? 100
+            RhythmicAudioManager.shared.playBeat(fileName: beatFile, bpm: bpm)
+        }
     
+//    @IBAction func pauseTapped(_ sender: Any) {
+//        guard let timerModel = timerModel else { return }
+//        timerModel.isPaused ? timerModel.resume() : timerModel.pause()
+//        updatePauseButtonUI()
+//    }
     @IBAction func pauseTapped(_ sender: Any) {
-        guard let timerModel = timerModel else { return }
-        timerModel.isPaused ? timerModel.resume() : timerModel.pause()
-        updatePauseButtonUI()
-    }
+            guard let timerModel = timerModel else { return }
+            if timerModel.isPaused {
+                timerModel.resume()
+                RhythmicAudioManager.shared.resume()
+            } else {
+                timerModel.pause()
+                RhythmicAudioManager.shared.pause()
+            }
+            updatePauseButtonUI()
+        }
     
     func setupBeatButton() {
         let optionClosure: UIActionHandler = { [weak self] action in
@@ -365,6 +383,7 @@ class SessionRunningViewController: UIViewController {
     }
     
     @IBAction func endSessionButtonTapped(_ sender: Any) {
+        RhythmicAudioManager.shared.stop()
         guard var sessionToUpdate = self.session ?? DataStore.shared.sessions.first else {
             presentSummaryAndDismiss()
             return
@@ -391,6 +410,7 @@ extension SessionRunningViewController: TimerModelDelegate {
     }
     
     func timerDidFinish() {
+        RhythmicAudioManager.shared.stop()
         timeLabel.text = "00:00:00"
         progressView.setProgress(0)
         pauseButton.isEnabled = false
