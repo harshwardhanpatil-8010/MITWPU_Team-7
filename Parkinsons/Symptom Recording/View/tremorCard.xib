@@ -34,25 +34,25 @@
                                 </constraints>
                             </view>
                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="WDh-w1-DMj">
-                                <rect key="frame" x="15.999999999999996" y="72" width="55.666666666666657" height="48.666666666666657"/>
+                                <rect key="frame" x="16" y="72" width="76.666666666666671" height="48.666666666666657"/>
                                 <subviews>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Average" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="7Ij-xp-j9m">
-                                        <rect key="frame" x="0.0" y="0.0" width="55.666666666666664" height="18"/>
+                                        <rect key="frame" x="0.0" y="0.0" width="76.666666666666671" height="18"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="15"/>
                                         <nil key="textColor"/>
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <stackView opaque="NO" contentMode="scaleToFill" alignment="lastBaseline" translatesAutoresizingMaskIntoConstraints="NO" id="XAY-sz-hJk">
-                                        <rect key="frame" x="0.0" y="18" width="55.666666666666664" height="30.666666666666671"/>
+                                        <rect key="frame" x="0.0" y="18" width="76.666666666666671" height="30.666666666666671"/>
                                         <subviews>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="12" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Gly-Fg-RBg">
-                                                <rect key="frame" x="0.0" y="0.0" width="26.666666666666668" height="28.666666666666668"/>
+                                                <rect key="frame" x="0.0" y="2.0000000000000018" width="26.666666666666668" height="28.666666666666671"/>
                                                 <fontDescription key="fontDescription" type="boldSystem" pointSize="24"/>
                                                 <nil key="textColor"/>
                                                 <nil key="highlightedColor"/>
                                             </label>
-                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" verticalHuggingPriority="251" horizontalCompressionResistancePriority="751" text="%" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="FaM-1S-nDa">
-                                                <rect key="frame" x="26.666666666666664" y="6.6666666666666696" width="29" height="20.333333333333329"/>
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" verticalHuggingPriority="251" horizontalCompressionResistancePriority="751" text="" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="FaM-1S-nDa">
+                                                <rect key="frame" x="26.666666666666664" y="0.0" width="49.999999999999993" height="29.333333333333336"/>
                                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                 <color key="textColor" systemColor="secondaryLabelColor"/>
                                                 <nil key="highlightedColor"/>
@@ -97,6 +97,7 @@
             <size key="customSize" width="370" height="148"/>
             <connections>
                 <outlet property="cardBackground" destination="6MY-mq-Boi" id="Ex5-0p-c0e"/>
+                <outlet property="tremorValueLabel" destination="Gly-Fg-RBg" id="0B9-hd-e3l"/>
             </connections>
             <point key="canvasLocation" x="358.77862595419845" y="146.47887323943664"/>
         </collectionViewCell>

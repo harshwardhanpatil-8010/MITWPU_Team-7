@@ -4,6 +4,7 @@ class tremorCard: UICollectionViewCell {
 
     @IBOutlet weak var cardBackground: UIView!
     
+    @IBOutlet weak var tremorValueLabel: UILabel!
     override func awakeFromNib() {
         super.awakeFromNib()
         self.clipsToBounds = false
@@ -27,5 +28,15 @@ class tremorCard: UICollectionViewCell {
         cardBackground.layer.shadowRadius = shadowRadius
         cardBackground.layer.shadowOffset = shadowOffset
     }
+    func configure(frequencyHz: Double?) {
+        if let hz = frequencyHz {
+            tremorValueLabel.text = String(format: "%.1f Hz", hz)
+            tremorValueLabel.textColor = .black // Ensure it's visible
+        } else {
+            tremorValueLabel.text = "Steady" // Or "No Tremor" instead of "— Hz"
+            tremorValueLabel.textColor = .label
+        }
+    }
+
    
 }

@@ -12,6 +12,8 @@ class SymptomViewController: UIViewController {
     var selectedDate: Date = Date()
     var currentDayLogs: [SymptomRating] = []
     private var gaitRangeText: String?
+    private var tremorFrequencyHz: Double?
+
 
     enum Section: Int, CaseIterable {
         case calendar = 0
@@ -50,7 +52,7 @@ class SymptomViewController: UIViewController {
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-
+        fetchTremorData()
         requestHealthKitIfNeeded()
     }
 
@@ -65,6 +67,28 @@ class SymptomViewController: UIViewController {
             }
         }
     }
+    private func fetchTremorData() {
+        // Optional: Update UI to show "Measuring..."
+        TremorMotionManager.shared.recordFrequency(duration: 8.0) { [weak self] hz in
+            guard let self = self else { return }
+            self.tremorFrequencyHz = hz
+            
+            // Use performBatchUpdates or reloadItems for a smoother experience than reloadSections
+            let indexPath = IndexPath(item: 0, section: Section.tremor.rawValue)
+            if self.collectionView.indexPathsForVisibleItems.contains(indexPath) {
+                self.collectionView.reloadItems(at: [indexPath])
+            } else {
+                // Fallback if not visible
+                self.collectionView.reloadSections(IndexSet(integer: Section.tremor.rawValue))
+            }
+        }
+    }
+
+
+    private func reloadTremorSection() {
+        collectionView.reloadSections(IndexSet(integer: Section.tremor.rawValue))
+    }
+
     private func fetchGaitDataForSelectedDate() {
         let start = Calendar.current.startOfDay(for: selectedDate)
         let end = Calendar.current.date(byAdding: .day, value: 1, to: start)!
@@ -289,8 +313,15 @@ extension SymptomViewController: UICollectionViewDataSource, UICollectionViewDel
             return cell
             
         case .tremor:
-            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "tremor_cell", for: indexPath) as! tremorCard
+            let cell = collectionView.dequeueReusableCell(
+                withReuseIdentifier: "tremor_cell",
+                for: indexPath
+            ) as! tremorCard
+
+            cell.configure(frequencyHz: tremorFrequencyHz)
             return cell
+
+
             
         case .gait:
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "gait_cell", for: indexPath) as! gaitCard
