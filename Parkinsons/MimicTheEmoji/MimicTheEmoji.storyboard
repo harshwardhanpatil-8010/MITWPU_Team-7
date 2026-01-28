@@ -174,10 +174,30 @@
                                     <action selector="playButtonTapped:" destination="AEg-aT-B4j" eventType="touchUpInside" id="PSX-7e-8V1"/>
                                 </connections>
                             </button>
+                            <stackView opaque="NO" contentMode="scaleToFill" spacing="18" translatesAutoresizingMaskIntoConstraints="NO" id="pHD-qg-ZuK">
+                                <rect key="frame" x="314" y="390" width="62.666666666666686" height="16"/>
+                                <subviews>
+                                    <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="checkmark.circle.fill" catalog="system" translatesAutoresizingMaskIntoConstraints="NO" id="5va-Ri-HwE">
+                                        <rect key="frame" x="0.0" y="0.66666666666666607" width="16" height="14.666666666666668"/>
+                                        <color key="tintColor" red="0.94117647059999998" green="0.71372549019999998" blue="0.45098039220000002" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="16" id="Kex-s8-dY4"/>
+                                            <constraint firstAttribute="width" constant="16" id="hsT-1Q-O5M"/>
+                                        </constraints>
+                                    </imageView>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="1/31 " textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ApT-8p-MC6">
+                                        <rect key="frame" x="34" y="0.0" width="28.666666666666671" height="16"/>
+                                        <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="13"/>
+                                        <nil key="textColor"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                </subviews>
+                            </stackView>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="i17-Z1-IRh"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                         <constraints>
+                            <constraint firstItem="0aA-Qp-don" firstAttribute="top" secondItem="pHD-qg-ZuK" secondAttribute="bottom" constant="12" id="2v0-WH-gVm"/>
                             <constraint firstItem="i17-Z1-IRh" firstAttribute="trailing" secondItem="7aX-Yq-Jzs" secondAttribute="trailing" constant="104" id="3EH-VV-nf5"/>
                             <constraint firstItem="rtP-gT-lq2" firstAttribute="leading" secondItem="i17-Z1-IRh" secondAttribute="leading" id="8KJ-g7-kiR"/>
                             <constraint firstItem="5fQ-k3-UFl" firstAttribute="top" secondItem="7aX-Yq-Jzs" secondAttribute="bottom" constant="24" id="B6D-xw-Tfe"/>
@@ -185,6 +205,7 @@
                             <constraint firstItem="0aA-Qp-don" firstAttribute="trailing" secondItem="i17-Z1-IRh" secondAttribute="trailing" id="DIV-vl-4cf"/>
                             <constraint firstItem="d9j-NU-iKa" firstAttribute="leading" secondItem="40a-JY-YdK" secondAttribute="leadingMargin" constant="95" id="E3v-xS-4eY"/>
                             <constraint firstItem="d9j-NU-iKa" firstAttribute="top" secondItem="0aA-Qp-don" secondAttribute="bottom" id="Fhx-Mz-sI2"/>
+                            <constraint firstItem="pHD-qg-ZuK" firstAttribute="top" secondItem="rtP-gT-lq2" secondAttribute="bottom" constant="272" id="JFU-rt-dKG"/>
                             <constraint firstItem="0aA-Qp-don" firstAttribute="bottom" secondItem="i17-Z1-IRh" secondAttribute="bottom" constant="-46" id="MFw-dd-ooe"/>
                             <constraint firstItem="5fQ-k3-UFl" firstAttribute="trailing" secondItem="i17-Z1-IRh" secondAttribute="trailing" id="Spc-Hi-a16"/>
                             <constraint firstItem="E76-49-pSe" firstAttribute="top" secondItem="rtP-gT-lq2" secondAttribute="bottom" constant="270" id="TPS-26-xgR"/>
@@ -195,18 +216,21 @@
                             <constraint firstItem="E76-49-pSe" firstAttribute="leading" secondItem="i17-Z1-IRh" secondAttribute="leading" constant="16" id="hoe-hs-Myj"/>
                             <constraint firstItem="rtP-gT-lq2" firstAttribute="top" secondItem="40a-JY-YdK" secondAttribute="top" constant="64" id="i0k-tV-2fE"/>
                             <constraint firstItem="7aX-Yq-Jzs" firstAttribute="top" secondItem="rtP-gT-lq2" secondAttribute="bottom" constant="24" id="jQS-xB-W75"/>
+                            <constraint firstItem="i17-Z1-IRh" firstAttribute="trailing" secondItem="pHD-qg-ZuK" secondAttribute="trailing" constant="16.329999999999998" id="s0z-ju-z8S"/>
+                            <constraint firstItem="pHD-qg-ZuK" firstAttribute="leading" secondItem="E76-49-pSe" secondAttribute="trailing" constant="277" id="sSq-wf-d7V"/>
                             <constraint firstItem="d9j-NU-iKa" firstAttribute="trailing" secondItem="7aX-Yq-Jzs" secondAttribute="trailing" id="tap-2p-epa"/>
                         </constraints>
                     </view>
                     <connections>
                         <outlet property="collectionView" destination="WHr-wU-5ca" id="mSp-kF-zj1"/>
+                        <outlet property="completedLabel" destination="ApT-8p-MC6" id="YHV-n0-EvZ"/>
                         <outlet property="monthAndYearOutlet" destination="qhA-DW-pOk" id="YbO-o4-Inu"/>
                         <outlet property="playButton" destination="d9j-NU-iKa" id="863-yK-e8G"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="kAU-qM-YSQ" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1210" y="142"/>
+            <point key="canvasLocation" x="1209.9236641221373" y="141.5492957746479"/>
         </scene>
         <!--EmojiGameViewController-->
         <scene sceneID="L1D-vc-qa5">
@@ -502,6 +526,7 @@
     </scenes>
     <resources>
         <image name="Emoji Landing" width="185" height="220"/>
+        <image name="checkmark.circle.fill" catalog="system" width="128" height="123"/>
         <image name="trophy1" width="960" height="1088"/>
         <image name="🎊" width="150" height="150"/>
         <systemColor name="systemBackgroundColor">

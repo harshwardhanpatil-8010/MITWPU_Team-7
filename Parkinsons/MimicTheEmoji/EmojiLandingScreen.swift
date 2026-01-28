@@ -6,7 +6,7 @@ class EmojiLandingScreen: UIViewController, UICollectionViewDataSource, UICollec
     @IBOutlet weak var monthAndYearOutlet: UILabel!
     @IBOutlet weak var playButton: UIButton!
     @IBOutlet weak var collectionView: UICollectionView!
-    
+    @IBOutlet weak var completedLabel: UILabel!
     // MARK: - Properties
     // Match Code 1: Force Gregorian and Monday start (2)
     private var calendar: Calendar = {
@@ -24,6 +24,9 @@ class EmojiLandingScreen: UIViewController, UICollectionViewDataSource, UICollec
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        updateCompletionCount() // New method
+        collectionView.reloadData() // Refresh the dots/colors
+        
         collectionView.dataSource = self
         collectionView.delegate = self
         collectionView.isScrollEnabled = false
@@ -31,7 +34,16 @@ class EmojiLandingScreen: UIViewController, UICollectionViewDataSource, UICollec
         setupMonth()
         configureLayout()
     }
+    
+    private func updateCompletionCount() {
+            let completedCount = (0..<daysInMonth).filter { offset in
+                guard let date = calendar.date(byAdding: .day, value: offset, to: firstDayOfMonth) else { return false }
+                return EmojiGameManager.shared.isCompleted(date: calendar.startOfDay(for: date))
+            }.count
 
+            completedLabel.text = "\(completedCount)/\(daysInMonth) Completed"
+        }
+    
     private func configureLayout() {
         guard let layout = collectionView.collectionViewLayout as? UICollectionViewFlowLayout else { return }
         // Match Code 1: Perfect 7-column grid math
