@@ -21,7 +21,7 @@
                                 <rect key="frame" x="0.0" y="64" width="393" height="54"/>
                                 <items>
                                     <navigationItem title="Mimic the Emoji" id="mvb-h5-Eq0">
-                                        <barButtonItem key="rightBarButtonItem" title="Item" id="HxH-FN-rvd"/>
+                                        <barButtonItem key="rightBarButtonItem" image="i" id="HxH-FN-rvd"/>
                                     </navigationItem>
                                 </items>
                             </navigationBar>
@@ -175,7 +175,7 @@
                                 </connections>
                             </button>
                             <stackView opaque="NO" contentMode="scaleToFill" spacing="18" translatesAutoresizingMaskIntoConstraints="NO" id="pHD-qg-ZuK">
-                                <rect key="frame" x="314" y="390" width="62.666666666666686" height="16"/>
+                                <rect key="frame" x="237" y="390" width="139.66666666666663" height="16"/>
                                 <subviews>
                                     <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="checkmark.circle.fill" catalog="system" translatesAutoresizingMaskIntoConstraints="NO" id="5va-Ri-HwE">
                                         <rect key="frame" x="0.0" y="0.66666666666666607" width="16" height="14.666666666666668"/>
@@ -186,7 +186,7 @@
                                         </constraints>
                                     </imageView>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="1/31 " textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ApT-8p-MC6">
-                                        <rect key="frame" x="34" y="0.0" width="28.666666666666671" height="16"/>
+                                        <rect key="frame" x="34.000000000000007" y="0.0" width="105.66666666666669" height="16"/>
                                         <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="13"/>
                                         <nil key="textColor"/>
                                         <nil key="highlightedColor"/>
@@ -217,7 +217,7 @@
                             <constraint firstItem="rtP-gT-lq2" firstAttribute="top" secondItem="40a-JY-YdK" secondAttribute="top" constant="64" id="i0k-tV-2fE"/>
                             <constraint firstItem="7aX-Yq-Jzs" firstAttribute="top" secondItem="rtP-gT-lq2" secondAttribute="bottom" constant="24" id="jQS-xB-W75"/>
                             <constraint firstItem="i17-Z1-IRh" firstAttribute="trailing" secondItem="pHD-qg-ZuK" secondAttribute="trailing" constant="16.329999999999998" id="s0z-ju-z8S"/>
-                            <constraint firstItem="pHD-qg-ZuK" firstAttribute="leading" secondItem="E76-49-pSe" secondAttribute="trailing" constant="277" id="sSq-wf-d7V"/>
+                            <constraint firstItem="pHD-qg-ZuK" firstAttribute="leading" secondItem="E76-49-pSe" secondAttribute="trailing" constant="200" id="sSq-wf-d7V"/>
                             <constraint firstItem="d9j-NU-iKa" firstAttribute="trailing" secondItem="7aX-Yq-Jzs" secondAttribute="trailing" id="tap-2p-epa"/>
                         </constraints>
                     </view>
@@ -527,6 +527,7 @@
     <resources>
         <image name="Emoji Landing" width="185" height="220"/>
         <image name="checkmark.circle.fill" catalog="system" width="128" height="123"/>
+        <image name="i" width="128" height="128"/>
         <image name="trophy1" width="960" height="1088"/>
         <image name="🎊" width="150" height="150"/>
         <systemColor name="systemBackgroundColor">

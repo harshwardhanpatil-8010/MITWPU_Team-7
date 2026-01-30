@@ -67,8 +67,11 @@ class EmojiGameViewController: UIViewController {
         if let resultVC = storyboard?.instantiateViewController(withIdentifier: "resultMimicTheEmoji") as? resultMimicTheEmoji {
             resultVC.completedCount = self.score
             resultVC.skippedCount = self.skippedCount
-            
             resultVC.timeTaken = self.timeElapsed
+            
+            // --- ADD THIS LINE BELOW ---
+            resultVC.playedDate = self.selectedDate
+            // ---------------------------
             
             resultVC.modalPresentationStyle = .fullScreen
             self.present(resultVC, animated: true, completion: nil)

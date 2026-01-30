@@ -1,5 +1,7 @@
 import UIKit
-
+extension Notification.Name {
+    static let didUpdateGameCompletion = Notification.Name("didUpdateGameCompletion")
+}
 class EmojiLandingScreen: UIViewController, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
 
     // MARK: - Outlets
@@ -24,6 +26,13 @@ class EmojiLandingScreen: UIViewController, UICollectionViewDataSource, UICollec
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        NotificationCenter.default.addObserver(
+                self,
+                selector: #selector(refreshUI),
+                name: .didUpdateGameCompletion,
+                object: nil
+            )
+        
         updateCompletionCount() // New method
         collectionView.reloadData() // Refresh the dots/colors
         
@@ -34,7 +43,11 @@ class EmojiLandingScreen: UIViewController, UICollectionViewDataSource, UICollec
         setupMonth()
         configureLayout()
     }
-    
+    // EmojiLandingScreen.swift
+    @objc private func refreshUI() {
+        updateCompletionCount() // Updates the "X/31 Completed" label
+        collectionView.reloadData() // Forces every cell to redraw itself
+    }
     private func updateCompletionCount() {
             let completedCount = (0..<daysInMonth).filter { offset in
                 guard let date = calendar.date(byAdding: .day, value: offset, to: firstDayOfMonth) else { return false }
@@ -96,12 +109,15 @@ class EmojiLandingScreen: UIViewController, UICollectionViewDataSource, UICollec
         let isFuture = cellDate > today
         let isSelected = selectedDate.map { calendar.isDate(cellDate, inSameDayAs: $0) } ?? false
 
+        
+        let isCompleted = EmojiGameManager.shared.isCompleted(date: cellDate)
+        
         // Assuming your Emoji DateCell has a similar configure method
         cell.configure(
             day: day,
             isToday: isToday,
             isSelected: isSelected,
-            isCompleted: false, // Update this once you add EmojiGameManager
+            isCompleted: isCompleted, // Update this once you add EmojiGameManager
             showTodayOutline: isToday && !isSelected,
             enabled: !isFuture
         )
