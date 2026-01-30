@@ -91,12 +91,10 @@ class _0minworkoutLandingPageViewController: UIViewController, UICollectionViewD
         self.exercises = WorkoutManager.shared.exercises
         collectionView.reloadData()
         
-        let currentProgress = WorkoutManager.shared.completedToday.count + WorkoutManager.shared.skippedToday.count
-
-        if currentProgress == 0 && !WorkoutManager.shared.hasCheckedSafetyThisSession {
-            WorkoutManager.shared.hasCheckedSafetyThisSession = true
+        if !WorkoutManager.shared.hasCompletedWorkoutToday() {
             checkMedTaken()
         }
+
         updateProgress()
         updateButtonUI()
         self.navigationController?.setNavigationBarHidden(false, animated: animated)
@@ -149,18 +147,7 @@ class _0minworkoutLandingPageViewController: UIViewController, UICollectionViewD
     
 
     @IBAction func StartWorkoutTapped(_ sender: Any) {
-        let sb = UIStoryboard(name: "10 minworkout", bundle: nil)
-        if let vc = sb.instantiateViewController(withIdentifier: "10minworkoutCountdownViewController") as? _0minworkoutCountdownViewController {
-            
-            // Find the first exercise that hasn't been COMPLETED
-            // (This includes those that were skipped)
-            let firstIncompleteIndex = exercises.firstIndex { exercise in
-                !WorkoutManager.shared.completedToday.contains(exercise.id)
-            } ?? 0
-
-            vc.startingIndex = firstIncompleteIndex
-            vc.exercises = WorkoutManager.shared.exercises
-        }
+        checkMedTaken()
     }
 
 
@@ -168,7 +155,7 @@ class _0minworkoutLandingPageViewController: UIViewController, UICollectionViewD
     private func showPushLimitsAlert() {
         let alert = UIAlertController(
             title: "Safety Check",
-            message: "Would you like to push your limits with standing exercises, or play it safe with seated exercises?",
+            message: "We noticed you haven't taken all your medications in the last 3 hours. We recommend seated exercises. Would you like to continue with standing exercises?",
             preferredStyle: .alert
         )
         
@@ -176,12 +163,14 @@ class _0minworkoutLandingPageViewController: UIViewController, UICollectionViewD
             WorkoutManager.shared.userWantsToPushLimits = true
             WorkoutManager.shared.generateDailyWorkout()
             self.refreshWorkoutList()
+            self.navigateToWorkout()
         }
         
         let seatedAction = UIAlertAction(title: "Play it Safe (Seated)", style: .default) { _ in
             WorkoutManager.shared.userWantsToPushLimits = false
             WorkoutManager.shared.generateDailyWorkout()
             self.refreshWorkoutList()
+            self.navigateToWorkout()
         }
         
         alert.addAction(standingAction)
@@ -199,7 +188,7 @@ class _0minworkoutLandingPageViewController: UIViewController, UICollectionViewD
     }
     
     private func checkMedTaken() {
-        if !WorkoutManager.shared.allMedsTaken {
+        if !WorkoutManager.shared.allMedsTaken && !WorkoutManager.shared.hasCompletedWorkoutToday() {
             showPushLimitsAlert()
         }
         else {
@@ -217,7 +206,10 @@ class _0minworkoutLandingPageViewController: UIViewController, UICollectionViewD
 
         let sb = UIStoryboard(name: "10 minworkout", bundle: nil)
         if let vc = sb.instantiateViewController(withIdentifier: "10minworkoutCountdownViewController") as? _0minworkoutCountdownViewController {
-            vc.startingIndex = finishedCount
+            let firstIncompleteIndex = exercises.firstIndex { exercise in
+                !WorkoutManager.shared.completedToday.contains(exercise.id)
+            } ?? 0
+            vc.startingIndex = firstIncompleteIndex
             vc.exercises = WorkoutManager.shared.exercises
             navigationController?.pushViewController(vc, animated: true)
         }

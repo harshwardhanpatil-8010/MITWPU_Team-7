@@ -209,6 +209,7 @@ class _0minworkoutViewController: UIViewController {
                 WorkoutManager.shared.completedToday.append(currentID)
             }
             WorkoutManager.shared.skippedToday.removeAll { $0 == currentID }
+            WorkoutManager.shared.setWorkoutCompleted()
         }
         
         goToRest()

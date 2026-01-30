@@ -16,6 +16,7 @@ final class DoseLogDataStore {
 
     func logs(for day: Date) -> [DoseLog] {
         logs.filter { $0.day == day.startOfDay }
+        
     }
 
     private func save() {
