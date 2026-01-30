@@ -9,10 +9,10 @@
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
-        <!--Emoji Landing Screen-->
+        <!--Mimic The Emoji-->
         <scene sceneID="w4R-e2-MAU">
             <objects>
-                <viewController storyboardIdentifier="EmojiLandingScreen" useStoryboardIdentifierAsRestorationIdentifier="YES" id="AEg-aT-B4j" customClass="EmojiLandingScreen" customModule="Parkinsons" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="EmojiLandingScreenID" title="Mimic The Emoji" useStoryboardIdentifierAsRestorationIdentifier="YES" id="AEg-aT-B4j" customClass="EmojiLandingScreen" customModule="Parkinsons" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="40a-JY-YdK">
                         <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -20,8 +20,8 @@
                             <navigationBar contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="rtP-gT-lq2">
                                 <rect key="frame" x="0.0" y="64" width="393" height="54"/>
                                 <items>
-                                    <navigationItem title="Mimic the Emoji" id="mvb-h5-Eq0">
-                                        <barButtonItem key="rightBarButtonItem" image="i" id="HxH-FN-rvd"/>
+                                    <navigationItem id="mvb-h5-Eq0">
+                                        <barButtonItem key="rightBarButtonItem" image="info" catalog="system" id="HxH-FN-rvd"/>
                                     </navigationItem>
                                 </items>
                             </navigationBar>
@@ -232,10 +232,10 @@
             </objects>
             <point key="canvasLocation" x="1209.9236641221373" y="141.5492957746479"/>
         </scene>
-        <!--EmojiGameViewController-->
+        <!--Mimic The Emoji-->
         <scene sceneID="L1D-vc-qa5">
             <objects>
-                <viewController storyboardIdentifier="EmojiGameViewController" title="EmojiGameViewController" useStoryboardIdentifierAsRestorationIdentifier="YES" id="mD5-tf-3Ic" customClass="EmojiGameViewController" customModule="Parkinsons" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="EmojiGameViewController" title="Mimic The Emoji" useStoryboardIdentifierAsRestorationIdentifier="YES" id="mD5-tf-3Ic" customClass="EmojiGameViewController" customModule="Parkinsons" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="PVl-rL-XER">
                         <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -246,7 +246,7 @@
                                     <constraint firstAttribute="height" constant="44" id="QKj-X6-dYg"/>
                                 </constraints>
                                 <items>
-                                    <navigationItem title="Mimic the Emoji" id="z6m-xk-XRM">
+                                    <navigationItem id="z6m-xk-XRM">
                                         <barButtonItem key="leftBarButtonItem" systemItem="cancel" id="SVP-A7-xg2"/>
                                     </navigationItem>
                                 </items>
@@ -527,7 +527,7 @@
     <resources>
         <image name="Emoji Landing" width="185" height="220"/>
         <image name="checkmark.circle.fill" catalog="system" width="128" height="123"/>
-        <image name="i" width="128" height="128"/>
+        <image name="info" catalog="system" width="88" height="128"/>
         <image name="trophy1" width="960" height="1088"/>
         <image name="🎊" width="150" height="150"/>
         <systemColor name="systemBackgroundColor">

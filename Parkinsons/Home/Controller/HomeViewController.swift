@@ -308,11 +308,24 @@ class HomeViewController: UIViewController, UICollectionViewDelegate, SymptomLog
     }
     
     private func handleGamesSelection(at row: Int) {
-        let storyboard = UIStoryboard(name: "Match the Cards", bundle: nil)
-        guard let vc = storyboard.instantiateViewController(withIdentifier: "matchTheCardsLandingPage") as? LevelSelectionViewController else { return }
-        navigationController?.pushViewController(vc, animated: true)
+        switch row {
+        case 1:
+            // Navigation for "Match the Cards"
+            let storyboard = UIStoryboard(name: "Match the Cards", bundle: nil)
+            guard let vc = storyboard.instantiateViewController(withIdentifier: "matchTheCardsLandingPage") as? LevelSelectionViewController else { return }
+            navigationController?.pushViewController(vc, animated: true)
+            
+        case 0:
+            // Navigation for "Mimic the Emoji"
+            let storyboard = UIStoryboard(name: "MimicTheEmoji", bundle: nil)
+            guard let vc = storyboard.instantiateViewController(withIdentifier: "EmojiLandingScreenID") as? EmojiLandingScreen else { return }
+            // Note: Ensure "EmojiLandingScreenID" matches the Storyboard ID you set in Interface Builder
+            navigationController?.pushViewController(vc, animated: true)
+            
+        default:
+            break
+        }
     }
-    
     private func handleExerciseSelection(at row: Int) {
         switch row {
         case 0:
