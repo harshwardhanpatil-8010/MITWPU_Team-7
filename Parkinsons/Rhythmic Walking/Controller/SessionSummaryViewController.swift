@@ -35,6 +35,9 @@ class SessionSummaryViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        if let session = sessionData, session.elapsedSeconds >= session.requestedDurationSeconds {
+            showGoalCelebration()
+        }
         setupProgressView()
         walkingUIView.applyCardStyle()
         GaitUIView.applyCardStyle()
@@ -45,7 +48,13 @@ class SessionSummaryViewController: UIViewController {
         navigationItem.hidesBackButton = true
         navigationController?.interactivePopGestureRecognizer?.isEnabled = false
     }
-
+//    override func viewDidAppear(_ animated: Bool) {
+//        super.viewDidAppear(animated)
+//        
+//        if let session = sessionData, session.elapsedSeconds >= session.requestedDurationSeconds {
+//            showGoalCelebration()
+//        }
+//    }
     
     func loadData() {
         guard let session = sessionData else {
@@ -76,7 +85,107 @@ class SessionSummaryViewController: UIViewController {
     @IBAction func doneButtonTapped(_ sender: Any) {
         dismiss(animated: true)
     }
-    
+
+    private func showGoalCelebration() {
+        let blurEffect = UIBlurEffect(style: .systemThinMaterial)
+        let blurView = UIVisualEffectView(effect: blurEffect)
+        blurView.frame = view.bounds
+        blurView.alpha = 0
+        view.addSubview(blurView)
+        
+        let goalLabel = UILabel()
+        goalLabel.text = "Goal Completed!"
+        goalLabel.font = UIFont.systemFont(ofSize: 50, weight: .bold)
+        goalLabel.textColor = .label
+        goalLabel.textAlignment = .center
+        goalLabel.center = view.center
+        goalLabel.alpha = 0
+        view.addSubview(goalLabel)
+        
+        UIView.animate(withDuration: 0.8) {
+            blurView.alpha = 1.0
+            goalLabel.alpha = 1.0
+        }
+        
+        let emitter = createConfettiEmitter()
+        view.layer.addSublayer(emitter)
+        
+        DispatchQueue.main.asyncAfter(deadline: .now() + 3.5) {
+            UIView.animate(withDuration: 1.0, animations: {
+                blurView.alpha = 0
+                goalLabel.alpha = 0
+                goalLabel.transform = CGAffineTransform(scaleX: 1.5, y: 1.5)
+            }) { _ in
+                blurView.removeFromSuperview()
+                goalLabel.removeFromSuperview()
+                emitter.removeFromSuperlayer()
+            }
+        }
+    }
+
+//    private func createConfettiEmitter() -> CAEmitterLayer {
+//        let emitter = CAEmitterLayer()
+//        emitter.emitterPosition = CGPoint(x: view.center.x, y: -10)
+//        emitter.emitterShape = .line
+//        emitter.emitterSize = CGSize(width: view.frame.size.width, height: 1)
+//        
+//        let colors: [UIColor] = [.systemRed, .systemBlue, .systemGreen, .systemYellow, .systemPink, .systemPurple]
+//        emitter.emitterCells = colors.map { color in
+//            let cell = CAEmitterCell()
+//            cell.birthRate = 4.0
+//            cell.lifetime = 8.0
+//            cell.velocity = 150
+//            cell.velocityRange = 50
+//            cell.emissionLongitude = .pi
+//            cell.spin = 3
+//            cell.scale = 0.05
+//            cell.contents = drawWhiteSquare().cgImage
+//            cell.color = color.cgColor
+//            return cell
+//        }
+//        return emitter
+//    }
+    private func createConfettiEmitter() -> CAEmitterLayer {
+        let emitter = CAEmitterLayer()
+        emitter.emitterPosition = CGPoint(x: view.center.x, y: -10)
+        emitter.emitterShape = .line
+        emitter.emitterSize = CGSize(width: view.frame.size.width, height: 1)
+
+        let colors: [UIColor] = [.systemRed, .systemBlue, .systemGreen, .systemYellow, .systemPink, .systemPurple]
+
+        emitter.emitterCells = colors.map { color in
+            let cell = CAEmitterCell()
+            cell.birthRate = 6.0            // Slightly increased birth rate for more density
+            cell.lifetime = 8.0
+            cell.velocity = 200             // Slightly faster fall
+            cell.velocityRange = 80
+            cell.emissionLongitude = .pi
+            cell.spin = 4
+            cell.spinRange = 2              // Adds variety to the rotation speed
+            
+            // --- SIZE ADJUSTMENTS ---
+            cell.scale = 0.5                // Increased from 0.05 to 0.5
+            cell.scaleRange = 0.2           // Sizes will vary between 0.3 and 0.7
+            // ------------------------
+            
+            cell.contents = drawWhiteSquare().cgImage
+            cell.color = color.cgColor
+            return cell
+        }
+
+        return emitter
+    }
+
+    private func drawWhiteSquare() -> UIImage {
+        let size = CGSize(width: 20, height: 20)
+        UIGraphicsBeginImageContext(size)
+        let context = UIGraphicsGetCurrentContext()!
+        context.setFillColor(UIColor.white.cgColor)
+        context.fill(CGRect(origin: .zero, size: size))
+        let image = UIGraphicsGetImageFromCurrentImageContext()!
+        UIGraphicsEndImageContext()
+        return image
+    }
 
     /*
     // MARK: - Navigation
