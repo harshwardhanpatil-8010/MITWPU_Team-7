@@ -43,26 +43,21 @@ class _0minworkoutGoodJobViewController: UIViewController {
     }
 
     
-     func saveFeedbackAndExit(feedback: String) {
+    func saveFeedbackAndExit(feedback: String) {
         WorkoutManager.shared.lastFeedback = feedback
-        
+
         let alert = UIAlertController(
             title: "Workout Complete!",
             message: "Great job! Your feedback has been saved. We will adjust tomorrow's exercises to better fit your needs.",
             preferredStyle: .alert
         )
-        
+
         alert.addAction(UIAlertAction(title: "Got it!", style: .default) { _ in
             if let nav = self.navigationController {
-                if let landing = nav.viewControllers.first(where: { $0 is _0minworkoutLandingPageViewController }) {
-                    nav.popToViewController(landing, animated: true)
-                } else {
-                    nav.popToRootViewController(animated: true)
-                }
+                nav.popToRootViewController(animated: true)
             }
         })
-        
+
         present(alert, animated: true)
     }
-
 }
