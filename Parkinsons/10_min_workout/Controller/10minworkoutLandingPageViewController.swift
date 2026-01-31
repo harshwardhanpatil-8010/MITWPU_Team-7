@@ -149,18 +149,19 @@ class _0minworkoutLandingPageViewController: UIViewController, UICollectionViewD
     
 
     @IBAction func StartWorkoutTapped(_ sender: Any) {
-        let sb = UIStoryboard(name: "10 minworkout", bundle: nil)
-        if let vc = sb.instantiateViewController(withIdentifier: "10minworkoutCountdownViewController") as? _0minworkoutCountdownViewController {
-            
-            // Find the first exercise that hasn't been COMPLETED
-            // (This includes those that were skipped)
-            let firstIncompleteIndex = exercises.firstIndex { exercise in
-                !WorkoutManager.shared.completedToday.contains(exercise.id)
-            } ?? 0
-
-            vc.startingIndex = firstIncompleteIndex
-            vc.exercises = WorkoutManager.shared.exercises
-        }
+//        let sb = UIStoryboard(name: "10 minworkout", bundle: nil)
+//        if let vc = sb.instantiateViewController(withIdentifier: "10minworkoutCountdownViewController") as? _0minworkoutCountdownViewController {
+//            
+//            // Find the first exercise that hasn't been COMPLETED
+//            // (This includes those that were skipped)
+//            let firstIncompleteIndex = exercises.firstIndex { exercise in
+//                !WorkoutManager.shared.completedToday.contains(exercise.id)
+//            } ?? 0
+//
+//            vc.startingIndex = firstIncompleteIndex
+//            vc.exercises = WorkoutManager.shared.exercises
+//        }
+        navigateToWorkout()
     }
 
 
@@ -201,9 +202,6 @@ class _0minworkoutLandingPageViewController: UIViewController, UICollectionViewD
     private func checkMedTaken() {
         if !WorkoutManager.shared.allMedsTaken {
             showPushLimitsAlert()
-        }
-        else {
-            navigateToWorkout()
         }
     }
 

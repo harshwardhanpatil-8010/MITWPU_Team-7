@@ -31,33 +31,31 @@ class _0minworkoutGoodJobViewController: UIViewController {
     }
     
     @IBAction func easyButtonTapped(_ sender: Any) {
-        saveFeedbackAndExit(feedback: "Easy")
+        saveFeedbackAndExit(value: 1)
     }
     
     @IBAction func perfectButtonTapped(_ sender: Any) {
-        saveFeedbackAndExit(feedback: "Moderate")
+        saveFeedbackAndExit(value: 2)
     }
     
     @IBAction func hardButtonTapped(_ sender: Any) {
-        saveFeedbackAndExit(feedback: "Hard")
+        saveFeedbackAndExit(value: 3)
     }
 
     
-    func saveFeedbackAndExit(feedback: String) {
-        WorkoutManager.shared.lastFeedback = feedback
+    func saveFeedbackAndExit(value: Int) {
+        WorkoutManager.shared.saveFeedback(value)
 
-        let alert = UIAlertController(
-            title: "Workout Complete!",
-            message: "Great job! Your feedback has been saved. We will adjust tomorrow's exercises to better fit your needs.",
-            preferredStyle: .alert
-        )
+                let alert = UIAlertController(
+                    title: "Workout Complete!",
+                    message: "Great job! Your feedback has been saved. Tomorrow’s workout will be adjusted to match how you felt today.",
+                    preferredStyle: .alert
+                )
 
-        alert.addAction(UIAlertAction(title: "Got it!", style: .default) { _ in
-            if let nav = self.navigationController {
-                nav.popToRootViewController(animated: true)
-            }
-        })
+                alert.addAction(UIAlertAction(title: "Got it!", style: .default) { _ in
+                    self.navigationController?.popToRootViewController(animated: true)
+                })
 
-        present(alert, animated: true)
+                present(alert, animated: true)
     }
 }
