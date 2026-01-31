@@ -4,7 +4,6 @@ class WorkoutManager {
     static let shared = WorkoutManager()
     var hasCheckedSafetyThisSession = false
     
-    var lastFeedback: String = "Moderate"
     
     var userWantsToPushLimits: Bool = false
     
