@@ -246,9 +246,7 @@
                                     <constraint firstAttribute="height" constant="44" id="QKj-X6-dYg"/>
                                 </constraints>
                                 <items>
-                                    <navigationItem id="z6m-xk-XRM">
-                                        <barButtonItem key="leftBarButtonItem" systemItem="cancel" id="SVP-A7-xg2"/>
-                                    </navigationItem>
+                                    <navigationItem id="z6m-xk-XRM"/>
                                 </items>
                             </navigationBar>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="HOV-OP-pNe">

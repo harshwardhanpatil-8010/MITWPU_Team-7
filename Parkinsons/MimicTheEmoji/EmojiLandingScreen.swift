@@ -43,6 +43,9 @@ class EmojiLandingScreen: UIViewController, UICollectionViewDataSource, UICollec
         setupMonth()
         configureLayout()
     }
+    override func viewWillAppear(_ animated: Bool) {
+        tabBarController?.tabBar.isHidden = true
+    }
     // EmojiLandingScreen.swift
     @objc private func refreshUI() {
         updateCompletionCount() // Updates the "X/31 Completed" label

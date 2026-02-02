@@ -35,6 +35,9 @@ class EmojiGameViewController: UIViewController {
         
         startGame()
     }
+    override func viewWillAppear(_ animated: Bool) {
+        tabBarController?.tabBar.isHidden = true
+    }
 
     func startGame() {
         score = 0
@@ -79,6 +82,7 @@ class EmojiGameViewController: UIViewController {
             }
         }
     }
+    
     func updateTimerLabel() {
         timeLeftLabel.text = "Time: \(timeElapsed)s"
     }

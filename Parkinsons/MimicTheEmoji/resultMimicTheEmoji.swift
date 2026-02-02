@@ -26,6 +26,9 @@ class resultMimicTheEmoji: UIViewController {
         setupResultCard()
         displayResults()
     }
+    override func viewWillAppear(_ animated: Bool) {
+        tabBarController?.tabBar.isHidden = true
+    }
     
     func setupResultCard() {
         resultCardBackground.layer.cornerRadius = 15
