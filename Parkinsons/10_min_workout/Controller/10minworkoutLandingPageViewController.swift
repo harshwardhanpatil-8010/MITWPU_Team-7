@@ -26,7 +26,6 @@ class _0minworkoutLandingPageViewController: UIViewController, UICollectionViewD
     private func setupProgressView() {
         progressView = CircularProgressView(frame: progressContainer.bounds)
         progressView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
-
         progressContainer.addSubview(progressView)
         progressView.progressColor = UIColor(hex: "0088FF")
         progressView.trackColor = UIColor(hex: "0088FF", alpha: 0.3)
@@ -149,18 +148,6 @@ class _0minworkoutLandingPageViewController: UIViewController, UICollectionViewD
     
 
     @IBAction func StartWorkoutTapped(_ sender: Any) {
-//        let sb = UIStoryboard(name: "10 minworkout", bundle: nil)
-//        if let vc = sb.instantiateViewController(withIdentifier: "10minworkoutCountdownViewController") as? _0minworkoutCountdownViewController {
-//            
-//            // Find the first exercise that hasn't been COMPLETED
-//            // (This includes those that were skipped)
-//            let firstIncompleteIndex = exercises.firstIndex { exercise in
-//                !WorkoutManager.shared.completedToday.contains(exercise.id)
-//            } ?? 0
-//
-//            vc.startingIndex = firstIncompleteIndex
-//            vc.exercises = WorkoutManager.shared.exercises
-//        }
         navigateToWorkout()
     }
 
@@ -245,7 +232,7 @@ extension _0minworkoutLandingPageViewController: UICollectionViewDataSource {
         }
 
         if let videoID = exercise.videoID {
-            cell.loadThumbnail(videoID: videoID)
+            cell.loadThumbnail(videoName: videoID)
         }
 
         let isCompleted = WorkoutManager.shared.completedToday.contains(exercise.id)

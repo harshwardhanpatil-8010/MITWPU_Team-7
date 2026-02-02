@@ -3,18 +3,11 @@ import Foundation
 class WorkoutManager {
     static let shared = WorkoutManager()
     var hasCheckedSafetyThisSession = false
-    
-    
     var userWantsToPushLimits: Bool = false
-    
     var exercises: [WorkoutExercise] = []
     var completedToday: [UUID] = []
-   
-    
     var skippedToday: [UUID] = []
-    
     private let lastWorkoutCompletionDateKey = "lastWorkoutCompletionDate"
-
     private var lastWorkoutCompletionDate: Date? {
         get {
             return UserDefaults.standard.object(forKey: lastWorkoutCompletionDateKey) as? Date
@@ -23,17 +16,14 @@ class WorkoutManager {
             UserDefaults.standard.set(newValue, forKey: lastWorkoutCompletionDateKey)
         }
     }
-
     func saveFeedback(_ value: Int) {
            UserDefaults.standard.set(value, forKey: "lastWorkoutFeedback")
            UserDefaults.standard.set(Date(), forKey: "lastWorkoutFeedbackDate")
        }
-    
     func loadLastFeedback() -> Int {
            let value = UserDefaults.standard.integer(forKey: "lastWorkoutFeedback")
            return value == 0 ? 2 : value
        }
-    
     func hasCompletedWorkoutToday() -> Bool {
         guard let lastCompletion = lastWorkoutCompletionDate else {
             return false
@@ -66,6 +56,7 @@ class WorkoutManager {
         return recentLogs.allSatisfy { $0.status == .taken }
     }
     
+    
     func getMedicationEffect() -> MedicationEffect {
         let logs = DoseLogDataStore.shared.logs(for: Date())
         let takenDoses = logs
@@ -86,6 +77,7 @@ class WorkoutManager {
             return .offPeriod
         }
     }
+    
     func preferredExercisePosition() -> ExercisePosition {
         switch getMedicationEffect() {
         case .optimal:
@@ -103,13 +95,9 @@ class WorkoutManager {
     
     func generateDailyWorkout() {
         let effect = getMedicationEffect()
-        
         var preferredPosition: ExercisePosition = preferredExercisePosition()
-
-    
         var dailySet: [WorkoutExercise] = []
         let library = getFullLibrary()
-        
         for category in ExerciseCategory.allCases {
             let filteredLibrary = library.filter { $0.category == category }
             

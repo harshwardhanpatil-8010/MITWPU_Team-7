@@ -13,7 +13,13 @@ class _0minworkoutCountdownViewController: UIViewController {
         super.viewDidLoad()
         startCountDown()
     }
-
+    
+    
+    override func viewWillAppear(_ animated: Bool) {
+        self.navigationController?.setNavigationBarHidden(false, animated: animated)
+        tabBarController?.tabBar.isHidden = true
+    }
+    
     func startCountDown() {
         guard !hasNavigated else { return }
 

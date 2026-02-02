@@ -1,11 +1,9 @@
-
 import UIKit
-import YouTubeiOSPlayerHelper
+import AVFoundation
 
 class _0minworkoutViewController: UIViewController {
     
-
-    @IBOutlet weak var playerView: FullScreenYTPlayerView!
+    @IBOutlet weak var playerView: UIView!
     @IBOutlet weak var exerciseName: UILabel!
     @IBOutlet weak var timerLabel: UILabel!
     @IBOutlet weak var repsLabel: UILabel!
@@ -22,7 +20,9 @@ class _0minworkoutViewController: UIViewController {
     var totalWorkoutSeconds: TimeInterval = 0
     var exerciseStartTime: Date?
     var isRevisitingSkipped = false
-
+    private var avPlayer: AVQueuePlayer?
+    private var avPlayerLayer: AVPlayerLayer?
+    private var playerLooper: AVPlayerLooper?
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -45,8 +45,17 @@ class _0minworkoutViewController: UIViewController {
         updateTopLabels()
         tabBarController?.tabBar.isHidden = true
     }
+    
+    override func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
+        avPlayerLayer?.frame = playerView.bounds
+    }
 
-
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        avPlayer?.pause()
+    }
+    
     // MARK: - Configuration & UI
     func updateTopLabels() {
         let completedCount = WorkoutManager.shared.completedToday.count
@@ -54,18 +63,33 @@ class _0minworkoutViewController: UIViewController {
     }
 
 
+    private func setupAVPlayer() {
+        if avPlayer != nil { return }
+        avPlayer = AVQueuePlayer()
+        avPlayerLayer = AVPlayerLayer(player: avPlayer)
+        avPlayerLayer?.videoGravity = .resizeAspectFill
+
+        guard let avPlayerLayer else { return }
+        playerView.layer.addSublayer(avPlayerLayer)
+    }
+    
+    
     func configureExercise() {
         guard currentIndex < exercises.count else {
             checkForSkippedExercises()
             return
         }
-        
-        previousButtonOutlet.isEnabled = (currentIndex > 0)
-        previousButtonOutlet.alpha = (currentIndex > 0) ? 1.0 : 0.5
-        
+        setupAVPlayer()
         let exercise = exercises[currentIndex]
         exerciseName.text = exercise.name
-        
+
+        if let videoName = exercise.videoID,
+           let url = Bundle.main.url(forResource: videoName, withExtension: "MOV") {
+            let asset = AVURLAsset(url: url)
+            let item = AVPlayerItem(asset: asset)
+            playerLooper = AVPlayerLooper(player: avPlayer!, templateItem: item)
+            avPlayer?.play()
+        }
         if exercise.category == .warmup || exercise.category == .cooldown {
             repsLabel.text = "-"
             timerLabel.isHidden = false
@@ -73,23 +97,18 @@ class _0minworkoutViewController: UIViewController {
         } else {
             repsLabel.text = "\(exercise.reps)"
             timerLabel.text = "-"
-            
             timer?.invalidate()
             timer = nil
         }
-        
-        
-        playerView.load(withVideoId: exercise.videoID ?? "", playerVars: playerView.getParkinsonsFriendlyVars())
         updateProgressBars()
         updateTopLabels()
         exerciseStartTime = Date()
     }
-
+    
     func startCountdown(seconds: Int) {
         timer?.invalidate()
         timeLeft = seconds
         timerLabel.text = "\(timeLeft)"
-        
         timer = Timer.scheduledTimer(withTimeInterval: 1.0, repeats: true) { [weak self] _ in
             guard let self = self else { return }
             if self.timeLeft > 0 {
@@ -109,7 +128,7 @@ class _0minworkoutViewController: UIViewController {
     @IBAction func skipButtonTapped(_ sender: UIButton) {
         handleCompletion(skipped: true)
     }
-
+    
     @IBAction func previousButtonTapped(_ sender: UIButton) {
         if currentIndex > 0 {
             currentIndex -= 1
@@ -118,7 +137,6 @@ class _0minworkoutViewController: UIViewController {
             transition.type = .push
             transition.subtype = .fromLeft
             view.window?.layer.add(transition, forKey: kCATransition)
-            
             configureExercise()
             UISelectionFeedbackGenerator().selectionChanged()
         }
@@ -130,7 +148,6 @@ class _0minworkoutViewController: UIViewController {
            if let vc = sb.instantiateViewController(withIdentifier: "InfoModalViewController") as? InfoModalViewController {
                vc.exercises = exercises
                vc.currentIndex = currentIndex
-               
                let nav = UINavigationController(rootViewController: vc)
                nav.modalPresentationStyle = .pageSheet
                present(nav, animated: true)
@@ -144,9 +161,7 @@ class _0minworkoutViewController: UIViewController {
             message: "Your progress will be saved.",
             preferredStyle: .alert
         )
-       
         let resumeAction = UIAlertAction(title: "Resume", style: .cancel, handler: nil)
-        
         let quitAction = UIAlertAction(title: "Quit", style: .destructive) { _ in
             self.showReasonForStoppingAlert()
         }
@@ -272,11 +287,9 @@ class _0minworkoutViewController: UIViewController {
                 message: "Would you like to try the exercises you skipped?",
                 preferredStyle: .alert
             )
-            
             alert.addAction(UIAlertAction(title: "Maybe later", style: .cancel) { [weak self] _ in
                 self?.showCompletion()
             })
-            
             alert.addAction(UIAlertAction(title: "Yes", style: .default) { [weak self] _ in
                 guard let self = self else { return }
                 self.isRevisitingSkipped = true
@@ -303,7 +316,6 @@ class _0minworkoutViewController: UIViewController {
             showCompletion()
         }
     }
-    
 }
 
 extension _0minworkoutViewController: RestScreenDelegate {
@@ -336,6 +348,5 @@ extension _0minworkoutViewController: RestScreenDelegate {
     }
 
 }
-
 
 

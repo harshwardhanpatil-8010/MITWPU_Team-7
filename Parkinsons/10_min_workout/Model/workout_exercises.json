@@ -3,7 +3,7 @@
   {
     "name": "Seated Trunk Rotations",
     "reps": 12,
-    "videoID": "uOljoOvycuo",
+    "videoID": "wrist_rotation",
     "description": "Deliberate torso rotations.",
     "category": "warmup",
     "position": "seated",
@@ -14,7 +14,7 @@
   {
     "name": "Seated Neck Tilts",
     "reps": 12,
-    "videoID": "jyOk-2DmVnU",
+    "videoID": "wrist_rotation",
     "description": "Gentle neck stretching.",
     "category": "warmup",
     "position": "seated",
@@ -25,7 +25,7 @@
   {
     "name": "Standing Big Reach",
     "reps": 12,
-    "videoID": "uOljoOvycuo",
+    "videoID": "wrist_rotation",
     "description": "Full body reach.",
     "category": "warmup",
     "position": "standing",
@@ -36,7 +36,7 @@
   {
     "name": "Standing Side Stretch",
     "reps": 12,
-    "videoID": "uOljoOvycuo",
+    "videoID": "wrist_rotation",
     "description": "Lateral rib stretch.",
     "category": "warmup",
     "position": "standing",
@@ -47,7 +47,7 @@
   {
     "name": "Seated Side Reach",
     "reps": 12,
-    "videoID": "Wz5IXboB7zM",
+    "videoID": "wrist_rotation",
     "description": "Off-center reaching.",
     "category": "balance",
     "position": "seated",
@@ -58,7 +58,7 @@
   {
     "name": "Seated Leg Hover",
     "reps": 12,
-    "videoID": "Wz5IXboB7zM",
+    "videoID": "wrist_rotation",
     "description": "Core-based leg lifting.",
     "category": "balance",
     "position": "seated",
@@ -69,7 +69,7 @@
   {
     "name": "Weight Shifts",
     "reps": 12,
-    "videoID": "Wz5IXboB7zM",
+    "videoID": "wrist_rotation",
     "description": "Shifting center of gravity.",
     "category": "balance",
     "position": "standing",
@@ -80,7 +80,7 @@
   {
     "name": "Tandem Stance",
     "reps": 12,
-    "videoID": "Wz5IXboB7zM",
+    "videoID": "wrist_rotation",
     "description": "Heel-to-toe balance.",
     "category": "balance",
     "position": "standing",
@@ -91,7 +91,7 @@
   {
     "name": "Seated Marching",
     "reps": 12,
-    "videoID": "March_ID",
+    "videoID": "wrist_rotation",
     "description": "Fast seated marching.",
     "category": "aerobic",
     "position": "seated",
@@ -102,7 +102,7 @@
   {
     "name": "Seated Boxing",
     "reps": 12,
-    "videoID": "March_ID",
+    "videoID": "wrist_rotation",
     "description": "Air punches with intent.",
     "category": "aerobic",
     "position": "seated",
@@ -113,7 +113,7 @@
   {
     "name": "High Knee March",
     "reps": 12,
-    "videoID": "March_ID",
+    "videoID": "wrist_rotation",
     "description": "Vigorous standing march.",
     "category": "aerobic",
     "position": "standing",
@@ -124,7 +124,7 @@
   {
     "name": "Standing Jumping Jacks",
     "reps": 12,
-    "videoID": "March_ID",
+    "videoID": "wrist_rotation",
     "description": "Modified arm/leg jacks.",
     "category": "aerobic",
     "position": "standing",
@@ -135,7 +135,7 @@
   {
     "name": "Seated Leg Extension",
     "reps": 12,
-    "videoID": "zIFtb-R24Ec",
+    "videoID": "wrist_rotation",
     "description": "Knee straightening.",
     "category": "strength",
     "position": "seated",
@@ -146,7 +146,7 @@
   {
     "name": "Seated Bicep Curls",
     "reps": 12,
-    "videoID": "zIFtb-R24Ec",
+    "videoID": "wrist_rotation",
     "description": "Arm strengthening.",
     "category": "strength",
     "position": "seated",
@@ -157,7 +157,7 @@
   {
     "name": "Sit-to-Stand",
     "reps": 12,
-    "videoID": "zIFtb-R24Ec",
+    "videoID": "wrist_rotation",
     "description": "Chair squats.",
     "category": "strength",
     "position": "standing",
@@ -168,7 +168,7 @@
   {
     "name": "Wall Push-ups",
     "reps": 12,
-    "videoID": "zIFtb-R24Ec",
+    "videoID": "wrist_rotation",
     "description": "Vertical push-ups.",
     "category": "strength",
     "position": "standing",
@@ -179,7 +179,7 @@
   {
     "name": "Box Breathing",
     "reps": 12,
-    "videoID": "WRyPQO_u_qE",
+    "videoID": "wrist_rotation",
     "description": "Rhythmic breathing.",
     "category": "cooldown",
     "position": "seated",
@@ -190,7 +190,7 @@
   {
     "name": "Seated Wrist Stretch",
     "reps": 12,
-    "videoID": "WRyPQO_u_qE",
+    "videoID": "wrist_rotation",
     "description": "Forearm release.",
     "category": "cooldown",
     "position": "seated",
@@ -201,7 +201,7 @@
   {
     "name": "Standing Calf Stretch",
     "reps": 12,
-    "videoID": "WRyPQO_u_qE",
+    "videoID": "wrist_rotation",
     "description": "Wall-assisted stretch.",
     "category": "cooldown",
     "position": "standing",
@@ -212,7 +212,7 @@
   {
     "name": "Standing Chest Opener",
     "reps": 12,
-    "videoID": "WRyPQO_u_qE",
+    "videoID": "wrist_rotation",
     "description": "Heart opening stretch.",
     "category": "cooldown",
     "position": "standing",
