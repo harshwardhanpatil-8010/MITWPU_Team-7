@@ -38,3 +38,14 @@ struct RhythmicSession: Codable, Identifiable {
 
 }
 
+enum PaceConfig {
+    static func bpm(for pace: String) -> Int {
+        switch pace {
+        case "Slow":     return 80
+        case "Moderate": return 120
+        case "Fast":     return 200//140
+        default:         return 100
+        }
+    }
+}
+

@@ -532,6 +532,25 @@
                                     </navigationItem>
                                 </items>
                             </navigationBar>
+                            <stackView hidden="YES" opaque="NO" contentMode="scaleToFill" axis="vertical" alignment="center" spacing="7" translatesAutoresizingMaskIntoConstraints="NO" id="RMv-Jz-BLX">
+                                <rect key="frame" x="34.333333333333343" y="298.33333333333326" width="333.66666666666663" height="277.66666666666674"/>
+                                <subviews>
+                                    <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="checkmark.circle" catalog="system" translatesAutoresizingMaskIntoConstraints="NO" id="HHb-WR-HEZ">
+                                        <rect key="frame" x="39.333333333333343" y="0.6666666666666714" width="255.00000000000003" height="218"/>
+                                        <color key="tintColor" red="0.58823529411764708" green="0.68235294117647061" blue="0.52156862745098043" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                        <constraints>
+                                            <constraint firstAttribute="width" constant="255" id="Hdb-Ly-yez"/>
+                                            <constraint firstAttribute="height" constant="219.33000000000001" id="lRd-D9-FXi"/>
+                                        </constraints>
+                                    </imageView>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Goal Completed !" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Ver-9O-mic">
+                                        <rect key="frame" x="0.0" y="226.33333333333331" width="333.66666666666669" height="51.333333333333314"/>
+                                        <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="43"/>
+                                        <nil key="textColor"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                </subviews>
+                            </stackView>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Walking Summary" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="cAf-Ek-EGe">
                                 <rect key="frame" x="16" y="86" width="370" height="24"/>
                                 <fontDescription key="fontDescription" type="boldSystem" pointSize="20"/>
@@ -756,6 +775,8 @@
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                         <constraints>
                             <constraint firstItem="fjf-0o-Z0T" firstAttribute="trailing" secondItem="gti-xA-aRh" secondAttribute="trailing" constant="16" id="26t-6F-JE3"/>
+                            <constraint firstItem="RMv-Jz-BLX" firstAttribute="centerX" secondItem="bBS-zW-oR2" secondAttribute="centerX" id="2ig-DH-B40"/>
+                            <constraint firstItem="RMv-Jz-BLX" firstAttribute="centerY" secondItem="bBS-zW-oR2" secondAttribute="centerY" id="3LU-Q9-xja"/>
                             <constraint firstItem="gti-xA-aRh" firstAttribute="leading" secondItem="fjf-0o-Z0T" secondAttribute="leading" constant="16" id="9zf-xI-j0v"/>
                             <constraint firstAttribute="trailing" secondItem="STB-Xg-ece" secondAttribute="trailing" id="EjF-ff-XKq"/>
                             <constraint firstItem="e0m-sN-ZMg" firstAttribute="leading" secondItem="fjf-0o-Z0T" secondAttribute="leading" constant="16" id="VuF-qI-6El"/>
@@ -776,6 +797,7 @@
                     <connections>
                         <outlet property="GaitUIView" destination="e0m-sN-ZMg" id="uUF-05-wQM"/>
                         <outlet property="distanceCovered" destination="SDp-zI-jou" id="CTC-AS-lET"/>
+                        <outlet property="goalCompletedTLabel" destination="RMv-Jz-BLX" id="H3i-yr-ywa"/>
                         <outlet property="speed" destination="MI3-bh-rbU" id="cWF-YO-Uvu"/>
                         <outlet property="stepLengthPercent" destination="kPx-fc-pRS" id="zVg-4I-PQY"/>
                         <outlet property="stepsLength" destination="kru-jc-1rw" id="Bfr-QD-DTg"/>
@@ -792,6 +814,21 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="XwU-fe-0Bp" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="6330" y="-454"/>
+        </scene>
+        <!--View Controller-->
+        <scene sceneID="46L-fu-Lfi">
+            <objects>
+                <viewController id="ARy-X7-j6U" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="3c6-qi-myg">
+                        <rect key="frame" x="0.0" y="0.0" width="402" height="874"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <viewLayoutGuide key="safeArea" id="EdN-r6-MJE"/>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                    </view>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="A9c-SC-sOj" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="6308.9552238805963" y="199.77116704805491"/>
         </scene>
         <!--Gait Summary Info View Controller-->
         <scene sceneID="myx-yR-NaW">
@@ -961,6 +998,7 @@ Longer step length usually means better leg strength and flexibility.</string>
         </scene>
     </scenes>
     <resources>
+        <image name="checkmark.circle" catalog="system" width="128" height="123"/>
         <image name="info.circle" catalog="system" width="128" height="123"/>
         <systemColor name="separatorColor">
             <color red="0.23529411759999999" green="0.23529411759999999" blue="0.26274509800000001" alpha="0.28999999999999998" colorSpace="custom" customColorSpace="sRGB"/>

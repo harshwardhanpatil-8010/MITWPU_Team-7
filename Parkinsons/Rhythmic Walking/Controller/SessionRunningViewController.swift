@@ -245,6 +245,12 @@
 //    */
 
 
+
+
+
+
+// after review changes
+
 import UIKit
 
 class SessionRunningViewController: UIViewController {
@@ -293,6 +299,7 @@ class SessionRunningViewController: UIViewController {
         isModalInPresentation = true
         
         setupProgressView()
+        self.selectedBPM = PaceConfig.bpm(for: selectedPace ?? "Slow")
         
         beatButton.setTitle(selectedBeat ?? "Clock", for: .normal)
         paceButton.setTitle(selectedPace ?? "Slow", for: .normal)
@@ -344,35 +351,87 @@ class SessionRunningViewController: UIViewController {
             guard let timerModel = timerModel else { return }
             if timerModel.isPaused {
                 timerModel.resume()
-                RhythmicAudioManager.shared.resume()
+//                RhythmicAudioManager.shared.resume()
+                
             } else {
                 timerModel.pause()
-                RhythmicAudioManager.shared.pause()
+//                RhythmicAudioManager.shared.pause()
+                RhythmicAudioManager.shared.stop()
             }
             updatePauseButtonUI()
         }
     
-    func setupBeatButton() {
-        let optionClosure: UIActionHandler = { [weak self] action in
-            self?.selectedBeat = action.title
-        }
-        let option1 = UIAction(title: "Clock", state: selectedBeat == "Clock" ? .on : .off, handler: optionClosure)
-        let option2 = UIAction(title: "Grass", state: selectedBeat == "Grass" ? .on : .off, handler: optionClosure)
-        beatButton.menu = UIMenu(children: [option1, option2])
-        beatButton.showsMenuAsPrimaryAction = true
-        beatButton.changesSelectionAsPrimaryAction = true
-    }
+//    func setupBeatButton() {
+//        let optionClosure: UIActionHandler = { [weak self] action in
+//            self?.selectedBeat = action.title
+//        }
+//        let option1 = UIAction(title: "Clock", state: selectedBeat == "Clock" ? .on : .off, handler: optionClosure)
+//        let option2 = UIAction(title: "Grass", state: selectedBeat == "Grass" ? .on : .off, handler: optionClosure)
+//        beatButton.menu = UIMenu(children: [option1, option2])
+//        beatButton.showsMenuAsPrimaryAction = true
+//        beatButton.changesSelectionAsPrimaryAction = true
+//    }
     
+//    func setupPaceButton() {
+//        let optionClosure: UIActionHandler = { [weak self] action in
+//            self?.selectedPace = action.title
+//        }
+//        let option1 = UIAction(title: "Slow", state: selectedPace == "Slow" ? .on : .off, handler: optionClosure)
+//        let option2 = UIAction(title: "Moderate", state: selectedPace == "Moderate" ? .on : .off, handler: optionClosure)
+//        let option3 = UIAction(title: "Fast", state: selectedPace == "Fast" ? .on : .off, handler: optionClosure)
+//        paceButton.menu = UIMenu(children: [option1, option2, option3])
+//        paceButton.showsMenuAsPrimaryAction = true
+//        paceButton.changesSelectionAsPrimaryAction = true
+//    }
     func setupPaceButton() {
+        // Set the initial title
+        paceButton.setTitle(selectedPace ?? "Slow", for: .normal)
+        
         let optionClosure: UIActionHandler = { [weak self] action in
-            self?.selectedPace = action.title
+            guard let self = self else { return }
+            
+            // 1. Update the local variable
+            self.selectedPace = action.title
+            
+            // 2. Get the new BPM from your PaceConfig helper
+            let newBPM = PaceConfig.bpm(for: action.title)
+            self.selectedBPM = newBPM
+            
+            // 3. Restart the audio with the new BPM (only if not paused)
+            if !(self.timerModel?.isPaused ?? false) {
+                RhythmicAudioManager.shared.playBeat(fileName: self.selectedBeat ?? "Clock", bpm: newBPM)
+            }
         }
+        
         let option1 = UIAction(title: "Slow", state: selectedPace == "Slow" ? .on : .off, handler: optionClosure)
         let option2 = UIAction(title: "Moderate", state: selectedPace == "Moderate" ? .on : .off, handler: optionClosure)
         let option3 = UIAction(title: "Fast", state: selectedPace == "Fast" ? .on : .off, handler: optionClosure)
+        
         paceButton.menu = UIMenu(children: [option1, option2, option3])
         paceButton.showsMenuAsPrimaryAction = true
         paceButton.changesSelectionAsPrimaryAction = true
+    }
+
+    func setupBeatButton() {
+        beatButton.setTitle(selectedBeat ?? "Clock", for: .normal)
+        
+        let optionClosure: UIActionHandler = { [weak self] action in
+            guard let self = self else { return }
+            
+            self.selectedBeat = action.title
+            
+            if !(self.timerModel?.isPaused ?? false) {
+                let currentBPM = self.selectedBPM ?? 100
+                RhythmicAudioManager.shared.playBeat(fileName: action.title, bpm: currentBPM)
+            }
+        }
+        
+        let option1 = UIAction(title: "Clock", state: selectedBeat == "Clock" ? .on : .off, handler: optionClosure)
+        let option2 = UIAction(title: "Grass", state: selectedBeat == "Grass" ? .on : .off, handler: optionClosure)
+        
+        beatButton.menu = UIMenu(children: [option1, option2])
+        beatButton.showsMenuAsPrimaryAction = true
+        beatButton.changesSelectionAsPrimaryAction = true
     }
     
     func presentSummaryAndDismiss() {

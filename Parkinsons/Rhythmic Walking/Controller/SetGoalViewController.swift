@@ -83,10 +83,10 @@ class SetGoalViewController: UIViewController, UITableViewDataSource, UIPickerVi
         let displayNum = session.sessionNumber
         
         if hrs == 0 {
-            cell.textLabel?.text = "Session \(displayNum)\t\t\t\t\t\t \(mins)min \(secs)s"
+            cell.textLabel?.text = "Session \(displayNum)\t\t\t\t\t\t  \(mins)min \(secs)s"
         }
         else{
-            cell.textLabel?.text = "Session \(displayNum)\t\t\t\t\t\t\(hrs)hrs \(mins)min"
+            cell.textLabel?.text = "Session \(displayNum)\t\t\t\t\t\t  \(hrs)hrs \(mins)min"
         }
         return cell
     }
