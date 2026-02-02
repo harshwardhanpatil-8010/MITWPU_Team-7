@@ -62,22 +62,23 @@ class EmojiGameViewController: UIViewController {
         timeElapsed += 1
         updateTimerLabel()
     }
-    
     func goToResults() {
         if let resultVC = storyboard?.instantiateViewController(withIdentifier: "resultMimicTheEmoji") as? resultMimicTheEmoji {
             resultVC.completedCount = self.score
             resultVC.skippedCount = self.skippedCount
             resultVC.timeTaken = self.timeElapsed
-            
-            // --- ADD THIS LINE BELOW ---
             resultVC.playedDate = self.selectedDate
-            // ---------------------------
             
-            resultVC.modalPresentationStyle = .fullScreen
-            self.present(resultVC, animated: true, completion: nil)
+            // Use the Navigation Controller to PUSH the view
+            if let nav = self.navigationController {
+                nav.pushViewController(resultVC, animated: true)
+            } else {
+                // If there is no Nav Controller, fallback to present (for debugging)
+                resultVC.modalPresentationStyle = .fullScreen
+                self.present(resultVC, animated: true)
+            }
         }
     }
-
     func updateTimerLabel() {
         timeLeftLabel.text = "Time: \(timeElapsed)s"
     }

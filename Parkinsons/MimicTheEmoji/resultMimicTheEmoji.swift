@@ -1,18 +1,18 @@
 import UIKit
 
 class resultMimicTheEmoji: UIViewController {
-
+    
     @IBOutlet weak var timeTakenCount: UILabel!
     @IBOutlet weak var skippedEmojiCount: UILabel!
     @IBOutlet weak var completedEmojiCount: UILabel!
     @IBOutlet weak var resultCardBackground: UIView!
     @IBOutlet weak var finishButton: UIButton!
-
+    
     var completedCount: Int = 0
     var skippedCount: Int = 0
     var timeTaken: Int = 30
     var playedDate: Date?
-
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -26,7 +26,7 @@ class resultMimicTheEmoji: UIViewController {
         setupResultCard()
         displayResults()
     }
-
+    
     func setupResultCard() {
         resultCardBackground.layer.cornerRadius = 15
         resultCardBackground.layer.shadowColor = UIColor.black.cgColor
@@ -35,29 +35,28 @@ class resultMimicTheEmoji: UIViewController {
         resultCardBackground.layer.shadowRadius = 8
         resultCardBackground.layer.masksToBounds = false
     }
-
+    
     func displayResults() {
         completedEmojiCount.text = "\(completedCount)"
         skippedEmojiCount.text = "\(skippedCount)"
         timeTakenCount.text = "\(timeTaken)"
     }
-
     @IBAction func finishButtonTapped(_ sender: UIButton) {
-        // 1. Check if we are inside a Navigation Controller
+        // 1. Check if we are in a Navigation Controller (which we are now, because of the 'push')
         if let nav = self.navigationController {
             
-            // Try to find the Emoji Landing Screen in the history
+            // 2. Look for the Landing Screen in the history
             if let landingVC = nav.viewControllers.first(where: { $0 is EmojiLandingScreen }) {
                 nav.popToViewController(landingVC, animated: true)
             } else {
-                // If it's not in history, just go back one screen
+                // 3. If not found, just go back one level
                 nav.popViewController(animated: true)
             }
             
         } else {
-            // 2. If we aren't in a Nav Controller, we must have been "Presented"
-            // This closes the current screen and returns to the one underneath
+            // Fallback for safety: if it's somehow still a modal, dismiss it
             self.dismiss(animated: true, completion: nil)
         }
     }
 }
+
