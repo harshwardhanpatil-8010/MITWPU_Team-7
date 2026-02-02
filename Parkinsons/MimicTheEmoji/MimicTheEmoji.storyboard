@@ -85,7 +85,7 @@
                                         </subviews>
                                     </stackView>
                                     <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="WHr-wU-5ca">
-                                        <rect key="frame" x="0.0" y="47.666666666666686" width="393" height="318.33333333333331"/>
+                                        <rect key="frame" x="8" y="47.666666666666686" width="377" height="318.33333333333331"/>
                                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                                         <collectionViewFlowLayout key="collectionViewLayout" automaticEstimatedItemSize="YES" minimumLineSpacing="0.0" minimumInteritemSpacing="0.0" id="a0T-e2-3nj">
                                             <size key="itemSize" width="128" height="128"/>
@@ -95,10 +95,10 @@
                                         </collectionViewFlowLayout>
                                         <cells>
                                             <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="DateCell" id="lkJ-sA-hqs" customClass="DateCell" customModule="Parkinsons" customModuleProvider="target">
-                                                <rect key="frame" x="0.0" y="0.0" width="127.99999999999997" height="128"/>
+                                                <rect key="frame" x="0.0" y="0.0" width="128" height="128"/>
                                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                                 <collectionViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" id="ohD-xg-xw4">
-                                                    <rect key="frame" x="0.0" y="0.0" width="127.99999999999997" height="128"/>
+                                                    <rect key="frame" x="0.0" y="0.0" width="128" height="128"/>
                                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                                     <subviews>
                                                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="eYR-CK-RCZ">
@@ -140,11 +140,11 @@
                                 <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                                 <constraints>
                                     <constraint firstItem="qhA-DW-pOk" firstAttribute="top" secondItem="0aA-Qp-don" secondAttribute="top" id="6d1-NM-Bx0"/>
-                                    <constraint firstItem="WHr-wU-5ca" firstAttribute="leading" secondItem="0aA-Qp-don" secondAttribute="leading" id="APU-Gp-Mw1"/>
+                                    <constraint firstItem="WHr-wU-5ca" firstAttribute="leading" secondItem="0aA-Qp-don" secondAttribute="leading" constant="8" id="APU-Gp-Mw1"/>
                                     <constraint firstItem="VmY-sX-3E0" firstAttribute="top" secondItem="qhA-DW-pOk" secondAttribute="bottom" constant="2" id="HQD-Ic-3Dc"/>
                                     <constraint firstItem="VmY-sX-3E0" firstAttribute="leading" secondItem="0aA-Qp-don" secondAttribute="leading" constant="16" id="Mdk-JT-DDr"/>
                                     <constraint firstAttribute="bottom" secondItem="WHr-wU-5ca" secondAttribute="bottom" constant="-46" id="OJO-Zi-EX4"/>
-                                    <constraint firstAttribute="trailing" secondItem="WHr-wU-5ca" secondAttribute="trailing" id="Qt3-nx-FfD"/>
+                                    <constraint firstAttribute="trailing" secondItem="WHr-wU-5ca" secondAttribute="trailing" constant="8" id="Qt3-nx-FfD"/>
                                     <constraint firstItem="WHr-wU-5ca" firstAttribute="top" secondItem="VmY-sX-3E0" secondAttribute="bottom" constant="5" id="VGn-mS-A6g"/>
                                     <constraint firstAttribute="trailing" secondItem="VmY-sX-3E0" secondAttribute="trailing" constant="16" id="W9r-Ze-iks"/>
                                     <constraint firstItem="qhA-DW-pOk" firstAttribute="leading" secondItem="0aA-Qp-don" secondAttribute="leading" constant="16" id="bNh-DD-mjy"/>

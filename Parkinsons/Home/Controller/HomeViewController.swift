@@ -4,11 +4,11 @@ enum Section: Int, CaseIterable {
     case calendar
     case medications
     case exercises
-    case symptoms
+   // case symptoms
     case therapeuticGames
 }
 
-class HomeViewController: UIViewController, UICollectionViewDelegate, SymptomLogCellDelegate, SymptomLogDetailDelegate {
+class HomeViewController: UIViewController, UICollectionViewDelegate {
     
     private let todayViewModel = TodayMedicationViewModel()
     private var todayDoses: [TodayDoseItem] = []
@@ -25,15 +25,15 @@ class HomeViewController: UIViewController, UICollectionViewDelegate, SymptomLog
         return view
     }()
     
-    var hasLoggedSymptomsToday: Bool = false {
-        didSet {
-            if let index = homeSections.firstIndex(of: .symptoms) {
-                mainCollectionView.reloadSections(IndexSet(integer: index))
-            } else {
-                mainCollectionView.reloadData()
-            }
-        }
-    }
+//    var hasLoggedSymptomsToday: Bool = false {
+//        didSet {
+//            if let index = homeSections.firstIndex(of: .symptoms) {
+//                mainCollectionView.reloadSections(IndexSet(integer: index))
+//            } else {
+//                mainCollectionView.reloadData()
+//            }
+//        }
+//    }
     
     var dates: [DateModel] = []
     var selectedDate: Date = Date()
@@ -156,7 +156,7 @@ class HomeViewController: UIViewController, UICollectionViewDelegate, SymptomLog
         mainCollectionView.register(UINib(nibName: "CalenderCollectionViewCell", bundle: nil), forCellWithReuseIdentifier: "calendar_cell")
         mainCollectionView.register(UINib(nibName: "MedicationCardCollectionViewCell", bundle: nil), forCellWithReuseIdentifier: "MedicationCardCell")
         mainCollectionView.register(UINib(nibName: "ExerciseCardCell", bundle: nil), forCellWithReuseIdentifier: "exercise_card_cell")
-        mainCollectionView.register(UINib(nibName: "SymptomLogCell", bundle: nil), forCellWithReuseIdentifier: "symptom_log_cell")
+//        mainCollectionView.register(UINib(nibName: "SymptomLogCell", bundle: nil), forCellWithReuseIdentifier: "symptom_log_cell")
         mainCollectionView.register(UINib(nibName: "TherapeuticGameCell", bundle: nil), forCellWithReuseIdentifier: "therapeutic_game_cell")
         
         mainCollectionView.register(SectionHeaderView.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: "HeaderView")
@@ -238,23 +238,23 @@ class HomeViewController: UIViewController, UICollectionViewDelegate, SymptomLog
                 section.boundarySupplementaryItems = [header]
                 return section
                 
-            case .symptoms:
-                let itemSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: .fractionalHeight(1.0))
-                let item = NSCollectionLayoutItem(layoutSize: itemSize)
-                let groupSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: .absolute(80))
-                let group = NSCollectionLayoutGroup.horizontal(layoutSize: groupSize, subitems: [item])
-                let section = NSCollectionLayoutSection(group: group)
-                section.contentInsets = NSDirectionalEdgeInsets(top: 8, leading: 16, bottom: 24, trailing: 16)
-                
-                let headerSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: .absolute(30))
-                let header = NSCollectionLayoutBoundarySupplementaryItem(
-                    layoutSize: headerSize,
-                    elementKind: UICollectionView.elementKindSectionHeader,
-                    alignment: .top
-                )
-                section.boundarySupplementaryItems = [header]
-                return section
-                
+//            case .symptoms:
+//                let itemSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: .fractionalHeight(1.0))
+//                let item = NSCollectionLayoutItem(layoutSize: itemSize)
+//                let groupSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: .absolute(80))
+//                let group = NSCollectionLayoutGroup.horizontal(layoutSize: groupSize, subitems: [item])
+//                let section = NSCollectionLayoutSection(group: group)
+//                section.contentInsets = NSDirectionalEdgeInsets(top: 8, leading: 16, bottom: 24, trailing: 16)
+//                
+//                let headerSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: .absolute(30))
+//                let header = NSCollectionLayoutBoundarySupplementaryItem(
+//                    layoutSize: headerSize,
+//                    elementKind: UICollectionView.elementKindSectionHeader,
+//                    alignment: .top
+//                )
+//                section.boundarySupplementaryItems = [header]
+//                return section
+//                
             case .therapeuticGames:
                 let itemSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1), heightDimension: .fractionalHeight(1.0))
                 let item = NSCollectionLayoutItem(layoutSize: itemSize)
@@ -278,34 +278,34 @@ class HomeViewController: UIViewController, UICollectionViewDelegate, SymptomLog
         return layout
     }
     
-    func symptomLogDidComplete(with ratings: [SymptomRating]) {
-        let newLogEntry = SymptomLogEntry(date: Date(), ratings: ratings)
-        SymptomLogManager.shared.saveLogEntry(newLogEntry)
-        hasLoggedSymptomsToday = true
-    }
-    
-    func symptomLogDidCancel() { }
-    
-    func symptomLogCellDidTapLogNow(_ cell: SymptomLogCell) {
-        let storyboard = UIStoryboard(name: "Home", bundle: nil)
-        if hasLoggedSymptomsToday {
-            guard let todayLog = SymptomLogManager.shared.getLogForToday() else {
-                hasLoggedSymptomsToday = false
-                return
-            }
-            guard let detailVC = storyboard.instantiateViewController(withIdentifier: "SymptomLogHistoryViewController") as? SymptomLogHistoryViewController else { return }
-            detailVC.todayLogEntry = todayLog
-            detailVC.updateCompletionDelegate = self
-            detailVC.modalPresentationStyle = .pageSheet
-            self.present(detailVC, animated: true)
-        } else {
-            guard let symptomVC = storyboard.instantiateViewController(withIdentifier: "SymptomLogDetailViewController") as? SymptomLogDetailViewController else { return }
-            symptomVC.delegate = self
-            let navController = UINavigationController(rootViewController: symptomVC)
-            navController.modalPresentationStyle = .pageSheet
-            self.present(navController, animated: true)
-        }
-    }
+//    func symptomLogDidComplete(with ratings: [SymptomRating]) {
+//        let newLogEntry = SymptomLogEntry(date: Date(), ratings: ratings)
+//        SymptomLogManager.shared.saveLogEntry(newLogEntry)
+//        hasLoggedSymptomsToday = true
+//    }
+//    
+//    func symptomLogDidCancel() { }
+//    
+//    func symptomLogCellDidTapLogNow(_ cell: SymptomLogCell) {
+//        let storyboard = UIStoryboard(name: "Home", bundle: nil)
+//        if hasLoggedSymptomsToday {
+//            guard let todayLog = SymptomLogManager.shared.getLogForToday() else {
+//                hasLoggedSymptomsToday = false
+//                return
+//            }
+//            guard let detailVC = storyboard.instantiateViewController(withIdentifier: "SymptomLogHistoryViewController") as? SymptomLogHistoryViewController else { return }
+//            detailVC.todayLogEntry = todayLog
+//            detailVC.updateCompletionDelegate = self
+//            detailVC.modalPresentationStyle = .pageSheet
+//            self.present(detailVC, animated: true)
+//        } else {
+//            guard let symptomVC = storyboard.instantiateViewController(withIdentifier: "SymptomLogDetailViewController") as? SymptomLogDetailViewController else { return }
+//            symptomVC.delegate = self
+//            let navController = UINavigationController(rootViewController: symptomVC)
+//            navController.modalPresentationStyle = .pageSheet
+//            self.present(navController, animated: true)
+//        }
+//    }
     
     private func handleGamesSelection(at row: Int) {
         switch row {
@@ -397,7 +397,7 @@ extension HomeViewController: UICollectionViewDataSource {
         case .medications:
             return todayDoses.count
         case .exercises: return exerciseData.count
-        case .symptoms: return 1
+        //case .symptoms: return 1
         case .therapeuticGames: return therapeuticGamesData.count
         }
     }
@@ -448,14 +448,14 @@ extension HomeViewController: UICollectionViewDataSource {
             }
             return cell
 
-            
-        case .symptoms:
-            let cell = mainCollectionView.dequeueReusableCell(withReuseIdentifier: "symptom_log_cell", for: indexPath) as! SymptomLogCell
-            cell.delegate = self
-            let message = hasLoggedSymptomsToday ? "Your symptoms have been logged today." : "You haven't logged your symptoms today."
-            let buttonTitle = hasLoggedSymptomsToday ? "View log" : "Log now"
-            cell.configure(with: message, buttonTitle: buttonTitle)
-            return cell
+//            
+//        case .symptoms:
+//            let cell = mainCollectionView.dequeueReusableCell(withReuseIdentifier: "symptom_log_cell", for: indexPath) as! SymptomLogCell
+//            cell.delegate = self
+//            let message = hasLoggedSymptomsToday ? "Your symptoms have been logged today." : "You haven't logged your symptoms today."
+//            let buttonTitle = hasLoggedSymptomsToday ? "View log" : "Log now"
+//            cell.configure(with: message, buttonTitle: buttonTitle)
+//            return cell
             
         case .therapeuticGames:
             let cell = mainCollectionView.dequeueReusableCell(withReuseIdentifier: "therapeutic_game_cell", for: indexPath) as! TherapeuticGameCell
@@ -484,8 +484,8 @@ extension HomeViewController: UICollectionViewDataSource {
                 header.configure(title: "Upcoming Medications")
             case .exercises:
                 header.configure(title: "Guided Exercise")
-            case .symptoms:
-                header.configure(title: "Symptoms")
+//            case .symptoms:
+//                header.configure(title: "Symptoms")
             case .therapeuticGames:
                 header.configure(title: "Therapeutic Games")
             }
