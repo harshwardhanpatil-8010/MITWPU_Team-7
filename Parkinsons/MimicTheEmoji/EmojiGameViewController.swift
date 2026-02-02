@@ -27,6 +27,7 @@ class EmojiGameViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         setupUI()
+        setupCustomBackButton()
         // selectedDate can be used to track the day's session if needed
         arModel.setup(view: cameraContainerView)
         arModel.onMatch = { [weak self] in
@@ -38,7 +39,43 @@ class EmojiGameViewController: UIViewController {
     override func viewWillAppear(_ animated: Bool) {
         tabBarController?.tabBar.isHidden = true
     }
+    func setupCustomBackButton() {
+        // 1. Hide the default chevron back button
+        self.navigationItem.hidesBackButton = true
+        
+        // 2. Define the action closure (No @objc needed)
+        let closeAction = UIAction { [weak self] _ in
+            self?.showQuitAlert()
+        }
+        
+        // 3. Create the "X" button using the correct system item initializer
+        // .close is the standard "X" icon for modern iOS
+        let closeButton = UIBarButtonItem(barButtonSystemItem: .close, target: nil, action: nil)
+        closeButton.primaryAction = closeAction
+        
+        // 4. Assign it to the left side
+        self.navigationItem.leftBarButtonItem = closeButton
+    }
 
+    func showQuitAlert() {
+        let alert = UIAlertController(
+            title: "Quit Game?",
+            message: "Are you sure you want to quit? Your progress will not be saved.",
+            preferredStyle: .alert
+        )
+        
+        let quitAction = UIAlertAction(title: "Quit", style: .destructive) { [weak self] _ in
+            // Navigates back because we used nav.pushViewController earlier
+            self?.navigationController?.popViewController(animated: true)
+        }
+        
+        let cancelAction = UIAlertAction(title: "Cancel", style: .cancel)
+        
+        alert.addAction(quitAction)
+        alert.addAction(cancelAction)
+        
+        present(alert, animated: true)
+    }
     func startGame() {
         score = 0
         skippedCount = 0
