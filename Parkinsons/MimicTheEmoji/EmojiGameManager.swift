@@ -11,14 +11,12 @@ class EmojiGameManager {
     static let shared = EmojiGameManager()
     private let storageKey = "CompletedEmojiDates"
 
-    // Checks if a date is in the list of completed dates
     func isCompleted(date: Date) -> Bool {
         let completedDates = UserDefaults.standard.stringArray(forKey: storageKey) ?? []
         let dateString = formatDate(date)
         return completedDates.contains(dateString)
     }
 
-    // Adds a date to the completion list
     func markAsCompleted(date: Date) {
         var completedDates = UserDefaults.standard.stringArray(forKey: storageKey) ?? []
         let dateString = formatDate(date)

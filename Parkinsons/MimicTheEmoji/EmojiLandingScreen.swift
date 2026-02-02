@@ -33,8 +33,8 @@ class EmojiLandingScreen: UIViewController, UICollectionViewDataSource, UICollec
                 object: nil
             )
         
-        updateCompletionCount() // New method
-        collectionView.reloadData() // Refresh the dots/colors
+        updateCompletionCount()
+        collectionView.reloadData()
         
         collectionView.dataSource = self
         collectionView.delegate = self
@@ -48,8 +48,8 @@ class EmojiLandingScreen: UIViewController, UICollectionViewDataSource, UICollec
     }
     // EmojiLandingScreen.swift
     @objc private func refreshUI() {
-        updateCompletionCount() // Updates the "X/31 Completed" label
-        collectionView.reloadData() // Forces every cell to redraw itself
+        updateCompletionCount()
+        collectionView.reloadData()
     }
     private func updateCompletionCount() {
             let completedCount = (0..<daysInMonth).filter { offset in
@@ -62,7 +62,6 @@ class EmojiLandingScreen: UIViewController, UICollectionViewDataSource, UICollec
     
     private func configureLayout() {
         guard let layout = collectionView.collectionViewLayout as? UICollectionViewFlowLayout else { return }
-        // Match Code 1: Perfect 7-column grid math
         let width = collectionView.bounds.width / 7
         layout.itemSize = CGSize(width: width, height: width)
         layout.minimumInteritemSpacing = 0
@@ -73,11 +72,9 @@ class EmojiLandingScreen: UIViewController, UICollectionViewDataSource, UICollec
         let now = Date()
         let comps = calendar.dateComponents([.year, .month], from: now)
 
-        // Match Code 1: Calculate the exact start of the current month
         firstDayOfMonth = calendar.date(from: comps)!
         daysInMonth = calendar.range(of: .day, in: .month, for: firstDayOfMonth)!.count
 
-        // Match Code 1: Calculate the offset for Monday start
         let weekday = calendar.component(.weekday, from: firstDayOfMonth)
         firstWeekdayOffset = (weekday - calendar.firstWeekday + 7) % 7
 
@@ -97,13 +94,11 @@ class EmojiLandingScreen: UIViewController, UICollectionViewDataSource, UICollec
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "DateCell", for: indexPath) as! DateCell
         
-        // Handle empty leading cells
         guard indexPath.item >= firstWeekdayOffset else {
             cell.configureEmpty()
             return cell
         }
 
-        // Match Code 1: Calculate actual day and date state
         let day = indexPath.item - firstWeekdayOffset + 1
         let date = calendar.date(byAdding: .day, value: day - 1, to: firstDayOfMonth)!
         let cellDate = calendar.startOfDay(for: date)
@@ -115,12 +110,11 @@ class EmojiLandingScreen: UIViewController, UICollectionViewDataSource, UICollec
         
         let isCompleted = EmojiGameManager.shared.isCompleted(date: cellDate)
         
-        // Assuming your Emoji DateCell has a similar configure method
         cell.configure(
             day: day,
             isToday: isToday,
             isSelected: isSelected,
-            isCompleted: isCompleted, // Update this once you add EmojiGameManager
+            isCompleted: isCompleted, 
             showTodayOutline: isToday && !isSelected,
             enabled: !isFuture
         )

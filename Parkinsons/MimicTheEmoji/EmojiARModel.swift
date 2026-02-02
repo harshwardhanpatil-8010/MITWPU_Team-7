@@ -42,7 +42,6 @@ class EmojiARModel: NSObject, ARSessionDelegate {
     }
 }
 
-// Manual Bridge for the FaceRing project
 enum FaceRing {
     static func loadScene() throws -> Entity & HasAnchoring {
         return try Entity.loadAnchor(named: "Scene", in: Bundle.main)

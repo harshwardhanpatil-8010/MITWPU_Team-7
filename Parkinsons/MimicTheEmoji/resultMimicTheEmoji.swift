@@ -16,8 +16,7 @@ class resultMimicTheEmoji: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        // FIX: Logic must be inside a function
-        // resultMimicTheEmoji.swift
+        
         if let date = playedDate {
             EmojiGameManager.shared.markAsCompleted(date: date) // Saves to memory
         }
@@ -45,19 +44,15 @@ class resultMimicTheEmoji: UIViewController {
         timeTakenCount.text = "\(timeTaken)"
     }
     @IBAction func finishButtonTapped(_ sender: UIButton) {
-        // 1. Check if we are in a Navigation Controller (which we are now, because of the 'push')
         if let nav = self.navigationController {
             
-            // 2. Look for the Landing Screen in the history
             if let landingVC = nav.viewControllers.first(where: { $0 is EmojiLandingScreen }) {
                 nav.popToViewController(landingVC, animated: true)
             } else {
-                // 3. If not found, just go back one level
                 nav.popViewController(animated: true)
             }
             
         } else {
-            // Fallback for safety: if it's somehow still a modal, dismiss it
             self.dismiss(animated: true, completion: nil)
         }
     }

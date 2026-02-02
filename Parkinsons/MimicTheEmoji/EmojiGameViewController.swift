@@ -28,7 +28,6 @@ class EmojiGameViewController: UIViewController {
         super.viewDidLoad()
         setupUI()
         setupCustomBackButton()
-        // selectedDate can be used to track the day's session if needed
         arModel.setup(view: cameraContainerView)
         arModel.onMatch = { [weak self] in
             self?.handleSuccess()
@@ -40,20 +39,15 @@ class EmojiGameViewController: UIViewController {
         tabBarController?.tabBar.isHidden = true
     }
     func setupCustomBackButton() {
-        // 1. Hide the default chevron back button
         self.navigationItem.hidesBackButton = true
         
-        // 2. Define the action closure (No @objc needed)
         let closeAction = UIAction { [weak self] _ in
             self?.showQuitAlert()
         }
         
-        // 3. Create the "X" button using the correct system item initializer
-        // .close is the standard "X" icon for modern iOS
         let closeButton = UIBarButtonItem(barButtonSystemItem: .close, target: nil, action: nil)
         closeButton.primaryAction = closeAction
         
-        // 4. Assign it to the left side
         self.navigationItem.leftBarButtonItem = closeButton
     }
 
@@ -65,7 +59,6 @@ class EmojiGameViewController: UIViewController {
         )
         
         let quitAction = UIAlertAction(title: "Quit", style: .destructive) { [weak self] _ in
-            // Navigates back because we used nav.pushViewController earlier
             self?.navigationController?.popViewController(animated: true)
         }
         
@@ -109,11 +102,9 @@ class EmojiGameViewController: UIViewController {
             resultVC.timeTaken = self.timeElapsed
             resultVC.playedDate = self.selectedDate
             
-            // Use the Navigation Controller to PUSH the view
             if let nav = self.navigationController {
                 nav.pushViewController(resultVC, animated: true)
             } else {
-                // If there is no Nav Controller, fallback to present (for debugging)
                 resultVC.modalPresentationStyle = .fullScreen
                 self.present(resultVC, animated: true)
             }
