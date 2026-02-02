@@ -14,6 +14,6 @@ struct DoseLog: Codable, Identifiable {
     let scheduledTime: Date
     let loggedAt: Date
     var status: DoseStatus
-    let day: Date
+    var day: Date
 }
 

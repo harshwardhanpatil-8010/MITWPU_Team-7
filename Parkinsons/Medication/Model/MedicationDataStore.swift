@@ -31,8 +31,12 @@ class MedicationDataStore: ObservableObject {
     }
 
     private func saveToStorage() {
-        if let encoded = try? JSONEncoder().encode(medications) {
-            UserDefaults.standard.set(encoded, forKey: storageKey)
+        let dataToSave = self.medications // Capture current state
+        
+        DispatchQueue.global(qos: .background).async {
+            if let encoded = try? JSONEncoder().encode(dataToSave) {
+                UserDefaults.standard.set(encoded, forKey: self.storageKey)
+            }
         }
     }
 

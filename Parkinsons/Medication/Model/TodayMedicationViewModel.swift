@@ -8,24 +8,19 @@ final class TodayMedicationViewModel {
     func loadTodayMedications(from medications: [Medication]) {
         todayDoses.removeAll()
 
-        let todayLogs = DoseLogDataStore.shared.logs
+        // 1. Create a Set of unique keys for doses already logged today
+        // Format: "medicationID-scheduledTime"
+        let loggedKeys = Set(DoseLogDataStore.shared.logs
             .filter { $0.day == Date().startOfDay }
+            .map { "\($0.medicationID)-\($0.scheduledTime.timeIntervalSince1970)" })
 
         for med in medications {
             guard isMedicationDueToday(med) else { continue }
 
             for dose in med.doses {
-
-                let alreadyLogged = todayLogs.contains {
-                    $0.medicationID == med.id &&
-                    Calendar.current.isDate(
-                        $0.scheduledTime,
-                        equalTo: dose.time,
-                        toGranularity: .minute
-                    )
-                }
-
-                guard !alreadyLogged else { continue }
+                // 2. O(1) Lookup instead of O(n) filtering
+                let currentKey = "\(med.id)-\(dose.time.timeIntervalSince1970)"
+                guard !loggedKeys.contains(currentKey) else { continue }
 
                 let item = TodayDoseItem(
                     id: UUID(),
@@ -36,11 +31,9 @@ final class TodayMedicationViewModel {
                     scheduledTime: normalizeDoseTime(dose.time),
                     logStatus: .none
                 )
-
                 todayDoses.append(item)
             }
         }
-
         todayDoses.sort { $0.scheduledTime < $1.scheduledTime }
     }
 

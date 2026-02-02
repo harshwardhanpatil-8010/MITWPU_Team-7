@@ -65,32 +65,29 @@ struct Medication: Codable {
 extension RepeatRule {
     func displayString() -> String {
         switch self {
-
         case .everyday:
             return "Everyday"
-
         case .none:
             return "None"
-
         case .weekly(let days):
-            if Set(days) == Set([1, 2, 3, 4, 5, 6, 7]) {
-                return "Everyday"
-            }
-
-            let weekdayMap: [Int: String] = [
-                1: "Sun",
-                2: "Mon",
-                3: "Tue",
-                4: "Wed",
-                5: "Thu",
-                6: "Fri",
-                7: "Sat"
-            ]
-
+            if days.count == 7 { return "Everyday" }
+            
+            // Uses the system's localized "Short" symbols (Mon, Tue, etc.)
+            let symbols = Calendar.current.shortWeekdaySymbols
             return days
                 .sorted()
-                .compactMap { weekdayMap[$0] }
+                .compactMap { dayIndex in
+                    // Adjusting for 1-based index (Sun=1) to 0-based array
+                    return symbols[safe: dayIndex - 1]
+                }
                 .joined(separator: ", ")
         }
+    }
+}
+
+// Helper to prevent crashes if an invalid Int is passed
+extension Array {
+    subscript(safe index: Index) -> Element? {
+        return indices.contains(index) ? self[index] : nil
     }
 }
