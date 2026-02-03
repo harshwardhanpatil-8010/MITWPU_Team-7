@@ -43,19 +43,10 @@ class _0minworkoutGoodJobViewController: UIViewController {
         saveFeedbackAndExit(value: 3)
     }
 
-    func saveDailyWorkoutSummary() {
-        let context = PersistenceController.shared.viewContext
-        let summary = DailyWorkoutSummary(context: context)
-        
-        summary.date = Date()
-        summary.completedCount = Int16(WorkoutManager.shared.completedToday.count)
-        summary.skippedCount = Int16(WorkoutManager.shared.skippedToday.count)
-        PersistenceController.shared.save()
-    }
-    
+ 
     func saveFeedbackAndExit(value: Int) {
         WorkoutManager.shared.saveFeedback(value)
-
+        DailyWorkoutSummaryStore.shared.saveWorkoutSummary()
                 let alert = UIAlertController(
                     title: "Workout Complete!",
                     message: "Great job! Your feedback has been saved. Tomorrow’s workout will be adjusted to match how you felt today.",

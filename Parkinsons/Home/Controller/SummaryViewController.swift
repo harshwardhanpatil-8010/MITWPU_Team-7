@@ -102,6 +102,7 @@ class SummaryViewController: UIViewController {
         mainCollectionView.setCollectionViewLayout(generateSummaryLayout(), animated: false)
     }
     
+    
     func loadDataForSelectedDate() {
         let targetDate = dateToDisplay ?? Date()
         currentSymptomLog = SymptomLogManager.shared.getLogEntry(for: targetDate)
@@ -243,26 +244,30 @@ extension SummaryViewController: UICollectionViewDataSource, UICollectionViewDel
             return cell
             
         case .exercises:
-            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "exercise_card_cell", for: indexPath) as! ExerciseCardCell
+            let cell = collectionView.dequeueReusableCell(
+                withReuseIdentifier: "exercise_card_cell",
+                for: indexPath
+            ) as! ExerciseCardCell
+
             let model = exerciseData[indexPath.item]
-            
+            cell.configure(with: model)
+
+            let today = Date()
+            let summary = DailyWorkoutSummaryStore.shared.fetchSummary(for: today)
+
             if indexPath.item == 0 {
-                let completed = WorkoutManager.shared.completedToday.count
+                let completed = Int(summary?.completedCount ?? 0)
                 let total = max(WorkoutManager.shared.getTodayWorkout().count, 7)
+
                 cell.setProgress(completed: completed, total: total)
-                cell.configure(with: model)
             } else {
-                cell.configure(with: model)
-                if let lastSession = DataStore.shared.sessions.first {
-                    let done = lastSession.elapsedSeconds
-                    let goal = lastSession.requestedDurationSeconds > 0 ? lastSession.requestedDurationSeconds : 60
-                    cell.setProgress(completed: done, total: goal)
-                    cell.progressLabel.text = "\(Int((Double(done) / Double(goal)) * 100))%"
-                } else {
-                    cell.setProgress(completed: 0, total: 1)
-                    cell.progressLabel.text = "0%"
-                }
+                let done = Int(summary?.completedCount ?? 0)
+                let goal = max(WorkoutManager.shared.getTodayWorkout().count, 1)
+
+                cell.setProgress(completed: done, total: goal)
+                cell.progressLabel.text = "\(Int((Double(done) / Double(goal)) * 100))%"
             }
+
             return cell
         }
     }
