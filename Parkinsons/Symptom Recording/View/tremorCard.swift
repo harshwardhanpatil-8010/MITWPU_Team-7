@@ -31,9 +31,9 @@ class tremorCard: UICollectionViewCell {
     func configure(frequencyHz: Double?) {
         if let hz = frequencyHz {
             tremorValueLabel.text = String(format: "%.1f Hz", hz)
-            tremorValueLabel.textColor = .black // Ensure it's visible
+            tremorValueLabel.textColor = .black
         } else {
-            tremorValueLabel.text = "Steady" // Or "No Tremor" instead of "— Hz"
+            tremorValueLabel.text = "Steady"
             tremorValueLabel.textColor = .label
         }
     }

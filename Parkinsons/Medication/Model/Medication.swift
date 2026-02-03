@@ -72,12 +72,12 @@ extension RepeatRule {
         case .weekly(let days):
             if days.count == 7 { return "Everyday" }
             
-            // Uses the system's localized "Short" symbols (Mon, Tue, etc.)
+            
             let symbols = Calendar.current.shortWeekdaySymbols
             return days
                 .sorted()
                 .compactMap { dayIndex in
-                    // Adjusting for 1-based index (Sun=1) to 0-based array
+                    
                     return symbols[safe: dayIndex - 1]
                 }
                 .joined(separator: ", ")
@@ -85,7 +85,7 @@ extension RepeatRule {
     }
 }
 
-// Helper to prevent crashes if an invalid Int is passed
+
 extension Array {
     subscript(safe index: Index) -> Element? {
         return indices.contains(index) ? self[index] : nil

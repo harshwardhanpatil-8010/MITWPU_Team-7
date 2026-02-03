@@ -10,7 +10,7 @@ final class TremorMotionManager {
     private let sampleRate: Double = 100.0
     private let queue = OperationQueue()
 
-    func recordFrequency(duration: TimeInterval = 5.0, completion: @escaping (Double?) -> Void) {
+    func recordTremorFrequency(duration: TimeInterval = 5.0, completion: @escaping (Double?) -> Void) {
         guard motionManager.isDeviceMotionAvailable else {
             completion(nil)
             return
@@ -24,14 +24,14 @@ final class TremorMotionManager {
             guard let self = self, let motion = data else { return }
 
             let ua = motion.userAcceleration
-            // Combine all axes into a single magnitude value to capture tremor in any direction
+            
             let magnitude = sqrt(pow(ua.x, 2) + pow(ua.y, 2) + pow(ua.z, 2))
             
             self.samples.append(magnitude)
 
             if self.samples.count >= maxSamples {
                 self.motionManager.stopDeviceMotionUpdates()
-                let freq = self.calculateDominantFrequency()
+                let freq = self.calculateTremorFrequency()
                 DispatchQueue.main.async {
                     completion(freq)
                 }
@@ -39,23 +39,23 @@ final class TremorMotionManager {
         }
     }
 
-    private func calculateDominantFrequency() -> Double? {
-        // Need enough data for a stable FFT (minimum 2-3 seconds at 100Hz)
+    private func calculateTremorFrequency() -> Double? {
+        
         guard samples.count >= 256 else { return nil }
 
-        // 1. Detrending: Remove the mean to center the signal at 0.0
+        
         let mean = samples.reduce(0, +) / Double(samples.count)
         let centered = samples.map { $0 - mean }
 
-        // 2. Apply Band-pass Filter (2Hz - 10Hz covers most Parkinsonian/Essential tremors)
+        
         let filtered = bandPass(centered, low: 2.0, high: 10.0, sampleRate: sampleRate)
 
-        // 3. RMS Check: Ensure there is actually enough movement to analyze
+        
         let rms = sqrt(filtered.map { $0 * $0 }.reduce(0, +) / Double(filtered.count))
-        if rms < 0.01 { return nil } // Too still
+        if rms < 0.01 { return nil }
 
-        // 4. FFT Setup
-        let n = 1 << Int(floor(log2(Double(filtered.count)))) // Power of 2
+        
+        let n = 1 << Int(floor(log2(Double(filtered.count))))
         let log2n = vDSP_Length(log2(Double(n)))
         guard let setup = vDSP_create_fftsetupD(log2n, FFTRadix(kFFTRadix2)) else { return nil }
 
@@ -66,15 +66,15 @@ final class TremorMotionManager {
             imag.withUnsafeMutableBufferPointer { imagPtr in
                 var split = DSPDoubleSplitComplex(realp: realPtr.baseAddress!, imagp: imagPtr.baseAddress!)
                 
-                // Perform FFT
+                
                 vDSP_fft_zipD(setup, &split, 1, log2n, FFTDirection(FFT_FORWARD))
                 
-                // Calculate Magnitudes
+                
                 var magnitudes = [Double](repeating: 0.0, count: n / 2)
                 vDSP_zvmagsD(&split, 1, &magnitudes, 1, vDSP_Length(n / 2))
                 vDSP_destroy_fftsetupD(setup)
                 
-                // 5. Find Peak in the Tremor Range (2Hz to 9Hz)
+                
                 let minBin = Int(2.0 * Double(n) / sampleRate)
                 let maxBin = Int(9.0 * Double(n) / sampleRate)
                 
@@ -90,7 +90,7 @@ final class TremorMotionManager {
                     }
                 }
                 
-                // 6. Confidence Check (Peak vs average energy)
+                
                 let totalEnergy = magnitudes[minBin...maxBin].reduce(0, +)
                 guard peakMagnitude > (totalEnergy / Double(maxBin - minBin)) * 1.5 else { return nil }
 

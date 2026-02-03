@@ -8,8 +8,8 @@ final class TodayMedicationViewModel {
     func loadTodayMedications(from medications: [Medication]) {
         todayDoses.removeAll()
 
-        // 1. Create a Set of unique keys for doses already logged today
-        // Format: "medicationID-scheduledTime"
+        
+        
         let loggedKeys = Set(DoseLogDataStore.shared.logs
             .filter { $0.day == Date().startOfDay }
             .map { "\($0.medicationID)-\($0.scheduledTime.timeIntervalSince1970)" })

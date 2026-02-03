@@ -20,7 +20,7 @@ class SymptomViewController: UIViewController {
         case tremor = 1
         case gait = 2
     }
-    
+
     enum ViewMode {
         case history
         case entry
@@ -55,6 +55,64 @@ class SymptomViewController: UIViewController {
         fetchTremorData()
         requestHealthKitIfNeeded()
     }
+    func samples(for range: TremorRange) -> [TremorSample] {
+        let all = TremorDataStore.shared.fetchAll()
+        let calendar = Calendar.current
+        let now = Date()
+
+        let startDate: Date = {
+            switch range {
+            case .day:
+                return calendar.startOfDay(for: now)
+            case .week:
+                return calendar.date(byAdding: .day, value: -7, to: now)!
+            case .month:
+                return calendar.date(byAdding: .month, value: -1, to: now)!
+            case .sixMonth:
+                return calendar.date(byAdding: .month, value: -6, to: now)!
+            case .year:
+                return calendar.date(byAdding: .year, value: -1, to: now)!
+            }
+        }()
+
+        return all.filter { $0.date >= startDate }
+    }
+    func aggregatedSamples(
+        for range: TremorRange
+    ) -> [(date: Date, value: Double)] {
+
+        let samples = samples(for: range)
+        guard !samples.isEmpty else { return [] }
+
+        let calendar = Calendar.current
+        var grouped: [Date: [Double]] = [:]
+
+        for sample in samples {
+            let keyDate: Date
+
+            switch range {
+            case .day:
+                keyDate = calendar.date(
+                    bySetting: .minute,
+                    value: 0,
+                    of: sample.date
+                )!
+            case .week, .month:
+                keyDate = calendar.startOfDay(for: sample.date)
+            case .sixMonth, .year:
+                keyDate = calendar.dateInterval(
+                    of: .weekOfYear,
+                    for: sample.date
+                )!.start
+            }
+
+            grouped[keyDate, default: []].append(sample.frequencyHz)
+        }
+
+        return grouped
+            .map { (date: $0.key, value: $0.value.reduce(0, +) / Double($0.value.count)) }
+            .sorted { $0.date < $1.date }
+    }
 
     private func requestHealthKitIfNeeded() {
         HealthKitManager.shared.requestAuthorization { granted in
@@ -68,21 +126,30 @@ class SymptomViewController: UIViewController {
         }
     }
     private func fetchTremorData() {
-        // Optional: Update UI to show "Measuring..."
-        TremorMotionManager.shared.recordFrequency(duration: 8.0) { [weak self] hz in
+
+        TremorMotionManager.shared.recordTremorFrequency(duration: 8.0) { [weak self] hz in
             guard let self = self else { return }
+
             self.tremorFrequencyHz = hz
-            
-            // Use performBatchUpdates or reloadItems for a smoother experience than reloadSections
+            if let hz = hz {
+                let sample = TremorSample(
+                    date: Date(),
+                    frequencyHz: hz
+                )
+
+                TremorDataStore.shared.save(sample)
+
+            }
+
             let indexPath = IndexPath(item: 0, section: Section.tremor.rawValue)
             if self.collectionView.indexPathsForVisibleItems.contains(indexPath) {
                 self.collectionView.reloadItems(at: [indexPath])
             } else {
-                // Fallback if not visible
                 self.collectionView.reloadSections(IndexSet(integer: Section.tremor.rawValue))
             }
         }
     }
+
 
 
     private func reloadTremorSection() {
@@ -98,7 +165,7 @@ class SymptomViewController: UIViewController {
                 guard let self = self else { return }
 
                 if let value = steadiness {
-                    // Show as 0–100
+                    
                     self.gaitRangeText = String(format: "%.0f / 100", value)
                 } else {
                     self.gaitRangeText = "No data"

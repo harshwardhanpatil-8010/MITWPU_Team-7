@@ -140,20 +140,14 @@ The severity may range from mild unsteadiness to a higher risk of falls that imp
                                     <action selector="segmentChanged:" destination="YGw-1n-8Co" eventType="valueChanged" id="RIB-gt-8jt"/>
                                 </connections>
                             </segmentedControl>
-                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Tremor Graph" translatesAutoresizingMaskIntoConstraints="NO" id="PRp-97-WcW">
-                                <rect key="frame" x="0.0" y="158" width="402" height="376"/>
-                                <constraints>
-                                    <constraint firstAttribute="height" constant="376" id="Hav-Pm-7vn"/>
-                                </constraints>
-                            </imageView>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="About Tremors" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Ktj-iq-8ZT">
-                                <rect key="frame" x="32" y="558" width="370" height="29"/>
+                                <rect key="frame" x="32" y="556" width="370" height="28.666666666666629"/>
                                 <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="24"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="cxb-m1-Gba">
-                                <rect key="frame" x="15" y="597" width="372" height="104"/>
+                                <rect key="frame" x="15" y="594.66666666666663" width="372" height="104"/>
                                 <subviews>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="6" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="QNL-v3-11S">
                                         <rect key="frame" x="15" y="15.000000000000007" width="342" height="114.66666666666669"/>
@@ -174,6 +168,36 @@ The severity may range from mild unsteadiness to a higher risk of falls that imp
                                     <constraint firstItem="QNL-v3-11S" firstAttribute="top" secondItem="cxb-m1-Gba" secondAttribute="top" constant="15" id="flo-Kb-Pr3"/>
                                 </constraints>
                             </view>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="MbX-0n-BVr">
+                                <rect key="frame" x="16" y="243" width="370" height="289"/>
+                                <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="289" id="cCg-3N-lvG"/>
+                                </constraints>
+                            </view>
+                            <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" alignment="top" translatesAutoresizingMaskIntoConstraints="NO" id="Dkf-yY-6Yx">
+                                <rect key="frame" x="16" y="165" width="80.666666666666671" height="73"/>
+                                <subviews>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Frequency" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="5Z9-YD-r1A">
+                                        <rect key="frame" x="0.0" y="0.0" width="80.666666666666671" height="20.333333333333332"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                        <nil key="textColor"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Range" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="PHo-5t-Qeh">
+                                        <rect key="frame" x="0.0" y="20.333333333333346" width="74.333333333333329" height="32.333333333333343"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="27"/>
+                                        <nil key="textColor"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Date" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="3mB-Ud-kC0">
+                                        <rect key="frame" x="0.0" y="52.666666666666657" width="36" height="20.333333333333329"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                        <nil key="textColor"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                </subviews>
+                            </stackView>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="1Zl-Xv-bPB"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
@@ -181,32 +205,35 @@ The severity may range from mild unsteadiness to a higher risk of falls that imp
                             <constraint firstItem="Ktj-iq-8ZT" firstAttribute="trailing" secondItem="1Zl-Xv-bPB" secondAttribute="trailing" id="3Yb-ew-c5l"/>
                             <constraint firstItem="xYP-v1-cNg" firstAttribute="top" secondItem="1Zl-Xv-bPB" secondAttribute="top" id="8lH-JB-Rhv"/>
                             <constraint firstItem="1Zl-Xv-bPB" firstAttribute="trailing" secondItem="cxb-m1-Gba" secondAttribute="trailing" constant="15" id="AvH-x0-cOF"/>
-                            <constraint firstItem="Ktj-iq-8ZT" firstAttribute="top" secondItem="PRp-97-WcW" secondAttribute="bottom" constant="24" id="DUQ-fJ-b1D"/>
+                            <constraint firstItem="MbX-0n-BVr" firstAttribute="leading" secondItem="1Zl-Xv-bPB" secondAttribute="leading" constant="16" id="BcN-p6-OAv"/>
                             <constraint firstItem="1Zl-Xv-bPB" firstAttribute="trailing" secondItem="xYP-v1-cNg" secondAttribute="trailing" constant="14" id="K1w-Wy-RWT"/>
-                            <constraint firstItem="PRp-97-WcW" firstAttribute="leading" secondItem="1Zl-Xv-bPB" secondAttribute="leading" id="WSb-oN-Xsm"/>
-                            <constraint firstItem="PRp-97-WcW" firstAttribute="trailing" secondItem="1Zl-Xv-bPB" secondAttribute="trailing" id="Xx8-cr-inO"/>
-                            <constraint firstItem="PRp-97-WcW" firstAttribute="top" secondItem="xYP-v1-cNg" secondAttribute="bottom" constant="3" id="cDp-aM-6xb"/>
+                            <constraint firstItem="MbX-0n-BVr" firstAttribute="top" secondItem="Dkf-yY-6Yx" secondAttribute="bottom" constant="5" id="dOT-sE-WRp"/>
+                            <constraint firstItem="Dkf-yY-6Yx" firstAttribute="leading" secondItem="1Zl-Xv-bPB" secondAttribute="leading" constant="16" id="dZI-rd-NU5"/>
                             <constraint firstItem="xYP-v1-cNg" firstAttribute="leading" secondItem="1Zl-Xv-bPB" secondAttribute="leading" constant="14" id="gID-1j-tFd"/>
                             <constraint firstItem="cxb-m1-Gba" firstAttribute="leading" secondItem="1Zl-Xv-bPB" secondAttribute="leading" constant="15" id="lzK-h3-I03"/>
+                            <constraint firstItem="Dkf-yY-6Yx" firstAttribute="top" secondItem="xYP-v1-cNg" secondAttribute="bottom" constant="10" id="mLK-gn-1uG"/>
+                            <constraint firstItem="Ktj-iq-8ZT" firstAttribute="top" secondItem="MbX-0n-BVr" secondAttribute="bottom" constant="24" id="plV-yX-Q5j"/>
                             <constraint firstItem="Ktj-iq-8ZT" firstAttribute="leading" secondItem="1Zl-Xv-bPB" secondAttribute="leading" constant="32" id="rjl-l8-8e1"/>
                             <constraint firstItem="cxb-m1-Gba" firstAttribute="top" secondItem="Ktj-iq-8ZT" secondAttribute="bottom" constant="10" id="t2v-gy-RWC"/>
+                            <constraint firstItem="1Zl-Xv-bPB" firstAttribute="trailing" secondItem="MbX-0n-BVr" secondAttribute="trailing" constant="16" id="yo8-fj-aZK"/>
                         </constraints>
                     </view>
                     <navigationItem key="navigationItem" id="Vdw-Gb-ShS"/>
                     <connections>
+                        <outlet property="DateLabel" destination="3mB-Ud-kC0" id="ADX-nt-9TF"/>
                         <outlet property="TremorCardView" destination="cxb-m1-Gba" id="3df-IF-Zvm"/>
-                        <outlet property="TremorImageView" destination="PRp-97-WcW" id="VA9-p0-Pil"/>
+                        <outlet property="TremorGraphView" destination="MbX-0n-BVr" id="gk7-oq-n3U"/>
                         <outlet property="TremorSegmentControl" destination="xYP-v1-cNg" id="eS0-0D-9t9"/>
+                        <outlet property="tremorFreq" destination="PHo-5t-Qeh" id="NCu-n8-EQI"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="bdX-Q6-XH7" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1209" y="8"/>
+            <point key="canvasLocation" x="1208.955223880597" y="7.5514874141876422"/>
         </scene>
     </scenes>
     <resources>
         <image name="Gait Graph" width="401" height="380"/>
-        <image name="Tremor Graph" width="400" height="376"/>
         <systemColor name="systemBackgroundColor">
             <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
         </systemColor>

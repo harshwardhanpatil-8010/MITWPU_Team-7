@@ -31,7 +31,7 @@ class MedicationDataStore: ObservableObject {
     }
 
     private func saveToStorage() {
-        let dataToSave = self.medications // Capture current state
+        let dataToSave = self.medications 
         
         DispatchQueue.global(qos: .background).async {
             if let encoded = try? JSONEncoder().encode(dataToSave) {

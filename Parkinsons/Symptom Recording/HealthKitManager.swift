@@ -15,7 +15,7 @@ final class HealthKitManager {
     private init() {}
 }
 
-// MARK: - HealthKit Types
+
 extension HealthKitManager {
 
     var gaitTypes: Set<HKObjectType> {
@@ -27,7 +27,7 @@ extension HealthKitManager {
     }
 }
 
-// MARK: - Authorization
+
 extension HealthKitManager {
 
     func requestAuthorization(completion: @escaping (Bool) -> Void) {
@@ -49,7 +49,7 @@ extension HealthKitManager {
     }
 }
 
-// MARK: - Fetching Gait Data
+
 extension HealthKitManager {
 
     func fetchWalkingSpeed(
@@ -113,29 +113,29 @@ extension HealthKitManager {
     }
 }
 
-// MARK: - Walking Steadiness Calculation
+
 extension HealthKitManager {
 
     func calculateWalkingSteadiness(speedValues: [Double], stepLengthValues: [Double]) -> Double? {
         guard !speedValues.isEmpty, !stepLengthValues.isEmpty else { return nil }
 
-        // 1️⃣ Compute mean
+        
         let speedMean = speedValues.reduce(0, +) / Double(speedValues.count)
         let stepMean = stepLengthValues.reduce(0, +) / Double(stepLengthValues.count)
 
-        // 2️⃣ Compute standard deviation
+        
         let speedStd = standardDeviation(speedValues)
         let stepStd = standardDeviation(stepLengthValues)
 
-        // 3️⃣ Coefficient of variation (variability)
+        
         let speedCV = speedStd / speedMean
         let stepCV = stepStd / stepMean
 
-        // 4️⃣ Combine CVs → Steadiness (0–100)
-        // Lower variability → higher steadiness
+        
+        
         let steadiness = 100 * (1 - ((speedCV + stepCV) / 2))
 
-        // Clamp 0–100
+        
         return max(0, min(steadiness, 100))
     }
 
@@ -146,7 +146,7 @@ extension HealthKitManager {
     }
 }
 
-// MARK: - Fetch + Compute Steadiness for a Date Range
+
 extension HealthKitManager {
 
     func fetchWalkingSteadiness(from startDate: Date, to endDate: Date, completion: @escaping (Double?) -> Void) {
