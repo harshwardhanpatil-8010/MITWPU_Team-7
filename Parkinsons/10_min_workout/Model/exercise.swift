@@ -38,17 +38,16 @@ struct WorkoutExercise: Codable, Identifiable {
     let benefits: String
     let stepsToPerform: String
 
-    init(from decoder: Decoder) throws {
-        let container = try decoder.container(keyedBy: CodingKeys.self)
-        self.id = UUID()
-        self.name = try container.decode(String.self, forKey: .name)
-        self.reps = try container.decode(Int.self, forKey: .reps)
-        self.videoID = try container.decodeIfPresent(String.self, forKey: .videoID)
-        self.description = try container.decode(String.self, forKey: .description)
-        self.category = try container.decode(ExerciseCategory.self, forKey: .category)
-        self.position = try container.decode(ExercisePosition.self, forKey: .position)
-        self.targetJoints = try container.decode([String].self, forKey: .targetJoints)
-        self.benefits = try container.decode(String.self, forKey: .benefits)
-        self.stepsToPerform = try container.decode(String.self, forKey: .stepsToPerform)
+    enum CodingKeys: String, CodingKey {
+        case id
+        case name
+        case reps
+        case videoID
+        case description
+        case category
+        case position
+        case targetJoints
+        case benefits
+        case stepsToPerform
     }
 }

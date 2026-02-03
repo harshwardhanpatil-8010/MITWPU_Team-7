@@ -1,6 +1,7 @@
 
 [
   {
+    "id": "3336511E-A002-4271-9171-87E85DCAF578",
     "name": "Seated Trunk Rotations",
     "reps": 12,
     "videoID": "wrist_rotation",
@@ -12,6 +13,7 @@
     "stepsToPerform": "Rotate torso slowly left to right."
   },
   {
+    "id": "748CB6A5-8C06-4C98-8A55-87DAF9ADC0C3",
     "name": "Seated Neck Tilts",
     "reps": 12,
     "videoID": "wrist_rotation",
@@ -23,6 +25,7 @@
     "stepsToPerform": "Tilt head side to side slowly."
   },
   {
+    "id": "0B9D3C03-2259-4C03-897C-BA5B68E25AE5",
     "name": "Standing Big Reach",
     "reps": 12,
     "videoID": "wrist_rotation",
@@ -34,6 +37,7 @@
     "stepsToPerform": "Reach for the floor then the sky."
   },
   {
+    "id": "D766E221-7602-4EB3-AC88-F50EC7FC2918",
     "name": "Standing Side Stretch",
     "reps": 12,
     "videoID": "wrist_rotation",
@@ -45,6 +49,7 @@
     "stepsToPerform": "Reach one arm over your head to the side."
   },
   {
+    "id": "E18B52D5-76DE-450E-B9CB-6746D099F364",
     "name": "Seated Side Reach",
     "reps": 12,
     "videoID": "wrist_rotation",
@@ -56,6 +61,7 @@
     "stepsToPerform": "Reach out to the side as far as safe."
   },
   {
+    "id": "24EFE1C3-2FD8-4304-9C68-3FE6E3B0CC22",
     "name": "Seated Leg Hover",
     "reps": 12,
     "videoID": "wrist_rotation",
@@ -67,6 +73,7 @@
     "stepsToPerform": "Lift one foot and hold without leaning back."
   },
   {
+    "id": "B03B742A-D21A-449E-B052-64E8D63AE9F9",
     "name": "Weight Shifts",
     "reps": 12,
     "videoID": "wrist_rotation",
@@ -78,6 +85,7 @@
     "stepsToPerform": "Slowly move weight from left foot to right."
   },
   {
+    "id": "DDFA910C-9B74-438D-8DFB-6521CBE60E6F",
     "name": "Tandem Stance",
     "reps": 12,
     "videoID": "wrist_rotation",
@@ -89,6 +97,7 @@
     "stepsToPerform": "Place one foot directly in front of the other."
   },
   {
+    "id": "E2F98AE4-940C-4C2A-877E-5A415C7D1EBB",
     "name": "Seated Marching",
     "reps": 12,
     "videoID": "wrist_rotation",
@@ -100,6 +109,7 @@
     "stepsToPerform": "Lift knees high and fast while seated."
   },
   {
+      "id": "DE2D3A2E-A706-4EF8-9AAE-B9162DA31A39",
     "name": "Seated Boxing",
     "reps": 12,
     "videoID": "wrist_rotation",
@@ -111,6 +121,7 @@
     "stepsToPerform": "Punch forward with large 'BIG' movements."
   },
   {
+    "id": "A931AE68-C59D-4238-906D-236415A84D8D",
     "name": "High Knee March",
     "reps": 12,
     "videoID": "wrist_rotation",
@@ -122,6 +133,7 @@
     "stepsToPerform": "March in place with high knees and arm swings."
   },
   {
+    "id": "F516A324-64C8-4A36-AB27-B1B8CB6AED78",
     "name": "Standing Jumping Jacks",
     "reps": 12,
     "videoID": "wrist_rotation",
@@ -133,6 +145,7 @@
     "stepsToPerform": "Step side to side while swinging arms high."
   },
   {
+    "id": "0E99FF63-938B-42EE-8581-70506F9D0CBE",
     "name": "Seated Leg Extension",
     "reps": 12,
     "videoID": "wrist_rotation",
@@ -144,6 +157,7 @@
     "stepsToPerform": "Straighten leg fully and squeeze thigh."
   },
   {
+    "id": "D6C8AF6D-9D55-4CEB-A24F-6B68B00E73B1",
     "name": "Seated Bicep Curls",
     "reps": 12,
     "videoID": "wrist_rotation",
@@ -155,6 +169,7 @@
     "stepsToPerform": "Curl hands to shoulders with tension."
   },
   {
+    "id": "B792C9D1-5F8D-438E-88F0-65644AEAF717",
     "name": "Sit-to-Stand",
     "reps": 12,
     "videoID": "wrist_rotation",
@@ -166,6 +181,7 @@
     "stepsToPerform": "Stand up from chair using legs only."
   },
   {
+    "id": "ED4D0AA7-C2C2-43B5-9F1D-D3E6ACB740B0",
     "name": "Wall Push-ups",
     "reps": 12,
     "videoID": "wrist_rotation",
@@ -177,6 +193,7 @@
     "stepsToPerform": "Push against a wall with controlled motion."
   },
   {
+    "id": "B986776D-ADA5-49BE-906B-0B3B37D61E8E",
     "name": "Box Breathing",
     "reps": 12,
     "videoID": "wrist_rotation",
@@ -188,6 +205,7 @@
     "stepsToPerform": "Inhale 4s, Hold 4s, Exhale 4s, Hold 4s."
   },
   {
+    "id": "DC27961C-0413-4B8C-9728-F86630EA00DF",
     "name": "Seated Wrist Stretch",
     "reps": 12,
     "videoID": "wrist_rotation",
@@ -199,6 +217,7 @@
     "stepsToPerform": "Gently pull fingers back toward forearm."
   },
   {
+    "id": "07525658-7E31-44E7-BFCD-AD53F64EBFFA",
     "name": "Standing Calf Stretch",
     "reps": 12,
     "videoID": "wrist_rotation",
@@ -210,6 +229,7 @@
     "stepsToPerform": "Lean against wall with one heel back."
   },
   {
+    "id": "EC212311-B369-47FF-A574-234EF68F61FE",
     "name": "Standing Chest Opener",
     "reps": 12,
     "videoID": "wrist_rotation",
