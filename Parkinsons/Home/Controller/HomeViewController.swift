@@ -479,6 +479,12 @@ extension HomeViewController: UICollectionViewDataSource {
         }
     }
     
+    /// Provides and configures header and footer supplementary views for the home screen collection view sections.
+    /// - Parameters:
+    ///   - collectionView: The collection view requesting the supplementary view.
+    ///   - kind: The kind of supplementary view requested (header or footer).
+    ///   - indexPath: The index path identifying the section for which the supplementary view is requested.
+    /// - Returns: A configured header or footer view for the specified section; returns an empty reusable view when no configured supplementary view is applicable.
     func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
         let sectionType = homeSections[indexPath.section]
         
