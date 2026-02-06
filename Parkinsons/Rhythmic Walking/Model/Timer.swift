@@ -23,9 +23,10 @@ final class TimerModel {
     
     var isPaused = false
     
-    init(totalSeconds: Int) {
+    init(totalSeconds: Int, startWithTimeLeft: Int? = nil) {
         self.totalTime = totalSeconds
-        self.timeLeft = totalSeconds
+//        self.timeLeft = totalSeconds
+        self.timeLeft = startWithTimeLeft ?? totalSeconds
     }
     
     func start() {

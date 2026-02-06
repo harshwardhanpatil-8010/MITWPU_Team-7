@@ -6,7 +6,7 @@ class SymptomViewController: UIViewController {
     @IBOutlet weak var editAndSaveButton: UIButton!
     @IBOutlet weak var symptomBackground: UIView!
     @IBOutlet weak var tableView: UITableView!
-    
+    @IBOutlet weak var calendarButton: UIBarButtonItem!
     @IBOutlet weak var tableViewHeightConstraint: NSLayoutConstraint!
     var dates: [DateModel] = []
     var selectedDate: Date = Date()
@@ -124,7 +124,24 @@ class SymptomViewController: UIViewController {
         ]
     }
 
-   
+    @IBAction func calendarButtonTapped(_ sender: UIBarButtonItem) {
+        print("Button was tapped!")
+        // Replace "Main" with the actual name of your Storyboard file (e.g., "Home" or "Main")
+        let storyboard = UIStoryboard(name: "Home", bundle: nil)
+        
+        // This ID must match the "Storyboard ID" in the Identity Inspector
+        guard let calendarVC = storyboard.instantiateViewController(withIdentifier: "CalendarViewController") as? CalendarViewController else {
+            print("Error: Could not find CalendarViewController. Check your Storyboard ID!")
+            return
+        }
+        
+        calendarVC.selectedDate = self.selectedDate
+        
+        // .pageSheet is the modern iOS modal look (the card that slides up)
+        calendarVC.modalPresentationStyle = .pageSheet
+        
+        self.present(calendarVC, animated: true, completion: nil)
+    }
     @IBAction func editAndSaveTapped(_ sender: UIButton) {
         if currentMode == .history {
             currentMode = .entry
