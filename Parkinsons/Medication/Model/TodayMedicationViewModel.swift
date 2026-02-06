@@ -18,7 +18,6 @@ final class TodayMedicationViewModel {
             guard isMedicationDueToday(med) else { continue }
 
             for dose in med.doses {
-                // 2. O(1) Lookup instead of O(n) filtering
                 let currentKey = "\(med.id)-\(dose.time.timeIntervalSince1970)"
                 guard !loggedKeys.contains(currentKey) else { continue }
 
