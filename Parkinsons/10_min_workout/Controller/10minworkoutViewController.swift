@@ -121,6 +121,12 @@ class _0minworkoutViewController: UIViewController {
         }
     }
     
+    
+    func hasRemainingSkippedExercises() -> Bool {
+        return !WorkoutManager.shared.skippedToday.isEmpty
+    }
+    
+    
     @IBAction func doneButtonTapped(_ sender: UIButton) {
         handleCompletion(skipped: false)
     }
@@ -255,8 +261,6 @@ class _0minworkoutViewController: UIViewController {
         }
     }
 
-
-
     func updateProgressBars() {
         guard progressBars != nil else { return }
         for (index, bar) in progressBars.enumerated() {
@@ -293,11 +297,8 @@ class _0minworkoutViewController: UIViewController {
             alert.addAction(UIAlertAction(title: "Yes", style: .default) { [weak self] _ in
                 guard let self = self else { return }
                 self.isRevisitingSkipped = true
-                
                 if let firstSkipIndex = self.exercises.firstIndex(where: { skippedIDs.contains($0.id) }) {
                     self.currentIndex = firstSkipIndex
-                    
-                   
                     if self.navigationController?.topViewController != self {
                         self.navigationController?.popToViewController(self, animated: true)
                     }
@@ -334,11 +335,14 @@ extension _0minworkoutViewController: RestScreenDelegate {
                 checkForSkippedExercises()
             }
         } else {
-            let nextSkip = exercises.enumerated().first { (index, exercise) in
-                return index > currentIndex && skippedIDs.contains(exercise.id)
+            let skippedIDs = WorkoutManager.shared.skippedToday
+            if skippedIDs.isEmpty {
+                showCompletion()
+                return
             }
-            
-            if let next = nextSkip {
+            if let next = exercises.enumerated().first(where: {
+                $0.offset != currentIndex && skippedIDs.contains($0.element.id)
+            }) {
                 currentIndex = next.offset
                 configureExercise()
             } else {

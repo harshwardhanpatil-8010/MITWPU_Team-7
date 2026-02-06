@@ -164,7 +164,7 @@ class _0minworkoutLandingPageViewController: UIViewController, UICollectionViewD
             WorkoutManager.shared.userWantsToPushLimits = true
             WorkoutManager.shared.generateDailyWorkout()
             self.refreshWorkoutList()
-        }
+        } 
         
         let seatedAction = UIAlertAction(title: "Play it Safe (Seated)", style: .default) { _ in
             WorkoutManager.shared.userWantsToPushLimits = false

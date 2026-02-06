@@ -33,7 +33,7 @@ class ExerciseListCollectionViewCell: UICollectionViewCell {
 
             guard let url = Bundle.main.url(
                 forResource: videoName,
-                withExtension: "mp4"
+                withExtension: "MOV"
             ) else { return }
 
             let asset = AVURLAsset(url: url)
