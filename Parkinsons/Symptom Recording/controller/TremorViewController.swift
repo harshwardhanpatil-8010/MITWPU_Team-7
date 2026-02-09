@@ -128,7 +128,7 @@ class TremorViewController: UIViewController {
             tremorFreq.text = "—"
         }
     }
-    private func xAxisLabels(for samples: [TremorSample],
+    private func xAxisLabels(for points: [AggregatedTremorPoint],
                              range: TremorRange) -> [(index: Int, label: String)] {
 
         let calendar = Calendar.current
@@ -140,24 +140,24 @@ class TremorViewController: UIViewController {
             let formatter = DateFormatter()
             formatter.dateFormat = "HH:mm"
 
-            let labelCount = min(4, samples.count)
+            let labelCount = min(4, points.count)
 
             for i in 0..<labelCount {
-                let index = i * (samples.count - 1) / max(labelCount - 1, 1)
-                labels.append((index, formatter.string(from: samples[index].date)))
+                let index = i * (points.count - 1) / max(labelCount - 1, 1)
+                labels.append((index, formatter.string(from: points[index].date)))
             }
 
         case .week:
             let formatter = DateFormatter()
             formatter.dateFormat = "EEE"
 
-            let uniqueDays = Dictionary(grouping: samples.indices) {
-                calendar.startOfDay(for: samples[$0].date)
+            let uniqueDays = Dictionary(grouping: points.indices) {
+                calendar.startOfDay(for: points[$0].date)
             }
 
             for (_, indices) in uniqueDays.sorted(by: { $0.key < $1.key }) {
                 if let first = indices.first {
-                    labels.append((first, formatter.string(from: samples[first].date)))
+                    labels.append((first, formatter.string(from: points[first].date)))
                 }
             }
 
@@ -167,7 +167,7 @@ class TremorViewController: UIViewController {
 
             let targetDays: Set<Int> = [7, 14, 21, 28]
 
-            for (i, sample) in samples.enumerated() {
+            for (i, sample) in points.enumerated() {
                 let day = calendar.component(.day, from: sample.date)
                 if targetDays.contains(day) {
                     labels.append((i, formatter.string(from: sample.date)))
@@ -178,13 +178,13 @@ class TremorViewController: UIViewController {
             let formatter = DateFormatter()
             formatter.dateFormat = "MMM"
 
-            let uniqueMonths = Dictionary(grouping: samples.indices) {
-                calendar.component(.month, from: samples[$0].date)
+            let uniqueMonths = Dictionary(grouping: points.indices) {
+                calendar.component(.month, from: points[$0].date)
             }
 
             for (_, indices) in uniqueMonths.sorted(by: { $0.key < $1.key }) {
                 if let first = indices.first {
-                    labels.append((first, formatter.string(from: samples[first].date)))
+                    labels.append((first, formatter.string(from: points[first].date)))
                 }
             }
 
@@ -192,13 +192,13 @@ class TremorViewController: UIViewController {
             let formatter = DateFormatter()
             formatter.dateFormat = "MMM"
 
-            let uniqueMonths = Dictionary(grouping: samples.indices) {
-                calendar.component(.month, from: samples[$0].date)
+            let uniqueMonths = Dictionary(grouping: points.indices) {
+                calendar.component(.month, from: points[$0].date)
             }
 
             for (_, indices) in uniqueMonths.sorted(by: { $0.key < $1.key }) {
                 if let first = indices.first {
-                    let month = formatter.string(from: samples[first].date)
+                    let month = formatter.string(from: points[first].date)
                     labels.append((first, String(month.prefix(1))))
                 }
             }
@@ -244,12 +244,8 @@ class TremorViewController: UIViewController {
     private func updateGraph(using points: [AggregatedTremorPoint],
                              range: TremorRange) {
 
-        // ✅ Clear old graph layers (IMPORTANT)
-        TremorGraphView.layer.sublayers?.forEach {
-            $0.removeFromSuperlayer()
-        }
-
-        guard samples.count > 1 else { return }
+        // Clear old layers
+        TremorGraphView.layer.sublayers?.forEach { $0.removeFromSuperlayer() }
 
         let width = TremorGraphView.bounds.width
         let height = TremorGraphView.bounds.height
@@ -258,18 +254,21 @@ class TremorViewController: UIViewController {
         let usableWidth = width - 2 * padding
         let usableHeight = height - 2 * padding
 
-        let maxHz = max(samples.map { $0.frequencyHz }.max() ?? 6, 6)
-        let minHz: Double = 0
+        // Safe counts
+        let count = points.count
+        let safeCount = max(count - 1, 1)
 
-        // MARK: - Y Axis (Hz labels + grid)
+        let minHz: Double = 0
+        let maxHz = max(points.map { $0.avgHz }.max() ?? 0, 6)
+
+        // ------------------------------------------------
+        // Y AXIS + GRID (ALWAYS VISIBLE)
+        // ------------------------------------------------
         let ySteps = 4
         for i in 0...ySteps {
-
             let value = minHz + (Double(i) / Double(ySteps)) * (maxHz - minHz)
-            let normalizedY = CGFloat(i) / CGFloat(ySteps)
-            let y = height - padding - normalizedY * usableHeight
+            let y = height - padding - CGFloat(i) / CGFloat(ySteps) * usableHeight
 
-            // Grid line
             let gridPath = UIBezierPath()
             gridPath.move(to: CGPoint(x: padding, y: y))
             gridPath.addLine(to: CGPoint(x: width, y: y))
@@ -280,28 +279,26 @@ class TremorViewController: UIViewController {
             gridLayer.lineWidth = 1
             TremorGraphView.layer.addSublayer(gridLayer)
 
-            // Y-axis label
             let label = CATextLayer()
             label.string = String(format: "%.0f", value)
             label.fontSize = 10
             label.foregroundColor = UIColor.secondaryLabel.cgColor
             label.frame = CGRect(x: 0, y: y - 6, width: padding - 4, height: 12)
             label.alignmentMode = .right
-            label.contentsScale = UIScreen.main.scale
+            label.contentsScale =
+                view.window?.windowScene?.screen.scale ??
+                view.traitCollection.displayScale
+
             TremorGraphView.layer.addSublayer(label)
         }
 
-        // MARK: - X Axis labels
-        // MARK: - X Axis labels (RANGE-AWARE ✅)
-        let labels = xAxisLabels(for: samples, range: TremorSegmentControl.selectedSegmentIndex == 0 ? .day :
-                                                    TremorSegmentControl.selectedSegmentIndex == 1 ? .week :
-                                                    TremorSegmentControl.selectedSegmentIndex == 2 ? .month :
-                                                    TremorSegmentControl.selectedSegmentIndex == 3 ? .sixMonth :
-                                                    .year)
+        // ------------------------------------------------
+        // X AXIS LABELS (RANGE AWARE)
+        // ------------------------------------------------
+        let labels = xAxisLabels(for: points, range: range)
 
         for item in labels {
-
-            let normalizedX = CGFloat(item.index) / CGFloat(samples.count - 1)
+            let normalizedX = CGFloat(item.index) / CGFloat(safeCount)
             let x = padding + normalizedX * usableWidth
 
             let label = CATextLayer()
@@ -309,32 +306,54 @@ class TremorViewController: UIViewController {
             label.fontSize = 10
             label.foregroundColor = UIColor.secondaryLabel.cgColor
             label.frame = CGRect(x: x - 20,
-                                  y: height - padding + 6,
-                                  width: 40,
-                                  height: 14)
+                                 y: height - padding + 6,
+                                 width: 40,
+                                 height: 14)
             label.alignmentMode = .center
-            label.contentsScale = UIScreen.main.scale
+            label.contentsScale =
+                view.window?.windowScene?.screen.scale ??
+                view.traitCollection.displayScale
 
             TremorGraphView.layer.addSublayer(label)
         }
 
+        // ------------------------------------------------
+        // NO DATA → EMPTY GRAPH (AXES ONLY)
+        // ------------------------------------------------
+        guard count > 0 else { return }
 
-        // MARK: - Tremor line (DYNAMIC SCALING)
+        // ------------------------------------------------
+        // LINE + POINTS
+        // ------------------------------------------------
         let path = UIBezierPath()
 
-        for (i, sample) in samples.enumerated() {
+        for (i, point) in points.enumerated() {
 
-            let normalizedX = CGFloat(i) / CGFloat(samples.count - 1)
-            let normalizedY = CGFloat((sample.frequencyHz - minHz) / (maxHz - minHz))
+            let normalizedX = CGFloat(i) / CGFloat(safeCount)
+            let normalizedY = CGFloat((point.avgHz - minHz) / (maxHz - minHz))
 
             let x = padding + normalizedX * usableWidth
             let y = height - padding - normalizedY * usableHeight
 
+            let pointCenter = CGPoint(x: x, y: y)
+
             if i == 0 {
-                path.move(to: CGPoint(x: x, y: y))
+                path.move(to: pointCenter)
             } else {
-                path.addLine(to: CGPoint(x: x, y: y))
+                path.addLine(to: pointCenter)
             }
+
+            // Draw dot (important for week/month/6M/year)
+            let dotPath = UIBezierPath(arcCenter: pointCenter,
+                                       radius: 3,
+                                       startAngle: 0,
+                                       endAngle: .pi * 2,
+                                       clockwise: true)
+
+            let dotLayer = CAShapeLayer()
+            dotLayer.path = dotPath.cgPath
+            dotLayer.fillColor = UIColor.systemBlue.cgColor
+            TremorGraphView.layer.addSublayer(dotLayer)
         }
 
         let lineLayer = CAShapeLayer()
@@ -347,6 +366,7 @@ class TremorViewController: UIViewController {
 
         TremorGraphView.layer.addSublayer(lineLayer)
     }
+
 
 
 

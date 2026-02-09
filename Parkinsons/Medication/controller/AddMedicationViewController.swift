@@ -26,7 +26,7 @@ class AddMedicationViewController: UIViewController,
     
     private var originalMedicationSnapshot: Medication?
     private var selectedRepeatRule: RepeatRule = .everyday
-    private let unitPlaceholder = "Add unit,"
+    private let unitPlaceholder = "Add unit"
     private let typePlaceholder = "Select type"
     private let repeatPlaceholder = "Select days"
     

@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct UnitAndType {
+struct UnitAndType {//UI support model,Static
     var name: String
     var image: String
     var isSelected: Bool

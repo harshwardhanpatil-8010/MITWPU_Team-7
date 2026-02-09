@@ -7,8 +7,8 @@
 
 import Foundation
 
-struct DoseLog: Codable, Identifiable {
-    let id: UUID 
+struct DoseLog: Codable, Identifiable {//Main
+    let id: UUID //dose log id
     let medicationID: UUID //foreign key
     let doseID: UUID //foreign key
     let scheduledTime: Date

@@ -1,7 +1,7 @@
 import Foundation
 import UIKit
-struct MedicationDose: Codable, Identifiable {
-    let id: UUID 
+struct MedicationDose: Codable, Identifiable {//Main
+    let id: UUID //Medication Dose id
     var time: Date
     var status: DoseStatus
     var medicationID: UUID // foreign key
@@ -50,8 +50,8 @@ enum RepeatRule: Codable, Equatable {
     }
 }
 
-struct Medication: Codable {
-    let id: UUID
+struct Medication: Codable {//Main
+    let id: UUID //medication id
     var name: String
     var form: String
     var unit: String
