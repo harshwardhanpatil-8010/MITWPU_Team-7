@@ -266,8 +266,8 @@ class SetGoalViewController: UIViewController, UITableViewDataSource, UIPickerVi
                     elapsedSeconds: 0,
                     beat: selectedBeat,
                     pace: selectedPace,
-                    steps: 0,
-                    distanceKMeters: 0
+//                    steps: 0,
+//                    distanceKMeters: 0
                 )
                 DataStore.shared.add(newSession)
                 
@@ -280,13 +280,13 @@ class SetGoalViewController: UIViewController, UITableViewDataSource, UIPickerVi
             guard let destVC = storyboard.instantiateViewController(withIdentifier: "SessionRunningVC") as? SessionRunningViewController else { return }
             
             let remainingSeconds = sessionToRun.requestedDurationSeconds - sessionToRun.elapsedSeconds
-            destVC.totalSessionDuration = remainingSeconds // Start from where we left off
+            destVC.totalSessionDuration = remainingSeconds
             destVC.hrs = remainingSeconds / 3600
             destVC.minn = (remainingSeconds % 3600) / 60
             destVC.selectedBeat = sessionToRun.beat
             destVC.selectedPace = sessionToRun.pace
             destVC.selectedBPM = bpmForPace(sessionToRun.pace)
-            destVC.session = sessionToRun // Pass the session reference
+            destVC.session = sessionToRun 
             
             let nav = UINavigationController(rootViewController: destVC)
             nav.modalPresentationStyle = .formSheet

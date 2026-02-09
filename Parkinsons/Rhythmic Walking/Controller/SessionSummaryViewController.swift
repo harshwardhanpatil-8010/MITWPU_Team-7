@@ -52,102 +52,76 @@ class SessionSummaryViewController: UIViewController {
         navigationController?.interactivePopGestureRecognizer?.isEnabled = false
     }
 
+//    func loadData() {
+//        guard let session = sessionData else {
+//            timeLabel.text = "00:00:00"
+//            progressView.setProgress(0.0)
+//            return
+//        }
+//        let elapsedSeconds = session.elapsedSeconds
+//        let hours = elapsedSeconds / 3600
+//        let minutes = (elapsedSeconds % 3600) / 60
+//        let seconds = elapsedSeconds % 60
+//        timeLabel.text = String(format: "%02d:%02d:%02d", hours, minutes, seconds)
+//        
+//        let progress = session.requestedDurationSeconds > 0 ? Float(elapsedSeconds) / Float(session.requestedDurationSeconds) : 1.0
+//        progressView.setProgress(CGFloat(progress))
+//        
+//        stepsTaken.text = "2513"
+//        distanceCovered.text = "2 km"
+//        speed.text = "3 km/h"
+//        stepsLength.text = gaitDemoInfo.stepLengthMeters.description
+//        walkingAsymmetry.text = gaitDemoInfo.walkingAsymmetryPercent.description
+//        walkingSteadiness.text = gaitDemoInfo.walkingSteadiness.description
+//        stepLengthPercent.text = "12 %"
+//        walkingAsymmetryPercent.text = "0.5 %"
+//        walkingSteadinessPercent.text = "5 %"
+//    }
+    
     func loadData() {
         guard let session = sessionData else {
             timeLabel.text = "00:00:00"
             progressView.setProgress(0.0)
             return
         }
-        let elapsedSeconds = session.elapsedSeconds
-        let hours = elapsedSeconds / 3600
-        let minutes = (elapsedSeconds % 3600) / 60
-        let seconds = elapsedSeconds % 60
+        
+        // 1. Setup Timer UI
+        let hours = session.elapsedSeconds / 3600
+        let minutes = (session.elapsedSeconds % 3600) / 60
+        let seconds = session.elapsedSeconds % 60
         timeLabel.text = String(format: "%02d:%02d:%02d", hours, minutes, seconds)
         
-        let progress = session.requestedDurationSeconds > 0 ? Float(elapsedSeconds) / Float(session.requestedDurationSeconds) : 1.0
+        let progress = session.requestedDurationSeconds > 0 ? Float(session.elapsedSeconds) / Float(session.requestedDurationSeconds) : 1.0
         progressView.setProgress(CGFloat(progress))
         
-        stepsTaken.text = "2513"
-        distanceCovered.text = "2 km"
-        speed.text = "3 km/h"
-        stepsLength.text = gaitDemoInfo.stepLengthMeters.description
-        walkingAsymmetry.text = gaitDemoInfo.walkingAsymmetryPercent.description
-        walkingSteadiness.text = gaitDemoInfo.walkingSteadiness.description
-        stepLengthPercent.text = "12 %"
-        walkingAsymmetryPercent.text = "0.5 %"
-        walkingSteadinessPercent.text = "5 %"
+        // 2. Fetch all HealthKit Data
+        HealthKitManager.shared.fetchFullSummary(for: session) { [weak self] summary in
+            guard let self = self else { return }
+            
+            
+            // Walking Data
+            self.stepsTaken.text = "\(summary.steps)"
+            self.distanceCovered.text = String(format: "%.1f km", summary.distanceMeters / 1000.0)
+            self.speed.text = String(format: "%.1f km/h", summary.speedKmH)
+            
+            // Gait Data
+            self.stepsLength.text = String(format: "%.2f m", summary.stepLengthMeters)
+            self.walkingAsymmetry.text = String(format: "%.1f%%", summary.walkingAsymmetryPercent)
+            self.walkingSteadiness.text = summary.walkingSteadiness
+            
+            // Trend Data (Placeholders or logic for changes)
+            self.stepLengthPercent.text = "12%"
+            self.walkingAsymmetryPercent.text = "0.5%"
+            self.walkingSteadinessPercent.text = "5%"
+            
+            // Color Feedback
+            self.walkingSteadiness.textColor = summary.walkingSteadiness == "OK" ? .systemGreen : .systemRed
+        }
     }
     
     @IBAction func doneButtonTapped(_ sender: Any) {
         dismiss(animated: true)
     }
-
-//    private func showConfetti() {
-//        // 1. Use .dark or .regular for a more noticeable blur
-//        let blurEffect = UIBlurEffect(style: .light)
-//        let blurEffectView = UIVisualEffectView(effect: nil)
-//        blurEffectView.frame = view.bounds
-//        blurEffectView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
-//        view.addSubview(blurEffectView)
-//        
-//        // 2. Setup Confetti Layer
-//        let confettiLayer = CAEmitterLayer()
-//        confettiLayer.emitterPosition = CGPoint(x: view.bounds.midX, y: -10)
-//        confettiLayer.emitterShape = .line
-//        confettiLayer.emitterSize = CGSize(width: view.bounds.width, height: 2)
-//
-//        let colors: [UIColor] = [.systemRed, .systemBlue, .systemGreen, .systemOrange, .systemPurple, .systemYellow, .systemPink]
-//        confettiLayer.emitterCells = colors.map { color in
-//            let cell = CAEmitterCell()
-//            cell.birthRate = 6
-//            cell.lifetime = 10
-//            cell.velocity = 180
-//            cell.velocityRange = 60
-//            cell.emissionLongitude = .pi
-//            cell.emissionRange = .pi / 4
-//            cell.spin = 3
-//            cell.spinRange = 4
-//            cell.scale = 0.05
-//            cell.scaleRange = 0.03
-//            cell.color = color.cgColor
-//            cell.contents = defaultConfettiImage().cgImage
-//            return cell
-//        }
-//
-//        // Add confetti ABOVE the blur but BELOW the label
-//        view.layer.addSublayer(confettiLayer)
-//        
-//        // 3. Bring your Label to the absolute front
-//        view.bringSubviewToFront(goalCompletedTLabel)
-//        
-//        // 4. Show the Label & Blur with animation
-//        goalCompletedTLabel.isHidden = false
-//        goalCompletedTLabel.alpha = 1.0
-//        goalCompletedTLabel.transform = CGAffineTransform(scaleX: 0.5, y: 0.5)
-//        
-//        UIView.animate(withDuration: 0.7, delay: 0, usingSpringWithDamping: 0.7, initialSpringVelocity: 0.5, options: .curveEaseOut, animations: {
-//            self.goalCompletedTLabel.transform = .identity
-//            blurEffectView.effect = blurEffect
-//        }, completion: nil)
-//
-//        // 5. STOP creating new confetti after 4 seconds
-//        DispatchQueue.main.asyncAfter(deadline: .now() + 4.0) {
-//            confettiLayer.birthRate = 0
-//        }
-//
-//        // 6. WAIT 15 seconds, then fade out
-//        DispatchQueue.main.asyncAfter(deadline: .now() + 5.0) {
-//            UIView.animate(withDuration: 1.5, animations: {
-//                self.goalCompletedTLabel.alpha = 0
-//                blurEffectView.effect = nil
-//                blurEffectView.alpha = 0 // Extra safety to ensure it disappears
-//            }) { _ in
-//                self.goalCompletedTLabel.isHidden = true
-//                blurEffectView.removeFromSuperview()
-//                confettiLayer.removeFromSuperlayer()
-//            }
-//        }
-//    }
     
     private func showConfetti() {
         let blurEffect = UIBlurEffect(style: .light)
