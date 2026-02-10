@@ -73,16 +73,6 @@ class _0minworkoutLandingPageViewController: UIViewController, UICollectionViewD
     }
     
 
-//    override func viewDidLayoutSubviews() {
-//        super.viewDidLayoutSubviews()
-//
-//        progressView.frame = progressContainer.bounds
-//
-//        progressView.trackColor = .systemGray5
-//        progressView.progressColor = UIColor(hex: "#0088FF")
-//
-//    }
-
 
 
     override func viewWillAppear(_ animated: Bool) {
@@ -138,6 +128,7 @@ class _0minworkoutLandingPageViewController: UIViewController, UICollectionViewD
         else if completedCount < total {
             startButtonOutlet.setTitle("Resume Workout", for: .normal)
             startButtonOutlet.isEnabled = true
+            
         }
         
         else {
@@ -194,19 +185,25 @@ class _0minworkoutLandingPageViewController: UIViewController, UICollectionViewD
 
     
     private func navigateToWorkout() {
-        let finishedCount = WorkoutManager.shared.completedToday.count + WorkoutManager.shared.skippedToday.count
-        let total = WorkoutManager.shared.exercises.count
-        if finishedCount == total && total > 0 {
-            WorkoutManager.shared.resetDailyProgress()
-        }
+        let exercises = WorkoutManager.shared.exercises
+        let completedSet = WorkoutManager.shared.completedToday
+
+        
+        let resumeIndex = exercises.firstIndex { exercise in
+            !completedSet.contains(exercise.id)
+        } ?? 0
 
         let sb = UIStoryboard(name: "10 minworkout", bundle: nil)
-        if let vc = sb.instantiateViewController(withIdentifier: "10minworkoutCountdownViewController") as? _0minworkoutCountdownViewController {
-            vc.startingIndex = finishedCount
-            vc.exercises = WorkoutManager.shared.exercises
+        if let vc = sb.instantiateViewController(
+            withIdentifier: "10minworkoutCountdownViewController"
+        ) as? _0minworkoutCountdownViewController {
+
+            vc.startingIndex = resumeIndex
+            vc.exercises = exercises
             navigationController?.pushViewController(vc, animated: true)
         }
     }
+
 }
 
 extension _0minworkoutLandingPageViewController: UICollectionViewDataSource {
