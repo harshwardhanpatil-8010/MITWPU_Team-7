@@ -6,6 +6,9 @@ class GameViewController: UIViewController {
     @IBOutlet weak var timeLabel: UILabel!
     @IBOutlet weak var collectionView: UICollectionView!
 
+
+    
+    
     var selectedDate: Date!
     var level: Int = 1
 
@@ -67,19 +70,22 @@ class GameViewController: UIViewController {
     private func startGame() {
         generateCards()
         collectionView.reloadData()
+        view.layoutIfNeeded()
+          updateLayout()
+
         revealCards()
         startTimer()
     }
 
     private func gridForLevel(_ level: Int) -> (Int, Int) {
         switch level {
-        case 1...3: return (2, 3)
-        case 4...6: return (2, 4)
-        case 7...9: return (3, 4)
-        case 10...12: return (3, 6)
-        case 13...15: return (4, 5)
-        case 16...18: return (5, 6)
-        default: return (6, 6)
+        case 1...3: return (3, 2)
+        case 4...6: return (4, 2)
+        case 7...9: return (4, 3)
+        case 10...12: return (6, 3)
+        case 13...15: return (5, 4)
+        case 16...18: return (6, 4)
+        default: return (7, 4)
         }
     }
 
@@ -108,22 +114,55 @@ class GameViewController: UIViewController {
     }
 
     private func updateLayout() {
+        guard
+            rows > 0,
+            columns > 0,
+            collectionView.bounds.width > 0,
+            collectionView.bounds.height > 0
+        else { return }
+
         guard let layout = collectionView.collectionViewLayout as? UICollectionViewFlowLayout else { return }
 
-        let width = collectionView.bounds.width
-        let height = collectionView.bounds.height
+        let availableWidth = collectionView.bounds.width
+        let availableHeight = collectionView.bounds.height
 
         let hSpacing = CGFloat(columns - 1) * spacing
         let vSpacing = CGFloat(rows - 1) * spacing
 
-        layout.itemSize = CGSize(
-            width: floor((width - hSpacing) / CGFloat(columns)),
-            height: floor((height - vSpacing) / CGFloat(rows))
+        let cellWidth = floor((availableWidth - hSpacing) / CGFloat(columns))
+        let cellHeight = floor((availableHeight - vSpacing) / CGFloat(rows))
+
+        let cellSide = min(cellWidth, cellHeight)
+
+        layout.itemSize = CGSize(width: cellSide, height: cellSide)
+        layout.minimumLineSpacing = spacing
+        layout.minimumInteritemSpacing = spacing
+
+        let totalGridWidth =
+            CGFloat(columns) * cellSide + hSpacing
+        let totalGridHeight =
+            CGFloat(rows) * cellSide + vSpacing
+
+        let horizontalInset = max(
+            (availableWidth - totalGridWidth) / 2,
+            0
         )
-        layout.sectionInset = .zero
+        let verticalInset = max(
+            (availableHeight - totalGridHeight) / 2,
+            0
+        )
+
+        layout.sectionInset = UIEdgeInsets(
+            top: verticalInset,
+            left: horizontalInset,
+            bottom: verticalInset,
+            right: horizontalInset
+        )
+
         layout.invalidateLayout()
     }
-
+    
+    
     private func startTimer() {
         secondsElapsed = 0
         updateTimeLabel()

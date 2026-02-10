@@ -1,4 +1,5 @@
 import UIKit
+import CoreData
 
 class _0minworkoutGoodJobViewController: UIViewController {
     @IBOutlet weak var completedExerciseNumberLabel: UILabel!
@@ -11,10 +12,8 @@ class _0minworkoutGoodJobViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         navigationItem.hidesBackButton = true
-        
         completedExerciseNumberLabel.text = "\(completed)"
         skippedExerciseNumber.text = "\(WorkoutManager.shared.skippedToday.count)"
-        
         let minutes = Int(totalWorkoutSeconds) / 60
         let seconds = Int(totalWorkoutSeconds) % 60
         totalTimeLabel.text = String(format: "%02d:%02d", minutes, seconds)
@@ -31,33 +30,31 @@ class _0minworkoutGoodJobViewController: UIViewController {
     }
     
     @IBAction func easyButtonTapped(_ sender: Any) {
-        saveFeedbackAndExit(feedback: "Easy")
+        saveFeedbackAndExit(value: 1)
     }
     
     @IBAction func perfectButtonTapped(_ sender: Any) {
-        saveFeedbackAndExit(feedback: "Moderate")
+        saveFeedbackAndExit(value: 2)
     }
     
     @IBAction func hardButtonTapped(_ sender: Any) {
-        saveFeedbackAndExit(feedback: "Hard")
+        saveFeedbackAndExit(value: 3)
     }
 
-    
-    func saveFeedbackAndExit(feedback: String) {
-        WorkoutManager.shared.lastFeedback = feedback
+ 
+    func saveFeedbackAndExit(value: Int) {
+        WorkoutManager.shared.saveFeedback(value)
+        DailyWorkoutSummaryStore.shared.saveWorkoutSummary()
+                let alert = UIAlertController(
+                    title: "Workout Complete!",
+                    message: "Great job! Your feedback has been saved. Tomorrow’s workout will be adjusted to match how you felt today.",
+                    preferredStyle: .alert
+                )
 
-        let alert = UIAlertController(
-            title: "Workout Complete!",
-            message: "Great job! Your feedback has been saved. We will adjust tomorrow's exercises to better fit your needs.",
-            preferredStyle: .alert
-        )
+                alert.addAction(UIAlertAction(title: "Got it!", style: .default) { _ in
+                    self.navigationController?.popToRootViewController(animated: true)
+                })
 
-        alert.addAction(UIAlertAction(title: "Got it!", style: .default) { _ in
-            if let nav = self.navigationController {
-                nav.popToRootViewController(animated: true)
-            }
-        })
-
-        present(alert, animated: true)
+                present(alert, animated: true)
     }
 }

@@ -329,7 +329,7 @@
                                 <nil key="highlightedColor"/>
                             </label>
                             <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" scrollEnabled="NO" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="hrF-g2-qku">
-                                <rect key="frame" x="16" y="163" width="361" height="621"/>
+                                <rect key="frame" x="16" y="171" width="361" height="597"/>
                                 <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                                 <collectionViewFlowLayout key="collectionViewLayout" automaticEstimatedItemSize="YES" minimumLineSpacing="10" minimumInteritemSpacing="10" id="t2G-zw-eJ9">
                                     <size key="itemSize" width="248" height="186"/>
@@ -370,14 +370,14 @@
                         <viewLayoutGuide key="safeArea" id="KAE-4j-I1D"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                         <constraints>
+                            <constraint firstItem="KAE-4j-I1D" firstAttribute="bottom" secondItem="hrF-g2-qku" secondAttribute="bottom" constant="16" id="0Ol-Bh-XSW"/>
                             <constraint firstItem="RgS-LE-kMh" firstAttribute="top" secondItem="ZPa-rp-8Vz" secondAttribute="top" constant="64" id="71U-qv-PcH"/>
-                            <constraint firstItem="hrF-g2-qku" firstAttribute="bottom" secondItem="KAE-4j-I1D" secondAttribute="bottom" id="BMJ-26-Opl"/>
                             <constraint firstItem="4aG-zH-bQn" firstAttribute="leading" secondItem="KAE-4j-I1D" secondAttribute="leading" constant="16" id="CsE-TY-ZHO"/>
                             <constraint firstItem="4aG-zH-bQn" firstAttribute="top" secondItem="RgS-LE-kMh" secondAttribute="bottom" constant="16" id="IX3-oI-5sw"/>
                             <constraint firstItem="KAE-4j-I1D" firstAttribute="trailing" secondItem="4aG-zH-bQn" secondAttribute="trailing" constant="16" id="Mz4-0a-1Sh"/>
                             <constraint firstItem="RgS-LE-kMh" firstAttribute="leading" secondItem="ZPa-rp-8Vz" secondAttribute="leading" id="Qom-Ur-75u"/>
                             <constraint firstAttribute="trailing" secondItem="RgS-LE-kMh" secondAttribute="trailing" id="TYm-lw-QrO"/>
-                            <constraint firstItem="hrF-g2-qku" firstAttribute="top" secondItem="4aG-zH-bQn" secondAttribute="bottom" constant="8" id="cOs-ff-v3Z"/>
+                            <constraint firstItem="hrF-g2-qku" firstAttribute="top" secondItem="4aG-zH-bQn" secondAttribute="bottom" constant="16" id="Yzj-zL-uyY"/>
                             <constraint firstItem="KAE-4j-I1D" firstAttribute="trailing" secondItem="hrF-g2-qku" secondAttribute="trailing" constant="16" id="kEf-NR-bTt"/>
                             <constraint firstItem="hrF-g2-qku" firstAttribute="leading" secondItem="KAE-4j-I1D" secondAttribute="leading" constant="16" id="uHK-py-ZtA"/>
                         </constraints>
