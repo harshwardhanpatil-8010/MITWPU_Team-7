@@ -12,10 +12,8 @@ class _0minworkoutGoodJobViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         navigationItem.hidesBackButton = true
-        
         completedExerciseNumberLabel.text = "\(completed)"
         skippedExerciseNumber.text = "\(WorkoutManager.shared.skippedToday.count)"
-        
         let minutes = Int(totalWorkoutSeconds) / 60
         let seconds = Int(totalWorkoutSeconds) % 60
         totalTimeLabel.text = String(format: "%02d:%02d", minutes, seconds)
