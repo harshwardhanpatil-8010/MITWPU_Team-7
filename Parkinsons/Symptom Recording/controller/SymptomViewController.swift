@@ -1,5 +1,6 @@
 import UIKit
 
+
 class SymptomViewController: UIViewController {
 
     @IBOutlet weak var collectionView: UICollectionView!
@@ -8,11 +9,14 @@ class SymptomViewController: UIViewController {
     @IBOutlet weak var tableView: UITableView!
     
     @IBOutlet weak var tableViewHeightConstraint: NSLayoutConstraint!
+    
+
     var dates: [DateModel] = []
     var selectedDate: Date = Date()
     var currentDayLogs: [SymptomRating] = []
     private var gaitRangeText: String?
     private var tremorFrequencyHz: Double?
+    private var todayAggregatedPoints: [AggregatedTremorPoint] = []
 
 
     enum Section: Int, CaseIterable {
@@ -52,9 +56,10 @@ class SymptomViewController: UIViewController {
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
+        loadTodayTremorData()
         fetchTremorData()
-        requestHealthKitIfNeeded()
     }
+
     func samples(for range: TremorRange) -> [TremorSample] {
         let all = TremorDataStore.shared.fetchAll()
         let calendar = Calendar.current
@@ -77,6 +82,17 @@ class SymptomViewController: UIViewController {
 
         return all.filter { $0.date >= startDate }
     }
+    private func loadTodayTremorData() {
+        let samples = TremorDataStore.shared.fetchSamples(
+            for: .day,
+            referenceDate: selectedDate
+        )
+
+        todayAggregatedPoints = samples.map {
+            AggregatedTremorPoint(date: $0.date, avgHz: $0.frequencyHz)
+        }
+    }
+
     func aggregatedSamples(
         for range: TremorRange
     ) -> [(date: Date, value: Double)] {
@@ -385,7 +401,11 @@ extension SymptomViewController: UICollectionViewDataSource, UICollectionViewDel
                 for: indexPath
             ) as! tremorCard
 
-            cell.configure(frequencyHz: tremorFrequencyHz)
+            cell.configure(
+                frequencyHz: todayAggregatedPoints.map { $0.avgHz }.average(),
+                graphPoints: todayAggregatedPoints
+            )
+
             return cell
 
 
@@ -453,20 +473,25 @@ extension SymptomViewController: UICollectionViewDataSource, UICollectionViewDel
 
         let storyboard = UIStoryboard(name: "SymptomRecording", bundle: nil)
 
-        let vc: UIViewController
-
         switch type {
+
         case .tremor:
-            vc = storyboard.instantiateViewController(withIdentifier: "TremorVC")
+            let vc = storyboard.instantiateViewController(
+                withIdentifier: "TremorVC"
+            ) as! TremorViewController   // ✅ STRONG TYPE
+
+            vc.selectedDate = selectedDate
+            navigationController?.pushViewController(vc, animated: true)
 
         case .gait:
-            vc = storyboard.instantiateViewController(withIdentifier: "GaitVC")
+            let vc = storyboard.instantiateViewController(
+                withIdentifier: "GaitVC"
+            )
+            navigationController?.pushViewController(vc, animated: true)
 
         default:
             return
         }
-
-        navigationController?.pushViewController(vc, animated: true)
     }
 
 }

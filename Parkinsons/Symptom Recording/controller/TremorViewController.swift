@@ -11,7 +11,10 @@ struct AggregatedTremorPoint {
     let avgHz: Double
 }
 
+
 class TremorViewController: UIViewController {
+    var selectedDate: Date = Date()
+    private var todayAggregatedPoints: [AggregatedTremorPoint] = []
 
     @IBOutlet weak var DateLabel: UILabel!
     @IBOutlet weak var tremorFreq: UILabel!
@@ -50,6 +53,7 @@ class TremorViewController: UIViewController {
 
         updateTremorUI(for: range)
     }
+    
     private func aggregateSamples(_ samples: [TremorSample],
                                   for range: TremorRange) -> [AggregatedTremorPoint] {
 
@@ -106,28 +110,47 @@ class TremorViewController: UIViewController {
 
     private func updateTremorUI(for range: TremorRange) {
 
-        let rawSamples = TremorDataStore.shared.fetchSamples(for: range)
+        let rawSamples = TremorDataStore.shared.fetchSamples(
+            for: range,
+            referenceDate: selectedDate
+        )
 
         let aggregated = aggregateSamples(rawSamples, for: range)
 
-        updateAverageLabel(using: rawSamples)   // card shows overall avg
+        if range == .day {
+            todayAggregatedPoints = aggregated
+        }
+
+        updateAverageLabel(
+            aggregatedPoints: aggregated,
+            range: range
+        )
+
         updateGraph(using: aggregated, range: range)
         updateDateLabel(for: range)
     }
 
 
-    private func updateAverageLabel(using samples: [TremorSample]) {
-        let avgHz = samples.averageFrequency()
 
-        // Clamp for realistic medical UI
-        let clampedHz = min(max(avgHz, 0), 12)
 
-        if clampedHz > 0 {
-            tremorFreq.text = String(format: "%.1f Hz", clampedHz)
-        } else {
-            tremorFreq.text = "—"
+
+    
+    private func updateAverageLabel(
+        aggregatedPoints: [AggregatedTremorPoint],
+        range: TremorRange
+    ) {
+        guard !aggregatedPoints.isEmpty else {
+            tremorFreq.text = "— Hz"
+            return
         }
+
+        let avg = aggregatedPoints
+            .map { $0.avgHz }
+            .reduce(0, +) / Double(aggregatedPoints.count)
+
+        tremorFreq.text = String(format: "%.1f Hz", avg)
     }
+
     private func xAxisLabels(for points: [AggregatedTremorPoint],
                              range: TremorRange) -> [(index: Int, label: String)] {
 

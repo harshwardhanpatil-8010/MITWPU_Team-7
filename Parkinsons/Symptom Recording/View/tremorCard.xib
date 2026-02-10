@@ -21,38 +21,38 @@
                         <rect key="frame" x="0.0" y="0.0" width="370" height="148"/>
                         <subviews>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Tremors" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Vky-OX-ADV">
-                                <rect key="frame" x="16" y="13.999999999999998" width="338" height="29.333333333333329"/>
+                                <rect key="frame" x="16" y="14" width="338" height="24"/>
                                 <fontDescription key="fontDescription" type="boldSystem" pointSize="20"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="L7I-dC-KjR">
-                                <rect key="frame" x="16" y="45.333333333333336" width="338" height="1"/>
+                                <rect key="frame" x="16" y="40" width="338" height="1"/>
                                 <color key="backgroundColor" systemColor="systemGray5Color"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="1" id="Urt-MJ-bfS"/>
                                 </constraints>
                             </view>
                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="WDh-w1-DMj">
-                                <rect key="frame" x="16" y="72" width="76.666666666666671" height="48.666666666666657"/>
+                                <rect key="frame" x="16" y="66.666666666666671" width="76.666666666666671" height="54"/>
                                 <subviews>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Average" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="7Ij-xp-j9m">
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Current" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="7Ij-xp-j9m">
                                         <rect key="frame" x="0.0" y="0.0" width="76.666666666666671" height="18"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="15"/>
                                         <nil key="textColor"/>
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <stackView opaque="NO" contentMode="scaleToFill" alignment="lastBaseline" translatesAutoresizingMaskIntoConstraints="NO" id="XAY-sz-hJk">
-                                        <rect key="frame" x="0.0" y="18" width="76.666666666666671" height="30.666666666666671"/>
+                                        <rect key="frame" x="0.0" y="18" width="76.666666666666671" height="36"/>
                                         <subviews>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="12" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Gly-Fg-RBg">
-                                                <rect key="frame" x="0.0" y="2.0000000000000018" width="26.666666666666668" height="28.666666666666671"/>
+                                                <rect key="frame" x="0.0" y="7.3333333333333304" width="26.666666666666668" height="28.666666666666671"/>
                                                 <fontDescription key="fontDescription" type="boldSystem" pointSize="24"/>
                                                 <nil key="textColor"/>
                                                 <nil key="highlightedColor"/>
                                             </label>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" verticalHuggingPriority="251" horizontalCompressionResistancePriority="751" text="" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="FaM-1S-nDa">
-                                                <rect key="frame" x="26.666666666666664" y="0.0" width="49.999999999999993" height="29.333333333333336"/>
+                                                <rect key="frame" x="26.666666666666664" y="0.0" width="49.999999999999993" height="34.666666666666664"/>
                                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                 <color key="textColor" systemColor="secondaryLabelColor"/>
                                                 <nil key="highlightedColor"/>
@@ -61,13 +61,14 @@
                                     </stackView>
                                 </subviews>
                             </stackView>
-                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" horizontalCompressionResistancePriority="749" image="TremorsGraph" translatesAutoresizingMaskIntoConstraints="NO" id="Ppc-m1-c3b">
-                                <rect key="frame" x="215" y="62" width="139" height="68"/>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="oeJ-14-ETr">
+                                <rect key="frame" x="215" y="56" width="139" height="68"/>
+                                <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                                 <constraints>
-                                    <constraint firstAttribute="height" constant="68" id="RqM-XH-XhH"/>
-                                    <constraint firstAttribute="width" constant="139" id="SnE-4E-jzT"/>
+                                    <constraint firstAttribute="width" constant="139" id="2bM-ng-1RH"/>
+                                    <constraint firstAttribute="height" constant="68" id="agw-Cg-wpR"/>
                                 </constraints>
-                            </imageView>
+                            </view>
                         </subviews>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                         <constraints>
@@ -75,13 +76,12 @@
                             <constraint firstAttribute="bottom" secondItem="WDh-w1-DMj" secondAttribute="bottom" constant="27.329999999999998" id="8PV-c9-Klm"/>
                             <constraint firstItem="L7I-dC-KjR" firstAttribute="leading" secondItem="6MY-mq-Boi" secondAttribute="leading" constant="16" id="JTz-3c-EHd"/>
                             <constraint firstAttribute="trailing" secondItem="L7I-dC-KjR" secondAttribute="trailing" constant="16" id="LzE-YU-yqL"/>
+                            <constraint firstItem="oeJ-14-ETr" firstAttribute="top" secondItem="L7I-dC-KjR" secondAttribute="bottom" constant="15" id="Q78-MM-uex"/>
                             <constraint firstAttribute="trailing" secondItem="Vky-OX-ADV" secondAttribute="trailing" constant="16" id="YJK-wd-rFb"/>
                             <constraint firstItem="WDh-w1-DMj" firstAttribute="leading" secondItem="6MY-mq-Boi" secondAttribute="leading" constant="16" id="YtT-Ks-Xl3"/>
-                            <constraint firstItem="Ppc-m1-c3b" firstAttribute="top" secondItem="L7I-dC-KjR" secondAttribute="bottom" constant="15.67" id="Zuq-yh-Huf"/>
                             <constraint firstItem="L7I-dC-KjR" firstAttribute="top" secondItem="Vky-OX-ADV" secondAttribute="bottom" constant="2" id="dtd-TI-9ep"/>
-                            <constraint firstAttribute="bottom" secondItem="Ppc-m1-c3b" secondAttribute="bottom" constant="18" id="jsN-R0-bcn"/>
                             <constraint firstItem="Vky-OX-ADV" firstAttribute="leading" secondItem="6MY-mq-Boi" secondAttribute="leading" constant="16" id="lz4-3b-8AU"/>
-                            <constraint firstAttribute="trailing" secondItem="Ppc-m1-c3b" secondAttribute="trailing" constant="16" id="tKw-79-agd"/>
+                            <constraint firstAttribute="trailing" secondItem="oeJ-14-ETr" secondAttribute="trailing" constant="16" id="v8x-YT-KzF"/>
                             <constraint firstItem="Vky-OX-ADV" firstAttribute="top" secondItem="6MY-mq-Boi" secondAttribute="top" constant="14" id="zMh-44-HXx"/>
                         </constraints>
                     </view>
@@ -97,13 +97,13 @@
             <size key="customSize" width="370" height="148"/>
             <connections>
                 <outlet property="cardBackground" destination="6MY-mq-Boi" id="Ex5-0p-c0e"/>
+                <outlet property="cardGraphView" destination="oeJ-14-ETr" id="skW-4N-lGz"/>
                 <outlet property="tremorValueLabel" destination="Gly-Fg-RBg" id="0B9-hd-e3l"/>
             </connections>
             <point key="canvasLocation" x="358.77862595419845" y="146.47887323943664"/>
         </collectionViewCell>
     </objects>
     <resources>
-        <image name="TremorsGraph" width="762" height="324"/>
         <systemColor name="secondaryLabelColor">
             <color red="0.23529411759999999" green="0.23529411759999999" blue="0.26274509800000001" alpha="0.59999999999999998" colorSpace="custom" customColorSpace="sRGB"/>
         </systemColor>
