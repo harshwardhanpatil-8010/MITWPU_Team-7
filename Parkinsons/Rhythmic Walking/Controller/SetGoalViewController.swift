@@ -20,6 +20,7 @@ class SetGoalViewController: UIViewController, UITableViewDataSource, UIPickerVi
     
     var startTapsCount: Int = 0
    
+    private var sessions: [RhythmicSession] = []
    
     private var selectedBeat = "Clock"
     private var selectedPace: String = "Slow"
