@@ -6,6 +6,8 @@ class CalenderCollectionViewCell: UICollectionViewCell {
     @IBOutlet weak var calenderBackground: UIView!
     @IBOutlet weak var calenderDay: UILabel!
 
+    
+    
     override func awakeFromNib() {
         super.awakeFromNib()
         self.clipsToBounds = false

@@ -410,32 +410,31 @@ extension HomeViewController: UICollectionViewDataSource {
             
         case .exercises:
             let cell = mainCollectionView.dequeueReusableCell(
-                    withReuseIdentifier: "exercise_card_cell",
-                    for: indexPath
-                ) as! ExerciseCardCell
-
-                let model = exerciseData[indexPath.row]
-                cell.configure(with: model)
-
-                if indexPath.row == 0 {
-                    let completed = WorkoutManager.shared.completedToday.count
-                    let total = max(WorkoutManager.shared.exercises.count, 1)
-                    cell.setProgress(completed: completed, total: total)
-
-                } else if indexPath.row == 1 {
-                    if let lastSession = DataStore.shared.sessions.first {
-                        let done = Double(lastSession.elapsedSeconds)
-                        let goal = Double(lastSession.requestedDurationSeconds)
-                        let percentage = Int((done / max(goal, 1)) * 100)
-
-                        cell.setProgress(completed: Int(done), total: Int(goal))
-                        cell.progressLabel.text = "\(percentage)%"
-                    } else {
-                        cell.setProgress(completed: 0, total: 1)
-                        cell.progressLabel.text = "0%"
-                    }
+                withReuseIdentifier: "exercise_card_cell",
+                for: indexPath
+            ) as! ExerciseCardCell
+            let model = exerciseData[indexPath.row]
+            cell.configure(with: model)
+            if indexPath.row == 0 {
+                cell.setThemeColor(UIColor(hex: "0088FF"))
+                let completed = WorkoutManager.shared.completedToday.count
+                let total = max(WorkoutManager.shared.exercises.count, 1)
+                cell.setProgress(completed: completed, total: total)
+            } else if indexPath.row == 1 {
+                cell.setThemeColor(UIColor(hex: "90AF81"))
+                if let lastSession = DataStore.shared.sessions.first {
+                    let done = lastSession.elapsedSeconds
+                    let goal = max(lastSession.requestedDurationSeconds, 1)
+                    let percentage = Int((Double(done) / Double(goal)) * 100)
+                    cell.setProgress(completed: done, total: goal)
+                    cell.progressLabel.text = "\(percentage)%"
+                } else {
+                    cell.setProgress(completed: 0, total: 1)
+                    cell.progressLabel.text = "0%"
                 }
+            }
             return cell
+
             
         case .symptoms:
             let cell = mainCollectionView.dequeueReusableCell(withReuseIdentifier: "symptom_log_cell", for: indexPath) as! SymptomLogCell

@@ -56,7 +56,7 @@
                 <outlet property="contentContainer" destination="7kZ-dZ-ZaN" id="VkL-ih-YJO"/>
                 <outlet property="frontLabel" destination="lgP-w0-wrw" id="QUQ-CP-kBK"/>
             </connections>
-            <point key="canvasLocation" x="-131" y="154"/>
+            <point key="canvasLocation" x="-131.29770992366412" y="153.52112676056339"/>
         </collectionViewCell>
     </objects>
     <resources>

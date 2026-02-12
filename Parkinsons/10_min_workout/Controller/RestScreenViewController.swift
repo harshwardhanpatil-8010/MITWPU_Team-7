@@ -5,8 +5,9 @@ import UIKit
 
 protocol RestScreenDelegate: AnyObject {
     func recordRestDuration(seconds: TimeInterval)
-    func restCompleted(nextIndex: Int)
+    func restCompleted()
 }
+
 
 class RestScreenViewController: UIViewController {
     
@@ -22,6 +23,7 @@ class RestScreenViewController: UIViewController {
     var totalTime = 60
     var restStartTime: Date?
     private var isCompleting = false
+    private var restTimer: Timer?
 
     private func setupBreathGuide() {
         breatheView.layer.cornerRadius = 75
@@ -48,10 +50,17 @@ class RestScreenViewController: UIViewController {
         setupUI()
         setupBreathGuide()
         
-        Timer.scheduledTimer(withTimeInterval: 1.0, repeats: true) { [weak self] t in
+        restTimer = Timer.scheduledTimer(withTimeInterval: 1.0, repeats: true) { [weak self] t in
             self?.tick(t)
         }
+
     }
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        restTimer?.invalidate()
+        restTimer = nil
+    }
+
 
     private func setupUI() {
         let completedCount = WorkoutManager.shared.completedToday.count
@@ -110,19 +119,23 @@ class RestScreenViewController: UIViewController {
     private func finishRest() {
         guard !isCompleting else { return }
         isCompleting = true
+        restTimer?.invalidate()
+        restTimer = nil
         
-        delegate?.restCompleted(nextIndex: currentIndex + 1)
-       
         let transition = CATransition()
         transition.duration = 0.4
         transition.type = .push
         transition.subtype = .fromRight
         transition.timingFunction = CAMediaTimingFunction(name: .easeInEaseOut)
-        
-        self.navigationController?.view.layer.add(transition, forKey: kCATransition)
-        
+        navigationController?.view.layer.add(transition, forKey: kCATransition)
         navigationController?.popViewController(animated: false)
+
+        DispatchQueue.main.async {
+            self.delegate?.restCompleted()
+        }
     }
+
+
     @IBAction func addTimeButtonTapped(_ sender: UIButton) {
         totalTime += 20
         updateTimerLabel()

@@ -7,6 +7,9 @@ class MatchTheCardCollectionViewCell: UICollectionViewCell {
     @IBOutlet weak var frontLabel: UILabel!
     @IBOutlet weak var backImageView: UIImageView!
 
+    
+    
+    
     private var showingFront = false
 
     override func awakeFromNib() {
@@ -32,6 +35,7 @@ class MatchTheCardCollectionViewCell: UICollectionViewCell {
         backImageView.clipsToBounds = true
     }
 
+    
     func configure(with card: Card) {
         resetAppearance()
         frontLabel.text = card.content
