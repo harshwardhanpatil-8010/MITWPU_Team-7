@@ -7,13 +7,13 @@
 
 import Foundation
 
-struct DoseLog: Codable, Identifiable {//Main
-    let id: UUID //dose log id
-    let medicationID: UUID //foreign key
-    let doseID: UUID //foreign key
-    let scheduledTime: Date
-    let loggedAt: Date
-    var status: DoseStatus
-    var day: Date
-}
-
+//struct DoseLog: Codable, Identifiable {//Main
+//    let id: UUID //dose log id
+//    let medicationID: UUID //foreign key
+//    let doseID: UUID //foreign key
+//    let scheduledTime: Date
+//    let loggedAt: Date
+//    var status: DoseStatus
+//    var day: Date
+//}
+//

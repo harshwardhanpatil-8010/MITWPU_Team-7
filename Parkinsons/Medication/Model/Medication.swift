@@ -1,11 +1,11 @@
 import Foundation
 import UIKit
-struct MedicationDose: Codable, Identifiable {//Main
-    let id: UUID //Medication Dose id
-    var time: Date
-    var status: DoseStatus
-    var medicationID: UUID // foreign key
-}
+//struct MedicationDose: Codable, Identifiable {//Main
+//    let id: UUID //Medication Dose id
+//    var time: Date
+//    var status: DoseStatus
+//    var medicationID: UUID // foreign key
+//}
 
 enum RepeatRule: Codable, Equatable {
     case everyday
@@ -50,17 +50,17 @@ enum RepeatRule: Codable, Equatable {
     }
 }
 
-struct Medication: Codable {//Main
-    let id: UUID //medication id
-    var name: String
-    var form: String
-    var unit: String
-    var strength: Int?
-    var iconName: String
-    var schedule: RepeatRule
-    var doses: [MedicationDose]
-    let createdAt: Date
-}
+//struct Medication: Codable {//Main
+//    let id: UUID //medication id
+//    var name: String
+//    var form: String
+//    var unit: String
+//    var strength: Int?
+//    var iconName: String
+//    var schedule: RepeatRule
+//    var doses: [MedicationDose]
+//    let createdAt: Date
+//}
 
 extension RepeatRule {
     func displayString() -> String {

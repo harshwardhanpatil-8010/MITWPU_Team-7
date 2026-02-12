@@ -24,34 +24,55 @@ class EditMedicationCollectionViewCell: UICollectionViewCell {
     }
 
     func configure(with medication: Medication) {
-        titleLabel.text = medication.name
-        subtitleLabel.text = medication.form
-        medIcon.image = UIImage(named: medication.iconName) ?? UIImage(named: "tablet")
+        
+        titleLabel.text = medication.medicationName
+        subtitleLabel.text = medication.medicationForm
+        
+        medIcon.image = UIImage(
+            named: medication.medicationIconName ?? ""
+        ) ?? UIImage(named: "tablet")
 
-        frequencyLabel.text = "\(medication.doses.count)x day"
-        switch medication.schedule {
-        case .everyday:
-            scheduleLabel.text = "Everyday"
+        let doseCount = medication.doses?.count ?? 0
+        frequencyLabel.text = "\(doseCount)x day"
+        
+        scheduleLabel.text = Medication.scheduleDisplayText(
+            type: medication.medicationScheduleType ?? "none",
+            days: medication.medicationScheduleDays as? [Int]
+        )
 
-        case .none:
-            scheduleLabel.text = "None"
-
-        case .weekly:
-            scheduleLabel.text = medication.schedule.displayString()
-        }
     }
+}
+extension Medication {
 
-    private func weekdayIndex(from weekday: Int) -> Int {
-        switch weekday {
-        case 2: return 0
-        case 3: return 1
-        case 4: return 2
-        case 5: return 3
-        case 6: return 4
-        case 7: return 5
-        case 1: return 6
-        default: return -1
+    static func scheduleDisplayText(type: String, days: [Int]?) -> String {
+
+        switch type {
+
+        case "everyday":
+            return "Everyday"
+
+        case "weekly":
+            guard let days = days, !days.isEmpty else {
+                return "Weekly"
+            }
+
+            let formatter = DateFormatter()
+            let weekdaySymbols = formatter.weekdaySymbols ?? []
+
+            let names = days.compactMap { day -> String? in
+                guard day >= 1 && day <= 7 else { return nil }
+                return weekdaySymbols[day - 1]
+            }
+
+            return names.joined(separator: ", ")
+
+        case "none":
+            return "—"
+
+        default:
+            return "—"
         }
     }
 }
+
 

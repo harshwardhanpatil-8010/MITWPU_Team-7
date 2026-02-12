@@ -1,5 +1,5 @@
 import Foundation
-
+import CoreData
 class WorkoutManager {
     static let shared = WorkoutManager()
     var hasCheckedSafetyThisSession = false
@@ -42,32 +42,58 @@ class WorkoutManager {
     }
     
     var allMedsTaken: Bool {
+        let context = PersistenceController.shared.viewContext
         let threeHoursAgo = Calendar.current.date(byAdding: .hour, value: -3, to: Date())!
-        let allLogs = DoseLogDataStore.shared.logs
-        
-        let recentLogs = allLogs.filter { log in
-            return log.scheduledTime >= threeHoursAgo && log.scheduledTime <= Date()
-        }
-        
-        if recentLogs.isEmpty {
+
+        let request: NSFetchRequest<MedicationDoseLog> = MedicationDoseLog.fetchRequest()
+        request.predicate = NSPredicate(
+            format: "doseScheduledTime >= %@ AND doseScheduledTime <= %@",
+            threeHoursAgo as NSDate,
+            Date() as NSDate
+        )
+
+        do {
+            let logs = try context.fetch(request)
+
+            if logs.isEmpty { return true }
+
+            return logs.allSatisfy { $0.doseLogStatus == "taken" }
+        } catch {
             return true
         }
-        
-        return recentLogs.allSatisfy { $0.status == .taken }
     }
+
+
+
     
     
     func getMedicationEffect() -> MedicationEffect {
-        let logs = DoseLogDataStore.shared.logs(for: Date())
-        let takenDoses = logs
-            .filter { $0.status == .taken }
-            .sorted(by: { $0.loggedAt < $1.loggedAt })
 
-        guard let lastDose = takenDoses.last else {
+        let context = PersistenceController.shared.viewContext
+
+        let startOfDay = Calendar.current.startOfDay(for: Date())
+        let endOfDay = Calendar.current.date(byAdding: .day, value: 1, to: startOfDay)!
+
+        let request: NSFetchRequest<MedicationDoseLog> = MedicationDoseLog.fetchRequest()
+        request.predicate = NSPredicate(
+            format: "doseScheduledTime >= %@ AND doseScheduledTime < %@ AND doseLogStatus == %@",
+            startOfDay as NSDate,
+            endOfDay as NSDate,
+            "taken"
+        )
+
+        let logs = (try? context.fetch(request)) ?? []
+
+        let takenDoses = logs.sorted {
+            ($0.doseLoggedAt ?? Date()) < ($1.doseLoggedAt ?? Date())
+        }
+
+        guard let lastDose = takenDoses.last,
+              let loggedAt = lastDose.doseLoggedAt else {
             return .offPeriod
         }
 
-        let hoursSinceDose = Date().timeIntervalSince(lastDose.loggedAt) / 3600
+        let hoursSinceDose = Date().timeIntervalSince(loggedAt) / 3600
 
         if hoursSinceDose < 3 {
             return .optimal
@@ -77,7 +103,7 @@ class WorkoutManager {
             return .offPeriod
         }
     }
-    
+
     func preferredExercisePosition() -> ExercisePosition {
         switch getMedicationEffect() {
         case .optimal:

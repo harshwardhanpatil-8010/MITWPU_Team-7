@@ -1,6 +1,6 @@
 import UIKit
 import Foundation
-
+import CoreData
 final class MainMedicationViewController: UIViewController {
 
     @IBOutlet weak var medSegment: UISegmentedControl!
@@ -71,18 +71,32 @@ final class MainMedicationViewController: UIViewController {
     }
     
     private func loadMedications() {
-        myMedications = MedicationDataStore.shared.medications
+        let request: NSFetchRequest<Medication> = Medication.fetchRequest()
+
+        do {
+            myMedications = try PersistenceController.shared.viewContext.fetch(request)
+        } catch {
+            print("Failed to fetch medications:", error)
+        }
+
 
         if currentSegment == .today {
             todayViewModel.loadTodayMedications(from: myMedications)
 
+            let logRequest: NSFetchRequest<MedicationDoseLog> = MedicationDoseLog.fetchRequest()
+
+            let logs = (try? PersistenceController.shared.viewContext.fetch(logRequest)) ?? []
+
             todayViewModel.loadLoggedDoses(
                 medications: myMedications,
-                logs: DoseLogDataStore.shared.logs,
+                logs: logs,
                 for: Date()
             )
 
             loggedDoses = todayViewModel.loggedDoses
+
+            loggedDoses = todayViewModel.loggedDoses
+
         }
 
         medicationCollectionView.reloadData()
@@ -148,12 +162,21 @@ final class MainMedicationViewController: UIViewController {
     }
 
     private func updateLoggedStatus(_ item: LoggedDoseItem, status: DoseStatus) {
-        DoseLogDataStore.shared.updateLogStatus(
-            logID: item.id,
-            status: status
-        )
+
+        for med in myMedications {
+            guard let doseSet = med.doses as? Set<MedicationDose>,
+                  let coreDose = doseSet.first(where: { $0.id == item.id }) else {
+                continue
+            }
+
+            coreDose.doseStatus = status == .taken ? "taken" : "skipped"
+            break
+        }
+
+        PersistenceController.shared.save()
         loadMedications()
     }
+
 
     private func updateUIForSegment() {
         if currentSegment == .myMedication {
@@ -293,20 +316,25 @@ extension MainMedicationViewController: UICollectionViewDelegate {
 
 extension MainMedicationViewController {
     private func updateDose(_ dose: TodayDoseItem, status: DoseStatus) {
-        let log = DoseLog(
-            id: UUID(),
-            medicationID: dose.medicationID,
-            doseID: dose.id,
-            scheduledTime: dose.scheduledTime,
-            loggedAt: Date(),
-            status: status,
-            day: Date().startOfDay
-        )
 
-        DoseLogDataStore.shared.logDose(log)
+        guard let medication = myMedications.first(where: { $0.id == dose.medicationID }),
+              let doseSet = medication.doses as? Set<MedicationDose>,
+              let coreDose = doseSet.first(where: { $0.id == dose.id }) else {
+            return
+        }
+
+        coreDose.doseStatus = status == .taken ? "taken" : "skipped"
+
+        PersistenceController.shared.save()
+
         loadMedications()
-        NotificationCenter.default.post(name: NSNotification.Name("MedicationLogged"), object: nil)
+
+        NotificationCenter.default.post(
+            name: NSNotification.Name("MedicationLogged"),
+            object: nil
+        )
     }
+
 }
 
 extension MainMedicationViewController: MedicationSectionHeaderViewDelegate {
