@@ -343,13 +343,10 @@ class _0minworkoutViewController: UIViewController {
 }
 
 extension _0minworkoutViewController: RestScreenDelegate {
-
     func recordRestDuration(seconds: TimeInterval) {
         totalWorkoutSeconds += seconds
     }
-
     func restCompleted() {
-
         if !isRevisitingSkipped {
             if currentIndex < exercises.count {
                 configureExercise()
@@ -358,15 +355,11 @@ extension _0minworkoutViewController: RestScreenDelegate {
             checkForSkippedExercises()
             return
         }
-
-
         skippedRevisitPointer += 1
-
         if skippedRevisitPointer < skippedIndicesToRevisit.count {
             currentIndex = skippedIndicesToRevisit[skippedRevisitPointer]
             configureExercise()
         } else {
-            // Finished all skipped
             isRevisitingSkipped = false
             skippedIndicesToRevisit.removeAll()
             showCompletion()
