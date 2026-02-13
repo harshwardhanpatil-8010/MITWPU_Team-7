@@ -7,6 +7,10 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		19918CB72F39B341001F24D6 /* Symptom.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 19918CB52F39B341001F24D6 /* Symptom.xcdatamodeld */; };
+		19918CBA2F39D679001F24D6 /* CDSymptomLog+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 19918CB82F39D679001F24D6 /* CDSymptomLog+CoreDataClass.swift */; };
+		19918CBB2F39D679001F24D6 /* CDSymptomLog+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 19918CB92F39D679001F24D6 /* CDSymptomLog+CoreDataProperties.swift */; };
+		19918CBD2F39D79D001F24D6 /* PersistenceController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 19918CBC2F39D79D001F24D6 /* PersistenceController.swift */; };
 		19C7FADF2F1F4DA600A3A885 /* ARKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 19C7FADE2F1F4DA600A3A885 /* ARKit.framework */; };
 		19C7FAE12F1F4DB700A3A885 /* RealityKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 19C7FAE02F1F4DB700A3A885 /* RealityKit.framework */; };
 		19F103652F2093730046C1D5 /* YouTubeiOSPlayerHelper in Frameworks */ = {isa = PBXBuildFile; productRef = 19F103642F2093730046C1D5 /* YouTubeiOSPlayerHelper */; };
@@ -15,6 +19,10 @@
 
 /* Begin PBXFileReference section */
 		19423B6D2ED6BD590004C99E /* Parkinsons.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Parkinsons.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		19918CB62F39B341001F24D6 /* Symptom.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = Symptom.xcdatamodel; sourceTree = "<group>"; };
+		19918CB82F39D679001F24D6 /* CDSymptomLog+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CDSymptomLog+CoreDataClass.swift"; sourceTree = "<group>"; };
+		19918CB92F39D679001F24D6 /* CDSymptomLog+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CDSymptomLog+CoreDataProperties.swift"; sourceTree = "<group>"; };
+		19918CBC2F39D79D001F24D6 /* PersistenceController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PersistenceController.swift; sourceTree = "<group>"; };
 		19C7FADE2F1F4DA600A3A885 /* ARKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ARKit.framework; path = System/Library/Frameworks/ARKit.framework; sourceTree = SDKROOT; };
 		19C7FAE02F1F4DB700A3A885 /* RealityKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = RealityKit.framework; path = System/Library/Frameworks/RealityKit.framework; sourceTree = SDKROOT; };
 /* End PBXFileReference section */
@@ -58,6 +66,10 @@
 		19423B642ED6BD590004C99E = {
 			isa = PBXGroup;
 			children = (
+				19918CBC2F39D79D001F24D6 /* PersistenceController.swift */,
+				19918CB82F39D679001F24D6 /* CDSymptomLog+CoreDataClass.swift */,
+				19918CB92F39D679001F24D6 /* CDSymptomLog+CoreDataProperties.swift */,
+				19918CB52F39B341001F24D6 /* Symptom.xcdatamodeld */,
 				19423B6F2ED6BD590004C99E /* Parkinsons */,
 				19C7FADD2F1F4DA500A3A885 /* Frameworks */,
 				19423B6E2ED6BD590004C99E /* Products */,
@@ -159,6 +171,10 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				19918CBD2F39D79D001F24D6 /* PersistenceController.swift in Sources */,
+				19918CB72F39B341001F24D6 /* Symptom.xcdatamodeld in Sources */,
+				19918CBA2F39D679001F24D6 /* CDSymptomLog+CoreDataClass.swift in Sources */,
+				19918CBB2F39D679001F24D6 /* CDSymptomLog+CoreDataProperties.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -190,7 +206,7 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = com.nevin.Parkinsons;
+				PRODUCT_BUNDLE_IDENTIFIER = com.nevinAb.Parkinsons;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				STRING_CATALOG_GENERATE_SYMBOLS = YES;
@@ -232,7 +248,7 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = com.nevin.Parkinsons;
+				PRODUCT_BUNDLE_IDENTIFIER = com.nevinAb.Parkinsons;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				STRING_CATALOG_GENERATE_SYMBOLS = YES;
@@ -409,6 +425,19 @@
 			productName = YouTubeiOSPlayerHelper;
 		};
 /* End XCSwiftPackageProductDependency section */
+
+/* Begin XCVersionGroup section */
+		19918CB52F39B341001F24D6 /* Symptom.xcdatamodeld */ = {
+			isa = XCVersionGroup;
+			children = (
+				19918CB62F39B341001F24D6 /* Symptom.xcdatamodel */,
+			);
+			currentVersion = 19918CB62F39B341001F24D6 /* Symptom.xcdatamodel */;
+			path = Symptom.xcdatamodeld;
+			sourceTree = "<group>";
+			versionGroupType = wrapper.xcdatamodel;
+		};
+/* End XCVersionGroup section */
 	};
 	rootObject = 19423B652ED6BD590004C99E /* Project object */;
 }
