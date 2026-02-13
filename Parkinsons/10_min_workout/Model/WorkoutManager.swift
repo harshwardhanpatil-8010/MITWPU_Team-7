@@ -30,16 +30,91 @@ class WorkoutManager {
         }
         return Calendar.current.isDateInToday(lastCompletion)
     }
+    private let lastWorkoutPositionKey = "lastWorkoutPosition"
+
+    func saveTodayPosition(_ position: ExercisePosition) {
+        UserDefaults.standard.set(position.rawValue, forKey: lastWorkoutPositionKey)
+    }
+
+    func loadLastWorkoutPosition() -> ExercisePosition? {
+        guard let raw = UserDefaults.standard.string(forKey: lastWorkoutPositionKey) else {
+            return nil
+        }
+        return ExercisePosition(rawValue: raw)
+    }
+
+    
+    //Check for the Disease Stage
+    var diseaseStage: Int {
+        return UserDefaults.standard.integer(forKey: "diseaseStage")
+    }
+
 
     func setWorkoutCompleted() {
         lastWorkoutCompletionDate = Date()
+        saveTodayPosition(preferredExercisePosition())
     }
+    enum Feedback {
+        case easy
+        case perfect
+        case hard
+    }
+
 
     enum MedicationEffect {
         case optimal
         case wearingOff
         case offPeriod
     }
+    private func currentFeedback() -> Feedback {
+        let stored = loadLastFeedback()
+        
+        switch stored {
+        case 1: return .easy
+        case 3: return .hard
+        default: return .perfect
+        }
+    }
+    
+    
+    private func calculateAdjustment(
+        previous: ExercisePosition?,
+        today: ExercisePosition,
+        feedback: Feedback
+    ) -> (reps: Int, seconds: Int) {
+        
+        guard let previous = previous else {
+            return (0, 0) // first day
+        }
+        
+        if previous == today {
+            switch feedback {
+            case .easy: return (2, 20)
+            case .perfect: return (1, 10)
+            case .hard: return (-2, -20)
+            }
+        }
+        
+        if previous == .seated && today == .standing {
+            switch feedback {
+            case .easy: return (1, 10)
+            case .perfect: return (0, 0)
+            case .hard: return (-2, -15)
+            }
+        }
+        
+        if previous == .standing && today == .seated {
+            switch feedback {
+            case .easy: return (1, 10)
+            case .perfect: return (0, 0)
+            case .hard: return (-1, -10)
+            }
+        }
+        
+        return (0, 0)
+    }
+
+    
     
     var allMedsTaken: Bool {
         let context = PersistenceController.shared.viewContext
@@ -121,7 +196,7 @@ class WorkoutManager {
     
     func generateDailyWorkout() {
         let effect = getMedicationEffect()
-        var preferredPosition: ExercisePosition = preferredExercisePosition()
+        let preferredPosition = preferredExercisePosition()
         var dailySet: [WorkoutExercise] = []
         let library = getFullLibrary()
         for category in ExerciseCategory.allCases {
@@ -130,28 +205,30 @@ class WorkoutManager {
             switch category {
             case .warmup:
                 let warmups = filteredLibrary.filter { $0.position == preferredPosition }
-                dailySet.append(contentsOf: (warmups.isEmpty ? filteredLibrary : warmups).shuffled().prefix(2).map { applyAlgorithm(to: $0 ) })
+                dailySet.append(contentsOf: (warmups.isEmpty ? filteredLibrary : warmups).shuffled().prefix(2).map { applyAlgorithm(to: $0, todayPosition: preferredPosition) }
+)
             case .balance:
                 if let balance = filteredLibrary.filter({ $0.position == preferredPosition}).randomElement() {
-                    dailySet.append(applyAlgorithm(to: balance))
+                    dailySet.append(applyAlgorithm(to: balance, todayPosition: preferredPosition))
+
                 } else if let altBalance = filteredLibrary.randomElement() {
-                    dailySet.append(applyAlgorithm(to: altBalance))
+                    dailySet.append(applyAlgorithm(to: altBalance, todayPosition: preferredPosition))
                 }
             case .aerobic:
                 if let aerobic = filteredLibrary.filter({ $0.position == preferredPosition}).randomElement() {
-                    dailySet.append(applyAlgorithm(to: aerobic))
+                    dailySet.append(applyAlgorithm(to: aerobic, todayPosition: preferredPosition))
                 } else if let altAerobic = filteredLibrary.randomElement() {
-                    dailySet.append(applyAlgorithm(to: altAerobic))
+                    dailySet.append(applyAlgorithm(to: altAerobic, todayPosition: preferredPosition))
                 }
             case .strength:
                 if let strength = filteredLibrary.filter({ $0.position == preferredPosition}).randomElement() {
-                    dailySet.append(applyAlgorithm(to: strength))
+                    dailySet.append(applyAlgorithm(to: strength, todayPosition: preferredPosition))
                 } else if let altStrength = filteredLibrary.randomElement() {
-                    dailySet.append(applyAlgorithm(to: altStrength))
+                    dailySet.append(applyAlgorithm(to: altStrength, todayPosition: preferredPosition))
                 }
             case .cooldown:
                 let cooldowns = filteredLibrary.filter { $0.position == preferredPosition }
-                dailySet.append(contentsOf: (cooldowns.isEmpty ? filteredLibrary: cooldowns).shuffled().prefix(2).map{applyAlgorithm(to: $0) })
+                dailySet.append(contentsOf: (cooldowns.isEmpty ? filteredLibrary: cooldowns).shuffled().prefix(2).map{applyAlgorithm(to: $0, todayPosition: preferredPosition)})
             }
             
             self.exercises = dailySet
@@ -164,41 +241,29 @@ class WorkoutManager {
             return exercises
         }
         
-    private func applyAlgorithm(to exercise: WorkoutExercise) -> WorkoutExercise {
+    private func applyAlgorithm(to exercise: WorkoutExercise,
+                                todayPosition: ExercisePosition) -> WorkoutExercise {
+        
         var modified = exercise
-
-        let storedFeedback = UserDefaults.standard.integer(forKey: "lastWorkoutFeedback")
-        let feedback = storedFeedback == 0 ? 2 : storedFeedback
-
-        let effectiveFeedback: Int
-        if allMedsTaken {
-            effectiveFeedback = feedback
-        } else {
-            effectiveFeedback = 2
-        }
-
-        if exercise.category == .warmup || exercise.category == .cooldown {
-            switch effectiveFeedback {
-            case 1:  //Easy
-                modified.reps = 60
-            case 3:  //Hard
-                modified.reps = 30
-            default:  //Medium
-                modified.reps = 40
-            }
-        } else {
-            switch effectiveFeedback {
-            case 1:
-                modified.reps = 14
-            case 3:
-                modified.reps = 8
-            default:
-                modified.reps = 12
-            }
-        }
-
+        
+        let previousPosition = loadLastWorkoutPosition()
+        let feedback = currentFeedback()
+        
+        let adjustment = calculateAdjustment(
+            previous: previousPosition,
+            today: todayPosition,
+            feedback: feedback
+        )
+        
+        modified.reps += adjustment.reps
+        
+        // Safety clamps
+        modified.reps = max(4, modified.reps)
+        modified.reps = min(25, modified.reps)
+        
         return modified
     }
+
 
         func resetDailyProgress() {
             completedToday.removeAll()

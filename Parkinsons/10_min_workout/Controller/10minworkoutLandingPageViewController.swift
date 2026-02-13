@@ -177,11 +177,36 @@ class _0minworkoutLandingPageViewController: UIViewController, UICollectionViewD
         self.updateButtonUI()
     }
     
+    //Check for medication taken
+    /*Stage 1–2 → no alert
+     Stage 3 + wearing off → ask user
+     Stage 3 + off → force seated
+     Stage 3 + optimal → normal
+     */
     private func checkMedTaken() {
-        if !WorkoutManager.shared.allMedsTaken {
-            showPushLimitsAlert()
+        
+        let manager = WorkoutManager.shared
+        
+        if manager.diseaseStage >= 3 {
+            
+            switch manager.getMedicationEffect() {
+                
+            case .wearingOff:
+                showPushLimitsAlert()
+                
+            case .offPeriod:
+                manager.userWantsToPushLimits = false
+                manager.generateDailyWorkout()
+                refreshWorkoutList()
+                
+            case .optimal:
+                break
+            }
         }
     }
+
+
+
 
     
     private func navigateToWorkout() {
