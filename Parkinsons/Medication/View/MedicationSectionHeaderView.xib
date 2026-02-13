@@ -17,16 +17,16 @@
                     <rect key="frame" x="0.0" y="0.0" width="320" height="16"/>
                     <subviews>
                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Lnr-d0-WSI">
-                            <rect key="frame" x="0.0" y="0.0" width="245" height="16"/>
+                            <rect key="frame" x="0.0" y="0.0" width="230" height="16"/>
                             <constraints>
-                                <constraint firstAttribute="width" constant="245" id="KrT-4V-jXP"/>
+                                <constraint firstAttribute="width" constant="230" id="KrT-4V-jXP"/>
                             </constraints>
                             <fontDescription key="fontDescription" type="boldSystem" pointSize="20"/>
                             <nil key="textColor"/>
                             <nil key="highlightedColor"/>
                         </label>
                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="trailing" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ErZ-1q-1wR">
-                            <rect key="frame" x="245" y="0.0" width="59" height="16"/>
+                            <rect key="frame" x="230" y="0.0" width="74" height="16"/>
                             <state key="normal" title="Button"/>
                             <buttonConfiguration key="configuration" style="plain" title="Show All"/>
                             <connections>

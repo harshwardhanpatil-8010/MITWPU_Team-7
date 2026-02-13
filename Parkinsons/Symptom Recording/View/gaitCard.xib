@@ -20,8 +20,8 @@
                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="w42-xP-mOh">
                         <rect key="frame" x="0.0" y="0.0" width="370" height="137"/>
                         <subviews>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Gait Disturbance" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="oLx-wS-sWU">
-                                <rect key="frame" x="16" y="13.999999999999998" width="158" height="18.333333333333329"/>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Walking Steadiness" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="oLx-wS-sWU">
+                                <rect key="frame" x="16" y="13.999999999999998" width="184" height="18.333333333333329"/>
                                 <fontDescription key="fontDescription" type="boldSystem" pointSize="20"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
@@ -49,7 +49,7 @@
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <stackView opaque="NO" contentMode="scaleToFill" alignment="lastBaseline" translatesAutoresizingMaskIntoConstraints="NO" id="7Hw-gg-zQM">
-                                        <rect key="frame" x="0.0" y="20" width="94.333333333333329" height="28.666666666666671"/>
+                                        <rect key="frame" x="0.0" y="20" width="120.66666666666667" height="28.666666666666671"/>
                                         <subviews>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="44-77" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="eSW-dj-yNn">
                                                 <rect key="frame" x="0.0" y="0.0" width="70.666666666666671" height="28.666666666666668"/>
@@ -57,8 +57,8 @@
                                                 <nil key="textColor"/>
                                                 <nil key="highlightedColor"/>
                                             </label>
-                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="bottomLeft" horizontalHuggingPriority="251" verticalHuggingPriority="251" horizontalCompressionResistancePriority="751" text="cm" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="aGk-dC-HHK">
-                                                <rect key="frame" x="70.666666666666671" y="6.6666666666666696" width="23.666666666666671" height="20.333333333333329"/>
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="bottomLeft" horizontalHuggingPriority="251" verticalHuggingPriority="251" horizontalCompressionResistancePriority="751" text="" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="aGk-dC-HHK">
+                                                <rect key="frame" x="70.666666666666671" y="0.0" width="50" height="27.333333333333332"/>
                                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                 <color key="textColor" systemColor="secondaryLabelColor"/>
                                                 <nil key="highlightedColor"/>
@@ -100,6 +100,7 @@
             <connections>
                 <outlet property="cardBackground" destination="w42-xP-mOh" id="iwk-U8-CWf"/>
                 <outlet property="rangeLabel" destination="eSW-dj-yNn" id="iyT-2v-qAh"/>
+                <outlet property="unitLabel" destination="aGk-dC-HHK" id="sG8-QN-efX"/>
             </connections>
             <point key="canvasLocation" x="149.61832061068702" y="115.84507042253522"/>
         </collectionViewCell>

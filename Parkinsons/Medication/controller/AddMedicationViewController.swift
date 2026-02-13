@@ -6,7 +6,7 @@
 //
 
 import UIKit
-
+import CoreData
 protocol AddMedicationDelegate: AnyObject {
     func didUpdateMedication()
 }
@@ -15,18 +15,26 @@ class AddMedicationViewController: UIViewController,
                                    UITableViewDelegate,
                                    UITableViewDataSource,
                                    DoseTableViewCellDelegate,
-                                   UnitsAndTypeDelegate,
-                                   RepeatSelectionDelegate {
-    func didSelectRepeatRule(_ rule: RepeatRule) {
-        selectedRepeatRule = rule
-        repeatLabel.text = rule.displayString()
+                                   UnitsAndTypeDelegate,RepeatSelectionDelegate{
+    func didSelectSchedule(type: String, days: [Int]?) {
+        selectedScheduleType = type
+        selectedScheduleDays = days
+        
+        repeatLabel.text = Medication.scheduleDisplayText(
+            type: type,
+            days: days
+        )
+        
         repeatLabel.textColor = .label
         evaluateTickButtonState()
     }
+
     
     private var originalMedicationSnapshot: Medication?
-    private var selectedRepeatRule: RepeatRule = .everyday
-    private let unitPlaceholder = "Add unit,"
+    private var selectedScheduleType: String?
+    private var selectedScheduleDays: [Int]?
+
+    private let unitPlaceholder = "Add unit"
     private let typePlaceholder = "Select type"
     private let repeatPlaceholder = "Select days"
     
@@ -136,24 +144,35 @@ class AddMedicationViewController: UIViewController,
     func fillFieldsForEditing() {
         guard let med = medicationToEdit else { return }
         
-        medicationNameTextField.text = med.name
-        typeLabel.text = med.form
-        unitLabel.text = med.unit
-        strengthUnitLabel.text = med.unit
+        medicationNameTextField.text = med.medicationName
+        typeLabel.text = med.medicationForm
+        unitLabel.text = med.medicationUnit
+        strengthUnitLabel.text = med.medicationUnit
         
         typeLabel.textColor = .label
         unitLabel.textColor = .label
         strengthUnitLabel.textColor = .label
         
-        if let strength = med.strength {
-            strengthLabel.text = "\(strength)"
-        }
+        strengthLabel.text = "\(med.medicationStrength)"
         
-        selectedRepeatRule = med.schedule
-        repeatLabel.text = med.schedule.displayString()
+
+        selectedScheduleType = med.medicationScheduleType
+        selectedScheduleDays = med.medicationScheduleDays as? [Int]
+
+        repeatLabel.text = Medication.scheduleDisplayText(
+            type: med.medicationScheduleType ?? "none",
+            days: med.medicationScheduleDays as? [Int]
+        )
+
+        repeatLabel.textColor = .label
+
         repeatLabel.textColor = .label
         
-        doseArray = med.doses.map { $0.time }
+        let doseSet = med.doses as? Set<MedicationDose> ?? []
+        doseArray = doseSet
+            .sorted { $0.doseTime ?? Date() < $1.doseTime ?? Date() }
+            .compactMap { $0.doseTime }
+
 
         doseStepper.value = Double(doseArray.count)
 
@@ -174,12 +193,27 @@ class AddMedicationViewController: UIViewController,
             return
         }
         
-        let nameChanged = medicationNameTextField.text != original.name
-        let strengthChanged = Int(strengthLabel.text ?? "") != original.strength
-        let unitChanged = unitLabel.text != original.unit
-        let typeChanged = typeLabel.text != original.form
-        let repeatChanged = selectedRepeatRule != original.schedule
-        let dosesChanged = doseArray.map { $0.timeIntervalSince1970 } != original.doses.map { $0.time.timeIntervalSince1970 }
+        let nameChanged = medicationNameTextField.text != original.medicationName
+        let strengthChanged =
+            Int16(Int(strengthLabel.text ?? "") ?? 0) != original.medicationStrength
+
+        let unitChanged = unitLabel.text != original.medicationUnit
+        let typeChanged = typeLabel.text != original.medicationForm
+
+        let repeatChanged =
+            selectedScheduleType != original.medicationScheduleType ||
+            (selectedScheduleDays ?? []) != (original.medicationScheduleDays as? [Int] ?? [])
+
+        let originalDoseTimes = (original.doses as? Set<MedicationDose> ?? [])
+            .compactMap { $0.doseTime?.timeIntervalSince1970 }
+            .sorted()
+
+        let currentDoseTimes = doseArray
+            .map { $0.timeIntervalSince1970 }
+            .sorted()
+
+        let dosesChanged = originalDoseTimes != currentDoseTimes
+
         
         tickButton.isEnabled = nameChanged || strengthChanged || unitChanged || typeChanged || repeatChanged || dosesChanged
     }
@@ -212,7 +246,9 @@ class AddMedicationViewController: UIViewController,
         guard let vc = storyboard.instantiateViewController(withIdentifier: "RepeatVC") as? RepeatViewController else { return }
         
         vc.delegate = self
-        vc.preselectedSchedule = selectedRepeatRule
+        vc.preselectedType = selectedScheduleType
+        vc.preselectedDays = selectedScheduleDays
+
         navigationController?.pushViewController(vc, animated: true)
     }
     
@@ -229,65 +265,68 @@ class AddMedicationViewController: UIViewController,
     
     @IBAction func deleteMedication(_ sender: UIButton) {
         guard let med = medicationToEdit else { return }
-        MedicationDataStore.shared.deleteMedication(med.id)
+
+        let context = PersistenceController.shared.viewContext
+        context.delete(med)
+        PersistenceController.shared.save(context)
+
         delegate?.didUpdateMedication()
         dismiss(animated: true)
     }
+
     
     @IBAction func onTickPressed(_ sender: UIBarButtonItem) {
-        let strengthValue = Int(strengthLabel.text ?? "")
-        guard let name = medicationNameTextField.text, !name.isEmpty else { return }
-        
-        let medicationID = isEditMode ? medicationToEdit.id : UUID()
-        let schedule = selectedRepeatRule
-        
-        let updatedDoses = doseArray.enumerated().map { (index, date) -> MedicationDose in
-            if isEditMode, index < medicationToEdit.doses.count {
-                let existingDose = medicationToEdit.doses[index]
-                return MedicationDose(
-                    id: existingDose.id,
-                    time: date,
-                    status: .none,
-                    medicationID: medicationID
-                )
-            } else {
-                return MedicationDose(
-                    id: UUID(),
-                    time: date,
-                    status: .none,
-                    medicationID: medicationID
-                )
+
+        guard let name = medicationNameTextField.text,
+              !name.trimmingCharacters(in: .whitespaces).isEmpty else { return }
+
+        let context = PersistenceController.shared.viewContext
+
+        let medication: Medication
+
+        if isEditMode {
+            medication = medicationToEdit
+        } else {
+            medication = Medication(context: context)
+            medication.id = UUID()
+            medication.createdAt = Date()
+        }
+
+        // MARK: - Basic fields
+        medication.medicationName = name
+        medication.medicationForm = typeLabel.text ?? "Capsule"
+        medication.medicationUnit = unitLabel.text ?? "mg"
+        medication.medicationStrength = Int16(Int(strengthLabel.text ?? "") ?? 0)
+        medication.medicationIconName = UnitAndType.icon(for: typeLabel.text ?? "Capsule")
+
+        // MARK: - Schedule
+        medication.medicationScheduleType = selectedScheduleType
+        medication.medicationScheduleDays = selectedScheduleDays as NSObject?
+
+        // MARK: - Remove old doses (edit mode only)
+        if isEditMode {
+            let oldDoses = medication.doses as? Set<MedicationDose> ?? []
+            for dose in oldDoses {
+                context.delete(dose)
             }
         }
-        
-        if isEditMode {
-            MedicationDataStore.shared.updateMedication(
-                originalID: medicationToEdit.id,
-                newName: name,
-                newForm: typeLabel.text ?? "Capsule",
-                newSchedule: schedule,
-                newDoses: updatedDoses,
-                newUnit: unitLabel.text ?? "mg",
-                newStrength: strengthValue
-            )
-        } else {
-            let newMedication = Medication(
-                id: medicationID,
-                name: name,
-                form: typeLabel.text ?? "Capsule",
-                unit: unitLabel.text ?? "mg",
-                strength: strengthValue,
-                iconName: UnitAndType.icon(for: typeLabel.text ?? "Capsule"),
-                schedule: schedule,
-                doses: updatedDoses,
-                createdAt: Date()
-            )
-            MedicationDataStore.shared.addMedication(newMedication)
+
+        // MARK: - Add new doses
+        for date in doseArray {
+            let dose = MedicationDose(context: context)
+            dose.id = UUID()
+            dose.doseTime = date
+            dose.doseStatus = "none"
+            dose.medication = medication
         }
-        
+
+        // MARK: - Save
+        PersistenceController.shared.save(context)
+
         delegate?.didUpdateMedication()
         dismiss(animated: true)
     }
+
 }
 
 extension AddMedicationViewController {

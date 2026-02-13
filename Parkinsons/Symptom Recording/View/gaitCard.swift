@@ -9,6 +9,7 @@ import UIKit
 
 class gaitCard: UICollectionViewCell {
 
+    @IBOutlet weak var unitLabel: UILabel!
     @IBOutlet weak var rangeLabel: UILabel!
     @IBOutlet weak var cardBackground: UIView!
     

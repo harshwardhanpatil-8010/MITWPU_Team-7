@@ -1,4 +1,5 @@
 import UIKit
+import CoreData
 
 class SummaryViewController: UIViewController {
     
@@ -16,8 +17,7 @@ class SummaryViewController: UIViewController {
     var currentSymptomLog: SymptomLogEntry?
     let summarySections = Section.allCases
     
-    private let todayViewModel = TodayMedicationViewModel()
-    private var loggedDoses: [LoggedDoseItem] = []
+
     private var totalScheduled: Int = 0
     private var totalTaken: Int = 0
     private var primaryMedication: MedicationModel?
@@ -106,40 +106,56 @@ class SummaryViewController: UIViewController {
     func loadDataForSelectedDate() {
         let targetDate = dateToDisplay ?? Date()
         currentSymptomLog = SymptomLogManager.shared.getLogEntry(for: targetDate)
-        
-        let allMeds = MedicationDataStore.shared.medications
-        let allLogs = DoseLogDataStore.shared.logs
-        
-        todayViewModel.loadLoggedDoses(medications: allMeds, logs: allLogs, for: targetDate)
-        self.loggedDoses = todayViewModel.loggedDoses
-        
-        self.totalScheduled = loggedDoses.count
-        self.totalTaken = loggedDoses.filter { $0.status == .taken }.count
-        
-        if let firstLogged = loggedDoses.first {
-            let formatter = DateFormatter()
-            formatter.dateFormat = "h:mm a"
-            
-            let originalLog = allLogs.first(where: { $0.id == firstLogged.id })
-            let dateToFormat = originalLog?.scheduledTime ?? firstLogged.loggedTime
-            let timeString = formatter.string(from: dateToFormat)
-            
-            self.primaryMedication = MedicationModel(
-                name: firstLogged.medicationName,
-                time: timeString,
-                detail: firstLogged.medicationForm,
-                iconName: firstLogged.iconName,
-                status: firstLogged.status
-            )
-        } else {
+
+        let context = PersistenceController.shared.viewContext
+
+        // Fetch DoseLogs for selected date
+        let logRequest: NSFetchRequest<MedicationDoseLog> = MedicationDoseLog.fetchRequest()
+        logRequest.predicate = NSPredicate(
+            format: "day == %@",
+            targetDate.startOfDay as NSDate
+        )
+
+        do {
+            let logs = try context.fetch(logRequest)
+
+            self.totalScheduled = logs.count
+            self.totalTaken = logs.filter { $0.doseLogStatus == "taken" }.count
+
+
+            if let firstLog = logs.first,
+               let med = firstLog.medication {
+
+                let formatter = DateFormatter()
+                formatter.dateFormat = "h:mm a"
+
+                let timeString = formatter.string(from: firstLog.doseScheduledTime ?? firstLog.doseLoggedAt ?? Date())
+
+                self.primaryMedication = MedicationModel(
+                    name: med.medicationName ?? "",
+                    time: timeString,
+                    detail: med.medicationForm ?? "",
+                    iconName: med.medicationIconName ?? "pill",
+                    status: DoseStatus(rawValue: firstLog.doseLogStatus ?? "") ?? .none
+
+                )
+            } else {
+                self.primaryMedication = nil
+            }
+
+        } catch {
+            print("Failed to fetch logs:", error)
             self.primaryMedication = nil
+            self.totalScheduled = 0
+            self.totalTaken = 0
         }
-        
+
         updateTitleUI(with: targetDate)
         symptomTableView.reloadData()
         updateSymptomTableBackground()
         mainCollectionView.reloadData()
     }
+
     
     private func updateTitleUI(with date: Date) {
         let formatter = DateFormatter()

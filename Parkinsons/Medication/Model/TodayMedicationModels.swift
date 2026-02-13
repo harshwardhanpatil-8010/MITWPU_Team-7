@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct TodayDoseItem {
+struct TodayDoseItem {//ui view model
     let id: UUID
     let medicationID: UUID
     let medicationName: String
@@ -27,12 +27,12 @@ struct TodayDoseItem {
     }
 }
 
-struct TodayTimeSection {
+struct TodayTimeSection {//ui view model
     let time: Date
     var doses: [TodayDoseItem]
 }
 
-struct LoggedDoseItem: Identifiable {
+struct LoggedDoseItem: Identifiable {//ui view model
     let id: UUID
     let medicationName: String
     let medicationForm: String

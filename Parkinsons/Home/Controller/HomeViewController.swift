@@ -1,5 +1,5 @@
 import UIKit
-
+import CoreData
 enum Section: Int, CaseIterable {
     case calendar
     case medications
@@ -109,39 +109,64 @@ class HomeViewController: UIViewController, UICollectionViewDelegate, SymptomLog
         present(nav, animated: true)
     }
     private func loadRealMedicationData() {
-        let myMedications = MedicationDataStore.shared.medications
-        todayViewModel.loadTodayMedications(from: myMedications)
-        
+        let context = PersistenceController.shared.viewContext
+
+        // Fetch Medications
+        let medRequest: NSFetchRequest<Medication> = Medication.fetchRequest()
+        let medications = (try? context.fetch(medRequest)) ?? []
+
+        // Fetch Logs
+        let logRequest: NSFetchRequest<MedicationDoseLog> = MedicationDoseLog.fetchRequest()
+        let startOfDay = Calendar.current.startOfDay(for: Date())
+        let endOfDay = Calendar.current.date(byAdding: .day, value: 1, to: startOfDay)!
+
+        logRequest.predicate = NSPredicate(
+            format: "doseScheduledTime >= %@ AND doseScheduledTime < %@",
+            startOfDay as NSDate,
+            endOfDay as NSDate
+        )
+
+        let logs = (try? context.fetch(logRequest)) ?? []
+
+        todayViewModel.loadTodayMedications(from: medications)
+
         todayViewModel.loadLoggedDoses(
-            medications: myMedications,
-            logs: DoseLogDataStore.shared.logs,
+            medications: medications,
+            logs: logs,
             for: Date()
         )
-        
+
         let unloggedDoses = todayViewModel.todayDoses.filter { dose in
             !todayViewModel.loggedDoses.contains(where: { $0.id == dose.id })
         }
-        
+
         self.todayDoses = unloggedDoses
         self.mainCollectionView.reloadData()
     }
-    private func updateDose(_ dose: TodayDoseItem, status: DoseStatus) {
-        let log = DoseLog(
-            id: UUID(),
-            medicationID: dose.medicationID,
-            doseID: dose.id,
-            scheduledTime: dose.scheduledTime,
-            loggedAt: Date(),
-            status:status,
-            day: Date().startOfDay
-        )
 
-        DoseLogDataStore.shared.logDose(log)
-       
+    private func updateDose(_ dose: TodayDoseItem, status: DoseStatus) {
+
+        let context = PersistenceController.shared.viewContext
+
+        let log = MedicationDoseLog(context: context)
+        log.id = UUID()
+        //log.medicationID = dose.medicationID
+        //log.doseID = dose.id
+        log.doseScheduledTime = dose.scheduledTime
+        log.doseLoggedAt = Date()
+        log.doseLogStatus = status.rawValue
+        log.doseDay = Date().startOfDay
+
+        PersistenceController.shared.save(context)
+
         loadRealMedicationData()
-      
-        NotificationCenter.default.post(name: NSNotification.Name("MedicationLogged"), object: nil)
+
+        NotificationCenter.default.post(
+            name: NSNotification.Name("MedicationLogged"),
+            object: nil
+        )
     }
+
     func setupSeparator() {
         view.addSubview(separatorView)
         NSLayoutConstraint.activate([
@@ -485,7 +510,11 @@ extension HomeViewController: UICollectionViewDataSource {
             
             footer.subviews.forEach { $0.removeFromSuperview() }
             
-            let noMedicationsCreated = MedicationDataStore.shared.medications.isEmpty
+            let context = PersistenceController.shared.viewContext
+            let request: NSFetchRequest<Medication> = Medication.fetchRequest()
+            let count = (try? context.count(for: request)) ?? 0
+            let noMedicationsCreated = count == 0
+
             
             
             let allDosesProcessed = todayDoses.isEmpty
