@@ -148,16 +148,25 @@ class HomeViewController: UIViewController, UICollectionViewDelegate, SymptomLog
 
         let context = PersistenceController.shared.viewContext
 
+        // 1️⃣ Update original MedicationDose
+        let medRequest: NSFetchRequest<Medication> = Medication.fetchRequest()
+        if let medications = try? context.fetch(medRequest),
+           let medication = medications.first(where: { $0.id == dose.medicationID }),
+           let doseSet = medication.doses as? Set<MedicationDose>,
+           let coreDose = doseSet.first(where: { $0.id == dose.id }) {
+
+            coreDose.doseStatus = status.rawValue
+        }
+
+        // 2️⃣ Create Log
         let log = MedicationDoseLog(context: context)
         log.id = UUID()
-        //log.medicationID = dose.medicationID
-        //log.doseID = dose.id
         log.doseScheduledTime = dose.scheduledTime
         log.doseLoggedAt = Date()
         log.doseLogStatus = status.rawValue
-        log.doseDay = Date().startOfDay
+        log.doseDay = Calendar.current.startOfDay(for: Date())
 
-        PersistenceController.shared.save(context)
+        PersistenceController.shared.save()
 
         loadRealMedicationData()
 
@@ -166,6 +175,7 @@ class HomeViewController: UIViewController, UICollectionViewDelegate, SymptomLog
             object: nil
         )
     }
+
 
     func setupSeparator() {
         view.addSubview(separatorView)
