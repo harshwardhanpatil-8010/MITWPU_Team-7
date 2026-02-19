@@ -1,5 +1,6 @@
 import Foundation
 import CoreData
+
 class WorkoutManager {
     static let shared = WorkoutManager()
     var hasCheckedSafetyThisSession = false
@@ -137,11 +138,7 @@ class WorkoutManager {
             return true
         }
     }
-
-
-
-    
-    
+ 
     func getMedicationEffect() -> MedicationEffect {
 
         let context = PersistenceController.shared.viewContext
@@ -195,7 +192,7 @@ class WorkoutManager {
     
     
     func generateDailyWorkout() {
-        let effect = getMedicationEffect()
+       // let effect = getMedicationEffect()
         let preferredPosition = preferredExercisePosition()
         var dailySet: [WorkoutExercise] = []
         let library = getFullLibrary()

@@ -87,7 +87,7 @@ class _0minworkoutViewController: UIViewController {
         exerciseName.text = exercise.name
 
         if let videoName = exercise.videoID,
-           let url = Bundle.main.url(forResource: videoName, withExtension: "MOV") {
+           let url = Bundle.main.url(forResource: videoName, withExtension: "mp4") {
             let asset = AVURLAsset(url: url)
             let item = AVPlayerItem(asset: asset)
             playerLooper = AVPlayerLooper(player: avPlayer!, templateItem: item)
