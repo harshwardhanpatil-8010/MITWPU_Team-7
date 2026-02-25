@@ -324,8 +324,8 @@
 import HealthKit
 import CoreData
 
-class HealthKitManager {
-    static let shared = HealthKitManager()
+class HealthKitManagerRhythmic {
+    static let shared = HealthKitManagerRhythmic()
     let healthStore = HKHealthStore()
     
     private let typesToRead: Set<HKQuantityType> = [
@@ -337,79 +337,104 @@ class HealthKitManager {
     ]
     
     func requestAuthorization(completion: @escaping (Bool) -> Void) {
-        healthStore.requestAuthorization(toShare: nil, read: typesToRead) { success, _ in
+        healthStore.requestAuthorization(toShare: nil, read: typesToRead) { success, error in
+            print("HealthKit auth success: \(success), error: \(String(describing: error))")
             completion(success)
         }
     }
     
-    // Fetches from HealthKit, saves results back to Core Data, returns GaitSummary
+    
+    func checkAuthorizationStatus() {
+        let types: [HKQuantityTypeIdentifier] = [
+            .stepCount,
+            .distanceWalkingRunning,
+            .walkingStepLength,
+            .walkingAsymmetryPercentage,
+            .appleWalkingSteadiness
+        ]
+        for id in types {
+            let type = HKQuantityType.quantityType(forIdentifier: id)!
+            let status = healthStore.authorizationStatus(for: type)
+            print("Auth status for \(id.rawValue): \(status.rawValue)")
+            // 0 = notDetermined, 1 = sharingDenied, 2 = sharingAuthorized
+        }
+    }
+    
     func fetchFullSummary(for session: RhythmicSessionDTO, completion: @escaping (GaitSummary) -> Void) {
-        let predicate = HKQuery.predicateForSamples(
-            withStart: session.startDate,
-            end: session.endDate ?? Date(),
+        let endDate = session.endDate ?? session.startDate.addingTimeInterval(TimeInterval(session.elapsedSeconds))
+        
+        let startWithBuffer = session.startDate.addingTimeInterval(-60)
+        let endWithBuffer = endDate.addingTimeInterval(60)
+        
+        // Loose predicate for cumulative types (steps, distance)
+        let loosePredicate = HKQuery.predicateForSamples(
+            withStart: startWithBuffer,
+            end: endWithBuffer,
+            options: []
+        )
+        // Strict predicate for average types (step length, asymmetry, steadiness)
+        let strictPredicate = HKQuery.predicateForSamples(
+            withStart: startWithBuffer,
+            end: endWithBuffer,
             options: .strictStartDate
         )
-        let group = DispatchGroup()
         
-        var steps      = 0
-        var distance   = 0.0
-        var stepLen    = 0.0
-        var asymmetry  = 0.0
-        var steadiness = 0.0
+        print("=== HealthKit Fetch ===")
+        print("  Start: \(startWithBuffer)")
+        print("  End:   \(endWithBuffer)")
+        
+        let group = DispatchGroup()
+        var steps = 0, distance = 0.0, stepLen = 0.0, asymmetry = 0.0, steadiness = 0.0
         
         group.enter()
-        fetchSum(for: .stepCount, predicate: predicate, unit: .count()) { val in
+        fetchSum(for: .stepCount, predicate: loosePredicate, unit: .count()) { val in
             steps = Int(val); group.leave()
         }
         
         group.enter()
-        fetchSum(for: .distanceWalkingRunning, predicate: predicate, unit: .meter()) { val in
+        fetchSum(for: .distanceWalkingRunning, predicate: loosePredicate, unit: .meter()) { val in
             distance = val; group.leave()
         }
         
         group.enter()
-        fetchAvg(for: .walkingStepLength, predicate: predicate, unit: .meter()) { val in
+        fetchAvg(for: .walkingStepLength, predicate: strictPredicate, unit: .meter()) { val in
             stepLen = val; group.leave()
         }
         
         group.enter()
-        fetchAvg(for: .walkingAsymmetryPercentage, predicate: predicate, unit: .percent()) { val in
+        fetchAvg(for: .walkingAsymmetryPercentage, predicate: strictPredicate, unit: .percent()) { val in
             asymmetry = val * 100; group.leave()
         }
         
         group.enter()
-        fetchAvg(for: .appleWalkingSteadiness, predicate: predicate, unit: .percent()) { val in
+        fetchAvg(for: .appleWalkingSteadiness, predicate: strictPredicate, unit: .percent()) { val in
             steadiness = val * 100; group.leave()
         }
         
         group.notify(queue: .main) {
+            print("=== HealthKit Results ===")
+            print("  Steps: \(steps), Distance: \(distance)m, StepLen: \(stepLen)m")
+            print("  Asymmetry: \(asymmetry)%, Steadiness: \(steadiness)%")
+            
             let durationHours = Double(session.elapsedSeconds) / 3600.0
             let speed = durationHours > 0 ? (distance / 1000.0) / durationHours : 0.0
-            let steadinessLabel = self.classifySteadiness(steadiness)
             
-            // Save HealthKit results back into Core Data
             self.saveHealthKitData(
-                for: session.id,
-                steps: steps,
-                distanceMeters: distance,
-                stepLengthMeters: stepLen,
-                walkingAsymmetry: asymmetry,
-                walkingSteadiness: steadiness
+                for: session.id, steps: steps, distanceMeters: distance,
+                stepLengthMeters: stepLen, walkingAsymmetry: asymmetry, walkingSteadiness: steadiness
             )
             
-            let summary = GaitSummary(
+            completion(GaitSummary(
                 steps: steps,
                 distanceMeters: distance,
                 speedKmH: speed,
                 stepLengthMeters: stepLen,
                 walkingAsymmetryPercent: asymmetry,
-                walkingSteadiness: steadinessLabel
-            )
-            completion(summary)
+                walkingSteadiness: self.classifySteadiness(steadiness)
+            ))
         }
     }
     
-    // Writes HealthKit-sourced values into the Core Data record
     private func saveHealthKitData(
         for sessionID: UUID,
         steps: Int,
@@ -421,14 +446,17 @@ class HealthKitManager {
         let context = PersistenceController.shared.viewContext
         let request: NSFetchRequest<RhythmicSession> = RhythmicSession.fetchRequest()
         request.predicate = NSPredicate(format: "id == %@", sessionID as CVarArg)
-        
-        guard let managed = try? context.fetch(request).first else { return }
+        guard let managed = try? context.fetch(request).first else {
+            print("⚠️ saveHealthKitData: no Core Data record found for \(sessionID)")
+            return
+        }
         managed.steps             = Int32(steps)
         managed.distanceMeters    = distanceMeters
         managed.stepLengthMeters  = stepLengthMeters
         managed.walkingAsymmetry  = walkingAsymmetry
         managed.walkingSteadiness = walkingSteadiness
         PersistenceController.shared.save()
+        print("✅ HealthKit data saved to Core Data")
     }
     
     private func fetchSum(for id: HKQuantityTypeIdentifier, predicate: NSPredicate, unit: HKUnit, completion: @escaping (Double) -> Void) {
@@ -436,7 +464,8 @@ class HealthKitManager {
             quantityType: .quantityType(forIdentifier: id)!,
             quantitySamplePredicate: predicate,
             options: .cumulativeSum
-        ) { _, stats, _ in
+        ) { _, stats, error in
+            if let error = error { print("fetchSum error (\(id)): \(error)") }
             completion(stats?.sumQuantity()?.doubleValue(for: unit) ?? 0.0)
         }
         healthStore.execute(query)
@@ -447,7 +476,8 @@ class HealthKitManager {
             quantityType: .quantityType(forIdentifier: id)!,
             quantitySamplePredicate: predicate,
             options: .discreteAverage
-        ) { _, stats, _ in
+        ) { _, stats, error in
+            if let error = error { print("fetchAvg error (\(id)): \(error)") }
             completion(stats?.averageQuantity()?.doubleValue(for: unit) ?? 0.0)
         }
         healthStore.execute(query)

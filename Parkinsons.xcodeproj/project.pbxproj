@@ -187,6 +187,8 @@
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = Parkinsons/Info.plist;
 				INFOPLIST_KEY_NSCameraUsageDescription = "This app needs camera access to help you mimic emojis for the game.";
+				INFOPLIST_KEY_NSHealthClinicalHealthRecordsShareUsageDescription = " This app saves session health data to track your progress.";
+				INFOPLIST_KEY_NSHealthShareUsageDescription = "This app reads your walking data to monitor Parkinson's symptoms.";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen.storyboard;
 				INFOPLIST_KEY_UIMainStoryboardFile = Home;
@@ -229,6 +231,8 @@
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = Parkinsons/Info.plist;
 				INFOPLIST_KEY_NSCameraUsageDescription = "This app needs camera access to help you mimic emojis for the game.";
+				INFOPLIST_KEY_NSHealthClinicalHealthRecordsShareUsageDescription = " This app saves session health data to track your progress.";
+				INFOPLIST_KEY_NSHealthShareUsageDescription = "This app reads your walking data to monitor Parkinson's symptoms.";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen.storyboard;
 				INFOPLIST_KEY_UIMainStoryboardFile = Home;
