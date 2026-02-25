@@ -36,7 +36,7 @@ class SymptomViewController: UIViewController {
         super.viewDidLoad()
         
      
-        
+        requestHealthKitIfNeeded()
         dates = HomeDataStore.shared.getDates()
         tableView.separatorStyle = .none
         registerCells()

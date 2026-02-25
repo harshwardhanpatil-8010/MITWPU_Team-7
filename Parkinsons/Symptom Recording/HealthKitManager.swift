@@ -22,9 +22,11 @@ extension HealthKitManager {
         return [
             HKQuantityType.quantityType(forIdentifier: .walkingStepLength)!,
             HKQuantityType.quantityType(forIdentifier: .walkingSpeed)!,
-            HKQuantityType.quantityType(forIdentifier: .walkingAsymmetryPercentage)!
+            HKQuantityType.quantityType(forIdentifier: .walkingAsymmetryPercentage)!,
+            HKQuantityType.quantityType(forIdentifier: .appleWalkingSteadiness)! // ✅ ADD THIS
         ]
     }
+
 }
 
 
@@ -51,6 +53,51 @@ extension HealthKitManager {
 
 
 extension HealthKitManager {
+    func fetchWalkingSteadinessSamples(
+        from startDate: Date,
+        to endDate: Date,
+        completion: @escaping ([(Date, Double)]) -> Void
+        
+    ) {
+        
+
+        guard let type = HKObjectType.quantityType(
+            forIdentifier: .appleWalkingSteadiness
+        ) else {
+            completion([])
+            return
+        }
+
+        let predicate = HKQuery.predicateForSamples(
+            withStart: startDate,
+            end: endDate,
+            options: .strictStartDate
+        )
+
+        let query = HKSampleQuery(
+            sampleType: type,
+            predicate: predicate,
+            limit: HKObjectQueryNoLimit,
+            sortDescriptors: nil
+        ) { _, samples, _ in
+
+            guard let samples = samples as? [HKQuantitySample] else {
+                completion([])
+                
+                return
+            }
+
+            let unit = HKUnit.percent()
+            let result = samples.map {
+                ($0.startDate, $0.quantity.doubleValue(for: unit))
+            }
+
+            completion(result)
+        }
+        
+
+        healthStore.execute(query)
+    }
 
     func fetchWalkingSpeed(
         from startDate: Date,

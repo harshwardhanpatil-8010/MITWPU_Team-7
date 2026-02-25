@@ -22,7 +22,10 @@ final class TodayMedicationViewModel {
                 guard let time = dose.doseTime else { continue }
 
                 // Only show if not already taken
-                if dose.doseStatus == "taken" { continue }
+                if dose.doseStatus == "taken" || dose.doseStatus == "skipped" {
+                    continue
+                }
+
 
                 let item = TodayDoseItem(
                     id: dose.id ?? UUID(),
@@ -56,9 +59,7 @@ final class TodayMedicationViewModel {
 
         for log in todayLogs {
 
-            guard let med = medications.first(where: { $0.id == log.id }) else {
-                continue
-            }
+            guard let med = log.medication else { continue }
 
             let item = LoggedDoseItem(
                 id: log.id ?? UUID(),
