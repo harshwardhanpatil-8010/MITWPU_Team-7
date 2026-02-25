@@ -6,20 +6,88 @@
 //
 
 import UIKit
+import AVFoundation
+import HealthKit
 
 @main
 class AppDelegate: UIResponder, UIApplicationDelegate {
 
 
 
+//    func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
+//        // Override point for customization after application launch.
+//   let _ = WorkoutManager.shared
+//     UserDefaults.standard.removeObject(forKey: "exercise_store")
+//        WorkoutManager.shared.resetAllExercises()
+//        
+//        do {
+//            try AVAudioSession.sharedInstance().setCategory(.playback, mode: .default, options: [])
+//            try AVAudioSession.sharedInstance().setActive(true)
+//        } catch {
+//            print("Failed to set audio session category: \(error)")
+//        }
+//        
+//        HealthKitManager.shared.requestAuthorization { granted in
+//            print("HealthKit granted: \(granted)")
+//        }
+//        
+//        
+//        return true
+//    }
+
+    
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
+
         // Override point for customization after application launch.
 let _ = WorkoutManager.shared
    UserDefaults.standard.removeObject(forKey: "exercise_store")
       WorkoutManager.shared.resetAllExercises()
+
+        let _ = WorkoutManager.shared
+        UserDefaults.standard.removeObject(forKey: "exercise_store")
+        WorkoutManager.shared.resetAllExercises()
+        
+        do {
+            try AVAudioSession.sharedInstance().setCategory(.playback, mode: .default, options: [])
+            try AVAudioSession.sharedInstance().setActive(true)
+        } catch {
+            print("Failed to set audio session: \(error)")
+        }
+        
+        // ✅ Dispatch to avoid blocking launch
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+//            HealthKitManager.shared.requestAuthorization { granted in
+//                print("HealthKit granted: \(granted)")
+//            }
+            HealthKitManagerRhythmic.shared.requestAuthorization { granted in
+                print("HealthKit granted: \(granted)")
+                guard granted else { return }
+                
+                // Check if ANY steps exist in the last 24 hours
+                let type = HKQuantityType.quantityType(forIdentifier: .stepCount)!
+                let predicate = HKQuery.predicateForSamples(
+                    withStart: Date().addingTimeInterval(-86400),
+                    end: Date(),
+                    options: []
+                )
+                let query = HKStatisticsQuery(quantityType: type, quantitySamplePredicate: predicate, options: .cumulativeSum) { _, stats, _ in
+                    print("✅ Steps in last 24hrs: \(stats?.sumQuantity()?.doubleValue(for: .count()) ?? 0)")
+                }
+                HealthKitManagerRhythmic.shared.healthStore.execute(query)
+            }
+        }
+        
+        HealthKitManagerRhythmic.shared.requestAuthorization { granted in
+            print("HealthKit granted: \(granted)")
+            HealthKitManagerRhythmic.shared.checkAuthorizationStatus()
+        }
+        
+
         return true
     }
-
+    
+    
+    
     // MARK: UISceneSession Lifecycle
 
     func application(_ application: UIApplication, configurationForConnecting connectingSceneSession: UISceneSession, options: UIScene.ConnectionOptions) -> UISceneConfiguration {
