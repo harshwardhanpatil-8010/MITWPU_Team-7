@@ -36,7 +36,7 @@ class SymptomRatingCell: UITableViewCell {
             let action = UIAction { [weak self] action in
                 guard let self = self,
                       let sender = action.sender as? UIButton,
-                      let intensity = SymptomRating.Intensity(rawValue: sender.tag) else { return }
+                      let intensity = SymptomRating.Intensity(rawValue: Int16(sender.tag)) else { return }
                 
                 self.handleRatingSelection(intensity: intensity, from: sender)
             }
@@ -84,7 +84,7 @@ class SymptomRatingCell: UITableViewCell {
         bubbleLabel.alpha = 0
         
         ratingButtons.forEach { button in
-            guard let buttonIntensity = SymptomRating.Intensity(rawValue: button.tag) else { return }
+            guard let buttonIntensity = SymptomRating.Intensity(rawValue: Int16(button.tag)) else { return }
             
             let isSelected = (buttonIntensity == rating.selectedIntensity)
             

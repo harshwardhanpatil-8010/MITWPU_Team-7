@@ -1,30 +1,23 @@
 import UIKit
 
-
 class SymptomViewController: UIViewController {
 
     @IBOutlet weak var collectionView: UICollectionView!
     @IBOutlet weak var editAndSaveButton: UIButton!
     @IBOutlet weak var symptomBackground: UIView!
     @IBOutlet weak var tableView: UITableView!
-    
+    @IBOutlet weak var calendarButton: UIBarButtonItem!
     @IBOutlet weak var tableViewHeightConstraint: NSLayoutConstraint!
-    
-
     var dates: [DateModel] = []
     var selectedDate: Date = Date()
     var currentDayLogs: [SymptomRating] = []
-    private var gaitRangeText: String?
-    private var tremorFrequencyHz: Double?
-    private var todayAggregatedPoints: [AggregatedTremorPoint] = []
-
-
+    
     enum Section: Int, CaseIterable {
         case calendar = 0
         case tremor = 1
         case gait = 2
     }
-
+    
     enum ViewMode {
         case history
         case entry
@@ -36,7 +29,7 @@ class SymptomViewController: UIViewController {
         super.viewDidLoad()
         
      
-        requestHealthKitIfNeeded()
+        
         dates = HomeDataStore.shared.getDates()
         tableView.separatorStyle = .none
         registerCells()
@@ -52,165 +45,8 @@ class SymptomViewController: UIViewController {
         setupTableViewUI()
         updateDataForSelectedDate()
         setupSymptomBackgroundUI()
+        
     }
-    
-    override func viewDidAppear(_ animated: Bool) {
-        super.viewDidAppear(animated)
-        loadTodayTremorData()
-        fetchTremorData()
-    }
-
-    func samples(for range: TremorRange) -> [TremorSample] {
-        let all = TremorDataStore.shared.fetchAll()
-        let calendar = Calendar.current
-        let now = Date()
-
-        let startDate: Date = {
-            switch range {
-            case .day:
-                return calendar.startOfDay(for: now)
-            case .week:
-                return calendar.date(byAdding: .day, value: -7, to: now)!
-            case .month:
-                return calendar.date(byAdding: .month, value: -1, to: now)!
-            case .sixMonth:
-                return calendar.date(byAdding: .month, value: -6, to: now)!
-            case .year:
-                return calendar.date(byAdding: .year, value: -1, to: now)!
-            }
-        }()
-
-        return all.filter { $0.date >= startDate }
-    }
-    private func loadTodayTremorData() {
-        let samples = TremorDataStore.shared.fetchSamples(
-            for: .day,
-            referenceDate: selectedDate
-        )
-
-        todayAggregatedPoints = samples.map {
-            AggregatedTremorPoint(date: $0.date, avgHz: $0.frequencyHz)
-        }
-    }
-
-    func aggregatedSamples(
-        for range: TremorRange
-    ) -> [(date: Date, value: Double)] {
-
-        let samples = samples(for: range)
-        guard !samples.isEmpty else { return [] }
-
-        let calendar = Calendar.current
-        var grouped: [Date: [Double]] = [:]
-
-        for sample in samples {
-            let keyDate: Date
-
-            switch range {
-            case .day:
-                keyDate = calendar.date(
-                    bySetting: .minute,
-                    value: 0,
-                    of: sample.date
-                )!
-            case .week, .month:
-                keyDate = calendar.startOfDay(for: sample.date)
-            case .sixMonth, .year:
-                keyDate = calendar.dateInterval(
-                    of: .weekOfYear,
-                    for: sample.date
-                )!.start
-            }
-
-            grouped[keyDate, default: []].append(sample.frequencyHz)
-        }
-
-        return grouped
-            .map { (date: $0.key, value: $0.value.reduce(0, +) / Double($0.value.count)) }
-            .sorted { $0.date < $1.date }
-    }
-
-    private func requestHealthKitIfNeeded() {
-        HealthKitManager.shared.requestAuthorization { granted in
-            DispatchQueue.main.async {
-                if granted {
-                    self.fetchGaitDataForSelectedDate()
-                } else {
-                    print("HealthKit permission denied")
-                }
-            }
-        }
-    }
-    private func fetchTremorData() {
-
-        TremorMotionManager.shared.recordTremorFrequency(duration: 8.0) { [weak self] hz in
-            guard let self = self else { return }
-
-            self.tremorFrequencyHz = hz
-            if let hz = hz {
-                let sample = TremorSample(
-                    date: Date(),
-                    frequencyHz: hz
-                )
-
-                TremorDataStore.shared.save(sample)
-
-            }
-
-            let indexPath = IndexPath(item: 0, section: Section.tremor.rawValue)
-            if self.collectionView.indexPathsForVisibleItems.contains(indexPath) {
-                self.collectionView.reloadItems(at: [indexPath])
-            } else {
-                self.collectionView.reloadSections(IndexSet(integer: Section.tremor.rawValue))
-            }
-        }
-    }
-
-
-
-    private func reloadTremorSection() {
-        collectionView.reloadSections(IndexSet(integer: Section.tremor.rawValue))
-    }
-
-    private func fetchGaitDataForSelectedDate() {
-        let start = Calendar.current.startOfDay(for: selectedDate)
-        let end = Calendar.current.date(byAdding: .day, value: 1, to: start)!
-
-        HealthKitManager.shared.fetchWalkingSteadiness(from: start, to: end) { [weak self] steadiness in
-            DispatchQueue.main.async {
-                guard let self = self else { return }
-
-                if let value = steadiness {
-                    
-                    self.gaitRangeText = String(format: "%.0f / 100", value)
-                } else {
-                    self.gaitRangeText = "No data"
-                }
-
-                self.reloadGaitSection()
-            }
-        }
-    }
-
-    private func reloadGaitSection() {
-        collectionView.reloadSections(IndexSet(integer: Section.gait.rawValue))
-    }
-
-    private func updateGaitCard(rangeText: String) {
-
-        let gaitSectionIndex = Section.gait.rawValue
-        let indexPath = IndexPath(item: 0, section: gaitSectionIndex)
-
-        guard
-            let cell = collectionView.cellForItem(at: indexPath) as? gaitCard
-        else {
-            collectionView.reloadSections(IndexSet(integer: gaitSectionIndex))
-            return
-        }
-
-        cell.configure(range: rangeText)
-    }
-
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
@@ -289,7 +125,24 @@ class SymptomViewController: UIViewController {
         ]
     }
 
-   
+    @IBAction func calendarButtonTapped(_ sender: UIBarButtonItem) {
+        print("Button was tapped!")
+        // Replace "Main" with the actual name of your Storyboard file (e.g., "Home" or "Main")
+        let storyboard = UIStoryboard(name: "Home", bundle: nil)
+        
+        // This ID must match the "Storyboard ID" in the Identity Inspector
+        guard let calendarVC = storyboard.instantiateViewController(withIdentifier: "CalendarViewController") as? CalendarViewController else {
+            print("Error: Could not find CalendarViewController. Check your Storyboard ID!")
+            return
+        }
+        
+        calendarVC.selectedDate = self.selectedDate
+        
+        // .pageSheet is the modern iOS modal look (the card that slides up)
+        calendarVC.modalPresentationStyle = .pageSheet
+        
+        self.present(calendarVC, animated: true, completion: nil)
+    }
     @IBAction func editAndSaveTapped(_ sender: UIButton) {
         if currentMode == .history {
             currentMode = .entry
@@ -396,26 +249,13 @@ extension SymptomViewController: UICollectionViewDataSource, UICollectionViewDel
             return cell
             
         case .tremor:
-            let cell = collectionView.dequeueReusableCell(
-                withReuseIdentifier: "tremor_cell",
-                for: indexPath
-            ) as! tremorCard
-
-            cell.configure(
-                frequencyHz: todayAggregatedPoints.map { $0.avgHz }.average(),
-                graphPoints: todayAggregatedPoints
-            )
-
+            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "tremor_cell", for: indexPath) as! tremorCard
             return cell
-
-
             
         case .gait:
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "gait_cell", for: indexPath) as! gaitCard
-            // display steadiness
-            cell.configure(range: gaitRangeText ?? "Loading…")
+            cell.configure(range: "45 - 77")
             return cell
-
         }
     }
     
@@ -473,25 +313,20 @@ extension SymptomViewController: UICollectionViewDataSource, UICollectionViewDel
 
         let storyboard = UIStoryboard(name: "SymptomRecording", bundle: nil)
 
+        let vc: UIViewController
+
         switch type {
-
         case .tremor:
-            let vc = storyboard.instantiateViewController(
-                withIdentifier: "TremorVC"
-            ) as! TremorViewController   // ✅ STRONG TYPE
-
-            vc.selectedDate = selectedDate
-            navigationController?.pushViewController(vc, animated: true)
+            vc = storyboard.instantiateViewController(withIdentifier: "TremorVC")
 
         case .gait:
-            let vc = storyboard.instantiateViewController(
-                withIdentifier: "GaitVC"
-            )
-            navigationController?.pushViewController(vc, animated: true)
+            vc = storyboard.instantiateViewController(withIdentifier: "GaitVC")
 
         default:
             return
         }
+
+        navigationController?.pushViewController(vc, animated: true)
     }
 
 }
