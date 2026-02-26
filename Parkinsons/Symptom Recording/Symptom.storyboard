@@ -141,6 +141,7 @@
                         <barButtonItem key="rightBarButtonItem" image="calendar" catalog="system" id="BnN-rM-4Cm"/>
                     </navigationItem>
                     <connections>
+                        <outlet property="calendarButton" destination="BnN-rM-4Cm" id="KWK-Nw-WNo"/>
                         <outlet property="collectionView" destination="ZbZ-Mr-g82" id="Cbw-0u-5BS"/>
                         <outlet property="editAndSaveButton" destination="K65-6B-FHQ" id="VnQ-jq-01W"/>
                         <outlet property="symptomBackground" destination="n2t-av-6Wh" id="Oy6-QK-Vqd"/>
@@ -160,7 +161,7 @@
             <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
         </systemColor>
         <systemColor name="systemGray5Color">
-            <color red="0.8980392157" green="0.8980392157" blue="0.91764705879999997" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <color red="0.89803921568627454" green="0.89803921568627454" blue="0.91764705882352937" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </systemColor>
     </resources>
 </document>

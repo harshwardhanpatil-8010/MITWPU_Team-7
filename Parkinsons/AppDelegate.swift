@@ -38,6 +38,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
 
+        if let appDomain = Bundle.main.bundleIdentifier {
+            UserDefaults.standard.removePersistentDomain(forName: appDomain)
+            UserDefaults.standard.synchronize()
+        }
+
         // Override point for customization after application launch.
 let _ = WorkoutManager.shared
    UserDefaults.standard.removeObject(forKey: "exercise_store")
