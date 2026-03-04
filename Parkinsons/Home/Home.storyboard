@@ -37,7 +37,6 @@
                                                     <segue destination="YxW-ZH-lhD" kind="presentation" id="8cO-Jt-PpU"/>
                                                 </connections>
                                             </barButtonItem>
-                                            <barButtonItem image="tree" catalog="system" id="3yv-DS-dHf"/>
                                         </rightBarButtonItems>
                                     </navigationItem>
                                 </items>
@@ -1001,7 +1000,6 @@
         <image name="severeFace" width="232" height="212"/>
         <image name="sun.max" catalog="system" width="128" height="125"/>
         <image name="sun.max.fill" catalog="system" width="128" height="125"/>
-        <image name="tree" catalog="system" width="128" height="118"/>
         <image name="xMark" width="258" height="228"/>
         <image name="xmark" catalog="system" width="128" height="113"/>
         <namedColor name="AccentColor">

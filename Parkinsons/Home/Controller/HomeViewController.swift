@@ -536,21 +536,29 @@ extension HomeViewController: UICollectionViewDataSource {
             header.setTitleAlignment(.left)
             header.setFont(size: 20, weight: .bold)
             
+            // Reset the tap closure to prevent "cell reuse" bugs
+            header.onInfoTap = nil
+
             switch sectionType {
             case .calendar:
                 let dateString = formattedDateString(for: selectedDate)
                 let isToday = Calendar.current.isDateInToday(selectedDate)
-                header.configure(title: isToday ? "Today, \(dateString)" : dateString)
+                header.configure(title: isToday ? "Today, \(dateString)" : dateString, showInfoIcon: false)
                 header.setTitleAlignment(.center)
                 header.setFont(size: 17, weight: .bold)
+                
             case .medications:
-                header.configure(title: "Upcoming Medications")
+                header.configure(title: "Upcoming Medications", showInfoIcon: false)
+                
             case .exercises:
-                header.configure(title: "Guided Exercise")
-//            case .symptoms:
-//                header.configure(title: "Symptoms")
+                header.configure(title: "Guided Exercise", showInfoIcon: false)
+                
             case .therapeuticGames:
-                header.configure(title: "Therapeutic Games")
+                // 3. Show the icon and handle the tap
+                header.configure(title: "Therapeutic Games", showInfoIcon: true)
+                header.onInfoTap = { [weak self] in
+                    self?.showGamesInfoPopup()
+                }
             }
             return header
         }
@@ -612,5 +620,16 @@ extension HomeViewController: MedicationCardDelegate {
     
     func didTapSkipped(for dose: TodayDoseItem) {
         updateDose(dose, status: .skipped)
+    }
+}
+extension HomeViewController {
+    private func showGamesInfoPopup() {
+        let alert = UIAlertController(
+            title: "Therapeutic Games",
+            message: "Therapeutic games are evidence-based activities designed to improve cognitive function, motor skills, and emotional well-being through engaging gameplay.",
+            preferredStyle: .alert
+        )
+        alert.addAction(UIAlertAction(title: "Got it", style: .default))
+        self.present(alert, animated: true)
     }
 }
