@@ -34,4 +34,10 @@
         <relationship name="dose" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="MedicationDose" inverseName="logs" inverseEntity="MedicationDose"/>
         <relationship name="medication" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Medication" inverseName="logs" inverseEntity="Medication"/>
     </entity>
+    <entity name="TremorSampleEntity" representedClassName="TremorSampleEntity" syncable="YES" codeGenerationType="class">
+        <attribute name="date" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
+        <attribute name="frequencyHz" optional="YES" attributeType="Double" defaultValueString="0.0" usesScalarValueType="YES"/>
+        <attribute name="id" optional="YES" attributeType="UUID" usesScalarValueType="NO"/>
+        <attribute name="isSteady" optional="YES" attributeType="Boolean" defaultValueString="NO" usesScalarValueType="YES"/>
+    </entity>
 </model>
