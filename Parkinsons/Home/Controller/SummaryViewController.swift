@@ -112,7 +112,7 @@ class SummaryViewController: UIViewController {
         // Fetch DoseLogs for selected date
         let logRequest: NSFetchRequest<MedicationDoseLog> = MedicationDoseLog.fetchRequest()
         logRequest.predicate = NSPredicate(
-            format: "day == %@",
+            format: "doseDay == %@",
             targetDate.startOfDay as NSDate
         )
 
