@@ -31,12 +31,23 @@ class CalenderCollectionViewCell: UICollectionViewCell {
         calenderDay.text = model.dayString
         calenderDate.text = model.dateString
         
+        // Check if the date is in the future
+        let isFuture = model.date > Date() && !Calendar.current.isDateInToday(model.date)
+        
+        // Reset defaults
         calenderBackground.backgroundColor = .white
         calenderDay.textColor = .lightGray
         calenderDate.textColor = .black
+        calenderBackground.alpha = 1.0 // Reset opacity
         
-        calenderBackground.layer.borderWidth = 0
-        calenderBackground.layer.borderColor = nil
+        if isFuture {
+            // Grayed out state for future dates
+            calenderDate.textColor = .systemGray4
+            calenderDay.textColor = .systemGray4
+            calenderBackground.backgroundColor = UIColor.systemGray6
+            calenderBackground.alpha = 0.6
+            return // Skip selection/today styling for future dates
+        }
 
         if isSelected {
             calenderDay.textColor = .white
