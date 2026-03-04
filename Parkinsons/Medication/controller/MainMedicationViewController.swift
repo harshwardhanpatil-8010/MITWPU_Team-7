@@ -315,42 +315,24 @@ extension MainMedicationViewController: UICollectionViewDelegate {
 }
 
 extension MainMedicationViewController {
-    private func updateDose(_ dose: TodayDoseItem, status: DoseStatus) {
+   
+        private func updateDose(_ dose: TodayDoseItem, status: DoseStatus) {
 
-        let context = PersistenceController.shared.viewContext
+            MedicationDoseLogger.shared.log(
+                dose: dose,
+                status: status,
+                medications: myMedications,
+                context: PersistenceController.shared.viewContext
+            )
 
-        guard let medication = myMedications.first(where: { $0.id == dose.medicationID }),
-              let doseSet = medication.doses as? Set<MedicationDose>,
-              let coreDose = doseSet.first(where: { $0.id == dose.id }) else {
-            return
+            loadMedications()
+
+            NotificationCenter.default.post(
+                name: NSNotification.Name("MedicationLogged"),
+                object: nil
+            )
         }
-
-        // 1️⃣ Update original dose status
-        coreDose.doseStatus = status == .taken ? "taken" : "skipped"
-
-        // 2️⃣ CREATE LOG ENTRY
-        let log = MedicationDoseLog(context: context)
-        log.id = UUID()
-        log.doseLoggedAt = Date()
-        log.doseScheduledTime = dose.scheduledTime
-        log.doseLogStatus = status == .taken ? "taken" : "skipped"
-        log.doseDay = Calendar.current.startOfDay(for: Date())
-
-        // If you have relationship
-        log.medication = medication
-
-        // 3️⃣ Save
-        PersistenceController.shared.save()
-
-        // 4️⃣ Reload
-        loadMedications()
-
-        NotificationCenter.default.post(
-            name: NSNotification.Name("MedicationLogged"),
-            object: nil
-        )
-    }
-
+    
 
 }
 

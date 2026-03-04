@@ -146,35 +146,27 @@ class HomeViewController: UIViewController, UICollectionViewDelegate {
 
     private func updateDose(_ dose: TodayDoseItem, status: DoseStatus) {
 
-        let context = PersistenceController.shared.viewContext
+            let context = PersistenceController.shared.viewContext
 
-        // 1️⃣ Update original MedicationDose
-        let medRequest: NSFetchRequest<Medication> = Medication.fetchRequest()
-        if let medications = try? context.fetch(medRequest),
-           let medication = medications.first(where: { $0.id == dose.medicationID }),
-           let doseSet = medication.doses as? Set<MedicationDose>,
-           let coreDose = doseSet.first(where: { $0.id == dose.id }) {
+            // Fetch all medications to pass to the logger
+            let medRequest: NSFetchRequest<Medication> = Medication.fetchRequest()
+            let medications = (try? context.fetch(medRequest)) ?? []
 
-            coreDose.doseStatus = status.rawValue
+            MedicationDoseLogger.shared.log(
+                dose: dose,
+                status: status,
+                medications: medications,
+                context: context
+            )
+
+            loadRealMedicationData()
+
+            NotificationCenter.default.post(
+                name: NSNotification.Name("MedicationLogged"),
+                object: nil
+            )
         }
-
-        // 2️⃣ Create Log
-        let log = MedicationDoseLog(context: context)
-        log.id = UUID()
-        log.doseScheduledTime = dose.scheduledTime
-        log.doseLoggedAt = Date()
-        log.doseLogStatus = status.rawValue
-        log.doseDay = Calendar.current.startOfDay(for: Date())
-
-        PersistenceController.shared.save()
-
-        loadRealMedicationData()
-
-        NotificationCenter.default.post(
-            name: NSNotification.Name("MedicationLogged"),
-            object: nil
-        )
-    }
+    
 
 
     func setupSeparator() {
@@ -280,7 +272,7 @@ class HomeViewController: UIViewController, UICollectionViewDelegate {
 //                let group = NSCollectionLayoutGroup.horizontal(layoutSize: groupSize, subitems: [item])
 //                let section = NSCollectionLayoutSection(group: group)
 //                section.contentInsets = NSDirectionalEdgeInsets(top: 8, leading: 16, bottom: 24, trailing: 16)
-//                
+//
 //                let headerSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: .absolute(30))
 //                let header = NSCollectionLayoutBoundarySupplementaryItem(
 //                    layoutSize: headerSize,
@@ -289,7 +281,7 @@ class HomeViewController: UIViewController, UICollectionViewDelegate {
 //                )
 //                section.boundarySupplementaryItems = [header]
 //                return section
-//                
+//
             case .therapeuticGames:
                 let itemSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1), heightDimension: .fractionalHeight(1.0))
                 let item = NSCollectionLayoutItem(layoutSize: itemSize)
@@ -318,9 +310,9 @@ class HomeViewController: UIViewController, UICollectionViewDelegate {
 //        SymptomLogManager.shared.saveLogEntry(newLogEntry)
 //        hasLoggedSymptomsToday = true
 //    }
-//    
+//
 //    func symptomLogDidCancel() { }
-//    
+//
 //    func symptomLogCellDidTapLogNow(_ cell: SymptomLogCell) {
 //        let storyboard = UIStoryboard(name: "Home", bundle: nil)
 //        if hasLoggedSymptomsToday {
@@ -493,8 +485,12 @@ extension HomeViewController: UICollectionViewDataSource {
             cell.configure(with: model)
             if indexPath.row == 0 {
                 cell.setThemeColor(UIColor(hex: "0088FF"))
+                // Ensure exercises are loaded so total is always 7
+                if WorkoutManager.shared.exercises.count != 7 {
+                    WorkoutManager.shared.getTodayWorkout()
+                }
                 let completed = WorkoutManager.shared.completedToday.count
-                let total = max(WorkoutManager.shared.exercises.count, 1)
+                let total = 7
                 cell.setProgress(completed: completed, total: total)
             } else if indexPath.row == 1 {
                 cell.setThemeColor(UIColor(hex: "90AF81"))
@@ -511,7 +507,7 @@ extension HomeViewController: UICollectionViewDataSource {
             }
             return cell
 
-//            
+//
 //        case .symptoms:
 //            let cell = mainCollectionView.dequeueReusableCell(withReuseIdentifier: "symptom_log_cell", for: indexPath) as! SymptomLogCell
 //            cell.delegate = self

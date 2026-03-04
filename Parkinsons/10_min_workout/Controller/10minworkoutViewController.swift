@@ -35,7 +35,7 @@ class _0minworkoutViewController: UIViewController {
         backgroundView.clipsToBounds = true
         playerView.isUserInteractionEnabled = false
         
-        if exercises.isEmpty {
+        if exercises.isEmpty || exercises.count != 7 {
             exercises = WorkoutManager.shared.getTodayWorkout()
         }
         
@@ -46,6 +46,7 @@ class _0minworkoutViewController: UIViewController {
         super.viewWillAppear(animated)
         updateProgressBars()
         updateTopLabels()
+        updatePreviousButton()
         tabBarController?.tabBar.isHidden = true
     }
     
@@ -60,9 +61,19 @@ class _0minworkoutViewController: UIViewController {
     }
     
     // MARK: - Configuration & UI
+
+    /// Hidden + disabled on the very first exercise (index 0).
+    /// Visible + enabled on all other exercises so the user can go back.
+    private func updatePreviousButton() {
+        let isFirst = currentIndex == 0
+        previousButtonOutlet.isEnabled = !isFirst
+        previousButtonOutlet.alpha     = isFirst ? 0.4 : 1.0
+    }
+
     func updateTopLabels() {
         let completedCount = WorkoutManager.shared.completedToday.count
-        exerciseCompletedLabel.text = "\(completedCount) of \(exercises.count)"
+        let total = exercises.isEmpty ? 7 : exercises.count
+        exerciseCompletedLabel.text = "\(completedCount) of \(total)"
     }
 
 
@@ -105,6 +116,7 @@ class _0minworkoutViewController: UIViewController {
         }
         updateProgressBars()
         updateTopLabels()
+        updatePreviousButton()
         exerciseStartTime = Date()
     }
     
@@ -368,6 +380,3 @@ extension _0minworkoutViewController: RestScreenDelegate {
 
 
 }
-
-
-
