@@ -1,8 +1,121 @@
+////
+////  AppDelegate.swift
+////  Parkinsons
+////
+////  Created by SDC-USER on 25/11/25.
+////
+//
+//import UIKit
+//import AVFoundation
+//import HealthKit
+//
+//@main
+//class AppDelegate: UIResponder, UIApplicationDelegate {
+//
+//
+//
+////    func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
+////        // Override point for customization after application launch.
+////   let _ = WorkoutManager.shared
+////     UserDefaults.standard.removeObject(forKey: "exercise_store")
+////        WorkoutManager.shared.resetAllExercises()
+////        
+////        do {
+////            try AVAudioSession.sharedInstance().setCategory(.playback, mode: .default, options: [])
+////            try AVAudioSession.sharedInstance().setActive(true)
+////        } catch {
+////            print("Failed to set audio session category: \(error)")
+////        }
+////        
+////        HealthKitManager.shared.requestAuthorization { granted in
+////            print("HealthKit granted: \(granted)")
+////        }
+////        
+////        
+////        return true
+////    }
+//
+//    
+//    func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
+//
+//        if let appDomain = Bundle.main.bundleIdentifier {
+//            UserDefaults.standard.removePersistentDomain(forName: appDomain)
+//            UserDefaults.standard.synchronize()
+//        }
+//
+//        // Override point for customization after application launch.
+//let _ = WorkoutManager.shared
+//   UserDefaults.standard.removeObject(forKey: "exercise_store")
+//      WorkoutManager.shared.resetAllExercises()
+//
+//        let _ = WorkoutManager.shared
+//        UserDefaults.standard.removeObject(forKey: "exercise_store")
+//        WorkoutManager.shared.resetAllExercises()
+//        
+//        do {
+//            try AVAudioSession.sharedInstance().setCategory(.playback, mode: .default, options: [])
+//            try AVAudioSession.sharedInstance().setActive(true)
+//        } catch {
+//            print("Failed to set audio session: \(error)")
+//        }
+//        
+//        // ✅ Dispatch to avoid blocking launch
+//        DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+////            HealthKitManager.shared.requestAuthorization { granted in
+////                print("HealthKit granted: \(granted)")
+////            }
+//            HealthKitManagerRhythmic.shared.requestAuthorization { granted in
+//                print("HealthKit granted: \(granted)")
+//                guard granted else { return }
+//                
+//                // Check if ANY steps exist in the last 24 hours
+//                let type = HKQuantityType.quantityType(forIdentifier: .stepCount)!
+//                let predicate = HKQuery.predicateForSamples(
+//                    withStart: Date().addingTimeInterval(-86400),
+//                    end: Date(),
+//                    options: []
+//                )
+//                let query = HKStatisticsQuery(quantityType: type, quantitySamplePredicate: predicate, options: .cumulativeSum) { _, stats, _ in
+//                    print("✅ Steps in last 24hrs: \(stats?.sumQuantity()?.doubleValue(for: .count()) ?? 0)")
+//                }
+//                HealthKitManagerRhythmic.shared.healthStore.execute(query)
+//            }
+//        }
+//        
+//        HealthKitManagerRhythmic.shared.requestAuthorization { granted in
+//            print("HealthKit granted: \(granted)")
+//            HealthKitManagerRhythmic.shared.checkAuthorizationStatus()
+//        }
+//        
+//
+//        return true
+//    }
+//    
+//    
+//    
+//    // MARK: UISceneSession Lifecycle
+//
+//    func application(_ application: UIApplication, configurationForConnecting connectingSceneSession: UISceneSession, options: UIScene.ConnectionOptions) -> UISceneConfiguration {
+//        // Called when a new scene session is being created.
+//        // Use this method to select a configuration to create the new scene with.
+//        return UISceneConfiguration(name: "Default Configuration", sessionRole: connectingSceneSession.role)
+//    }
+//
+//    func application(_ application: UIApplication, didDiscardSceneSessions sceneSessions: Set<UISceneSession>) {
+//        // Called when the user discards a scene session.
+//        // If any sessions were discarded while the application was not running, this will be called shortly after application:didFinishLaunchingWithOptions.
+//        // Use this method to release any resources that were specific to the discarded scenes, as they will not return.
+//    }
+//
+//
+//}
+//
+
+
+
 //
 //  AppDelegate.swift
 //  Parkinsons
-//
-//  Created by SDC-USER on 25/11/25.
 //
 
 import UIKit
@@ -12,101 +125,39 @@ import HealthKit
 @main
 class AppDelegate: UIResponder, UIApplicationDelegate {
 
+    func application(_ application: UIApplication,
+                     didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
 
-
-//    func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
-//        // Override point for customization after application launch.
-//   let _ = WorkoutManager.shared
-//     UserDefaults.standard.removeObject(forKey: "exercise_store")
-//        WorkoutManager.shared.resetAllExercises()
-//        
-//        do {
-//            try AVAudioSession.sharedInstance().setCategory(.playback, mode: .default, options: [])
-//            try AVAudioSession.sharedInstance().setActive(true)
-//        } catch {
-//            print("Failed to set audio session category: \(error)")
-//        }
-//        
-//        HealthKitManager.shared.requestAuthorization { granted in
-//            print("HealthKit granted: \(granted)")
-//        }
-//        
-//        
-//        return true
-//    }
-
-    
-    func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
-
-        if let appDomain = Bundle.main.bundleIdentifier {
-            UserDefaults.standard.removePersistentDomain(forName: appDomain)
-            UserDefaults.standard.synchronize()
-        }
-
-        // Override point for customization after application launch.
-let _ = WorkoutManager.shared
-   UserDefaults.standard.removeObject(forKey: "exercise_store")
-      WorkoutManager.shared.resetAllExercises()
-
+        // ── WorkoutManager ───────────────────────────────────────────────────
         let _ = WorkoutManager.shared
-        UserDefaults.standard.removeObject(forKey: "exercise_store")
-        WorkoutManager.shared.resetAllExercises()
-        
+
+        // ── Audio Session ────────────────────────────────────────────────────
         do {
-            try AVAudioSession.sharedInstance().setCategory(.playback, mode: .default, options: [])
+            try AVAudioSession.sharedInstance().setCategory(
+                .playback, mode: .default, options: [.mixWithOthers])
             try AVAudioSession.sharedInstance().setActive(true)
         } catch {
-            print("Failed to set audio session: \(error)")
+            print("[Audio] Session setup failed: \(error)")
         }
-        
-        // ✅ Dispatch to avoid blocking launch
-        DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
-//            HealthKitManager.shared.requestAuthorization { granted in
-//                print("HealthKit granted: \(granted)")
-//            }
-            HealthKitManagerRhythmic.shared.requestAuthorization { granted in
-                print("HealthKit granted: \(granted)")
-                guard granted else { return }
-                
-                // Check if ANY steps exist in the last 24 hours
-                let type = HKQuantityType.quantityType(forIdentifier: .stepCount)!
-                let predicate = HKQuery.predicateForSamples(
-                    withStart: Date().addingTimeInterval(-86400),
-                    end: Date(),
-                    options: []
-                )
-                let query = HKStatisticsQuery(quantityType: type, quantitySamplePredicate: predicate, options: .cumulativeSum) { _, stats, _ in
-                    print("✅ Steps in last 24hrs: \(stats?.sumQuantity()?.doubleValue(for: .count()) ?? 0)")
-                }
-                HealthKitManagerRhythmic.shared.healthStore.execute(query)
-            }
-        }
-        
+
+        // ── HealthKit Authorization ──────────────────────────────────────────
+        // Called once here on first launch — system shows permission sheet automatically.
         HealthKitManagerRhythmic.shared.requestAuthorization { granted in
-            print("HealthKit granted: \(granted)")
-            HealthKitManagerRhythmic.shared.checkAuthorizationStatus()
+            print("[HealthKit] Authorization granted: \(granted)")
         }
-        
 
         return true
     }
-    
-    
-    
-    // MARK: UISceneSession Lifecycle
 
-    func application(_ application: UIApplication, configurationForConnecting connectingSceneSession: UISceneSession, options: UIScene.ConnectionOptions) -> UISceneConfiguration {
-        // Called when a new scene session is being created.
-        // Use this method to select a configuration to create the new scene with.
-        return UISceneConfiguration(name: "Default Configuration", sessionRole: connectingSceneSession.role)
+    // MARK: - UISceneSession Lifecycle
+
+    func application(_ application: UIApplication,
+                     configurationForConnecting connectingSceneSession: UISceneSession,
+                     options: UIScene.ConnectionOptions) -> UISceneConfiguration {
+        return UISceneConfiguration(name: "Default Configuration",
+                                    sessionRole: connectingSceneSession.role)
     }
 
-    func application(_ application: UIApplication, didDiscardSceneSessions sceneSessions: Set<UISceneSession>) {
-        // Called when the user discards a scene session.
-        // If any sessions were discarded while the application was not running, this will be called shortly after application:didFinishLaunchingWithOptions.
-        // Use this method to release any resources that were specific to the discarded scenes, as they will not return.
-    }
-
-
+    func application(_ application: UIApplication,
+                     didDiscardSceneSessions sceneSessions: Set<UISceneSession>) {}
 }
-
