@@ -4,10 +4,9 @@
 <dict>
 	<key>com.apple.developer.healthkit</key>
 	<true/>
-<<<<<<< HEAD
+
 	<key>com.apple.developer.healthkit.background-delivery</key>
 	<true/>
-=======
->>>>>>> origin/unnatti
+
 </dict>
 </plist>
