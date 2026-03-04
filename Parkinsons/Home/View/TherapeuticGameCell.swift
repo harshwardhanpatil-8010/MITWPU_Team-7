@@ -53,9 +53,10 @@ class TherapeuticGameCell: UICollectionViewCell {
 
     @IBOutlet weak var titleLabel: UILabel!
     @IBOutlet weak var descriptionLabel: UILabel!
-    @IBOutlet weak var iconImageView: UIImageView!
     @IBOutlet weak var backgroundCardView: UIView!
-
+    
+    @IBOutlet weak var completionLabel: UILabel!
+    
     // Badge: [orange circle ✓]  [X/Y]
     private let badgeContainer: UIView = {
         let v = UIView()
@@ -154,9 +155,9 @@ class TherapeuticGameCell: UICollectionViewCell {
             descriptionLabel.text = model.description
         }
 
-        if let imageName = model.iconName {
-            iconImageView.image = UIImage(named: imageName)
-            iconImageView.tintColor = nil
-        }
+//        if let imageName = model.iconName {
+//            iconImageView.image = UIImage(named: imageName)
+//            iconImageView.tintColor = nil
+//        }
     }
 }
