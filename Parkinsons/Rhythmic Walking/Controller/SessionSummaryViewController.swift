@@ -256,6 +256,7 @@ class SessionSummaryViewController: UIViewController {
            session.elapsedSeconds >= session.requestedDurationSeconds {
             showConfetti()
         }
+        navigationItem.title = "Rhythmic Walking"
     }
 
     // MARK: - Back

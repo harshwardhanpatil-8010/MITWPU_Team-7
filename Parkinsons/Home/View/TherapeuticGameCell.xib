@@ -32,25 +32,47 @@
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Face with monocle" translatesAutoresizingMaskIntoConstraints="NO" id="280-Ok-tQk">
-                                <rect key="frame" x="258" y="13" width="59" height="49"/>
-                                <constraints>
-                                    <constraint firstAttribute="height" constant="49" id="HFc-PH-HTr"/>
-                                    <constraint firstAttribute="width" constant="59" id="Xv4-cT-hI7"/>
-                                </constraints>
-                            </imageView>
+                            <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="GG5-I5-OFG">
+                                <rect key="frame" x="267" y="14.666666666666664" width="50" height="41"/>
+                                <subviews>
+                                    <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Face with monocle" translatesAutoresizingMaskIntoConstraints="NO" id="280-Ok-tQk">
+                                        <rect key="frame" x="0.0" y="0.0" width="50" height="25"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="25" id="HFc-PH-HTr"/>
+                                            <constraint firstAttribute="width" constant="50" id="Xv4-cT-hI7"/>
+                                        </constraints>
+                                    </imageView>
+                                    <stackView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="fw7-hJ-XQc">
+                                        <rect key="frame" x="0.0" y="25" width="50" height="16"/>
+                                        <subviews>
+                                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="checkmark.circle.fill" catalog="system" translatesAutoresizingMaskIntoConstraints="NO" id="I8o-MU-zQC">
+                                                <rect key="frame" x="0.0" y="0.66666666666666607" width="16" height="14.666666666666668"/>
+                                                <color key="tintColor" red="0.94117647059999998" green="0.71372549019999998" blue="0.45098039220000002" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                                <constraints>
+                                                    <constraint firstAttribute="height" constant="16" id="cKQ-3S-Vqx"/>
+                                                    <constraint firstAttribute="width" constant="16" id="hXw-uq-NHL"/>
+                                                </constraints>
+                                            </imageView>
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="1/31 " lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="w0B-dn-4fk">
+                                                <rect key="frame" x="16" y="0.0" width="34" height="16"/>
+                                                <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="13"/>
+                                                <nil key="textColor"/>
+                                                <nil key="highlightedColor"/>
+                                            </label>
+                                        </subviews>
+                                    </stackView>
+                                </subviews>
+                            </stackView>
                         </subviews>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                         <constraints>
-                            <constraint firstAttribute="trailing" secondItem="280-Ok-tQk" secondAttribute="trailing" constant="16" id="0et-eJ-XBu"/>
                             <constraint firstAttribute="bottom" secondItem="HRu-mw-IAh" secondAttribute="bottom" constant="19" id="3sn-bk-RS7"/>
                             <constraint firstItem="hTJ-CF-CKg" firstAttribute="leading" secondItem="hyf-t1-NL3" secondAttribute="leading" constant="16" id="CFW-bD-aDt"/>
-                            <constraint firstItem="280-Ok-tQk" firstAttribute="top" secondItem="hyf-t1-NL3" secondAttribute="top" constant="13" id="NNc-Ee-gy8"/>
                             <constraint firstAttribute="trailing" secondItem="HRu-mw-IAh" secondAttribute="trailing" constant="8" id="UoE-45-Y43"/>
-                            <constraint firstAttribute="bottom" secondItem="280-Ok-tQk" secondAttribute="bottom" constant="13" id="X4G-FG-F8s"/>
                             <constraint firstAttribute="trailing" secondItem="hTJ-CF-CKg" secondAttribute="trailing" constant="13" id="ZTm-rm-vhy"/>
+                            <constraint firstItem="GG5-I5-OFG" firstAttribute="top" secondItem="hyf-t1-NL3" secondAttribute="top" constant="14.666666666666664" id="ape-b6-jus"/>
+                            <constraint firstAttribute="trailing" secondItem="GG5-I5-OFG" secondAttribute="trailing" constant="16" id="eqB-tY-u00"/>
                             <constraint firstItem="HRu-mw-IAh" firstAttribute="leading" secondItem="hyf-t1-NL3" secondAttribute="leading" constant="16" id="f7T-nO-pyw"/>
-                            <constraint firstItem="280-Ok-tQk" firstAttribute="centerY" secondItem="hyf-t1-NL3" secondAttribute="centerY" id="fnY-DQ-uHY"/>
                             <constraint firstItem="HRu-mw-IAh" firstAttribute="top" secondItem="hTJ-CF-CKg" secondAttribute="bottom" constant="6" id="tvJ-CO-NRx"/>
                         </constraints>
                     </view>
@@ -70,11 +92,12 @@
                 <outlet property="iconImageView" destination="280-Ok-tQk" id="5KA-ut-VbG"/>
                 <outlet property="titleLabel" destination="hTJ-CF-CKg" id="ItI-XN-an4"/>
             </connections>
-            <point key="canvasLocation" x="637.40458015267177" y="229.92957746478874"/>
+            <point key="canvasLocation" x="633" y="261"/>
         </collectionViewCell>
     </objects>
     <resources>
         <image name="Face with monocle" width="80" height="80"/>
+        <image name="checkmark.circle.fill" catalog="system" width="128" height="123"/>
         <systemColor name="systemBackgroundColor">
             <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
         </systemColor>
