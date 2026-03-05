@@ -108,13 +108,18 @@ class SummaryViewController: UIViewController {
         currentSymptomLog = SymptomLogManager.shared.getLogEntry(for: targetDate)
 
         let context = PersistenceController.shared.viewContext
-
-        // Fetch DoseLogs for selected date
+        
+        // Create the fetch request
         let logRequest: NSFetchRequest<MedicationDoseLog> = MedicationDoseLog.fetchRequest()
+        
+        // Filter by the selected day
         logRequest.predicate = NSPredicate(
             format: "doseDay == %@",
             targetDate.startOfDay as NSDate
         )
+        
+        // ✅ ADD SORT DESCRIPTOR: Get the most recently logged medication first
+        logRequest.sortDescriptors = [NSSortDescriptor(key: "doseLoggedAt", ascending: false)]
 
         do {
             let logs = try context.fetch(logRequest)
@@ -122,29 +127,29 @@ class SummaryViewController: UIViewController {
             self.totalScheduled = logs.count
             self.totalTaken = logs.filter { $0.doseLogStatus == "taken" }.count
 
-
-            if let firstLog = logs.first,
-               let med = firstLog.medication {
+            // ✅ Now that we sort by date descending, the first log IS the most recent
+            if let mostRecentLog = logs.first,
+               let med = mostRecentLog.medication {
 
                 let formatter = DateFormatter()
                 formatter.dateFormat = "h:mm a"
 
-                let timeString = formatter.string(from: firstLog.doseScheduledTime ?? firstLog.doseLoggedAt ?? Date())
+                // Use the actual logged time for the summary display
+                let timeString = formatter.string(from: mostRecentLog.doseLoggedAt ?? Date())
 
                 self.primaryMedication = MedicationModel(
                     name: med.medicationName ?? "",
                     time: timeString,
                     detail: med.medicationForm ?? "",
                     iconName: med.medicationIconName ?? "pill",
-                    status: DoseStatus(rawValue: firstLog.doseLogStatus ?? "") ?? .none
-
+                    status: DoseStatus(rawValue: mostRecentLog.doseLogStatus ?? "") ?? .none
                 )
             } else {
                 self.primaryMedication = nil
             }
 
         } catch {
-            print("Failed to fetch logs:", error)
+            print("Failed to fetch logs: \(error)")
             self.primaryMedication = nil
             self.totalScheduled = 0
             self.totalTaken = 0
@@ -155,7 +160,6 @@ class SummaryViewController: UIViewController {
         updateSymptomTableBackground()
         mainCollectionView.reloadData()
     }
-
     
     private func updateTitleUI(with date: Date) {
         let formatter = DateFormatter()

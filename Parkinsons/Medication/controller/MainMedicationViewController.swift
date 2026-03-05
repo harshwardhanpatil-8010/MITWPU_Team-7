@@ -58,7 +58,15 @@ final class MainMedicationViewController: UIViewController {
         ) { [weak self] _ in
             self?.loadMedications()
         }
+        NotificationCenter.default.addObserver(
+            forName: NSNotification.Name("MedicationLogged"),
+            object: nil,
+            queue: .main
+        ) { [weak self] _ in
+            self?.loadMedications()
+        }
     }
+    
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         loadMedications()
@@ -68,35 +76,34 @@ final class MainMedicationViewController: UIViewController {
         if let observer = didBecomeActiveObserver {
             NotificationCenter.default.removeObserver(observer)
         }
+        NotificationCenter.default.removeObserver(self, name: NSNotification.Name("MedicationLogged"), object: nil)
     }
     
     private func loadMedications() {
         let request: NSFetchRequest<Medication> = Medication.fetchRequest()
-
         do {
             myMedications = try PersistenceController.shared.viewContext.fetch(request)
         } catch {
             print("Failed to fetch medications:", error)
         }
 
-
         if currentSegment == .today {
             todayViewModel.loadTodayMedications(from: myMedications)
 
+            // ✅ Filter to today's logs only using doseDay
             let logRequest: NSFetchRequest<MedicationDoseLog> = MedicationDoseLog.fetchRequest()
+            let startOfDay = Calendar.current.startOfDay(for: Date())
+            let endOfDay = Calendar.current.date(byAdding: .day, value: 1, to: startOfDay)!
+            logRequest.predicate = NSPredicate(
+                format: "doseDay >= %@ AND doseDay < %@",
+                startOfDay as NSDate,
+                endOfDay as NSDate
+            )
 
             let logs = (try? PersistenceController.shared.viewContext.fetch(logRequest)) ?? []
 
-            todayViewModel.loadLoggedDoses(
-                medications: myMedications,
-                logs: logs,
-                for: Date()
-            )
-
+            todayViewModel.loadLoggedDoses(medications: myMedications, logs: logs, for: Date())
             loggedDoses = todayViewModel.loggedDoses
-
-            loggedDoses = todayViewModel.loggedDoses
-
         }
 
         medicationCollectionView.reloadData()
@@ -162,18 +169,18 @@ final class MainMedicationViewController: UIViewController {
     }
 
     private func updateLoggedStatus(_ item: LoggedDoseItem, status: DoseStatus) {
+        let context = PersistenceController.shared.viewContext
 
-        for med in myMedications {
-            guard let doseSet = med.doses as? Set<MedicationDose>,
-                  let coreDose = doseSet.first(where: { $0.id == item.id }) else {
-                continue
-            }
+        // Find the log by its id, then update both log and linked dose
+        let logRequest: NSFetchRequest<MedicationDoseLog> = MedicationDoseLog.fetchRequest()
+        logRequest.predicate = NSPredicate(format: "id == %@", item.id as CVarArg)
 
-            coreDose.doseStatus = status == .taken ? "taken" : "skipped"
-            break
+        if let log = (try? context.fetch(logRequest))?.first {
+            log.doseLogStatus = status.rawValue
+            log.dose?.doseStatus = status.rawValue  // ✅ sync MedicationDose too
         }
 
-        PersistenceController.shared.save()
+        PersistenceController.shared.save(context)
         loadMedications()
     }
 
@@ -316,7 +323,6 @@ extension MainMedicationViewController: UICollectionViewDelegate {
 
 extension MainMedicationViewController {
     private func updateDose(_ dose: TodayDoseItem, status: DoseStatus) {
-
         let context = PersistenceController.shared.viewContext
 
         guard let medication = myMedications.first(where: { $0.id == dose.medicationID }),
@@ -325,32 +331,26 @@ extension MainMedicationViewController {
             return
         }
 
-        // 1️⃣ Update original dose status
-        coreDose.doseStatus = status == .taken ? "taken" : "skipped"
+        // 1. Update the MedicationDose status
+        coreDose.doseStatus = status.rawValue
 
-        // 2️⃣ CREATE LOG ENTRY
+        // 2. Create the log and link it properly via both relationships
         let log = MedicationDoseLog(context: context)
         log.id = UUID()
         log.doseLoggedAt = Date()
         log.doseScheduledTime = dose.scheduledTime
-        log.doseLogStatus = status == .taken ? "taken" : "skipped"
+        log.doseLogStatus = status.rawValue
         log.doseDay = Calendar.current.startOfDay(for: Date())
-
-        // If you have relationship
         log.medication = medication
+        log.dose = coreDose  // ✅ This was missing — links log to its MedicationDose
 
-        // 3️⃣ Save
-        PersistenceController.shared.save()
+        // 3. Save
+        PersistenceController.shared.save(context)
 
-        // 4️⃣ Reload
+        // 4. Reload and notify
         loadMedications()
-
-        NotificationCenter.default.post(
-            name: NSNotification.Name("MedicationLogged"),
-            object: nil
-        )
+        NotificationCenter.default.post(name: NSNotification.Name("MedicationLogged"), object: nil)
     }
-
 
 }
 
@@ -382,7 +382,30 @@ extension MainMedicationViewController: AddMedicationDelegate {
 
 extension MainMedicationViewController: EditLogDelegate {
     func didUpdateLoggedDoses(_ updated: [LoggedDoseItem]) {
-        self.loggedDoses = updated
-        medicationCollectionView.reloadSections(IndexSet(integer: 1))
+        let context = PersistenceController.shared.viewContext
+
+        for item in updated {
+            // Find the MedicationDoseLog by its id and update its status
+            let logRequest: NSFetchRequest<MedicationDoseLog> = MedicationDoseLog.fetchRequest()
+            logRequest.predicate = NSPredicate(format: "id == %@", item.id as CVarArg)
+
+            if let log = (try? context.fetch(logRequest))?.first {
+                log.doseLogStatus = item.status.rawValue
+
+                // Also keep the MedicationDose status in sync via the relationship
+                if let coreDose = log.dose {
+                    coreDose.doseStatus = item.status.rawValue
+                }
+            }
+        }
+
+        // ✅ Save to CoreData
+        PersistenceController.shared.save(context)
+
+        // ✅ Notify HomeViewController and SummaryViewController
+        NotificationCenter.default.post(name: NSNotification.Name("MedicationLogged"), object: nil)
+
+        // ✅ Reload local UI from CoreData (not from the in-memory array)
+        loadMedications()
     }
 }
