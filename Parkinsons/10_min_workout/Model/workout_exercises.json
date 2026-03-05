@@ -5,12 +5,9 @@
     "reps": 12,
     "duration": 40,
     "videoID": "standing_shoulder_warmup",
-    "description": "Dynamic shoulder circles to prep the joints.",
     "category": "warmup",
     "position": "standing",
-    "targetJoints": ["Shoulder"],
-    "benefits": "Increases range of motion.",
-    "stepsToPerform": "Roll shoulders back in large, slow circles."
+    "targetJoints": ["Shoulder"]
   },
   {
     "id": "748CB6A5-8C06-4C98-8A55-87DAF9ADC0C3",
@@ -18,12 +15,9 @@
     "reps": 12,
     "duration": 40,
     "videoID": "standing_sideways_stretch",
-    "description": "Lateral lengthening of the torso.",
     "category": "cooldown",
     "position": "standing",
-    "targetJoints": ["Spine"],
-    "benefits": "Improves ribcage expansion.",
-    "stepsToPerform": "Reach one arm up and lean gently to the side."
+    "targetJoints": ["Spine"]
   },
   {
     "id": "0B9D3C03-2259-4C03-897C-BA5B68E25AE5",
@@ -31,12 +25,9 @@
     "reps": 12,
     "duration": 40,
     "videoID": "standing_trunk_rotations",
-    "description": "Slow, controlled spinal twists.",
     "category": "warmup",
     "position": "standing",
-    "targetJoints": ["Spine"],
-    "benefits": "Reduces back stiffness.",
-    "stepsToPerform": "Rotate torso left and right with arms loose."
+    "targetJoints": ["Spine"]
   },
   {
     "id": "D766E221-7602-4EB3-AC88-F50EC7FC2918",
@@ -44,12 +35,9 @@
     "reps": 12,
     "duration": 40,
     "videoID": "wrist_rotations",
-    "description": "Gentle circular wrist movements.",
     "category": "cooldown",
     "position": "standing",
-    "targetJoints": ["Wrist"],
-    "benefits": "Relieves joint pressure.",
-    "stepsToPerform": "Circle wrists slowly in both directions."
+    "targetJoints": ["Wrist"]
   },
   {
     "id": "E18B52D5-76DE-450E-B9CB-6746D099F364",
@@ -57,12 +45,9 @@
     "reps": 12,
     "duration": 40,
     "videoID": "standing_march",
-    "description": "Rhythmic knee lifting.",
     "category": "aerobic",
     "position": "standing",
-    "targetJoints": ["Hip", "Knee"],
-    "benefits": "Warms up lower body and boosts heart rate.",
-    "stepsToPerform": "March in place lifting knees toward the waist."
+    "targetJoints": ["Hip", "Knee"]
   },
   {
     "id": "24EFE1C3-2FD8-4304-9C68-3FE6E3B0CC22",
@@ -70,12 +55,9 @@
     "reps": 12,
     "duration": 40,
     "videoID": "bicep_curls",
-    "description": "Elbow flexion for arm strength.",
     "category": "strength",
     "position": "standing",
-    "targetJoints": ["Elbow"],
-    "benefits": "Increases upper body functional power.",
-    "stepsToPerform": "Curl hands toward shoulders with controlled tension."
+    "targetJoints": ["Elbow"]
   },
   {
     "id": "B03B742A-D21A-449E-B052-64E8D63AE9F9",
@@ -83,12 +65,9 @@
     "reps": 12,
     "duration": 40,
     "videoID": "chair_squats",
-    "description": "Functional sit-to-stand motion.",
     "category": "strength",
     "position": "seated",
-    "targetJoints": ["Hip", "Knee"],
-    "benefits": "Strengthens legs for daily mobility.",
-    "stepsToPerform": "Rise to a standing position then slowly sit back down."
+    "targetJoints": ["Hip", "Knee"]
   },
   {
     "id": "DDFA910C-9B74-438D-8DFB-6521CBE60E6F",
@@ -96,12 +75,9 @@
     "reps": 12,
     "duration": 40,
     "videoID": "neck_tilts_sideways",
-    "description": "Gentle lateral neck stretches.",
     "category": "balance",
     "position": "seated",
-    "targetJoints": ["Neck"],
-    "benefits": "Improves cervical alignment.",
-    "stepsToPerform": "Tilt ear toward shoulder without lifting the shoulder."
+    "targetJoints": ["Neck"]
   },
   {
     "id": "E2F98AE4-940C-4C2A-877E-5A415C7D1EBB",
@@ -109,12 +85,9 @@
     "reps": 12,
     "duration": 40,
     "videoID": "palm_stretch",
-    "description": "Active finger and hand extension.",
     "category": "warmup",
     "position": "seated",
-    "targetJoints": ["Wrist", "Fingers"],
-    "benefits": "Reduces hand cramping.",
-    "stepsToPerform": "Open palms wide, stretching fingers apart."
+    "targetJoints": ["Wrist", "Fingers"]
   },
   {
     "id": "DE2D3A2E-A706-4EF8-9AAE-B9162DA31A39",
@@ -122,12 +95,9 @@
     "reps": 12,
     "duration": 40,
     "videoID": "seated_ankle_stretch",
-    "description": "Ankle flexion and extension.",
     "category": "cooldown",
     "position": "seated",
-    "targetJoints": ["Ankle"],
-    "benefits": "Improves circulation in lower limbs.",
-    "stepsToPerform": "Point and flex toes while keeping leg extended."
+    "targetJoints": ["Ankle"]
   },
   {
     "id": "A931AE68-C59D-4238-906D-236415A84D8D",
@@ -135,12 +105,9 @@
     "reps": 12,
     "duration": 40,
     "videoID": "seated_march",
-    "description": "Lower body aerobic movement.",
     "category": "aerobic",
     "position": "seated",
-    "targetJoints": ["Hip"],
-    "benefits": "Increases blood flow safely.",
-    "stepsToPerform": "Lift knees high while maintaining a straight back."
+    "targetJoints": ["Hip"]
   },
   {
     "id": "F516A324-64C8-4A36-AB27-B1B8CB6AED78",
@@ -148,12 +115,9 @@
     "reps": 12,
     "duration": 40,
     "videoID": "seated_shoulder_stretch1",
-    "description": "Posterior shoulder release.",
     "category": "cooldown",
     "position": "seated",
-    "targetJoints": ["Shoulder"],
-    "benefits": "Relieves tension between shoulder blades.",
-    "stepsToPerform": "Pull one arm across the chest with the other hand."
+    "targetJoints": ["Shoulder"]
   },
   {
     "id": "0E99FF63-938B-42EE-8581-70506F9D0CBE",
@@ -161,12 +125,9 @@
     "reps": 12,
     "duration": 40,
     "videoID": "seated_trunk_rotations",
-    "description": "Seated spinal twisting.",
     "category": "warmup",
     "position": "seated",
-    "targetJoints": ["Spine"],
-    "benefits": "Improves core mobility.",
-    "stepsToPerform": "Twist upper body left and right using chair for leverage."
+    "targetJoints": ["Spine"]
   },
   {
     "id": "D6C8AF6D-9D55-4CEB-A24F-6B68B00E73B1",
@@ -174,12 +135,9 @@
     "reps": 12,
     "duration": 40,
     "videoID": "standing_hamstring_curls",
-    "description": "Active leg curls for balance.",
     "category": "balance",
     "position": "standing",
-    "targetJoints": ["Knee", "Hip"],
-    "benefits": "Improves single-leg stability.",
-    "stepsToPerform": "Lift heel toward glutes while balancing on one leg."
+    "targetJoints": ["Knee", "Hip"]
   },
   {
     "id": "B792C9D1-5F8D-438E-88F0-65644AEAF717",
@@ -187,11 +145,8 @@
     "reps": 12,
     "duration": 40,
     "videoID": "standing_shoulder_warmup2",
-    "description": "Arm swings for upper body heat.",
     "category": "warmup",
     "position": "standing",
-    "targetJoints": ["Shoulder"],
-    "benefits": "Warms up the rotator cuff.",
-    "stepsToPerform": "Swing arms horizontally across the chest."
+    "targetJoints": ["Shoulder"]
   }
 ]

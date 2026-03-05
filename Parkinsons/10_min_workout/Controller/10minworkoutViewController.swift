@@ -163,17 +163,6 @@ class _0minworkoutViewController: UIViewController {
     }
 
     
-    @IBAction func infoButtonTapped(_ sender: Any) {
-        let sb = UIStoryboard(name: "10 minworkout", bundle: nil)
-           if let vc = sb.instantiateViewController(withIdentifier: "InfoModalViewController") as? InfoModalViewController {
-               vc.exercises = exercises
-               vc.currentIndex = currentIndex
-               let nav = UINavigationController(rootViewController: vc)
-               nav.modalPresentationStyle = .pageSheet
-               present(nav, animated: true)
-           }
-        
-    }
 
     @IBAction func closeButtonTapped(_ sender: Any) {
         let quitConfirmAlert = UIAlertController(

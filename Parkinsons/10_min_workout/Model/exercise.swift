@@ -33,12 +33,10 @@ struct WorkoutExercise: Codable, Identifiable {
     /// Strength / aerobic / balance exercises leave this nil and show reps instead.
     var duration: Int?
     let videoID: String?
-    let description: String
     let category: ExerciseCategory
     let position: ExercisePosition
     let targetJoints: [String]
-    let benefits: String
-    let stepsToPerform: String
+ 
 
   
     var timerSeconds: Int {
@@ -49,6 +47,11 @@ struct WorkoutExercise: Codable, Identifiable {
             return reps
         }
     }
+    
+    var thumbnailName: String? {
+            guard let videoID else { return nil }
+            return "\(videoID)_thumb"
+        }
 
     enum CodingKeys: String, CodingKey {
         case id
@@ -56,11 +59,8 @@ struct WorkoutExercise: Codable, Identifiable {
         case reps
         case duration
         case videoID
-        case description
         case category
         case position
         case targetJoints
-        case benefits
-        case stepsToPerform
     }
 }

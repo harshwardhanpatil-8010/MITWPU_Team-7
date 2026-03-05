@@ -28,30 +28,9 @@ class ExerciseListCollectionViewCell: UICollectionViewCell {
         thumbnailOutlet.alpha = 1
     }
 
-    func loadThumbnail(videoName: String) {
-        DispatchQueue.global(qos: .userInitiated).async {
-
-            guard let url = Bundle.main.url(
-                forResource: videoName,
-                withExtension: "mp4"
-            ) else { return }
-
-            let asset = AVURLAsset(url: url)
-            let imageGenerator = AVAssetImageGenerator(asset: asset)
-            imageGenerator.appliesPreferredTrackTransform = true
-
-            let time = CMTime(seconds: 0.0, preferredTimescale: 600)
-
-            do {
-                let cgImage = try imageGenerator.copyCGImage(at: time, actualTime: nil)
-                let image = UIImage(cgImage: cgImage)
-
-                DispatchQueue.main.async {
-                    self.thumbnailOutlet.image = image
-                }
-            } catch {
-               
-            }
+    func loadThumbnail(exercise: WorkoutExercise) {
+        if let name = exercise.thumbnailName {
+            thumbnailOutlet.image = UIImage(named: name)
         }
     }
 }
