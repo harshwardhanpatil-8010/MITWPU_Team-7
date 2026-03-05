@@ -5,7 +5,6 @@
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="24504"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="System colors in document resources" minToolsVersion="11.0"/>
-        <capability name="collection view cell content view" minToolsVersion="11.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
@@ -88,58 +87,6 @@
                                             </label>
                                         </subviews>
                                     </stackView>
-                                    <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="WHr-wU-5ca">
-                                        <rect key="frame" x="8" y="47.666666666666686" width="377" height="288.33333333333331"/>
-                                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
-                                        <collectionViewFlowLayout key="collectionViewLayout" automaticEstimatedItemSize="YES" minimumLineSpacing="0.0" minimumInteritemSpacing="0.0" id="a0T-e2-3nj">
-                                            <size key="itemSize" width="128" height="128"/>
-                                            <size key="headerReferenceSize" width="0.0" height="0.0"/>
-                                            <size key="footerReferenceSize" width="0.0" height="0.0"/>
-                                            <inset key="sectionInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
-                                        </collectionViewFlowLayout>
-                                        <cells>
-                                            <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="DateCell" id="lkJ-sA-hqs" customClass="DateCell" customModule="Parkinsons" customModuleProvider="target">
-                                                <rect key="frame" x="0.0" y="0.0" width="128" height="128"/>
-                                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                                <collectionViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" id="ohD-xg-xw4">
-                                                    <rect key="frame" x="0.0" y="0.0" width="128" height="128"/>
-                                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                                    <subviews>
-                                                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="eYR-CK-RCZ">
-                                                            <rect key="frame" x="48" y="48" width="32" height="32"/>
-                                                            <subviews>
-                                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="x5f-yq-Psh">
-                                                                    <rect key="frame" x="-2" y="-2" width="36" height="36"/>
-                                                                    <constraints>
-                                                                        <constraint firstAttribute="height" constant="36" id="KYq-fR-LkY"/>
-                                                                        <constraint firstAttribute="width" constant="36" id="fgM-5b-es2"/>
-                                                                    </constraints>
-                                                                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                                                    <nil key="textColor"/>
-                                                                    <nil key="highlightedColor"/>
-                                                                </label>
-                                                            </subviews>
-                                                            <color key="backgroundColor" systemColor="systemBackgroundColor"/>
-                                                            <constraints>
-                                                                <constraint firstAttribute="width" constant="32" id="FbK-Ie-z6x"/>
-                                                                <constraint firstAttribute="height" constant="32" id="IpJ-1A-Ohh"/>
-                                                                <constraint firstItem="x5f-yq-Psh" firstAttribute="centerY" secondItem="eYR-CK-RCZ" secondAttribute="centerY" id="Zo2-Tp-uSz"/>
-                                                                <constraint firstItem="x5f-yq-Psh" firstAttribute="centerX" secondItem="eYR-CK-RCZ" secondAttribute="centerX" id="jiA-Zz-kZo"/>
-                                                            </constraints>
-                                                        </view>
-                                                    </subviews>
-                                                    <constraints>
-                                                        <constraint firstItem="eYR-CK-RCZ" firstAttribute="centerY" secondItem="ohD-xg-xw4" secondAttribute="centerY" id="8NV-F2-SoU"/>
-                                                        <constraint firstItem="eYR-CK-RCZ" firstAttribute="centerX" secondItem="ohD-xg-xw4" secondAttribute="centerX" id="trP-HC-eII"/>
-                                                    </constraints>
-                                                </collectionViewCellContentView>
-                                                <connections>
-                                                    <outlet property="dateLabel" destination="x5f-yq-Psh" id="Veu-O7-RWd"/>
-                                                    <outlet property="labelBackgroundView" destination="eYR-CK-RCZ" id="zHX-Lc-SfZ"/>
-                                                </connections>
-                                            </collectionViewCell>
-                                        </cells>
-                                    </collectionView>
                                     <stackView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="pHD-qg-ZuK">
                                         <rect key="frame" x="332.33333333333331" y="1" width="44.666666666666686" height="16"/>
                                         <subviews>
@@ -163,14 +110,10 @@
                                 <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                                 <constraints>
                                     <constraint firstItem="qhA-DW-pOk" firstAttribute="top" secondItem="0aA-Qp-don" secondAttribute="top" id="6d1-NM-Bx0"/>
-                                    <constraint firstItem="WHr-wU-5ca" firstAttribute="leading" secondItem="0aA-Qp-don" secondAttribute="leading" constant="8" id="APU-Gp-Mw1"/>
                                     <constraint firstAttribute="trailing" secondItem="pHD-qg-ZuK" secondAttribute="trailing" constant="16" id="FgD-Jf-F93"/>
                                     <constraint firstItem="VmY-sX-3E0" firstAttribute="top" secondItem="qhA-DW-pOk" secondAttribute="bottom" constant="2" id="HQD-Ic-3Dc"/>
                                     <constraint firstItem="VmY-sX-3E0" firstAttribute="leading" secondItem="0aA-Qp-don" secondAttribute="leading" constant="16" id="Mdk-JT-DDr"/>
-                                    <constraint firstAttribute="bottom" secondItem="WHr-wU-5ca" secondAttribute="bottom" constant="50" id="OJO-Zi-EX4"/>
-                                    <constraint firstAttribute="trailing" secondItem="WHr-wU-5ca" secondAttribute="trailing" constant="8" id="Qt3-nx-FfD"/>
                                     <constraint firstItem="pHD-qg-ZuK" firstAttribute="top" secondItem="0aA-Qp-don" secondAttribute="top" constant="1" id="Ulp-d7-nkA"/>
-                                    <constraint firstItem="WHr-wU-5ca" firstAttribute="top" secondItem="VmY-sX-3E0" secondAttribute="bottom" constant="5" id="VGn-mS-A6g"/>
                                     <constraint firstAttribute="trailing" secondItem="VmY-sX-3E0" secondAttribute="trailing" constant="16" id="W9r-Ze-iks"/>
                                     <constraint firstItem="qhA-DW-pOk" firstAttribute="leading" secondItem="0aA-Qp-don" secondAttribute="leading" constant="16" id="bNh-DD-mjy"/>
                                 </constraints>
@@ -214,7 +157,6 @@
                         </constraints>
                     </view>
                     <connections>
-                        <outlet property="collectionView" destination="WHr-wU-5ca" id="mSp-kF-zj1"/>
                         <outlet property="completedLabel" destination="ApT-8p-MC6" id="YHV-n0-EvZ"/>
                         <outlet property="infoButton" destination="HxH-FN-rvd" id="yS7-7R-hfn"/>
                         <outlet property="monthAndYearOutlet" destination="qhA-DW-pOk" id="YbO-o4-Inu"/>
