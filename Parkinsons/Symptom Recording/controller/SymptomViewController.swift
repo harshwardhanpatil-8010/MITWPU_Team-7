@@ -1,6 +1,7 @@
 import UIKit
 
-class SymptomViewController: UIViewController {
+class SymptomViewController: UIViewController, SymptomRatingCellDelegate {
+    
 
     @IBOutlet weak var collectionView: UICollectionView!
     @IBOutlet weak var editAndSaveButton: UIButton!
@@ -18,9 +19,8 @@ class SymptomViewController: UIViewController {
     private var todayAggregatedPoints: [AggregatedTremorPoint] = []
 
     enum Section: Int, CaseIterable {
-        case calendar = 0
-        case tremor = 1
-        case gait = 2
+        case tremor = 0
+        case gait = 1
     }
     
     enum ViewMode {
@@ -43,7 +43,7 @@ class SymptomViewController: UIViewController {
         collectionView.dataSource = self
         collectionView.delegate = self
         collectionView.setCollectionViewLayout(generateLayout(), animated: true)
-        autoSelectToday()
+//        autoSelectToday()
         tableView.dataSource = self
         tableView.delegate = self
         setupTableViewUI()
@@ -182,7 +182,7 @@ class SymptomViewController: UIViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         collectionView.reloadData()
-        DispatchQueue.main.async { self.scrollToSelectedDate(animated: false) }
+//        DispatchQueue.main.async { self.scrollToSelectedDate(animated: false) }
     }
 
     // MARK: - UI Setup
@@ -208,7 +208,7 @@ class SymptomViewController: UIViewController {
     }
 
     func registerCells() {
-        collectionView.register(UINib(nibName: "CalenderCollectionViewCell", bundle: nil), forCellWithReuseIdentifier: "calendar_cell")
+//        collectionView.register(UINib(nibName: "CalenderCollectionViewCell", bundle: nil), forCellWithReuseIdentifier: "calendar_cell")
         collectionView.register(UINib(nibName: "tremorCard", bundle: nil), forCellWithReuseIdentifier: "tremor_cell")
         collectionView.register(UINib(nibName: "gaitCard", bundle: nil), forCellWithReuseIdentifier: "gait_cell")
         collectionView.register(SectionHeaderView.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: "HeaderView")
@@ -264,18 +264,6 @@ class SymptomViewController: UIViewController {
         return UICollectionViewCompositionalLayout { sectionIndex, env in
             guard let sectionType = Section(rawValue: sectionIndex) else { return nil }
             switch sectionType {
-            case .calendar:
-                let itemSize = NSCollectionLayoutSize(widthDimension: .absolute(60), heightDimension: .absolute(70))
-                let item = NSCollectionLayoutItem(layoutSize: itemSize)
-                let groupSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: .absolute(100))
-                let group = NSCollectionLayoutGroup.horizontal(layoutSize: groupSize, subitem: item, count: 7)
-                let section = NSCollectionLayoutSection(group: group)
-                section.orthogonalScrollingBehavior = .continuous
-                section.interGroupSpacing = 4
-                section.contentInsets = NSDirectionalEdgeInsets(top: 10, leading: 16, bottom: 0, trailing: 16)
-                let headerSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: .absolute(30))
-                section.boundarySupplementaryItems = [NSCollectionLayoutBoundarySupplementaryItem(layoutSize: headerSize, elementKind: UICollectionView.elementKindSectionHeader, alignment: .top)]
-                return section
             case .tremor:
                 let itemSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: .estimated(160))
                 let group = NSCollectionLayoutGroup.vertical(layoutSize: itemSize, subitems: [NSCollectionLayoutItem(layoutSize: itemSize)])
@@ -292,12 +280,12 @@ class SymptomViewController: UIViewController {
         }
     }
 
-    func autoSelectToday() {
-        if let index = dates.firstIndex(where: { Calendar.current.isDate($0.date, inSameDayAs: Date()) }) {
-            selectedDate = dates[index].date
-            scrollToSelectedDate(animated: false)
-        }
-    }
+//    func autoSelectToday() {
+//        if let index = dates.firstIndex(where: { Calendar.current.isDate($0.date, inSameDayAs: Date()) }) {
+//            selectedDate = dates[index].date
+//            scrollToSelectedDate(animated: false)
+//        }
+//    }
 
     func formattedDateString(for date: Date) -> String {
         let formatter = DateFormatter()
@@ -309,136 +297,78 @@ class SymptomViewController: UIViewController {
 // MARK: - CollectionView
 
 extension SymptomViewController: UICollectionViewDataSource, UICollectionViewDelegate {
-
+    
     func numberOfSections(in collectionView: UICollectionView) -> Int { Section.allCases.count }
-
+    
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         guard let s = Section(rawValue: section) else { return 0 }
         switch s {
-        case .calendar: return dates.count
         case .tremor, .gait: return 1
         }
     }
-
+    
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         guard let sectionType = Section(rawValue: indexPath.section) else { return UICollectionViewCell() }
         switch sectionType {
-        case .calendar:
-            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "calendar_cell", for: indexPath) as! CalenderCollectionViewCell
-            let model = dates[indexPath.row]
-            cell.configure(with: model,
-                           isSelected: Calendar.current.isDate(model.date, inSameDayAs: selectedDate),
-                           isToday: Calendar.current.isDate(model.date, inSameDayAs: Date()))
-            return cell
-
         case .tremor:
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "tremor_cell", for: indexPath) as! tremorCard
-
+            
             // tremorFrequencyHz: nil = not yet recorded, 0.0 = steady, >0 = Hz value
             // Pass nil to card when steady so it shows "Steady" label
             let displayHz: Double? = (tremorFrequencyHz == nil || tremorFrequencyHz == 0.0) ? nil : tremorFrequencyHz
             let isSteady = tremorFrequencyHz == 0.0
             cell.configure(frequencyHz: displayHz, isSteady: isSteady, graphPoints: todayAggregatedPoints)
             return cell
-
+            
         case .gait:
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "gait_cell", for: indexPath) as! gaitCard
             cell.configureWithPoints(range: gaitRangeText ?? "Loading…", points: gaitGraphPoints)
-
             return cell
         }
     }
-
+    
     func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
-        if kind == UICollectionView.elementKindSectionHeader, indexPath.section == 0 {
-            let header = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: "HeaderView", for: indexPath) as! SectionHeaderView
-            let dateString = formattedDateString(for: selectedDate)
-            header.configure(title: Calendar.current.isDateInToday(selectedDate) ? "Today, \(dateString)" : dateString)
-            header.setTitleAlignment(.center)
-            return header
-        }
         return UICollectionReusableView()
     }
-
+    
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         guard let sectionType = Section(rawValue: indexPath.section) else { return }
         switch sectionType {
-        case .calendar:
-            selectedDate = dates[indexPath.row].date
-            if let header = collectionView.supplementaryView(forElementKind: UICollectionView.elementKindSectionHeader, at: IndexPath(item: 0, section: 0)) as? SectionHeaderView {
-                let ds = formattedDateString(for: selectedDate)
-                header.configure(title: Calendar.current.isDateInToday(selectedDate) ? "Today, \(ds)" : ds)
+        case .tremor:
+            break
+        case .gait:
+            break
+        }
+    }
+}
+    // MARK: - TableView
+    
+    extension SymptomViewController: UITableViewDataSource, UITableViewDelegate {
+        func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int { currentDayLogs.count }
+        
+        func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+            let rating = currentDayLogs[indexPath.row]
+            if currentMode == .entry {
+                let cell = tableView.dequeueReusableCell(withIdentifier: "SymptomRatingCell", for: indexPath) as! SymptomRatingCell
+                cell.delegate = self
+                cell.configure(with: rating)
+                return cell
+            } else {
+                let cell = tableView.dequeueReusableCell(withIdentifier: SymptomDetailCell.reuseIdentifier, for: indexPath) as! SymptomDetailCell
+                cell.configure(with: rating, isEditable: false)
+                return cell
             }
-            let visibleCal = collectionView.indexPathsForVisibleItems.filter { $0.section == Section.calendar.rawValue }
-            collectionView.reloadItems(at: visibleCal)
-            collectionView.scrollToItem(at: indexPath, at: .centeredHorizontally, animated: true)
-            updateDataForSelectedDate()
-        case .tremor:
-            navigateToSymptomDetail(type: .tremor)
-        case .gait:
-            navigateToSymptomDetail(type: .gait)
+        }
+        
+        func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+            currentMode == .entry ? 130 : 70
+        }
+    }
+    
+    extension SymptomViewController {
+        func didSelectIntensity(_ intensity: SymptomRating.Intensity, in cell: SymptomRatingCell) {
+            guard let indexPath = tableView.indexPath(for: cell) else { return }
+            currentDayLogs[indexPath.row].selectedIntensity = intensity
         }
     }
 
-    func scrollToSelectedDate(animated: Bool) {
-        if let index = dates.firstIndex(where: { Calendar.current.isDate($0.date, inSameDayAs: selectedDate) }) {
-            let ip = IndexPath(item: index, section: Section.calendar.rawValue)
-            collectionView.layoutIfNeeded()
-            collectionView.scrollToItem(at: ip, at: .centeredHorizontally, animated: animated)
-            collectionView.selectItem(at: ip, animated: animated, scrollPosition: [])
-        }
-    }
-
-    private func navigateToSymptomDetail(type: Section) {
-
-
-        let storyboard = UIStoryboard(name: "SymptomRecording", bundle: nil)
-
-        let vc: UIViewController
-
-        switch type {
-        case .tremor:
-            vc = storyboard.instantiateViewController(withIdentifier: "TremorVC")
-
-        case .gait:
-            vc = storyboard.instantiateViewController(withIdentifier: "GaitVC")
-
-        default:
-            return
-
-        }
-
-        navigationController?.pushViewController(vc, animated: true)
-    }
-}
-
-// MARK: - TableView
-
-extension SymptomViewController: UITableViewDataSource, UITableViewDelegate {
-    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int { currentDayLogs.count }
-
-    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let rating = currentDayLogs[indexPath.row]
-        if currentMode == .entry {
-            let cell = tableView.dequeueReusableCell(withIdentifier: "SymptomRatingCell", for: indexPath) as! SymptomRatingCell
-            cell.delegate = self
-            cell.configure(with: rating)
-            return cell
-        } else {
-            let cell = tableView.dequeueReusableCell(withIdentifier: SymptomDetailCell.reuseIdentifier, for: indexPath) as! SymptomDetailCell
-            cell.configure(with: rating, isEditable: false)
-            return cell
-        }
-    }
-
-    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        currentMode == .entry ? 130 : 70
-    }
-}
-
-extension SymptomViewController: SymptomRatingCellDelegate {
-    func didSelectIntensity(_ intensity: SymptomRating.Intensity, in cell: SymptomRatingCell) {
-        guard let indexPath = tableView.indexPath(for: cell) else { return }
-        currentDayLogs[indexPath.row].selectedIntensity = intensity
-    }
-}
