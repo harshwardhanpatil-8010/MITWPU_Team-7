@@ -66,27 +66,38 @@ class _0minworkoutLandingPageViewController: UIViewController, UICollectionViewD
         let manager = WorkoutManager.shared
         let currentProgress = manager.completedToday.count + manager.skippedToday.count
 
-        if currentProgress == 0 && !manager.hasCheckedSafetyThisSession {
-            manager.hasCheckedSafetyThisSession = true
+        // Only run the med check when the workout hasn't started yet.
+        // Re-run it every time the medication state has changed since the last check
+        // (e.g. user just added meds, or just logged a dose) — this is the
+        // "continuous checking" behaviour.
+        if currentProgress == 0 {
+            let medStateChanged = manager.currentMedState() != manager.lastCheckedMedState
 
-            if manager.exercises.isEmpty {
-                manager.generateDailyWorkout()
-            }
-            self.exercises = manager.exercises
-            collectionView.reloadData()
-            updateProgress()
-            updateButtonUI()
-
-            checkMedTaken()
-
-        } else {
-            self.exercises = manager.exercises
-
-            if self.exercises.isEmpty {
-                manager.generateDailyWorkout()
+            if medStateChanged {
+                // Medication state is different from last time — re-run full check.
+                // Show a default list immediately, then the alert regenerates it.
+                if manager.exercises.isEmpty {
+                    manager.generateDailyWorkout(for: .seated)
+                }
                 self.exercises = manager.exercises
-            }
+                collectionView.reloadData()
+                updateProgress()
+                updateButtonUI()
 
+                checkMedTaken()   // this saves lastCheckedMedState when done
+            } else {
+                // Med state unchanged — just sync the list, no alert needed.
+                if manager.exercises.isEmpty {
+                    manager.generateDailyWorkout(for: .seated)
+                }
+                self.exercises = manager.exercises
+                collectionView.reloadData()
+                updateProgress()
+                updateButtonUI()
+            }
+        } else {
+            // Mid-session — never show the alert, just sync state.
+            self.exercises = manager.exercises
             collectionView.reloadData()
             updateProgress()
             updateButtonUI()
@@ -156,41 +167,62 @@ class _0minworkoutLandingPageViewController: UIViewController, UICollectionViewD
     }
 
     // ─────────────────────────────────────────────────────────────────────────
-    // MARK: - Safety & Medication Check
+    // MARK: - Medication & Safety Check  (matches flowchart exactly)
+    //
+    //  ┌─ Stage ≥ 3?
+    //  │    YES → Generate safety alert → Standing or Seated?
+    //  │              Seated  → generateDailyWorkout(.seated)   feedback ON
+    //  │              Standing → allMedsTaken?
+    //  │                           YES → generateDailyWorkout(.standing)  feedback ON
+    //  │                           NO  → generateDailyWorkoutIgnoringFeedback(.standing) feedback OFF
+    //  │
+    //  └─ Stage 1 or 2
+    //       Check medication intake status
+    //       allMedsTaken?
+    //         YES → Mark as ON-period
+    //               Standing suggested → generateDailyWorkout(.standing)  feedback ON
+    //         NO  → Safety alert → Standing or Seated?
+    //               Either → generateDailyWorkoutIgnoringFeedback(position) feedback OFF
     // ─────────────────────────────────────────────────────────────────────────
 
     private func checkMedTaken() {
         let manager = WorkoutManager.shared
 
         if manager.diseaseStage >= 3 {
-            showStage3PositionChoice()
+            // ── STAGE ≥ 3 ────────────────────────────────────────────────────
+            // Show safety alert, let user pick position.
+            // If standing is chosen, check meds before allowing it.
+            showStage3SafetyAlert()
         } else {
-            guard manager.hasMedicationsAdded else {
-                showNoMedicationPositionAlert()
-                return
-            }
-
+            // ── STAGE 1 / 2 ──────────────────────────────────────────────────
+            // Check medication intake status directly — no "hasMedicationsAdded"
+            // gate needed because allMedsTaken already returns false when nothing
+            // has been logged, which correctly routes to the safety alert.
             if manager.allMedsTaken {
-                // ON period — standing is safe, use full feedback algorithm
+                // ON period: standing is suggested, full feedback applied.
                 manager.generateDailyWorkout(for: .standing)
+                manager.lastCheckedMedState = manager.currentMedState()
                 refreshWorkoutList()
             } else {
+                // Meds not taken in window → safety alert, reduced intensity.
                 showStage12MedNotTakenAlert()
             }
         }
     }
 
-    // ── Stage ≥ 3 ────────────────────────────────────────────────────────────
+    // ── Stage ≥ 3: safety alert ───────────────────────────────────────────────
 
-    private func showStage3PositionChoice() {
+    private func showStage3SafetyAlert() {
         let alert = UIAlertController(
-            title: "Choose Exercise Position",
-            message: "Would you like to perform standing or seated exercises?",
+            title: "Safety Check",
+            message: "You are in an advanced stage. Please choose the exercise position that is safest for you today.",
             preferredStyle: .alert
         )
 
         alert.addAction(UIAlertAction(title: "Seated (Recommended)", style: .default) { [weak self] _ in
-            WorkoutManager.shared.generateDailyWorkout(for: .seated)
+            let manager = WorkoutManager.shared
+            manager.generateDailyWorkout(for: .seated)
+            manager.lastCheckedMedState = manager.currentMedState()
             self?.refreshWorkoutList()
         })
 
@@ -201,13 +233,17 @@ class _0minworkoutLandingPageViewController: UIViewController, UICollectionViewD
         present(alert, animated: true)
     }
 
+    /// Stage ≥ 3, standing chosen — check meds before allowing.
     private func checkMedsForStage3Standing() {
         let manager = WorkoutManager.shared
 
         if manager.allMedsTaken {
+            // Meds confirmed → standing with full feedback
             manager.generateDailyWorkout(for: .standing)
+            manager.lastCheckedMedState = manager.currentMedState()
             refreshWorkoutList()
         } else {
+            // Meds not taken → standing allowed but reduced intensity + no feedback
             showStage3MedNotTakenWarning()
         }
     }
@@ -215,58 +251,44 @@ class _0minworkoutLandingPageViewController: UIViewController, UICollectionViewD
     private func showStage3MedNotTakenWarning() {
         let alert = UIAlertController(
             title: "Medication Not Confirmed",
-            message: "Your medication does not appear to have been taken within the required time window. Exercise intensity will be reduced for your safety. Your previously saved difficulty feedback will NOT be applied this session.",
+            message: "Your medication does not appear to have been taken within the required time window. Exercise intensity will be reduced for your safety. Previously saved feedback will NOT be applied this session.",
             preferredStyle: .alert
         )
-        alert.addAction(UIAlertAction(title: "Continue", style: .default) { [weak self] _ in
-            WorkoutManager.shared.generateDailyWorkoutIgnoringFeedback(for: .standing)
+        alert.addAction(UIAlertAction(title: "Continue with Standing", style: .default) { [weak self] _ in
+            let manager = WorkoutManager.shared
+            manager.generateDailyWorkoutIgnoringFeedback(for: .standing)
+            manager.lastCheckedMedState = manager.currentMedState()
             self?.refreshWorkoutList()
         })
         alert.addAction(UIAlertAction(title: "Switch to Seated", style: .cancel) { [weak self] _ in
-            WorkoutManager.shared.generateDailyWorkoutIgnoringFeedback(for: .seated)
+            let manager = WorkoutManager.shared
+            manager.generateDailyWorkoutIgnoringFeedback(for: .seated)
+            manager.lastCheckedMedState = manager.currentMedState()
             self?.refreshWorkoutList()
         })
         present(alert, animated: true)
     }
 
-    // ── No medication added ──────────────────────────────────────────────────
-
-    private func showNoMedicationPositionAlert() {
-        let alert = UIAlertController(
-            title: "How are you feeling today?",
-            message: "No medication has been set up in the app. Choose the exercise position that feels right for you today.",
-            preferredStyle: .alert
-        )
-
-        alert.addAction(UIAlertAction(title: "Standing Exercises", style: .default) { [weak self] _ in
-            WorkoutManager.shared.generateDailyWorkout(for: .standing)
-            self?.refreshWorkoutList()
-        })
-
-        alert.addAction(UIAlertAction(title: "Seated Exercises", style: .default) { [weak self] _ in
-            WorkoutManager.shared.generateDailyWorkout(for: .seated)
-            self?.refreshWorkoutList()
-        })
-
-        present(alert, animated: true)
-    }
-
-    // ── Stage 1/2, meds not taken ────────────────────────────────────────────
+    // ── Stage 1/2: meds not taken → safety alert ─────────────────────────────
 
     private func showStage12MedNotTakenAlert() {
         let alert = UIAlertController(
             title: "Medication Check",
-            message: "Your medication does not appear to have been taken within the required time window. You may still exercise, but intensity will be reduced and previously saved feedback will NOT be applied this session.",
+            message: "Your medication does not appear to have been taken within the required time window. Exercise intensity will be reduced. Previously saved feedback will NOT be applied this session.",
             preferredStyle: .alert
         )
 
         alert.addAction(UIAlertAction(title: "Standing Exercises", style: .default) { [weak self] _ in
-            WorkoutManager.shared.generateDailyWorkoutIgnoringFeedback(for: .standing)
+            let manager = WorkoutManager.shared
+            manager.generateDailyWorkoutIgnoringFeedback(for: .standing)
+            manager.lastCheckedMedState = manager.currentMedState()
             self?.refreshWorkoutList()
         })
 
         alert.addAction(UIAlertAction(title: "Seated Exercises (Safer)", style: .default) { [weak self] _ in
-            WorkoutManager.shared.generateDailyWorkoutIgnoringFeedback(for: .seated)
+            let manager = WorkoutManager.shared
+            manager.generateDailyWorkoutIgnoringFeedback(for: .seated)
+            manager.lastCheckedMedState = manager.currentMedState()
             self?.refreshWorkoutList()
         })
 

@@ -8,9 +8,6 @@
 import Foundation
 import CoreData
 
-/// Centralised, duplicate-safe dose logging.
-/// Both `MainMedicationViewController` and `HomeViewController` call this
-/// instead of writing their own `MedicationDoseLog` creation code.
 final class MedicationDoseLogger {
 
     static let shared = MedicationDoseLogger()
@@ -18,17 +15,7 @@ final class MedicationDoseLogger {
 
     // MARK: - Public API
 
-    /// Logs a dose as taken or skipped.
-    ///
-    /// - If a `MedicationDoseLog` already exists for this dose today, it
-    ///   updates the existing record instead of creating a duplicate.
-    /// - Also updates the `doseStatus` on the originating `MedicationDose`.
-    ///
-    /// - Parameters:
-    ///   - dose: The `TodayDoseItem` the user interacted with.
-    ///   - status: `.taken` or `.skipped`
-    ///   - medications: The full list of `Medication` objects to look up the Core Data dose.
-    ///   - context: The managed object context to use.
+
     @discardableResult
     func log(
         dose: TodayDoseItem,
@@ -43,7 +30,6 @@ final class MedicationDoseLogger {
             let doseSet = medication.doses as? Set<MedicationDose>,
             let coreDose = doseSet.first(where: { $0.id == dose.id })
         else {
-            print("MedicationDoseLogger: Could not find CoreData dose for id \(dose.id)")
             return nil
         }
 
@@ -57,7 +43,7 @@ final class MedicationDoseLogger {
         if let existing = existingLog {
             // Update existing — no duplicate created
             log = existing
-            print("MedicationDoseLogger: Updating existing log for \(dose.medicationName)")
+     
         } else {
             // Create new log entry
             log = MedicationDoseLog(context: context)
@@ -66,7 +52,7 @@ final class MedicationDoseLogger {
             log.doseDay = Calendar.current.startOfDay(for: Date())
             log.dose = coreDose         // relationship to MedicationDose
             log.medication = medication // relationship to Medication
-            print("MedicationDoseLogger: Creating new log for \(dose.medicationName)")
+         
         }
 
         log.doseLoggedAt = Date()

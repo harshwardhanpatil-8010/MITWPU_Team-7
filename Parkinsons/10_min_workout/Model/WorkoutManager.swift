@@ -7,55 +7,58 @@ class WorkoutManager {
 
     // MARK: - Session State
 
-    /// Prevents the safety/medication alert from re-appearing on every viewWillAppear.
-    /// Reset this when starting a fresh session (e.g. new day or resetAllExercises).
-    var hasCheckedSafetyThisSession = false
+    /// Snapshot of med state at the time the last safety check ran.
+    /// On every viewWillAppear (while no progress exists) we compare the
+    /// live state to this snapshot — if they differ we re-run the check.
+    var lastCheckedMedState: MedState = .unknown
 
-    /// Set to true by the UI when the user explicitly chooses standing exercises
-    /// during a "medication wearing off" or "meds not taken" alert.
+    enum MedState: Equatable {
+        case unknown
+        case snapshot(hasMeds: Bool, allTaken: Bool, effectRaw: String)
+    }
+
+    func currentMedState() -> MedState {
+        .snapshot(
+            hasMeds:    hasMedicationsAdded,
+            allTaken:   allMedsTaken,
+            effectRaw:  String(describing: getMedicationEffect())
+        )
+    }
+
     var userWantsToPushLimits: Bool = false
 
     var exercises: [WorkoutExercise] = []
     var completedToday: [UUID] = []
-    var skippedToday: [UUID] = []
+    var skippedToday:   [UUID] = []
 
     // MARK: - Persistence Keys
 
     private let lastWorkoutCompletionDateKey = "lastWorkoutCompletionDate"
     private let lastWorkoutPositionKey       = "lastWorkoutPosition"
-    /// Stores the MD5 hash of the JSON last used to build exercises.
-    /// When the bundled JSON changes, the hash won't match and exercises are regenerated.
-    private let lastJSONHashKey = "lastWorkoutExercisesJSONHash"
+    private let lastJSONHashKey              = "lastWorkoutExercisesJSONHash"
 
     // MARK: - Enums
 
     enum Feedback {
-        case easy       // stored value 1
-        case perfect    // stored value 2  ← default if never set
-        case hard       // stored value 3
+        case easy
+        case perfect
+        case hard
     }
 
     enum MedicationEffect {
-        case optimal     // < 3 hrs since last dose  → ON period
-        case wearingOff  // 3–6 hrs since last dose  → transitioning
-        case offPeriod   // > 6 hrs or no dose today → OFF period
+        case optimal      // < 3 hrs since last dose  → ON period
+        case wearingOff   // 3–6 hrs since last dose  → transitioning
+        case offPeriod    // > 6 hrs or no dose today → OFF period
     }
 
-   
     enum ExerciseSafetyStatus {
-       
         case approved(position: ExercisePosition)
-
-
         case safetyAlertRequired(stage: Int, proceedWithPosition: ExercisePosition)
-
-      
         case onHold(reason: String)
     }
 
     // MARK: - Disease Stage
 
-    /// Parkinson's stage (1–5) saved during onboarding or updated by a clinician.
     var diseaseStage: Int {
         return UserDefaults.standard.integer(forKey: "diseaseStage")
     }
@@ -74,7 +77,6 @@ class WorkoutManager {
 
     func setWorkoutCompleted() {
         lastWorkoutCompletionDate = Date()
-        saveTodayPosition(preferredExercisePosition())
     }
 
     // MARK: - Position Persistence
@@ -95,7 +97,6 @@ class WorkoutManager {
         UserDefaults.standard.set(Date(), forKey: "lastWorkoutFeedbackDate")
     }
 
-    
     func loadLastFeedback() -> Int {
         let value = UserDefaults.standard.integer(forKey: "lastWorkoutFeedback")
         return value == 0 ? 2 : value
@@ -111,13 +112,12 @@ class WorkoutManager {
 
     // MARK: - Medication Status
 
- 
+    /// True if at least one dose was physically logged (doseLoggedAt) within the
+    /// last 3 hours with status "taken". Returns false if nothing was logged → OFF period.
     var allMedsTaken: Bool {
         let context       = PersistenceController.shared.viewContext
         let threeHoursAgo = Calendar.current.date(byAdding: .hour, value: -3, to: Date())!
 
-        // Query by doseLoggedAt (actual intake time), not doseScheduledTime (scheduled time).
-        // If no dose was physically logged in the last 3 hours → NOT in an ON period.
         let request: NSFetchRequest<MedicationDoseLog> = MedicationDoseLog.fetchRequest()
         request.predicate = NSPredicate(
             format: "doseLoggedAt >= %@ AND doseLoggedAt <= %@ AND doseLogStatus == %@",
@@ -128,13 +128,11 @@ class WorkoutManager {
 
         do {
             let logs = try context.fetch(request)
-            // No dose logged in the last 3 hours → not in an ON period
-            return !logs.isEmpty
+            return !logs.isEmpty     // at least one dose logged in the window → ON period
         } catch {
             return false
         }
     }
-
 
     var hasMedicationsAdded: Bool {
         let context = PersistenceController.shared.viewContext
@@ -144,15 +142,13 @@ class WorkoutManager {
         return count > 0
     }
 
-
+    /// Derives how far into the medication effect window the user currently is,
+    /// using doseLoggedAt (actual intake time) — NOT doseScheduledTime.
     func getMedicationEffect() -> MedicationEffect {
         let context    = PersistenceController.shared.viewContext
         let startOfDay = Calendar.current.startOfDay(for: Date())
         let endOfDay   = Calendar.current.date(byAdding: .day, value: 1, to: startOfDay)!
 
-        // Query by doseLoggedAt — when the user actually took the medication today.
-        // Using doseScheduledTime was wrong: a dose scheduled at 8am looks "expired"
-        // by 11am even if the user just took it moments ago.
         let request: NSFetchRequest<MedicationDoseLog> = MedicationDoseLog.fetchRequest()
         request.predicate = NSPredicate(
             format: "doseLoggedAt >= %@ AND doseLoggedAt < %@ AND doseLogStatus == %@",
@@ -174,113 +170,20 @@ class WorkoutManager {
         return .offPeriod
     }
 
-    // MARK: - Preferred Exercise Position
+    // MARK: - Exercise Generation (position passed explicitly by UI)
 
-   
-    func preferredExercisePosition() -> ExercisePosition {
-     
-        if !hasMedicationsAdded {
-            return userWantsToPushLimits ? .standing : .seated
-        }
-
-        
-        switch getMedicationEffect() {
-        case .optimal:    return .standing
-        case .wearingOff: return userWantsToPushLimits ? .standing : .seated
-        case .offPeriod:  return userWantsToPushLimits ? .standing : .seated
-        }
-    }
-
-    // MARK: - FIG. 2: Internal Safety Gate
-
-    func evaluateSafetyStatus() -> ExerciseSafetyStatus {
-        let stage        = diseaseStage
-        let medicEffect  = getMedicationEffect()
-        let preferredPos = preferredExercisePosition()
-
-        // Stage ≥ 3 — safety alert already shown by LandingPage before calling generate
-        if stage >= 3 {
-            return .safetyAlertRequired(stage: stage, proceedWithPosition: preferredPos)
-        }
-
-      
-        if !hasMedicationsAdded {
-            return .approved(position: preferredPos)
-        }
-
-        // Stage 1/2 with medications present
-        if preferredPos == .standing {
-            switch medicEffect {
-            case .offPeriod:
-              
-                if !userWantsToPushLimits {
-                    return .onHold(reason: "Standing exercises are not safe during an OFF medication period. Please wait for your next ON period or switch to seated exercises.")
-                }
-                return .approved(position: .standing)
-            case .wearingOff:
-                return .approved(position: .standing)
-            case .optimal:
-                return .approved(position: .standing)
-            }
-        }
-
-        // Seated is always safe
-        return .approved(position: .seated)
-    }
-
-    // MARK: - FIG. 1 + FIG. 2: Primary Workout Generation  ← FEEDBACK CONSIDERED
-
-    /// Generates workout using the UI-chosen position directly.
-    /// Use this when the user has explicitly selected Standing or Seated from an alert.
+    /// Full feedback algorithm — call this when meds are confirmed taken (ON period)
+    /// or when no meds are added and the user chose a position.
     func generateDailyWorkout(for position: ExercisePosition) {
-        self.exercises = buildExerciseSet(position: position, applyFeedback: true)
+        saveTodayPosition(position)
+        exercises = buildExerciseSet(position: position, applyFeedback: true)
         saveCurrentJSONHash()
     }
 
-    /// Derives position automatically from medication state + userWantsToPushLimits.
-    /// Use this only when position was not explicitly chosen by the user this session.
-    func generateDailyWorkout() {
-        let safetyStatus = evaluateSafetyStatus()
-
-        let approvedPosition: ExercisePosition
-        switch safetyStatus {
-        case .approved(let pos):
-            approvedPosition = pos
-        case .safetyAlertRequired(_, let pos):
-            approvedPosition = pos
-        case .onHold:
-            self.exercises = []
-            return
-        }
-
-        self.exercises = buildExerciseSet(position: approvedPosition, applyFeedback: true)
-        saveCurrentJSONHash()
-    }
-
-    // MARK: - FIG. 2: Reduced-Intensity Generation  ← FEEDBACK NOT CONSIDERED
-
-    /// Reduced intensity with UI-chosen position.
+    /// Reduced intensity, no feedback — call this when meds are NOT taken in window.
     func generateDailyWorkoutIgnoringFeedback(for position: ExercisePosition) {
-        self.exercises = buildExerciseSet(position: position, applyFeedback: false)
-        saveCurrentJSONHash()
-    }
-
-    /// Reduced intensity with auto-derived position.
-    func generateDailyWorkoutIgnoringFeedback() {
-        let safetyStatus = evaluateSafetyStatus()
-
-        let approvedPosition: ExercisePosition
-        switch safetyStatus {
-        case .approved(let pos):
-            approvedPosition = pos
-        case .safetyAlertRequired(_, let pos):
-            approvedPosition = pos
-        case .onHold:
-            self.exercises = []
-            return
-        }
-
-        self.exercises = buildExerciseSet(position: approvedPosition, applyFeedback: false)
+        saveTodayPosition(position)
+        exercises = buildExerciseSet(position: position, applyFeedback: false)
         saveCurrentJSONHash()
     }
 
@@ -296,7 +199,6 @@ class WorkoutManager {
             switch category {
 
             case .warmup:
-                
                 let matched = pool.filter { $0.position == position }
                 let source  = matched.isEmpty ? pool : matched
                 dailySet += source.shuffled().prefix(2).map {
@@ -306,7 +208,6 @@ class WorkoutManager {
                 }
 
             case .balance, .aerobic, .strength:
-                
                 let exercise = pool.filter { $0.position == position }.randomElement()
                               ?? pool.randomElement()
                 if let ex = exercise {
@@ -318,7 +219,6 @@ class WorkoutManager {
                 }
 
             case .cooldown:
-                
                 let matched = pool.filter { $0.position == position }
                 let source  = matched.isEmpty ? pool : matched
                 dailySet += source.shuffled().prefix(2).map {
@@ -335,28 +235,22 @@ class WorkoutManager {
     // MARK: - Lazy Load
 
     func getTodayWorkout() -> [WorkoutExercise] {
-        // Force regeneration if the bundled JSON has changed since last build.
-        // This ensures edits to workout_exercises.json are always picked up
-        // without needing to manually clear the app or reset state.
         if exercises.isEmpty || bundleJSONChanged() {
-            generateDailyWorkout()
-            saveCurrentJSONHash()
+            // No position known yet — default to seated until the alert fires
+            generateDailyWorkout(for: loadLastWorkoutPosition() ?? .seated)
         }
         return exercises
     }
 
-    // MARK: - Progressive Adjustment Algorithm  (Feedback Considered)
+    // MARK: - Progressive Adjustment Algorithm
 
-  
     private func calculateAdjustment(
         previous: ExercisePosition?,
         today: ExercisePosition,
         feedback: Feedback
     ) -> (reps: Int, seconds: Int) {
 
-        guard let previous = previous else {
-            return (0, 0)
-        }
+        guard let previous = previous else { return (0, 0) }
 
         if previous == today {
             switch feedback {
@@ -367,7 +261,6 @@ class WorkoutManager {
         }
 
         if previous == .seated && today == .standing {
-            
             switch feedback {
             case .easy:    return ( 1,  10)
             case .perfect: return ( 0,   0)
@@ -376,7 +269,6 @@ class WorkoutManager {
         }
 
         if previous == .standing && today == .seated {
-            
             switch feedback {
             case .easy:    return ( 1,  10)
             case .perfect: return ( 0,   0)
@@ -387,7 +279,6 @@ class WorkoutManager {
         return (0, 0)
     }
 
-    
     private func applyProgressiveAlgorithm(
         to exercise: WorkoutExercise,
         todayPosition: ExercisePosition
@@ -399,42 +290,35 @@ class WorkoutManager {
 
         switch exercise.category {
         case .warmup, .cooldown:
-            // Timed exercises: adjust duration (seconds), leave reps untouched
-            let baseDuration = exercise.duration ?? 30
+            let baseDuration = exercise.duration ?? 40
             modified.duration = max(15, min(60, baseDuration + adjustment.seconds))
         default:
-            // Rep-based exercises: adjust reps, leave duration untouched
             modified.reps = max(4, min(25, modified.reps + adjustment.reps))
         }
         return modified
     }
 
-    // MARK: - Minimum Intensity  (Feedback NOT Considered)
+    // MARK: - Minimum Intensity (Feedback NOT Considered)
 
-    
-    
     private func applyMinimumIntensity(to exercise: WorkoutExercise) -> WorkoutExercise {
         var modified = exercise
         switch exercise.category {
         case .warmup, .cooldown:
-            modified.duration = 15   // minimum 15-second timer for timed exercises
+            modified.duration = 15
         default:
-            modified.reps = 4        // minimum 4 reps for rep-based exercises
+            modified.reps = 4
         }
         return modified
     }
 
     // MARK: - JSON Change Detection
 
-    /// Returns true if the bundled workout_exercises.json has changed
-    /// since the last time exercises were generated.
     private func bundleJSONChanged() -> Bool {
         guard let currentHash = currentBundleJSONHash() else { return false }
         let savedHash = UserDefaults.standard.string(forKey: lastJSONHashKey)
         return currentHash != savedHash
     }
 
-    /// Computes a SHA256 hash of the bundled JSON data.
     private func currentBundleJSONHash() -> String? {
         guard let url = Bundle.main.url(forResource: "workout_exercises", withExtension: "json"),
               let data = try? Data(contentsOf: url) else { return nil }
@@ -442,14 +326,13 @@ class WorkoutManager {
         return digest.map { String(format: "%02x", $0) }.joined()
     }
 
-    /// Saves the current bundle JSON hash to UserDefaults.
     private func saveCurrentJSONHash() {
         if let hash = currentBundleJSONHash() {
             UserDefaults.standard.set(hash, forKey: lastJSONHashKey)
         }
     }
 
-    // MARK: - Stage-Filtered Exercise Library
+    // MARK: - Stage-Filtered Library
 
     private func getStageFilteredLibrary(for stage: Int) -> [WorkoutExercise] {
         let full = getFullLibrary()
@@ -457,9 +340,7 @@ class WorkoutManager {
     }
 
     private func getFullLibrary() -> [WorkoutExercise] {
-        guard let url = Bundle.main.url(forResource: "workout_exercises", withExtension: "json") else {
-            return []
-        }
+        guard let url = Bundle.main.url(forResource: "workout_exercises", withExtension: "json") else { return [] }
         do {
             let data = try Data(contentsOf: url)
             return try JSONDecoder().decode([WorkoutExercise].self, from: data)
@@ -477,10 +358,9 @@ class WorkoutManager {
 
     func resetAllExercises() {
         resetDailyProgress()
-        hasCheckedSafetyThisSession = false
-        userWantsToPushLimits       = false
+        lastCheckedMedState  = .unknown
+        userWantsToPushLimits = false
         UserDefaults.standard.removeObject(forKey: lastJSONHashKey)
-        generateDailyWorkout()
-        saveCurrentJSONHash()
+        generateDailyWorkout(for: loadLastWorkoutPosition() ?? .seated)
     }
 }

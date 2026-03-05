@@ -14,15 +14,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         // On first launch (or after a JSON update), the app reloads exercises from
         // the new JSON. This preserves ALL other UserDefaults (disease stage, feedback,
         // position history, medication data) while forcing a fresh exercise set.
-        //
-        // HOW IT WORKS:
-        //   1. We store the last loaded JSON version in UserDefaults.
-        //   2. If the stored version doesn't match the current version, we:
-        //        a. Clear only the exercise-related session state.
-        //        b. Force a fresh generateDailyWorkout() from the new JSON.
-        //        c. Save the new version so this only runs once per update.
-        //   3. If the version matches (normal daily launch), we do nothing here —
-        //      the LandingPage loads exercises and runs the safety check as normal.
 
         let currentJSONVersion = "1.0"   // ← BUMP THIS every time you update workout_exercises.json
         let storedJSONVersion  = UserDefaults.standard.string(forKey: "loadedExerciseJSONVersion")
@@ -31,20 +22,18 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             // JSON has been updated (or this is first ever launch).
             // Reset only exercise session state — preserve everything else.
             WorkoutManager.shared.resetDailyProgress()
-            WorkoutManager.shared.hasCheckedSafetyThisSession = false
-            WorkoutManager.shared.userWantsToPushLimits       = false
-            WorkoutManager.shared.exercises                   = []
+            WorkoutManager.shared.lastCheckedMedState  = .unknown   // was hasCheckedSafetyThisSession
+            WorkoutManager.shared.userWantsToPushLimits = false
+            WorkoutManager.shared.exercises             = []
 
-            // Save the new version so this block won't run again until next bump
             UserDefaults.standard.set(currentJSONVersion, forKey: "loadedExerciseJSONVersion")
 
-            print("📦 Exercise JSON updated to version \(currentJSONVersion) — exercises will regenerate on next LandingPage load.")
+         
         }
 
         // NOTE: We do NOT call generateDailyWorkout() here.
-        // The LandingPage's viewWillAppear calls getTodayWorkout() → generateDailyWorkout()
-        // AFTER the safety/medication check has run and set userWantsToPushLimits correctly.
-        // Calling it here would generate exercises before we know the user's position choice.
+        // The LandingPage's viewWillAppear triggers the med-state check and
+        // calls generateDailyWorkout(for:) AFTER the user has chosen a position.
 
         // MARK: - Audio Session
 
