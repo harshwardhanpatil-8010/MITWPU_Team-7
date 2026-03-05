@@ -206,7 +206,24 @@ class SummaryViewController: UIViewController {
             return section
         }
     }
-    
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        let sectionType = summarySections[indexPath.section]
+        
+        if sectionType == .exercises {
+            let selectedExercise = exerciseData[indexPath.item]
+            
+            // Check if the title matches "Rhythmic Walking"
+            if selectedExercise.title == "Rhythmic Walking" {
+                let storyboard = UIStoryboard(name: "Home", bundle: nil) 
+                if let walkingVC = storyboard.instantiateViewController(withIdentifier: "RhythmicWalkingSummaryViewController") as? RhythmicWalkingSummaryViewController {
+                    
+                    // Set the presentation style to modal
+                    walkingVC.modalPresentationStyle = .pageSheet
+                    self.present(walkingVC, animated: true, completion: nil)
+                }
+            }
+        }
+    }
     private func createHeaderItem() -> NSCollectionLayoutBoundarySupplementaryItem {
         return NSCollectionLayoutBoundarySupplementaryItem(
             layoutSize: .init(widthDimension: .fractionalWidth(1.0), heightDimension: .absolute(30)),
