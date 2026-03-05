@@ -202,6 +202,7 @@ class _0minworkoutViewController: UIViewController {
                     WorkoutManager.shared.exercises[i].reps = 6
                 }
             }
+            WorkoutManager.shared.syncSessionPersistence()
             self.navigateToLandingPage()
         }
         
@@ -242,6 +243,7 @@ class _0minworkoutViewController: UIViewController {
             currentIndex += 1
         }
 
+        WorkoutManager.shared.syncSessionPersistence()
         goToRest()
     }
 

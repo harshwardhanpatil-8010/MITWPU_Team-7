@@ -18,9 +18,14 @@ extension DailyWorkoutSummary {
         return NSFetchRequest<DailyWorkoutSummary>(entityName: "DailyWorkoutSummary")
     }
 
+    @NSManaged public var completedExerciseIDs: NSObject?
+    @NSManaged public var completedExerciseNames: NSObject?
     @NSManaged public var completedCount: Int16
     @NSManaged public var date: Date?
+    @NSManaged public var skippedExerciseIDs: NSObject?
+    @NSManaged public var skippedExerciseNames: NSObject?
     @NSManaged public var skippedCount: Int16
+    @NSManaged public var totalExercises: Int16
 
 }
 

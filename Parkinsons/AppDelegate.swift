@@ -20,11 +20,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
         if storedJSONVersion != currentJSONVersion {
             // JSON has been updated (or this is first ever launch).
-            // Reset only exercise session state — preserve everything else.
-            WorkoutManager.shared.resetDailyProgress()
-            WorkoutManager.shared.lastCheckedMedState  = .unknown   // was hasCheckedSafetyThisSession
-            WorkoutManager.shared.userWantsToPushLimits = false
-            WorkoutManager.shared.exercises             = []
+            // Perform a full controlled workout reset and immediately persist it.
+            WorkoutManager.shared.resetAllExercises()
+            WorkoutManager.shared.syncSessionPersistence()
 
             UserDefaults.standard.set(currentJSONVersion, forKey: "loadedExerciseJSONVersion")
 

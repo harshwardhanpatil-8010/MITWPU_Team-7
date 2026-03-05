@@ -5,20 +5,26 @@ import CryptoKit
 class WorkoutManager {
     static let shared = WorkoutManager()
 
+    private init() {
+        restorePersistedSessionIfAvailable()
+    }
+
     // MARK: - Session State
 
     var lastCheckedMedState: MedState = .unknown
 
     enum MedState: Equatable {
         case unknown
-        case snapshot(hasMeds: Bool, allTaken: Bool, effectRaw: String)
+        case snapshot(hasMeds: Bool, allTaken: Bool, effectRaw: String, adherenceRaw: String)
     }
 
     func currentMedState() -> MedState {
-        .snapshot(
+        let adherence = medicationAdherenceSnapshot()
+        return .snapshot(
             hasMeds:   hasMedicationsAdded,
             allTaken:  allMedsTaken,
-            effectRaw: String(describing: getMedicationEffect())
+            effectRaw: String(describing: getMedicationEffect()),
+            adherenceRaw: adherence.signature
         )
     }
 
@@ -32,6 +38,10 @@ class WorkoutManager {
     private let lastWorkoutCompletionDateKey = "lastWorkoutCompletionDate"
     private let lastWorkoutPositionKey       = "lastWorkoutPosition"
     private let lastJSONHashKey              = "lastWorkoutExercisesJSONHash"
+    private let workoutSessionDateKey        = "workoutSessionDate"
+    private let workoutSessionExercisesKey   = "workoutSessionExercises"
+    private let workoutSessionCompletedKey   = "workoutSessionCompletedIDs"
+    private let workoutSessionSkippedKey     = "workoutSessionSkippedIDs"
 
     // MARK: - Enums
 
@@ -45,6 +55,22 @@ class WorkoutManager {
         case optimal
         case wearingOff
         case offPeriod
+    }
+
+    struct MedicationAdherenceSnapshot {
+        let scheduledCount: Int
+        let takenCount: Int
+        let skippedCount: Int
+        let missedCount: Int
+
+        var signature: String {
+            "\(scheduledCount)-\(takenCount)-\(skippedCount)-\(missedCount)"
+        }
+
+        var isReadyForFullAdaptiveWorkout: Bool {
+            guard scheduledCount > 0 else { return false }
+            return takenCount == scheduledCount && skippedCount == 0 && missedCount == 0
+        }
     }
 
     // MARK: - Disease Stage
@@ -67,6 +93,66 @@ class WorkoutManager {
 
     func setWorkoutCompleted() {
         lastWorkoutCompletionDate = Date()
+    }
+
+    // MARK: - Session Persistence
+
+    func syncSessionPersistence() {
+        persistCurrentSession()
+        DailyWorkoutSummaryStore.shared.saveWorkoutSummary()
+    }
+
+    private func restorePersistedSessionIfAvailable() {
+        guard let storedDate = UserDefaults.standard.object(forKey: workoutSessionDateKey) as? Date else { return }
+
+        if !Calendar.current.isDate(storedDate, inSameDayAs: Date()) {
+            clearPersistedSession()
+            return
+        }
+
+        if let data = UserDefaults.standard.data(forKey: workoutSessionExercisesKey),
+           let decoded = try? JSONDecoder().decode([WorkoutExercise].self, from: data) {
+            exercises = decoded
+        }
+
+        let completedStrings = UserDefaults.standard.stringArray(forKey: workoutSessionCompletedKey) ?? []
+        completedToday = completedStrings.compactMap(UUID.init(uuidString:))
+
+        let skippedStrings = UserDefaults.standard.stringArray(forKey: workoutSessionSkippedKey) ?? []
+        skippedToday = skippedStrings.compactMap(UUID.init(uuidString:))
+    }
+
+    private func persistCurrentSession() {
+        UserDefaults.standard.set(Calendar.current.startOfDay(for: Date()), forKey: workoutSessionDateKey)
+
+        if let data = try? JSONEncoder().encode(exercises) {
+            UserDefaults.standard.set(data, forKey: workoutSessionExercisesKey)
+        }
+
+        let completed = completedToday.map(\.uuidString)
+        let skipped = skippedToday.map(\.uuidString)
+        UserDefaults.standard.set(completed, forKey: workoutSessionCompletedKey)
+        UserDefaults.standard.set(skipped, forKey: workoutSessionSkippedKey)
+        DailyWorkoutSummaryStore.shared.saveWorkoutSummary()
+    }
+
+    private func clearPersistedSession() {
+        UserDefaults.standard.removeObject(forKey: workoutSessionDateKey)
+        UserDefaults.standard.removeObject(forKey: workoutSessionExercisesKey)
+        UserDefaults.standard.removeObject(forKey: workoutSessionCompletedKey)
+        UserDefaults.standard.removeObject(forKey: workoutSessionSkippedKey)
+        exercises.removeAll()
+        completedToday.removeAll()
+        skippedToday.removeAll()
+        DailyWorkoutSummaryStore.shared.saveWorkoutSummary()
+    }
+
+    private func rollOverSessionIfNeeded() {
+        guard let storedDate = UserDefaults.standard.object(forKey: workoutSessionDateKey) as? Date else { return }
+        if !Calendar.current.isDate(storedDate, inSameDayAs: Date()) {
+            clearPersistedSession()
+            lastCheckedMedState = .unknown
+        }
     }
 
     // MARK: - Position Persistence
@@ -102,25 +188,10 @@ class WorkoutManager {
 
     // MARK: - Medication Status
 
-    /// True if at least one dose was physically logged (doseLoggedAt) within the
-    /// last 3 hours with status "taken". Returns false when nothing logged → OFF period.
+    /// Uses scheduled doses in the recent window and classifies them as taken / skipped / missed.
+    /// Full-intensity workout is allowed only when all expected doses in the window were taken.
     var allMedsTaken: Bool {
-        let context       = PersistenceController.shared.viewContext
-        let threeHoursAgo = Calendar.current.date(byAdding: .hour, value: -3, to: Date())!
-
-        let request: NSFetchRequest<MedicationDoseLog> = MedicationDoseLog.fetchRequest()
-        request.predicate = NSPredicate(
-            format: "doseLoggedAt >= %@ AND doseLoggedAt <= %@ AND doseLogStatus == %@",
-            threeHoursAgo as NSDate,
-            Date() as NSDate,
-            "taken"
-        )
-        do {
-            let logs = try context.fetch(request)
-            return !logs.isEmpty
-        } catch {
-            return false
-        }
+        medicationAdherenceSnapshot().isReadyForFullAdaptiveWorkout
     }
 
     var hasMedicationsAdded: Bool {
@@ -129,6 +200,82 @@ class WorkoutManager {
         request.fetchLimit = 1
         let count = (try? context.count(for: request)) ?? 0
         return count > 0
+    }
+
+    func medicationAdherenceSnapshot(
+        windowHours: Int = 3,
+        graceMinutes: Int = 30
+    ) -> MedicationAdherenceSnapshot {
+        let context = PersistenceController.shared.viewContext
+        let now = Date()
+        let windowStart = Calendar.current.date(byAdding: .hour, value: -windowHours, to: now) ?? now
+
+        let medicationRequest: NSFetchRequest<Medication> = Medication.fetchRequest()
+        let medications = (try? context.fetch(medicationRequest)) ?? []
+        guard !medications.isEmpty else {
+            return MedicationAdherenceSnapshot(scheduledCount: 0, takenCount: 0, skippedCount: 0, missedCount: 0)
+        }
+
+        let startOfDay = Calendar.current.startOfDay(for: now)
+        let endOfDay = Calendar.current.date(byAdding: .day, value: 1, to: startOfDay) ?? now
+        let logRequest: NSFetchRequest<MedicationDoseLog> = MedicationDoseLog.fetchRequest()
+        logRequest.predicate = NSPredicate(
+            format: "doseDay >= %@ AND doseDay < %@",
+            startOfDay as NSDate,
+            endOfDay as NSDate
+        )
+        let logs = (try? context.fetch(logRequest)) ?? []
+
+        var latestLogByDoseID: [UUID: MedicationDoseLog] = [:]
+        for log in logs {
+            guard let doseID = log.dose?.id else { continue }
+            let current = latestLogByDoseID[doseID]
+            let currentDate = current?.doseLoggedAt ?? .distantPast
+            let newDate = log.doseLoggedAt ?? .distantPast
+            if newDate >= currentDate {
+                latestLogByDoseID[doseID] = log
+            }
+        }
+
+        var scheduledCount = 0
+        var takenCount = 0
+        var skippedCount = 0
+        var missedCount = 0
+        let graceSeconds = TimeInterval(graceMinutes * 60)
+
+        for medication in medications where isMedicationDueToday(medication) {
+            let doseSet = medication.doses as? Set<MedicationDose> ?? []
+            for dose in doseSet {
+                guard
+                    let doseID = dose.id,
+                    let doseTime = dose.doseTime
+                else { continue }
+
+                let scheduledTime = normalizeToToday(doseTime)
+                guard scheduledTime >= windowStart, scheduledTime <= now else { continue }
+
+                // Do not mark as missed immediately when a dose just became due.
+                guard scheduledTime.addingTimeInterval(graceSeconds) <= now else { continue }
+
+                scheduledCount += 1
+                let status = latestLogByDoseID[doseID]?.doseLogStatus ?? ""
+
+                if status == "taken" {
+                    takenCount += 1
+                } else if status == "skipped" {
+                    skippedCount += 1
+                } else {
+                    missedCount += 1
+                }
+            }
+        }
+
+        return MedicationAdherenceSnapshot(
+            scheduledCount: scheduledCount,
+            takenCount: takenCount,
+            skippedCount: skippedCount,
+            missedCount: missedCount
+        )
     }
 
     func getMedicationEffect() -> MedicationEffect {
@@ -155,31 +302,63 @@ class WorkoutManager {
         return .offPeriod
     }
 
+    private func isMedicationDueToday(_ med: Medication) -> Bool {
+        let type = med.medicationScheduleType ?? "none"
+        let days = med.medicationScheduleDays as? [Int] ?? []
+
+        switch type {
+        case "everyday":
+            return true
+        case "weekly":
+            let weekday = Calendar.current.component(.weekday, from: Date())
+            return days.contains(weekday)
+        default:
+            return false
+        }
+    }
+
+    private func normalizeToToday(_ date: Date) -> Date {
+        let cal = Calendar.current
+        let comp = cal.dateComponents([.hour, .minute], from: date)
+        return cal.date(
+            bySettingHour: comp.hour ?? 0,
+            minute: comp.minute ?? 0,
+            second: 0,
+            of: Date()
+        ) ?? Date()
+    }
+
     // MARK: - Exercise Generation
 
     /// Full adaptive — feedback ON, no intensity reduction.
     /// Use when: Stage 1/2 ON-period, OR Stage ≥ 3 standing with meds taken.
     func generateDailyWorkout(for position: ExercisePosition) {
+        rollOverSessionIfNeeded()
         saveTodayPosition(position)
         exercises = buildExerciseSet(position: position, applyFeedback: true, reduceIntensity: false)
         saveCurrentJSONHash()
+        persistCurrentSession()
     }
 
     /// Reduced intensity, feedback NOT considered.
     /// Use when: meds NOT taken (any stage), OR Stage ≥ 3 standing without meds.
     func generateDailyWorkoutIgnoringFeedback(for position: ExercisePosition) {
+        rollOverSessionIfNeeded()
         saveTodayPosition(position)
         exercises = buildExerciseSet(position: position, applyFeedback: false, reduceIntensity: true)
         saveCurrentJSONHash()
+        persistCurrentSession()
     }
 
     /// Reduced intensity, feedback IS considered.
     /// Use when: Stage ≥ 3 seated — safe position so feedback applies,
     /// but intensity is still moderated for the advanced stage.
     func generateDailyWorkoutReducedWithFeedback(for position: ExercisePosition) {
+        rollOverSessionIfNeeded()
         saveTodayPosition(position)
         exercises = buildExerciseSet(position: position, applyFeedback: true, reduceIntensity: true)
         saveCurrentJSONHash()
+        persistCurrentSession()
     }
 
     // MARK: - Shared Exercise Set Builder
@@ -245,6 +424,7 @@ class WorkoutManager {
     // MARK: - Lazy Load
 
     func getTodayWorkout() -> [WorkoutExercise] {
+        rollOverSessionIfNeeded()
         if exercises.isEmpty || bundleJSONChanged() {
             generateDailyWorkout(for: loadLastWorkoutPosition() ?? .seated)
         }
@@ -262,23 +442,23 @@ class WorkoutManager {
 
         if previous == today {
             switch feedback {
-            case .easy:    return ( 2,  20)
-            case .perfect: return ( 1,  10)
-            case .hard:    return (-2, -20)
+            case .easy:    return ( 1,   5)
+            case .perfect: return ( 0,   0)
+            case .hard:    return (-1,  -5)
             }
         }
         if previous == .seated && today == .standing {
             switch feedback {
-            case .easy:    return ( 1,  10)
+            case .easy:    return ( 1,   5)
             case .perfect: return ( 0,   0)
-            case .hard:    return (-2, -15)
+            case .hard:    return (-1,  -5)
             }
         }
         if previous == .standing && today == .seated {
             switch feedback {
-            case .easy:    return ( 1,  10)
+            case .easy:    return ( 1,   5)
             case .perfect: return ( 0,   0)
-            case .hard:    return (-1, -10)
+            case .hard:    return (-1,  -5)
             }
         }
         return (0, 0)
@@ -296,9 +476,9 @@ class WorkoutManager {
         switch exercise.category {
         case .warmup, .cooldown:
             let base = exercise.duration ?? 40
-            modified.duration = max(15, min(60, base + adjustment.seconds))
+            modified.duration = max(20, min(60, base + adjustment.seconds))
         default:
-            modified.reps = max(4, min(25, modified.reps + adjustment.reps))
+            modified.reps = max(6, min(15, modified.reps + adjustment.reps))
         }
         return modified
     }
@@ -309,9 +489,9 @@ class WorkoutManager {
         var modified = exercise
         switch exercise.category {
         case .warmup, .cooldown:
-            modified.duration = min(modified.duration ?? 40, 15)
+            modified.duration = min(modified.duration ?? 40, 30)
         default:
-            modified.reps = min(modified.reps, 4)
+            modified.reps = min(modified.reps, 8)
         }
         return modified
     }
@@ -340,8 +520,10 @@ class WorkoutManager {
     // MARK: - Stage-Filtered Library
 
     private func getStageFilteredLibrary(for stage: Int) -> [WorkoutExercise] {
-        let full = getFullLibrary()
-        return stage >= 3 ? full.filter { $0.position == .seated } : full
+        // Keep full library available for all stages so stage/medication/position
+        // decision flow in Landing controller can drive the exact branch behavior.
+        _ = stage
+        return getFullLibrary()
     }
 
     private func getFullLibrary() -> [WorkoutExercise] {
@@ -359,6 +541,7 @@ class WorkoutManager {
     func resetDailyProgress() {
         completedToday.removeAll()
         skippedToday.removeAll()
+        persistCurrentSession()
     }
 
     func resetAllExercises() {
@@ -366,6 +549,7 @@ class WorkoutManager {
         lastCheckedMedState   = .unknown
         userWantsToPushLimits = false
         UserDefaults.standard.removeObject(forKey: lastJSONHashKey)
+        clearPersistedSession()
         generateDailyWorkout(for: loadLastWorkoutPosition() ?? .seated)
     }
 }

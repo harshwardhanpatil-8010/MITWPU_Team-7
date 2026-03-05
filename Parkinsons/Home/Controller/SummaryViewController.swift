@@ -22,9 +22,10 @@ class SummaryViewController: UIViewController {
     private var totalTaken: Int = 0
     private var primaryMedication: MedicationModel?
     private var medicationObserver: NSObjectProtocol?
+    private var selectedWorkoutSummary: DailyWorkoutSummary?
     var exerciseData: [ExerciseModel] = [
         ExerciseModel(title: "10-Min Workout", detail: "Completed", progressColorHex: "0088FF"),
-        ExerciseModel(title: "Rhythmic Walking", detail: "Missed",  progressColorHex: "90AF81")
+        ExerciseModel(title: "Skipped Exercises", detail: "None",  progressColorHex: "90AF81")
     ]
     
     override func viewDidLoad() {
@@ -112,7 +113,7 @@ class SummaryViewController: UIViewController {
         // Fetch DoseLogs for selected date
         let logRequest: NSFetchRequest<MedicationDoseLog> = MedicationDoseLog.fetchRequest()
         logRequest.predicate = NSPredicate(
-            format: "day == %@",
+            format: "doseDay == %@",
             targetDate.startOfDay as NSDate
         )
 
@@ -150,10 +151,34 @@ class SummaryViewController: UIViewController {
             self.totalTaken = 0
         }
 
+        selectedWorkoutSummary = DailyWorkoutSummaryStore.shared.fetchSummary(for: targetDate)
+        let completedNames = DailyWorkoutSummaryStore.shared.completedExerciseNames(for: targetDate)
+        let skippedNames = DailyWorkoutSummaryStore.shared.skippedExerciseNames(for: targetDate)
+
+        exerciseData[0] = ExerciseModel(
+            title: "10-Min Workout",
+            detail: formatExerciseNames(prefix: "Done", names: completedNames),
+            progressColorHex: "0088FF"
+        )
+        exerciseData[1] = ExerciseModel(
+            title: "Skipped Exercises",
+            detail: formatExerciseNames(prefix: "Skipped", names: skippedNames),
+            progressColorHex: "90AF81"
+        )
+
         updateTitleUI(with: targetDate)
         symptomTableView.reloadData()
         updateSymptomTableBackground()
         mainCollectionView.reloadData()
+    }
+
+    private func formatExerciseNames(prefix: String, names: [String]) -> String {
+        guard !names.isEmpty else { return "\(prefix): None" }
+        let preview = names.prefix(2).joined(separator: ", ")
+        if names.count > 2 {
+            return "\(prefix): \(preview) +\(names.count - 2)"
+        }
+        return "\(prefix): \(preview)"
     }
 
     
@@ -268,20 +293,19 @@ extension SummaryViewController: UICollectionViewDataSource, UICollectionViewDel
             let model = exerciseData[indexPath.item]
             cell.configure(with: model)
 
-            let today = Date()
-            let summary = DailyWorkoutSummaryStore.shared.fetchSummary(for: today)
+            let summary = selectedWorkoutSummary
 
             if indexPath.item == 0 {
                 let completed = Int(summary?.completedCount ?? 0)
-                let total = max(WorkoutManager.shared.getTodayWorkout().count, 7)
+                let total = max(Int(summary?.totalExercises ?? 0), 1)
 
                 cell.setProgress(completed: completed, total: total)
             } else {
-                let done = Int(summary?.completedCount ?? 0)
-                let goal = max(WorkoutManager.shared.getTodayWorkout().count, 1)
+                let skipped = Int(summary?.skippedCount ?? 0)
+                let goal = max(Int(summary?.totalExercises ?? 0), 1)
 
-                cell.setProgress(completed: done, total: goal)
-                cell.progressLabel.text = "\(Int((Double(done) / Double(goal)) * 100))%"
+                cell.setProgress(completed: skipped, total: goal)
+                cell.progressLabel.text = "\(Int((Double(skipped) / Double(goal)) * 100))%"
             }
 
             return cell

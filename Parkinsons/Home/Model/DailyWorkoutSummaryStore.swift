@@ -15,11 +15,26 @@ class DailyWorkoutSummaryStore {
     }
 
 
-    func saveWorkoutSummary() {
-        let summary = fetchSummary(for: Date()) ?? DailyWorkoutSummary(context: context)
-        summary.date = Date()
-        summary.completedCount = Int16(WorkoutManager.shared.completedToday.count)
-        summary.skippedCount = Int16(WorkoutManager.shared.skippedToday.count)
+    func saveWorkoutSummary(for date: Date = Date()) {
+        let summary = fetchSummary(for: date) ?? DailyWorkoutSummary(context: context)
+        let manager = WorkoutManager.shared
+        let startOfDay = Calendar.current.startOfDay(for: date)
+        let allExercises = manager.exercises
+        let completedIDs = manager.completedToday
+        let skippedIDs = manager.skippedToday
+
+        let nameByID = Dictionary(uniqueKeysWithValues: allExercises.map { ($0.id, $0.name) })
+        let completedNames = completedIDs.compactMap { nameByID[$0] }
+        let skippedNames = skippedIDs.compactMap { nameByID[$0] }
+
+        summary.date = startOfDay
+        summary.totalExercises = Int16(allExercises.count)
+        summary.completedCount = Int16(completedIDs.count)
+        summary.skippedCount = Int16(skippedIDs.count)
+        summary.completedExerciseIDs = completedIDs.map(\.uuidString) as NSArray
+        summary.skippedExerciseIDs = skippedIDs.map(\.uuidString) as NSArray
+        summary.completedExerciseNames = completedNames as NSArray
+        summary.skippedExerciseNames = skippedNames as NSArray
         PersistenceController.shared.save()
     }
 
@@ -35,5 +50,15 @@ class DailyWorkoutSummaryStore {
         )
         request.fetchLimit = 1
         return try? context.fetch(request).first
+    }
+
+    func completedExerciseNames(for date: Date) -> [String] {
+        let raw = fetchSummary(for: date)?.completedExerciseNames as? [String]
+        return raw ?? []
+    }
+
+    func skippedExerciseNames(for date: Date) -> [String] {
+        let raw = fetchSummary(for: date)?.skippedExerciseNames as? [String]
+        return raw ?? []
     }
 }

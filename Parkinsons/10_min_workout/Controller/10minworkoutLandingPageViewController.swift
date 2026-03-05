@@ -168,8 +168,8 @@ class _0minworkoutLandingPageViewController: UIViewController, UICollectionViewD
     //  Stage 1 / 2
     //  └─ allMedsTaken?
     //       YES → ON-period → standing, full adaptive, feedback CONSIDERED
-    //       NO  → alert → Seated or Standing?
-    //                Both → reduce intensity, feedback NOT considered
+    //       NO  → safety alert → Seated or Standing?
+    //                Both → full adaptive, feedback CONSIDERED
     // ─────────────────────────────────────────────────────────────────────────
 
     private func checkMedTaken() {
@@ -185,8 +185,8 @@ class _0minworkoutLandingPageViewController: UIViewController, UICollectionViewD
                 manager.lastCheckedMedState = manager.currentMedState()
                 refreshWorkoutList()
             } else {
-                // Meds not taken → show position choice, reduced intensity, feedback OFF
-                showStage12PositionAlert()
+                // Meds not taken → safety alert + user choice, full adaptive feedback ON
+                showStage12SafetyAlert()
             }
         }
     }
@@ -230,9 +230,9 @@ class _0minworkoutLandingPageViewController: UIViewController, UICollectionViewD
         present(alert, animated: true)
     }
 
-    // ── Stage 1/2: meds not taken → position choice, reduced intensity, feedback OFF
+    // ── Stage 1/2: meds not taken → safety alert + position choice, full adaptive, feedback ON
 
-    private func showStage12PositionAlert() {
+    private func showStage12SafetyAlert() {
         let alert = UIAlertController(
             title: "Choose Exercise Position",
             message: "How would you like to exercise today?",
@@ -241,14 +241,14 @@ class _0minworkoutLandingPageViewController: UIViewController, UICollectionViewD
 
         alert.addAction(UIAlertAction(title: "Standing", style: .default) { [weak self] _ in
             let manager = WorkoutManager.shared
-            manager.generateDailyWorkoutIgnoringFeedback(for: .standing)
+            manager.generateDailyWorkout(for: .standing)
             manager.lastCheckedMedState = manager.currentMedState()
             self?.refreshWorkoutList()
         })
 
         alert.addAction(UIAlertAction(title: "Seated", style: .default) { [weak self] _ in
             let manager = WorkoutManager.shared
-            manager.generateDailyWorkoutIgnoringFeedback(for: .seated)
+            manager.generateDailyWorkout(for: .seated)
             manager.lastCheckedMedState = manager.currentMedState()
             self?.refreshWorkoutList()
         })
