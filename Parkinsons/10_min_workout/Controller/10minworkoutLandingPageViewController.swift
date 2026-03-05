@@ -65,20 +65,11 @@ class _0minworkoutLandingPageViewController: UIViewController, UICollectionViewD
         if currentProgress == 0 {
             // Re-run the check whenever med state changes (dose logged, med added, etc.)
             let medStateChanged = manager.currentMedState() != manager.lastCheckedMedState
+            let needsFreshDecision = medStateChanged || manager.exercises.isEmpty
 
-            if medStateChanged {
-                if manager.exercises.isEmpty {
-                    manager.generateDailyWorkout(for: .seated)
-                }
-                self.exercises = manager.exercises
-                collectionView.reloadData()
-                updateProgress()
-                updateButtonUI()
+            if needsFreshDecision {
                 checkMedTaken()
             } else {
-                if manager.exercises.isEmpty {
-                    manager.generateDailyWorkout(for: .seated)
-                }
                 self.exercises = manager.exercises
                 collectionView.reloadData()
                 updateProgress()

@@ -191,15 +191,21 @@ class _0minworkoutViewController: UIViewController {
         )
         let painAction = UIAlertAction(title: "Physical Pain / Fatigue", style: .default) { _ in
             for i in self.currentIndex..<self.exercises.count {
+                let exerciseID = self.exercises[i].id
                 let cat = self.exercises[i].category
                 if cat == .warmup || cat == .cooldown {
-                    // Reduce the timer duration for timed exercises
-                    self.exercises[i].duration = 15
-                    WorkoutManager.shared.exercises[i].duration = 15
+                    // Match current reduced-mode rules for safer continuation.
+                    self.exercises[i].duration = min(self.exercises[i].duration ?? 40, 30)
+                    if let managerIndex = WorkoutManager.shared.exercises.firstIndex(where: { $0.id == exerciseID }) {
+                        WorkoutManager.shared.exercises[managerIndex].duration =
+                            min(WorkoutManager.shared.exercises[managerIndex].duration ?? 40, 30)
+                    }
                 } else {
-                    // Reduce reps for rep-based exercises
-                    self.exercises[i].reps = 6
-                    WorkoutManager.shared.exercises[i].reps = 6
+                    self.exercises[i].reps = min(self.exercises[i].reps, 8)
+                    if let managerIndex = WorkoutManager.shared.exercises.firstIndex(where: { $0.id == exerciseID }) {
+                        WorkoutManager.shared.exercises[managerIndex].reps =
+                            min(WorkoutManager.shared.exercises[managerIndex].reps, 8)
+                    }
                 }
             }
             WorkoutManager.shared.syncSessionPersistence()

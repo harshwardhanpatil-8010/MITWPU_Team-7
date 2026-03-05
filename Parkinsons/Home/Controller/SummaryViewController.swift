@@ -294,18 +294,22 @@ extension SummaryViewController: UICollectionViewDataSource, UICollectionViewDel
             cell.configure(with: model)
 
             let summary = selectedWorkoutSummary
+            let targetDate = dateToDisplay ?? Date()
+            let persistedTotal = DailyWorkoutSummaryStore.shared.totalExercises(for: targetDate)
 
             if indexPath.item == 0 {
                 let completed = Int(summary?.completedCount ?? 0)
-                let total = max(Int(summary?.totalExercises ?? 0), 1)
+                let total = max(persistedTotal, 1)
 
                 cell.setProgress(completed: completed, total: total)
             } else {
                 let skipped = Int(summary?.skippedCount ?? 0)
-                let goal = max(Int(summary?.totalExercises ?? 0), 1)
+                let goal = max(persistedTotal, 1)
+                let ratio = Double(skipped) / Double(goal)
+                let percent = Int(ratio * 100.0)
 
                 cell.setProgress(completed: skipped, total: goal)
-                cell.progressLabel.text = "\(Int((Double(skipped) / Double(goal)) * 100))%"
+                cell.progressLabel.text = "\(percent)%"
             }
 
             return cell

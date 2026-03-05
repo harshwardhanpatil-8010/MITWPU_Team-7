@@ -484,12 +484,9 @@ extension HomeViewController: UICollectionViewDataSource {
             cell.configure(with: model)
             if indexPath.row == 0 {
                 cell.setThemeColor(UIColor(hex: "0088FF"))
-                // Ensure exercises are loaded so total is always 7
-                if WorkoutManager.shared.exercises.count != 7 {
-                    WorkoutManager.shared.getTodayWorkout()
-                }
                 let completed = WorkoutManager.shared.completedToday.count
-                let total = 7
+                let storedTotal = DailyWorkoutSummaryStore.shared.totalExercises(for: Date())
+                let total = max(storedTotal, 7)
                 cell.setProgress(completed: completed, total: total)
             } else if indexPath.row == 1 {
                 cell.setThemeColor(UIColor(hex: "90AF81"))

@@ -8,6 +8,7 @@ class _0minworkoutCountdownViewController: UIViewController {
     var exercises: [WorkoutExercise] = []
     var startingIndex: Int = 0
     private var hasNavigated = false
+    private var isCountdownCancelled = false
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -16,12 +17,19 @@ class _0minworkoutCountdownViewController: UIViewController {
     
     
     override func viewWillAppear(_ animated: Bool) {
+        isCountdownCancelled = false
         self.navigationController?.setNavigationBarHidden(false, animated: animated)
         tabBarController?.tabBar.isHidden = true
     }
+
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        isCountdownCancelled = true
+        TimerLabel.layer.removeAllAnimations()
+    }
     
     func startCountDown() {
-        guard !hasNavigated else { return }
+        guard !hasNavigated, !isCountdownCancelled else { return }
 
         if countDown == 0 {
             hasNavigated = true
@@ -29,6 +37,7 @@ class _0minworkoutCountdownViewController: UIViewController {
             UIView.animate(withDuration: 0.4) {
                 self.TimerLabel.transform = CGAffineTransform(scaleX: 1.5, y: 1.5)
             } completion: { _ in
+                guard !self.isCountdownCancelled else { return }
                 self.navigateToWorkout()
             }
             return
@@ -42,6 +51,7 @@ class _0minworkoutCountdownViewController: UIViewController {
             self.TimerLabel.alpha = 0
             self.TimerLabel.transform = CGAffineTransform(scaleX: 4, y: 4)
         }) { _ in
+            guard !self.isCountdownCancelled else { return }
             self.countDown -= 1
             self.startCountDown()
         }

@@ -28,13 +28,13 @@ class DailyWorkoutSummaryStore {
         let skippedNames = skippedIDs.compactMap { nameByID[$0] }
 
         summary.date = startOfDay
-        summary.totalExercises = Int16(allExercises.count)
+        summary.setValue(Int16(allExercises.count), forKey: "totalExercises")
         summary.completedCount = Int16(completedIDs.count)
         summary.skippedCount = Int16(skippedIDs.count)
-        summary.completedExerciseIDs = completedIDs.map(\.uuidString) as NSArray
-        summary.skippedExerciseIDs = skippedIDs.map(\.uuidString) as NSArray
-        summary.completedExerciseNames = completedNames as NSArray
-        summary.skippedExerciseNames = skippedNames as NSArray
+        summary.setValue(completedIDs.map(\.uuidString) as NSArray, forKey: "completedExerciseIDs")
+        summary.setValue(skippedIDs.map(\.uuidString) as NSArray, forKey: "skippedExerciseIDs")
+        summary.setValue(completedNames as NSArray, forKey: "completedExerciseNames")
+        summary.setValue(skippedNames as NSArray, forKey: "skippedExerciseNames")
         PersistenceController.shared.save()
     }
 
@@ -53,12 +53,23 @@ class DailyWorkoutSummaryStore {
     }
 
     func completedExerciseNames(for date: Date) -> [String] {
-        let raw = fetchSummary(for: date)?.completedExerciseNames as? [String]
-        return raw ?? []
+        guard let summary = fetchSummary(for: date) else { return [] }
+        return summary.value(forKey: "completedExerciseNames") as? [String] ?? []
     }
 
     func skippedExerciseNames(for date: Date) -> [String] {
-        let raw = fetchSummary(for: date)?.skippedExerciseNames as? [String]
-        return raw ?? []
+        guard let summary = fetchSummary(for: date) else { return [] }
+        return summary.value(forKey: "skippedExerciseNames") as? [String] ?? []
+    }
+
+    func totalExercises(for date: Date) -> Int {
+        guard let summary = fetchSummary(for: date) else { return 0 }
+        if let value = summary.value(forKey: "totalExercises") as? Int16 {
+            return Int(value)
+        }
+        if let number = summary.value(forKey: "totalExercises") as? NSNumber {
+            return number.intValue
+        }
+        return 0
     }
 }
