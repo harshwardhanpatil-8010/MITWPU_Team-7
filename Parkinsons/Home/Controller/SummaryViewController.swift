@@ -206,7 +206,47 @@ class SummaryViewController: UIViewController {
             return section
         }
     }
-    
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        let sectionType = summarySections[indexPath.section]
+        
+        if sectionType == .exercises {
+            let selectedExercise = exerciseData[indexPath.item]
+            
+            // 1. Handle 10-Min Workout
+            if selectedExercise.title == "10-Min Workout" {
+                let sb = UIStoryboard(name: "10 minworkout", bundle: nil)
+                if let workoutVC = sb.instantiateViewController(withIdentifier: "exerciseLandingPage") as? _0minworkoutLandingPageViewController {
+                    workoutVC.shouldHideStartButton = true
+                    // Wrap it in a Navigation Controller so we can add the "X" button
+                    let navController = UINavigationController(rootViewController: workoutVC)
+                    navController.modalPresentationStyle = .pageSheet
+                    
+                    // 2. Create the "X" button dynamically
+                    let closeButton = UIBarButtonItem(title: "", style: .plain, target: self, action: #selector(dismissWorkoutModal))
+                    closeButton.image = UIImage(systemName: "xmark") // Standard "X" icon
+                    closeButton.tintColor = .label
+                    
+                    // Inject the button into the landing page's navigation bar
+                    workoutVC.navigationItem.leftBarButtonItem = closeButton
+                    
+                    self.present(navController, animated: true)
+                }
+            }
+            // 3. Handle Rhythmic Walking (Existing logic)
+            else if selectedExercise.title == "Rhythmic Walking" {
+                let storyboard = UIStoryboard(name: "Home", bundle: nil)
+                if let walkingVC = storyboard.instantiateViewController(withIdentifier: "RhythmicWalkingSummaryViewController") as? RhythmicWalkingSummaryViewController {
+                    walkingVC.modalPresentationStyle = .pageSheet
+                    self.present(walkingVC, animated: true)
+                }
+            }
+        }
+    }
+
+    // 4. Add this helper function to handle the dismissal
+    @objc func dismissWorkoutModal() {
+        self.dismiss(animated: true, completion: nil)
+    }
     private func createHeaderItem() -> NSCollectionLayoutBoundarySupplementaryItem {
         return NSCollectionLayoutBoundarySupplementaryItem(
             layoutSize: .init(widthDimension: .fractionalWidth(1.0), heightDimension: .absolute(30)),

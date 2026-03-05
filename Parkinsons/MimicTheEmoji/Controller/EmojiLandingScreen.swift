@@ -5,6 +5,7 @@ extension Notification.Name {
 class EmojiLandingScreen: UIViewController, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
 
     // MARK: - Outlets
+    @IBOutlet weak var infoButton: UIBarButtonItem!
     @IBOutlet weak var monthAndYearOutlet: UILabel!
     @IBOutlet weak var playButton: UIButton!
     @IBOutlet weak var collectionView: UICollectionView!

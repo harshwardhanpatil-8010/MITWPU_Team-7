@@ -8,7 +8,7 @@ class _0minworkoutLandingPageViewController: UIViewController, UICollectionViewD
     @IBOutlet weak var progressContainer: UIView!
     @IBOutlet weak var exerciseNumberLabel: UILabel!
     @IBOutlet weak var collectionView: UICollectionView!
-
+    var shouldHideStartButton: Bool = false
     var exercises: [WorkoutExercise] = []
     
     private var progressView: CircularProgressView!
@@ -86,10 +86,16 @@ class _0minworkoutLandingPageViewController: UIViewController, UICollectionViewD
             WorkoutManager.shared.hasCheckedSafetyThisSession = true
             checkMedTaken()
         }
+        
+            /// CHANGE THIS LOGIC:
+        // Only hide if the 'shouldHideStartButton' flag was explicitly set to true
+        startButtonOutlet.isHidden = shouldHideStartButton
         updateProgress()
         updateButtonUI()
         self.navigationController?.setNavigationBarHidden(false, animated: animated)
         tabBarController?.tabBar.isHidden = true
+        
+       
     }
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
