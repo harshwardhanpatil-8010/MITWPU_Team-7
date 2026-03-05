@@ -35,7 +35,7 @@ class _0minworkoutViewController: UIViewController {
         backgroundView.clipsToBounds = true
         playerView.isUserInteractionEnabled = false
         
-        if exercises.isEmpty || exercises.count != 7 {
+        if exercises.isEmpty {
             exercises = WorkoutManager.shared.getTodayWorkout()
         }
         
@@ -72,8 +72,7 @@ class _0minworkoutViewController: UIViewController {
 
     func updateTopLabels() {
         let completedCount = WorkoutManager.shared.completedToday.count
-        let total = exercises.isEmpty ? 7 : exercises.count
-        exerciseCompletedLabel.text = "\(completedCount) of \(total)"
+        exerciseCompletedLabel.text = "\(completedCount) of \(exercises.count)"
     }
 
 
@@ -107,7 +106,7 @@ class _0minworkoutViewController: UIViewController {
         if exercise.category == .warmup || exercise.category == .cooldown {
             repsLabel.text = "-"
             timerLabel.isHidden = false
-            startCountdown(seconds: exercise.reps)
+            startCountdown(seconds: exercise.timerSeconds)
         } else {
             repsLabel.text = "\(exercise.reps)"
             timerLabel.text = "-"
@@ -204,10 +203,15 @@ class _0minworkoutViewController: UIViewController {
         let painAction = UIAlertAction(title: "Physical Pain / Fatigue", style: .default) { _ in
             for i in self.currentIndex..<self.exercises.count {
                 let cat = self.exercises[i].category
-                let reducedReps = (cat == .warmup || cat == .cooldown) ? 20 : 6
-                
-                self.exercises[i].reps = reducedReps
-                WorkoutManager.shared.exercises[i].reps = reducedReps
+                if cat == .warmup || cat == .cooldown {
+                    // Reduce the timer duration for timed exercises
+                    self.exercises[i].duration = 15
+                    WorkoutManager.shared.exercises[i].duration = 15
+                } else {
+                    // Reduce reps for rep-based exercises
+                    self.exercises[i].reps = 6
+                    WorkoutManager.shared.exercises[i].reps = 6
+                }
             }
             self.navigateToLandingPage()
         }

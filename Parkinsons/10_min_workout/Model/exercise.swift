@@ -14,7 +14,6 @@ enum ExerciseCategory: String, CaseIterable, Codable {
     case cooldown
 }
 
-
 enum ExercisePosition: String, Codable {
     case seated
     case standing
@@ -23,13 +22,16 @@ enum ExercisePosition: String, Codable {
 enum MedicationEffect {
     case optimal
     case wearingOff
-    case offPeriod 
+    case offPeriod
 }
 
 struct WorkoutExercise: Codable, Identifiable {
     let id: UUID
     let name: String
     var reps: Int
+    /// Duration in seconds — only used by warmup & cooldown for the countdown timer.
+    /// Strength / aerobic / balance exercises leave this nil and show reps instead.
+    var duration: Int?
     let videoID: String?
     let description: String
     let category: ExerciseCategory
@@ -38,10 +40,21 @@ struct WorkoutExercise: Codable, Identifiable {
     let benefits: String
     let stepsToPerform: String
 
+  
+    var timerSeconds: Int {
+        switch category {
+        case .warmup, .cooldown:
+            return duration ?? 40
+        default:
+            return reps
+        }
+    }
+
     enum CodingKeys: String, CodingKey {
         case id
         case name
         case reps
+        case duration
         case videoID
         case description
         case category

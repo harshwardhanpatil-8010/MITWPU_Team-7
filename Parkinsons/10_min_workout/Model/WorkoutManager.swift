@@ -1,5 +1,6 @@
 import Foundation
 import CoreData
+import CryptoKit
 
 class WorkoutManager {
     static let shared = WorkoutManager()
@@ -22,6 +23,9 @@ class WorkoutManager {
 
     private let lastWorkoutCompletionDateKey = "lastWorkoutCompletionDate"
     private let lastWorkoutPositionKey       = "lastWorkoutPosition"
+    /// Stores the MD5 hash of the JSON last used to build exercises.
+    /// When the bundled JSON changes, the hash won't match and exercises are regenerated.
+    private let lastJSONHashKey = "lastWorkoutExercisesJSONHash"
 
     // MARK: - Enums
 
@@ -112,8 +116,8 @@ class WorkoutManager {
         let context       = PersistenceController.shared.viewContext
         let threeHoursAgo = Calendar.current.date(byAdding: .hour, value: -3, to: Date())!
 
-        // Check doses that were actually LOGGED (taken) within the last 3 hours,
-        // using doseLoggedAt (actual intake time) — not doseScheduledTime.
+        // Query by doseLoggedAt (actual intake time), not doseScheduledTime (scheduled time).
+        // If no dose was physically logged in the last 3 hours → NOT in an ON period.
         let request: NSFetchRequest<MedicationDoseLog> = MedicationDoseLog.fetchRequest()
         request.predicate = NSPredicate(
             format: "doseLoggedAt >= %@ AND doseLoggedAt <= %@ AND doseLogStatus == %@",
@@ -146,9 +150,9 @@ class WorkoutManager {
         let startOfDay = Calendar.current.startOfDay(for: Date())
         let endOfDay   = Calendar.current.date(byAdding: .day, value: 1, to: startOfDay)!
 
-        // Fetch doses that were actually LOGGED today, using doseLoggedAt.
-        // This correctly reflects when the user physically took the medication,
-        // regardless of when it was scheduled.
+        // Query by doseLoggedAt — when the user actually took the medication today.
+        // Using doseScheduledTime was wrong: a dose scheduled at 8am looks "expired"
+        // by 11am even if the user just took it moments ago.
         let request: NSFetchRequest<MedicationDoseLog> = MedicationDoseLog.fetchRequest()
         request.predicate = NSPredicate(
             format: "doseLoggedAt >= %@ AND doseLoggedAt < %@ AND doseLogStatus == %@",
@@ -226,7 +230,15 @@ class WorkoutManager {
 
     // MARK: - FIG. 1 + FIG. 2: Primary Workout Generation  ← FEEDBACK CONSIDERED
 
+    /// Generates workout using the UI-chosen position directly.
+    /// Use this when the user has explicitly selected Standing or Seated from an alert.
+    func generateDailyWorkout(for position: ExercisePosition) {
+        self.exercises = buildExerciseSet(position: position, applyFeedback: true)
+        saveCurrentJSONHash()
+    }
 
+    /// Derives position automatically from medication state + userWantsToPushLimits.
+    /// Use this only when position was not explicitly chosen by the user this session.
     func generateDailyWorkout() {
         let safetyStatus = evaluateSafetyStatus()
 
@@ -235,7 +247,6 @@ class WorkoutManager {
         case .approved(let pos):
             approvedPosition = pos
         case .safetyAlertRequired(_, let pos):
-            
             approvedPosition = pos
         case .onHold:
             self.exercises = []
@@ -243,11 +254,18 @@ class WorkoutManager {
         }
 
         self.exercises = buildExerciseSet(position: approvedPosition, applyFeedback: true)
+        saveCurrentJSONHash()
     }
 
     // MARK: - FIG. 2: Reduced-Intensity Generation  ← FEEDBACK NOT CONSIDERED
 
+    /// Reduced intensity with UI-chosen position.
+    func generateDailyWorkoutIgnoringFeedback(for position: ExercisePosition) {
+        self.exercises = buildExerciseSet(position: position, applyFeedback: false)
+        saveCurrentJSONHash()
+    }
 
+    /// Reduced intensity with auto-derived position.
     func generateDailyWorkoutIgnoringFeedback() {
         let safetyStatus = evaluateSafetyStatus()
 
@@ -263,6 +281,7 @@ class WorkoutManager {
         }
 
         self.exercises = buildExerciseSet(position: approvedPosition, applyFeedback: false)
+        saveCurrentJSONHash()
     }
 
     // MARK: - Shared Exercise Set Builder
@@ -316,8 +335,12 @@ class WorkoutManager {
     // MARK: - Lazy Load
 
     func getTodayWorkout() -> [WorkoutExercise] {
-        if exercises.isEmpty {
+        // Force regeneration if the bundled JSON has changed since last build.
+        // This ensures edits to workout_exercises.json are always picked up
+        // without needing to manually clear the app or reset state.
+        if exercises.isEmpty || bundleJSONChanged() {
             generateDailyWorkout()
+            saveCurrentJSONHash()
         }
         return exercises
     }
@@ -374,7 +397,15 @@ class WorkoutManager {
         let feedback   = currentFeedback()
         let adjustment = calculateAdjustment(previous: prevPos, today: todayPosition, feedback: feedback)
 
-        modified.reps = max(4, min(25, modified.reps + adjustment.reps))
+        switch exercise.category {
+        case .warmup, .cooldown:
+            // Timed exercises: adjust duration (seconds), leave reps untouched
+            let baseDuration = exercise.duration ?? 30
+            modified.duration = max(15, min(60, baseDuration + adjustment.seconds))
+        default:
+            // Rep-based exercises: adjust reps, leave duration untouched
+            modified.reps = max(4, min(25, modified.reps + adjustment.reps))
+        }
         return modified
     }
 
@@ -383,9 +414,39 @@ class WorkoutManager {
     
     
     private func applyMinimumIntensity(to exercise: WorkoutExercise) -> WorkoutExercise {
-        var modified  = exercise
-        modified.reps = 4
+        var modified = exercise
+        switch exercise.category {
+        case .warmup, .cooldown:
+            modified.duration = 15   // minimum 15-second timer for timed exercises
+        default:
+            modified.reps = 4        // minimum 4 reps for rep-based exercises
+        }
         return modified
+    }
+
+    // MARK: - JSON Change Detection
+
+    /// Returns true if the bundled workout_exercises.json has changed
+    /// since the last time exercises were generated.
+    private func bundleJSONChanged() -> Bool {
+        guard let currentHash = currentBundleJSONHash() else { return false }
+        let savedHash = UserDefaults.standard.string(forKey: lastJSONHashKey)
+        return currentHash != savedHash
+    }
+
+    /// Computes a SHA256 hash of the bundled JSON data.
+    private func currentBundleJSONHash() -> String? {
+        guard let url = Bundle.main.url(forResource: "workout_exercises", withExtension: "json"),
+              let data = try? Data(contentsOf: url) else { return nil }
+        let digest = SHA256.hash(data: data)
+        return digest.map { String(format: "%02x", $0) }.joined()
+    }
+
+    /// Saves the current bundle JSON hash to UserDefaults.
+    private func saveCurrentJSONHash() {
+        if let hash = currentBundleJSONHash() {
+            UserDefaults.standard.set(hash, forKey: lastJSONHashKey)
+        }
     }
 
     // MARK: - Stage-Filtered Exercise Library
@@ -418,6 +479,8 @@ class WorkoutManager {
         resetDailyProgress()
         hasCheckedSafetyThisSession = false
         userWantsToPushLimits       = false
+        UserDefaults.standard.removeObject(forKey: lastJSONHashKey)
         generateDailyWorkout()
+        saveCurrentJSONHash()
     }
 }
