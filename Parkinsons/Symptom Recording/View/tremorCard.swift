@@ -44,12 +44,12 @@ class tremorCard: UICollectionViewCell {
         if isSteady {
             // ✅ Steady = measured, no tremor
             tremorValueLabel.text      = "Steady"
-            tremorValueLabel.textColor = .systemGreen
+            tremorValueLabel.textColor = .black
         } else if let hz = frequencyHz {
             tremorValueLabel.text = String(format: "%.1f Hz", hz)
-            if hz < 4.0      { tremorValueLabel.textColor = .systemYellow }
-            else if hz < 6.0 { tremorValueLabel.textColor = .systemOrange }
-            else              { tremorValueLabel.textColor = .systemRed    }
+            if hz < 4.0      { tremorValueLabel.textColor = .black }
+            else if hz < 6.0 { tremorValueLabel.textColor = .black }
+            else              { tremorValueLabel.textColor = .black    }
         } else {
             // nil = not yet measured (recording in progress)
             tremorValueLabel.text      = "Measuring…"
@@ -138,7 +138,7 @@ class tremorCard: UICollectionViewCell {
             let cx  = pL + uw / 2   // ← centre of usable width
 
             addLine(from: CGPoint(x: pL, y: y), to: CGPoint(x: W - pR, y: y),
-                    color: UIColor.systemBlue.withAlphaComponent(0.3).cgColor, width: 1, dash: [3, 3])
+                    color: UIColor.systemOrange.withAlphaComponent(0.3).cgColor, width: 1, dash: [3, 3])
 
             let ring = CAShapeLayer()
             ring.path = UIBezierPath(arcCenter: CGPoint(x: cx, y: y), radius: 4, startAngle: 0, endAngle: .pi*2, clockwise: true).cgPath
@@ -147,7 +147,7 @@ class tremorCard: UICollectionViewCell {
 
             let dot = CAShapeLayer()
             dot.path = UIBezierPath(arcCenter: CGPoint(x: cx, y: y), radius: 2.5, startAngle: 0, endAngle: .pi*2, clockwise: true).cgPath
-            dot.fillColor = UIColor.systemBlue.cgColor
+            dot.fillColor = UIColor.systemOrange.cgColor
             cardGraphView.layer.addSublayer(dot)
             return
         }
@@ -168,8 +168,8 @@ class tremorCard: UICollectionViewCell {
 
             let grad = CAGradientLayer()
             grad.frame  = cardGraphView.bounds
-            grad.colors = [UIColor.systemBlue.withAlphaComponent(0.20).cgColor,
-                           UIColor.systemBlue.withAlphaComponent(0.0).cgColor]
+            grad.colors = [UIColor.systemOrange.withAlphaComponent(0.20).cgColor,
+                           UIColor.systemOrange.withAlphaComponent(0.0).cgColor]
             grad.startPoint = CGPoint(x: 0.5, y: 0)
             grad.endPoint   = CGPoint(x: 0.5, y: 1)
             let mask = CAShapeLayer(); mask.path = fillPath.cgPath
@@ -189,7 +189,7 @@ class tremorCard: UICollectionViewCell {
             }
             let ll = CAShapeLayer()
             ll.path        = lp.cgPath
-            ll.strokeColor = UIColor.systemBlue.cgColor
+            ll.strokeColor = UIColor.systemOrange.cgColor
             ll.fillColor   = UIColor.clear.cgColor
             ll.lineWidth   = 1.5
             ll.lineJoin    = .round; ll.lineCap = .round
@@ -200,7 +200,7 @@ class tremorCard: UICollectionViewCell {
         let dotR: CGFloat = pts.count > 8 ? 1.5 : 2.5
         for i in 0..<pts.count {
             let p   = coord(i)
-            let col = UIColor.systemBlue
+            let col = UIColor.systemOrange
 
             let ring = CAShapeLayer()
             ring.path      = UIBezierPath(arcCenter: p, radius: dotR + 1.2, startAngle: 0, endAngle: .pi * 2, clockwise: true).cgPath

@@ -1,11 +1,15 @@
 import UIKit
 
-// AggregatedTremorPoint and average() are defined in TremorShared.swift
+struct AggregatedTremorPoint {
+    let date: Date
+    let avgHz: Double
+}
 
 class TremorViewController: UIViewController {
 
     var selectedDate: Date = Date()
     private var todayAggregatedPoints: [AggregatedTremorPoint] = []
+    private var pendingGraphUpdate = false   // flag: layout not ready yet
 
     @IBOutlet weak var DateLabel: UILabel!
     @IBOutlet weak var tremorFreq: UILabel!
@@ -21,17 +25,53 @@ class TremorViewController: UIViewController {
         super.viewDidLoad()
         TremorCardView.applyCardStyle()
         setupNavigationBar()
+        tremorFreq.text      = "Measuring…"
+        tremorFreq.textColor = .secondaryLabel
     }
 
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
+        // ✅ Draw from stored data first, then kick off a fresh 5s recording
         updateTremorUI(for: currentRange)
+        startRecording()
     }
 
-    /// ✅ Stop motion manager if still running when user presses back
+    // ✅ Re-draw graph here if bounds were zero during viewDidAppear
+    override func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
+        if pendingGraphUpdate {
+            pendingGraphUpdate = false
+            updateTremorUI(for: currentRange)
+        }
+    }
+
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
         TremorMotionManager.shared.cancelRecording()
+    }
+
+    // MARK: - Recording
+
+    private func startRecording() {
+        TremorMotionManager.shared.recordTremorFrequency(duration: 5.0) { [weak self] result in
+            guard let self = self else { return }
+
+            // Persist
+            TremorDataStore.shared.save(result: result)
+
+            // Update headline label
+            switch result {
+            case .steady:
+                self.tremorFreq.text      = "Steady"
+                self.tremorFreq.textColor = .black
+            case .tremor(let hz):
+                self.tremorFreq.text      = String(format: "%.1f Hz", hz)
+                self.tremorFreq.textColor = .black
+            }
+
+            // ✅ Refresh graph with the new data point
+            self.updateTremorUI(for: self.currentRange)
+        }
     }
 
     // MARK: - Setup
@@ -58,7 +98,6 @@ class TremorViewController: UIViewController {
 
     private func aggregateSamples(_ samples: [TremorSample], for range: TremorRange) -> [AggregatedTremorPoint] {
         let calendar = Calendar.current
-        // For day view — keep every individual reading (both tremor and steady)
         switch range {
         case .day:
             return samples.map { AggregatedTremorPoint(date: $0.date, avgHz: $0.frequencyHz) }
@@ -71,11 +110,9 @@ class TremorViewController: UIViewController {
                 .map { AggregatedTremorPoint(date: $0.key, avgHz: $0.value.map { $0.frequencyHz }.average()) }
                 .sorted { $0.date < $1.date }
         case .sixMonth, .year:
-            return Dictionary(grouping: samples) {
-                calendar.date(from: calendar.dateComponents([.year, .month], from: $0.date))!
-            }
-            .map { AggregatedTremorPoint(date: $0.key, avgHz: $0.value.map { $0.frequencyHz }.average()) }
-            .sorted { $0.date < $1.date }
+            return Dictionary(grouping: samples) { calendar.date(from: calendar.dateComponents([.year, .month], from: $0.date))! }
+                .map { AggregatedTremorPoint(date: $0.key, avgHz: $0.value.map { $0.frequencyHz }.average()) }
+                .sorted { $0.date < $1.date }
         }
     }
 
@@ -93,16 +130,16 @@ class TremorViewController: UIViewController {
     private func updateAverageLabel(aggregatedPoints: [AggregatedTremorPoint]) {
         guard !aggregatedPoints.isEmpty else {
             tremorFreq.text = "Steady"
-            tremorFreq.textColor = .systemGreen
+            tremorFreq.textColor = .black
             return
         }
         let avg = aggregatedPoints.map { $0.avgHz }.average()
         if avg < 0.1 {
             tremorFreq.text = "Steady"
-            tremorFreq.textColor = .systemGreen
+            tremorFreq.textColor = .black
         } else {
             tremorFreq.text = String(format: "%.1f Hz", avg)
-            tremorFreq.textColor = colorForHz(avg)
+            tremorFreq.textColor = .black
         }
     }
 
@@ -178,8 +215,14 @@ class TremorViewController: UIViewController {
     private func updateGraph(using points: [AggregatedTremorPoint], range: TremorRange) {
         TremorGraphView.layer.sublayers?.forEach { $0.removeFromSuperlayer() }
 
-        let width = TremorGraphView.bounds.width
+        let width  = TremorGraphView.bounds.width
         let height = TremorGraphView.bounds.height
+
+        // ✅ If layout hasn't finished, defer until viewDidLayoutSubviews
+        guard width > 0, height > 0 else {
+            pendingGraphUpdate = true
+            return
+        }
         let pLeft: CGFloat = 34, pBottom: CGFloat = 28, pTop: CGFloat = 12, pRight: CGFloat = 12
         let usableW = width - pLeft - pRight
         let usableH = height - pBottom - pTop
@@ -255,7 +298,7 @@ class TremorViewController: UIViewController {
 
         let gradLayer = CAGradientLayer()
         gradLayer.frame = TremorGraphView.bounds
-        gradLayer.colors = [UIColor.systemBlue.withAlphaComponent(0.18).cgColor, UIColor.systemBlue.withAlphaComponent(0.0).cgColor]
+        gradLayer.colors = [UIColor.systemOrange.withAlphaComponent(0.20).cgColor, UIColor.systemOrange.withAlphaComponent(0.0).cgColor]
         gradLayer.startPoint = CGPoint(x: 0.5, y: 0); gradLayer.endPoint = CGPoint(x: 0.5, y: 1)
         let fillMask = CAShapeLayer(); fillMask.path = fillPath.cgPath
         gradLayer.mask = fillMask
@@ -265,31 +308,26 @@ class TremorViewController: UIViewController {
         let linePath = UIBezierPath()
         for (i, pt) in coords.enumerated() { i == 0 ? linePath.move(to: pt) : linePath.addLine(to: pt) }
         let lineLayer = CAShapeLayer(); lineLayer.path = linePath.cgPath
-        lineLayer.strokeColor = UIColor.systemBlue.cgColor; lineLayer.fillColor = UIColor.clear.cgColor
+        lineLayer.strokeColor = UIColor.systemOrange.cgColor; lineLayer.fillColor = UIColor.clear.cgColor
         lineLayer.lineWidth = 2; lineLayer.lineJoin = .round; lineLayer.lineCap = .round
         TremorGraphView.layer.addSublayer(lineLayer)
 
-        // Dots — colour coded: green = steady (0 Hz), yellow/orange/red by tremor severity
-        for (i, point) in points.enumerated() {
-            let pt = coords[i]
-            let dotColor: UIColor
-            if point.avgHz < 0.1 {
-                dotColor = .systemGreen   // steady
-            } else if point.avgHz < 4.0 {
-                dotColor = .systemYellow
-            } else if point.avgHz < 6.0 {
-                dotColor = .systemOrange
-            } else {
-                dotColor = .systemRed
-            }
-            let radius: CGFloat = range == .day ? 2.5 : 4
-            let dotPath = UIBezierPath(arcCenter: pt, radius: radius, startAngle: 0, endAngle: .pi * 2, clockwise: true)
+        // Dots
+        for pt in coords {
+            let dotPath = UIBezierPath(arcCenter: pt, radius: range == .day ? 2.5 : 4, startAngle: 0, endAngle: .pi * 2, clockwise: true)
             let dotLayer = CAShapeLayer(); dotLayer.path = dotPath.cgPath
-            dotLayer.fillColor   = dotColor.cgColor
+            dotLayer.fillColor = UIColor.systemOrange.cgColor
             dotLayer.strokeColor = UIColor.white.cgColor; dotLayer.lineWidth = 1.5
             TremorGraphView.layer.addSublayer(dotLayer)
         }
     }
 }
 
-// average() extension is defined in TremorShared.swift
+// MARK: - Array helper
+
+extension Array where Element == Double {
+    func average() -> Double {
+        guard !isEmpty else { return 0 }
+        return reduce(0, +) / Double(count)
+    }
+}

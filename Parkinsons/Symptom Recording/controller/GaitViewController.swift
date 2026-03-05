@@ -13,6 +13,7 @@ class GaitViewController: UIViewController {
     private let chartView = WalkingSteadinessChartView()
     private var aggregatedPoints: [(date: Date, value: Double)] = []
     private var currentRange: SteadinessRange = .day
+    private var pendingChartData: [(date: Date, value: Double)]? = nil  // cache when bounds not ready
 
     enum SteadinessRange { case day, week, month, sixMonth, year }
 
@@ -22,14 +23,23 @@ class GaitViewController: UIViewController {
         super.viewDidLoad()
         GaitCardView.applyCardStyle()
         title = "Walking Steadiness"
+        steadinessFreq.text = "Loading…"
         setupChart()
-        // ✅ Force white background on the graph container — prevents dark/black rendering
         walkingSteadinessGraph.backgroundColor = .clear
     }
 
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         authorizeAndFetch()
+    }
+
+    // ✅ Chart configure() calls setNeedsDisplay which needs real bounds — draw here if deferred
+    override func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
+        if let data = pendingChartData {
+            pendingChartData = nil
+            chartView.configure(with: data)
+        }
     }
 
     // MARK: - Chart Setup
@@ -193,7 +203,13 @@ class GaitViewController: UIViewController {
 
     private func finalize(points: [(date: Date, value: Double)]) {
         aggregatedPoints = points
-        chartView.configure(with: points)
+
+        // ✅ If bounds are ready, configure immediately; otherwise defer to viewDidLayoutSubviews
+        if chartView.bounds.width > 0 {
+            chartView.configure(with: points)
+        } else {
+            pendingChartData = points
+        }
 
         guard !points.isEmpty else {
             steadinessFreq.text  = "No Data"
@@ -201,19 +217,17 @@ class GaitViewController: UIViewController {
             return
         }
 
-        // Show the most recent reading as the headline value
         let latest = points.last!.value
 
-        // Animate the label update
         UIView.transition(with: steadinessFreq, duration: 0.3, options: .transitionCrossDissolve) {
             self.steadinessFreq.text      = String(format: "%.0f / 100", latest)
-            self.steadinessFreq.textColor = self.colorFor(latest)
+            self.steadinessFreq.textColor = .black
         }
 
-        let (label, color) = classificationFor(latest)
+        let (label, _) = classificationFor(latest)
         UIView.transition(with: steadinessRange, duration: 0.3, options: .transitionCrossDissolve) {
             self.steadinessRange.text      = label
-            self.steadinessRange.textColor = color
+            self.steadinessRange.textColor = .black
         }
     }
 

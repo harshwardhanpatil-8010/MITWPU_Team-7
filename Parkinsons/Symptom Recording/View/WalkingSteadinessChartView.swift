@@ -200,8 +200,8 @@ class WalkingSteadinessChartView: UIView {
         fillPath.close()
         fillPath.addClip()
 
-        let colors = [UIColor.systemTeal.withAlphaComponent(0.30).cgColor,
-                      UIColor.systemTeal.withAlphaComponent(0.0).cgColor] as CFArray
+        let colors = [UIColor.systemOrange.withAlphaComponent(0.22).cgColor,
+                      UIColor.systemOrange.withAlphaComponent(0.0).cgColor] as CFArray
         let grad = CGGradient(colorsSpace: CGColorSpaceCreateDeviceRGB(), colors: colors, locations: [0, 1])!
         ctx.drawLinearGradient(grad,
             start: CGPoint(x: rect.midX, y: pTop),
@@ -216,7 +216,7 @@ class WalkingSteadinessChartView: UIView {
         let clipW = pLeft + uw(rect) * animationProgress
         ctx.saveGState()
         ctx.clip(to: CGRect(x: 0, y: 0, width: clipW, height: rect.height))
-        ctx.setStrokeColor(UIColor.systemTeal.cgColor)
+        ctx.setStrokeColor(UIColor.systemOrange.cgColor)
         ctx.setLineWidth(2.5); ctx.setLineJoin(.round); ctx.setLineCap(.round)
 
         if points.count == 1 {
@@ -244,7 +244,7 @@ class WalkingSteadinessChartView: UIView {
         for i in 0..<animatedCount {
             let p = pt(at: i, in: rect)
             let v = points[i].value
-            let dotColor: UIColor = v >= 80 ? .systemGreen : v >= 60 ? .systemYellow : .systemRed
+            let dotColor: UIColor = .systemOrange
             ctx.setFillColor(UIColor.white.cgColor)
             ctx.addEllipse(in: CGRect(x: p.x - radius - 2, y: p.y - radius - 2,
                                       width: (radius + 2) * 2, height: (radius + 2) * 2))

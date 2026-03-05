@@ -48,10 +48,10 @@ class gaitCard: UICollectionViewCell {
         if let value = parseDouble(from: range) {
             rangeLabel.text      = String(format: "%.0f", value)
             unitLabel.text       = "/ 100"
-            rangeLabel.textColor = colorFor(value)
+            rangeLabel.textColor = .black
         } else {
             rangeLabel.text      = range
-            rangeLabel.textColor = .secondaryLabel
+            rangeLabel.textColor = .black
             unitLabel.text       = ""
         }
         setNeedsLayout()
@@ -133,28 +133,6 @@ class gaitCard: UICollectionViewCell {
             return
         }
 
-        // Single reading — centred dot + dashed horizontal at that value
-        if pts.count == 1 {
-            let ny  = CGFloat(pts[0].value / 100.0)
-            let y   = H - pB - ny * uh
-            let cx  = pL + uw / 2
-            let col: UIColor = pts[0].value >= 80 ? .systemGreen : pts[0].value >= 60 ? .systemYellow : .systemRed
-
-            addLine(from: CGPoint(x: pL, y: y), to: CGPoint(x: W - pR, y: y),
-                    color: col.withAlphaComponent(0.3).cgColor, w: 1, dash: [3, 3])
-
-            let ring = CAShapeLayer()
-            ring.path = UIBezierPath(arcCenter: CGPoint(x: cx, y: y), radius: 4, startAngle: 0, endAngle: .pi*2, clockwise: true).cgPath
-            ring.fillColor = UIColor.white.cgColor
-            walkingSteadinessView.layer.addSublayer(ring)
-
-            let dot = CAShapeLayer()
-            dot.path = UIBezierPath(arcCenter: CGPoint(x: cx, y: y), radius: 2.5, startAngle: 0, endAngle: .pi*2, clockwise: true).cgPath
-            dot.fillColor = col.cgColor
-            walkingSteadinessView.layer.addSublayer(dot)
-            return
-        }
-
         // ── Gradient fill ─────────────────────────────────────────
         if pts.count > 1 {
             let fillPath = UIBezierPath()
@@ -171,8 +149,8 @@ class gaitCard: UICollectionViewCell {
 
             let grad = CAGradientLayer()
             grad.frame  = walkingSteadinessView.bounds
-            grad.colors = [UIColor.systemTeal.withAlphaComponent(0.22).cgColor,
-                           UIColor.systemTeal.withAlphaComponent(0.0).cgColor]
+            grad.colors = [UIColor.systemOrange.withAlphaComponent(0.20).cgColor,
+                           UIColor.systemOrange.withAlphaComponent(0.0).cgColor]
             grad.startPoint = CGPoint(x: 0.5, y: 0)
             grad.endPoint   = CGPoint(x: 0.5, y: 1)
             let mask = CAShapeLayer(); mask.path = fillPath.cgPath
@@ -192,7 +170,7 @@ class gaitCard: UICollectionViewCell {
             }
             let ll = CAShapeLayer()
             ll.path        = lp.cgPath
-            ll.strokeColor = UIColor.systemTeal.cgColor
+            ll.strokeColor = UIColor.systemOrange.cgColor
             ll.fillColor   = UIColor.clear.cgColor
             ll.lineWidth   = 1.5
             ll.lineJoin    = .round; ll.lineCap = .round
@@ -204,7 +182,7 @@ class gaitCard: UICollectionViewCell {
         for i in 0..<pts.count {
             let p   = coord(i)
             let val = pts[i].value
-            let col: UIColor = val >= 80 ? .systemGreen : val >= 60 ? .systemYellow : .systemRed
+            let col: UIColor = .systemOrange
 
             let ring = CAShapeLayer()
             ring.path      = UIBezierPath(arcCenter: p, radius: dotR + 1.2, startAngle: 0, endAngle: .pi * 2, clockwise: true).cgPath
