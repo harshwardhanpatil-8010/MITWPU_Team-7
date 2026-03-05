@@ -47,6 +47,11 @@ class EmojiLandingScreen: UIViewController, UICollectionViewDataSource, UICollec
     override func viewWillAppear(_ animated: Bool) {
         tabBarController?.tabBar.isHidden = true
     }
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        // Show the tab bar again when leaving this screen
+        tabBarController?.tabBar.isHidden = false
+    }
     // EmojiLandingScreen.swift
     @objc private func refreshUI() {
         updateCompletionCount()
