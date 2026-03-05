@@ -1,43 +1,221 @@
-//
-//  gaitCard.swift
-//  Parkinsons
-//
-//  Created by Noya Abraham on 29/12/25.
-//
-
 import UIKit
 
 class gaitCard: UICollectionViewCell {
 
+    // MARK: - IBOutlets (XIB only)
     @IBOutlet weak var unitLabel: UILabel!
     @IBOutlet weak var rangeLabel: UILabel!
     @IBOutlet weak var cardBackground: UIView!
-    
+    @IBOutlet weak var walkingSteadinessView: UIView!   // 139 × 68 pt
+
+    private var graphPoints: [(date: Date, value: Double)] = []
+
+    // MARK: - Lifecycle
+
     override func awakeFromNib() {
         super.awakeFromNib()
         self.clipsToBounds = false
         self.contentView.clipsToBounds = false
         setupCardStyle()
     }
-    
-    func setupCardStyle() {
-        let cornerRadius: CGFloat = 25
-        let shadowColor: UIColor = .black
-        let shadowOpacity: Float = 0.15
-        let shadowRadius: CGFloat = 3
-        let shadowOffset: CGSize = .init(width: 0, height: 1)
 
-        cardBackground.layer.cornerRadius = cornerRadius
-        cardBackground.layer.masksToBounds = false
-
-        cardBackground.layer.shadowColor = shadowColor.cgColor
-        cardBackground.layer.shadowOpacity = shadowOpacity
-        cardBackground.layer.shadowRadius = shadowRadius
-        cardBackground.layer.shadowOffset = shadowOffset
-        cardBackground.backgroundColor = .white
+    override func layoutSubviews() {
+        super.layoutSubviews()
+        walkingSteadinessView.backgroundColor = .clear
+        DispatchQueue.main.async { self.redrawGraph() }
     }
-    
+
+    // MARK: - Card Style
+
+    private func setupCardStyle() {
+        cardBackground.layer.cornerRadius = 20
+        cardBackground.layer.masksToBounds = false
+        cardBackground.layer.shadowColor   = UIColor.black.cgColor
+        cardBackground.layer.shadowOpacity = 0.12
+        cardBackground.layer.shadowRadius  = 8
+        cardBackground.layer.shadowOffset  = CGSize(width: 0, height: 3)
+    }
+
+    // MARK: - Configure
+
     func configure(range: String) {
-        rangeLabel.text = range
+        configureWithPoints(range: range, points: [])
+    }
+
+    func configureWithPoints(range: String, points: [(date: Date, value: Double)]) {
+        self.graphPoints = points
+
+        if let value = parseDouble(from: range) {
+            rangeLabel.text      = String(format: "%.0f", value)
+            unitLabel.text       = "/ 100"
+            rangeLabel.textColor = .black
+        } else {
+            rangeLabel.text      = range
+            rangeLabel.textColor = .black
+            unitLabel.text       = ""
+        }
+        setNeedsLayout()
+    }
+
+    private func parseDouble(from text: String) -> Double? {
+        let s = text.components(separatedBy: "/").first?.trimmingCharacters(in: .whitespaces) ?? text
+        return Double(s)
+    }
+
+    private func colorFor(_ v: Double) -> UIColor {
+        if v >= 80 { return .systemGreen  }
+        if v >= 60 { return .systemOrange }
+        return .systemRed
+    }
+
+    // MARK: - Mini Graph
+    // View is 139 × 68 pt.
+    // Left pad = 22 pt for Y labels ("100"/"0")
+    // Bottom pad = 14 pt for X labels (date)
+    // Top/right pad = 4 pt
+
+    private func redrawGraph() {
+        walkingSteadinessView.layer.sublayers?.forEach { $0.removeFromSuperlayer() }
+        walkingSteadinessView.backgroundColor = .clear
+
+        let W = walkingSteadinessView.bounds.width
+        let H = walkingSteadinessView.bounds.height
+        guard W > 0, H > 0 else { return }
+
+        let pL: CGFloat = 22
+        let pB: CGFloat = 14
+        let pT: CGFloat = 4
+        let pR: CGFloat = 4
+        let uw = W - pL - pR
+        let uh = H - pB - pT
+
+        let pts = graphPoints
+        let safe = max(pts.count - 1, 1)
+
+        func coord(_ i: Int) -> CGPoint {
+            let x = pL + CGFloat(i) / CGFloat(safe) * uw
+            let y = H - pB - CGFloat(pts[i].value / 100.0) * uh
+            return CGPoint(x: x, y: y)
+        }
+
+        // ── Y axis labels: 100 (top) and 0 (bottom) ──────────────
+        addText("100", frame: CGRect(x: 0, y: pT - 1, width: pL - 3, height: 10),
+                align: .right, color: .tertiaryLabel)
+        addText("0",   frame: CGRect(x: 0, y: H - pB - 8, width: pL - 3, height: 10),
+                align: .right, color: .tertiaryLabel)
+
+        // ── Axes ──────────────────────────────────────────────────
+        addLine(from: CGPoint(x: pL, y: pT),      to: CGPoint(x: pL, y: H - pB),
+                color: UIColor.systemGray5.cgColor, w: 0.5)
+        addLine(from: CGPoint(x: pL, y: H - pB),  to: CGPoint(x: W - pR, y: H - pB),
+                color: UIColor.systemGray5.cgColor, w: 0.5)
+
+        // ── X axis labels: first and last date ────────────────────
+        if pts.count >= 2 {
+            let fmt = DateFormatter()
+            // Choose format based on date span
+            let span = pts.last!.date.timeIntervalSince(pts.first!.date)
+            fmt.dateFormat = span < 86400 ? "HH:mm" : "d MMM"
+
+            addText(fmt.string(from: pts.first!.date),
+                    frame: CGRect(x: pL, y: H - pB + 2, width: 30, height: 10),
+                    align: .left, color: .tertiaryLabel)
+            addText(fmt.string(from: pts.last!.date),
+                    frame: CGRect(x: W - pR - 30, y: H - pB + 2, width: 30, height: 10),
+                    align: .right, color: .tertiaryLabel)
+        }
+
+        // ── No data state ─────────────────────────────────────────
+        guard pts.count > 0 else {
+            addLine(from: CGPoint(x: pL,     y: H - pB - uh / 2),
+                    to:   CGPoint(x: W - pR, y: H - pB - uh / 2),
+                    color: UIColor.systemGray4.cgColor, w: 1, dash: [3, 3])
+            return
+        }
+
+        // ── Gradient fill ─────────────────────────────────────────
+        if pts.count > 1 {
+            let fillPath = UIBezierPath()
+            fillPath.move(to: CGPoint(x: coord(0).x, y: H - pB))
+            fillPath.addLine(to: coord(0))
+            for i in 1..<pts.count {
+                let p = coord(i - 1), c = coord(i)
+                let cp1 = CGPoint(x: p.x + (c.x - p.x) * 0.4, y: p.y)
+                let cp2 = CGPoint(x: c.x - (c.x - p.x) * 0.4, y: c.y)
+                fillPath.addCurve(to: c, controlPoint1: cp1, controlPoint2: cp2)
+            }
+            fillPath.addLine(to: CGPoint(x: coord(pts.count - 1).x, y: H - pB))
+            fillPath.close()
+
+            let grad = CAGradientLayer()
+            grad.frame  = walkingSteadinessView.bounds
+            grad.colors = [UIColor.systemOrange.withAlphaComponent(0.20).cgColor,
+                           UIColor.systemOrange.withAlphaComponent(0.0).cgColor]
+            grad.startPoint = CGPoint(x: 0.5, y: 0)
+            grad.endPoint   = CGPoint(x: 0.5, y: 1)
+            let mask = CAShapeLayer(); mask.path = fillPath.cgPath
+            grad.mask = mask
+            walkingSteadinessView.layer.addSublayer(grad)
+        }
+
+        // ── Smooth line ───────────────────────────────────────────
+        if pts.count > 1 {
+            let lp = UIBezierPath()
+            lp.move(to: coord(0))
+            for i in 1..<pts.count {
+                let p = coord(i - 1), c = coord(i)
+                let cp1 = CGPoint(x: p.x + (c.x - p.x) * 0.4, y: p.y)
+                let cp2 = CGPoint(x: c.x - (c.x - p.x) * 0.4, y: c.y)
+                lp.addCurve(to: c, controlPoint1: cp1, controlPoint2: cp2)
+            }
+            let ll = CAShapeLayer()
+            ll.path        = lp.cgPath
+            ll.strokeColor = UIColor.systemOrange.cgColor
+            ll.fillColor   = UIColor.clear.cgColor
+            ll.lineWidth   = 1.5
+            ll.lineJoin    = .round; ll.lineCap = .round
+            walkingSteadinessView.layer.addSublayer(ll)
+        }
+
+        // ── Colour-coded dots ─────────────────────────────────────
+        let dotR: CGFloat = pts.count > 8 ? 1.5 : 2.5
+        for i in 0..<pts.count {
+            let p   = coord(i)
+            let val = pts[i].value
+            let col: UIColor = .systemOrange
+
+            let ring = CAShapeLayer()
+            ring.path      = UIBezierPath(arcCenter: p, radius: dotR + 1.2, startAngle: 0, endAngle: .pi * 2, clockwise: true).cgPath
+            ring.fillColor = UIColor.white.cgColor
+            walkingSteadinessView.layer.addSublayer(ring)
+
+            let dot = CAShapeLayer()
+            dot.path      = UIBezierPath(arcCenter: p, radius: dotR, startAngle: 0, endAngle: .pi * 2, clockwise: true).cgPath
+            dot.fillColor = col.cgColor
+            walkingSteadinessView.layer.addSublayer(dot)
+        }
+    }
+
+    // MARK: - Layer helpers
+
+    private func addText(_ text: String, frame: CGRect, align: CATextLayerAlignmentMode, color: UIColor) {
+        let l = CATextLayer()
+        l.string          = text
+        l.fontSize        = 7
+        l.foregroundColor = color.cgColor
+        l.frame           = frame
+        l.alignmentMode   = align
+        l.contentsScale   = UIScreen.main.scale
+        walkingSteadinessView.layer.addSublayer(l)
+    }
+
+    private func addLine(from: CGPoint, to: CGPoint, color: CGColor, w: CGFloat, dash: [NSNumber]? = nil) {
+        let path = UIBezierPath(); path.move(to: from); path.addLine(to: to)
+        let l = CAShapeLayer()
+        l.path        = path.cgPath
+        l.strokeColor = color
+        l.lineWidth   = w
+        if let d = dash { l.lineDashPattern = d }
+        walkingSteadinessView.layer.addSublayer(l)
     }
 }

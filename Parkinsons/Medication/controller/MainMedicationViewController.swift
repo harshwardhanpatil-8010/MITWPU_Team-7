@@ -386,4 +386,3 @@ extension MainMedicationViewController: EditLogDelegate {
         medicationCollectionView.reloadSections(IndexSet(integer: 1))
     }
 }
-
