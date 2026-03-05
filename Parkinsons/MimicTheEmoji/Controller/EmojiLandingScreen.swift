@@ -58,7 +58,7 @@ class EmojiLandingScreen: UIViewController, UICollectionViewDataSource, UICollec
                 return EmojiGameManager.shared.isCompleted(date: calendar.startOfDay(for: date))
             }.count
 
-            completedLabel.text = "\(completedCount)/\(daysInMonth) Completed"
+            completedLabel.text = "\(completedCount)/\(daysInMonth)"
         }
     
     private func configureLayout() {
