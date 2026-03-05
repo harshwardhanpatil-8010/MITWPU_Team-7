@@ -308,31 +308,48 @@ extension SummaryViewController: UICollectionViewDataSource, UICollectionViewDel
             let model = exerciseData[indexPath.item]
             cell.configure(with: model)
 
-            let today = Date()
-            let summary = DailyWorkoutSummaryStore.shared.fetchSummary(for: today)
-
+            // 1. Logic for 10-Min Workout (Progress based on completed exercises)
             if indexPath.item == 0 {
-                let completed = Int(summary?.completedCount ?? 0)
-                let total = max(WorkoutManager.shared.getTodayWorkout().count, 7)
-
+                let completed = WorkoutManager.shared.completedToday.count
+                let total = max(WorkoutManager.shared.exercises.count, 1) // Avoid division by zero
+                
                 cell.setProgress(completed: completed, total: total)
-            } else {
-                let done = Int(summary?.completedCount ?? 0)
-                let goal = max(WorkoutManager.shared.getTodayWorkout().count, 1)
+            }
+            // 2. Logic for Rhythmic Walking (Progress based on session duration)
+            else if indexPath.item == 1 {
+                if let lastSession = DataStore.shared.sessions.first {
+                    let done = lastSession.elapsedSeconds
+                    let goal = max(lastSession.requestedDurationSeconds, 1)
+                    let percentage = Int((Double(done) / Double(goal)) * 100)
 
-                cell.setProgress(completed: done, total: goal)
-                cell.progressLabel.text = "\(Int((Double(done) / Double(goal)) * 100))%"
+                    cell.setProgress(completed: done, total: goal)
+                    cell.progressLabel.text = "\(percentage)%"
+                } else {
+                    // No session exists yet today
+                    cell.setProgress(completed: 0, total: 1)
+                    cell.progressLabel.text = "0%"
+                }
             }
 
             return cell
         }
     }
-    
     func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
         let header = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: "HeaderView", for: indexPath) as! SectionHeaderView
         let sectionType = summarySections[indexPath.section]
-        header.configure(title: sectionType == .exercises ? "Guided Exercise" : "Medications Log")
+        
+        // 1. Determine the title based on the section
+        let title = sectionType == .exercises ? "Guided Exercise" : "Medications Log"
+        
+        // 2. Configure the header with the title
+        header.configure(title: title)
+        
+        // 3. Set the font to Bold and Size 20
+        header.setFont(size: 20, weight: .bold)
+        
+        // 4. Ensure it is left-aligned
         header.setTitleAlignment(.left)
+        
         return header
     }
 }

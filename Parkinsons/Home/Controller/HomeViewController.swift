@@ -409,6 +409,21 @@ class HomeViewController: UIViewController, UICollectionViewDelegate {
             collectionView.deselectItem(at: indexPath, animated: true)
         }
     }
+    func collectionView(_ collectionView: UICollectionView, shouldSelectItemAt indexPath: IndexPath) -> Bool {
+        let sectionType = homeSections[indexPath.section]
+        
+        // Only apply the restriction to the calendar section
+        if sectionType == .calendar {
+            let targetDate = dates[indexPath.row].date
+            let isToday = Calendar.current.isDateInToday(targetDate)
+            let isFuture = targetDate > Date() && !isToday
+            
+            // If it's a future date, return false to disable clicking
+            return !isFuture
+        }
+        
+        return true
+    }
     
     func scrollToSelectedDate(animated: Bool) {
         if let index = dates.firstIndex(where: { Calendar.current.isDate($0.date, inSameDayAs: selectedDate) }) {
