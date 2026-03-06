@@ -182,18 +182,42 @@ class AddMedicationViewController: UIViewController,
     }
     
     private func evaluateTickButtonState() {
+
         if !isEditMode {
-            let text = medicationNameTextField.text ?? ""
-            tickButton.isEnabled = !text.trimmingCharacters(in: .whitespaces).isEmpty
+
+            let nameValid = !(medicationNameTextField.text ?? "")
+                .trimmingCharacters(in: .whitespaces).isEmpty
+
+            let strengthValid = !(strengthLabel.text ?? "")
+                .trimmingCharacters(in: .whitespaces).isEmpty
+
+            let unitValid = unitLabel.textColor == .label
+            let typeValid = typeLabel.textColor == .label
+
+            let repeatValid = selectedScheduleType != nil
+
+            let hasDose = !doseArray.isEmpty
+
+            tickButton.isEnabled =
+                nameValid &&
+                strengthValid &&
+                unitValid &&
+                typeValid &&
+                repeatValid &&
+                hasDose
+
             return
         }
-        
+
+        // ---------- EDIT MODE (keep your existing logic) ----------
+
         guard let original = originalMedicationSnapshot else {
             tickButton.isEnabled = false
             return
         }
-        
+
         let nameChanged = medicationNameTextField.text != original.medicationName
+
         let strengthChanged =
             Int16(Int(strengthLabel.text ?? "") ?? 0) != original.medicationStrength
 
@@ -214,8 +238,13 @@ class AddMedicationViewController: UIViewController,
 
         let dosesChanged = originalDoseTimes != currentDoseTimes
 
-        
-        tickButton.isEnabled = nameChanged || strengthChanged || unitChanged || typeChanged || repeatChanged || dosesChanged
+        tickButton.isEnabled =
+            nameChanged ||
+            strengthChanged ||
+            unitChanged ||
+            typeChanged ||
+            repeatChanged ||
+            dosesChanged
     }
     
     func renumberDoses() {

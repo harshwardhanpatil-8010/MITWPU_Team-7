@@ -1,11 +1,5 @@
-//
-//  GaitViewController.swift
-//  Parkinsons
-//
-//  Created by SDC-USER on 05/01/26.
-//
-
 import UIKit
+import HealthKit
 
 class GaitViewController: UIViewController {
 
@@ -13,119 +7,216 @@ class GaitViewController: UIViewController {
     @IBOutlet weak var steadinessRange: UILabel!
     @IBOutlet weak var steadinessFreq: UILabel!
     @IBOutlet weak var walkingSteadinessGraph: UIView!
-
     @IBOutlet weak var GaitSegmentControl: UISegmentedControl!
     @IBOutlet weak var GaitCardView: UIView!
+
     private let chartView = WalkingSteadinessChartView()
     private var aggregatedPoints: [(date: Date, value: Double)] = []
-    enum SteadinessRange {
-        case day, week, month, sixMonth, year
-    }
+    private var currentRange: SteadinessRange = .day
+    private var pendingChartData: [(date: Date, value: Double)]? = nil
+
+    enum SteadinessRange { case day, week, month, sixMonth, year }
+
+    // MARK: - Lifecycle
 
     override func viewDidLoad() {
         super.viewDidLoad()
-
         GaitCardView.applyCardStyle()
-        setupNavigationBar()
+        title = "Walking Steadiness"
+        steadinessFreq.text  = "Loading..."
+        steadinessRange.text = ""
         setupChart()
+        walkingSteadinessGraph.backgroundColor = .clear
+    }
 
-        HealthKitManager.shared.requestAuthorization { granted in
-            DispatchQueue.main.async {
-                if granted {
-                    self.fetchData(for: .day)
-                } else {
-                    print("HealthKit permission denied")
-                }
-            }
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        authorizeAndFetch()
+    }
+
+    override func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
+        if let data = pendingChartData {
+            pendingChartData = nil
+            chartView.configure(with: data)
         }
     }
 
+    // MARK: - Chart Setup
+
     private func setupChart() {
         chartView.translatesAutoresizingMaskIntoConstraints = false
+        chartView.backgroundColor = .clear
+        chartView.isOpaque = false
         walkingSteadinessGraph.addSubview(chartView)
-
         NSLayoutConstraint.activate([
             chartView.topAnchor.constraint(equalTo: walkingSteadinessGraph.topAnchor),
             chartView.leadingAnchor.constraint(equalTo: walkingSteadinessGraph.leadingAnchor),
             chartView.trailingAnchor.constraint(equalTo: walkingSteadinessGraph.trailingAnchor),
-            chartView.bottomAnchor.constraint(equalTo: walkingSteadinessGraph.bottomAnchor)
+            chartView.bottomAnchor.constraint(equalTo: walkingSteadinessGraph.bottomAnchor),
         ])
     }
 
+    // MARK: - Segment Control
 
-
-    private func setupNavigationBar() {
-        title = "Walking Steadiness"
+    @IBAction func segmentChanged(_ sender: UISegmentedControl) {
+        switch sender.selectedSegmentIndex {
+        case 0: currentRange = .day
+        case 1: currentRange = .week
+        case 2: currentRange = .month
+        case 3: currentRange = .sixMonth
+        case 4: currentRange = .year
+        default: currentRange = .day
+        }
+        fetchData(for: currentRange)
     }
-    private func fetchData(for range: SteadinessRange) {
 
-        let calendar = Calendar.current
+    // MARK: - Auth + Fetch
+
+    private func authorizeAndFetch() {
+        HealthKitManager.shared.requestAuthorization { [weak self] granted in
+            DispatchQueue.main.async {
+                guard let self = self else { return }
+                if granted {
+                    self.fetchData(for: self.currentRange)
+                } else {
+                    self.showNoAccess()
+                }
+            }
+        }
+    }
+
+    private func showNoAccess() {
+        steadinessFreq.text  = "No Access"
+        steadinessRange.text = ""
+        configureChart(with: [])
+    }
+
+    // MARK: - Data Fetching
+
+    private func fetchData(for range: SteadinessRange) {
+        let cal = Calendar.current
         let now = Date()
 
-        let startDate: Date = {
+        steadinessFreq.text  = "Loading..."
+        steadinessRange.text = ""
+
+        // ✅ Use wider windows — appleWalkingSteadiness is written ~weekly by Apple's algorithm.
+        //    For "day" view, go back 1 week so we always catch the most recent weekly sample.
+        //    For longer ranges, use the full window.
+        let start: Date = {
             switch range {
-            case .day:
-                return calendar.startOfDay(for: now)
-            case .week:
-                return calendar.date(byAdding: .day, value: -7, to: now)!
-            case .month:
-                return calendar.date(byAdding: .month, value: -1, to: now)!
-            case .sixMonth:
-                return calendar.date(byAdding: .month, value: -6, to: now)!
-            case .year:
-                return calendar.date(byAdding: .year, value: -1, to: now)!
+            case .day:      return cal.date(byAdding: .weekOfYear, value: -1, to: now)!
+            case .week:     return cal.date(byAdding: .day,        value: -7, to: now)!
+            case .month:    return cal.date(byAdding: .month,      value: -1, to: now)!
+            case .sixMonth: return cal.date(byAdding: .month,      value: -6, to: now)!
+            case .year:     return cal.date(byAdding: .year,       value: -1, to: now)!
             }
         }()
 
-        HealthKitManager.shared.fetchWalkingSteadinessSamples(
-            from: startDate,
-            to: now
-        ) { [weak self] samples in
+        updateDateLabel(range: range, start: start, now: now)
 
+        // ✅ Fetch raw samples — plot each one as its own point exactly like Apple Health does.
+        //    appleWalkingSteadiness produces ~1 sample per week, so no aggregation needed.
+        //    HKUnit.percent() returns 0.0–1.0 → multiply by 100 for display.
+        HealthKitManager.shared.fetchWalkingSteadinessSamples(from: start, to: now) { [weak self] rawSamples in
             DispatchQueue.main.async {
-
                 guard let self = self else { return }
 
-                let grouped = Dictionary(grouping: samples) { sample in
-                    calendar.startOfDay(for: sample.0)
+                if !rawSamples.isEmpty {
+                    let points = rawSamples
+                        .sorted { $0.0 < $1.0 }
+                        .map { (date: $0.0, value: min(max($0.1 * 100.0, 0), 100)) }
+                    self.finalize(points: points)
+                } else {
+                    // Fallback: derive from step cadence variability
+                    self.fetchComputedFallback(from: start, to: now)
                 }
-
-                self.aggregatedPoints = grouped.map { (date, values) in
-                    let avg = values.map { $0.1 }.reduce(0, +) / Double(values.count)
-                    return (date: date, value: avg)
-                }
-                .sorted { $0.date < $1.date }
-
-                self.chartView.configure(with: self.aggregatedPoints)
             }
         }
     }
 
+    // MARK: - Computed Fallback (speed + step length as time-series)
 
-
-    @IBAction func segmentChanged(_ sender: UISegmentedControl) {
-
-        let selectedRange: SteadinessRange
-
-        switch sender.selectedSegmentIndex {
-        case 0: selectedRange = .day
-        case 1: selectedRange = .week
-        case 2: selectedRange = .month
-        case 3: selectedRange = .sixMonth
-        case 4: selectedRange = .year
-        default: selectedRange = .day
+    private func fetchComputedFallback(from start: Date, to end: Date) {
+        // ✅ Uses per-day bucketed CV — produces multiple points across the range
+        HealthKitManager.shared.fetchComputedSteadinessSamples(from: start, to: end) { [weak self] points in
+            DispatchQueue.main.async {
+                guard let self = self else { return }
+                if !points.isEmpty {
+                    self.finalize(points: points)
+                } else {
+                    self.steadinessFreq.text  = "No Data"
+                    self.steadinessRange.text = ""
+                    self.configureChart(with: [])
+                }
+            }
         }
-
-        fetchData(for: selectedRange)
     }
 
+    // MARK: - Finalize UI
+
+    private func finalize(points: [(date: Date, value: Double)]) {
+        aggregatedPoints = points
+        configureChart(with: points)
+
+        guard !points.isEmpty else {
+            steadinessFreq.text  = "No Data"
+            steadinessRange.text = ""
+            return
+        }
+
+        // ✅ Average ALL points in the selected range — not just the last one
+        let avg = points.map { $0.value }.reduce(0, +) / Double(points.count)
+
+        UIView.transition(with: steadinessFreq, duration: 0.3, options: .transitionCrossDissolve) {
+            self.steadinessFreq.text      = String(format: "%.0f / 100", avg)
+            self.steadinessFreq.textColor = .black
+        }
+
+        let (label, _) = classificationFor(avg)
+        UIView.transition(with: steadinessRange, duration: 0.3, options: .transitionCrossDissolve) {
+            self.steadinessRange.text      = label
+            self.steadinessRange.textColor = .black
+        }
+    }
+
+    // MARK: - Chart helper
+
+    private func configureChart(with points: [(date: Date, value: Double)]) {
+        if chartView.bounds.width > 0 {
+            chartView.configure(with: points)
+        } else {
+            pendingChartData = points
+        }
+    }
+
+    // MARK: - Helpers
+
+    private func classificationFor(_ v: Double) -> (String, UIColor) {
+        if v >= 80 { return ("Good",              .systemGreen)  }
+        if v >= 60 { return ("Moderate",          .systemOrange) }
+        return             ("Low — See a Doctor", .systemRed)
+    }
+
+    private func updateDateLabel(range: SteadinessRange, start: Date, now: Date) {
+        let f = DateFormatter()
+        switch range {
+        case .day:
+            f.dateFormat = "d MMM yyyy"
+            dateLabel.text = f.string(from: now)
+        case .week:
+            f.dateFormat = "d MMM"
+            dateLabel.text = "\(f.string(from: start)) - \(f.string(from: now))"
+        case .month:
+            f.dateFormat = "MMMM yyyy"
+            dateLabel.text = f.string(from: now)
+        case .sixMonth:
+            f.dateFormat = "MMM yyyy"
+            dateLabel.text = "\(f.string(from: start)) - \(f.string(from: now))"
+        case .year:
+            f.dateFormat = "yyyy"
+            dateLabel.text = f.string(from: now)
+        }
+    }
 }
-
-
-
-
-
-
-
-
-
