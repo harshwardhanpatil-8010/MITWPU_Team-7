@@ -82,7 +82,7 @@ class WalkingSteadinessChartView: UIView {
     // MARK: - Empty state (no emoji — clean text only)
 
     private func drawEmpty(ctx: CGContext, rect: CGRect) {
-        // Dashed centre line
+        // Just a dashed centre line — no text (label above the graph shows "No Data")
         ctx.setStrokeColor(UIColor.systemGray5.cgColor)
         ctx.setLineWidth(1)
         ctx.setLineDash(phase: 0, lengths: [6, 4])
@@ -90,32 +90,6 @@ class WalkingSteadinessChartView: UIView {
         ctx.addLine(to: CGPoint(x: rect.width - pRight, y: rect.height / 2))
         ctx.strokePath()
         ctx.setLineDash(phase: 0, lengths: [])
-
-        // Primary message
-        let title = "No walking data yet"
-        let titleAttrs: [NSAttributedString.Key: Any] = [
-            .font: UIFont.systemFont(ofSize: 14, weight: .medium),
-            .foregroundColor: UIColor.secondaryLabel,
-        ]
-        let titleSz = (title as NSString).size(withAttributes: titleAttrs)
-        (title as NSString).draw(
-            at: CGPoint(x: (rect.width - titleSz.width) / 2,
-                        y: rect.height / 2 - titleSz.height - 4),
-            withAttributes: titleAttrs
-        )
-
-        // Sub message
-        let sub = "Walk with iPhone to collect data"
-        let subAttrs: [NSAttributedString.Key: Any] = [
-            .font: UIFont.systemFont(ofSize: 11, weight: .regular),
-            .foregroundColor: UIColor.tertiaryLabel,
-        ]
-        let subSz = (sub as NSString).size(withAttributes: subAttrs)
-        (sub as NSString).draw(
-            at: CGPoint(x: (rect.width - subSz.width) / 2,
-                        y: rect.height / 2 + 4),
-            withAttributes: subAttrs
-        )
     }
 
     // MARK: - Grid

@@ -71,30 +71,36 @@ extension HealthKitManager {
         let predicate = HKQuery.predicateForSamples(
             withStart: startDate,
             end: endDate,
-            options: .strictStartDate
+            options: []   // ✅ Not .strictStartDate — appleWalkingSteadiness is written ~weekly,
+                          //    strictStartDate misses samples that started before the window
         )
+
+        let sort = NSSortDescriptor(key: HKSampleSortIdentifierStartDate, ascending: true)
 
         let query = HKSampleQuery(
             sampleType: type,
             predicate: predicate,
             limit: HKObjectQueryNoLimit,
-            sortDescriptors: nil
-        ) { _, samples, _ in
-
-            guard let samples = samples as? [HKQuantitySample] else {
+            sortDescriptors: [sort]
+        ) { _, samples, error in
+            if let error = error {
+                print("Walking steadiness fetch error:", error.localizedDescription)
                 completion([])
-                
                 return
             }
-
+            guard let samples = samples as? [HKQuantitySample] else {
+                completion([])
+                return
+            }
+            // appleWalkingSteadiness: HKUnit.percent() returns 0.0–1.0 (e.g. 0.87 = 87%)
             let unit = HKUnit.percent()
             let result = samples.map {
                 ($0.startDate, $0.quantity.doubleValue(for: unit))
             }
-
+            print("Walking steadiness: \(result.count) sample(s) found")
+            result.forEach { print("  \($0.0): \(String(format: "%.1f", $0.1 * 100))%") }
             completion(result)
         }
-        
 
         healthStore.execute(query)
     }
@@ -165,58 +171,151 @@ extension HealthKitManager {
 
     func calculateWalkingSteadiness(speedValues: [Double], stepLengthValues: [Double]) -> Double? {
         guard !speedValues.isEmpty, !stepLengthValues.isEmpty else { return nil }
-
-        
         let speedMean = speedValues.reduce(0, +) / Double(speedValues.count)
-        let stepMean = stepLengthValues.reduce(0, +) / Double(stepLengthValues.count)
-
-        
-        let speedStd = standardDeviation(speedValues)
-        let stepStd = standardDeviation(stepLengthValues)
-
-        
-        let speedCV = speedStd / speedMean
-        let stepCV = stepStd / stepMean
-
-        
-        
+        let stepMean  = stepLengthValues.reduce(0, +) / Double(stepLengthValues.count)
+        let speedCV   = standardDeviation(speedValues) / speedMean
+        let stepCV    = standardDeviation(stepLengthValues) / stepMean
         let steadiness = 100 * (1 - ((speedCV + stepCV) / 2))
-
-        
         return max(0, min(steadiness, 100))
     }
 
     private func standardDeviation(_ values: [Double]) -> Double {
-        let mean = values.reduce(0, +) / Double(values.count)
+        let mean     = values.reduce(0, +) / Double(values.count)
         let variance = values.reduce(0) { $0 + pow($1 - mean, 2) } / Double(values.count)
         return sqrt(variance)
     }
-}
 
+    // ✅ NEW: fetch speed samples WITH timestamps → (Date, Double) pairs
+    func fetchWalkingSpeedSamples(
+        from startDate: Date,
+        to endDate: Date,
+        completion: @escaping ([(Date, Double)]) -> Void
+    ) {
+        guard let type = HKQuantityType.quantityType(forIdentifier: .walkingSpeed) else {
+            completion([]); return
+        }
+        let predicate = HKQuery.predicateForSamples(withStart: startDate, end: endDate, options: [])
+        let sort = NSSortDescriptor(key: HKSampleSortIdentifierStartDate, ascending: true)
+        let query = HKSampleQuery(sampleType: type, predicate: predicate,
+                                  limit: HKObjectQueryNoLimit, sortDescriptors: [sort]) { _, samples, _ in
+            let pairs = (samples as? [HKQuantitySample])?.map {
+                ($0.startDate, $0.quantity.doubleValue(for: .meter().unitDivided(by: .second())))
+            } ?? []
+            print("Walking speed samples: \(pairs.count)")
+            completion(pairs)
+        }
+        healthStore.execute(query)
+    }
 
-extension HealthKitManager {
+    // ✅ NEW: fetch step length samples WITH timestamps
+    func fetchStepLengthSamples(
+        from startDate: Date,
+        to endDate: Date,
+        completion: @escaping ([(Date, Double)]) -> Void
+    ) {
+        guard let type = HKQuantityType.quantityType(forIdentifier: .walkingStepLength) else {
+            completion([]); return
+        }
+        let predicate = HKQuery.predicateForSamples(withStart: startDate, end: endDate, options: [])
+        let sort = NSSortDescriptor(key: HKSampleSortIdentifierStartDate, ascending: true)
+        let query = HKSampleQuery(sampleType: type, predicate: predicate,
+                                  limit: HKObjectQueryNoLimit, sortDescriptors: [sort]) { _, samples, _ in
+            let pairs = (samples as? [HKQuantitySample])?.map {
+                ($0.startDate, $0.quantity.doubleValue(for: .meter()))
+            } ?? []
+            print("Step length samples: \(pairs.count)")
+            completion(pairs)
+        }
+        healthStore.execute(query)
+    }
 
+    // ✅ NEW: time-series computed steadiness — buckets speed+step by day and computes CV per bucket
+    func fetchComputedSteadinessSamples(
+        from startDate: Date,
+        to endDate: Date,
+        completion: @escaping ([(Date, Double)]) -> Void
+    ) {
+        let group = DispatchGroup()
+        var speedSamples: [(Date, Double)] = []
+        var stepSamples:  [(Date, Double)] = []
+
+        group.enter()
+        fetchWalkingSpeedSamples(from: startDate, to: endDate) { pairs in
+            speedSamples = pairs; group.leave()
+        }
+        group.enter()
+        fetchStepLengthSamples(from: startDate, to: endDate) { pairs in
+            stepSamples = pairs; group.leave()
+        }
+
+        group.notify(queue: .global()) {
+            guard !speedSamples.isEmpty || !stepSamples.isEmpty else {
+                completion([]); return
+            }
+
+            let cal = Calendar.current
+
+            // Bucket both by day
+            func bucket(_ pairs: [(Date, Double)]) -> [Date: [Double]] {
+                Dictionary(grouping: pairs) { cal.startOfDay(for: $0.0) }
+                    .mapValues { $0.map { $0.1 } }
+            }
+
+            let speedByDay = bucket(speedSamples)
+            let stepByDay  = bucket(stepSamples)
+
+            // Union of all days that have at least one metric
+            let allDays = Set(speedByDay.keys).union(stepByDay.keys).sorted()
+
+            var results: [(Date, Double)] = []
+
+            for day in allDays {
+                let speeds = speedByDay[day] ?? []
+                let steps  = stepByDay[day]  ?? []
+
+                // Need at least 2 values in a bucket to compute variability
+                // If only one metric available, use its CV alone
+                let value: Double
+                if speeds.count >= 2 && steps.count >= 2 {
+                    let sMean = speeds.reduce(0,+)/Double(speeds.count)
+                    let lMean = steps.reduce(0,+)/Double(steps.count)
+                    let sCV   = self.standardDeviation(speeds) / sMean
+                    let lCV   = self.standardDeviation(steps)  / lMean
+                    value = max(0, min(100 * (1 - (sCV + lCV) / 2), 100))
+                } else if speeds.count >= 2 {
+                    let sMean = speeds.reduce(0,+)/Double(speeds.count)
+                    let sCV   = self.standardDeviation(speeds) / sMean
+                    value = max(0, min(100 * (1 - sCV), 100))
+                } else if steps.count >= 2 {
+                    let lMean = steps.reduce(0,+)/Double(steps.count)
+                    let lCV   = self.standardDeviation(steps) / lMean
+                    value = max(0, min(100 * (1 - lCV), 100))
+                } else {
+                    // Only 1 sample — use mean speed as proxy (normalised 0–2 m/s → 0–100)
+                    let v = (speeds + steps).first ?? 0
+                    value = speeds.isEmpty ? max(0, min(v / 0.8 * 100, 100))
+                                           : max(0, min(v / 2.0 * 100, 100))
+                }
+                results.append((day, value))
+            }
+
+            print("Computed steadiness points: \(results.count)")
+            results.forEach { print("  \($0.0): \(String(format: "%.1f", $0.1))") }
+            completion(results)
+        }
+    }
+
+    // Keep old single-value fetch for any legacy callers
     func fetchWalkingSteadiness(from startDate: Date, to endDate: Date, completion: @escaping (Double?) -> Void) {
         var speeds: [Double] = []
         var stepLengths: [Double] = []
-
         let group = DispatchGroup()
-
         group.enter()
-        fetchWalkingSpeed(from: startDate, to: endDate) { values in
-            speeds = values
-            group.leave()
-        }
-
+        fetchWalkingSpeed(from: startDate, to: endDate) { speeds = $0; group.leave() }
         group.enter()
-        fetchStepLength(from: startDate, to: endDate) { values in
-            stepLengths = values
-            group.leave()
-        }
-
+        fetchStepLength(from: startDate, to: endDate) { stepLengths = $0; group.leave() }
         group.notify(queue: .main) {
-            let steadiness = self.calculateWalkingSteadiness(speedValues: speeds, stepLengthValues: stepLengths)
-            completion(steadiness)
+            completion(self.calculateWalkingSteadiness(speedValues: speeds, stepLengthValues: stepLengths))
         }
     }
 }

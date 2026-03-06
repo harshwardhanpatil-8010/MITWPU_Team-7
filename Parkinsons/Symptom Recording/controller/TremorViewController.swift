@@ -223,13 +223,24 @@ class TremorViewController: UIViewController {
             pendingGraphUpdate = true
             return
         }
-        let pLeft: CGFloat = 34, pBottom: CGFloat = 28, pTop: CGFloat = 12, pRight: CGFloat = 12
+        let pLeft: CGFloat = 44   // wider left margin — Y labels + gap so dots don't overlap
+        let pBottom: CGFloat = 28
+        let pTop: CGFloat = 22    // more top room so Hz label doesn't overlap top Y value
+        let pRight: CGFloat = 12
         let usableW = width - pLeft - pRight
         let usableH = height - pBottom - pTop
         let count = points.count
         let safeCount = max(count - 1, 1)
         let minHz: Double = 0
         let maxHz = max(points.map { $0.avgHz }.max() ?? 6, 6)
+
+        // Hz unit label — sits above the top Y value, not overlapping it
+        let hzLbl = CATextLayer()
+        hzLbl.string = "Hz"; hzLbl.fontSize = 8
+        hzLbl.foregroundColor = UIColor.tertiaryLabel.cgColor
+        hzLbl.frame = CGRect(x: 0, y: 4, width: pLeft - 6, height: 12)
+        hzLbl.alignmentMode = .right; hzLbl.contentsScale = UIScreen.main.scale
+        TremorGraphView.layer.addSublayer(hzLbl)
 
         // Y grid + labels
         for i in 0...4 {
@@ -245,18 +256,11 @@ class TremorViewController: UIViewController {
             let lbl = CATextLayer()
             lbl.string = String(format: "%.0f", value); lbl.fontSize = 9
             lbl.foregroundColor = UIColor.secondaryLabel.cgColor
-            lbl.frame = CGRect(x: 0, y: y - 6, width: pLeft - 4, height: 12)
+            // ✅ Right-align inside the left margin, with 6pt gap from the axis line
+            lbl.frame = CGRect(x: 0, y: y - 6, width: pLeft - 8, height: 12)
             lbl.alignmentMode = .right; lbl.contentsScale = UIScreen.main.scale
             TremorGraphView.layer.addSublayer(lbl)
         }
-
-        // Hz unit label
-        let hzLbl = CATextLayer()
-        hzLbl.string = "Hz"; hzLbl.fontSize = 9
-        hzLbl.foregroundColor = UIColor.tertiaryLabel.cgColor
-        hzLbl.frame = CGRect(x: 0, y: pTop - 10, width: pLeft - 4, height: 12)
-        hzLbl.alignmentMode = .right; hzLbl.contentsScale = UIScreen.main.scale
-        TremorGraphView.layer.addSublayer(hzLbl)
 
         // X labels
         for item in xAxisLabels(for: points, range: range) {
@@ -289,10 +293,17 @@ class TremorViewController: UIViewController {
             coords.append(CGPoint(x: x, y: y))
         }
 
-        // Gradient fill
+        // Gradient fill — smooth Bézier curves
         let fillPath = UIBezierPath()
         fillPath.move(to: CGPoint(x: coords[0].x, y: height - pBottom))
-        for pt in coords { fillPath.addLine(to: pt) }
+        fillPath.addLine(to: coords[0])
+        for i in 1..<coords.count {
+            let p   = coords[i - 1]
+            let cur = coords[i]
+            let cp1 = CGPoint(x: p.x + (cur.x - p.x) * 0.4, y: p.y)
+            let cp2 = CGPoint(x: cur.x - (cur.x - p.x) * 0.4, y: cur.y)
+            fillPath.addCurve(to: cur, controlPoint1: cp1, controlPoint2: cp2)
+        }
         fillPath.addLine(to: CGPoint(x: coords.last!.x, y: height - pBottom))
         fillPath.close()
 
@@ -304,20 +315,36 @@ class TremorViewController: UIViewController {
         gradLayer.mask = fillMask
         TremorGraphView.layer.addSublayer(gradLayer)
 
-        // Line
+        // Line — smooth Bézier curves
         let linePath = UIBezierPath()
-        for (i, pt) in coords.enumerated() { i == 0 ? linePath.move(to: pt) : linePath.addLine(to: pt) }
+        linePath.move(to: coords[0])
+        for i in 1..<coords.count {
+            let p   = coords[i - 1]
+            let cur = coords[i]
+            let cp1 = CGPoint(x: p.x + (cur.x - p.x) * 0.4, y: p.y)
+            let cp2 = CGPoint(x: cur.x - (cur.x - p.x) * 0.4, y: cur.y)
+            linePath.addCurve(to: cur, controlPoint1: cp1, controlPoint2: cp2)
+        }
         let lineLayer = CAShapeLayer(); lineLayer.path = linePath.cgPath
         lineLayer.strokeColor = UIColor.systemOrange.cgColor; lineLayer.fillColor = UIColor.clear.cgColor
         lineLayer.lineWidth = 2; lineLayer.lineJoin = .round; lineLayer.lineCap = .round
         TremorGraphView.layer.addSublayer(lineLayer)
 
-        // Dots
+        // Dots — white ring + orange fill, matching walking steadiness graph style
+        let dotRadius: CGFloat = count > 14 ? 3 : 5
         for pt in coords {
-            let dotPath = UIBezierPath(arcCenter: pt, radius: range == .day ? 2.5 : 4, startAngle: 0, endAngle: .pi * 2, clockwise: true)
-            let dotLayer = CAShapeLayer(); dotLayer.path = dotPath.cgPath
+            let ringPath = UIBezierPath(arcCenter: pt, radius: dotRadius + 2,
+                                        startAngle: 0, endAngle: .pi * 2, clockwise: true)
+            let ringLayer = CAShapeLayer()
+            ringLayer.path      = ringPath.cgPath
+            ringLayer.fillColor = UIColor.white.cgColor
+            TremorGraphView.layer.addSublayer(ringLayer)
+
+            let dotPath = UIBezierPath(arcCenter: pt, radius: dotRadius,
+                                       startAngle: 0, endAngle: .pi * 2, clockwise: true)
+            let dotLayer = CAShapeLayer()
+            dotLayer.path      = dotPath.cgPath
             dotLayer.fillColor = UIColor.systemOrange.cgColor
-            dotLayer.strokeColor = UIColor.white.cgColor; dotLayer.lineWidth = 1.5
             TremorGraphView.layer.addSublayer(dotLayer)
         }
     }

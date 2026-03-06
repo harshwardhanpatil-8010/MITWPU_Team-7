@@ -139,29 +139,33 @@ class SymptomViewController: UIViewController {
     // MARK: - Gait Data
 
     private func fetchGaitDataForSelectedDate() {
-        let start = Calendar.current.startOfDay(for: selectedDate)
-        let end = Calendar.current.date(byAdding: .day, value: 1, to: start)!
+        // ✅ Use 1-week window — appleWalkingSteadiness is written ~weekly so single-day misses it
+        let end   = Calendar.current.date(byAdding: .day, value: 1,  to: Calendar.current.startOfDay(for: selectedDate))!
+        let start = Calendar.current.date(byAdding: .weekOfYear, value: -1, to: end)!
 
         HealthKitManager.shared.fetchWalkingSteadinessSamples(from: start, to: end) { [weak self] samples in
             DispatchQueue.main.async {
                 guard let self = self else { return }
                 if !samples.isEmpty {
-                    let avg = samples.map { $0.1 * 100 }.reduce(0, +) / Double(samples.count)
-                    self.gaitRangeText = String(format: "%.0f / 100", avg)
-                    let calendar = Calendar.current
-                    let grouped = Dictionary(grouping: samples) { calendar.startOfDay(for: $0.0) }
-                    self.gaitGraphPoints = grouped.map { (date, vals) in
-                        (date: date, value: vals.map { $0.1 * 100 }.reduce(0, +) / Double(vals.count))
-                    }.sorted { $0.date < $1.date }
+                    let points = samples
+                        .sorted { $0.0 < $1.0 }
+                        .map { (date: $0.0, value: min(max($0.1 * 100, 0), 100)) }
+                    // ✅ Average all points for the day — not just the last
+                    let avg = points.map { $0.value }.reduce(0, +) / Double(points.count)
+                    self.gaitRangeText   = String(format: "%.0f / 100", avg)
+                    self.gaitGraphPoints = points
                     self.collectionView.reloadSections(IndexSet(integer: Section.gait.rawValue))
                 } else {
-                    HealthKitManager.shared.fetchWalkingSteadiness(from: start, to: end) { value in
+                    // ✅ Fallback: time-series from speed + step length variability
+                    HealthKitManager.shared.fetchComputedSteadinessSamples(from: start, to: end) { points in
                         DispatchQueue.main.async {
-                            if let v = value {
-                                self.gaitRangeText = String(format: "%.0f / 100", v)
-                                self.gaitGraphPoints = [(date: Date(), value: v)]
+                            if !points.isEmpty {
+                                // ✅ Average all computed points for the period
+                                let avg = points.map { $0.1 }.reduce(0, +) / Double(points.count)
+                                self.gaitRangeText   = String(format: "%.0f / 100", avg)
+                                self.gaitGraphPoints = points.map { (date: $0.0, value: $0.1) }
                             } else {
-                                self.gaitRangeText = "No Data"
+                                self.gaitRangeText   = "No Data"
                                 self.gaitGraphPoints = []
                             }
                             self.collectionView.reloadSections(IndexSet(integer: Section.gait.rawValue))

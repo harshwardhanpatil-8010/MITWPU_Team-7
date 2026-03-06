@@ -185,7 +185,7 @@ class gaitCard: UICollectionViewCell {
             let col: UIColor = .systemOrange
 
             let ring = CAShapeLayer()
-            ring.path      = UIBezierPath(arcCenter: p, radius: dotR + 1.2, startAngle: 0, endAngle: .pi * 2, clockwise: true).cgPath
+            ring.path      = UIBezierPath(arcCenter: p, radius: dotR + 2, startAngle: 0, endAngle: .pi * 2, clockwise: true).cgPath
             ring.fillColor = UIColor.white.cgColor
             walkingSteadinessView.layer.addSublayer(ring)
 
