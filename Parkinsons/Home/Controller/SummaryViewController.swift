@@ -23,8 +23,8 @@ class SummaryViewController: UIViewController {
     private var primaryMedication: MedicationModel?
     private var medicationObserver: NSObjectProtocol?
     var exerciseData: [ExerciseModel] = [
-        ExerciseModel(title: "10-Min Workout", detail: "Completed", progressColorHex: "0088FF"),
-        ExerciseModel(title: "Rhythmic Walking", detail: "Missed",  progressColorHex: "90AF81")
+        ExerciseModel(title: "10-Min Workout", detail: "Tap to view summary", progressColorHex: "0088FF"),
+        ExerciseModel(title: "Rhythmic Walking", detail: "Tap to view summary",  progressColorHex: "90AF81")
     ]
     
     override func viewDidLoad() {
@@ -240,6 +240,7 @@ class SummaryViewController: UIViewController {
             else if selectedExercise.title == "Rhythmic Walking" {
                 let storyboard = UIStoryboard(name: "Home", bundle: nil)
                 if let walkingVC = storyboard.instantiateViewController(withIdentifier: "RhythmicWalkingSummaryViewController") as? RhythmicWalkingSummaryViewController {
+                    walkingVC.dateToDisplay       = dateToDisplay
                     walkingVC.modalPresentationStyle = .pageSheet
                     self.present(walkingVC, animated: true)
                 }
