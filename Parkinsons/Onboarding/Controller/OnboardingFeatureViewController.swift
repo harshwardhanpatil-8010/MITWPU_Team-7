@@ -50,16 +50,10 @@ class OnboardingFeatureViewController: UIViewController {
         }
     }
 
-    func navigateToHome() {
-        let storyboard = UIStoryboard(name: "Home", bundle: nil)
-        let tabBarVC = storyboard.instantiateViewController(withIdentifier: "HomeTabBar")
-        
-        if let windowScene = UIApplication.shared.connectedScenes.first as? UIWindowScene,
-           let sceneDelegate = windowScene.delegate as? SceneDelegate {
-            
-            sceneDelegate.window?.rootViewController = tabBarVC
-            sceneDelegate.window?.makeKeyAndVisible()
-        }
+    func navigateToOnboardingInfo() {
+        let storyboard = UIStoryboard(name: "Login", bundle: nil)
+        let infoVC = storyboard.instantiateViewController(withIdentifier: "OnboardingInfoView") as! OnboardingInfoViewController
+        navigationController?.setViewControllers([self, infoVC], animated: true)
     }
 
     @IBAction func continueButtonTapped(_ sender: UIButton) {
@@ -69,16 +63,14 @@ class OnboardingFeatureViewController: UIViewController {
             progressBars[currentIndex].setProgress(1.0, animated: true)
             
         } else {
-            UserDefaults.standard.set(true, forKey: "hasCompletedOnboarding")
-           navigateToHome()
             progressBars[currentIndex].setProgress(1.0, animated: true)
+            navigateToOnboardingInfo()
         }
     }
     
     
     @IBAction func skipTapped(_ sender: UIButton) {
-        UserDefaults.standard.set(true, forKey: "hasCompletedOnboarding")
-      navigateToHome()
+        navigateToOnboardingInfo()
     }
     
     /*

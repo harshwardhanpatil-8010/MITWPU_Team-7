@@ -28,10 +28,12 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
             let tabBarVC = storyboard.instantiateViewController(withIdentifier: "HomeTabBar")
             window.rootViewController = tabBarVC
         } else {
-            // Load Onboarding
+            // Load Onboarding (Feature first -> Info)
             let storyboard = UIStoryboard(name: "Login", bundle: nil)
-            let onboardingVC = storyboard.instantiateViewController(withIdentifier: "OnboardingInfoView")
-            window.rootViewController = onboardingVC
+            let featureVC = storyboard.instantiateViewController(withIdentifier: "OnboardingFeatureViewController")
+            let navVC = UINavigationController(rootViewController: featureVC)
+            navVC.modalPresentationStyle = .fullScreen
+            window.rootViewController = navVC
         }
         
         self.window = window
@@ -71,4 +73,3 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 
 
 }
-

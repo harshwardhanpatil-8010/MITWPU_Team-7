@@ -60,7 +60,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                     quantitySamplePredicate: predicate,
                     options: .cumulativeSum
                 ) { _, stats, _ in
-                    print("✅ Steps in last 24hrs: \(stats?.sumQuantity()?.doubleValue(for: .count()) ?? 0)")
+                    
                 }
                 HealthKitManagerRhythmic.shared.healthStore.execute(query)
             }

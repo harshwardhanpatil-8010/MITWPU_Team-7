@@ -9,30 +9,27 @@ import UIKit
 
 class OnboardingInfoViewController: UIViewController {
 
-    // Note: Based on your outlets, stageLabelButton is the element that needs its text updated.
-       @IBOutlet weak var stageLabel: UILabel!        // Text above the stage picker (e.g., "Parkinson's Stage")
-       @IBOutlet weak var stageLabelButton: UIButton! // The actual button/label that shows the selected stage
-       @IBOutlet weak var genderLabelButton: UIButton!
-       @IBOutlet weak var dateLabel: UILabel!
-       @IBOutlet weak var genderLabel: UILabel!       // Label that shows the selected gender
 
-       // Data for the Pickers
+       @IBOutlet weak var stageLabelButton: UIButton!
+       @IBOutlet weak var genderLabelButton: UIButton!
+
+
        let genderOptions = ["Male", "Female", "Other"]
-       let stageOptions = ["Stage 1", "Stage 2", "Stage 3", "Stage 4", "Stage 5"] // Added more stages for completeness
+       let stageOptions = ["Stage 1", "Stage 2", "Stage 3", "Stage 4", "Stage 5"]
 
        override func viewDidLoad() {
            super.viewDidLoad()
 
-           // Configure the Gender Picker
+           navigationItem.hidesBackButton = true
+           navigationController?.interactivePopGestureRecognizer?.isEnabled = false
+
            configureGenderPickerMenu()
-           
-           // Configure the Stage Picker
            configureStagePickerMenu()
            
-           // Initial setup
-           genderLabel.text = "Select your gender"
+           genderLabelButton.setTitle("", for: .normal)
+           genderLabelButton.setTitleColor(.systemBlue, for: .normal)
            stageLabelButton.setTitle("", for: .normal)
-           stageLabelButton.setTitleColor(.systemBlue, for: .normal) // Ensure it looks like a selectable button
+           stageLabelButton.setTitleColor(.systemBlue, for: .normal)
        }
        
        // MARK: - Picker Configurations (UIMenu)
@@ -40,8 +37,7 @@ class OnboardingInfoViewController: UIViewController {
        private func configureGenderPickerMenu() {
            let menuActions = genderOptions.map { gender in
                return UIAction(title: gender) { [weak self] action in
-                   // Update the genderLabel
-                   self?.genderLabel.text = action.title
+                   self?.genderLabelButton.setTitle(action.title, for: .normal)
                }
            }
            
@@ -66,20 +62,20 @@ class OnboardingInfoViewController: UIViewController {
        // MARK: - IBAction (Maintained for clarity, though not strictly required for UIMenu)
        
        @IBAction func genderPicker(_ sender: Any) {
-           // UIMenu handles the action, so this is mostly empty.
+
        }
        
        @IBAction func stagePicker(_ sender: Any) {
-           // UIMenu handles the action, so this is mostly empty.
+
        }
     
     
     @IBAction func nextButtonTapped(_ sender: Any) {
         
-        let selectedGender = genderLabel.text ?? ""
+        let selectedGender = genderLabelButton.title(for: .normal) ?? ""
         let stageText = stageLabelButton.title(for: .normal) ?? ""
         
-        guard selectedGender != "Select your gender",
+        guard !selectedGender.isEmpty,
               let stageNumber = Int(stageText.components(separatedBy: " ").last ?? "") else {
             print("Please complete all fields")
             return
@@ -87,25 +83,31 @@ class OnboardingInfoViewController: UIViewController {
         
         UserDefaults.standard.set(stageNumber, forKey: "diseaseStage")
         UserDefaults.standard.set(selectedGender, forKey: "userGender")
-        
-        let storyboard = UIStoryboard(name: "Login", bundle: nil)
-        let vc = storyboard.instantiateViewController(withIdentifier: "OnboardingFeatureViewController") as! OnboardingFeatureViewController
-        
-        let navVC = UINavigationController(rootViewController: vc)
-        navVC.modalPresentationStyle = .fullScreen
-        
-        present(navVC, animated: true)
+
+        UserDefaults.standard.set(true, forKey: "hasCompletedOnboarding")
+        navigateToHome()
     }
-    
-       // MARK: - Date Picker (Implementation placeholder)
-       
-       // You will need an action for the date picker (27 Nov 2025) which typically
-       // uses a UIDatePicker view shown modally or inline.
-       
-       /*
-       // MARK: - Navigation
-       override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-           // ...
-       }
-       */
+
+    private func navigateToHome() {
+        let storyboard = UIStoryboard(name: "Home", bundle: nil)
+        let tabBarVC = storyboard.instantiateViewController(withIdentifier: "HomeTabBar")
+
+        let windowScene = UIApplication.shared.connectedScenes
+            .compactMap { $0 as? UIWindowScene }
+            .first { $0.activationState == .foregroundActive }
+            ?? UIApplication.shared.connectedScenes.first as? UIWindowScene
+
+        if let sceneDelegate = windowScene?.delegate as? SceneDelegate {
+            sceneDelegate.window?.rootViewController = tabBarVC
+            sceneDelegate.window?.makeKeyAndVisible()
+            return
+        }
+
+
+        if let window = windowScene?.windows.first {
+            window.rootViewController = tabBarVC
+            window.makeKeyAndVisible()
+        }
+    }
+
    }
