@@ -31,26 +31,22 @@ class _0minworkoutCountdownViewController: UIViewController {
     func startCountDown() {
         guard !hasNavigated, !isCountdownCancelled else { return }
 
-        if countDown == 0 {
+        if countDown < 0 {
             hasNavigated = true
-            TimerLabel.text = "GO!"
-            UIView.animate(withDuration: 0.4) {
-                self.TimerLabel.transform = CGAffineTransform(scaleX: 1.5, y: 1.5)
-            } completion: { _ in
-                guard !self.isCountdownCancelled else { return }
-                self.navigateToWorkout()
-            }
+            navigateToWorkout()
             return
         }
 
-        TimerLabel.text = "\(countDown)"
         TimerLabel.alpha = 1
         TimerLabel.transform = .identity
+        TimerLabel.text = countDown == 0 ? "GO!" : "\(countDown)"
 
-        UIView.animate(withDuration: 0.7, animations: {
+        UIView.animate(withDuration: 0.85, animations: {
             self.TimerLabel.alpha = 0
             self.TimerLabel.transform = CGAffineTransform(scaleX: 4, y: 4)
-        }) { _ in
+        })
+
+        DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
             guard !self.isCountdownCancelled else { return }
             self.countDown -= 1
             self.startCountDown()
