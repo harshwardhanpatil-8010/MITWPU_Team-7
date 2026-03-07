@@ -6,7 +6,7 @@ class _0minworkoutLandingPageViewController: UIViewController, UICollectionViewD
     @IBOutlet weak var progressContainer: UIView!
     @IBOutlet weak var exerciseNumberLabel: UILabel!
     @IBOutlet weak var collectionView: UICollectionView!
-
+    public var shouldHideStartButton: Bool = false
     var exercises: [WorkoutExercise] = []
     private var progressView: CircularProgressView!
 
@@ -54,6 +54,7 @@ class _0minworkoutLandingPageViewController: UIViewController, UICollectionViewD
         super.viewDidLoad()
         setupProgressView()
         setupCollectionView()
+        startButtonOutlet.isHidden = shouldHideStartButton
     }
 
     override func viewWillAppear(_ animated: Bool) {

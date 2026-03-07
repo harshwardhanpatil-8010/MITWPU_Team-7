@@ -985,6 +985,80 @@
             </objects>
             <point key="canvasLocation" x="4338" y="710"/>
         </scene>
+        <!--Rhythmic Walking Summary View Controller-->
+        <scene sceneID="611-QI-srz">
+            <objects>
+                <viewController storyboardIdentifier="RhythmicWalkingSummaryViewController" useStoryboardIdentifierAsRestorationIdentifier="YES" id="pfy-PR-ZqD" customClass="RhythmicWalkingSummaryViewController" customModule="Parkinsons" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="MEU-0B-3rj">
+                        <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="-1" estimatedSectionHeaderHeight="-1" sectionFooterHeight="-1" estimatedSectionFooterHeight="-1" translatesAutoresizingMaskIntoConstraints="NO" id="k3p-Z7-bRA">
+                                <rect key="frame" x="16" y="155" width="361" height="642"/>
+                                <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                                <prototypes>
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="sessionCell" textLabel="veF-db-DXq" style="IBUITableViewCellStyleDefault" id="GSM-uf-pxG">
+                                        <rect key="frame" x="0.0" y="50" width="361" height="51"/>
+                                        <autoresizingMask key="autoresizingMask"/>
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="GSM-uf-pxG" id="mrv-F0-uYY">
+                                            <rect key="frame" x="0.0" y="0.0" width="361" height="51"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <subviews>
+                                                <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" insetsLayoutMarginsFromSafeArea="NO" text="Title" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="veF-db-DXq">
+                                                    <rect key="frame" x="20" y="0.0" width="321" height="51"/>
+                                                    <autoresizingMask key="autoresizingMask"/>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="0.0"/>
+                                                    <nil key="textColor"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                            </subviews>
+                                        </tableViewCellContentView>
+                                    </tableViewCell>
+                                </prototypes>
+                            </tableView>
+                            <navigationBar contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="1kA-TQ-cAK">
+                                <rect key="frame" x="0.0" y="20" width="393" height="54"/>
+                                <items>
+                                    <navigationItem title="Rhythmic walking" id="1eK-mb-HUD">
+                                        <barButtonItem key="leftBarButtonItem" systemItem="cancel" id="qb9-Qi-5iF">
+                                            <connections>
+                                                <action selector="closeButtonTapped:" destination="pfy-PR-ZqD" id="E4Y-eM-pFg"/>
+                                            </connections>
+                                        </barButtonItem>
+                                    </navigationItem>
+                                </items>
+                            </navigationBar>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Today's Session" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="147-qC-3VG">
+                                <rect key="frame" x="16" y="106" width="236" height="41"/>
+                                <fontDescription key="fontDescription" style="UICTFontTextStyleTitle0"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                        </subviews>
+                        <viewLayoutGuide key="safeArea" id="AXl-MI-oYo"/>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                        <constraints>
+                            <constraint firstItem="k3p-Z7-bRA" firstAttribute="top" secondItem="147-qC-3VG" secondAttribute="bottom" constant="8" id="4Yc-4E-kf4"/>
+                            <constraint firstItem="1kA-TQ-cAK" firstAttribute="top" secondItem="MEU-0B-3rj" secondAttribute="top" constant="20" id="Eg1-3v-3Hn"/>
+                            <constraint firstAttribute="trailing" secondItem="1kA-TQ-cAK" secondAttribute="trailing" id="FZS-me-wD0"/>
+                            <constraint firstItem="k3p-Z7-bRA" firstAttribute="leading" secondItem="AXl-MI-oYo" secondAttribute="leading" constant="16" id="RBy-4g-Yy9"/>
+                            <constraint firstItem="147-qC-3VG" firstAttribute="top" secondItem="1kA-TQ-cAK" secondAttribute="bottom" constant="32" id="VCg-6A-nfE"/>
+                            <constraint firstItem="1kA-TQ-cAK" firstAttribute="leading" secondItem="MEU-0B-3rj" secondAttribute="leading" id="ZWK-Xm-vYE"/>
+                            <constraint firstItem="147-qC-3VG" firstAttribute="leading" secondItem="AXl-MI-oYo" secondAttribute="leading" constant="16" id="dY0-3M-LE9"/>
+                            <constraint firstItem="AXl-MI-oYo" firstAttribute="trailing" secondItem="k3p-Z7-bRA" secondAttribute="trailing" constant="16" id="hTH-Jt-kbC"/>
+                            <constraint firstItem="1kA-TQ-cAK" firstAttribute="leading" secondItem="MEU-0B-3rj" secondAttribute="leadingMargin" constant="-16" id="i73-ta-wdy"/>
+                            <constraint firstAttribute="bottom" secondItem="k3p-Z7-bRA" secondAttribute="bottom" constant="55" id="pS2-aH-U6L"/>
+                        </constraints>
+                    </view>
+                    <connections>
+                        <outlet property="closeBarButton" destination="qb9-Qi-5iF" id="vhe-MT-gt5"/>
+                        <outlet property="tableView" destination="k3p-Z7-bRA" id="prC-it-9ph"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="jlF-tL-7UV" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="5696.9465648854957" y="-613.38028169014092"/>
+        </scene>
     </scenes>
     <resources>
         <image name="Screenshot 2025-12-12 at 3.45.03 PM" width="68" height="76"/>

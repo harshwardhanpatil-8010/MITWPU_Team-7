@@ -12,7 +12,9 @@ class SummaryViewController: UIViewController {
     @IBOutlet weak var summaryTitleLabel: UILabel!
     @IBOutlet weak var mainCollectionView: UICollectionView!
     @IBOutlet weak var closeBarButton: UIBarButtonItem!
-    
+    @objc func dismissWorkoutModal() {
+            self.dismiss(animated: true, completion: nil)
+        }
     var dateToDisplay: Date?
     var currentSymptomLog: SymptomLogEntry?
     let summarySections = Section.allCases
@@ -296,7 +298,46 @@ extension SummaryViewController: UICollectionViewDataSource, UICollectionViewDel
             return cell
         }
     }
-    
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+            let sectionType = summarySections[indexPath.section]
+            
+            if sectionType == .exercises {
+                let selectedExercise = exerciseData[indexPath.item]
+                
+                // 1. Handle 10-Min Workout
+                if selectedExercise.title == "10-Min Workout" {
+                    let sb = UIStoryboard(name: "10 minworkout", bundle: nil)
+                    if let workoutVC = sb.instantiateViewController(withIdentifier: "exerciseLandingPage") as? _0minworkoutLandingPageViewController {
+                        // This line will now work because 'as?' tells Swift
+                        // exactly which class (and variables) to look for.
+                        workoutVC.shouldHideStartButton = true
+                        
+                        let navController = UINavigationController(rootViewController: workoutVC)
+                        navController.modalPresentationStyle = .pageSheet
+                        
+                        // Create the "X" button dynamically
+                        let closeButton = UIBarButtonItem(
+                            image: UIImage(systemName: "xmark"),
+                            style: .plain,
+                            target: self,
+                            action: #selector(dismissWorkoutModal)
+                        )
+                        closeButton.tintColor = .label
+                        workoutVC.navigationItem.leftBarButtonItem = closeButton
+                        
+                        self.present(navController, animated: true)
+                    }
+                }
+                // 2. Handle Rhythmic Walking
+                else if selectedExercise.title == "Rhythmic Walking" {
+                    let storyboard = UIStoryboard(name: "Home", bundle: nil)
+                    if let walkingVC = storyboard.instantiateViewController(withIdentifier: "RhythmicWalkingSummaryViewController") as? RhythmicWalkingSummaryViewController {
+                        walkingVC.modalPresentationStyle = .pageSheet
+                        self.present(walkingVC, animated: true)
+                    }
+                }
+            }
+        }
     func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
         let header = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: "HeaderView", for: indexPath) as! SectionHeaderView
         header.configure(title: summarySections[indexPath.section] == .exercises ? "Guided Exercise" : "Medications Log")
@@ -304,3 +345,4 @@ extension SummaryViewController: UICollectionViewDataSource, UICollectionViewDel
         return header
     }
 }
+
