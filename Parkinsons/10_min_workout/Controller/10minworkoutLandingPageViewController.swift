@@ -65,7 +65,6 @@ class _0minworkoutLandingPageViewController: UIViewController, UICollectionViewD
         let currentProgress = manager.completedToday.count + manager.skippedToday.count
 
         if currentProgress == 0 {
-            // Always ensure at least one set is loaded on landing.
             if manager.exercises.isEmpty {
                 let fallbackPosition = manager.loadLastWorkoutPosition() ?? .seated
                 manager.generateDailyWorkout(for: fallbackPosition)
@@ -76,13 +75,15 @@ class _0minworkoutLandingPageViewController: UIViewController, UICollectionViewD
             updateProgress()
             updateButtonUI()
 
-            // Re-run the check whenever med state changes (dose logged, med added, etc.)
-            let medStateChanged = manager.currentMedState() != manager.lastCheckedMedState
-            let needsFreshDecision = medStateChanged
-
-            if needsFreshDecision {
-                checkMedTaken()
+            // CHANGE HERE: Only check for meds/show alerts if the start button is NOT hidden
+            // (Assuming shouldHideStartButton is true only when coming from Summary)
+            if !shouldHideStartButton {
+                let medStateChanged = manager.currentMedState() != manager.lastCheckedMedState
+                if medStateChanged {
+                    checkMedTaken()
+                }
             }
+            
         } else {
             self.exercises = manager.exercises
             collectionView.reloadData()

@@ -456,6 +456,8 @@ class SummaryViewController: UIViewController {
     private func setupCollectionView() {
         mainCollectionView.dataSource = self
         mainCollectionView.delegate = self
+
+        mainCollectionView.register(UICollectionReusableView.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionFooter, withReuseIdentifier: "EmptyMedicationFooter")
         mainCollectionView.register(UINib(nibName: "medicationSummary", bundle: nil), forCellWithReuseIdentifier: "MedicationSummaryCell")
         mainCollectionView.register(UINib(nibName: "ExerciseCardCell", bundle: nil), forCellWithReuseIdentifier: "exercise_card_cell")
         mainCollectionView.register(SectionHeaderView.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: "HeaderView")
@@ -566,21 +568,46 @@ class SummaryViewController: UIViewController {
             let sectionType = self.summarySections[sectionIndex]
             let section: NSCollectionLayoutSection
             
+            // Let's set a clear variable for height so it's easy to change
+            let medicationHeight: CGFloat = 80
+            
             switch sectionType {
             case .medicationsSummary:
                 let item = NSCollectionLayoutItem(layoutSize: .init(widthDimension: .fractionalWidth(1.0), heightDimension: .fractionalHeight(1.0)))
+<<<<<<< HEAD
                 let group = NSCollectionLayoutGroup.horizontal(layoutSize: .init(widthDimension: .fractionalWidth(1.0), heightDimension: .absolute(80)), subitems: [item])
                 section = NSCollectionLayoutSection(group: group)
+=======
+                
+                // UPDATED: Changed height from 80 to medicationHeight (150)
+                let group = NSCollectionLayoutGroup.horizontal(layoutSize: .init(widthDimension: .fractionalWidth(0.9), heightDimension: .absolute(medicationHeight)), subitems: [item])
+                
+                section = NSCollectionLayoutSection(group: group)
+                section.orthogonalScrollingBehavior = .groupPaging
+                section.interGroupSpacing = 12
+
+                // UPDATED: Footer height now matches the group height
+                let footerHeight: CGFloat = self.dailyMedications.isEmpty ? medicationHeight : 0
+                let footerSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: .absolute(footerHeight))
+                
+                let footer = NSCollectionLayoutBoundarySupplementaryItem(
+                    layoutSize: footerSize,
+                    elementKind: UICollectionView.elementKindSectionFooter,
+                    alignment: .bottom
+                )
+                
+                section.boundarySupplementaryItems = [self.createHeaderItem(), footer]
+>>>>>>> e8729d1 (Fix: Summary)
                 
             case .exercises:
                 let item = NSCollectionLayoutItem(layoutSize: .init(widthDimension: .fractionalWidth(0.5), heightDimension: .fractionalHeight(1.0)))
                 item.contentInsets = .init(top: 0, leading: 2, bottom: 0, trailing: 4)
                 let group = NSCollectionLayoutGroup.horizontal(layoutSize: .init(widthDimension: .fractionalWidth(1.0), heightDimension: .absolute(190)), subitems: [item, item])
                 section = NSCollectionLayoutSection(group: group)
+                section.boundarySupplementaryItems = [self.createHeaderItem()]
             }
             
             section.contentInsets = .init(top: 8, leading: 16, bottom: 24, trailing: 16)
-            section.boundarySupplementaryItems = [self.createHeaderItem()]
             return section
         }
     }
@@ -658,8 +685,15 @@ extension SummaryViewController: UICollectionViewDataSource, UICollectionViewDel
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         switch summarySections[section] {
+<<<<<<< HEAD
         case .medicationsSummary: return 1
         case .exercises: return exerciseData.count
+=======
+        case .medicationsSummary:
+            return dailyMedications.count // Returns 0 if empty, so NO card shows
+        case .exercises:
+            return exerciseData.count
+>>>>>>> e8729d1 (Fix: Summary)
         }
     }
     
@@ -669,6 +703,7 @@ extension SummaryViewController: UICollectionViewDataSource, UICollectionViewDel
         switch sectionType {
         case .medicationsSummary:
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "MedicationSummaryCell", for: indexPath) as! MedicationSummaryCell
+<<<<<<< HEAD
             
             if let model = primaryMedication {
                 cell.configure(with: model, totalTaken: totalTaken, totalScheduled: totalScheduled)
@@ -676,8 +711,11 @@ extension SummaryViewController: UICollectionViewDataSource, UICollectionViewDel
                 let emptyModel = MedicationModel(name: "No Medications", time: "--:--", detail: "None logged", iconName: "pill")
                 cell.configure(with: emptyModel, totalTaken: 0, totalScheduled: 0)
             }
+=======
+            let model = dailyMedications[indexPath.item]
+            cell.configure(with: model, totalTaken: totalTaken, totalScheduled: totalScheduled)
+>>>>>>> e8729d1 (Fix: Summary)
             return cell
-            
         case .exercises:
             let cell = collectionView.dequeueReusableCell(
                 withReuseIdentifier: "exercise_card_cell",
@@ -714,6 +752,7 @@ extension SummaryViewController: UICollectionViewDataSource, UICollectionViewDel
         }
     }
     func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
+<<<<<<< HEAD
         let header = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: "HeaderView", for: indexPath) as! SectionHeaderView
         let sectionType = summarySections[indexPath.section]
         
@@ -730,5 +769,41 @@ extension SummaryViewController: UICollectionViewDataSource, UICollectionViewDel
         header.setTitleAlignment(.left)
         
         return header
+=======
+        let sectionType = summarySections[indexPath.section]
+
+        if kind == UICollectionView.elementKindSectionHeader {
+            let header = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: "HeaderView", for: indexPath) as! SectionHeaderView
+            header.configure(title: sectionType == .exercises ? "Guided Exercise" : "Medications Log")
+            header.setTitleAlignment(.left)
+            return header
+        }
+        
+        // Handle the Empty Footer
+        if kind == UICollectionView.elementKindSectionFooter && sectionType == .medicationsSummary {
+            let footer = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: "EmptyMedicationFooter", for: indexPath)
+            
+            // Clean up old views
+            footer.subviews.forEach { $0.removeFromSuperview() }
+            
+            if dailyMedications.isEmpty {
+                let label = UILabel()
+                label.text = "No medication Logged yet"
+                label.textColor = .secondaryLabel
+                label.font = .systemFont(ofSize: 24, weight: .medium)
+                label.textAlignment = .center
+                label.translatesAutoresizingMaskIntoConstraints = false
+                
+                footer.addSubview(label)
+                NSLayoutConstraint.activate([
+                    label.centerXAnchor.constraint(equalTo: footer.centerXAnchor),
+                    label.centerYAnchor.constraint(equalTo: footer.centerYAnchor, constant: -15)
+                ])
+            }
+            return footer
+        }
+        
+        return UICollectionReusableView()
+>>>>>>> e8729d1 (Fix: Summary)
     }
 }
