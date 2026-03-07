@@ -6,38 +6,44 @@ class CalenderCollectionViewCell: UICollectionViewCell {
     @IBOutlet weak var calenderBackground: UIView!
     @IBOutlet weak var calenderDay: UILabel!
 
-    
-    
     override func awakeFromNib() {
         super.awakeFromNib()
         self.clipsToBounds = false
         self.contentView.clipsToBounds = false
-        
         setupShadow()
     }
     
     private func setupShadow() {
         calenderBackground.layer.cornerRadius = 17.8
-        
         calenderBackground.layer.masksToBounds = false
-        
         calenderBackground.layer.shadowColor = UIColor.black.cgColor
         calenderBackground.layer.shadowOpacity = 0.1
         calenderBackground.layer.shadowRadius = 3
         calenderBackground.layer.shadowOffset = CGSize(width: 0, height: 1)
     }
     
-    func configure(with model: DateModel, isSelected: Bool, isToday: Bool) {
+    // Added isFuture parameter here
+    func configure(with model: DateModel, isSelected: Bool, isToday: Bool, isFuture: Bool) {
         calenderDay.text = model.dayString
         calenderDate.text = model.dateString
         
+        // 1. Handle Future Dates First (Highest Priority for Styling)
+        if isFuture {
+            calenderBackground.backgroundColor = .white
+            calenderDay.textColor = .systemGray5
+            calenderDate.textColor = .systemGray5
+            calenderBackground.layer.borderWidth = 0
+            return // Exit early so selection/today logic doesn't override colors
+        }
+        
+        // 2. Default Styling for past/present
         calenderBackground.backgroundColor = .white
         calenderDay.textColor = .lightGray
         calenderDate.textColor = .black
-        
         calenderBackground.layer.borderWidth = 0
         calenderBackground.layer.borderColor = nil
 
+        // 3. Selection Styling
         if isSelected {
             calenderDay.textColor = .white
             calenderDate.textColor = .white
@@ -45,6 +51,7 @@ class CalenderCollectionViewCell: UICollectionViewCell {
             return
         }
         
+        // 4. Today Styling
         if isToday {
             calenderDay.textColor = .systemBlue
             calenderDate.textColor = .systemBlue

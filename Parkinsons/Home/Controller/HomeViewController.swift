@@ -371,14 +371,28 @@ class HomeViewController: UIViewController, UICollectionViewDelegate {
         
         switch sectionType {
         case .calendar:
-            let newDate = dates[indexPath.row].date
-            if !Calendar.current.isDate(newDate, inSameDayAs: selectedDate) {
+            let model = dates[indexPath.row]
+            let calendar = Calendar.current
+            
+            // Check if the date is after today
+            // We compare against the start of tomorrow to allow "today" to be clickable
+            let tomorrow = calendar.startOfDay(for: calendar.date(byAdding: .day, value: 1, to: Date())!)
+            
+            if model.date >= tomorrow {
+                // Future date: Deselect and return without doing anything
+                collectionView.deselectItem(at: indexPath, animated: false)
+                return
+            }
+
+            // Existing logic for valid dates
+            let newDate = model.date
+            if !calendar.isDate(newDate, inSameDayAs: selectedDate) {
                 selectedDate = newDate
                 collectionView.scrollToItem(at: indexPath, at: .centeredHorizontally, animated: true)
                 
                 if let header = collectionView.supplementaryView(forElementKind: UICollectionView.elementKindSectionHeader, at: IndexPath(item: 0, section: Section.calendar.rawValue)) as? SectionHeaderView {
                     let dateString = formattedDateString(for: selectedDate)
-                    let isToday = Calendar.current.isDateInToday(selectedDate)
+                    let isToday = calendar.isDateInToday(selectedDate)
                     header.configure(title: isToday ? "Today, \(dateString)" : dateString)
                 }
                 let visibleCalendarIndices = collectionView.indexPathsForVisibleItems.filter { $0.section == Section.calendar.rawValue }
@@ -435,9 +449,21 @@ extension HomeViewController: UICollectionViewDataSource {
         case .calendar:
             let cell = mainCollectionView.dequeueReusableCell(withReuseIdentifier: "calendar_cell", for: indexPath) as! CalenderCollectionViewCell
             let model = dates[indexPath.row]
-            let isSelected = Calendar.current.isDate(model.date, inSameDayAs: selectedDate)
-            let isToday = Calendar.current.isDate(model.date, inSameDayAs: Date())
-            cell.configure(with: model, isSelected: isSelected, isToday: isToday)
+            
+            let calendar = Calendar.current
+            let isSelected = calendar.isDate(model.date, inSameDayAs: selectedDate)
+            let isToday = calendar.isDateInToday(model.date)
+            
+            // Logic: If the date is strictly after today, it is "Future"
+            let isFuture = model.date > calendar.startOfDay(for: Date().addingTimeInterval(86400))
+            // Simplified alternative:
+            // let isFuture = calendar.compare(model.date, to: Date(), grainOf: .day) == .orderedDescending
+
+            cell.configure(with: model, isSelected: isSelected, isToday: isToday, isFuture: isFuture)
+            
+            // Disable interaction for the cell if it's in the future
+            cell.isUserInteractionEnabled = !isFuture
+            
             return cell
             
         case .medications:

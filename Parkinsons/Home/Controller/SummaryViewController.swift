@@ -95,6 +95,7 @@ class SummaryViewController: UIViewController {
     private func setupCollectionView() {
         mainCollectionView.dataSource = self
         mainCollectionView.delegate = self
+        mainCollectionView.isScrollEnabled = false
         mainCollectionView.register(UINib(nibName: "medicationSummary", bundle: nil), forCellWithReuseIdentifier: "MedicationSummaryCell")
         mainCollectionView.register(UINib(nibName: "ExerciseCardCell", bundle: nil), forCellWithReuseIdentifier: "exercise_card_cell")
         mainCollectionView.register(SectionHeaderView.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: "HeaderView")
