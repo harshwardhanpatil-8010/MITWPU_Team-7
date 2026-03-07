@@ -10,7 +10,7 @@ import HealthKit
 final class HealthKitManager {
 
     static let shared = HealthKitManager()
-    private let healthStore = HKHealthStore()
+    let healthStore = HKHealthStore()
 
     private init() {}
 }

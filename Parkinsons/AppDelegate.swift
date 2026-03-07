@@ -1,3 +1,4 @@
+
 import UIKit
 import AVFoundation
 import HealthKit
@@ -36,10 +37,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         // MARK: - Audio Session
 
         do {
-            try AVAudioSession.sharedInstance().setCategory(.playback, mode: .default, options: [])
+            try AVAudioSession.sharedInstance().setCategory(
+                .playback, mode: .default, options: [.mixWithOthers])
             try AVAudioSession.sharedInstance().setActive(true)
         } catch {
-            print("Failed to set audio session: \(error)")
+            print("[Audio] Session setup failed: \(error)")
         }
 
         // MARK: - HealthKit
@@ -66,9 +68,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             }
         }
 
+
         HealthKitManagerRhythmic.shared.requestAuthorization { granted in
-            print("HealthKit granted: \(granted)")
-            HealthKitManagerRhythmic.shared.checkAuthorizationStatus()
+            print("[HealthKit] Authorization granted: \(granted)")
         }
 
         return true
@@ -80,6 +82,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                      configurationForConnecting connectingSceneSession: UISceneSession,
                      options: UIScene.ConnectionOptions) -> UISceneConfiguration {
         return UISceneConfiguration(name: "Default Configuration", sessionRole: connectingSceneSession.role)
+
     }
 
     func application(_ application: UIApplication,

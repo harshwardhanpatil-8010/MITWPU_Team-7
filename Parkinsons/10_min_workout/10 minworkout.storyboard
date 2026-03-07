@@ -220,9 +220,9 @@
                                     <constraint firstItem="xWr-wC-5H9" firstAttribute="centerX" secondItem="bmk-RZ-sGy" secondAttribute="centerX" id="tTX-xB-oWQ"/>
                                 </constraints>
                             </view>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Exercises" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="jcs-0T-Vqw">
-                                <rect key="frame" x="16" y="358" width="370" height="28.666666666666686"/>
-                                <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="24"/>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Exercises for Today" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="jcs-0T-Vqw">
+                                <rect key="frame" x="16" y="368" width="370" height="24"/>
+                                <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="20"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
@@ -237,7 +237,7 @@
                                 </connections>
                             </button>
                             <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="8Ik-1f-ItZ">
-                                <rect key="frame" x="20" y="402.66666666666674" width="366" height="310.33333333333326"/>
+                                <rect key="frame" x="20" y="402" width="366" height="311"/>
                                 <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                                 <collectionViewFlowLayout key="collectionViewLayout" automaticEstimatedItemSize="YES" minimumLineSpacing="10" minimumInteritemSpacing="10" id="TMx-Vj-uYL">
                                     <size key="itemSize" width="128" height="128"/>
@@ -260,19 +260,18 @@
                         <viewLayoutGuide key="safeArea" id="Wub-cm-Ofp"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
-                            <constraint firstItem="jcs-0T-Vqw" firstAttribute="top" secondItem="bmk-RZ-sGy" secondAttribute="bottom" constant="30" id="2Ld-mz-zzq"/>
+                            <constraint firstItem="jcs-0T-Vqw" firstAttribute="top" secondItem="bmk-RZ-sGy" secondAttribute="bottom" constant="40" id="2Ld-mz-zzq"/>
                             <constraint firstItem="bmk-RZ-sGy" firstAttribute="centerX" secondItem="i6X-z3-sPf" secondAttribute="centerX" id="6kR-LV-M7N"/>
                             <constraint firstItem="xbg-g6-n8k" firstAttribute="top" secondItem="8Ik-1f-ItZ" secondAttribute="bottom" constant="20" id="7Dw-Bh-kWU"/>
                             <constraint firstItem="Wub-cm-Ofp" firstAttribute="trailing" secondItem="xbg-g6-n8k" secondAttribute="trailing" constant="20" id="AWh-rx-ozQ"/>
                             <constraint firstItem="8Ik-1f-ItZ" firstAttribute="leading" secondItem="Wub-cm-Ofp" secondAttribute="leading" constant="20" id="CDC-MN-Mxq"/>
-                            <constraint firstItem="jcs-0T-Vqw" firstAttribute="top" secondItem="bmk-RZ-sGy" secondAttribute="bottom" constant="30" id="DwY-ry-0jU"/>
                             <constraint firstItem="jcs-0T-Vqw" firstAttribute="leading" secondItem="Wub-cm-Ofp" secondAttribute="leading" constant="16" id="FLG-9c-1i1"/>
                             <constraint firstItem="bmk-RZ-sGy" firstAttribute="top" secondItem="Wub-cm-Ofp" secondAttribute="top" constant="20" id="KTW-F0-YaL"/>
                             <constraint firstItem="xbg-g6-n8k" firstAttribute="leading" secondItem="Wub-cm-Ofp" secondAttribute="leading" constant="20" id="QEU-tC-OoF"/>
                             <constraint firstItem="Wub-cm-Ofp" firstAttribute="bottom" secondItem="xbg-g6-n8k" secondAttribute="bottom" constant="25" id="Sls-8h-m6J"/>
                             <constraint firstItem="Wub-cm-Ofp" firstAttribute="trailing" secondItem="jcs-0T-Vqw" secondAttribute="trailing" constant="16" id="ck9-vb-yUJ"/>
                             <constraint firstItem="Wub-cm-Ofp" firstAttribute="trailing" secondItem="8Ik-1f-ItZ" secondAttribute="trailing" constant="16" id="otu-JP-k7p"/>
-                            <constraint firstItem="8Ik-1f-ItZ" firstAttribute="top" secondItem="jcs-0T-Vqw" secondAttribute="bottom" constant="16" id="pPX-C0-MJV"/>
+                            <constraint firstItem="8Ik-1f-ItZ" firstAttribute="top" secondItem="jcs-0T-Vqw" secondAttribute="bottom" constant="10" id="pPX-C0-MJV"/>
                         </constraints>
                     </view>
                     <navigationItem key="navigationItem" title="10 min Workout" id="uWL-aI-44F"/>
@@ -798,7 +797,7 @@
     <resources>
         <image name="checkmark.circle" catalog="system" width="128" height="123"/>
         <systemColor name="separatorColor">
-            <color red="0.23529411764705882" green="0.23529411764705882" blue="0.2627450980392157" alpha="0.12" colorSpace="custom" customColorSpace="sRGB"/>
+            <color red="0.23529411759999999" green="0.23529411759999999" blue="0.26274509800000001" alpha="0.28999999999999998" colorSpace="custom" customColorSpace="sRGB"/>
         </systemColor>
         <systemColor name="systemBackgroundColor">
             <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>

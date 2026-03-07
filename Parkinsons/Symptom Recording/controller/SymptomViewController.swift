@@ -1,11 +1,13 @@
 import UIKit
 
-class SymptomViewController: UIViewController {
+class SymptomViewController: UIViewController, SymptomRatingCellDelegate {
+    
 
     @IBOutlet weak var collectionView: UICollectionView!
     @IBOutlet weak var editAndSaveButton: UIButton!
     @IBOutlet weak var symptomBackground: UIView!
     @IBOutlet weak var tableView: UITableView!
+
     @IBOutlet weak var tableViewHeightConstraint: NSLayoutConstraint!
 
     // Removed dates array as it was used for the calendar
@@ -16,7 +18,6 @@ class SymptomViewController: UIViewController {
     private var tremorFrequencyHz: Double?
     private var todayAggregatedPoints: [AggregatedTremorPoint] = []
 
-    // 1. Updated Sections: Removed .calendar
     enum Section: Int, CaseIterable {
         case tremor = 0
         case gait = 1
@@ -34,18 +35,20 @@ class SymptomViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         requestHealthKitIfNeeded()
+
         tableView.separatorStyle = .none
         registerCells()
         collectionView.dataSource = self
         collectionView.delegate = self
         collectionView.setCollectionViewLayout(generateLayout(), animated: true)
-        
+
         tableView.dataSource = self
         tableView.delegate = self
         setupTableViewUI()
         updateDataForSelectedDate()
         setupSymptomBackgroundUI()
     }
+
 
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
@@ -111,6 +114,7 @@ class SymptomViewController: UIViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         collectionView.reloadData()
+
     }
 
     // MARK: - UI Setup
@@ -136,7 +140,6 @@ class SymptomViewController: UIViewController {
     }
 
     func registerCells() {
-        // Removed calendar cell registration
         collectionView.register(UINib(nibName: "tremorCard", bundle: nil), forCellWithReuseIdentifier: "tremor_cell")
         collectionView.register(UINib(nibName: "gaitCard", bundle: nil), forCellWithReuseIdentifier: "gait_cell")
         tableView.register(UINib(nibName: "SymptomDetailCell", bundle: nil), forCellReuseIdentifier: SymptomDetailCell.reuseIdentifier)
@@ -204,26 +207,29 @@ class SymptomViewController: UIViewController {
             }
         }
     }
+
 }
 
 // MARK: - CollectionView
 
 extension SymptomViewController: UICollectionViewDataSource, UICollectionViewDelegate {
-
+    
     func numberOfSections(in collectionView: UICollectionView) -> Int { Section.allCases.count }
 
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int { 1 }
+
 
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         guard let sectionType = Section(rawValue: indexPath.section) else { return UICollectionViewCell() }
         switch sectionType {
         case .tremor:
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "tremor_cell", for: indexPath) as! tremorCard
+
             let displayHz: Double? = (tremorFrequencyHz == nil || tremorFrequencyHz == 0.0) ? nil : tremorFrequencyHz
             let isSteady = tremorFrequencyHz == 0.0
             cell.configure(frequencyHz: displayHz, isSteady: isSteady, graphPoints: todayAggregatedPoints)
             return cell
-
+            
         case .gait:
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "gait_cell", for: indexPath) as! gaitCard
             cell.configureWithPoints(range: gaitRangeText ?? "Loading…", points: gaitGraphPoints)
@@ -277,9 +283,10 @@ extension SymptomViewController: UITableViewDataSource, UITableViewDelegate {
     }
 }
 
-extension SymptomViewController: SymptomRatingCellDelegate {
+extension SymptomViewController {
     func didSelectIntensity(_ intensity: SymptomRating.Intensity, in cell: SymptomRatingCell) {
         guard let indexPath = tableView.indexPath(for: cell) else { return }
         currentDayLogs[indexPath.row].selectedIntensity = intensity
     }
 }
+

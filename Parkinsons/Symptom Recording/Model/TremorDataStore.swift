@@ -61,7 +61,7 @@ final class TremorDataStore {
     }
 
     private func saveInternal(_ sample: TremorSample, dedupInterval: TimeInterval) {
-        let request = NSFetchRequest<NSManagedObject>(entityName: "TremorSampleEntity")
+        let request = NSFetchRequest<NSManagedObject>(entityName: "Tremor")
         request.sortDescriptors = [NSSortDescriptor(key: "date", ascending: false)]
         request.fetchLimit = 1
 
@@ -71,7 +71,7 @@ final class TremorDataStore {
             return
         }
 
-        let e = NSEntityDescription.insertNewObject(forEntityName: "TremorSampleEntity", into: context)
+        let e = NSEntityDescription.insertNewObject(forEntityName: "Tremor", into: context)
         e.setValue(UUID(),             forKey: "id")
         e.setValue(sample.date,        forKey: "date")
         e.setValue(sample.frequencyHz, forKey: "frequencyHz")
@@ -88,7 +88,7 @@ final class TremorDataStore {
     // MARK: - Fetch all
 
     func fetchAll() -> [TremorSample] {
-        let req = NSFetchRequest<NSManagedObject>(entityName: "TremorSampleEntity")
+        let req = NSFetchRequest<NSManagedObject>(entityName: "Tremor")
         req.sortDescriptors = [NSSortDescriptor(key: "date", ascending: true)]
         return (try? context.fetch(req))?.compactMap { map($0) } ?? []
     }
@@ -112,7 +112,7 @@ final class TremorDataStore {
     // MARK: - Private helpers
 
     private func fetchSamples(from start: Date, to end: Date) -> [TremorSample] {
-        let req = NSFetchRequest<NSManagedObject>(entityName: "TremorSampleEntity")
+        let req = NSFetchRequest<NSManagedObject>(entityName: "Tremor")
         req.predicate = NSPredicate(format: "date >= %@ AND date < %@", start as CVarArg, end as CVarArg)
         req.sortDescriptors = [NSSortDescriptor(key: "date", ascending: true)]
         return (try? context.fetch(req))?.compactMap { map($0) } ?? []
@@ -174,7 +174,7 @@ extension TremorDataStore {
         let bg = PersistenceController.shared.newBackgroundContext()
         bg.perform {
             for s in old {
-                let e = NSEntityDescription.insertNewObject(forEntityName: "TremorSampleEntity", into: bg)
+                let e = NSEntityDescription.insertNewObject(forEntityName: "Tremor", into: bg)
                 e.setValue(UUID(),          forKey: "id")
                 e.setValue(s.date,          forKey: "date")
                 e.setValue(s.frequencyHz,   forKey: "frequencyHz")

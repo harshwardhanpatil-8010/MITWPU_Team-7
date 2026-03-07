@@ -43,6 +43,7 @@ class CalenderCollectionViewCell: UICollectionViewCell {
         calenderBackground.layer.borderWidth = 0
         calenderBackground.layer.borderColor = nil
 
+
         // 3. Selection Styling
         if isSelected {
             calenderDay.textColor = .white

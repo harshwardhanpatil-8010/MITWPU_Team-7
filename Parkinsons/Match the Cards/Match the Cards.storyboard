@@ -17,7 +17,7 @@
                         <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="TrophyImage" translatesAutoresizingMaskIntoConstraints="NO" id="Jln-MY-x4G">
+                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="cards" translatesAutoresizingMaskIntoConstraints="NO" id="Jln-MY-x4G">
                                 <rect key="frame" x="106" y="123" width="180" height="180"/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="180" id="1M8-gd-nVL"/>
@@ -25,13 +25,13 @@
                                 </constraints>
                             </imageView>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Daily Challenge" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="bFM-Tb-Pm4">
-                                <rect key="frame" x="16" y="319" width="361" height="23"/>
+                                <rect key="frame" x="16" y="333" width="361" height="23"/>
                                 <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="19"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="ehY-tb-4fN">
-                                <rect key="frame" x="0.0" y="352" width="393" height="390"/>
+                                <rect key="frame" x="0.0" y="366" width="393" height="376"/>
                                 <subviews>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="January 2026" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="bWV-1L-duc">
                                         <rect key="frame" x="16" y="0.0" width="361" height="20.333333333333332"/>
@@ -106,7 +106,7 @@
                                         </subviews>
                                     </stackView>
                                     <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="G6S-L3-cyg">
-                                        <rect key="frame" x="0.0" y="51" width="393" height="289"/>
+                                        <rect key="frame" x="0.0" y="51" width="393" height="275"/>
                                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                                         <collectionViewFlowLayout key="collectionViewLayout" automaticEstimatedItemSize="YES" minimumLineSpacing="0.0" minimumInteritemSpacing="0.0" id="01K-fL-Ef5">
                                             <size key="itemSize" width="128" height="128"/>
@@ -175,10 +175,10 @@
                                 </constraints>
                             </view>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="rR8-W1-hW2">
-                                <rect key="frame" x="132.66666666666666" y="720" width="127.99999999999997" height="48"/>
+                                <rect key="frame" x="107.66666666666669" y="716" width="178" height="52"/>
                                 <constraints>
-                                    <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="128" id="IMQ-Gw-QY2"/>
-                                    <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="48" id="ZtR-Yi-Gv8"/>
+                                    <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="178" id="IMQ-Gw-QY2"/>
+                                    <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="52" id="ZtR-Yi-Gv8"/>
                                 </constraints>
                                 <state key="normal" title="Button"/>
                                 <buttonConfiguration key="configuration" style="filled" title="Play" cornerStyle="capsule"/>
@@ -195,7 +195,7 @@
                             <constraint firstItem="9oP-sP-g9N" firstAttribute="trailing" secondItem="bFM-Tb-Pm4" secondAttribute="trailing" constant="16" id="8HC-0h-eZR"/>
                             <constraint firstItem="ehY-tb-4fN" firstAttribute="trailing" secondItem="9oP-sP-g9N" secondAttribute="trailing" id="BAI-0K-5Hg"/>
                             <constraint firstItem="Jln-MY-x4G" firstAttribute="leading" secondItem="9oP-sP-g9N" secondAttribute="leading" constant="106" id="BFc-PX-3UL"/>
-                            <constraint firstItem="bFM-Tb-Pm4" firstAttribute="top" secondItem="Jln-MY-x4G" secondAttribute="bottom" constant="16" id="C41-Sf-NWJ"/>
+                            <constraint firstItem="bFM-Tb-Pm4" firstAttribute="top" secondItem="Jln-MY-x4G" secondAttribute="bottom" constant="30" id="C41-Sf-NWJ"/>
                             <constraint firstItem="bFM-Tb-Pm4" firstAttribute="leading" secondItem="9oP-sP-g9N" secondAttribute="leading" constant="16" id="Jkh-Mf-Xyp"/>
                             <constraint firstItem="9oP-sP-g9N" firstAttribute="bottom" secondItem="rR8-W1-hW2" secondAttribute="bottom" constant="16" id="Jor-2o-FtJ"/>
                             <constraint firstItem="9oP-sP-g9N" firstAttribute="trailing" secondItem="Jln-MY-x4G" secondAttribute="trailing" constant="107" id="ccp-hr-qTt"/>
@@ -467,7 +467,7 @@
         </scene>
     </scenes>
     <resources>
-        <image name="TrophyImage" width="398" height="428"/>
+        <image name="cards" width="616" height="294"/>
         <image name="checkmark.circle.fill" catalog="system" width="128" height="123"/>
         <image name="chevron.left" catalog="system" width="97" height="128"/>
         <image name="lightbulb.fill" catalog="system" width="92" height="128"/>
@@ -475,13 +475,13 @@
         <image name="xmark" catalog="system" width="128" height="113"/>
         <image name="🎊" width="150" height="150"/>
         <systemColor name="separatorColor">
-            <color red="0.23529411764705882" green="0.23529411764705882" blue="0.2627450980392157" alpha="0.12" colorSpace="custom" customColorSpace="sRGB"/>
+            <color red="0.23529411759999999" green="0.23529411759999999" blue="0.26274509800000001" alpha="0.28999999999999998" colorSpace="custom" customColorSpace="sRGB"/>
         </systemColor>
         <systemColor name="systemBackgroundColor">
             <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
         </systemColor>
         <systemColor name="systemGrayColor">
-            <color red="0.55686274509803924" green="0.55686274509803924" blue="0.57647058823529407" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <color red="0.5568627451" green="0.5568627451" blue="0.57647058819999997" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </systemColor>
     </resources>
 </document>
