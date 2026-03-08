@@ -50,13 +50,18 @@ class profileViewController: UIViewController {
     }
 
     @IBAction func medicationNavigation(_ sender: Any) {
-        
         let storyboard = UIStoryboard(name: "Medication", bundle: nil)
         
         if let medicationVC = storyboard.instantiateViewController(withIdentifier: "MainMedicationVC") as? MainMedicationViewController {
-         
-            medicationVC.modalPresentationStyle = .pageSheet
-            self.present(medicationVC, animated: true, completion: nil)
+            
+            // 1. Tell the destination it's coming from Profile
+            medicationVC.isPresentedFromProfile = true
+            
+            // 2. Wrap in Navigation Controller to enable the "X" button
+            let navController = UINavigationController(rootViewController: medicationVC)
+            navController.modalPresentationStyle = .pageSheet
+            
+            self.present(navController, animated: true, completion: nil)
         }
     }
     override func viewDidLayoutSubviews() {

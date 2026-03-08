@@ -7,7 +7,9 @@ final class MainMedicationViewController: UIViewController {
     @IBOutlet weak var medicationCollectionView: UICollectionView!
     @IBOutlet weak var noMedicationLabel: UIStackView!
     @IBOutlet weak var editButton: UIBarButtonItem!
-    
+    var isPresentedFromProfile: Bool = false
+    @IBOutlet weak var plusButton: UIButton!
+
     enum SegmentType {
         case today
         case myMedication
@@ -44,6 +46,12 @@ final class MainMedicationViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        if isPresentedFromProfile {
+                    setupProfilePresentationUI()
+                }
+                
+                setupCollectionView()
+        
         setupCollectionView()
         updateUIForSegment()
         self.definesPresentationContext = true
@@ -66,7 +74,21 @@ final class MainMedicationViewController: UIViewController {
             self?.loadMedications()
         }
     }
-    
+    private func setupProfilePresentationUI() {
+            // 1. Set up the "X" (Close) button
+            let closeButton = UIBarButtonItem(barButtonSystemItem: .close, target: self, action: #selector(dismissModal))
+            self.navigationItem.leftBarButtonItem = closeButton
+            
+            // 2. Hide the Plus button
+            plusButton.isHidden = true
+            
+            // 3. Set segment to "My Medication" (index 1)
+            medSegment.selectedSegmentIndex = 1
+            currentSegment = .myMedication
+        }
+    @objc private func dismissModal() {
+            self.dismiss(animated: true, completion: nil)
+        }
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         loadMedications()

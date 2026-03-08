@@ -545,6 +545,7 @@
                         <outlet property="medSegment" destination="K65-Ym-9su" id="xyW-Ww-RwM"/>
                         <outlet property="medicationCollectionView" destination="t7A-gk-CD4" id="aKr-gJ-SiI"/>
                         <outlet property="noMedicationLabel" destination="Ua8-xd-Rtz" id="DeV-Bj-SN2"/>
+                        <outlet property="plusButton" destination="KiJ-pe-Mx2" id="mMz-w1-ese"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Ns3-hb-kou" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
