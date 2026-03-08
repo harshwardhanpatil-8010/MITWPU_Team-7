@@ -162,7 +162,7 @@ extension Notification.Name {
 }
 
 class EmojiLandingScreen: UIViewController, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
-
+//
     @IBOutlet weak var infoButton: UIBarButtonItem!
     @IBOutlet weak var monthAndYearOutlet: UILabel!
     @IBOutlet weak var playButton: UIButton!
@@ -183,7 +183,8 @@ class EmojiLandingScreen: UIViewController, UICollectionViewDataSource, UICollec
 
     override func viewDidLoad() {
         super.viewDidLoad()
-
+        infoButton.target = self
+            infoButton.action = #selector(infoButtonTapped(_:))
         NotificationCenter.default.addObserver(
             self,
             selector: #selector(refreshUI),
@@ -214,7 +215,30 @@ class EmojiLandingScreen: UIViewController, UICollectionViewDataSource, UICollec
         updateCompletionCount()
         collectionView.reloadData()
     }
-
+    @objc @IBAction func infoButtonTapped(_ sender: UIBarButtonItem) {
+        print("Action triggered programmatically!")
+        
+        let storyboard = UIStoryboard(name: "MimicTheEmoji", bundle: nil)
+        
+        if let infoVC = storyboard.instantiateViewController(withIdentifier: "InfoMimicTheEmojiViewController") as? InfoMimicTheEmojiViewController {
+            infoVC.modalPresentationStyle = .pageSheet
+            self.present(infoVC, animated: true, completion: nil)
+        } else {
+            print("Error: Could not find InfoMimicTheEmojiViewController. Check Storyboard ID.")
+        }
+    }
+//    @IBAction func infoButtonTapped(_ sender: UIBarButtonItem) {
+//        print("Info button was tapped!") // If this doesn't print, the Storyboard connection is broken.
+//        
+//        let storyboard = UIStoryboard(name: "MimicTheEmoji", bundle: nil)
+//        
+//        if let infoVC = storyboard.instantiateViewController(withIdentifier: "InfoMimicTheEmojiViewController") as? InfoMimicTheEmojiViewController {
+//            infoVC.modalPresentationStyle = .pageSheet
+//            self.present(infoVC, animated: true, completion: nil)
+//        } else {
+//            print("Could not find InfoMimicTheEmojiViewController in Storyboard")
+//        }
+//    }
     private func updateCompletionCount() {
         let completedCount = (0..<daysInMonth).filter { offset in
             guard let date = calendar.date(byAdding: .day, value: offset, to: firstDayOfMonth) else { return false }

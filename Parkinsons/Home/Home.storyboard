@@ -163,9 +163,7 @@
                                         </constraints>
                                         <color key="tintColor" white="0.66666666669999997" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <state key="normal" title="Button"/>
-                                        <buttonConfiguration key="configuration" style="gray" title="Past Symptom Records" imagePadding="135">
-                                            <imageReference key="image" image="chevron.right" catalog="system" symbolScale="medium"/>
-                                            <preferredSymbolConfiguration key="preferredSymbolConfigurationForImage" scale="large" weight="bold"/>
+                                        <buttonConfiguration key="configuration" style="plain">
                                             <directionalEdgeInsets key="contentInsets" top="0.0" leading="0.0" bottom="0.0" trailing="0.0"/>
                                         </buttonConfiguration>
                                         <connections>

@@ -21,7 +21,11 @@
                                 <rect key="frame" x="0.0" y="64" width="393" height="54"/>
                                 <items>
                                     <navigationItem id="mvb-h5-Eq0">
-                                        <barButtonItem key="rightBarButtonItem" image="questionmark.circle" catalog="system" id="HxH-FN-rvd"/>
+                                        <barButtonItem key="rightBarButtonItem" title="Item" id="Rgi-QO-eJa">
+                                            <connections>
+                                                <action selector="infoButtonTapped:" destination="AEg-aT-B4j" id="0DG-LI-duE"/>
+                                            </connections>
+                                        </barButtonItem>
                                     </navigationItem>
                                 </items>
                             </navigationBar>
@@ -184,7 +188,7 @@
                     <connections>
                         <outlet property="collectionView" destination="icA-Be-QOe" id="2V4-3q-AzF"/>
                         <outlet property="completedLabel" destination="ApT-8p-MC6" id="YHV-n0-EvZ"/>
-                        <outlet property="infoButton" destination="HxH-FN-rvd" id="yS7-7R-hfn"/>
+                        <outlet property="infoButton" destination="Rgi-QO-eJa" id="Wog-Tq-rB1"/>
                         <outlet property="monthAndYearOutlet" destination="qhA-DW-pOk" id="YbO-o4-Inu"/>
                         <outlet property="playButton" destination="d9j-NU-iKa" id="863-yK-e8G"/>
                     </connections>
@@ -476,12 +480,107 @@
             </objects>
             <point key="canvasLocation" x="2866.4122137404579" y="130.98591549295776"/>
         </scene>
+        <!--Info Mimic The Emoji View Controller-->
+        <scene sceneID="vuK-cY-8Ux">
+            <objects>
+                <viewController storyboardIdentifier="InfoMimicTheEmojiViewController" useStoryboardIdentifierAsRestorationIdentifier="YES" id="QW1-SM-jxc" customClass="InfoMimicTheEmojiViewController" customModule="Parkinsons" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="ard-oo-iKr">
+                        <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="0L2-eC-IIC">
+                                <rect key="frame" x="16" y="113.00000000000001" width="361" height="240.33333333333337"/>
+                                <string key="text">1. You’ll see an Emoji on the screen
+2. You need to mimic the expression of that emoji
+3. If the expression matches the next emoji will appear
+4. If you are not able to match the emoji tap the skip button
+5. You will get a set of 10 emoji try and mimic all of them
+6. High score will be based on how many you complete and the time taken</string>
+                                <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Daily challenges" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="KZ3-kJ-3uF">
+                                <rect key="frame" x="16" y="384.33333333333331" width="361" height="21"/>
+                                <fontDescription key="fontDescription" style="UICTFontTextStyleHeadline"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="cnz-dF-qK3">
+                                <rect key="frame" x="16" y="412.33333333333331" width="361" height="218.33333333333331"/>
+                                <string key="text">1. Each level introduces a new set of cards for you to complete.
+2. Difficulty increases slowly as you move forward.
+3. Finish the current level to unlock the next one.
+4. Take your time, you can replay any level anytime.
+5. After completing each level, you can see the time taken to finish.</string>
+                                <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="How to Play ?" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="kDK-xV-XP7">
+                                <rect key="frame" x="16" y="85" width="361" height="21"/>
+                                <fontDescription key="fontDescription" style="UICTFontTextStyleHeadline"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="ErI-r2-OSC">
+                                <rect key="frame" x="16" y="368.33333333333331" width="361" height="1"/>
+                                <color key="backgroundColor" systemColor="separatorColor"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="1" id="qLd-7j-gch"/>
+                                </constraints>
+                            </view>
+                            <navigationBar contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="9oA-d5-Y43">
+                                <rect key="frame" x="0.0" y="15" width="393" height="54"/>
+                                <items>
+                                    <navigationItem id="1l9-Rk-exe">
+                                        <barButtonItem key="leftBarButtonItem" title="Item" image="xmark" catalog="system" id="zrI-yf-aDn">
+                                            <connections>
+                                                <action selector="closeButtonTapped:" destination="QW1-SM-jxc" id="n08-8m-Ped"/>
+                                            </connections>
+                                        </barButtonItem>
+                                    </navigationItem>
+                                </items>
+                            </navigationBar>
+                        </subviews>
+                        <viewLayoutGuide key="safeArea" id="Ogo-j7-8R0"/>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                        <constraints>
+                            <constraint firstAttribute="trailing" secondItem="ErI-r2-OSC" secondAttribute="trailing" constant="16" id="4CL-VR-041"/>
+                            <constraint firstItem="9oA-d5-Y43" firstAttribute="top" secondItem="ard-oo-iKr" secondAttribute="top" constant="15" id="9az-iM-Oll"/>
+                            <constraint firstAttribute="trailing" secondItem="9oA-d5-Y43" secondAttribute="trailing" id="Avs-M3-ZEY"/>
+                            <constraint firstItem="Ogo-j7-8R0" firstAttribute="trailing" secondItem="kDK-xV-XP7" secondAttribute="trailing" constant="16" id="HYF-su-Dxf"/>
+                            <constraint firstItem="ErI-r2-OSC" firstAttribute="leading" secondItem="ard-oo-iKr" secondAttribute="leading" constant="16" id="IbW-TY-Qjx"/>
+                            <constraint firstItem="Ogo-j7-8R0" firstAttribute="trailing" secondItem="0L2-eC-IIC" secondAttribute="trailing" constant="16" id="LCQ-cf-8cn"/>
+                            <constraint firstItem="ErI-r2-OSC" firstAttribute="top" secondItem="0L2-eC-IIC" secondAttribute="bottom" constant="15" id="OD9-8h-akx"/>
+                            <constraint firstItem="9oA-d5-Y43" firstAttribute="leading" secondItem="ard-oo-iKr" secondAttribute="leading" id="PhM-Zc-aQC"/>
+                            <constraint firstItem="cnz-dF-qK3" firstAttribute="top" secondItem="KZ3-kJ-3uF" secondAttribute="bottom" constant="7" id="QtG-Hd-FiX"/>
+                            <constraint firstItem="Ogo-j7-8R0" firstAttribute="trailing" secondItem="cnz-dF-qK3" secondAttribute="trailing" constant="16" id="TfH-ek-D9U"/>
+                            <constraint firstItem="Ogo-j7-8R0" firstAttribute="trailing" secondItem="KZ3-kJ-3uF" secondAttribute="trailing" constant="16" id="V2E-Ml-enC"/>
+                            <constraint firstItem="kDK-xV-XP7" firstAttribute="leading" secondItem="Ogo-j7-8R0" secondAttribute="leading" constant="16" id="Vwt-Gd-QHc"/>
+                            <constraint firstItem="0L2-eC-IIC" firstAttribute="top" secondItem="kDK-xV-XP7" secondAttribute="bottom" constant="7" id="Vz9-8d-IT3"/>
+                            <constraint firstItem="0L2-eC-IIC" firstAttribute="leading" secondItem="Ogo-j7-8R0" secondAttribute="leading" constant="16" id="ZBE-pp-euw"/>
+                            <constraint firstItem="cnz-dF-qK3" firstAttribute="leading" secondItem="Ogo-j7-8R0" secondAttribute="leading" constant="16" id="ZIe-Bz-va7"/>
+                            <constraint firstItem="KZ3-kJ-3uF" firstAttribute="leading" secondItem="Ogo-j7-8R0" secondAttribute="leading" constant="16" id="Ztn-hO-oHC"/>
+                            <constraint firstItem="kDK-xV-XP7" firstAttribute="top" secondItem="9oA-d5-Y43" secondAttribute="bottom" constant="16" id="cD0-RP-PeK"/>
+                            <constraint firstItem="KZ3-kJ-3uF" firstAttribute="top" secondItem="ErI-r2-OSC" secondAttribute="bottom" constant="15" id="wo8-1G-FHH"/>
+                        </constraints>
+                    </view>
+                    <navigationItem key="navigationItem" id="egy-mt-mFv"/>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="B4z-Tu-zre" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1218" y="825"/>
+        </scene>
     </scenes>
     <resources>
         <image name="Emoji Landing" width="185" height="220"/>
         <image name="checkmark.circle.fill" catalog="system" width="128" height="123"/>
-        <image name="questionmark.circle" catalog="system" width="128" height="123"/>
+        <image name="xmark" catalog="system" width="128" height="113"/>
         <image name="🎊" width="150" height="150"/>
+        <systemColor name="separatorColor">
+            <color red="0.23529411759999999" green="0.23529411759999999" blue="0.26274509800000001" alpha="0.28999999999999998" colorSpace="custom" customColorSpace="sRGB"/>
+        </systemColor>
         <systemColor name="systemBackgroundColor">
             <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
         </systemColor>
