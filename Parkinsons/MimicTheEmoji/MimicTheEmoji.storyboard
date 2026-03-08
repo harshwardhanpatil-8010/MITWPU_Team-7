@@ -21,7 +21,7 @@
                                 <rect key="frame" x="0.0" y="64" width="393" height="54"/>
                                 <items>
                                     <navigationItem id="mvb-h5-Eq0">
-                                        <barButtonItem key="rightBarButtonItem" title="Item" id="Rgi-QO-eJa">
+                                        <barButtonItem key="rightBarButtonItem" image="questionmark.circle" catalog="system" id="Rgi-QO-eJa">
                                             <connections>
                                                 <action selector="infoButtonTapped:" destination="AEg-aT-B4j" id="0DG-LI-duE"/>
                                             </connections>
@@ -576,6 +576,7 @@
     <resources>
         <image name="Emoji Landing" width="185" height="220"/>
         <image name="checkmark.circle.fill" catalog="system" width="128" height="123"/>
+        <image name="questionmark.circle" catalog="system" width="128" height="123"/>
         <image name="xmark" catalog="system" width="128" height="113"/>
         <image name="🎊" width="150" height="150"/>
         <systemColor name="separatorColor">
