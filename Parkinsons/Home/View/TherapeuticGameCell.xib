@@ -20,7 +20,7 @@
                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="hyf-t1-NL3">
                         <rect key="frame" x="0.0" y="0.0" width="333" height="75"/>
                         <subviews>
-                            <stackView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="hy0-fp-BNZ">
+                            <stackView opaque="NO" contentMode="scaleToFill" spacing="-73" translatesAutoresizingMaskIntoConstraints="NO" id="hy0-fp-BNZ">
                                 <rect key="frame" x="16" y="20" width="301" height="16"/>
                                 <subviews>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="hTJ-CF-CKg">
@@ -30,20 +30,20 @@
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <stackView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="fw7-hJ-XQc">
-                                        <rect key="frame" x="256.33333333333331" y="0.0" width="44.666666666666686" height="16"/>
+                                        <rect key="frame" x="183.33333333333334" y="0.0" width="117.66666666666666" height="16"/>
                                         <subviews>
                                             <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="checkmark.circle.fill" catalog="system" translatesAutoresizingMaskIntoConstraints="NO" id="I8o-MU-zQC">
                                                 <rect key="frame" x="0.0" y="0.66666666666666607" width="16" height="14.666666666666668"/>
-                                                <color key="tintColor" red="0.94117647059999998" green="0.71372549019999998" blue="0.45098039220000002" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                                <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                 <constraints>
                                                     <constraint firstAttribute="height" constant="16" id="cKQ-3S-Vqx"/>
                                                     <constraint firstAttribute="width" constant="16" id="hXw-uq-NHL"/>
                                                 </constraints>
                                             </imageView>
-                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="1/31 " lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="w0B-dn-4fk">
-                                                <rect key="frame" x="16" y="0.0" width="28.666666666666671" height="16"/>
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="1/31 completed" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="w0B-dn-4fk">
+                                                <rect key="frame" x="16.000000000000007" y="0.0" width="101.66666666666669" height="16"/>
                                                 <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="13"/>
-                                                <nil key="textColor"/>
+                                                <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                 <nil key="highlightedColor"/>
                                             </label>
                                         </subviews>

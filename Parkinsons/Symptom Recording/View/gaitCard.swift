@@ -2,15 +2,13 @@ import UIKit
 
 class gaitCard: UICollectionViewCell {
 
-    // MARK: - IBOutlets (XIB only)
     @IBOutlet weak var unitLabel: UILabel!
     @IBOutlet weak var rangeLabel: UILabel!
     @IBOutlet weak var cardBackground: UIView!
-    @IBOutlet weak var walkingSteadinessView: UIView!   // 139 × 68 pt
+    @IBOutlet weak var walkingSteadinessView: UIView!
 
     private var graphPoints: [(date: Date, value: Double)] = []
 
-    // MARK: - Lifecycle
 
     override func awakeFromNib() {
         super.awakeFromNib()
@@ -25,7 +23,6 @@ class gaitCard: UICollectionViewCell {
         DispatchQueue.main.async { self.redrawGraph() }
     }
 
-    // MARK: - Card Style
 
     private func setupCardStyle() {
         cardBackground.layer.cornerRadius = 20
@@ -36,7 +33,6 @@ class gaitCard: UICollectionViewCell {
         cardBackground.layer.shadowOffset  = CGSize(width: 0, height: 3)
     }
 
-    // MARK: - Configure
 
     func configure(range: String) {
         configureWithPoints(range: range, points: [])
@@ -68,11 +64,6 @@ class gaitCard: UICollectionViewCell {
         return .systemRed
     }
 
-    // MARK: - Mini Graph
-    // View is 139 × 68 pt.
-    // Left pad = 22 pt for Y labels ("100"/"0")
-    // Bottom pad = 14 pt for X labels (date)
-    // Top/right pad = 4 pt
 
     private func redrawGraph() {
         walkingSteadinessView.layer.sublayers?.forEach { $0.removeFromSuperlayer() }
@@ -98,22 +89,17 @@ class gaitCard: UICollectionViewCell {
             return CGPoint(x: x, y: y)
         }
 
-        // ── Y axis labels: 100 (top) and 0 (bottom) ──────────────
         addText("100", frame: CGRect(x: 0, y: pT - 1, width: pL - 3, height: 10),
                 align: .right, color: .tertiaryLabel)
         addText("0",   frame: CGRect(x: 0, y: H - pB - 8, width: pL - 3, height: 10),
                 align: .right, color: .tertiaryLabel)
 
-        // ── Axes ──────────────────────────────────────────────────
         addLine(from: CGPoint(x: pL, y: pT),      to: CGPoint(x: pL, y: H - pB),
                 color: UIColor.systemGray5.cgColor, w: 0.5)
         addLine(from: CGPoint(x: pL, y: H - pB),  to: CGPoint(x: W - pR, y: H - pB),
                 color: UIColor.systemGray5.cgColor, w: 0.5)
-
-        // ── X axis labels: first and last date ────────────────────
         if pts.count >= 2 {
             let fmt = DateFormatter()
-            // Choose format based on date span
             let span = pts.last!.date.timeIntervalSince(pts.first!.date)
             fmt.dateFormat = span < 86400 ? "HH:mm" : "d MMM"
 
@@ -125,7 +111,6 @@ class gaitCard: UICollectionViewCell {
                     align: .right, color: .tertiaryLabel)
         }
 
-        // ── No data state ─────────────────────────────────────────
         guard pts.count > 0 else {
             addLine(from: CGPoint(x: pL,     y: H - pB - uh / 2),
                     to:   CGPoint(x: W - pR, y: H - pB - uh / 2),
@@ -133,7 +118,6 @@ class gaitCard: UICollectionViewCell {
             return
         }
 
-        // ── Gradient fill ─────────────────────────────────────────
         if pts.count > 1 {
             let fillPath = UIBezierPath()
             fillPath.move(to: CGPoint(x: coord(0).x, y: H - pB))
@@ -158,7 +142,6 @@ class gaitCard: UICollectionViewCell {
             walkingSteadinessView.layer.addSublayer(grad)
         }
 
-        // ── Smooth line ───────────────────────────────────────────
         if pts.count > 1 {
             let lp = UIBezierPath()
             lp.move(to: coord(0))
@@ -177,7 +160,6 @@ class gaitCard: UICollectionViewCell {
             walkingSteadinessView.layer.addSublayer(ll)
         }
 
-        // ── Colour-coded dots ─────────────────────────────────────
         let dotR: CGFloat = pts.count > 8 ? 1.5 : 2.5
         for i in 0..<pts.count {
             let p   = coord(i)
@@ -195,8 +177,6 @@ class gaitCard: UICollectionViewCell {
             walkingSteadinessView.layer.addSublayer(dot)
         }
     }
-
-    // MARK: - Layer helpers
 
     private func addText(_ text: String, frame: CGRect, align: CATextLayerAlignmentMode, color: UIColor) {
         let l = CATextLayer()

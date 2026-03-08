@@ -33,7 +33,7 @@
                                 </constraints>
                             </imageView>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="0aA-Qp-don">
-                                <rect key="frame" x="0.0" y="339" width="393" height="399"/>
+                                <rect key="frame" x="0.0" y="369" width="393" height="369"/>
                                 <subviews>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="January 2026" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="qhA-DW-pOk">
                                         <rect key="frame" x="16.000000000000007" y="0.0" width="110.66666666666669" height="20.333333333333332"/>
@@ -108,7 +108,7 @@
                                         </subviews>
                                     </stackView>
                                     <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="icA-Be-QOe">
-                                        <rect key="frame" x="0.0" y="46" width="393" height="303"/>
+                                        <rect key="frame" x="0.0" y="46" width="393" height="273"/>
                                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                                         <collectionViewFlowLayout key="collectionViewLayout" automaticEstimatedItemSize="YES" minimumLineSpacing="10" minimumInteritemSpacing="10" id="iXx-u3-aNW">
                                             <size key="itemSize" width="128" height="128"/>
@@ -144,7 +144,7 @@
                                 </constraints>
                             </view>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Daily Challenge" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="5fQ-k3-UFl">
-                                <rect key="frame" x="16" y="313" width="393" height="23"/>
+                                <rect key="frame" x="16" y="343" width="393" height="23"/>
                                 <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="19"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
@@ -174,7 +174,7 @@
                             <constraint firstItem="5fQ-k3-UFl" firstAttribute="trailing" secondItem="i17-Z1-IRh" secondAttribute="trailing" constant="16" id="UAb-Fr-FJc"/>
                             <constraint firstItem="rtP-gT-lq2" firstAttribute="trailing" secondItem="i17-Z1-IRh" secondAttribute="trailing" id="Wm5-14-ZH4"/>
                             <constraint firstItem="0aA-Qp-don" firstAttribute="leading" secondItem="i17-Z1-IRh" secondAttribute="leading" id="b0q-Tx-LhA"/>
-                            <constraint firstItem="5fQ-k3-UFl" firstAttribute="top" secondItem="7aX-Yq-Jzs" secondAttribute="bottom" constant="50" id="hHy-k5-SMb"/>
+                            <constraint firstItem="5fQ-k3-UFl" firstAttribute="top" secondItem="7aX-Yq-Jzs" secondAttribute="bottom" constant="80" id="hHy-k5-SMb"/>
                             <constraint firstItem="rtP-gT-lq2" firstAttribute="top" secondItem="40a-JY-YdK" secondAttribute="top" constant="64" id="i0k-tV-2fE"/>
                             <constraint firstItem="i17-Z1-IRh" firstAttribute="bottom" secondItem="d9j-NU-iKa" secondAttribute="bottom" constant="16" id="iiV-nt-DuO"/>
                             <constraint firstItem="d9j-NU-iKa" firstAttribute="centerX" secondItem="40a-JY-YdK" secondAttribute="centerX" id="kCC-Qh-0Mk"/>

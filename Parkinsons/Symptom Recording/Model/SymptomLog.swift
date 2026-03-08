@@ -1,17 +1,8 @@
-//
-//  SymptomLog.swift
-//  Parkinsons
-//
-//  Core Data–Optimized (Structure Names Preserved)
-//  Acts as the Symptom Data Store
-//
+
 
 import Foundation
 import CoreData
 
-// MARK: - Symptom Type
-
-/// Stored as Int16 in Core Data
 enum SymptomType: Int16, CaseIterable, Codable {
     case slowedMovement = 0
     case gaitDisturbance
@@ -21,7 +12,6 @@ enum SymptomType: Int16, CaseIterable, Codable {
     case lossOfBalance
     case insomnia
 
-    /// UI-only display name
     var displayName: String {
         switch self {
         case .slowedMovement: return "Slowed Movement"
@@ -35,9 +25,6 @@ enum SymptomType: Int16, CaseIterable, Codable {
     }
 }
 
-// MARK: - Symptom Severity
-
-/// Stored as Int16 in Core Data
 enum SymptomSeverity: Int16, Codable, CaseIterable {
     case mild = 0
     case moderate
@@ -54,7 +41,6 @@ enum SymptomSeverity: Int16, Codable, CaseIterable {
     }
 }
 
-// MARK: - Symptom Rating (UI Layer)
 
 struct SymptomRating: Codable, Identifiable {
     let id: UUID
@@ -86,8 +72,6 @@ struct SymptomRating: Codable, Identifiable {
     }
 }
 
-// MARK: - Symptom Log Entry (Daily Grouping)
-
 struct SymptomLogEntry: Codable, Identifiable {
     let id: UUID
     let date: Date
@@ -104,7 +88,6 @@ struct SymptomLogEntry: Codable, Identifiable {
     }
 }
 
-// MARK: - Symptom Log (Persistence Model)
 
 struct SymptomLog: Codable, Identifiable {
     let id: UUID
@@ -128,11 +111,9 @@ struct SymptomLog: Codable, Identifiable {
     }
 }
 
-// MARK: - Core Data Mapping Helpers
 
 extension SymptomLog {
 
-    /// Core Data → Swift
     init?(managedObject: CDSymptomLog) {
         guard
             let id = managedObject.id,
@@ -145,27 +126,20 @@ extension SymptomLog {
         self.date = date
         self.symptom = symptom
         self.severity = severity
-        //self.notes = managedObject.notes
     }
 }
 
 extension CDSymptomLog {
 
-    /// Swift → Core Data
     func populate(from log: SymptomLog) {
         id = log.id
         date = log.date
         symptom = log.symptom.rawValue
         severity = log.severity?.rawValue ?? SymptomSeverity.notPresent.rawValue
-       // notes = log.notes
     }
 }
 
-// MARK: - Symptom Log Store (Data Store)
-
 struct SymptomLogStore {
-
-    // MARK: Save
 
     static func save(
         _ entry: SymptomLogEntry,
@@ -195,7 +169,6 @@ struct SymptomLogStore {
         try context.save()
     }
 
-    // MARK: Fetch
 
     static func fetchAll(
         context: NSManagedObjectContext
@@ -230,7 +203,6 @@ struct SymptomLogStore {
         }
     }
 
-    // MARK: Rebuild Daily Entry
 
     static func buildDailyEntry(
         for date: Date,
@@ -260,7 +232,6 @@ struct SymptomLogStore {
         )
     }
 
-    // MARK: Delete
 
     static func deleteAll(
         context: NSManagedObjectContext

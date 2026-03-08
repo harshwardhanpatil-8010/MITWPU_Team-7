@@ -17,7 +17,6 @@ class GaitViewController: UIViewController {
 
     enum SteadinessRange { case day, week, month, sixMonth, year }
 
-    // MARK: - Lifecycle
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -42,8 +41,6 @@ class GaitViewController: UIViewController {
         }
     }
 
-    // MARK: - Chart Setup
-
     private func setupChart() {
         chartView.translatesAutoresizingMaskIntoConstraints = false
         chartView.backgroundColor = .clear
@@ -57,7 +54,6 @@ class GaitViewController: UIViewController {
         ])
     }
 
-    // MARK: - Segment Control
 
     @IBAction func segmentChanged(_ sender: UISegmentedControl) {
         switch sender.selectedSegmentIndex {
@@ -71,7 +67,6 @@ class GaitViewController: UIViewController {
         fetchData(for: currentRange)
     }
 
-    // MARK: - Auth + Fetch
 
     private func authorizeAndFetch() {
         HealthKitManager.shared.requestAuthorization { [weak self] granted in
@@ -92,7 +87,6 @@ class GaitViewController: UIViewController {
         configureChart(with: [])
     }
 
-    // MARK: - Data Fetching
 
     private func fetchData(for range: SteadinessRange) {
         let cal = Calendar.current
@@ -100,10 +94,6 @@ class GaitViewController: UIViewController {
 
         steadinessFreq.text  = "Loading..."
         steadinessRange.text = ""
-
-        // ✅ Use wider windows — appleWalkingSteadiness is written ~weekly by Apple's algorithm.
-        //    For "day" view, go back 1 week so we always catch the most recent weekly sample.
-        //    For longer ranges, use the full window.
         let start: Date = {
             switch range {
             case .day:      return cal.date(byAdding: .weekOfYear, value: -1, to: now)!
@@ -116,9 +106,6 @@ class GaitViewController: UIViewController {
 
         updateDateLabel(range: range, start: start, now: now)
 
-        // ✅ Fetch raw samples — plot each one as its own point exactly like Apple Health does.
-        //    appleWalkingSteadiness produces ~1 sample per week, so no aggregation needed.
-        //    HKUnit.percent() returns 0.0–1.0 → multiply by 100 for display.
         HealthKitManager.shared.fetchWalkingSteadinessSamples(from: start, to: now) { [weak self] rawSamples in
             DispatchQueue.main.async {
                 guard let self = self else { return }
@@ -129,17 +116,13 @@ class GaitViewController: UIViewController {
                         .map { (date: $0.0, value: min(max($0.1 * 100.0, 0), 100)) }
                     self.finalize(points: points)
                 } else {
-                    // Fallback: derive from step cadence variability
                     self.fetchComputedFallback(from: start, to: now)
                 }
             }
         }
     }
 
-    // MARK: - Computed Fallback (speed + step length as time-series)
-
     private func fetchComputedFallback(from start: Date, to end: Date) {
-        // ✅ Uses per-day bucketed CV — produces multiple points across the range
         HealthKitManager.shared.fetchComputedSteadinessSamples(from: start, to: end) { [weak self] points in
             DispatchQueue.main.async {
                 guard let self = self else { return }
@@ -154,7 +137,6 @@ class GaitViewController: UIViewController {
         }
     }
 
-    // MARK: - Finalize UI
 
     private func finalize(points: [(date: Date, value: Double)]) {
         aggregatedPoints = points
@@ -166,7 +148,6 @@ class GaitViewController: UIViewController {
             return
         }
 
-        // ✅ Average ALL points in the selected range — not just the last one
         let avg = points.map { $0.value }.reduce(0, +) / Double(points.count)
 
         UIView.transition(with: steadinessFreq, duration: 0.3, options: .transitionCrossDissolve) {
@@ -181,7 +162,6 @@ class GaitViewController: UIViewController {
         }
     }
 
-    // MARK: - Chart helper
 
     private func configureChart(with points: [(date: Date, value: Double)]) {
         if chartView.bounds.width > 0 {
@@ -190,8 +170,6 @@ class GaitViewController: UIViewController {
             pendingChartData = points
         }
     }
-
-    // MARK: - Helpers
 
     private func classificationFor(_ v: Double) -> (String, UIColor) {
         if v >= 80 { return ("Good",              .systemGreen)  }

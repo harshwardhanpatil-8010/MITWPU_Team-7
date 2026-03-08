@@ -415,6 +415,19 @@ class RhythmicWalkingSummaryViewController: UIViewController {
     /// Sessions grouped in the same order as sectionTitles, newest-first within each day
     private var sessionsBySection: [[RhythmicSession]] = []
 
+    // MARK: - Empty state
+
+    private let emptyLabel: UILabel = {
+        let label = UILabel()
+        label.text          = "No sessions performed"
+        label.textColor     = .secondaryLabel
+        label.font          = .systemFont(ofSize: 17, weight: .medium)
+        label.textAlignment = .center
+        label.translatesAutoresizingMaskIntoConstraints = false
+        label.isHidden      = true
+        return label
+    }()
+
     // MARK: - Lifecycle
 
     override func viewDidLoad() {
@@ -423,12 +436,53 @@ class RhythmicWalkingSummaryViewController: UIViewController {
         tableView.delegate   = self
         tableView.layer.cornerRadius = 30
         tableView.clipsToBounds      = true
+
+        // X button — dismisses the whole sheet
+        let closeButton = UIBarButtonItem(
+            image: UIImage(systemName: "xmark"),
+            style: .plain,
+            target: self,
+            action: #selector(closeTapped)
+        )
+        closeButton.tintColor = .label
+        navigationItem.leftBarButtonItem = closeButton
+
+        // Empty-state label centred in the view
+        view.addSubview(emptyLabel)
+        NSLayoutConstraint.activate([
+            emptyLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            emptyLabel.centerYAnchor.constraint(equalTo: view.centerYAnchor)
+        ])
+    }
+
+    @objc private func closeTapped() {
+        dismiss(animated: true)
     }
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
+        // Set the navigation title to the selected calendar date (or "All Sessions")
+        if let targetDate = dateToDisplay {
+            let formatter = DateFormatter()
+            formatter.dateFormat = "d MMMM yyyy"
+            let calendar = Calendar.current
+            if calendar.isDateInToday(targetDate) {
+                navigationItem.title = "Today's Sessions"
+            } else if calendar.isDateInYesterday(targetDate) {
+                navigationItem.title = "Yesterday's Sessions"
+            } else {
+                navigationItem.title = formatter.string(from: targetDate)
+            }
+        } else {
+            navigationItem.title = "All Sessions"
+        }
         fetchAndGroup()
         tableView.reloadData()
+
+        // Toggle empty state
+        let isEmpty = sessionsBySection.allSatisfy { $0.isEmpty }
+        emptyLabel.isHidden = !isEmpty
+        tableView.isHidden  = isEmpty
     }
 
     // MARK: - Core Data fetch
@@ -437,11 +491,11 @@ class RhythmicWalkingSummaryViewController: UIViewController {
         let context = PersistenceController.shared.viewContext
         let request: NSFetchRequest<RhythmicSession> = RhythmicSession.fetchRequest()
         request.sortDescriptors = [
-            NSSortDescriptor(keyPath: \RhythmicSession.startDate, ascending: false)
+            NSSortDescriptor(keyPath: \RhythmicSession.startDate, ascending: true)
         ]
 
-        // If a specific date was provided (tapped from calendar/summary),
-        // restrict the fetch to that calendar day only.
+        // If a specific date was provided (tapped from calendar), restrict fetch
+        // to that calendar day ONLY — one section, sessions in chronological order.
         if let targetDate = dateToDisplay {
             let calendar = Calendar.current
             let start    = calendar.startOfDay(for: targetDate)
@@ -475,9 +529,9 @@ class RhythmicWalkingSummaryViewController: UIViewController {
         for session in sessions {
             let date = session.startDate ?? Date()
             let title: String
-            if calendar.isDateInToday(date)          { title = "Today"     }
-            else if calendar.isDateInYesterday(date) { title = "Yesterday" }
-            else                                     { title = formatter.string(from: date) }
+            if calendar.isDateInToday(date)          { title = ""     }
+            else if calendar.isDateInYesterday(date) { title = "" }
+            else                                     { title = "" }
 
             if map[title] == nil {
                 orderedTitles.append(title)
@@ -525,11 +579,9 @@ class RhythmicWalkingSummaryViewController: UIViewController {
         }
 
         summaryVC.sessionData = dto
+        summaryVC.isHistoryView = true   // suppress confetti, allow back navigation
 
-        // Set title BEFORE pushing so viewDidLoad sees it and does not overwrite it
-        summaryVC.navigationItem.title = "Session \(sessionNumber)"
-
-        // Push onto the existing nav stack so the back button works automatically
+        // Push onto the existing nav stack — back button returns here automatically
         navigationController?.pushViewController(summaryVC, animated: true)
     }
 

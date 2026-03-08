@@ -462,14 +462,14 @@
                                                 </cells>
                                             </collectionView>
                                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="-1" estimatedSectionHeaderHeight="-1" sectionFooterHeight="-1" estimatedSectionFooterHeight="-1" translatesAutoresizingMaskIntoConstraints="NO" id="yPm-mc-eYY">
-                                                <rect key="frame" x="16" y="515" width="361" height="423"/>
+                                                <rect key="frame" x="16" y="530" width="361" height="423"/>
                                                 <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                                                 <constraints>
                                                     <constraint firstAttribute="height" constant="423" id="BRw-ma-AoR"/>
                                                 </constraints>
                                             </tableView>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Symptom Faced" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="zAz-VH-ul4">
-                                                <rect key="frame" x="16" y="483" width="152.33333333333334" height="24"/>
+                                                <rect key="frame" x="16" y="498" width="152.33333333333334" height="24"/>
                                                 <fontDescription key="fontDescription" type="boldSystem" pointSize="20"/>
                                                 <nil key="textColor"/>
                                                 <nil key="highlightedColor"/>
@@ -490,7 +490,7 @@
                                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                                         <constraints>
                                             <constraint firstItem="zAz-VH-ul4" firstAttribute="leading" secondItem="mTm-Yk-S5Z" secondAttribute="leading" constant="16" id="2V3-Ge-i2A"/>
-                                            <constraint firstItem="zAz-VH-ul4" firstAttribute="top" secondItem="3Sv-Y6-W7P" secondAttribute="bottom" constant="17" id="3Nt-nd-Wus"/>
+                                            <constraint firstItem="zAz-VH-ul4" firstAttribute="top" secondItem="3Sv-Y6-W7P" secondAttribute="bottom" constant="32" id="3Nt-nd-Wus"/>
                                             <constraint firstAttribute="trailing" secondItem="3Sv-Y6-W7P" secondAttribute="trailing" id="3sV-Xl-eLy"/>
                                             <constraint firstAttribute="trailing" secondItem="aS2-ck-cYL" secondAttribute="trailing" id="Gn0-bC-KP5"/>
                                             <constraint firstItem="yPm-mc-eYY" firstAttribute="leading" secondItem="mTm-Yk-S5Z" secondAttribute="leading" constant="16" id="JYI-U8-AsB"/>
@@ -1015,34 +1015,17 @@
                                     </tableViewCell>
                                 </prototypes>
                             </tableView>
-                            <navigationBar contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="1kA-TQ-cAK">
-                                <rect key="frame" x="0.0" y="20" width="393" height="54"/>
-                                <items>
-                                    <navigationItem title="Rhythmic walking" id="1eK-mb-HUD">
-                                        <barButtonItem key="leftBarButtonItem" systemItem="cancel" id="qb9-Qi-5iF">
-                                            <connections>
-                                                <action selector="closeButtonTapped:" destination="pfy-PR-ZqD" id="E4Y-eM-pFg"/>
-                                            </connections>
-                                        </barButtonItem>
-                                    </navigationItem>
-                                </items>
-                            </navigationBar>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="AXl-MI-oYo"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                         <constraints>
-                            <constraint firstItem="1kA-TQ-cAK" firstAttribute="top" secondItem="MEU-0B-3rj" secondAttribute="top" constant="20" id="Eg1-3v-3Hn"/>
-                            <constraint firstAttribute="trailing" secondItem="1kA-TQ-cAK" secondAttribute="trailing" id="FZS-me-wD0"/>
                             <constraint firstItem="AXl-MI-oYo" firstAttribute="bottom" secondItem="k3p-Z7-bRA" secondAttribute="bottom" id="Kcn-Fu-SVf"/>
                             <constraint firstItem="k3p-Z7-bRA" firstAttribute="leading" secondItem="AXl-MI-oYo" secondAttribute="leading" constant="16" id="RBy-4g-Yy9"/>
-                            <constraint firstItem="1kA-TQ-cAK" firstAttribute="leading" secondItem="MEU-0B-3rj" secondAttribute="leading" id="ZWK-Xm-vYE"/>
+                            <constraint firstItem="k3p-Z7-bRA" firstAttribute="top" secondItem="MEU-0B-3rj" secondAttribute="topMargin" constant="-29" id="fF6-Us-VaU"/>
                             <constraint firstItem="AXl-MI-oYo" firstAttribute="trailing" secondItem="k3p-Z7-bRA" secondAttribute="trailing" constant="16" id="hTH-Jt-kbC"/>
-                            <constraint firstItem="1kA-TQ-cAK" firstAttribute="leading" secondItem="MEU-0B-3rj" secondAttribute="leadingMargin" constant="-16" id="i73-ta-wdy"/>
-                            <constraint firstItem="k3p-Z7-bRA" firstAttribute="top" secondItem="1kA-TQ-cAK" secondAttribute="bottom" constant="15" id="vKC-ay-yUo"/>
                         </constraints>
                     </view>
                     <connections>
-                        <outlet property="closeBarButton" destination="qb9-Qi-5iF" id="vhe-MT-gt5"/>
                         <outlet property="tableView" destination="k3p-Z7-bRA" id="prC-it-9ph"/>
                     </connections>
                 </viewController>

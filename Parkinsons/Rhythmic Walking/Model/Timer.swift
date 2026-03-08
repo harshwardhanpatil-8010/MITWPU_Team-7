@@ -1,10 +1,3 @@
-//
-//  Timer.swift
-//  Parkinsons
-//
-//  Created by SDC-USER on 27/11/25.
-//
-
 
 import Foundation
 
@@ -25,7 +18,6 @@ final class TimerModel {
     
     init(totalSeconds: Int, startWithTimeLeft: Int? = nil) {
         self.totalTime = totalSeconds
-//        self.timeLeft = totalSeconds
         self.timeLeft = startWithTimeLeft ?? totalSeconds
     }
     

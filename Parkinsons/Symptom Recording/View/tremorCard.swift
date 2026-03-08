@@ -5,9 +5,8 @@ class tremorCard: UICollectionViewCell {
     private var pendingPoints: [AggregatedTremorPoint] = []
     private var pendingHz: Double? = nil
 
-    // MARK: - IBOutlets (XIB only)
     @IBOutlet weak var cardBackground: UIView!
-    @IBOutlet weak var cardGraphView: UIView!   // 139 × 68 pt
+    @IBOutlet weak var cardGraphView: UIView!
     @IBOutlet weak var tremorValueLabel: UILabel!
 
     override func awakeFromNib() {
@@ -23,7 +22,6 @@ class tremorCard: UICollectionViewCell {
         DispatchQueue.main.async { self.drawMiniGraph() }
     }
 
-    // MARK: - Card Style
 
     private func setupCardStyle() {
         cardBackground.layer.cornerRadius = 20
@@ -34,7 +32,6 @@ class tremorCard: UICollectionViewCell {
         cardBackground.layer.shadowOffset  = CGSize(width: 0, height: 3)
     }
 
-    // MARK: - Configure
 
     func configure(frequencyHz: Double?, isSteady: Bool = false, graphPoints: [AggregatedTremorPoint]) {
         pendingPoints = graphPoints
@@ -42,7 +39,6 @@ class tremorCard: UICollectionViewCell {
         setNeedsLayout()
 
         if isSteady {
-            // ✅ Steady = measured, no tremor
             tremorValueLabel.text      = "Steady"
             tremorValueLabel.textColor = .black
         } else if let hz = frequencyHz {
@@ -51,17 +47,10 @@ class tremorCard: UICollectionViewCell {
             else if hz < 6.0 { tremorValueLabel.textColor = .black }
             else              { tremorValueLabel.textColor = .black    }
         } else {
-            // nil = not yet measured (recording in progress)
             tremorValueLabel.text      = "Measuring…"
             tremorValueLabel.textColor = .secondaryLabel
         }
     }
-
-    // MARK: - Mini Graph
-    // View is 139 × 68 pt.
-    // Left pad = 22 pt for Y labels ("0"/"7")
-    // Bottom pad = 14 pt for X labels (time)
-    // Top/right pad = 4 pt
 
     private func drawMiniGraph() {
         cardGraphView.layer.sublayers?.forEach { $0.removeFromSuperlayer() }
@@ -71,9 +60,8 @@ class tremorCard: UICollectionViewCell {
         let H = cardGraphView.bounds.height
         guard W > 0, H > 0 else { return }
 
-        // Padding — leaves room for axis labels
-        let pL: CGFloat = 22   // Y label column
-        let pB: CGFloat = 14   // X label row
+        let pL: CGFloat = 22
+        let pB: CGFloat = 14
         let pT: CGFloat = 4
         let pR: CGFloat = 4
         let uw = W - pL - pR
@@ -90,7 +78,6 @@ class tremorCard: UICollectionViewCell {
             return CGPoint(x: x, y: y)
         }
 
-        // ── Y axis labels: max and 0 ──────────────────────────────
         addTextLayer(String(format: "%.0f", maxHz),
                      frame: CGRect(x: 0, y: pT - 1, width: pL - 3, height: 10),
                      alignment: .right, color: .tertiaryLabel)
@@ -99,11 +86,9 @@ class tremorCard: UICollectionViewCell {
                      frame: CGRect(x: 0, y: H - pB - 8, width: pL - 3, height: 10),
                      alignment: .right, color: .tertiaryLabel)
 
-        // ── Y axis line ────────────────────────────────────────────
         addLine(from: CGPoint(x: pL, y: pT), to: CGPoint(x: pL, y: H - pB),
                 color: UIColor.systemGray5.cgColor, width: 0.5)
 
-        // ── X axis line + labels ───────────────────────────────────
         addLine(from: CGPoint(x: pL, y: H - pB), to: CGPoint(x: W - pR, y: H - pB),
                 color: UIColor.systemGray5.cgColor, width: 0.5)
 
@@ -111,7 +96,6 @@ class tremorCard: UICollectionViewCell {
             let fmt = DateFormatter()
             fmt.dateFormat = "HH:mm"
 
-            // First and last timestamps
             let x0 = pL
             let x1 = pL + uw
             addTextLayer(fmt.string(from: pts.first!.date),
@@ -122,7 +106,6 @@ class tremorCard: UICollectionViewCell {
                          alignment: .right, color: .tertiaryLabel)
         }
 
-        // ── No data state ─────────────────────────────────────────
         guard pts.count > 0 else {
             addLine(from: CGPoint(x: pL, y: H - pB - uh / 2),
                     to:   CGPoint(x: W - pR, y: H - pB - uh / 2),
@@ -130,12 +113,10 @@ class tremorCard: UICollectionViewCell {
                     dash: [3, 3])
             return
         }
-
-        // Single reading — draw a centred dot + dashed horizontal
         if pts.count == 1 {
             let ny  = CGFloat((pts[0].avgHz - minHz) / (maxHz - minHz))
             let y   = H - pB - ny * uh
-            let cx  = pL + uw / 2   // ← centre of usable width
+            let cx  = pL + uw / 2
 
             addLine(from: CGPoint(x: pL, y: y), to: CGPoint(x: W - pR, y: y),
                     color: UIColor.systemOrange.withAlphaComponent(0.3).cgColor, width: 1, dash: [3, 3])
@@ -152,7 +133,6 @@ class tremorCard: UICollectionViewCell {
             return
         }
 
-        // ── Gradient fill ─────────────────────────────────────────
         if pts.count > 1 {
             let fillPath = UIBezierPath()
             fillPath.move(to: CGPoint(x: coord(0).x, y: H - pB))
@@ -177,7 +157,6 @@ class tremorCard: UICollectionViewCell {
             cardGraphView.layer.addSublayer(grad)
         }
 
-        // ── Line ──────────────────────────────────────────────────
         if pts.count > 1 {
             let lp = UIBezierPath()
             lp.move(to: coord(0))
@@ -196,7 +175,6 @@ class tremorCard: UICollectionViewCell {
             cardGraphView.layer.addSublayer(ll)
         }
 
-        // ── Dots ──────────────────────────────────────────────────
         let dotR: CGFloat = pts.count > 8 ? 1.5 : 2.5
         for i in 0..<pts.count {
             let p   = coord(i)
@@ -214,7 +192,6 @@ class tremorCard: UICollectionViewCell {
         }
     }
 
-    // MARK: - Layer helpers
 
     private func addTextLayer(_ text: String, frame: CGRect, alignment: CATextLayerAlignmentMode, color: UIColor) {
         let l = CATextLayer()

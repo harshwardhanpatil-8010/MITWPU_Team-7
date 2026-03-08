@@ -71,8 +71,7 @@ extension HealthKitManager {
         let predicate = HKQuery.predicateForSamples(
             withStart: startDate,
             end: endDate,
-            options: []   // ✅ Not .strictStartDate — appleWalkingSteadiness is written ~weekly,
-                          //    strictStartDate misses samples that started before the window
+            options: []
         )
 
         let sort = NSSortDescriptor(key: HKSampleSortIdentifierStartDate, ascending: true)
@@ -92,7 +91,6 @@ extension HealthKitManager {
                 completion([])
                 return
             }
-            // appleWalkingSteadiness: HKUnit.percent() returns 0.0–1.0 (e.g. 0.87 = 87%)
             let unit = HKUnit.percent()
             let result = samples.map {
                 ($0.startDate, $0.quantity.doubleValue(for: unit))
@@ -185,7 +183,6 @@ extension HealthKitManager {
         return sqrt(variance)
     }
 
-    // ✅ NEW: fetch speed samples WITH timestamps → (Date, Double) pairs
     func fetchWalkingSpeedSamples(
         from startDate: Date,
         to endDate: Date,
@@ -207,7 +204,6 @@ extension HealthKitManager {
         healthStore.execute(query)
     }
 
-    // ✅ NEW: fetch step length samples WITH timestamps
     func fetchStepLengthSamples(
         from startDate: Date,
         to endDate: Date,
@@ -229,7 +225,6 @@ extension HealthKitManager {
         healthStore.execute(query)
     }
 
-    // ✅ NEW: time-series computed steadiness — buckets speed+step by day and computes CV per bucket
     func fetchComputedSteadinessSamples(
         from startDate: Date,
         to endDate: Date,
@@ -255,7 +250,6 @@ extension HealthKitManager {
 
             let cal = Calendar.current
 
-            // Bucket both by day
             func bucket(_ pairs: [(Date, Double)]) -> [Date: [Double]] {
                 Dictionary(grouping: pairs) { cal.startOfDay(for: $0.0) }
                     .mapValues { $0.map { $0.1 } }
@@ -264,7 +258,6 @@ extension HealthKitManager {
             let speedByDay = bucket(speedSamples)
             let stepByDay  = bucket(stepSamples)
 
-            // Union of all days that have at least one metric
             let allDays = Set(speedByDay.keys).union(stepByDay.keys).sorted()
 
             var results: [(Date, Double)] = []
@@ -273,8 +266,6 @@ extension HealthKitManager {
                 let speeds = speedByDay[day] ?? []
                 let steps  = stepByDay[day]  ?? []
 
-                // Need at least 2 values in a bucket to compute variability
-                // If only one metric available, use its CV alone
                 let value: Double
                 if speeds.count >= 2 && steps.count >= 2 {
                     let sMean = speeds.reduce(0,+)/Double(speeds.count)
@@ -291,7 +282,6 @@ extension HealthKitManager {
                     let lCV   = self.standardDeviation(steps) / lMean
                     value = max(0, min(100 * (1 - lCV), 100))
                 } else {
-                    // Only 1 sample — use mean speed as proxy (normalised 0–2 m/s → 0–100)
                     let v = (speeds + steps).first ?? 0
                     value = speeds.isEmpty ? max(0, min(v / 0.8 * 100, 100))
                                            : max(0, min(v / 2.0 * 100, 100))
@@ -305,7 +295,6 @@ extension HealthKitManager {
         }
     }
 
-    // Keep old single-value fetch for any legacy callers
     func fetchWalkingSteadiness(from startDate: Date, to endDate: Date, completion: @escaping (Double?) -> Void) {
         var speeds: [Double] = []
         var stepLengths: [Double] = []

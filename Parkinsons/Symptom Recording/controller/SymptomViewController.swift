@@ -10,7 +10,6 @@ class SymptomViewController: UIViewController, SymptomRatingCellDelegate {
 
     @IBOutlet weak var tableViewHeightConstraint: NSLayoutConstraint!
 
-    // Removed dates array as it was used for the calendar
     var selectedDate: Date = Date()
     var currentDayLogs: [SymptomRating] = []
     private var gaitRangeText: String?
@@ -30,7 +29,6 @@ class SymptomViewController: UIViewController, SymptomRatingCellDelegate {
 
     var currentMode: ViewMode = .history
 
-    // MARK: - Lifecycle
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -59,8 +57,6 @@ class SymptomViewController: UIViewController, SymptomRatingCellDelegate {
         super.viewWillDisappear(animated)
         TremorMotionManager.shared.cancelRecording()
     }
-
-    // MARK: - Tremor/Gait Helpers (Logic remains same, focusing on Today)
 
     private func loadTodayTremorData() {
         let s = TremorDataStore.shared.fetchSamples(for: .day, referenceDate: selectedDate)
@@ -117,7 +113,6 @@ class SymptomViewController: UIViewController, SymptomRatingCellDelegate {
 
     }
 
-    // MARK: - UI Setup
 
     func setupTableViewUI() {
         tableView.layer.cornerRadius = 25
@@ -187,7 +182,6 @@ class SymptomViewController: UIViewController, SymptomRatingCellDelegate {
         updateTableViewHeight()
     }
 
-    // 2. Updated Layout: Removed calendar case
     func generateLayout() -> UICollectionViewLayout {
         return UICollectionViewCompositionalLayout { sectionIndex, env in
             guard let sectionType = Section(rawValue: sectionIndex) else { return nil }
@@ -209,8 +203,6 @@ class SymptomViewController: UIViewController, SymptomRatingCellDelegate {
     }
 
 }
-
-// MARK: - CollectionView
 
 extension SymptomViewController: UICollectionViewDataSource, UICollectionViewDelegate {
     
@@ -260,7 +252,6 @@ extension SymptomViewController: UICollectionViewDataSource, UICollectionViewDel
     }
 }
 
-// MARK: - TableView (Remains mostly same)
 extension SymptomViewController: UITableViewDataSource, UITableViewDelegate {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int { currentDayLogs.count }
 

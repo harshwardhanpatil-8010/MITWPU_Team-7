@@ -16,16 +16,10 @@ final class TremorMotionManager {
         q.qualityOfService = .userInitiated
         return q
     }()
-
-    // MARK: - Result type
-    // .steady    → phone was still, save 0.0 Hz
-    // .tremor(hz)→ tremor detected at that frequency
     enum TremorResult {
         case steady
         case tremor(Double)
     }
-
-    // MARK: - Cancel
     func cancelRecording() {
         motionManager.stopDeviceMotionUpdates()
         isRecording = false
@@ -33,8 +27,6 @@ final class TremorMotionManager {
         samples.removeAll()
     }
 
-    // MARK: - Record
-    // ✅ Duration reduced to 5s — fast enough for real-time UX
     func recordTremorFrequency(
         duration: TimeInterval = 5.0,
         completion: @escaping (TremorResult) -> Void
@@ -69,24 +61,16 @@ final class TremorMotionManager {
         }
     }
 
-    // MARK: - DSP
-
     private func analyseFrequency() -> TremorResult {
         guard samples.count >= 256 else { return .steady }
 
-        // DC removal
         let mean = samples.reduce(0, +) / Double(samples.count)
         let centered = samples.map { $0 - mean }
 
-        // Band-pass 3–7 Hz
         let filtered = bandPass(centered, low: 3.0, high: 7.0, sampleRate: sampleRate)
 
-        // RMS gate
-        // ✅ Lowered to 0.004: table = ~0.001, gentle shake = ~0.005, tremor = ~0.015+
         let rms = sqrt(filtered.map { $0 * $0 }.reduce(0, +) / Double(filtered.count))
         if rms < 0.004 { return .steady }
-
-        // FFT
         let n = 1 << Int(floor(log2(Double(filtered.count))))
         let log2n = vDSP_Length(log2(Double(n)))
         guard let setup = vDSP_create_fftsetupD(log2n, FFTRadix(kFFTRadix2)) else { return .steady }
@@ -126,8 +110,6 @@ final class TremorMotionManager {
 
                 let totalEnergy = magnitudes[minBin...maxBin].reduce(0, +)
                 let avgEnergy = totalEnergy / Double(maxBin - minBin)
-
-                // ✅ Lowered SNR to 2.0 — requires clear peak but not clinical-grade
                 guard peakMag > avgEnergy * 2.0 else { return }
 
                 detected = Double(peakIndex) * sampleRate / Double(n)
@@ -137,7 +119,6 @@ final class TremorMotionManager {
         if let hz = detected {
             return .tremor(hz)
         } else {
-            // Motion present but no dominant frequency peak → treat as steady
             return .steady
         }
     }

@@ -1,18 +1,12 @@
-//
-//  TremorDataStore.swift
-//  Parkinsons
-//
 
 import Foundation
 import CoreData
 
-// MARK: - TremorSample
 
 struct TremorSample: Codable {
     let date: Date
-    let frequencyHz: Double   // 0.0 = steady, >0 = detected frequency
-    let isSteady: Bool        // explicit flag — distinguishes stored steady from missing data
-
+    let frequencyHz: Double
+    let isSteady: Bool
     init(date: Date, frequencyHz: Double) {
         self.date        = date
         self.frequencyHz = frequencyHz
@@ -30,7 +24,6 @@ struct TremorSample: Codable {
     }
 }
 
-// MARK: - TremorDataStore
 
 final class TremorDataStore {
 
@@ -41,21 +34,15 @@ final class TremorDataStore {
         PersistenceController.shared.viewContext
     }
 
-    // MARK: - Save from TremorResult
-
-    /// Primary save path — call with the result from TremorMotionManager
     func save(result: TremorMotionManager.TremorResult, date: Date = Date()) {
         switch result {
         case .steady:
-            // ✅ Steady readings ARE saved so the graph plots them as 0 Hz
-            // Dedup: only one steady reading every 5 minutes to avoid flooding
             saveInternal(TremorSample.steady(date: date), dedupInterval: 300)
         case .tremor(let hz):
             saveInternal(TremorSample(date: date, frequencyHz: hz), dedupInterval: 60)
         }
     }
 
-    /// Legacy path — keeps any existing callers compiling
     func save(_ sample: TremorSample) {
         saveInternal(sample, dedupInterval: 60)
     }
@@ -76,8 +63,6 @@ final class TremorDataStore {
         e.setValue(sample.date,        forKey: "date")
         e.setValue(sample.frequencyHz, forKey: "frequencyHz")
 
-        // ✅ Only write isSteady if the attribute exists in the model
-        // (safe if you haven't added it to .xcdatamodeld yet)
         if e.entity.attributesByName["isSteady"] != nil {
             e.setValue(sample.isSteady, forKey: "isSteady")
         }
@@ -85,15 +70,12 @@ final class TremorDataStore {
         PersistenceController.shared.save(context)
     }
 
-    // MARK: - Fetch all
 
     func fetchAll() -> [TremorSample] {
         let req = NSFetchRequest<NSManagedObject>(entityName: "Tremor")
         req.sortDescriptors = [NSSortDescriptor(key: "date", ascending: true)]
         return (try? context.fetch(req))?.compactMap { map($0) } ?? []
     }
-
-    // MARK: - Fetch by calendar date
 
     func fetchSamples(for date: Date) -> [TremorSample] {
         let cal   = Calendar.current
@@ -102,14 +84,11 @@ final class TremorDataStore {
         return fetchSamples(from: start, to: end)
     }
 
-    // MARK: - Fetch by range
 
     func fetchSamples(for range: TremorRange, referenceDate: Date) -> [TremorSample] {
         let (start, end) = dateRange(for: range, referenceDate: referenceDate)
         return fetchSamples(from: start, to: end)
     }
-
-    // MARK: - Private helpers
 
     private func fetchSamples(from start: Date, to end: Date) -> [TremorSample] {
         let req = NSFetchRequest<NSManagedObject>(entityName: "Tremor")
@@ -124,7 +103,6 @@ final class TremorDataStore {
             let hz   = obj.value(forKey: "frequencyHz") as? Double
         else { return nil }
 
-        // ✅ Read isSteady only if the attribute exists — defaults false if not in model yet
         let isSteady: Bool
         if obj.entity.attributesByName["isSteady"] != nil {
             isSteady = obj.value(forKey: "isSteady") as? Bool ?? false
@@ -157,7 +135,6 @@ final class TremorDataStore {
     }
 }
 
-// MARK: - UserDefaults → Core Data migration
 
 extension TremorDataStore {
     func migrateFromUserDefaultsIfNeeded() {

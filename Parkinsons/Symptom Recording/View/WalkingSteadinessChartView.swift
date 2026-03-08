@@ -25,8 +25,6 @@ class WalkingSteadinessChartView: UIView {
         isOpaque = false
         contentMode = .redraw
     }
-
-    // MARK: - Animation
     private var animationProgress: CGFloat = 1.0
 
     private func animateIn() {
@@ -40,8 +38,6 @@ class WalkingSteadinessChartView: UIView {
         if animationProgress >= 1.0 { link.invalidate() }
         setNeedsDisplay()
     }
-
-    // MARK: - Layout constants
     private let pLeft:   CGFloat = 38
     private let pBottom: CGFloat = 30
     private let pTop:    CGFloat = 16
@@ -57,7 +53,6 @@ class WalkingSteadinessChartView: UIView {
         return CGPoint(x: x, y: y)
     }
 
-    // MARK: - draw
 
     override func draw(_ rect: CGRect) {
         guard let ctx = UIGraphicsGetCurrentContext() else { return }
@@ -79,10 +74,8 @@ class WalkingSteadinessChartView: UIView {
         drawAxes(ctx: ctx, rect: rect)
     }
 
-    // MARK: - Empty state (no emoji — clean text only)
 
     private func drawEmpty(ctx: CGContext, rect: CGRect) {
-        // Just a dashed centre line — no text (label above the graph shows "No Data")
         ctx.setStrokeColor(UIColor.systemGray5.cgColor)
         ctx.setLineWidth(1)
         ctx.setLineDash(phase: 0, lengths: [6, 4])
@@ -91,8 +84,6 @@ class WalkingSteadinessChartView: UIView {
         ctx.strokePath()
         ctx.setLineDash(phase: 0, lengths: [])
     }
-
-    // MARK: - Grid
 
     private func drawGrid(ctx: CGContext, rect: CGRect) {
         let steps = 4
@@ -106,7 +97,6 @@ class WalkingSteadinessChartView: UIView {
         }
     }
 
-    // MARK: - Zone bands
 
     private func drawReferenceZones(ctx: CGContext, rect: CGRect) {
         let y100 = rect.height - pBottom - uh(rect)
@@ -149,7 +139,6 @@ class WalkingSteadinessChartView: UIView {
         )
     }
 
-    // MARK: - Gradient fill
 
     private func drawGradientFill(rect: CGRect) {
         guard points.count > 0, let ctx = UIGraphicsGetCurrentContext() else { return }
@@ -183,7 +172,6 @@ class WalkingSteadinessChartView: UIView {
         ctx.restoreGState()
     }
 
-    // MARK: - Line
 
     private func drawSmoothLine(ctx: CGContext, rect: CGRect) {
         guard points.count > 0 else { return }
@@ -210,7 +198,6 @@ class WalkingSteadinessChartView: UIView {
         ctx.restoreGState()
     }
 
-    // MARK: - Dots
 
     private func drawDots(ctx: CGContext, rect: CGRect) {
         let radius: CGFloat = points.count > 14 ? 3 : 5
@@ -230,7 +217,6 @@ class WalkingSteadinessChartView: UIView {
         }
     }
 
-    // MARK: - Y Labels
 
     private func drawYLabels(ctx: CGContext, rect: CGRect) {
         let attrs: [NSAttributedString.Key: Any] = [
@@ -251,8 +237,6 @@ class WalkingSteadinessChartView: UIView {
         ("%" as NSString).draw(at: CGPoint(x: 2, y: pTop - 4), withAttributes: unitAttrs)
     }
 
-    // MARK: - X Labels
-
     private func drawXLabels(ctx: CGContext, rect: CGRect) {
         guard points.count > 1 else { return }
         let f = DateFormatter()
@@ -272,7 +256,6 @@ class WalkingSteadinessChartView: UIView {
         }
     }
 
-    // MARK: - Axes
 
     private func drawAxes(ctx: CGContext, rect: CGRect) {
         ctx.setStrokeColor(UIColor.systemGray4.cgColor)
