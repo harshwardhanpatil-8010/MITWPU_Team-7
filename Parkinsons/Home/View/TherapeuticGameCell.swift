@@ -190,7 +190,7 @@ class TherapeuticGameCell: UICollectionViewCell {
 
     func configure(with model: TherapeuticGameModel, completionText: String, isTodayCompleted: Bool) {
         titleLabel.text = model.title
-        descriptionLabel.text = isTodayCompleted ? "Completed daily challenge!" : model.description
+        descriptionLabel.text = isTodayCompleted ? "Daily challenge completed!" : model.description
         completionLabel.text = completionText
     }
 }

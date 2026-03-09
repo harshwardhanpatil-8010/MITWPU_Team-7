@@ -74,7 +74,7 @@ class profileViewController: UIViewController {
         logoBackground.clipsToBounds = true
         
         sexsSelector.setTitle(selectedSex, for: .normal)
-        stackViewBackground.layer.cornerRadius = 20
+        stackViewBackground.layer.cornerRadius = 25
         stackViewBackground.clipsToBounds = true
         
         isEditingMode = false
