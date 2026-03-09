@@ -1,9 +1,4 @@
-////
-////  exercise.swift
-////  Parkinson's App
-////
-////  Created by SDC-USER on 25/11/25.
-////
+
 import Foundation
 
 enum ExerciseCategory: String, CaseIterable, Codable {
@@ -29,8 +24,6 @@ struct WorkoutExercise: Codable, Identifiable {
     let id: UUID
     let name: String
     var reps: Int
-    /// Duration in seconds — only used by warmup & cooldown for the countdown timer.
-    /// Strength / aerobic / balance exercises leave this nil and show reps instead.
     var duration: Int?
     let videoID: String?
     let category: ExerciseCategory

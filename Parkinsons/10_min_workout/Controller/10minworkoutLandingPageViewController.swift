@@ -75,8 +75,7 @@ class _0minworkoutLandingPageViewController: UIViewController, UICollectionViewD
             updateProgress()
             updateButtonUI()
 
-            // CHANGE HERE: Only check for meds/show alerts if the start button is NOT hidden
-            // (Assuming shouldHideStartButton is true only when coming from Summary)
+
             if !shouldHideStartButton {
                 let medStateChanged = manager.currentMedState() != manager.lastCheckedMedState
                 if medStateChanged {
@@ -157,23 +156,7 @@ class _0minworkoutLandingPageViewController: UIViewController, UICollectionViewD
         }
     }
 
-    // ─────────────────────────────────────────────────────────────────────────
-    // MARK: - Flowchart Decision Tree
-    //
-    //  Stage ≥ 3
-    //  └─ Safety alert → Seated or Standing?
-    //       Seated   → reduce intensity + feedback CONSIDERED
-    //                  (applyFeedback: true, applyMinimum: true, position: .seated)
-    //       Standing → allMedsTaken?
-    //                    YES → full adaptive, feedback CONSIDERED (.standing)
-    //                    NO  → reduce intensity, feedback NOT considered (.standing)
-    //
-    //  Stage 1 / 2
-    //  └─ allMedsTaken?
-    //       YES → ON-period → standing, full adaptive, feedback CONSIDERED
-    //       NO  → safety alert → Seated or Standing?
-    //                Both → full adaptive, feedback CONSIDERED
-    // ─────────────────────────────────────────────────────────────────────────
+
 
     private func checkMedTaken() {
         let manager = WorkoutManager.shared
@@ -181,26 +164,15 @@ class _0minworkoutLandingPageViewController: UIViewController, UICollectionViewD
         if manager.diseaseStage >= 3 {
             showStage3PositionAlert()
         } else {
-            // Stage 1 / 2 — check medication intake status
             if manager.allMedsTaken {
-                // ON-period: standing suggested, full adaptive feedback ON
                 manager.generateDailyWorkout(for: .standing)
                 manager.lastCheckedMedState = manager.currentMedState()
                 refreshWorkoutList()
             } else {
-                // Meds not taken → safety alert + user choice, full adaptive feedback ON
                 showStage12SafetyAlert()
             }
         }
     }
-
-    // ── Stage ≥ 3: safety alert — only ONE alert, no second alert ────────────
-    //
-    //   Seated  → generateDailyWorkout  (applyFeedback: true)  + applyMinimumIntensity
-    //             i.e. feedback IS considered but intensity is reduced
-    //   Standing → check meds silently (no extra alert):
-    //               taken  → generateDailyWorkout  (full adaptive, feedback ON)
-    //               NOT taken → generateDailyWorkoutIgnoringFeedback (feedback OFF)
 
     private func showStage3PositionAlert() {
         let alert = UIAlertController(
@@ -211,7 +183,7 @@ class _0minworkoutLandingPageViewController: UIViewController, UICollectionViewD
 
         alert.addAction(UIAlertAction(title: "Seated (Recommended)", style: .default) { [weak self] _ in
             let manager = WorkoutManager.shared
-            // Seated for stage ≥ 3: reduce intensity but feedback IS considered
+            
             manager.generateDailyWorkoutReducedWithFeedback(for: .seated)
             manager.lastCheckedMedState = manager.currentMedState()
             self?.refreshWorkoutList()
@@ -220,10 +192,10 @@ class _0minworkoutLandingPageViewController: UIViewController, UICollectionViewD
         alert.addAction(UIAlertAction(title: "Standing", style: .default) { [weak self] _ in
             let manager = WorkoutManager.shared
             if manager.allMedsTaken {
-                // Meds taken → full adaptive, feedback ON
+
                 manager.generateDailyWorkout(for: .standing)
             } else {
-                // Meds NOT taken → reduce intensity, feedback OFF
+
                 manager.generateDailyWorkoutIgnoringFeedback(for: .standing)
             }
             manager.lastCheckedMedState = manager.currentMedState()
@@ -232,8 +204,6 @@ class _0minworkoutLandingPageViewController: UIViewController, UICollectionViewD
 
         present(alert, animated: true)
     }
-
-    // ── Stage 1/2: meds not taken → safety alert + position choice, full adaptive, feedback ON
 
     private func showStage12SafetyAlert() {
         let alert = UIAlertController(

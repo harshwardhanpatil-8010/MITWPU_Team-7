@@ -60,10 +60,6 @@ class _0minworkoutViewController: UIViewController {
         avPlayer?.pause()
     }
     
-    // MARK: - Configuration & UI
-
-    /// Hidden + disabled on the very first exercise (index 0).
-    /// Visible + enabled on all other exercises so the user can go back.
     private func updatePreviousButton() {
         let isFirst = currentIndex == 0
         previousButtonOutlet.isEnabled = !isFirst

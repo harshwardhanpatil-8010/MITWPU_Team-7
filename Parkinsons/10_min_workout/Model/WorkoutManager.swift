@@ -187,9 +187,6 @@ class WorkoutManager {
     }
 
     // MARK: - Medication Status
-
-    /// Uses scheduled doses in the recent window and classifies them as taken / skipped / missed.
-    /// Full-intensity workout is allowed only when all expected doses in the window were taken.
     var allMedsTaken: Bool {
         medicationAdherenceSnapshot().isReadyForFullAdaptiveWorkout
     }
@@ -254,7 +251,6 @@ class WorkoutManager {
                 let scheduledTime = normalizeToToday(doseTime)
                 guard scheduledTime >= windowStart, scheduledTime <= now else { continue }
 
-                // Do not mark as missed immediately when a dose just became due.
                 guard scheduledTime.addingTimeInterval(graceSeconds) <= now else { continue }
 
                 scheduledCount += 1
@@ -330,8 +326,6 @@ class WorkoutManager {
 
     // MARK: - Exercise Generation
 
-    /// Full adaptive — feedback ON, no intensity reduction.
-    /// Use when: Stage 1/2 ON-period, OR Stage ≥ 3 standing with meds taken.
     func generateDailyWorkout(for position: ExercisePosition) {
         rollOverSessionIfNeeded()
         saveTodayPosition(position)
@@ -339,9 +333,6 @@ class WorkoutManager {
         saveCurrentJSONHash()
         persistCurrentSession()
     }
-
-    /// Reduced intensity, feedback NOT considered.
-    /// Use when: meds NOT taken (any stage), OR Stage ≥ 3 standing without meds.
     func generateDailyWorkoutIgnoringFeedback(for position: ExercisePosition) {
         rollOverSessionIfNeeded()
         saveTodayPosition(position)
@@ -350,9 +341,6 @@ class WorkoutManager {
         persistCurrentSession()
     }
 
-    /// Reduced intensity, feedback IS considered.
-    /// Use when: Stage ≥ 3 seated — safe position so feedback applies,
-    /// but intensity is still moderated for the advanced stage.
     func generateDailyWorkoutReducedWithFeedback(for position: ExercisePosition) {
         rollOverSessionIfNeeded()
         saveTodayPosition(position)
@@ -403,8 +391,7 @@ class WorkoutManager {
         return dailySet
     }
 
-    /// Single transform point: applies feedback adjustment first, then
-    /// optionally clamps to minimum intensity if reduceIntensity is true.
+
     private func transform(
         _ exercise: WorkoutExercise,
         position: ExercisePosition,
@@ -520,8 +507,6 @@ class WorkoutManager {
     // MARK: - Stage-Filtered Library
 
     private func getStageFilteredLibrary(for stage: Int) -> [WorkoutExercise] {
-        // Keep full library available for all stages so stage/medication/position
-        // decision flow in Landing controller can drive the exact branch behavior.
         _ = stage
         return getFullLibrary()
     }
