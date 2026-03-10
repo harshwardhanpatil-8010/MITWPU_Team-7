@@ -37,9 +37,6 @@ class SectionHeaderView: UICollectionReusableView {
             titleLabel.topAnchor.constraint(equalTo: topAnchor),
             titleLabel.bottomAnchor.constraint(equalTo: bottomAnchor),
             
-            // Position info button to the right of the title text
-            // We use leadingAnchor relative to the titleLabel's text width later or
-            // simply pin it to the far right for cleaner UI
             infoButton.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -16),
             infoButton.centerYAnchor.constraint(equalTo: centerYAnchor),
             infoButton.widthAnchor.constraint(equalToConstant: 30),

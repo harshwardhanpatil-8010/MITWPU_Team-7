@@ -15,10 +15,8 @@ final class SymptomLogManager {
 
     func saveLogEntry(_ entry: SymptomLogEntry) {
 
-        // 1️⃣ Delete existing logs for that date (avoid duplicates)
         deleteLogs(for: entry.date)
 
-        // 2️⃣ Flatten ratings → Core Data rows
         for rating in entry.ratings {
 
             guard let intensity = rating.selectedIntensity,
@@ -67,7 +65,7 @@ final class SymptomLogManager {
             return SymptomLogEntry(date: date, ratings: ratings)
 
         } catch {
-            print("❌ Fetch error:", error)
+            print(" Fetch error:", error)
             return nil
         }
     }

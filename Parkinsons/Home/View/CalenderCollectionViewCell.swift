@@ -22,7 +22,6 @@ class CalenderCollectionViewCell: UICollectionViewCell {
         calenderBackground.layer.shadowOffset = CGSize(width: 0, height: 1)
     }
     
-    // Added isFuture parameter here
     func configure(with model: DateModel, isSelected: Bool, isToday: Bool, isFuture: Bool) {
         calenderDay.text = model.dayString
         calenderDate.text = model.dateString
@@ -52,7 +51,6 @@ class CalenderCollectionViewCell: UICollectionViewCell {
             return
         }
         
-        // 4. Today Styling
         if isToday {
             calenderDay.textColor = .systemBlue
             calenderDate.textColor = .systemBlue
