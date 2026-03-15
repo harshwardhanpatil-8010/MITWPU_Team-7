@@ -33,7 +33,7 @@ class WorkoutManager {
     var completedToday: [UUID] = []
     var skippedToday:   [UUID] = []
 
-    // MARK: - Persistence Keys
+
 
     private let lastWorkoutCompletionDateKey = "lastWorkoutCompletionDate"
     private let lastWorkoutPositionKey       = "lastWorkoutPosition"
@@ -43,7 +43,7 @@ class WorkoutManager {
     private let workoutSessionCompletedKey   = "workoutSessionCompletedIDs"
     private let workoutSessionSkippedKey     = "workoutSessionSkippedIDs"
 
-    // MARK: - Enums
+
 
     enum Feedback {
         case easy
