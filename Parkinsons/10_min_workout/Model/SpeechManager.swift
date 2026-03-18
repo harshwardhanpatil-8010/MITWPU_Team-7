@@ -28,7 +28,7 @@ class SpeechManager {
 
         let utterance = AVSpeechUtterance(string: trimmedText)
         utterance.voice = AVSpeechSynthesisVoice(language: "en-US")
-        utterance.rate = 0.5   // Adjust speed (0.0 - 1.0)
+        utterance.rate = 0.5   
         utterance.pitchMultiplier = 1.0
         utterance.volume = 1.0
 

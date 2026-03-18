@@ -1,14 +1,8 @@
-
-
 import UIKit
-
-
 protocol RestScreenDelegate: AnyObject {
     func recordRestDuration(seconds: TimeInterval)
     func restCompleted()
 }
-
-
 class RestScreenViewController: UIViewController {
     
     @IBOutlet weak var timerLabel: UILabel!

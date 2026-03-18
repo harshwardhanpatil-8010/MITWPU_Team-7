@@ -518,7 +518,7 @@
                                 </constraints>
                             </stackView>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" verticalHuggingPriority="252" text="Good Job!" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="4TP-2J-blD">
-                                <rect key="frame" x="98" y="154" width="206" height="34.333333333333343"/>
+                                <rect key="frame" x="16" y="154" width="370" height="34.333333333333343"/>
                                 <fontDescription key="fontDescription" type="boldSystem" pointSize="43"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
@@ -538,9 +538,9 @@
                         <constraints>
                             <constraint firstItem="4TP-2J-blD" firstAttribute="top" secondItem="xVr-vc-wZ8" secondAttribute="top" constant="30" id="4nr-L9-9sE"/>
                             <constraint firstItem="9wP-dT-ZoO" firstAttribute="centerX" secondItem="WXM-8e-z9q" secondAttribute="centerX" id="87q-Zk-NcQ"/>
+                            <constraint firstItem="xVr-vc-wZ8" firstAttribute="trailing" secondItem="4TP-2J-blD" secondAttribute="trailing" constant="16" id="AIC-hX-0ZG"/>
                             <constraint firstItem="dHL-ck-CQC" firstAttribute="leading" secondItem="xVr-vc-wZ8" secondAttribute="leading" constant="16" id="Ayg-x2-gdo"/>
-                            <constraint firstItem="4TP-2J-blD" firstAttribute="leading" secondItem="xVr-vc-wZ8" secondAttribute="leading" constant="98" id="BW5-m2-dgP"/>
-                            <constraint firstItem="xVr-vc-wZ8" firstAttribute="trailing" secondItem="4TP-2J-blD" secondAttribute="trailing" constant="98" id="Ipr-wB-0DJ"/>
+                            <constraint firstItem="4TP-2J-blD" firstAttribute="leading" secondItem="xVr-vc-wZ8" secondAttribute="leading" constant="16" id="FCv-PD-C1L"/>
                             <constraint firstItem="uCw-s6-jDX" firstAttribute="leading" secondItem="xVr-vc-wZ8" secondAttribute="leading" constant="16" id="Mn3-He-EBD"/>
                             <constraint firstItem="dHL-ck-CQC" firstAttribute="centerX" secondItem="WXM-8e-z9q" secondAttribute="centerX" id="NHd-dW-HNY"/>
                             <constraint firstItem="LkN-Gg-kXq" firstAttribute="centerY" secondItem="WXM-8e-z9q" secondAttribute="centerY" constant="17" id="VMx-3B-Xfb"/>

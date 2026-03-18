@@ -1,4 +1,5 @@
 import UIKit
+import AudioToolbox
 
 class _0minworkoutCountdownViewController: UIViewController {
 
@@ -15,7 +16,6 @@ class _0minworkoutCountdownViewController: UIViewController {
         startCountDown()
     }
     
-    
     override func viewWillAppear(_ animated: Bool) {
         isCountdownCancelled = false
         self.navigationController?.setNavigationBarHidden(false, animated: animated)
@@ -26,6 +26,16 @@ class _0minworkoutCountdownViewController: UIViewController {
         super.viewWillDisappear(animated)
         isCountdownCancelled = true
         TimerLabel.layer.removeAllAnimations()
+    }
+    
+    private func playBeat(isGo: Bool) {
+        if isGo {
+            // Higher pitched double-tap for GO!
+            AudioServicesPlaySystemSound(1057)
+        } else {
+            // Clean tick for 3, 2, 1
+            AudioServicesPlaySystemSound(1104)
+        }
     }
     
     func startCountDown() {
@@ -40,6 +50,9 @@ class _0minworkoutCountdownViewController: UIViewController {
         TimerLabel.alpha = 1
         TimerLabel.transform = .identity
         TimerLabel.text = countDown == 0 ? "GO!" : "\(countDown)"
+        
+        // Play beat on each count
+        playBeat(isGo: countDown == 0)
 
         UIView.animate(withDuration: 0.85, animations: {
             self.TimerLabel.alpha = 0
