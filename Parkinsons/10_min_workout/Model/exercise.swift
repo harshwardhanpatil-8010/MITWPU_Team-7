@@ -29,6 +29,7 @@ struct WorkoutExercise: Codable, Identifiable {
     let category: ExerciseCategory
     let position: ExercisePosition
     let targetJoints: [String]
+    let voiceInstruction: String?
  
 
   
@@ -55,5 +56,6 @@ struct WorkoutExercise: Codable, Identifiable {
         case category
         case position
         case targetJoints
+        case voiceInstruction   
     }
 }

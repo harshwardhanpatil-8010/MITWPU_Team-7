@@ -7,7 +7,8 @@
     "videoID": "standing_shoulder_warmup",
     "category": "warmup",
     "position": "standing",
-    "targetJoints": ["Shoulder"]
+    "targetJoints": ["Shoulder"],
+    "voiceInstruction": "Stand straight. Slowly rotate your shoulders in a circular motion. Continue for 40 seconds."
   },
   {
     "id": "748CB6A5-8C06-4C98-8A55-87DAF9ADC0C3",
@@ -17,7 +18,8 @@
     "videoID": "standing_sideways_stretch",
     "category": "cooldown",
     "position": "standing",
-    "targetJoints": ["Spine"]
+    "targetJoints": ["Spine"],
+    "voiceInstruction": "Stand straight. Slowly rotate your shoulders in a circular motion. Continue for 40 seconds."
   },
   {
     "id": "0B9D3C03-2259-4C03-897C-BA5B68E25AE5",
@@ -27,7 +29,8 @@
     "videoID": "standing_trunk_rotations",
     "category": "warmup",
     "position": "standing",
-    "targetJoints": ["Spine"]
+    "targetJoints": ["Spine"],
+    "voiceInstruction": "Stand straight. Slowly rotate your shoulders in a circular motion. Continue for 40 seconds."
   },
   {
     "id": "D766E221-7602-4EB3-AC88-F50EC7FC2918",
@@ -37,7 +40,8 @@
     "videoID": "wrist_rotations",
     "category": "cooldown",
     "position": "standing",
-    "targetJoints": ["Wrist"]
+    "targetJoints": ["Wrist"],
+    "voiceInstruction": "Stand straight. Slowly rotate your shoulders in a circular motion. Continue for 40 seconds."
   },
   {
     "id": "E18B52D5-76DE-450E-B9CB-6746D099F364",
@@ -47,7 +51,8 @@
     "videoID": "standing_march",
     "category": "aerobic",
     "position": "standing",
-    "targetJoints": ["Hip", "Knee"]
+    "targetJoints": ["Hip", "Knee"],
+    "voiceInstruction": "Stand straight. Slowly rotate your shoulders in a circular motion. Continue for 40 seconds."
   },
   {
     "id": "24EFE1C3-2FD8-4304-9C68-3FE6E3B0CC22",
@@ -57,7 +62,8 @@
     "videoID": "bicep_curls",
     "category": "strength",
     "position": "standing",
-    "targetJoints": ["Elbow"]
+    "targetJoints": ["Elbow"],
+    "voiceInstruction": "Stand straight. Slowly rotate your shoulders in a circular motion. Continue for 40 seconds."
   },
   {
     "id": "B03B742A-D21A-449E-B052-64E8D63AE9F9",
@@ -67,7 +73,8 @@
     "videoID": "chair_squats",
     "category": "strength",
     "position": "seated",
-    "targetJoints": ["Hip", "Knee"]
+    "targetJoints": ["Hip", "Knee"],
+    "voiceInstruction": "Stand straight. Slowly rotate your shoulders in a circular motion. Continue for 40 seconds."
   },
   {
     "id": "DDFA910C-9B74-438D-8DFB-6521CBE60E6F",
@@ -77,7 +84,8 @@
     "videoID": "neck_tilts_sideways",
     "category": "balance",
     "position": "seated",
-    "targetJoints": ["Neck"]
+    "targetJoints": ["Neck"],
+    "voiceInstruction": "Stand straight. Slowly rotate your shoulders in a circular motion. Continue for 40 seconds."
   },
   {
     "id": "E2F98AE4-940C-4C2A-877E-5A415C7D1EBB",
@@ -87,7 +95,8 @@
     "videoID": "palm_stretch",
     "category": "warmup",
     "position": "seated",
-    "targetJoints": ["Wrist", "Fingers"]
+    "targetJoints": ["Wrist", "Fingers"],
+    "voiceInstruction": "Stand straight. Slowly rotate your shoulders in a circular motion. Continue for 40 seconds."
   },
   {
     "id": "DE2D3A2E-A706-4EF8-9AAE-B9162DA31A39",
@@ -97,7 +106,8 @@
     "videoID": "seated_ankle_stretch",
     "category": "cooldown",
     "position": "seated",
-    "targetJoints": ["Ankle"]
+    "targetJoints": ["Ankle"],
+    "voiceInstruction": "Stand straight. Slowly rotate your shoulders in a circular motion. Continue for 40 seconds."
   },
   {
     "id": "A931AE68-C59D-4238-906D-236415A84D8D",
@@ -107,7 +117,8 @@
     "videoID": "seated_march",
     "category": "aerobic",
     "position": "seated",
-    "targetJoints": ["Hip"]
+    "targetJoints": ["Hip"],
+    "voiceInstruction": "Stand straight. Slowly rotate your shoulders in a circular motion. Continue for 40 seconds."
   },
   {
     "id": "F516A324-64C8-4A36-AB27-B1B8CB6AED78",
@@ -117,7 +128,8 @@
     "videoID": "seated_shoulder_stretch1",
     "category": "cooldown",
     "position": "seated",
-    "targetJoints": ["Shoulder"]
+    "targetJoints": ["Shoulder"],
+    "voiceInstruction": "Stand straight. Slowly rotate your shoulders in a circular motion. Continue for 40 seconds."
   },
   {
     "id": "0E99FF63-938B-42EE-8581-70506F9D0CBE",
@@ -127,7 +139,8 @@
     "videoID": "seated_trunk_rotations",
     "category": "warmup",
     "position": "seated",
-    "targetJoints": ["Spine"]
+    "targetJoints": ["Spine"],
+    "voiceInstruction": "Stand straight. Slowly rotate your shoulders in a circular motion. Continue for 40 seconds."
   },
   {
     "id": "D6C8AF6D-9D55-4CEB-A24F-6B68B00E73B1",
@@ -137,7 +150,8 @@
     "videoID": "standing_hamstring_curls",
     "category": "balance",
     "position": "standing",
-    "targetJoints": ["Knee", "Hip"]
+    "targetJoints": ["Knee", "Hip"],
+    "voiceInstruction": "Stand straight. Slowly rotate your shoulders in a circular motion. Continue for 40 seconds."
   },
   {
     "id": "B792C9D1-5F8D-438E-88F0-65644AEAF717",
@@ -147,6 +161,7 @@
     "videoID": "standing_shoulder_warmup2",
     "category": "warmup",
     "position": "standing",
-    "targetJoints": ["Shoulder"]
+    "targetJoints": ["Shoulder"],
+    "voiceInstruction": "Stand straight. Slowly rotate your shoulders in a circular motion. Continue for 40 seconds."
   }
 ]

@@ -1,8 +1,5 @@
-
 import Foundation
 import CoreData
-
-
 struct TremorSample: Codable {
     let date: Date
     let frequencyHz: Double
@@ -12,19 +9,15 @@ struct TremorSample: Codable {
         self.frequencyHz = frequencyHz
         self.isSteady    = false
     }
-
     static func steady(date: Date) -> TremorSample {
         TremorSample(date: date, frequencyHz: 0.0, isSteady: true)
     }
-
     init(date: Date, frequencyHz: Double, isSteady: Bool) {
         self.date        = date
         self.frequencyHz = frequencyHz
         self.isSteady    = isSteady
     }
 }
-
-
 final class TremorDataStore {
 
     static let shared = TremorDataStore()
@@ -134,7 +127,6 @@ final class TremorDataStore {
         }
     }
 }
-
 
 extension TremorDataStore {
     func migrateFromUserDefaultsIfNeeded() {

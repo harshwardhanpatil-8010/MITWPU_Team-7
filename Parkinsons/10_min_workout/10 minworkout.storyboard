@@ -490,6 +490,7 @@
                                 <subviews>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="8SQ-QY-s5I">
                                         <rect key="frame" x="0.0" y="0.0" width="118" height="48"/>
+                                        <color key="tintColor" systemColor="systemGreenColor"/>
                                         <buttonConfiguration key="configuration" style="filled" title="Easy" cornerStyle="capsule"/>
                                         <connections>
                                             <action selector="easyButtonTapped:" destination="TZO-vY-iUG" eventType="touchUpInside" id="GXU-BR-0lC"/>
@@ -497,6 +498,7 @@
                                     </button>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ux0-Xz-2li">
                                         <rect key="frame" x="126" y="0.0" width="118" height="48"/>
+                                        <color key="tintColor" systemColor="systemYellowColor"/>
                                         <buttonConfiguration key="configuration" style="filled" title="Perfect" cornerStyle="capsule"/>
                                         <connections>
                                             <action selector="perfectButtonTapped:" destination="TZO-vY-iUG" eventType="touchUpInside" id="mDh-9r-lO3"/>
@@ -504,6 +506,7 @@
                                     </button>
                                     <button opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="249" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="cA4-km-A1S">
                                         <rect key="frame" x="252" y="0.0" width="118" height="48"/>
+                                        <color key="tintColor" systemColor="systemPinkColor"/>
                                         <buttonConfiguration key="configuration" style="filled" title="Hard" cornerStyle="capsule"/>
                                         <connections>
                                             <action selector="hardButtonTapped:" destination="TZO-vY-iUG" eventType="touchUpInside" id="7Py-mG-5fJ"/>
@@ -521,7 +524,7 @@
                                 <nil key="highlightedColor"/>
                             </label>
                             <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="hands.clap.fill" catalog="system" translatesAutoresizingMaskIntoConstraints="NO" id="9wP-dT-ZoO">
-                                <rect key="frame" x="101" y="228.66666666666669" width="200" height="145.66666666666669"/>
+                                <rect key="frame" x="101" y="228.66666666666669" width="200" height="145.66666666666663"/>
                                 <color key="tintColor" red="0.94117647059999998" green="0.71372549019999998" blue="0.45098039220000002" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="141.66999999999999" id="6ud-Zi-6wC"/>
@@ -805,6 +808,15 @@
         </systemColor>
         <systemColor name="systemBackgroundColor">
             <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+        </systemColor>
+        <systemColor name="systemGreenColor">
+            <color red="0.20392156859999999" green="0.78039215689999997" blue="0.34901960780000002" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </systemColor>
+        <systemColor name="systemPinkColor">
+            <color red="1" green="0.1764705882" blue="0.33333333329999998" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </systemColor>
+        <systemColor name="systemYellowColor">
+            <color red="1" green="0.80000000000000004" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </systemColor>
     </resources>
 </document>

@@ -58,6 +58,7 @@ class _0minworkoutViewController: UIViewController {
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
         avPlayer?.pause()
+        SpeechManager.shared.stop()
     }
     
     private func updatePreviousButton() {
@@ -92,6 +93,8 @@ class _0minworkoutViewController: UIViewController {
         let exercise = exercises[currentIndex]
         exerciseName.text = exercise.name
 
+        SpeechManager.shared.stop()
+
         if let videoName = exercise.videoID,
            let url = Bundle.main.url(forResource: videoName, withExtension: "mp4") {
             let asset = AVURLAsset(url: url)
@@ -99,6 +102,7 @@ class _0minworkoutViewController: UIViewController {
             playerLooper = AVPlayerLooper(player: avPlayer!, templateItem: item)
             avPlayer?.play()
         }
+
         if exercise.category == .warmup || exercise.category == .cooldown {
             repsLabel.text = "-"
             timerLabel.isHidden = false
@@ -109,6 +113,15 @@ class _0minworkoutViewController: UIViewController {
             timer?.invalidate()
             timer = nil
         }
+
+        // ✅ Single speak call — only voiceInstruction, no name fallback
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) { [weak self] in
+            guard let self else { return }
+            if let instruction = self.exercises[self.currentIndex].voiceInstruction {
+                SpeechManager.shared.speak(instruction)
+            }
+        }
+
         updateProgressBars()
         updateTopLabels()
         updatePreviousButton()
@@ -190,7 +203,7 @@ class _0minworkoutViewController: UIViewController {
                 let exerciseID = self.exercises[i].id
                 let cat = self.exercises[i].category
                 if cat == .warmup || cat == .cooldown {
-                    // Match current reduced-mode rules for safer continuation.
+                    
                     self.exercises[i].duration = min(self.exercises[i].duration ?? 40, 30)
                     if let managerIndex = WorkoutManager.shared.exercises.firstIndex(where: { $0.id == exerciseID }) {
                         WorkoutManager.shared.exercises[managerIndex].duration =
