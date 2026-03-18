@@ -460,14 +460,14 @@ extension HomeViewController: UICollectionViewDataSource {
                     guard let date = calendar.date(byAdding: .day, value: offset, to: firstDayOfMonth) else { return false }
                     return EmojiGameManager.shared.isCompleted(date: calendar.startOfDay(for: date))
                 }.count
-                completionText = "\(completedCount)/\(daysInMonth) completed"
+                completionText = "\(completedCount)/\(daysInMonth) daily challenges completed"
                 isTodayCompleted = EmojiGameManager.shared.isCompleted(date: today)
             case 1:
                 let completedCount = (0..<daysInMonth).filter { offset in
                     guard let date = calendar.date(byAdding: .day, value: offset, to: firstDayOfMonth) else { return false }
                     return DailyGameManager.shared.isCompleted(date: calendar.startOfDay(for: date))
                 }.count
-                completionText = "\(completedCount)/\(daysInMonth) completed"
+                completionText = "\(completedCount)/\(daysInMonth) daily challenges completed"
                 isTodayCompleted = DailyGameManager.shared.isCompleted(date: today)
             default:
                 completionText = ""
@@ -500,7 +500,7 @@ extension HomeViewController: UICollectionViewDataSource {
                 header.configure(title: "Upcoming Medications", showInfoIcon: false)
                 
             case .exercises:
-                header.configure(title: "Guided Exercise", showInfoIcon: false)
+                header.configure(title: "Guided Exercises", showInfoIcon: false)
                 
             case .therapeuticGames:
                 header.configure(title: "Therapeutic Games", showInfoIcon: true)
