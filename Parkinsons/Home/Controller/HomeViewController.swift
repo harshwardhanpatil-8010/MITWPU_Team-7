@@ -59,13 +59,15 @@ class HomeViewController: UIViewController, UICollectionViewDelegate {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        let savedName = UserDefaults.standard.string(forKey: "UserFirstName") ?? "User"
-            NameOfUser.text = "Hello, \(savedName)!"
+        // 1. Initial Load: Look for the FULL name, then split it
+            let savedFull = UserDefaults.standard.string(forKey: "UserFullName") ?? "User"
+            let firstName = savedFull.components(separatedBy: " ").first ?? savedFull
+            self.NameOfUser.text = "Hello, \(firstName)!"
 
-            // Listen for name changes while the app is running
+            // 2. Real-time Update: Listen for the "NameChanged" broadcast
             NotificationCenter.default.addObserver(forName: NSNotification.Name("NameChanged"), object: nil, queue: .main) { [weak self] notification in
-                if let newName = notification.userInfo?["name"] as? String {
-                    self?.NameOfUser.text = "Hello, \(newName)!"
+                if let newFirstName = notification.userInfo?["name"] as? String {
+                    self?.NameOfUser.text = "Hello, \(newFirstName)!"
                 }
             }
         
