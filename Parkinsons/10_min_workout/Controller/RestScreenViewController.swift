@@ -13,7 +13,9 @@ class RestScreenViewController: UIViewController {
     
     weak var delegate: RestScreenDelegate?
     var currentIndex: Int = 0
+    var nextExerciseIndex: Int?
     var totalExercises: Int = 0
+    var exercises: [WorkoutExercise] = []
     var totalTime = 60
     var restStartTime: Date?
     private var isCompleting = false
@@ -66,31 +68,30 @@ class RestScreenViewController: UIViewController {
     private func updateProgressBars() {
         guard progressBars != nil else { return }
         let sortedBars = progressBars.sorted { $0.frame.origin.x < $1.frame.origin.x }
-        
-        let allExercises = WorkoutManager.shared.exercises
-        
+
+        let sessionExercises = exercises.isEmpty ? WorkoutManager.shared.exercises : exercises
+
         for (index, bar) in sortedBars.enumerated() {
-            if index < allExercises.count {
-                let exerciseID = allExercises[index].id
-                
+            if index < sessionExercises.count {
+                let exerciseID = sessionExercises[index].id
+
                 if WorkoutManager.shared.completedToday.contains(exerciseID) {
                     bar.progress = 1.0
                     bar.progressTintColor = .systemBlue
-                }
-                else if WorkoutManager.shared.skippedToday.contains(exerciseID) {
+                } else if WorkoutManager.shared.skippedToday.contains(exerciseID) {
                     bar.progress = 1.0
                     bar.progressTintColor = .systemGray4
-                }
-                
-                else if index == currentIndex {
+                } else if index == nextExerciseIndex {
                     bar.progress = 1.0
                     bar.progressTintColor = UIColor.systemBlue.withAlphaComponent(0.3)
-                }
-  
-                else {
+                } else {
                     bar.progress = 0.0
-                    bar.trackTintColor = .systemGray5
+                    bar.progressTintColor = .systemBlue
                 }
+                bar.trackTintColor = .systemGray5
+                bar.isHidden = false
+            } else {
+                bar.isHidden = true
             }
         }
     }

@@ -28,6 +28,10 @@ class _0minworkoutViewController: UIViewController {
     private var skippedRevisitPointer: Int = 0
     private var pendingSpeechWorkItem: DispatchWorkItem?
 
+    private var sortedProgressBars: [UIProgressView] {
+        (progressBars ?? []).sorted { $0.frame.origin.x < $1.frame.origin.x }
+    }
+
     override func viewDidLoad() {
         super.viewDidLoad()
 
@@ -254,6 +258,7 @@ class _0minworkoutViewController: UIViewController {
         recordDuration()
 
         let currentID = exercises[currentIndex].id
+        let nextIndex = nextExerciseIndex(afterCompletingAt: currentIndex)
 
         if skipped {
             if !WorkoutManager.shared.skippedToday.contains(currentID) {
@@ -269,7 +274,7 @@ class _0minworkoutViewController: UIViewController {
         }
 
         WorkoutManager.shared.syncSessionPersistence()
-        goToRest()
+        goToRest(nextExerciseIndex: nextIndex)
     }
 
 
@@ -281,12 +286,32 @@ class _0minworkoutViewController: UIViewController {
         }
     }
 
-    func goToRest() {
+    private func nextExerciseIndex(afterCompletingAt completedIndex: Int) -> Int? {
+        if isRevisitingSkipped {
+            guard let currentSkippedPointer = skippedIndicesToRevisit.firstIndex(of: completedIndex) else {
+                return nil
+            }
+
+            let nextPointer = currentSkippedPointer + 1
+            guard nextPointer < skippedIndicesToRevisit.count else {
+                return nil
+            }
+
+            return skippedIndicesToRevisit[nextPointer]
+        }
+
+        let nextIndex = completedIndex + 1
+        return nextIndex < exercises.count ? nextIndex : nil
+    }
+
+    func goToRest(nextExerciseIndex: Int?) {
         timer?.invalidate()
         let sb = UIStoryboard(name: "10 minworkout", bundle: nil)
         if let vc = sb.instantiateViewController(withIdentifier: "RestScreenViewController") as? RestScreenViewController {
             vc.currentIndex = currentIndex
+            vc.nextExerciseIndex = nextExerciseIndex
             vc.totalExercises = exercises.count
+            vc.exercises = exercises
             vc.delegate = self
             navigationController?.pushViewController(vc, animated: true)
         }
@@ -303,18 +328,23 @@ class _0minworkoutViewController: UIViewController {
 
     func updateProgressBars() {
         guard progressBars != nil else { return }
-        for (index, bar) in progressBars.enumerated() {
+        for (index, bar) in sortedProgressBars.enumerated() {
             if index < exercises.count {
                 let exerciseID = exercises[index].id
                 if WorkoutManager.shared.completedToday.contains(exerciseID) {
                     bar.progress = 1.0
                     bar.progressTintColor = .systemBlue
+                } else if WorkoutManager.shared.skippedToday.contains(exerciseID) {
+                    bar.progress = 1.0
+                    bar.progressTintColor = .systemGray4
                 } else if index == currentIndex {
                     bar.progress = 0.5
                     bar.progressTintColor = .systemBlue
                 } else {
                     bar.progress = 0.0
+                    bar.progressTintColor = .systemBlue
                 }
+                bar.trackTintColor = .systemGray5
                 bar.isHidden = false
             } else {
                 bar.isHidden = true
