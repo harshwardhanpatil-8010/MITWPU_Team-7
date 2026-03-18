@@ -8,7 +8,9 @@ class TherapeuticGameCell: UICollectionViewCell {
     @IBOutlet weak var descriptionLabel: UILabel!
     @IBOutlet weak var backgroundCardView: UIView!
     @IBOutlet weak var completionLabel: UILabel!
-
+    @IBOutlet weak var imageView: UIImageView!
+    
+    
     override func awakeFromNib() {
         super.awakeFromNib()
         self.clipsToBounds = false
