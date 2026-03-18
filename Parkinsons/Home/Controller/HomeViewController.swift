@@ -10,6 +10,7 @@ enum Section: Int, CaseIterable {
 
 class HomeViewController: UIViewController, UICollectionViewDelegate {
     
+    @IBOutlet weak var NameOfUser: UILabel!
     private let todayViewModel = TodayMedicationViewModel()
     private var todayDoses: [TodayDoseItem] = []
     
@@ -57,6 +58,17 @@ class HomeViewController: UIViewController, UICollectionViewDelegate {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        let savedName = UserDefaults.standard.string(forKey: "UserFirstName") ?? "User"
+            NameOfUser.text = "Hello, \(savedName)!"
+
+            // Listen for name changes while the app is running
+            NotificationCenter.default.addObserver(forName: NSNotification.Name("NameChanged"), object: nil, queue: .main) { [weak self] notification in
+                if let newName = notification.userInfo?["name"] as? String {
+                    self?.NameOfUser.text = "Hello, \(newName)!"
+                }
+            }
+        
         registerCells()
         
         mainCollectionView.dataSource = self

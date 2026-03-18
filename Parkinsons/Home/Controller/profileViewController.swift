@@ -105,6 +105,16 @@ class profileViewController: UIViewController {
             UIView.animate(withDuration: 0.3) {
                 self.updateUI(forEditing: self.isEditingMode)
             }
+            if let fullName = nameTextField.text, !fullName.isEmpty {
+                        // 2. Extract only the first word
+                        let firstName = fullName.components(separatedBy: " ").first ?? fullName
+                        
+                        // 3. Save it to UserDefaults (so it stays when the app restarts)
+                        UserDefaults.standard.set(firstName, forKey: "UserFirstName")
+                        
+                        // 4. Notify the HomeViewController to update its label
+                        NotificationCenter.default.post(name: NSNotification.Name("NameChanged"), object: nil, userInfo: ["name": firstName])
+                    }
         }
     }
     

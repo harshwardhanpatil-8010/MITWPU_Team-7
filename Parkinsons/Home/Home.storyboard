@@ -86,6 +86,7 @@
                     <toolbarItems/>
                     <simulatedToolbarMetrics key="simulatedBottomBarMetrics"/>
                     <connections>
+                        <outlet property="NameOfUser" destination="FrP-at-w4U" id="P8r-r2-49T"/>
                         <outlet property="mainCollectionView" destination="VtX-jr-dYm" id="GSP-ou-Zpg"/>
                     </connections>
                 </viewController>
