@@ -32,6 +32,14 @@ class _0minworkoutViewController: UIViewController {
         (progressBars ?? []).sorted { $0.frame.origin.x < $1.frame.origin.x }
     }
 
+    private var unresolvedSkippedIDs: [UUID] {
+        let validExerciseIDs = Set(exercises.map(\.id))
+        let completedIDs = Set(WorkoutManager.shared.completedToday)
+        return WorkoutManager.shared.skippedToday.filter { skippedID in
+            validExerciseIDs.contains(skippedID) && !completedIDs.contains(skippedID)
+        }
+    }
+
     override func viewDidLoad() {
         super.viewDidLoad()
 
@@ -160,7 +168,7 @@ class _0minworkoutViewController: UIViewController {
     
     
     func hasRemainingSkippedExercises() -> Bool {
-        return !WorkoutManager.shared.skippedToday.isEmpty
+        return !unresolvedSkippedIDs.isEmpty
     }
     
     
@@ -353,15 +361,19 @@ class _0minworkoutViewController: UIViewController {
     }
 
     func checkForSkippedExercises() {
-        
+        let unresolvedSkipped = unresolvedSkippedIDs
+        let staleSkipped = Set(WorkoutManager.shared.skippedToday).subtracting(unresolvedSkipped)
+        if !staleSkipped.isEmpty {
+            WorkoutManager.shared.skippedToday.removeAll { staleSkipped.contains($0) }
+            WorkoutManager.shared.syncSessionPersistence()
+        }
+
         if hasHandledSkippedExercises {
             showCompletion()
             return
         }
 
-        let skippedIDs = WorkoutManager.shared.skippedToday
-
-        guard !skippedIDs.isEmpty else {
+        guard !unresolvedSkipped.isEmpty else {
             showCompletion()
             return
         }
@@ -383,9 +395,8 @@ class _0minworkoutViewController: UIViewController {
             self.hasHandledSkippedExercises = true
             self.isRevisitingSkipped = true
 
-            
             self.skippedIndicesToRevisit = self.exercises.indices.filter {
-                skippedIDs.contains(self.exercises[$0].id)
+                unresolvedSkipped.contains(self.exercises[$0].id)
             }
 
             self.skippedRevisitPointer = 0

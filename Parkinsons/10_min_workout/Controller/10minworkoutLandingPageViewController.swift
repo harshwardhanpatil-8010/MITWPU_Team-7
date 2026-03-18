@@ -140,7 +140,7 @@ class _0minworkoutLandingPageViewController: UIViewController, UICollectionViewD
     private func navigateToWorkout() {
         let exercises    = WorkoutManager.shared.exercises
         let completedSet = WorkoutManager.shared.completedToday
-        let resumeIndex  = exercises.firstIndex { !completedSet.contains($0.id) } ?? 0
+        let resumeIndex  = exercises.firstIndex { !completedSet.contains($0.id) } ?? exercises.count
 
         let sb = UIStoryboard(name: "10 minworkout", bundle: nil)
         if let vc = sb.instantiateViewController(withIdentifier: "10minworkoutCountdownViewController")
