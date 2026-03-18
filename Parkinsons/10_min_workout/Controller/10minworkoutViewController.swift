@@ -99,6 +99,12 @@ class _0minworkoutViewController: UIViewController {
     
     
     func configureExercise() {
+        if !isRevisitingSkipped,
+           let nextPendingIndex = nextMainRunIndex(startingAt: currentIndex),
+           nextPendingIndex != currentIndex {
+            currentIndex = nextPendingIndex
+        }
+
         guard currentIndex < exercises.count else {
             checkForSkippedExercises()
             return
@@ -294,6 +300,15 @@ class _0minworkoutViewController: UIViewController {
         }
     }
 
+    private func nextMainRunIndex(startingAt startIndex: Int) -> Int? {
+        guard startIndex < exercises.count else { return nil }
+
+        let completedIDs = Set(WorkoutManager.shared.completedToday)
+        return exercises.indices[startIndex...].first { index in
+            !completedIDs.contains(exercises[index].id)
+        }
+    }
+
     private func nextExerciseIndex(afterCompletingAt completedIndex: Int) -> Int? {
         if isRevisitingSkipped {
             guard let currentSkippedPointer = skippedIndicesToRevisit.firstIndex(of: completedIndex) else {
@@ -308,8 +323,7 @@ class _0minworkoutViewController: UIViewController {
             return skippedIndicesToRevisit[nextPointer]
         }
 
-        let nextIndex = completedIndex + 1
-        return nextIndex < exercises.count ? nextIndex : nil
+        return nextMainRunIndex(startingAt: completedIndex + 1)
     }
 
     func goToRest(nextExerciseIndex: Int?) {
