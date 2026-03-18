@@ -1,22 +1,10 @@
-//
-//  SpeechManager.swift
-//  Parkinsons
-//
-//  Created by SDC-USER on 18/03/26.
-//
-
-
 import AVFoundation
-
 class SpeechManager {
-
     static let shared = SpeechManager()
     private let synthesizer = AVSpeechSynthesizer()
-
     private init() {
         configureAudioSession()
     }
-
     func speak(_ text: String) {
         let trimmedText = text.trimmingCharacters(in: .whitespacesAndNewlines)
         guard !trimmedText.isEmpty else { return }
@@ -31,7 +19,6 @@ class SpeechManager {
         utterance.rate = 0.5   
         utterance.pitchMultiplier = 1.0
         utterance.volume = 1.0
-
         synthesizer.speak(utterance)
     }
 

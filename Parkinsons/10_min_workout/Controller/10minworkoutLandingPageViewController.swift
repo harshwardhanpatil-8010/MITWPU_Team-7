@@ -17,9 +17,6 @@ class _0minworkoutLandingPageViewController: UIViewController, UICollectionViewD
         let completed = exercises.filter {  completedSet.contains($0.id) }
         return top + completed
     }
-
-    // MARK: - Setup
-
     private func setupProgressView() {
         progressView = CircularProgressView(frame: progressContainer.bounds)
         progressView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
@@ -48,8 +45,6 @@ class _0minworkoutLandingPageViewController: UIViewController, UICollectionViewD
         section.interGroupSpacing = 2.5
         return UICollectionViewCompositionalLayout(section: section)
     }
-
-    // MARK: - Lifecycle
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -252,11 +247,8 @@ extension _0minworkoutLandingPageViewController: UICollectionViewDataSource {
             ? "\(exercise.timerSeconds)s"
             : "\(exercise.reps) Reps"
         cell.loadThumbnail(exercise: exercise)
-
-
         let isCompleted = WorkoutManager.shared.completedToday.contains(exercise.id)
         isCompleted ? cell.configureCompleted() : cell.configurePendingOrSkipped()
-
         return cell
     }
 }
