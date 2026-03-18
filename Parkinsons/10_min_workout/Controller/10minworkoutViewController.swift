@@ -26,6 +26,7 @@ class _0minworkoutViewController: UIViewController {
     private var hasHandledSkippedExercises = false
     private var skippedIndicesToRevisit: [Int] = []
     private var skippedRevisitPointer: Int = 0
+    private var pendingSpeechWorkItem: DispatchWorkItem?
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -57,6 +58,7 @@ class _0minworkoutViewController: UIViewController {
 
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
+        pendingSpeechWorkItem?.cancel()
         avPlayer?.pause()
         SpeechManager.shared.stop()
     }
@@ -93,6 +95,7 @@ class _0minworkoutViewController: UIViewController {
         let exercise = exercises[currentIndex]
         exerciseName.text = exercise.name
 
+        pendingSpeechWorkItem?.cancel()
         SpeechManager.shared.stop()
 
         if let videoName = exercise.videoID,
@@ -114,12 +117,19 @@ class _0minworkoutViewController: UIViewController {
             timer = nil
         }
 
-        // ✅ Single speak call — only voiceInstruction, no name fallback
-        DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) { [weak self] in
-            guard let self else { return }
-            if let instruction = self.exercises[self.currentIndex].voiceInstruction {
+        if let instruction = exercise.voiceInstruction?.trimmingCharacters(in: .whitespacesAndNewlines),
+           !instruction.isEmpty {
+            let exerciseID = exercise.id
+            let workItem = DispatchWorkItem { [weak self] in
+                guard
+                    let self,
+                    self.currentIndex < self.exercises.count,
+                    self.exercises[self.currentIndex].id == exerciseID
+                else { return }
                 SpeechManager.shared.speak(instruction)
             }
+            pendingSpeechWorkItem = workItem
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.35, execute: workItem)
         }
 
         updateProgressBars()
