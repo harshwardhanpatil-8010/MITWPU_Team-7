@@ -35,7 +35,7 @@
                                                     <action selector="segmentChanged:" destination="Y6W-OH-hqX" eventType="valueChanged" id="Erh-Vf-h7I"/>
                                                 </connections>
                                             </segmentedControl>
-                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="About Gait Disturbance" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ZeR-3n-3BC">
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="About Walking Steadiness" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ZeR-3n-3BC">
                                                 <rect key="frame" x="32" y="429.66666666666663" width="370" height="28.666666666666686"/>
                                                 <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="24"/>
                                                 <nil key="textColor"/>
@@ -46,11 +46,11 @@
                                                 <subviews>
                                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" lineBreakMode="tailTruncation" numberOfLines="43" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="7Fn-35-UKb">
                                                         <rect key="frame" x="16" y="15" width="340" height="324.66666666666669"/>
-                                                        <string key="text">Gait disturbance refers to difficulty in walking, which can appear as unsteady steps, slowed movement, shuffling, or imbalance while moving.
+                                                        <mutableString key="text">Walking Steadiness refers to difficulty in walking, which can appear as unsteady steps, slowed movement, shuffling, or imbalance while moving.
 
 It is a common symptom in neurological conditions like Parkinson’s disease, stroke, or multiple sclerosis. Gait issues can also arise from muscle weakness, joint problems, inner ear disorders, or age-related changes.
 
-The severity may range from mild unsteadiness to a higher risk of falls that impact daily activities. Factors such as fatigue, medications, and vision problems can worsen gait disturbance. Persistent or worsening gait changes should be medically evaluated.</string>
+The severity may range from mild unsteadiness to a higher risk of falls that impact daily activities. Factors such as fatigue, medications, and vision problems can worsen gait disturbance. Persistent or worsening gait changes should be medically evaluated.</mutableString>
                                                         <fontDescription key="fontDescription" type="system" pointSize="16"/>
                                                         <nil key="textColor"/>
                                                         <nil key="highlightedColor"/>
