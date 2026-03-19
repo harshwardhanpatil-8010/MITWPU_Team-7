@@ -2,6 +2,7 @@ import UIKit
 
 class profileViewController: UIViewController {
 
+    @IBOutlet weak var StageInfo: UITextField!
     @IBOutlet weak var backButton: UIBarButtonItem!
     @IBOutlet weak var editButton: UIBarButtonItem!
     @IBOutlet weak var logoBackground: UIView!
@@ -73,6 +74,22 @@ class profileViewController: UIViewController {
         logoBackground.layer.cornerRadius = logoBackground.frame.size.height / 2
         logoBackground.clipsToBounds = true
         
+        // --- STAGE INFO LOADING ---
+            // 1. Retrieve the stage number (defaults to 0 if not found)
+            let savedStage = UserDefaults.standard.integer(forKey: "diseaseStage")
+            
+            // 2. If the stage is valid (1-5), display it. Otherwise, leave it or set a default.
+            if savedStage > 0 {
+                StageInfo.text = "Stage \(savedStage)"
+            } else {
+                StageInfo.text = "Not Set"
+            }
+            // ---------------------------
+        // --- 2. SEX/GENDER LOADING ---
+            // This looks for the key "userGender" we saved in Onboarding
+            let savedSex = UserDefaults.standard.string(forKey: "userGender") ?? "Male"
+            self.selectedSex = savedSex // This triggers the 'didSet' to update sexsSelector title
+        
         // --- ADD THESE LINES HERE ---
         // 1. Load the FULL name from the new key
             let savedFullName = UserDefaults.standard.string(forKey: "UserFullName") ?? "John Doe"
@@ -110,7 +127,7 @@ class profileViewController: UIViewController {
             editButton.image = nil
             editButton.title = "Edit"
             editButton.style = .plain
-            
+            UserDefaults.standard.set(selectedSex, forKey: "userGender")
             updateUI(forEditing: false)
             
             UIView.animate(withDuration: 0.3) {
@@ -163,7 +180,8 @@ class profileViewController: UIViewController {
             nameTextField,
             emergencyNoTextField,
             dateOfBirthSelector,
-            sexsSelector
+            sexsSelector,
+            StageInfo
         ]
         
         for field in editableFields {
