@@ -12,7 +12,13 @@ class HomeViewController: UIViewController, UICollectionViewDelegate {
     
     private let todayViewModel = TodayMedicationViewModel()
     private var todayDoses: [TodayDoseItem] = []
+
+
+    @IBOutlet weak var NameLabel: UILabel!
     
+
+
+
     @IBOutlet weak var mainCollectionView: UICollectionView!
     
     private var medicationLoggedObserver: NSObjectProtocol?
@@ -57,6 +63,17 @@ class HomeViewController: UIViewController, UICollectionViewDelegate {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        if let fullName = UserDefaults.standard.string(forKey: "userName")?
+                .trimmingCharacters(in: .whitespacesAndNewlines),
+               !fullName.isEmpty {
+
+                let firstName = fullName.components(separatedBy: " ").first ?? fullName
+                NameLabel.text = "Hello \(firstName)"
+
+            } else {
+                NameLabel.text = "Hello John"
+            }
+
         registerCells()
         
         mainCollectionView.dataSource = self
@@ -83,14 +100,29 @@ class HomeViewController: UIViewController, UICollectionViewDelegate {
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        
+
+        if let fullName = UserDefaults.standard.string(forKey: "userName")?
+            .trimmingCharacters(in: .whitespacesAndNewlines),
+           !fullName.isEmpty {
+
+            let firstName = fullName
+                .split(whereSeparator: { $0.isWhitespace })
+                .first
+                .map(String.init) ?? fullName
+
+            NameLabel.text = "Hello \(firstName)"
+
+        } else {
+            NameLabel.text = "Hello John"
+        }
+
         mainCollectionView.performBatchUpdates({
             mainCollectionView.reloadData()
         }, completion: { _ in
             self.scrollToSelectedDate(animated: false)
         })
     }
-    
+
     @IBAction func profilePageButton(_ sender: Any) {
         let storyboard = UIStoryboard(name: "Home", bundle: nil)
         let vc = storyboard.instantiateViewController(withIdentifier: "profileViewController") as! profileViewController

@@ -13,7 +13,10 @@ class OnboardingInfoViewController: UIViewController {
        @IBOutlet weak var stageLabelButton: UIButton!
        @IBOutlet weak var genderLabelButton: UIButton!
 
+    @IBOutlet weak var nameTextField: UITextField!
 
+    @IBOutlet weak var emergencyTextField: UITextField!
+    
        let genderOptions = ["Male", "Female", "Other"]
        let stageOptions = ["Stage 1", "Stage 2", "Stage 3", "Stage 4", "Stage 5"]
 
@@ -71,20 +74,21 @@ class OnboardingInfoViewController: UIViewController {
     
     
     @IBAction func nextButtonTapped(_ sender: Any) {
-        
+
+        let name = nameTextField.text?.trimmingCharacters(in: .whitespacesAndNewlines) ?? ""
+        let emergencyContact = emergencyTextField.text?.trimmingCharacters(in: .whitespacesAndNewlines) ?? ""
         let selectedGender = genderLabelButton.title(for: .normal) ?? ""
         let stageText = stageLabelButton.title(for: .normal) ?? ""
-        
-        guard !selectedGender.isEmpty,
-              let stageNumber = Int(stageText.components(separatedBy: " ").last ?? "") else {
-            print("Please complete all fields")
-            return
-        }
-        
-        UserDefaults.standard.set(stageNumber, forKey: "diseaseStage")
-        UserDefaults.standard.set(selectedGender, forKey: "userGender")
 
-        UserDefaults.standard.set(true, forKey: "hasCompletedOnboarding")
+              let stageNumber = Int(stageText.components(separatedBy: " ").last ?? "")
+
+        let defaults = UserDefaults.standard
+        defaults.set(name, forKey: "userName")
+        defaults.set(emergencyContact, forKey: "emergencyContact")
+        defaults.set(stageNumber, forKey: "diseaseStage")
+        defaults.set(selectedGender, forKey: "userGender")
+        defaults.set(true, forKey: "hasCompletedOnboarding")
+
         navigateToHome()
     }
 

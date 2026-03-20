@@ -35,9 +35,36 @@ class profileViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+
+        loadUserData()
         setupInitialUI()
     }
+
+    func loadUserData() {
+
+        let defaults = UserDefaults.standard
+
+        let fullName = defaults.string(forKey: "userName") ?? ""
+        let firstName = fullName
+            .split(whereSeparator: { $0.isWhitespace })
+            .first
+            .map(String.init) ?? "User"
+
+        nameTextField.text = fullName
+        logoLabel.text = String(firstName.prefix(1))
+
+        let emergency = defaults.string(forKey: "emergencyContact") ?? ""
+        emergencyNoTextField.text = emergency
+
+        let gender = defaults.string(forKey: "userGender") ?? "Male"
+        selectedSex = gender
+
+        if let dob = defaults.object(forKey: "userDOB") as? Date {
+            dateOfBirthSelector.date = dob
+        }
+    }
+
+
     @IBAction func pastSymptomRecordsNavigation(_ sender: Any) {
         
         let storyboard = UIStoryboard(name: "Symptom", bundle: nil)
@@ -87,27 +114,43 @@ class profileViewController: UIViewController {
 
     @IBAction func editButtonTapped(_ sender: UIBarButtonItem) {
         isEditingMode.toggle()
-        
+
         if isEditingMode {
             let config = UIImage.SymbolConfiguration(weight: .bold)
             editButton.image = UIImage(systemName: "checkmark", withConfiguration: config)
             editButton.title = nil
             editButton.style = .prominent
-            
+
             updateUI(forEditing: true)
+
         } else {
+
+            saveUserData()
+
             editButton.image = nil
             editButton.title = "Edit"
             editButton.style = .plain
-            
+
             updateUI(forEditing: false)
-            
-            UIView.animate(withDuration: 0.3) {
-                self.updateUI(forEditing: self.isEditingMode)
-            }
+
+            loadUserData()
         }
     }
-    
+
+    func saveUserData() {
+
+        let defaults = UserDefaults.standard
+
+        let name = nameTextField.text?.trimmingCharacters(in: .whitespacesAndNewlines) ?? ""
+        let emergency = emergencyNoTextField.text?.trimmingCharacters(in: .whitespacesAndNewlines) ?? ""
+
+        defaults.set(name, forKey: "userName")
+        defaults.set(emergency, forKey: "emergencyContact")
+        defaults.set(selectedSex, forKey: "userGender")
+        defaults.set(dateOfBirthSelector.date, forKey: "userDOB")
+    }
+
+
     @IBAction func backButtonTapped(_ sender: UIBarButtonItem) {
         if isEditingMode {
             let alert = UIAlertController(

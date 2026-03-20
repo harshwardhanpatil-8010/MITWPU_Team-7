@@ -319,11 +319,13 @@ class _0minworkoutViewController: UIViewController {
             guard nextPointer < skippedIndicesToRevisit.count else {
                 return nil
             }
-
             return skippedIndicesToRevisit[nextPointer]
         }
 
-        return nextMainRunIndex(startingAt: completedIndex + 1)
+
+        let nextIndex = completedIndex + 1
+        return nextIndex < exercises.count ? nextIndex : nil
+
     }
 
     func goToRest(nextExerciseIndex: Int?) {

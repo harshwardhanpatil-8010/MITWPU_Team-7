@@ -3,6 +3,7 @@
     <device id="retina6_3" orientation="portrait" appearance="light"/>
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="24504"/>
+        <capability name="Named colors" minToolsVersion="9.0"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="System colors in document resources" minToolsVersion="11.0"/>
         <capability name="UIMenu" message="Requires Xcode 11 or later." minToolsVersion="11.0" requiredIntegratedClassName="UICommandDiff"/>
@@ -76,70 +77,6 @@
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <stackView opaque="NO" contentMode="scaleToFill" distribution="fillEqually" translatesAutoresizingMaskIntoConstraints="NO" id="nGU-UI-XMH">
-                                <rect key="frame" x="16" y="258.33333333333331" width="370" height="23"/>
-                                <subviews>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Gender" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="oSs-dw-lmp">
-                                        <rect key="frame" x="0.0" y="0.0" width="185" height="23"/>
-                                        <fontDescription key="fontDescription" type="boldSystem" pointSize="19"/>
-                                        <nil key="textColor"/>
-                                        <nil key="highlightedColor"/>
-                                    </label>
-                                    <button opaque="NO" contentMode="scaleToFill" showsMenuAsPrimaryAction="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="nNS-GJ-clA">
-                                        <rect key="frame" x="185" y="0.0" width="185" height="23"/>
-                                        <menu key="menu" id="wE9-ws-7pp">
-                                            <children>
-                                                <command title="Male" menuElementState="on" id="bJt-dP-1Nw"/>
-                                                <command title="Female" id="1qy-Ks-IdX"/>
-                                                <command title="Other" id="Uw2-CF-A96"/>
-                                            </children>
-                                        </menu>
-                                        <state key="normal" title="Select" image="chevron.up.chevron.down" catalog="system"/>
-                                        <connections>
-                                            <action selector="genderPicker:" destination="Y6W-OH-hqX" eventType="touchUpInside" id="4eo-0F-Llt"/>
-                                        </connections>
-                                    </button>
-                                </subviews>
-                            </stackView>
-                            <stackView opaque="NO" contentMode="scaleToFill" distribution="fillEqually" translatesAutoresizingMaskIntoConstraints="NO" id="Uju-6h-sDP">
-                                <rect key="frame" x="16" y="321.33333333333331" width="370" height="50"/>
-                                <subviews>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Date of Birth" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="E4r-Nq-6Ui">
-                                        <rect key="frame" x="0.0" y="0.0" width="185" height="50"/>
-                                        <fontDescription key="fontDescription" type="boldSystem" pointSize="19"/>
-                                        <nil key="textColor"/>
-                                        <nil key="highlightedColor"/>
-                                    </label>
-                                    <datePicker contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" datePickerMode="date" translatesAutoresizingMaskIntoConstraints="NO" id="tuN-e7-b2J">
-                                        <rect key="frame" x="185" y="0.0" width="185" height="50"/>
-                                    </datePicker>
-                                </subviews>
-                            </stackView>
-                            <stackView opaque="NO" contentMode="scaleToFill" distribution="fillEqually" translatesAutoresizingMaskIntoConstraints="NO" id="aAz-4x-XAU">
-                                <rect key="frame" x="16" y="411.33333333333331" width="370" height="23"/>
-                                <subviews>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Parkinson's Stage" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="n99-bd-qzb">
-                                        <rect key="frame" x="0.0" y="0.0" width="185" height="23"/>
-                                        <fontDescription key="fontDescription" type="boldSystem" pointSize="19"/>
-                                        <nil key="textColor"/>
-                                        <nil key="highlightedColor"/>
-                                    </label>
-                                    <button opaque="NO" contentMode="scaleToFill" showsMenuAsPrimaryAction="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="6QB-oF-Gml">
-                                        <rect key="frame" x="185" y="0.0" width="185" height="23"/>
-                                        <menu key="menu" id="Yac-E0-hKB">
-                                            <children>
-                                                <command title="Stage 1" menuElementState="on" id="PPz-eC-7Up"/>
-                                                <command title="Stage 2" id="loo-md-ykj"/>
-                                                <command title="Stage 3" id="CZC-Jc-JoE"/>
-                                            </children>
-                                        </menu>
-                                        <state key="normal" title="Button" image="chevron.up.chevron.down" catalog="system"/>
-                                        <connections>
-                                            <action selector="stagePicker:" destination="Y6W-OH-hqX" eventType="touchUpInside" id="FSM-Cz-v01"/>
-                                        </connections>
-                                    </button>
-                                </subviews>
-                            </stackView>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="X4X-IN-NyD">
                                 <rect key="frame" x="20" y="748" width="362" height="48"/>
                                 <constraints>
@@ -151,39 +88,164 @@
                                     <action selector="nextButtonTapped:" destination="Y6W-OH-hqX" eventType="touchUpInside" id="DZm-mq-gyf"/>
                                 </connections>
                             </button>
+                            <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" alignment="top" spacing="30" translatesAutoresizingMaskIntoConstraints="NO" id="87r-oq-vpU">
+                                <rect key="frame" x="16" y="268.33333333333331" width="370" height="283.99999999999994"/>
+                                <subviews>
+                                    <stackView opaque="NO" contentMode="scaleToFill" distribution="fillEqually" translatesAutoresizingMaskIntoConstraints="NO" id="f4i-fw-FuZ">
+                                        <rect key="frame" x="0.0" y="0.0" width="365" height="34"/>
+                                        <subviews>
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Name" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="O1B-9X-nkq">
+                                                <rect key="frame" x="0.0" y="0.0" width="182.66666666666666" height="34"/>
+                                                <fontDescription key="fontDescription" type="boldSystem" pointSize="19"/>
+                                                <nil key="textColor"/>
+                                                <nil key="highlightedColor"/>
+                                            </label>
+                                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" horizontalHuggingPriority="248" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="anv-kn-bu5">
+                                                <rect key="frame" x="182.66666666666663" y="0.0" width="182.33333333333337" height="34"/>
+                                                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                                <textInputTraits key="textInputTraits"/>
+                                            </textField>
+                                        </subviews>
+                                    </stackView>
+                                    <stackView opaque="NO" contentMode="scaleToFill" distribution="fillEqually" translatesAutoresizingMaskIntoConstraints="NO" id="ciD-po-Le0">
+                                        <rect key="frame" x="0.0" y="64" width="365" height="34"/>
+                                        <subviews>
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Emergency Contact" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="QGZ-XR-1vQ">
+                                                <rect key="frame" x="0.0" y="0.0" width="182.66666666666666" height="34"/>
+                                                <fontDescription key="fontDescription" type="boldSystem" pointSize="19"/>
+                                                <nil key="textColor"/>
+                                                <nil key="highlightedColor"/>
+                                            </label>
+                                            <textField opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="248" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="M9F-W7-sDr">
+                                                <rect key="frame" x="182.66666666666663" y="0.0" width="182.33333333333337" height="34"/>
+                                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                                <textInputTraits key="textInputTraits"/>
+                                            </textField>
+                                        </subviews>
+                                    </stackView>
+                                    <stackView opaque="NO" contentMode="scaleToFill" distribution="fillEqually" translatesAutoresizingMaskIntoConstraints="NO" id="nGU-UI-XMH">
+                                        <rect key="frame" x="0.0" y="128" width="365" height="23"/>
+                                        <subviews>
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Gender" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="oSs-dw-lmp">
+                                                <rect key="frame" x="0.0" y="0.0" width="182.66666666666666" height="23"/>
+                                                <fontDescription key="fontDescription" type="boldSystem" pointSize="19"/>
+                                                <nil key="textColor"/>
+                                                <nil key="highlightedColor"/>
+                                            </label>
+                                            <button opaque="NO" contentMode="scaleToFill" showsMenuAsPrimaryAction="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="nNS-GJ-clA">
+                                                <rect key="frame" x="182.66666666666663" y="0.0" width="182.33333333333337" height="23"/>
+                                                <menu key="menu" id="wE9-ws-7pp">
+                                                    <children>
+                                                        <command title="Male" menuElementState="on" id="bJt-dP-1Nw"/>
+                                                        <command title="Female" id="1qy-Ks-IdX"/>
+                                                        <command title="Other" id="Uw2-CF-A96"/>
+                                                    </children>
+                                                </menu>
+                                                <state key="normal" title="Gender" image="chevron.up.chevron.down" catalog="system">
+                                                    <color key="titleColor" name="AccentColor"/>
+                                                </state>
+                                                <connections>
+                                                    <action selector="genderPicker:" destination="Y6W-OH-hqX" eventType="touchUpInside" id="4eo-0F-Llt"/>
+                                                </connections>
+                                            </button>
+                                        </subviews>
+                                    </stackView>
+                                    <stackView opaque="NO" contentMode="scaleToFill" distribution="fillEqually" translatesAutoresizingMaskIntoConstraints="NO" id="Uju-6h-sDP">
+                                        <rect key="frame" x="0.0" y="181" width="365" height="50"/>
+                                        <subviews>
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Date of Birth" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="E4r-Nq-6Ui">
+                                                <rect key="frame" x="0.0" y="0.0" width="182.66666666666666" height="50"/>
+                                                <fontDescription key="fontDescription" type="boldSystem" pointSize="19"/>
+                                                <nil key="textColor"/>
+                                                <nil key="highlightedColor"/>
+                                            </label>
+                                            <datePicker contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" datePickerMode="date" translatesAutoresizingMaskIntoConstraints="NO" id="tuN-e7-b2J">
+                                                <rect key="frame" x="182.66666666666663" y="0.0" width="182.33333333333337" height="50"/>
+                                            </datePicker>
+                                        </subviews>
+                                    </stackView>
+                                    <stackView opaque="NO" contentMode="scaleToFill" distribution="fillEqually" translatesAutoresizingMaskIntoConstraints="NO" id="aAz-4x-XAU">
+                                        <rect key="frame" x="0.0" y="261.00000000000006" width="365" height="23"/>
+                                        <subviews>
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Parkinson's Stage" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="n99-bd-qzb">
+                                                <rect key="frame" x="0.0" y="0.0" width="182.66666666666666" height="23"/>
+                                                <fontDescription key="fontDescription" type="boldSystem" pointSize="19"/>
+                                                <nil key="textColor"/>
+                                                <nil key="highlightedColor"/>
+                                            </label>
+                                            <button opaque="NO" contentMode="scaleToFill" showsMenuAsPrimaryAction="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="6QB-oF-Gml">
+                                                <rect key="frame" x="182.66666666666663" y="0.0" width="182.33333333333337" height="23"/>
+                                                <menu key="menu" id="Yac-E0-hKB">
+                                                    <children>
+                                                        <command title="Stage 1" menuElementState="on" id="PPz-eC-7Up"/>
+                                                        <command title="Stage 2" id="loo-md-ykj"/>
+                                                        <command title="Stage 3" id="CZC-Jc-JoE"/>
+                                                    </children>
+                                                </menu>
+                                                <state key="normal" title="Stage" image="chevron.up.chevron.down" catalog="system">
+                                                    <color key="titleColor" name="AccentColor"/>
+                                                </state>
+                                                <connections>
+                                                    <action selector="stagePicker:" destination="Y6W-OH-hqX" eventType="touchUpInside" id="FSM-Cz-v01"/>
+                                                </connections>
+                                            </button>
+                                        </subviews>
+                                    </stackView>
+                                </subviews>
+                                <color key="backgroundColor" red="0.9137254901960784" green="0.9137254901960784" blue="0.92156862745098034" alpha="1" colorSpace="calibratedRGB"/>
+                                <constraints>
+                                    <constraint firstAttribute="trailing" secondItem="ciD-po-Le0" secondAttribute="trailing" constant="5" id="1kd-JP-8ed"/>
+                                    <constraint firstAttribute="trailing" secondItem="f4i-fw-FuZ" secondAttribute="trailing" constant="5" id="3sU-z8-839"/>
+                                    <constraint firstAttribute="trailing" secondItem="Uju-6h-sDP" secondAttribute="trailing" constant="5" id="IvH-Cv-B7H"/>
+                                    <constraint firstAttribute="trailing" secondItem="nGU-UI-XMH" secondAttribute="trailing" constant="5" id="QoG-JA-Wyl"/>
+                                    <constraint firstAttribute="trailing" secondItem="aAz-4x-XAU" secondAttribute="trailing" constant="5" id="fnO-Ha-eJa"/>
+                                </constraints>
+                            </stackView>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="vDu-zF-Fre"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                         <constraints>
                             <constraint firstItem="vDu-zF-Fre" firstAttribute="bottom" secondItem="X4X-IN-NyD" secondAttribute="bottom" constant="10" id="0wp-Fx-ttd"/>
-                            <constraint firstItem="nGU-UI-XMH" firstAttribute="top" secondItem="R0H-oS-Wf8" secondAttribute="bottom" constant="40" id="1Fm-Nz-IlB"/>
-                            <constraint firstItem="vDu-zF-Fre" firstAttribute="trailing" secondItem="Uju-6h-sDP" secondAttribute="trailing" constant="16" id="6iU-kt-7Pw"/>
-                            <constraint firstItem="aAz-4x-XAU" firstAttribute="leading" secondItem="vDu-zF-Fre" secondAttribute="leading" constant="16" id="9Ph-20-Fti"/>
                             <constraint firstItem="vDu-zF-Fre" firstAttribute="trailing" secondItem="X4X-IN-NyD" secondAttribute="trailing" constant="20" id="9Ua-En-jOs"/>
                             <constraint firstItem="R0H-oS-Wf8" firstAttribute="leading" secondItem="vDu-zF-Fre" secondAttribute="leading" constant="16" id="A9J-mg-aNS"/>
                             <constraint firstItem="78b-1x-fuf" firstAttribute="leading" secondItem="vDu-zF-Fre" secondAttribute="leading" constant="16" id="Hhq-Om-KmN"/>
                             <constraint firstAttribute="trailing" secondItem="R0H-oS-Wf8" secondAttribute="trailing" constant="16" id="Hjt-aP-5wC"/>
+                            <constraint firstItem="87r-oq-vpU" firstAttribute="leading" secondItem="vDu-zF-Fre" secondAttribute="leading" constant="16" id="JjW-O1-96p"/>
                             <constraint firstItem="78b-1x-fuf" firstAttribute="top" secondItem="vDu-zF-Fre" secondAttribute="top" constant="6" id="K7d-Bm-cII"/>
+                            <constraint firstItem="vDu-zF-Fre" firstAttribute="trailing" secondItem="87r-oq-vpU" secondAttribute="trailing" constant="16" id="Lfd-4j-v0t"/>
                             <constraint firstItem="vDu-zF-Fre" firstAttribute="trailing" secondItem="78b-1x-fuf" secondAttribute="trailing" constant="16" id="MEs-A6-Sus"/>
-                            <constraint firstItem="vDu-zF-Fre" firstAttribute="trailing" secondItem="nGU-UI-XMH" secondAttribute="trailing" constant="16" id="MdK-XV-eIE"/>
-                            <constraint firstItem="vDu-zF-Fre" firstAttribute="trailing" secondItem="aAz-4x-XAU" secondAttribute="trailing" constant="16" id="Q0i-uO-UxT"/>
                             <constraint firstItem="X4X-IN-NyD" firstAttribute="leading" secondItem="vDu-zF-Fre" secondAttribute="leading" constant="20" id="Xgp-QQ-ie9"/>
-                            <constraint firstItem="Uju-6h-sDP" firstAttribute="leading" secondItem="vDu-zF-Fre" secondAttribute="leading" constant="16" id="Y50-rK-dmS"/>
                             <constraint firstItem="R0H-oS-Wf8" firstAttribute="top" secondItem="78b-1x-fuf" secondAttribute="bottom" constant="14" id="YEK-LF-pY8"/>
-                            <constraint firstItem="Uju-6h-sDP" firstAttribute="top" secondItem="nGU-UI-XMH" secondAttribute="bottom" constant="40" id="t2Z-7k-wGJ"/>
-                            <constraint firstItem="nGU-UI-XMH" firstAttribute="leading" secondItem="vDu-zF-Fre" secondAttribute="leading" constant="16" id="tyc-nH-Nlb"/>
-                            <constraint firstItem="aAz-4x-XAU" firstAttribute="top" secondItem="Uju-6h-sDP" secondAttribute="bottom" constant="40" id="vZN-n0-95S"/>
+                            <constraint firstItem="87r-oq-vpU" firstAttribute="top" secondItem="R0H-oS-Wf8" secondAttribute="bottom" constant="50" id="caP-fA-BiV"/>
                         </constraints>
                     </view>
                     <navigationItem key="navigationItem" id="doI-kY-B6J"/>
                     <connections>
+                        <outlet property="emergencyTextField" destination="M9F-W7-sDr" id="elt-yB-SfW"/>
                         <outlet property="genderLabelButton" destination="nNS-GJ-clA" id="cdQ-es-vQh"/>
+                        <outlet property="nameTextField" destination="anv-kn-bu5" id="WFq-em-Wnc"/>
                         <outlet property="stageLabelButton" destination="6QB-oF-Gml" id="IU9-ji-i0M"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Ief-a0-LHa" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1561" y="174"/>
+            <point key="canvasLocation" x="1559.7014925373132" y="173.68421052631578"/>
+        </scene>
+        <!--View Controller-->
+        <scene sceneID="2Dj-Sb-BNV">
+            <objects>
+                <viewController id="zE1-CH-ftP" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="y6Z-ZY-gyo">
+                        <rect key="frame" x="0.0" y="0.0" width="402" height="874"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <viewLayoutGuide key="safeArea" id="RXc-EP-dsM"/>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                    </view>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="r07-sD-WQw" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="2354" y="201"/>
         </scene>
         <!--Onboarding Feature View Controller-->
         <scene sceneID="J5y-wo-uFx">
@@ -294,6 +356,9 @@
     </scenes>
     <resources>
         <image name="chevron.up.chevron.down" catalog="system" width="109" height="128"/>
+        <namedColor name="AccentColor">
+            <color red="0.0" green="0.46000000000000002" blue="0.89000000000000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </namedColor>
         <systemColor name="secondaryLabelColor">
             <color red="0.23529411759999999" green="0.23529411759999999" blue="0.26274509800000001" alpha="0.59999999999999998" colorSpace="custom" customColorSpace="sRGB"/>
         </systemColor>
