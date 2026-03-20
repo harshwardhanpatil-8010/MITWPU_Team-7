@@ -14,7 +14,7 @@ class RhythmicWalkingSummaryViewController: UIViewController {
 
     private let emptyLabel: UILabel = {
         let label = UILabel()
-        label.text          = "No sessions performed"
+        label.text          = "No sessions performed."
         label.textColor     = .secondaryLabel
         label.font          = .systemFont(ofSize: 17, weight: .medium)
         label.textAlignment = .center
