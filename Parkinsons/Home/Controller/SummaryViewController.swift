@@ -105,7 +105,7 @@ class SummaryViewController: UIViewController {
 
             let emptyLabel = UILabel()
 
-            emptyLabel.text = "No symptoms Logged"
+            emptyLabel.text = "No symptoms logged."
 
             emptyLabel.textColor = .secondaryLabel
 
@@ -244,7 +244,7 @@ class SummaryViewController: UIViewController {
 
             let emptyLabel = UILabel()
 
-            emptyLabel.text = "No medication Logged"
+            emptyLabel.text = "No medications logged."
 
             emptyLabel.textColor = .secondaryLabel
 
@@ -598,7 +598,7 @@ extension SummaryViewController: UICollectionViewDataSource, UICollectionViewDel
             
             if dailyMedications.isEmpty {
                 let label = UILabel()
-                label.text = "No medication Logged yet"
+                label.text = "No medications logged."
                 label.textColor = .secondaryLabel
                 label.font = .systemFont(ofSize: 24, weight: .medium)
                 label.textAlignment = .center

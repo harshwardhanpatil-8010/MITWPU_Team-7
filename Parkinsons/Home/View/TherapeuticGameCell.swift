@@ -8,7 +8,9 @@ class TherapeuticGameCell: UICollectionViewCell {
     @IBOutlet weak var descriptionLabel: UILabel!
     @IBOutlet weak var backgroundCardView: UIView!
     @IBOutlet weak var completionLabel: UILabel!
-
+    @IBOutlet weak var iconImageView: UIImageView!
+    
+    
     override func awakeFromNib() {
         super.awakeFromNib()
         self.clipsToBounds = false
@@ -29,5 +31,12 @@ class TherapeuticGameCell: UICollectionViewCell {
         titleLabel.text = model.title
         descriptionLabel.text = isTodayCompleted ? "Daily challenge completed!" : model.description
         completionLabel.text = completionText
+        
+        if let imageName = model.iconName {
+            iconImageView.image = UIImage(named: imageName)
+            iconImageView.tintColor = nil
+        }
     }
 }
+
+

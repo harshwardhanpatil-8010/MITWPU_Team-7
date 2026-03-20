@@ -90,10 +90,10 @@ class SymptomRatingCell: UITableViewCell {
             
             let baseIconName: String
             switch buttonIntensity {
-            case .mild: baseIconName = "mild"
-            case .moderate: baseIconName = "moderate"
-            case .severe: baseIconName = "severe"
-            case .notPresent: baseIconName = "notPresent"
+            case .mild: baseIconName = "mild1"
+            case .moderate: baseIconName = "moderate1"
+            case .severe: baseIconName = "severe1"
+            case .notPresent: baseIconName = "notPresent1"
             }
             
             let finalIconName = isSelected ? baseIconName + ".fill" : baseIconName

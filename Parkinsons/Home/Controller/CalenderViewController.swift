@@ -105,14 +105,24 @@ extension CalendarViewController: UICollectionViewDataSource, UICollectionViewDe
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "date_capsule_cell", for: indexPath) as! DateCapsuleCell
         let dayData = sections[indexPath.section].days[indexPath.item]
+        
         cell.isHidden = dayData.isDummy
         if dayData.isDummy { return cell }
 
-        let dateModel = DateModel(date: dayData.date, dayString: "", dateString: dayData.dayNumber)
+        // Check if the date is after today
+        let isFuture = dayData.date > Date()
         let isToday = Calendar.current.isDateInToday(dayData.date)
+        
+        let dateModel = DateModel(date: dayData.date, dayString: "", dateString: dayData.dayNumber)
+        
+        // Configure visual appearance
         cell.configure(with: dateModel, isSelected: dayData.isSelected, isToday: isToday)
+        
+        // Disable interaction and dim the cell if it's in the future
+        cell.isUserInteractionEnabled = !isFuture
+        cell.contentView.alpha = isFuture ? 0.3 : 1.0
+        
         return cell
-
     }
 
     func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
@@ -137,8 +147,12 @@ extension CalendarViewController: UICollectionViewDataSource, UICollectionViewDe
 
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         let dayData = sections[indexPath.section].days[indexPath.item]
-        if dayData.isDummy { return }
+        
+        // Guard against dummy cells AND future dates
+        let isFuture = dayData.date > Date()
+        if dayData.isDummy || isFuture { return }
 
+        // Existing selection logic...
         for s in 0..<sections.count {
             for d in 0..<sections[s].days.count {
                 sections[s].days[d].isSelected = false

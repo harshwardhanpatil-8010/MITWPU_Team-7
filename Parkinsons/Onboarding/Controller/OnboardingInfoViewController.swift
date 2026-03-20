@@ -41,7 +41,7 @@ class OnboardingInfoViewController: UIViewController {
                }
            }
            
-           let genderMenu = UIMenu(title: "Select your gender", children: menuActions)
+           let genderMenu = UIMenu(title: "Select gender", children: menuActions)
            genderLabelButton.menu = genderMenu
            genderLabelButton.showsMenuAsPrimaryAction = true
        }

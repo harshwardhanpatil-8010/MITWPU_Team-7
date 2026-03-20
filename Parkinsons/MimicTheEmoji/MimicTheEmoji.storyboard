@@ -24,6 +24,7 @@
                                         <barButtonItem key="rightBarButtonItem" image="questionmark.circle" catalog="system" id="Rgi-QO-eJa">
                                             <connections>
                                                 <action selector="infoButtonTapped:" destination="AEg-aT-B4j" id="0DG-LI-duE"/>
+                                                <segue destination="D9s-Va-0Dw" kind="presentation" id="9tp-pO-aCw"/>
                                             </connections>
                                         </barButtonItem>
                                     </navigationItem>
@@ -481,14 +482,14 @@
             <point key="canvasLocation" x="2866.4122137404579" y="130.98591549295776"/>
         </scene>
         <!--Info Mimic The Emoji View Controller-->
-        <scene sceneID="vuK-cY-8Ux">
+        <scene sceneID="hSF-0V-XdX">
             <objects>
-                <viewController storyboardIdentifier="InfoMimicTheEmojiViewController" useStoryboardIdentifierAsRestorationIdentifier="YES" id="QW1-SM-jxc" customClass="InfoMimicTheEmojiViewController" customModule="Parkinsons" customModuleProvider="target" sceneMemberID="viewController">
-                    <view key="view" contentMode="scaleToFill" id="ard-oo-iKr">
-                        <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
+                <viewController id="D9s-Va-0Dw" customClass="InfoMimicTheEmojiViewController" customModule="Parkinsons" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="ORw-h4-3Y1">
+                        <rect key="frame" x="0.0" y="0.0" width="393" height="793"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="0L2-eC-IIC">
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="taV-9A-5mD">
                                 <rect key="frame" x="16" y="113.00000000000001" width="361" height="240.33333333333337"/>
                                 <string key="text">1. You’ll see an Emoji on the screen
 2. You need to mimic the expression of that emoji
@@ -500,13 +501,13 @@
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Daily challenges" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="KZ3-kJ-3uF">
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Daily challenges" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Dda-hV-Pej">
                                 <rect key="frame" x="16" y="384.33333333333331" width="361" height="21"/>
                                 <fontDescription key="fontDescription" style="UICTFontTextStyleHeadline"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="cnz-dF-qK3">
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="9Jj-Fq-QPo">
                                 <rect key="frame" x="16" y="412.33333333333331" width="361" height="218.33333333333331"/>
                                 <string key="text">1. Each level introduces a new set of cards for you to complete.
 2. Difficulty increases slowly as you move forward.
@@ -517,60 +518,60 @@
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="How to Play ?" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="kDK-xV-XP7">
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="How to Play ?" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Zcb-ZN-6Fp">
                                 <rect key="frame" x="16" y="85" width="361" height="21"/>
                                 <fontDescription key="fontDescription" style="UICTFontTextStyleHeadline"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="ErI-r2-OSC">
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="YEz-XK-o4Q">
                                 <rect key="frame" x="16" y="368.33333333333331" width="361" height="1"/>
                                 <color key="backgroundColor" systemColor="separatorColor"/>
                                 <constraints>
-                                    <constraint firstAttribute="height" constant="1" id="qLd-7j-gch"/>
+                                    <constraint firstAttribute="height" constant="1" id="08M-BV-Hp7"/>
                                 </constraints>
                             </view>
-                            <navigationBar contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="9oA-d5-Y43">
+                            <navigationBar contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="yAY-a1-0Dc">
                                 <rect key="frame" x="0.0" y="15" width="393" height="54"/>
                                 <items>
-                                    <navigationItem id="1l9-Rk-exe">
-                                        <barButtonItem key="leftBarButtonItem" title="Item" image="xmark" catalog="system" id="zrI-yf-aDn">
+                                    <navigationItem id="c3Y-CB-oh6">
+                                        <barButtonItem key="leftBarButtonItem" title="Item" image="xmark" catalog="system" id="RYK-TM-AXp">
                                             <connections>
-                                                <action selector="closeButtonTapped:" destination="QW1-SM-jxc" id="n08-8m-Ped"/>
+                                                <action selector="closeButtonTapped:" destination="D9s-Va-0Dw" id="1ez-zn-bgX"/>
                                             </connections>
                                         </barButtonItem>
                                     </navigationItem>
                                 </items>
                             </navigationBar>
                         </subviews>
-                        <viewLayoutGuide key="safeArea" id="Ogo-j7-8R0"/>
+                        <viewLayoutGuide key="safeArea" id="eBz-JG-zKj"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                         <constraints>
-                            <constraint firstAttribute="trailing" secondItem="ErI-r2-OSC" secondAttribute="trailing" constant="16" id="4CL-VR-041"/>
-                            <constraint firstItem="9oA-d5-Y43" firstAttribute="top" secondItem="ard-oo-iKr" secondAttribute="top" constant="15" id="9az-iM-Oll"/>
-                            <constraint firstAttribute="trailing" secondItem="9oA-d5-Y43" secondAttribute="trailing" id="Avs-M3-ZEY"/>
-                            <constraint firstItem="Ogo-j7-8R0" firstAttribute="trailing" secondItem="kDK-xV-XP7" secondAttribute="trailing" constant="16" id="HYF-su-Dxf"/>
-                            <constraint firstItem="ErI-r2-OSC" firstAttribute="leading" secondItem="ard-oo-iKr" secondAttribute="leading" constant="16" id="IbW-TY-Qjx"/>
-                            <constraint firstItem="Ogo-j7-8R0" firstAttribute="trailing" secondItem="0L2-eC-IIC" secondAttribute="trailing" constant="16" id="LCQ-cf-8cn"/>
-                            <constraint firstItem="ErI-r2-OSC" firstAttribute="top" secondItem="0L2-eC-IIC" secondAttribute="bottom" constant="15" id="OD9-8h-akx"/>
-                            <constraint firstItem="9oA-d5-Y43" firstAttribute="leading" secondItem="ard-oo-iKr" secondAttribute="leading" id="PhM-Zc-aQC"/>
-                            <constraint firstItem="cnz-dF-qK3" firstAttribute="top" secondItem="KZ3-kJ-3uF" secondAttribute="bottom" constant="7" id="QtG-Hd-FiX"/>
-                            <constraint firstItem="Ogo-j7-8R0" firstAttribute="trailing" secondItem="cnz-dF-qK3" secondAttribute="trailing" constant="16" id="TfH-ek-D9U"/>
-                            <constraint firstItem="Ogo-j7-8R0" firstAttribute="trailing" secondItem="KZ3-kJ-3uF" secondAttribute="trailing" constant="16" id="V2E-Ml-enC"/>
-                            <constraint firstItem="kDK-xV-XP7" firstAttribute="leading" secondItem="Ogo-j7-8R0" secondAttribute="leading" constant="16" id="Vwt-Gd-QHc"/>
-                            <constraint firstItem="0L2-eC-IIC" firstAttribute="top" secondItem="kDK-xV-XP7" secondAttribute="bottom" constant="7" id="Vz9-8d-IT3"/>
-                            <constraint firstItem="0L2-eC-IIC" firstAttribute="leading" secondItem="Ogo-j7-8R0" secondAttribute="leading" constant="16" id="ZBE-pp-euw"/>
-                            <constraint firstItem="cnz-dF-qK3" firstAttribute="leading" secondItem="Ogo-j7-8R0" secondAttribute="leading" constant="16" id="ZIe-Bz-va7"/>
-                            <constraint firstItem="KZ3-kJ-3uF" firstAttribute="leading" secondItem="Ogo-j7-8R0" secondAttribute="leading" constant="16" id="Ztn-hO-oHC"/>
-                            <constraint firstItem="kDK-xV-XP7" firstAttribute="top" secondItem="9oA-d5-Y43" secondAttribute="bottom" constant="16" id="cD0-RP-PeK"/>
-                            <constraint firstItem="KZ3-kJ-3uF" firstAttribute="top" secondItem="ErI-r2-OSC" secondAttribute="bottom" constant="15" id="wo8-1G-FHH"/>
+                            <constraint firstAttribute="trailing" secondItem="yAY-a1-0Dc" secondAttribute="trailing" id="2SL-9Z-cFZ"/>
+                            <constraint firstItem="Dda-hV-Pej" firstAttribute="leading" secondItem="eBz-JG-zKj" secondAttribute="leading" constant="16" id="3We-IE-26n"/>
+                            <constraint firstItem="eBz-JG-zKj" firstAttribute="trailing" secondItem="taV-9A-5mD" secondAttribute="trailing" constant="16" id="6c0-8C-iTK"/>
+                            <constraint firstItem="YEz-XK-o4Q" firstAttribute="leading" secondItem="ORw-h4-3Y1" secondAttribute="leading" constant="16" id="7rr-mU-pbq"/>
+                            <constraint firstItem="Dda-hV-Pej" firstAttribute="top" secondItem="YEz-XK-o4Q" secondAttribute="bottom" constant="15" id="9Xd-pp-2ah"/>
+                            <constraint firstItem="YEz-XK-o4Q" firstAttribute="top" secondItem="taV-9A-5mD" secondAttribute="bottom" constant="15" id="LWS-vz-p2J"/>
+                            <constraint firstItem="9Jj-Fq-QPo" firstAttribute="top" secondItem="Dda-hV-Pej" secondAttribute="bottom" constant="7" id="Nz1-Et-VBp"/>
+                            <constraint firstItem="taV-9A-5mD" firstAttribute="leading" secondItem="eBz-JG-zKj" secondAttribute="leading" constant="16" id="OZN-l5-CiM"/>
+                            <constraint firstItem="Zcb-ZN-6Fp" firstAttribute="leading" secondItem="eBz-JG-zKj" secondAttribute="leading" constant="16" id="Tlt-9t-r0g"/>
+                            <constraint firstItem="yAY-a1-0Dc" firstAttribute="top" secondItem="ORw-h4-3Y1" secondAttribute="top" constant="15" id="XZd-dN-9Kg"/>
+                            <constraint firstItem="eBz-JG-zKj" firstAttribute="trailing" secondItem="Zcb-ZN-6Fp" secondAttribute="trailing" constant="16" id="alk-gg-djo"/>
+                            <constraint firstAttribute="trailing" secondItem="YEz-XK-o4Q" secondAttribute="trailing" constant="16" id="bAE-e5-dor"/>
+                            <constraint firstItem="eBz-JG-zKj" firstAttribute="trailing" secondItem="Dda-hV-Pej" secondAttribute="trailing" constant="16" id="iDa-fL-Ke7"/>
+                            <constraint firstItem="eBz-JG-zKj" firstAttribute="trailing" secondItem="9Jj-Fq-QPo" secondAttribute="trailing" constant="16" id="ppQ-fl-NhE"/>
+                            <constraint firstItem="yAY-a1-0Dc" firstAttribute="leading" secondItem="ORw-h4-3Y1" secondAttribute="leading" id="syR-gt-M4m"/>
+                            <constraint firstItem="taV-9A-5mD" firstAttribute="top" secondItem="Zcb-ZN-6Fp" secondAttribute="bottom" constant="7" id="tQD-j8-wnT"/>
+                            <constraint firstItem="9Jj-Fq-QPo" firstAttribute="leading" secondItem="eBz-JG-zKj" secondAttribute="leading" constant="16" id="ysv-yH-5en"/>
+                            <constraint firstItem="Zcb-ZN-6Fp" firstAttribute="top" secondItem="yAY-a1-0Dc" secondAttribute="bottom" constant="16" id="zj4-6k-ytM"/>
                         </constraints>
                     </view>
-                    <navigationItem key="navigationItem" id="egy-mt-mFv"/>
+                    <navigationItem key="navigationItem" id="R6N-kl-jYT"/>
                 </viewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="B4z-Tu-zre" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="uMU-r0-CHg" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1218" y="825"/>
+            <point key="canvasLocation" x="1218" y="828"/>
         </scene>
     </scenes>
     <resources>

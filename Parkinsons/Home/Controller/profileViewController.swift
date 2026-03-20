@@ -2,6 +2,7 @@ import UIKit
 
 class profileViewController: UIViewController {
 
+    @IBOutlet weak var StageInfo: UITextField!
     @IBOutlet weak var backButton: UIBarButtonItem!
     @IBOutlet weak var editButton: UIBarButtonItem!
     @IBOutlet weak var logoBackground: UIView!
@@ -73,18 +74,45 @@ class profileViewController: UIViewController {
         logoBackground.layer.cornerRadius = logoBackground.frame.size.height / 2
         logoBackground.clipsToBounds = true
         
+        // --- STAGE INFO LOADING ---
+            // 1. Retrieve the stage number (defaults to 0 if not found)
+            let savedStage = UserDefaults.standard.integer(forKey: "diseaseStage")
+            
+            // 2. If the stage is valid (1-5), display it. Otherwise, leave it or set a default.
+            if savedStage > 0 {
+                StageInfo.text = "Stage \(savedStage)"
+            } else {
+                StageInfo.text = "Not Set"
+            }
+            // ---------------------------
+        // --- 2. SEX/GENDER LOADING ---
+            // This looks for the key "userGender" we saved in Onboarding
+            let savedSex = UserDefaults.standard.string(forKey: "userGender") ?? "Male"
+            self.selectedSex = savedSex // This triggers the 'didSet' to update sexsSelector title
+        
+        // --- ADD THESE LINES HERE ---
+        // 1. Load the FULL name from the new key
+            let savedFullName = UserDefaults.standard.string(forKey: "UserFullName") ?? "John Doe"
+            
+            // 2. Put the FULL name back into the text field
+            nameTextField.text = savedFullName
+            
+            // 3. Set the logo label using the first letter of the saved name
+            if let firstChar = savedFullName.first {
+                logoLabel.text = String(firstChar).uppercased()
+            }
+        // ----------------------------
+
         sexsSelector.setTitle(selectedSex, for: .normal)
         stackViewBackground.layer.cornerRadius = 25
         stackViewBackground.clipsToBounds = true
         
         isEditingMode = false
-
-            editButton.title = "Edit"
+        editButton.title = "Edit"
         emergencyNoTextField.borderStyle = .none
 
         updateUI(forEditing: false)
     }
-
     @IBAction func editButtonTapped(_ sender: UIBarButtonItem) {
         isEditingMode.toggle()
         
@@ -99,11 +127,31 @@ class profileViewController: UIViewController {
             editButton.image = nil
             editButton.title = "Edit"
             editButton.style = .plain
-            
+            UserDefaults.standard.set(selectedSex, forKey: "userGender")
             updateUI(forEditing: false)
             
             UIView.animate(withDuration: 0.3) {
                 self.updateUI(forEditing: self.isEditingMode)
+            }
+            if let fullName = nameTextField.text, !fullName.isEmpty {
+                
+                // 1. SAVE THE FULL NAME (for the Profile Screen)
+                UserDefaults.standard.set(fullName, forKey: "UserFullName")
+                
+                // 2. EXTRACT THE FIRST NAME (for the Home Screen)
+                let firstName = fullName.components(separatedBy: " ").first ?? fullName
+                
+                // 3. Update the Logo Circle with the first letter
+                if let firstChar = firstName.first {
+                    logoLabel.text = String(firstChar).uppercased()
+                }
+                
+                // 4. Broadcast the FIRST NAME ONLY to HomeViewController
+                NotificationCenter.default.post(
+                    name: NSNotification.Name("NameChanged"),
+                    object: nil,
+                    userInfo: ["name": firstName]
+                )
             }
         }
     }
@@ -132,7 +180,8 @@ class profileViewController: UIViewController {
             nameTextField,
             emergencyNoTextField,
             dateOfBirthSelector,
-            sexsSelector
+            sexsSelector,
+            StageInfo
         ]
         
         for field in editableFields {

@@ -10,6 +10,7 @@ enum Section: Int, CaseIterable {
 
 class HomeViewController: UIViewController, UICollectionViewDelegate {
     
+    @IBOutlet weak var NameOfUser: UILabel!
     private let todayViewModel = TodayMedicationViewModel()
     private var todayDoses: [TodayDoseItem] = []
     
@@ -57,6 +58,19 @@ class HomeViewController: UIViewController, UICollectionViewDelegate {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        // 1. Initial Load: Look for the FULL name, then split it
+            let savedFull = UserDefaults.standard.string(forKey: "UserFullName") ?? "User"
+            let firstName = savedFull.components(separatedBy: " ").first ?? savedFull
+            self.NameOfUser.text = "Hello, \(firstName)!"
+
+            // 2. Real-time Update: Listen for the "NameChanged" broadcast
+            NotificationCenter.default.addObserver(forName: NSNotification.Name("NameChanged"), object: nil, queue: .main) { [weak self] notification in
+                if let newFirstName = notification.userInfo?["name"] as? String {
+                    self?.NameOfUser.text = "Hello, \(newFirstName)!"
+                }
+            }
+        
         registerCells()
         
         mainCollectionView.dataSource = self
@@ -460,14 +474,14 @@ extension HomeViewController: UICollectionViewDataSource {
                     guard let date = calendar.date(byAdding: .day, value: offset, to: firstDayOfMonth) else { return false }
                     return EmojiGameManager.shared.isCompleted(date: calendar.startOfDay(for: date))
                 }.count
-                completionText = "\(completedCount)/\(daysInMonth) completed"
+                completionText = "\(completedCount)/\(daysInMonth) daily challenges completed"
                 isTodayCompleted = EmojiGameManager.shared.isCompleted(date: today)
             case 1:
                 let completedCount = (0..<daysInMonth).filter { offset in
                     guard let date = calendar.date(byAdding: .day, value: offset, to: firstDayOfMonth) else { return false }
                     return DailyGameManager.shared.isCompleted(date: calendar.startOfDay(for: date))
                 }.count
-                completionText = "\(completedCount)/\(daysInMonth) completed"
+                completionText = "\(completedCount)/\(daysInMonth) daily challenges completed"
                 isTodayCompleted = DailyGameManager.shared.isCompleted(date: today)
             default:
                 completionText = ""
@@ -500,7 +514,7 @@ extension HomeViewController: UICollectionViewDataSource {
                 header.configure(title: "Upcoming Medications", showInfoIcon: false)
                 
             case .exercises:
-                header.configure(title: "Guided Exercise", showInfoIcon: false)
+                header.configure(title: "Guided Exercises", showInfoIcon: false)
                 
             case .therapeuticGames:
                 header.configure(title: "Therapeutic Games", showInfoIcon: true)
@@ -574,7 +588,7 @@ extension HomeViewController {
     private func showGamesInfoPopup() {
         let alert = UIAlertController(
             title: "Therapeutic Games",
-            message: "These daily games support memory, focus and movement for people living with Parkinson’s Disease. \nMimic the Emoji encourages facial movement and expression by copying different emojis. \nMatch the Cards strengthens memory and attention by remembering card positions. \nPlaying regularly helps keep the mind active in a simple and engaging way. Try them out!",
+            message: "Daily games to enhance memory, focus and facial movement for people with Parkinson’s disease. Mimic the Emoji boosts facial expression by copying emojis. Match the Cards improves memory and attention. Play regularly to keep your mind active!",
             preferredStyle: .alert
         )
         alert.addAction(UIAlertAction(title: "Got it", style: .default))
