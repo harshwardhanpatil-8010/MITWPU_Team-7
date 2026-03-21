@@ -60,7 +60,7 @@ class HomeViewController: UIViewController, UICollectionViewDelegate {
         super.viewDidLoad()
         
         // 1. Initial Load: Look for the FULL name, then split it
-            let savedFull = UserDefaults.standard.string(forKey: "UserFullName") ?? "User"
+            let savedFull = UserDefaults.standard.string(forKey: "UserFullName") ?? "John"
             let firstName = savedFull.components(separatedBy: " ").first ?? savedFull
             self.NameOfUser.text = "Hello, \(firstName)!"
 
