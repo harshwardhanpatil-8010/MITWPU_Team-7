@@ -45,12 +45,8 @@
                                                 <rect key="frame" x="15" y="468.33333333333337" width="372" height="482"/>
                                                 <subviews>
                                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" lineBreakMode="tailTruncation" numberOfLines="43" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="7Fn-35-UKb">
-                                                        <rect key="frame" x="16" y="15" width="340" height="324.66666666666669"/>
-                                                        <mutableString key="text">Walking Steadiness refers to difficulty in walking, which can appear as unsteady steps, slowed movement, shuffling, or imbalance while moving.
-
-It is a common symptom in neurological conditions like Parkinson’s disease, stroke, or multiple sclerosis. Gait issues can also arise from muscle weakness, joint problems, inner ear disorders, or age-related changes.
-
-The severity may range from mild unsteadiness to a higher risk of falls that impact daily activities. Factors such as fatigue, medications, and vision problems can worsen gait disturbance. Persistent or worsening gait changes should be medically evaluated.</mutableString>
+                                                        <rect key="frame" x="16" y="15" width="340" height="153"/>
+                                                        <string key="text">Walking Steadiness estimates how stable and balanced your walking pattern is. It analyzes movement factors such as walking speed, step length, support time, and left–right symmetry to understand your gait quality. Monitoring these changes over time helps detect mobility changes, assess balance, and support safer movement.</string>
                                                         <fontDescription key="fontDescription" type="system" pointSize="16"/>
                                                         <nil key="textColor"/>
                                                         <nil key="highlightedColor"/>
@@ -263,7 +259,7 @@ The severity may range from mild unsteadiness to a higher risk of falls that imp
     </scenes>
     <resources>
         <systemColor name="secondaryLabelColor">
-            <color red="0.23529411759999999" green="0.23529411759999999" blue="0.26274509800000001" alpha="0.59999999999999998" colorSpace="custom" customColorSpace="sRGB"/>
+            <color red="0.23529411764705882" green="0.23529411764705882" blue="0.2627450980392157" alpha="0.59999999999999998" colorSpace="custom" customColorSpace="sRGB"/>
         </systemColor>
         <systemColor name="systemBackgroundColor">
             <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
