@@ -11,7 +11,6 @@ class MyMedicationCollectionViewCell: UICollectionViewCell {
 
     @IBOutlet weak var medContainer: UIView!
     @IBOutlet weak var medImage: UIImageView!
-    @IBOutlet weak var medFrequency: UILabel!
     @IBOutlet weak var medRepeat: UILabel!
     @IBOutlet weak var medUnitandForm: UILabel!
     @IBOutlet weak var medTitle: UILabel!
@@ -30,15 +29,11 @@ extension MyMedicationCollectionViewCell {
         medTitle.text = medication.medicationName
         medUnitandForm.text = medication.medicationForm
         
-        // Frequency
         let doseCount = medication.doses?.count ?? 0
-        medFrequency.text = "\(doseCount)x day"
         
         medImage.image = UIImage(
             named: medication.medicationIconName ?? ""
         ) ?? UIImage(systemName: "pills")
-        
-        // Schedule handling (since now it's String + Days)
         
         guard let scheduleType = medication.medicationScheduleType else {
             medRepeat.text = "—"

@@ -18,9 +18,9 @@ class resultMimicTheEmoji: UIViewController {
         
         
         if let date = playedDate {
-            EmojiGameManager.shared.markAsCompleted(date: date) // Saves to memory
+            EmojiGameManager.shared.markAsCompleted(date: date)
         }
-        NotificationCenter.default.post(name: .didUpdateGameCompletion, object: nil) // Broadcasts update
+        NotificationCenter.default.post(name: .didUpdateGameCompletion, object: nil)
         
         setupResultCard()
         displayResults()

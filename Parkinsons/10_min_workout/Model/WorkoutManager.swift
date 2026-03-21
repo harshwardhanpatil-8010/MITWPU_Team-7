@@ -9,8 +9,6 @@ class WorkoutManager {
         restorePersistedSessionIfAvailable()
     }
 
-    // MARK: - Session State
-
     var lastCheckedMedState: MedState = .unknown
 
     enum MedState: Equatable {
@@ -73,13 +71,11 @@ class WorkoutManager {
         }
     }
 
-    // MARK: - Disease Stage
 
     var diseaseStage: Int {
         return UserDefaults.standard.integer(forKey: "diseaseStage")
     }
 
-    // MARK: - Workout Completion Tracking
 
     private var lastWorkoutCompletionDate: Date? {
         get { UserDefaults.standard.object(forKey: lastWorkoutCompletionDateKey) as? Date }
@@ -95,7 +91,6 @@ class WorkoutManager {
         lastWorkoutCompletionDate = Date()
     }
 
-    // MARK: - Session Persistence
 
     func syncSessionPersistence() {
         persistCurrentSession()
@@ -155,7 +150,6 @@ class WorkoutManager {
         }
     }
 
-    // MARK: - Position Persistence
 
     func saveTodayPosition(_ position: ExercisePosition) {
         UserDefaults.standard.set(position.rawValue, forKey: lastWorkoutPositionKey)
@@ -186,7 +180,6 @@ class WorkoutManager {
         }
     }
 
-    // MARK: - Medication Status
     var allMedsTaken: Bool {
         medicationAdherenceSnapshot().isReadyForFullAdaptiveWorkout
     }
@@ -324,7 +317,6 @@ class WorkoutManager {
         ) ?? Date()
     }
 
-    // MARK: - Exercise Generation
 
     func generateDailyWorkout(for position: ExercisePosition) {
         rollOverSessionIfNeeded()
@@ -349,7 +341,6 @@ class WorkoutManager {
         persistCurrentSession()
     }
 
-    // MARK: - Shared Exercise Set Builder
 
     private func buildExerciseSet(
         position: ExercisePosition,
@@ -408,7 +399,6 @@ class WorkoutManager {
         return ex
     }
 
-    // MARK: - Lazy Load
 
     func getTodayWorkout() -> [WorkoutExercise] {
         rollOverSessionIfNeeded()
@@ -418,7 +408,6 @@ class WorkoutManager {
         return exercises
     }
 
-    // MARK: - Progressive Adjustment Algorithm
 
     private func calculateAdjustment(
         previous: ExercisePosition?,
@@ -470,7 +459,6 @@ class WorkoutManager {
         return modified
     }
 
-    // MARK: - Minimum Intensity
 
     private func applyMinimumIntensity(to exercise: WorkoutExercise) -> WorkoutExercise {
         var modified = exercise
@@ -483,7 +471,6 @@ class WorkoutManager {
         return modified
     }
 
-    // MARK: - JSON Change Detection
 
     private func bundleJSONChanged() -> Bool {
         guard let currentHash = currentBundleJSONHash() else { return false }
@@ -504,7 +491,6 @@ class WorkoutManager {
         }
     }
 
-    // MARK: - Stage-Filtered Library
 
     private func getStageFilteredLibrary(for stage: Int) -> [WorkoutExercise] {
         _ = stage
@@ -521,7 +507,6 @@ class WorkoutManager {
         }
     }
 
-    // MARK: - Reset
 
     func resetDailyProgress() {
         completedToday.removeAll()
