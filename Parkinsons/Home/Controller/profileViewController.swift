@@ -1,6 +1,6 @@
 import UIKit
 
-class profileViewController: UIViewController {
+class profileViewController: UIViewController, UITextFieldDelegate {
 
     @IBOutlet weak var StageInfo: UITextField!
     @IBOutlet weak var backButton: UIBarButtonItem!
@@ -36,9 +36,60 @@ class profileViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+
+        loadUserData()
         setupInitialUI()
+        configureTextFields()
+        configureKeyboardDismissGesture()
     }
+
+    private func configureTextFields() {
+        nameTextField.delegate = self
+        emergencyNoTextField.delegate = self
+        StageInfo.delegate = self
+        nameTextField.returnKeyType = .done
+        emergencyNoTextField.returnKeyType = .done
+        StageInfo.returnKeyType = .done
+    }
+
+    private func configureKeyboardDismissGesture() {
+        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(dismissKeyboard))
+        tapGesture.cancelsTouchesInView = false
+        view.addGestureRecognizer(tapGesture)
+    }
+
+    @objc private func dismissKeyboard() {
+        view.endEditing(true)
+    }
+
+    func loadUserData() {
+
+        let defaults = UserDefaults.standard
+
+        let fullName = defaults.string(forKey: "userName") ?? ""
+        let firstName = fullName
+            .split(whereSeparator: { $0.isWhitespace })
+            .first
+            .map(String.init) ?? "User"
+
+        nameTextField.text = fullName
+        logoLabel.text = String(firstName.prefix(1))
+
+        let emergency = defaults.string(forKey: "emergencyContact") ?? ""
+        emergencyNoTextField.text = emergency
+
+        let gender = defaults.string(forKey: "userGender") ?? "Male"
+        selectedSex = gender
+
+        let savedStage = defaults.integer(forKey: "diseaseStage")
+        StageInfo.text = savedStage > 0 ? "Stage \(savedStage)" : "Not Set"
+
+        if let dob = defaults.object(forKey: "userDOB") as? Date {
+            dateOfBirthSelector.date = dob
+        }
+    }
+
+
     @IBAction func pastSymptomRecordsNavigation(_ sender: Any) {
         
         let storyboard = UIStoryboard(name: "Symptom", bundle: nil)
@@ -73,36 +124,6 @@ class profileViewController: UIViewController {
     private func setupInitialUI() {
         logoBackground.layer.cornerRadius = logoBackground.frame.size.height / 2
         logoBackground.clipsToBounds = true
-        
-        // --- STAGE INFO LOADING ---
-            // 1. Retrieve the stage number (defaults to 0 if not found)
-            let savedStage = UserDefaults.standard.integer(forKey: "diseaseStage")
-            
-            // 2. If the stage is valid (1-5), display it. Otherwise, leave it or set a default.
-            if savedStage > 0 {
-                StageInfo.text = "Stage \(savedStage)"
-            } else {
-                StageInfo.text = "Not Set"
-            }
-            // ---------------------------
-        // --- 2. SEX/GENDER LOADING ---
-            // This looks for the key "userGender" we saved in Onboarding
-            let savedSex = UserDefaults.standard.string(forKey: "userGender") ?? "Male"
-            self.selectedSex = savedSex // This triggers the 'didSet' to update sexsSelector title
-        
-        // --- ADD THESE LINES HERE ---
-        // 1. Load the FULL name from the new key
-            let savedFullName = UserDefaults.standard.string(forKey: "UserFullName") ?? "John Doe"
-            
-            // 2. Put the FULL name back into the text field
-            nameTextField.text = savedFullName
-            
-            // 3. Set the logo label using the first letter of the saved name
-            if let firstChar = savedFullName.first {
-                logoLabel.text = String(firstChar).uppercased()
-            }
-        // ----------------------------
-
         sexsSelector.setTitle(selectedSex, for: .normal)
         stackViewBackground.layer.cornerRadius = 25
         stackViewBackground.clipsToBounds = true
@@ -115,47 +136,50 @@ class profileViewController: UIViewController {
     }
     @IBAction func editButtonTapped(_ sender: UIBarButtonItem) {
         isEditingMode.toggle()
-        
+
         if isEditingMode {
             let config = UIImage.SymbolConfiguration(weight: .bold)
             editButton.image = UIImage(systemName: "checkmark", withConfiguration: config)
             editButton.title = nil
             editButton.style = .prominent
-            
+
             updateUI(forEditing: true)
+
         } else {
+
+            saveUserData()
+
             editButton.image = nil
             editButton.title = "Edit"
             editButton.style = .plain
-            UserDefaults.standard.set(selectedSex, forKey: "userGender")
+
+
             updateUI(forEditing: false)
-            
-            UIView.animate(withDuration: 0.3) {
-                self.updateUI(forEditing: self.isEditingMode)
-            }
-            if let fullName = nameTextField.text, !fullName.isEmpty {
-                
-                // 1. SAVE THE FULL NAME (for the Profile Screen)
-                UserDefaults.standard.set(fullName, forKey: "UserFullName")
-                
-                // 2. EXTRACT THE FIRST NAME (for the Home Screen)
-                let firstName = fullName.components(separatedBy: " ").first ?? fullName
-                
-                // 3. Update the Logo Circle with the first letter
-                if let firstChar = firstName.first {
-                    logoLabel.text = String(firstChar).uppercased()
-                }
-                
-                // 4. Broadcast the FIRST NAME ONLY to HomeViewController
-                NotificationCenter.default.post(
-                    name: NSNotification.Name("NameChanged"),
-                    object: nil,
-                    userInfo: ["name": firstName]
-                )
-            }
+
+            loadUserData()
+
         }
     }
-    
+
+    func saveUserData() {
+
+        let defaults = UserDefaults.standard
+
+        let name = nameTextField.text?.trimmingCharacters(in: .whitespacesAndNewlines) ?? ""
+        let emergency = emergencyNoTextField.text?.trimmingCharacters(in: .whitespacesAndNewlines) ?? ""
+
+        defaults.set(name, forKey: "userName")
+        defaults.set(emergency, forKey: "emergencyContact")
+        defaults.set(selectedSex, forKey: "userGender")
+        defaults.set(dateOfBirthSelector.date, forKey: "userDOB")
+        if let stageText = StageInfo.text?.trimmingCharacters(in: .whitespacesAndNewlines),
+           let stageNumber = Int(stageText.components(separatedBy: " ").last ?? "") {
+            defaults.set(stageNumber, forKey: "diseaseStage")
+        }
+        NotificationCenter.default.post(name: NSNotification.Name("UserProfileUpdated"), object: nil)
+    }
+
+
     @IBAction func backButtonTapped(_ sender: UIBarButtonItem) {
         if isEditingMode {
             let alert = UIAlertController(
@@ -209,6 +233,11 @@ class profileViewController: UIViewController {
         if !isEditing {
             view.endEditing(true)
         }
+    }
+
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        textField.resignFirstResponder()
+        return true
     }
 
     

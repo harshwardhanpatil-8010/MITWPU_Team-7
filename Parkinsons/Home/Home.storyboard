@@ -41,13 +41,13 @@
                                 </items>
                             </navigationBar>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Hello John" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="FrP-at-w4U">
-                                <rect key="frame" x="16" y="180" width="158.66666666666666" height="38.333333333333343"/>
+                                <rect key="frame" x="16" y="180" width="361" height="38.333333333333343"/>
                                 <fontDescription key="fontDescription" type="boldSystem" pointSize="32"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="VtX-jr-dYm">
-                                <rect key="frame" x="0.0" y="234.33333333333331" width="393" height="617.66666666666674"/>
+                                <rect key="frame" x="0.0" y="234.33333333333326" width="393" height="617.66666666666674"/>
                                 <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                                 <collectionViewFlowLayout key="collectionViewLayout" automaticEstimatedItemSize="YES" minimumLineSpacing="10" minimumInteritemSpacing="10" id="mZc-ho-9sF">
                                     <size key="itemSize" width="393" height="114"/>
@@ -75,6 +75,7 @@
                             <constraint firstItem="FrP-at-w4U" firstAttribute="leading" secondItem="vDu-zF-Fre" secondAttribute="leading" constant="16" id="Ecr-DK-ukg"/>
                             <constraint firstAttribute="bottom" secondItem="VtX-jr-dYm" secondAttribute="bottom" id="HwU-Zy-3Bh"/>
                             <constraint firstItem="Byu-25-vaf" firstAttribute="leading" secondItem="5EZ-qb-Rvc" secondAttribute="leading" id="IBK-OZ-l2T"/>
+                            <constraint firstItem="vDu-zF-Fre" firstAttribute="trailing" secondItem="FrP-at-w4U" secondAttribute="trailing" constant="16" id="Nd0-LS-XB5"/>
                             <constraint firstItem="VtX-jr-dYm" firstAttribute="leading" secondItem="vDu-zF-Fre" secondAttribute="leading" id="SOd-hS-iEF"/>
                             <constraint firstItem="FrP-at-w4U" firstAttribute="top" secondItem="vDu-zF-Fre" secondAttribute="top" constant="8" id="Tkg-ZY-iCl"/>
                             <constraint firstAttribute="trailing" secondItem="Byu-25-vaf" secondAttribute="trailing" id="Z7A-mf-PLD"/>
@@ -85,7 +86,10 @@
                     <toolbarItems/>
                     <simulatedToolbarMetrics key="simulatedBottomBarMetrics"/>
                     <connections>
+
+                        <outlet property="NameLabel" destination="FrP-at-w4U" id="HkS-rP-3mF"/>
                         <outlet property="NameOfUser" destination="FrP-at-w4U" id="P8r-r2-49T"/>
+
                         <outlet property="mainCollectionView" destination="VtX-jr-dYm" id="GSP-ou-Zpg"/>
                     </connections>
                 </viewController>

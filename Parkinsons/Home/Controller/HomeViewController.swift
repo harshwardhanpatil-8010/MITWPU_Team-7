@@ -13,10 +13,17 @@ class HomeViewController: UIViewController, UICollectionViewDelegate {
     @IBOutlet weak var NameOfUser: UILabel!
     private let todayViewModel = TodayMedicationViewModel()
     private var todayDoses: [TodayDoseItem] = []
+
+
+    @IBOutlet weak var NameLabel: UILabel!
     
+
+
+
     @IBOutlet weak var mainCollectionView: UICollectionView!
     
     private var medicationLoggedObserver: NSObjectProtocol?
+    private var userProfileUpdatedObserver: NSObjectProtocol?
     
     let homeSections = Section.allCases
     private let separatorView: UIView = {
@@ -58,19 +65,9 @@ class HomeViewController: UIViewController, UICollectionViewDelegate {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        // 1. Initial Load: Look for the FULL name, then split it
-            let savedFull = UserDefaults.standard.string(forKey: "UserFullName") ?? "User"
-            let firstName = savedFull.components(separatedBy: " ").first ?? savedFull
-            self.NameOfUser.text = "Hello, \(firstName)!"
 
-            // 2. Real-time Update: Listen for the "NameChanged" broadcast
-            NotificationCenter.default.addObserver(forName: NSNotification.Name("NameChanged"), object: nil, queue: .main) { [weak self] notification in
-                if let newFirstName = notification.userInfo?["name"] as? String {
-                    self?.NameOfUser.text = "Hello, \(newFirstName)!"
-                }
-            }
-        
+        updateGreeting()
+
         registerCells()
         
         mainCollectionView.dataSource = self
@@ -87,30 +84,59 @@ class HomeViewController: UIViewController, UICollectionViewDelegate {
         ) { [weak self] _ in
             self?.loadRealMedicationData()
         }
+
+        userProfileUpdatedObserver = NotificationCenter.default.addObserver(
+            forName: NSNotification.Name("UserProfileUpdated"),
+            object: nil,
+            queue: .main
+        ) { [weak self] _ in
+            self?.updateGreeting()
+        }
     }
     
     deinit {
         if let observer = medicationLoggedObserver {
             NotificationCenter.default.removeObserver(observer)
         }
+        if let observer = userProfileUpdatedObserver {
+            NotificationCenter.default.removeObserver(observer)
+        }
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        
+
+        updateGreeting()
+
         mainCollectionView.performBatchUpdates({
             mainCollectionView.reloadData()
         }, completion: { _ in
             self.scrollToSelectedDate(animated: false)
         })
     }
-    
+
     @IBAction func profilePageButton(_ sender: Any) {
         let storyboard = UIStoryboard(name: "Home", bundle: nil)
         let vc = storyboard.instantiateViewController(withIdentifier: "profileViewController") as! profileViewController
         let nav = UINavigationController(rootViewController: vc)
         nav.modalPresentationStyle = .pageSheet
         present(nav, animated: true)
+    }
+
+    private func updateGreeting() {
+        if let fullName = UserDefaults.standard.string(forKey: "userName")?
+            .trimmingCharacters(in: .whitespacesAndNewlines),
+           !fullName.isEmpty {
+            let firstName = fullName
+                .split(whereSeparator: { $0.isWhitespace })
+                .first
+                .map(String.init) ?? fullName
+            NameLabel.text = "Hello \(firstName)"
+            NameOfUser.text = "Hello \(firstName)"
+        } else {
+            NameLabel.text = "Hello John"
+            NameOfUser.text = "Hello John"
+        }
     }
     private func loadRealMedicationData() {
         let context = PersistenceController.shared.viewContext

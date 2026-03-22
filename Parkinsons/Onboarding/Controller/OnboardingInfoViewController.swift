@@ -7,24 +7,30 @@
 
 import UIKit
 
-class OnboardingInfoViewController: UIViewController {
+class OnboardingInfoViewController: UIViewController, UITextFieldDelegate {
 
 
        @IBOutlet weak var stageLabelButton: UIButton!
        @IBOutlet weak var genderLabelButton: UIButton!
-
-
-       let genderOptions = ["Male", "Female", "Other"]
+    @IBOutlet weak var dateOfBirthPicker: UIDatePicker!
+    @IBOutlet weak var nameTextField: UITextField!
+    @IBOutlet weak var emergencyTextField: UITextField!
+    
+    @IBOutlet weak var backgroundStackView: UIStackView!
+    let genderOptions = ["Male", "Female", "Other"]
        let stageOptions = ["Stage 1", "Stage 2", "Stage 3", "Stage 4", "Stage 5"]
 
        override func viewDidLoad() {
            super.viewDidLoad()
-
+           backgroundStackView.layer.cornerRadius = 25
+           backgroundStackView.clipsToBounds = true
            navigationItem.hidesBackButton = true
            navigationController?.interactivePopGestureRecognizer?.isEnabled = false
 
            configureGenderPickerMenu()
            configureStagePickerMenu()
+           configureTextFields()
+           configureKeyboardDismissGesture()
            
            genderLabelButton.setTitle("", for: .normal)
            genderLabelButton.setTitleColor(.systemBlue, for: .normal)
@@ -59,6 +65,23 @@ class OnboardingInfoViewController: UIViewController {
         stageLabelButton.showsMenuAsPrimaryAction = true
     }
 
+    private func configureTextFields() {
+        nameTextField.delegate = self
+        emergencyTextField.delegate = self
+        nameTextField.returnKeyType = .done
+        emergencyTextField.returnKeyType = .done
+    }
+
+    private func configureKeyboardDismissGesture() {
+        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(dismissKeyboard))
+        tapGesture.cancelsTouchesInView = false
+        view.addGestureRecognizer(tapGesture)
+    }
+
+    @objc private func dismissKeyboard() {
+        view.endEditing(true)
+    }
+
        // MARK: - IBAction (Maintained for clarity, though not strictly required for UIMenu)
        
        @IBAction func genderPicker(_ sender: Any) {
@@ -68,23 +91,31 @@ class OnboardingInfoViewController: UIViewController {
        @IBAction func stagePicker(_ sender: Any) {
 
        }
+
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        textField.resignFirstResponder()
+        return true
+    }
     
     
     @IBAction func nextButtonTapped(_ sender: Any) {
-        
+
+        let name = nameTextField.text?.trimmingCharacters(in: .whitespacesAndNewlines) ?? ""
+        let emergencyContact = emergencyTextField.text?.trimmingCharacters(in: .whitespacesAndNewlines) ?? ""
         let selectedGender = genderLabelButton.title(for: .normal) ?? ""
         let stageText = stageLabelButton.title(for: .normal) ?? ""
-        
-        guard !selectedGender.isEmpty,
-              let stageNumber = Int(stageText.components(separatedBy: " ").last ?? "") else {
-            print("Please complete all fields")
-            return
-        }
-        
-        UserDefaults.standard.set(stageNumber, forKey: "diseaseStage")
-        UserDefaults.standard.set(selectedGender, forKey: "userGender")
 
-        UserDefaults.standard.set(true, forKey: "hasCompletedOnboarding")
+              let stageNumber = Int(stageText.components(separatedBy: " ").last ?? "")
+
+        let defaults = UserDefaults.standard
+        defaults.set(name, forKey: "userName")
+        defaults.set(emergencyContact, forKey: "emergencyContact")
+        defaults.set(stageNumber, forKey: "diseaseStage")
+        defaults.set(selectedGender, forKey: "userGender")
+        defaults.set(dateOfBirthPicker.date, forKey: "userDOB")
+        defaults.set(true, forKey: "hasCompletedOnboarding")
+        NotificationCenter.default.post(name: NSNotification.Name("UserProfileUpdated"), object: nil)
+
         navigateToHome()
     }
 
