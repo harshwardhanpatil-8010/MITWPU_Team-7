@@ -401,12 +401,10 @@
                         <outlet property="backgroundView" destination="h8l-Uq-EZY" id="GzV-J7-Xwr"/>
                         <outlet property="deleteButton" destination="n15-eu-lVI" id="AvH-2R-7G3"/>
                         <outlet property="doseStepper" destination="T7R-Yw-aw4" id="i2C-es-0Cv"/>
-                        <outlet property="doseTableHeightConstraint" destination="cYc-O6-ORg" id="jqe-kq-FaF"/>
                         <outlet property="doseTableView" destination="9PV-RW-Pyh" id="G2l-Tm-EPc"/>
                         <outlet property="medicationNameTextField" destination="K2z-4Y-41i" id="4wi-e2-I9j"/>
                         <outlet property="repeatLabel" destination="6Kb-IB-Wcf" id="b7S-Co-hDQ"/>
                         <outlet property="repeatStack" destination="rJ2-8q-PCb" id="3Ci-kr-lB4"/>
-                        <outlet property="scrollView" destination="7jw-pn-Zn7" id="sJm-1N-4Gm"/>
                         <outlet property="strengthLabel" destination="R90-to-RJp" id="BZ5-fA-6B6"/>
                         <outlet property="strengthUnitLabel" destination="UHl-dA-G5h" id="Yya-sl-KZf"/>
                         <outlet property="tickButton" destination="Ivl-la-9zD" id="qiq-t0-7ST"/>
