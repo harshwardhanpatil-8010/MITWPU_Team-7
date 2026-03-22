@@ -18,7 +18,7 @@ class GaitViewController: UIViewController {
     enum SteadinessRange { case day, week, month, sixMonth, year }
 
 
-    override func viewDidLoad() {
+override func viewDidLoad() {
         super.viewDidLoad()
         GaitCardView.applyCardStyle()
         title = "Walking Steadiness"
@@ -28,11 +28,6 @@ class GaitViewController: UIViewController {
         walkingSteadinessGraph.backgroundColor = .clear
     }
 
-    override func viewDidAppear(_ animated: Bool) {
-        super.viewDidAppear(animated)
-        authorizeAndFetch()
-    }
-
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
         if let data = pendingChartData {
@@ -40,6 +35,13 @@ class GaitViewController: UIViewController {
             chartView.configure(with: data)
         }
     }
+
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        authorizeAndFetch()
+    }
+
+
 
     private func setupChart() {
         chartView.translatesAutoresizingMaskIntoConstraints = false

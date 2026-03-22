@@ -81,6 +81,10 @@ class AddMedicationViewController: UIViewController,
         let tap = UITapGestureRecognizer(target: self, action: #selector(dismissKeyboard))
         view.addGestureRecognizer(tap)
         
+        // Set delegates for text fields to dismiss keyboard on return
+        medicationNameTextField.delegate = self
+        strengthLabel.delegate = self
+        
         deleteButton.isHidden = !isEditMode
         backgroundView.layer.cornerRadius = 16
         doseTableView.dataSource = self
@@ -103,6 +107,12 @@ class AddMedicationViewController: UIViewController,
         repeatStack.addGestureRecognizer(
             UITapGestureRecognizer(target: self, action: #selector(repeatStackTapped))
         )
+    }
+    
+    // MARK: - UITextFieldDelegate
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        textField.resignFirstResponder()
+        return true
     }
 
     override func viewDidLayoutSubviews() {

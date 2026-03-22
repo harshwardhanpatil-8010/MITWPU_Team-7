@@ -42,7 +42,7 @@
                                                 <nil key="highlightedColor"/>
                                             </label>
                                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="sJN-Cb-KuH">
-                                                <rect key="frame" x="15" y="468.33333333333337" width="372" height="482"/>
+                                                <rect key="frame" x="15" y="468.33333333333337" width="372" height="185"/>
                                                 <subviews>
                                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" lineBreakMode="tailTruncation" numberOfLines="43" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="7Fn-35-UKb">
                                                         <rect key="frame" x="16" y="15" width="340" height="153"/>
@@ -54,9 +54,9 @@
                                                 </subviews>
                                                 <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                                                 <constraints>
+                                                    <constraint firstAttribute="height" constant="185" id="2CB-Um-RV9"/>
                                                     <constraint firstItem="7Fn-35-UKb" firstAttribute="leading" secondItem="sJN-Cb-KuH" secondAttribute="leading" constant="16" id="4h3-y2-iIv"/>
                                                     <constraint firstItem="7Fn-35-UKb" firstAttribute="top" secondItem="sJN-Cb-KuH" secondAttribute="top" constant="15" id="FHc-BT-DDi"/>
-                                                    <constraint firstAttribute="height" constant="482" id="V9m-J3-JNf"/>
                                                     <constraint firstAttribute="trailing" secondItem="7Fn-35-UKb" secondAttribute="trailing" constant="16" id="rm2-hX-qdX"/>
                                                 </constraints>
                                             </view>
@@ -259,7 +259,7 @@
     </scenes>
     <resources>
         <systemColor name="secondaryLabelColor">
-            <color red="0.23529411764705882" green="0.23529411764705882" blue="0.2627450980392157" alpha="0.59999999999999998" colorSpace="custom" customColorSpace="sRGB"/>
+            <color red="0.23529411759999999" green="0.23529411759999999" blue="0.26274509800000001" alpha="0.59999999999999998" colorSpace="custom" customColorSpace="sRGB"/>
         </systemColor>
         <systemColor name="systemBackgroundColor">
             <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
