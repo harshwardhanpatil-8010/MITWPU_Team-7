@@ -14,16 +14,16 @@ struct UnitAndType {//UI support model,Static
 }
 
 var unitAndType: [UnitAndType] = [
-    UnitAndType(name: "Capsule", image: "capsuleM", isSelected: false),
-    UnitAndType(name: "Tablet", image: "tablet", isSelected: false),
-    UnitAndType(name: "Liquid", image: "liquid", isSelected: false),
-    UnitAndType(name: "Cream", image: "cream", isSelected: false),
-    UnitAndType(name: "Device", image: "device", isSelected: false),
-    UnitAndType(name: "Drops", image: "drops", isSelected: false),
-    UnitAndType(name: "Foam", image: "foam", isSelected: false),
-    UnitAndType(name: "Gel", image: "gel", isSelected: false),
-    UnitAndType(name: "Powder", image: "powder", isSelected: false),
-    UnitAndType(name: "Spray", image: "spray", isSelected: false)
+    UnitAndType(name: "Capsule", image: "capsule1", isSelected: false),
+    UnitAndType(name: "Tablet", image: "tablet1", isSelected: false),
+    UnitAndType(name: "Liquid", image: "liquid1", isSelected: false),
+    UnitAndType(name: "Cream", image: "cream1", isSelected: false),
+    UnitAndType(name: "Device", image: "device1", isSelected: false),
+    UnitAndType(name: "Drops", image: "drops1", isSelected: false),
+    UnitAndType(name: "Foam", image: "foam1", isSelected: false),
+    UnitAndType(name: "Gel", image: "gel1", isSelected: false),
+    UnitAndType(name: "Powder", image: "powder1", isSelected: false),
+    UnitAndType(name: "Spray", image: "spray1", isSelected: false)
 ]
 extension UnitAndType {
     static func icon(for type: String) -> String {

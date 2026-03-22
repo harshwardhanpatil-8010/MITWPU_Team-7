@@ -285,6 +285,35 @@
             </objects>
             <point key="canvasLocation" x="2675" y="138"/>
         </scene>
+        <!--View Controller-->
+        <scene sceneID="oAv-gR-YM5">
+            <objects>
+                <viewController id="zWb-vR-d1J" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="wVz-li-HVQ">
+                        <rect key="frame" x="0.0" y="0.0" width="402" height="874"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Let's Begin" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="1g2-1y-g4K">
+                                <rect key="frame" x="16" y="222" width="370" height="32.333333333333343"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="27"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                        </subviews>
+                        <viewLayoutGuide key="safeArea" id="CmP-I1-dWo"/>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                        <constraints>
+                            <constraint firstItem="1g2-1y-g4K" firstAttribute="centerX" secondItem="wVz-li-HVQ" secondAttribute="centerX" id="Wu0-Ko-ecU"/>
+                            <constraint firstItem="1g2-1y-g4K" firstAttribute="top" secondItem="CmP-I1-dWo" secondAttribute="top" constant="98" id="dxa-v5-kvw"/>
+                            <constraint firstItem="1g2-1y-g4K" firstAttribute="leading" secondItem="CmP-I1-dWo" secondAttribute="leading" constant="16" id="yDT-Uf-aTh"/>
+                            <constraint firstItem="CmP-I1-dWo" firstAttribute="trailing" secondItem="1g2-1y-g4K" secondAttribute="trailing" constant="16" id="zHi-tw-MtW"/>
+                        </constraints>
+                    </view>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="lk5-KT-phM" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="2859" y="935"/>
+        </scene>
         <!--10 min Workout-->
         <scene sceneID="fwz-WR-0Sv">
             <objects>

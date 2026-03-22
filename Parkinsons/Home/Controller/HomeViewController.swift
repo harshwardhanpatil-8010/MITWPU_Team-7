@@ -66,6 +66,13 @@ class HomeViewController: UIViewController, UICollectionViewDelegate {
     override func viewDidLoad() {
         super.viewDidLoad()
 
+        
+        // 1. Initial Load: Look for the FULL name, then split it
+            let savedFull = UserDefaults.standard.string(forKey: "UserFullName") ?? "John"
+            let firstName = savedFull.components(separatedBy: " ").first ?? savedFull
+            self.NameOfUser.text = "Hello, \(firstName)!"
+
+
         updateGreeting()
 
         registerCells()
