@@ -79,14 +79,14 @@ final class MainMedicationViewController: UIViewController {
         updateCollectionViewHeight()
     }
     private func setupProfilePresentationUI() {
-            // 1. Set up the "X" (Close) button
+       
             let closeButton = UIBarButtonItem(barButtonSystemItem: .close, target: self, action: #selector(dismissModal))
             self.navigationItem.leftBarButtonItem = closeButton
             
-            // 2. Hide the Plus button
+
             plusButton.isHidden = true
             
-            // 3. Set segment to "My Medication" (index 1)
+
             medSegment.selectedSegmentIndex = 1
             currentSegment = .myMedication
         }
@@ -116,7 +116,7 @@ final class MainMedicationViewController: UIViewController {
         if currentSegment == .today {
             todayViewModel.loadTodayMedications(from: myMedications)
 
-            // ✅ Filter to today's logs only using doseDay
+
             let logRequest: NSFetchRequest<MedicationDoseLog> = MedicationDoseLog.fetchRequest()
             let startOfDay = Calendar.current.startOfDay(for: Date())
             let endOfDay = Calendar.current.date(byAdding: .day, value: 1, to: startOfDay)!
@@ -411,27 +411,26 @@ extension MainMedicationViewController: EditLogDelegate {
         let context = PersistenceController.shared.viewContext
 
         for item in updated {
-            // Find the MedicationDoseLog by its id and update its status
+
             let logRequest: NSFetchRequest<MedicationDoseLog> = MedicationDoseLog.fetchRequest()
             logRequest.predicate = NSPredicate(format: "id == %@", item.id as CVarArg)
 
             if let log = (try? context.fetch(logRequest))?.first {
                 log.doseLogStatus = item.status.rawValue
 
-                // Also keep the MedicationDose status in sync via the relationship
+
                 if let coreDose = log.dose {
                     coreDose.doseStatus = item.status.rawValue
                 }
             }
         }
 
-        // ✅ Save to CoreData
         PersistenceController.shared.save(context)
 
-        // ✅ Notify HomeViewController and SummaryViewController
+
         NotificationCenter.default.post(name: NSNotification.Name("MedicationLogged"), object: nil)
 
-        // ✅ Reload local UI from CoreData (not from the in-memory array)
+
         loadMedications()
     }
 }

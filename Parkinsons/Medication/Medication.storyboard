@@ -491,24 +491,6 @@
                                                     </collectionViewCell>
                                                 </cells>
                                             </collectionView>
-                                            <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="equalSpacing" alignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="Ua8-xd-Rtz">
-                                                <rect key="frame" x="16" y="395.66666666666669" width="370" height="82.666666666666686"/>
-                                                <subviews>
-                                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="No medications added yet." textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="xt9-qh-SD7">
-                                                        <rect key="frame" x="24.333333333333343" y="0.0" width="321.33333333333326" height="33.666666666666664"/>
-                                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                                        <fontDescription key="fontDescription" style="UICTFontTextStyleTitle1"/>
-                                                        <color key="textColor" systemColor="systemGray2Color"/>
-                                                        <nil key="highlightedColor"/>
-                                                    </label>
-                                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Your medication reminders will appear here once added." textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="LaC-O5-4Fs">
-                                                        <rect key="frame" x="16.333333333333343" y="33.666666666666629" width="337.33333333333326" height="49"/>
-                                                        <fontDescription key="fontDescription" style="UICTFontTextStyleTitle3"/>
-                                                        <color key="textColor" systemColor="systemGray2Color"/>
-                                                        <nil key="highlightedColor"/>
-                                                    </label>
-                                                </subviews>
-                                            </stackView>
                                         </subviews>
                                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                                         <constraints>
@@ -518,10 +500,6 @@
                                             <constraint firstItem="t7A-gk-CD4" firstAttribute="top" secondItem="K65-Ym-9su" secondAttribute="bottom" constant="16" id="9dE-WQ-1Z9"/>
                                             <constraint firstItem="t7A-gk-CD4" firstAttribute="leading" secondItem="kYv-8o-X4E" secondAttribute="leading" constant="16" id="Dp4-Km-a5f"/>
                                             <constraint firstAttribute="trailing" secondItem="t7A-gk-CD4" secondAttribute="trailing" constant="16" id="Hc3-Wg-4q1"/>
-                                            <constraint firstItem="Ua8-xd-Rtz" firstAttribute="centerX" secondItem="kYv-8o-X4E" secondAttribute="centerX" id="Ix2-ef-bwk"/>
-                                            <constraint firstItem="Ua8-xd-Rtz" firstAttribute="centerY" secondItem="t7A-gk-CD4" secondAttribute="centerY" id="N1p-16-BgA"/>
-                                            <constraint firstItem="Ua8-xd-Rtz" firstAttribute="leading" secondItem="kYv-8o-X4E" secondAttribute="leading" constant="16" id="QvG-ao-F8T"/>
-                                            <constraint firstAttribute="trailing" secondItem="Ua8-xd-Rtz" secondAttribute="trailing" constant="16" id="dB1-gK-rKf"/>
                                             <constraint firstAttribute="bottom" secondItem="t7A-gk-CD4" secondAttribute="bottom" constant="85" id="sgt-b0-hTf"/>
                                         </constraints>
                                     </view>
@@ -534,6 +512,23 @@
                                     <constraint firstAttribute="bottom" secondItem="kYv-8o-X4E" secondAttribute="bottom" id="cX1-5q-UhP"/>
                                 </constraints>
                             </scrollView>
+                            <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="equalSpacing" alignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="Ua8-xd-Rtz">
+                                <rect key="frame" x="16" y="395" width="370" height="83"/>
+                                <subviews>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="No medications added yet." textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="xt9-qh-SD7">
+                                        <rect key="frame" x="0.0" y="0.0" width="370" height="34"/>
+                                        <fontDescription key="fontDescription" style="UICTFontTextStyleTitle1"/>
+                                        <color key="textColor" systemColor="systemGray2Color"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Your medication reminders will appear here once added." textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="LaC-O5-4Fs">
+                                        <rect key="frame" x="16" y="34" width="338" height="49"/>
+                                        <fontDescription key="fontDescription" style="UICTFontTextStyleTitle3"/>
+                                        <color key="textColor" systemColor="systemGray2Color"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                </subviews>
+                            </stackView>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="KiJ-pe-Mx2">
                                 <rect key="frame" x="322" y="726" width="56" height="56"/>
                                 <constraints>
@@ -558,6 +553,10 @@
                             <constraint firstItem="xyJ-1q-QrA" firstAttribute="trailing" secondItem="KiJ-pe-Mx2" secondAttribute="trailing" constant="24" id="dCv-ua-rhY"/>
                             <constraint firstItem="3X7-Lc-9t7" firstAttribute="top" secondItem="bjZ-Wf-C2i" secondAttribute="top" id="ha0-I4-Sr3"/>
                             <constraint firstItem="3X7-Lc-9t7" firstAttribute="trailing" secondItem="xyJ-1q-QrA" secondAttribute="trailing" id="s0y-W7-lWf"/>
+                            <constraint firstItem="Ua8-xd-Rtz" firstAttribute="centerX" secondItem="xyJ-1q-QrA" secondAttribute="centerX" id="Ix2-ef-bwk"/>
+                            <constraint firstItem="Ua8-xd-Rtz" firstAttribute="centerY" secondItem="xyJ-1q-QrA" secondAttribute="centerY" id="N1p-16-BgA"/>
+                            <constraint firstItem="Ua8-xd-Rtz" firstAttribute="leading" secondItem="xyJ-1q-QrA" secondAttribute="leading" constant="16" id="QvG-ao-F8T"/>
+                            <constraint firstItem="xyJ-1q-QrA" firstAttribute="trailing" secondItem="Ua8-xd-Rtz" secondAttribute="trailing" constant="16" id="dB1-gK-rKf"/>
                         </constraints>
                     </view>
                     <navigationItem key="navigationItem" title="Medication" largeTitleDisplayMode="always" id="KiE-TG-zyf">
