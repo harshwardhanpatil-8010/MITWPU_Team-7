@@ -91,7 +91,7 @@
                                                 </subviews>
                                             </stackView>
                                         </subviews>
-                                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                                        <color key="backgroundColor" white="0" alpha="0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <constraints>
                                             <constraint firstItem="ZH6-Mh-C0B" firstAttribute="top" secondItem="raN-Ig-P22" secondAttribute="bottom" constant="10" id="3Nq-V1-3B2"/>
                                             <constraint firstItem="sJN-Cb-KuH" firstAttribute="top" secondItem="ZeR-3n-3BC" secondAttribute="bottom" constant="10" id="8Py-BZ-ecJ"/>
@@ -101,7 +101,7 @@
                                             <constraint firstAttribute="trailing" secondItem="iQ6-jK-g0I" secondAttribute="trailing" constant="16" id="NaB-4J-uUE"/>
                                             <constraint firstItem="iQ6-jK-g0I" firstAttribute="top" secondItem="ZH6-Mh-C0B" secondAttribute="bottom" constant="5" id="Scj-td-Dkr"/>
                                             <constraint firstAttribute="trailing" secondItem="sJN-Cb-KuH" secondAttribute="trailing" constant="15" id="Wgv-hl-oji"/>
-                                            <constraint firstAttribute="height" constant="1600" id="d9T-L5-ZWR"/>
+                                            <constraint firstAttribute="bottom" secondItem="sJN-Cb-KuH" secondAttribute="bottom" constant="25" id="d9T-L5-ZWR"/>
                                             <constraint firstItem="iQ6-jK-g0I" firstAttribute="leading" secondItem="7Kf-Zc-tMf" secondAttribute="leading" constant="16" id="jaj-nm-jJJ"/>
                                             <constraint firstAttribute="trailing" secondItem="raN-Ig-P22" secondAttribute="trailing" constant="14" id="kWc-eP-LmL"/>
                                             <constraint firstAttribute="trailing" secondItem="ZeR-3n-3BC" secondAttribute="trailing" id="kYB-OM-W5R"/>
@@ -116,7 +116,7 @@
                                     <constraint firstAttribute="trailing" secondItem="7Kf-Zc-tMf" secondAttribute="trailing" id="7GB-y3-C1R"/>
                                     <constraint firstItem="7Kf-Zc-tMf" firstAttribute="leading" secondItem="Gmq-uI-I9u" secondAttribute="leading" id="aGg-Pc-41F"/>
                                     <constraint firstAttribute="trailing" secondItem="7Kf-Zc-tMf" secondAttribute="trailing" id="dlU-Qb-AlE"/>
-                                    <constraint firstAttribute="height" constant="1600" id="eVb-bs-v9J"/>
+
                                     <constraint firstAttribute="bottom" secondItem="7Kf-Zc-tMf" secondAttribute="bottom" id="q8L-UA-39Z"/>
                                 </constraints>
                             </scrollView>
@@ -127,7 +127,8 @@
                             <constraint firstItem="Gmq-uI-I9u" firstAttribute="leading" secondItem="vDu-zF-Fre" secondAttribute="leading" id="DCE-2c-yAO"/>
                             <constraint firstItem="7Kf-Zc-tMf" firstAttribute="width" secondItem="5EZ-qb-Rvc" secondAttribute="width" id="Wpp-jT-Jas"/>
                             <constraint firstItem="Gmq-uI-I9u" firstAttribute="trailing" secondItem="vDu-zF-Fre" secondAttribute="trailing" id="yhT-A0-ubc"/>
-                            <constraint firstItem="Gmq-uI-I9u" firstAttribute="top" secondItem="vDu-zF-Fre" secondAttribute="top" id="zPK-ko-Fhx"/>
+                            <constraint firstItem="Gmq-uI-I9u" firstAttribute="top" secondItem="5EZ-qb-Rvc" secondAttribute="top" id="zPK-ko-Fhx"/>
+                            <constraint firstItem="vDu-zF-Fre" firstAttribute="bottom" secondItem="Gmq-uI-I9u" secondAttribute="bottom" id="bTm-Qe-x1P"/>
                         </constraints>
                     </view>
                     <navigationItem key="navigationItem" id="wFG-UO-g4a"/>
@@ -135,6 +136,7 @@
                         <outlet property="GaitCardView" destination="sJN-Cb-KuH" id="yL9-zI-580"/>
                         <outlet property="GaitSegmentControl" destination="raN-Ig-P22" id="85e-FH-mJx"/>
                         <outlet property="dateLabel" destination="9nJ-r4-ZXS" id="oA3-2i-33s"/>
+                        <outlet property="scrollView" destination="Gmq-uI-I9u" id="sCr-vW-p3R"/>
                         <outlet property="steadinessFreq" destination="udJ-Yd-cFI" id="CeP-wi-SqS"/>
                         <outlet property="steadinessRange" destination="p3s-gB-yKF" id="Odq-bp-UWf"/>
                         <outlet property="walkingSteadinessGraph" destination="iQ6-jK-g0I" id="FLQ-LP-Mvx"/>

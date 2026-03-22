@@ -9,6 +9,7 @@ class GaitViewController: UIViewController {
     @IBOutlet weak var walkingSteadinessGraph: UIView!
     @IBOutlet weak var GaitSegmentControl: UISegmentedControl!
     @IBOutlet weak var GaitCardView: UIView!
+    @IBOutlet weak var scrollView: UIScrollView!
 
     private let chartView = WalkingSteadinessChartView()
     private var aggregatedPoints: [(date: Date, value: Double)] = []
@@ -26,6 +27,13 @@ override func viewDidLoad() {
         steadinessRange.text = ""
         setupChart()
         walkingSteadinessGraph.backgroundColor = .clear
+
+        // Make navigation bar transparent so scroll content behind it looks correct
+        let appearance = UINavigationBarAppearance()
+        appearance.configureWithTransparentBackground()
+        navigationController?.navigationBar.standardAppearance = appearance
+        navigationController?.navigationBar.scrollEdgeAppearance = appearance
+        navigationController?.navigationBar.compactAppearance = appearance
     }
 
     override func viewDidLayoutSubviews() {
