@@ -59,6 +59,29 @@ struct WorkoutExercise: Codable, Identifiable {
         case voiceInstruction
         case voiceInstructionPascal = "VoiceInstruction"
     }
+
+    init(
+        id: UUID,
+        name: String,
+        reps: Int,
+        duration: Int?,
+        videoID: String?,
+        category: ExerciseCategory,
+        position: ExercisePosition,
+        targetJoints: [String],
+        voiceInstruction: String?
+    ) {
+        self.id = id
+        self.name = name
+        self.reps = reps
+        self.duration = duration
+        self.videoID = videoID
+        self.category = category
+        self.position = position
+        self.targetJoints = targetJoints
+        self.voiceInstruction = voiceInstruction
+    }
+
     func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
         try container.encode(id, forKey: .id)

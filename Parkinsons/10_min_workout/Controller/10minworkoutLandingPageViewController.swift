@@ -273,11 +273,23 @@ class _0minworkoutLandingPageViewController: UIViewController, UICollectionViewD
     @IBOutlet weak var exerciseNumberLabel: UILabel!
     @IBOutlet weak var collectionView: UICollectionView!
     public var shouldHideStartButton: Bool = false
+    var displayDate: Date?
 
     var exercises: [WorkoutExercise] = []
     private var progressView: CircularProgressView!
+    private var historicalCompletedNames: Set<String> = []
+    private var historicalCompletedCount: Int = 0
+    private var historicalTotalCount: Int = 0
+
+    private var isHistoricalMode: Bool {
+        guard let displayDate else { return false }
+        return shouldHideStartButton && !Calendar.current.isDateInToday(displayDate)
+    }
 
     private var currentSortedExercises: [WorkoutExercise] {
+        if isHistoricalMode {
+            return exercises
+        }
         let completedSet = WorkoutManager.shared.completedToday
         let top       = exercises.filter { !completedSet.contains($0.id) }
         let completed = exercises.filter {  completedSet.contains($0.id) }
@@ -322,6 +334,13 @@ class _0minworkoutLandingPageViewController: UIViewController, UICollectionViewD
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
 
+        if isHistoricalMode {
+            loadHistoricalWorkout()
+            navigationController?.setNavigationBarHidden(false, animated: animated)
+            tabBarController?.tabBar.isHidden = true
+            return
+        }
+
         let manager = WorkoutManager.shared
         let currentProgress = manager.completedToday.count + manager.skippedToday.count
 
@@ -357,8 +376,69 @@ class _0minworkoutLandingPageViewController: UIViewController, UICollectionViewD
 
     // MARK: - Progress & Button UI
 
+    private func loadHistoricalWorkout() {
+        guard let displayDate else { return }
+
+        let summary = DailyWorkoutSummaryStore.shared.fetchSummary(for: displayDate)
+        let completedNames = DailyWorkoutSummaryStore.shared.completedExerciseNames(for: displayDate)
+        let skippedNames = DailyWorkoutSummaryStore.shared.skippedExerciseNames(for: displayDate)
+        let total = max(Int(summary?.totalExercises ?? 0), completedNames.count + skippedNames.count)
+
+        historicalCompletedNames = Set(completedNames)
+        historicalCompletedCount = Int(summary?.completedCount ?? Int16(completedNames.count))
+        historicalTotalCount = total
+
+        var placeholderExercises: [WorkoutExercise] = []
+        let knownNames = completedNames + skippedNames
+
+        for (index, name) in knownNames.enumerated() {
+            placeholderExercises.append(
+                WorkoutExercise(
+                    id: UUID(),
+                    name: name,
+                    reps: 0,
+                    duration: 0,
+                    videoID: nil,
+                    category: .strength,
+                    position: .seated,
+                    targetJoints: [],
+                    voiceInstruction: nil
+                )
+            )
+        }
+
+        if total > knownNames.count {
+            for index in knownNames.count..<total {
+                placeholderExercises.append(
+                    WorkoutExercise(
+                        id: UUID(),
+                        name: "Exercise \(index + 1)",
+                        reps: 0,
+                        duration: 0,
+                        videoID: nil,
+                        category: .strength,
+                        position: .seated,
+                        targetJoints: [],
+                        voiceInstruction: nil
+                    )
+                )
+            }
+        }
+
+        exercises = placeholderExercises
+        collectionView.reloadData()
+        updateProgress()
+        updateButtonUI()
+    }
+
     func updateProgress() {
         view.layoutIfNeeded()
+        if isHistoricalMode {
+            let total = max(historicalTotalCount, 1)
+            exerciseNumberLabel.text = "\(historicalCompletedCount)/\(historicalTotalCount)"
+            progressView.setProgress(CGFloat(historicalCompletedCount) / CGFloat(total))
+            return
+        }
         let completed = WorkoutManager.shared.completedToday.count
         let total     = exercises.count
         exerciseNumberLabel.text = "\(completed)/\(total)"
@@ -366,6 +446,10 @@ class _0minworkoutLandingPageViewController: UIViewController, UICollectionViewD
     }
 
     func updateButtonUI() {
+        if isHistoricalMode {
+            startButtonOutlet.isEnabled = false
+            return
+        }
         let completed = WorkoutManager.shared.completedToday.count
         let skipped   = WorkoutManager.shared.skippedToday.count
         let total     = exercises.count
@@ -489,11 +573,17 @@ extension _0minworkoutLandingPageViewController: UICollectionViewDataSource {
 
         let exercise = currentSortedExercises[indexPath.item]
         cell.exerciseNameOutlet.text = exercise.name
-        cell.repsOutlet.text = (exercise.category == .warmup || exercise.category == .cooldown)
-            ? "\(exercise.timerSeconds)s"
-            : "\(exercise.reps) Reps"
-        cell.loadThumbnail(exercise: exercise)
-        let isCompleted = WorkoutManager.shared.completedToday.contains(exercise.id)
+        if isHistoricalMode {
+            cell.repsOutlet.text = ""
+        } else {
+            cell.repsOutlet.text = (exercise.category == .warmup || exercise.category == .cooldown)
+                ? "\(exercise.timerSeconds)s"
+                : "\(exercise.reps) Reps"
+            cell.loadThumbnail(exercise: exercise)
+        }
+        let isCompleted = isHistoricalMode
+            ? historicalCompletedNames.contains(exercise.name)
+            : WorkoutManager.shared.completedToday.contains(exercise.id)
         isCompleted ? cell.configureCompleted() : cell.configurePendingOrSkipped()
         return cell
     }

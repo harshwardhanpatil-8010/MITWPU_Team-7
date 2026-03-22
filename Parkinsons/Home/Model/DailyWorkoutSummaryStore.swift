@@ -14,14 +14,40 @@ class DailyWorkoutSummaryStore {
         PersistenceController.shared.viewContext
     }
 
+    private func dayBounds(for date: Date) -> (start: Date, end: Date) {
+        let start = Calendar.current.startOfDay(for: date)
+        let end = Calendar.current.date(byAdding: .day, value: 1, to: start)!
+        return (start, end)
+    }
+
+    private func fetchSummaries(for date: Date) -> [DailyWorkoutSummary] {
+        let request: NSFetchRequest<DailyWorkoutSummary> = DailyWorkoutSummary.fetchRequest()
+        let bounds = dayBounds(for: date)
+        request.predicate = NSPredicate(
+            format: "date >= %@ AND date < %@",
+            bounds.start as NSDate,
+            bounds.end as NSDate
+        )
+        request.sortDescriptors = [
+            NSSortDescriptor(key: "date", ascending: false)
+        ]
+        return (try? context.fetch(request)) ?? []
+    }
 
     func saveWorkoutSummary(for date: Date = Date()) {
-        let summary = fetchSummary(for: date) ?? DailyWorkoutSummary(context: context)
+        let existingSummaries = fetchSummaries(for: date)
+        let summary = existingSummaries.first ?? DailyWorkoutSummary(context: context)
         let manager = WorkoutManager.shared
         let startOfDay = Calendar.current.startOfDay(for: date)
         let allExercises = manager.exercises
         let completedIDs = manager.completedToday
         let skippedIDs = manager.skippedToday
+
+        if existingSummaries.count > 1 {
+            for duplicate in existingSummaries.dropFirst() {
+                context.delete(duplicate)
+            }
+        }
 
         let nameByID = Dictionary(uniqueKeysWithValues: allExercises.map { ($0.id, $0.name) })
         let completedNames = completedIDs.compactMap { nameByID[$0] }
@@ -40,16 +66,7 @@ class DailyWorkoutSummaryStore {
 
 
     func fetchSummary(for date: Date) -> DailyWorkoutSummary? {
-        let request: NSFetchRequest<DailyWorkoutSummary> = DailyWorkoutSummary.fetchRequest()
-        let startOfDay = Calendar.current.startOfDay(for: date)
-        let endOfDay = Calendar.current.date(byAdding: .day, value: 1, to: startOfDay)!
-        request.predicate = NSPredicate(
-            format: "date >= %@ AND date < %@",
-            startOfDay as NSDate,
-            endOfDay as NSDate
-        )
-        request.fetchLimit = 1
-        return try? context.fetch(request).first
+        fetchSummaries(for: date).first
     }
 
     func completedExerciseNames(for date: Date) -> [String] {
