@@ -338,21 +338,11 @@ class HomeViewController: UIViewController, UICollectionViewDelegate {
             break
         }
     }
-
-    private func displayed10MinWorkoutProgress(for date: Date) -> Int {
-        let isToday = Calendar.current.isDateInToday(date)
-        let summary = DailyWorkoutSummaryStore.shared.fetchSummary(for: date)
-        let storedCompleted = Int(summary?.completedCount ?? 0)
-        return isToday ? max(storedCompleted, WorkoutManager.shared.completedToday.count) : storedCompleted
-    }
-
     private func handleExerciseSelection(at row: Int) {
         switch row {
         case 0:
-            guard displayed10MinWorkoutProgress(for: selectedDate) > 0 else { return }
             let storyboard = UIStoryboard(name: "10 minworkout", bundle: nil)
             guard let vc = storyboard.instantiateViewController(withIdentifier: "exerciseLandingPage") as? _0minworkoutLandingPageViewController else { return }
-            vc.displayDate = selectedDate
             navigationController?.pushViewController(vc, animated: true)
         case 1:
             let storyboard = UIStoryboard(name: "Rhythmic Walking", bundle: nil)
@@ -484,9 +474,9 @@ extension HomeViewController: UICollectionViewDataSource {
                 let targetDate = selectedDate
                 let isToday = Calendar.current.isDateInToday(targetDate)
                 let summary = DailyWorkoutSummaryStore.shared.fetchSummary(for: targetDate)
-                let storedCompleted = displayed10MinWorkoutProgress(for: targetDate)
+                let storedCompleted = Int(summary?.completedCount ?? 0)
                 let storedTotal = Int(summary?.totalExercises ?? 0)
-                let completed = storedCompleted
+                let completed = isToday ? max(storedCompleted, WorkoutManager.shared.completedToday.count) : storedCompleted
                 let total = max(isToday ? max(storedTotal, WorkoutManager.shared.exercises.count) : storedTotal, 7)
                 cell.setProgress(completed: completed, total: total)
             } else if indexPath.row == 1 {

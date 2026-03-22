@@ -5,6 +5,7 @@ final class MainMedicationViewController: UIViewController {
 
     @IBOutlet weak var medSegment: UISegmentedControl!
     @IBOutlet weak var medicationCollectionView: UICollectionView!
+    @IBOutlet weak var medicationCollectionViewHeightConstraint: NSLayoutConstraint!
     @IBOutlet weak var noMedicationLabel: UIStackView!
     @IBOutlet weak var editButton: UIBarButtonItem!
     var isPresentedFromProfile: Bool = false
@@ -49,8 +50,6 @@ final class MainMedicationViewController: UIViewController {
         if isPresentedFromProfile {
                     setupProfilePresentationUI()
                 }
-                
-                setupCollectionView()
         
         setupCollectionView()
         updateUIForSegment()
@@ -73,6 +72,11 @@ final class MainMedicationViewController: UIViewController {
         ) { [weak self] _ in
             self?.loadMedications()
         }
+    }
+
+    override func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
+        updateCollectionViewHeight()
     }
     private func setupProfilePresentationUI() {
             // 1. Set up the "X" (Close) button
@@ -129,6 +133,8 @@ final class MainMedicationViewController: UIViewController {
         }
 
         medicationCollectionView.reloadData()
+        medicationCollectionView.layoutIfNeeded()
+        updateCollectionViewHeight()
         updateNoMedicationState()
         updateUIForSegment()
     }
@@ -176,12 +182,20 @@ final class MainMedicationViewController: UIViewController {
         medicationCollectionView.dataSource = self
         medicationCollectionView.delegate = self
         medicationCollectionView.backgroundColor = .clear
+        medicationCollectionView.alwaysBounceVertical = false
+        medicationCollectionView.isScrollEnabled = false
 
         medicationCollectionView.register(UINib(nibName: "TodayMedicationCollectionViewCell", bundle: nil), forCellWithReuseIdentifier: "TodayMedicationCollectionViewCell")
         medicationCollectionView.register(UINib(nibName: "MyMedicationCollectionViewCell", bundle: nil), forCellWithReuseIdentifier: "MyMedicationCollectionViewCell")
         medicationCollectionView.register(UINib(nibName: "LoggedMedicationCollectionViewCell", bundle: nil), forCellWithReuseIdentifier: "LoggedMedicationCollectionViewCell")
         medicationCollectionView.register(UINib(nibName: "MedicationSectionHeaderView", bundle: nil), forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: "MedicationSectionHeaderView")
         medicationCollectionView.register(UINib(nibName: "LoggedEmptyFooterView", bundle: nil), forSupplementaryViewOfKind: UICollectionView.elementKindSectionFooter, withReuseIdentifier: "LoggedEmptyFooterView")
+    }
+
+    private func updateCollectionViewHeight() {
+        let contentHeight = medicationCollectionView.collectionViewLayout.collectionViewContentSize.height
+        guard contentHeight > 0 else { return }
+        medicationCollectionViewHeightConstraint.constant = contentHeight
     }
 
     @IBAction func segmentChanged(_ sender: UISegmentedControl) {

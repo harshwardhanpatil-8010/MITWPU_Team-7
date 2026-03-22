@@ -131,13 +131,13 @@
                         <viewLayoutGuide key="safeArea" id="hZO-CO-gnb"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                         <constraints>
-                            <constraint firstAttribute="bottom" secondItem="7Bi-mp-zbI" secondAttribute="bottom" constant="92" id="Hz6-RM-7Z0"/>
+                            <constraint firstAttribute="bottom" secondItem="7Bi-mp-zbI" secondAttribute="bottom" id="Hz6-RM-7Z0"/>
                             <constraint firstItem="7Bi-mp-zbI" firstAttribute="leading" secondItem="hZO-CO-gnb" secondAttribute="leading" id="fYu-h7-9K4"/>
                             <constraint firstItem="7Bi-mp-zbI" firstAttribute="top" secondItem="hRj-r1-r9a" secondAttribute="top" constant="-32" id="kLr-JY-Gv2"/>
                             <constraint firstItem="7Bi-mp-zbI" firstAttribute="trailing" secondItem="hZO-CO-gnb" secondAttribute="trailing" id="nBu-bK-SZj"/>
                         </constraints>
                     </view>
-                    <navigationItem key="navigationItem" title="Symptom Log" style="browser" id="J61-4l-7gg"/>
+                    <navigationItem key="navigationItem" title="Symptom Log" largeTitleDisplayMode="always" id="J61-4l-7gg"/>
                     <connections>
                         <outlet property="collectionView" destination="ZbZ-Mr-g82" id="Cbw-0u-5BS"/>
                         <outlet property="editAndSaveButton" destination="K65-6B-FHQ" id="VnQ-jq-01W"/>

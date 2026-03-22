@@ -278,12 +278,6 @@ class SummaryViewController: UIViewController {
 
     }
 
-    private func displayed10MinWorkoutProgress(for date: Date) -> Int {
-        let isToday = Calendar.current.isDateInToday(date)
-        let storedCompleted = Int(selectedWorkoutSummary?.completedCount ?? 0)
-        return isToday ? max(storedCompleted, WorkoutManager.shared.completedToday.count) : storedCompleted
-    }
-
     
 
     func generateSummaryLayout() -> UICollectionViewLayout {
@@ -464,9 +458,9 @@ extension SummaryViewController: UICollectionViewDataSource, UICollectionViewDel
                 
                 let targetDate = dateToDisplay ?? Date()
                 let isToday = Calendar.current.isDateInToday(targetDate)
-                let storedCompleted = displayed10MinWorkoutProgress(for: targetDate)
+                let storedCompleted = Int(selectedWorkoutSummary?.completedCount ?? 0)
                 let storedTotal = Int(selectedWorkoutSummary?.totalExercises ?? 0)
-                let completed = storedCompleted
+                let completed = isToday ? max(storedCompleted, WorkoutManager.shared.completedToday.count) : storedCompleted
                 let total = max(isToday ? max(storedTotal, WorkoutManager.shared.exercises.count) : storedTotal, 7)
                 
                 cell.setProgress(completed: completed, total: total)
@@ -516,8 +510,6 @@ extension SummaryViewController: UICollectionViewDataSource, UICollectionViewDel
             // 1. Handle 10-Min Workout
             
             if selectedExercise.title == "10-Min Workout" {
-                let targetDate = dateToDisplay ?? Date()
-                guard displayed10MinWorkoutProgress(for: targetDate) > 0 else { return }
                 
                 let sb = UIStoryboard(name: "10 minworkout", bundle: nil)
                 

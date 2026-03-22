@@ -50,12 +50,14 @@ class AddMedicationViewController: UIViewController,
     @IBOutlet weak var medicationNameTextField: UITextField!
     @IBOutlet weak var strengthUnitLabel: UILabel!
     @IBOutlet weak var repeatLabel: UILabel!
+    @IBOutlet weak var scrollView: UIScrollView!
     @IBOutlet weak var typeLabel: UILabel!
     @IBOutlet weak var unitLabel: UILabel!
     @IBOutlet weak var repeatStack: UIStackView!
     @IBOutlet weak var unitandTypeStack: UIStackView!
     @IBOutlet weak var doseStepper: UIStepper!
     @IBOutlet weak var doseTableView: UITableView!
+    @IBOutlet weak var doseTableHeightConstraint: NSLayoutConstraint!
     @IBOutlet weak var uiStackView: UIStackView!
     
     override func viewDidLoad() {
@@ -84,6 +86,7 @@ class AddMedicationViewController: UIViewController,
         backgroundView.layer.cornerRadius = 16
         doseTableView.dataSource = self
         doseTableView.delegate = self
+        doseTableView.isScrollEnabled = false
         doseStepper.value = Double(doseArray.count)
         
         repeatStack.isUserInteractionEnabled = true
@@ -102,6 +105,15 @@ class AddMedicationViewController: UIViewController,
         repeatStack.addGestureRecognizer(
             UITapGestureRecognizer(target: self, action: #selector(repeatStackTapped))
         )
+
+        updateDoseTableHeight()
+        updateScrollInsets()
+    }
+
+    override func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
+        updateDoseTableHeight()
+        updateScrollInsets()
     }
     
     @objc func dismissKeyboard() {
@@ -254,6 +266,20 @@ class AddMedicationViewController: UIViewController,
             }
         }
     }
+
+    private func updateDoseTableHeight() {
+        doseTableView.layoutIfNeeded()
+        doseTableHeightConstraint.constant = doseTableView.contentSize.height
+        view.layoutIfNeeded()
+    }
+
+    private func updateScrollInsets() {
+        let deleteButtonInset: CGFloat = deleteButton.isHidden ? 24 : (deleteButton.bounds.height + 40)
+        let bottomInset = view.safeAreaInsets.bottom + deleteButtonInset
+
+        scrollView.contentInset.bottom = bottomInset
+        scrollView.verticalScrollIndicatorInsets.bottom = bottomInset
+    }
     
     @IBAction func backButtonTapped(_ sender: Any) {
         dismiss(animated: true, completion: nil)
@@ -289,6 +315,7 @@ class AddMedicationViewController: UIViewController,
             doseArray.removeLast()
         }
         doseTableView.reloadData()
+        updateDoseTableHeight()
         evaluateTickButtonState()
     }
     
@@ -377,7 +404,7 @@ extension AddMedicationViewController {
         doseTableView.deleteRows(at: [indexPath], with: .fade)
         doseStepper.value = Double(doseArray.count)
         renumberDoses()
+        updateDoseTableHeight()
         evaluateTickButtonState()
     }
 }
-
