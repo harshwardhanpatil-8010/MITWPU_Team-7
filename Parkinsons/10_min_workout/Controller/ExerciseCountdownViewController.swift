@@ -154,7 +154,7 @@ class ExerciseCountdownViewController: UIViewController {
         stack.setCustomSpacing(28, after: exerciseNameLabel)
 
         startButton.translatesAutoresizingMaskIntoConstraints = false
-        startButton.setTitle("Start!", for: .normal)
+        startButton.setTitle("Start", for: .normal)
         startButton.titleLabel?.font = .systemFont(ofSize: 20, weight: .bold)
         startButton.setTitleColor(.black, for: .normal)
         startButton.backgroundColor = .white

@@ -115,8 +115,6 @@ final class MainMedicationViewController: UIViewController {
 
         if currentSegment == .today {
             todayViewModel.loadTodayMedications(from: myMedications)
-
-
             let logRequest: NSFetchRequest<MedicationDoseLog> = MedicationDoseLog.fetchRequest()
             let startOfDay = Calendar.current.startOfDay(for: Date())
             let endOfDay = Calendar.current.date(byAdding: .day, value: 1, to: startOfDay)!
@@ -207,13 +205,12 @@ final class MainMedicationViewController: UIViewController {
     private func updateLoggedStatus(_ item: LoggedDoseItem, status: DoseStatus) {
         let context = PersistenceController.shared.viewContext
 
-        // Find the log by its id, then update both log and linked dose
         let logRequest: NSFetchRequest<MedicationDoseLog> = MedicationDoseLog.fetchRequest()
         logRequest.predicate = NSPredicate(format: "id == %@", item.id as CVarArg)
 
         if let log = (try? context.fetch(logRequest))?.first {
             log.doseLogStatus = status.rawValue
-            log.dose?.doseStatus = status.rawValue  // ✅ sync MedicationDose too
+            log.dose?.doseStatus = status.rawValue
         }
 
         PersistenceController.shared.save(context)
@@ -411,14 +408,11 @@ extension MainMedicationViewController: EditLogDelegate {
         let context = PersistenceController.shared.viewContext
 
         for item in updated {
-
             let logRequest: NSFetchRequest<MedicationDoseLog> = MedicationDoseLog.fetchRequest()
             logRequest.predicate = NSPredicate(format: "id == %@", item.id as CVarArg)
 
             if let log = (try? context.fetch(logRequest))?.first {
                 log.doseLogStatus = item.status.rawValue
-
-
                 if let coreDose = log.dose {
                     coreDose.doseStatus = item.status.rawValue
                 }
@@ -426,11 +420,7 @@ extension MainMedicationViewController: EditLogDelegate {
         }
 
         PersistenceController.shared.save(context)
-
-
         NotificationCenter.default.post(name: NSNotification.Name("MedicationLogged"), object: nil)
-
-
         loadMedications()
     }
 }
