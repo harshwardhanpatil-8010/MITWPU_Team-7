@@ -184,7 +184,7 @@ override func viewDidLoad() {
     private func classificationFor(_ v: Double) -> (String, UIColor) {
         if v >= 80 { return ("Good",              .systemGreen)  }
         if v >= 60 { return ("Moderate",          .systemOrange) }
-        return             ("Low — See a Doctor", .systemRed)
+        return             ("Low", .systemRed)
     }
 
     private func updateDateLabel(range: SteadinessRange, start: Date, now: Date) {
