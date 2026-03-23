@@ -9,7 +9,6 @@ import UIKit
 
 class EditMedicationCollectionViewCell: UICollectionViewCell {
 
-    @IBOutlet weak var frequencyLabel: UILabel!
     @IBOutlet weak var scheduleLabel: UILabel!
     @IBOutlet weak var subtitleLabel: UILabel!
     @IBOutlet weak var titleLabel: UILabel!
@@ -33,7 +32,7 @@ class EditMedicationCollectionViewCell: UICollectionViewCell {
         ) ?? UIImage(named: "tablet")
 
         let doseCount = medication.doses?.count ?? 0
-        frequencyLabel.text = "\(doseCount)x day"
+
         
         scheduleLabel.text = Medication.scheduleDisplayText(
             type: medication.medicationScheduleType ?? "none",
@@ -56,9 +55,7 @@ extension Medication {
                 return "Weekly"
             }
 
-            let formatter = DateFormatter()
-            let weekdaySymbols = formatter.weekdaySymbols ?? []
-
+            let weekdaySymbols = Calendar.current.shortWeekdaySymbols
             let names = days.compactMap { day -> String? in
                 guard day >= 1 && day <= 7 else { return nil }
                 return weekdaySymbols[day - 1]

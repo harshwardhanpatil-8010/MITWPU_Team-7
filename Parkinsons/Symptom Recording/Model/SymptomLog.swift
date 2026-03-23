@@ -23,6 +23,18 @@ enum SymptomType: Int16, CaseIterable, Codable {
         case .insomnia: return "Insomnia"
         }
     }
+    
+    var iconName: String {
+        switch self {
+        case .slowedMovement: return "ColourTortoise"
+        case .gaitDisturbance: return "ColourWalking"
+        case .tremors: return "ColourTremor"
+        case .facialStiffness: return "stiffFace"
+        case .bodyStiffness: return "ColourBodyStiff"
+        case .lossOfBalance: return "ColourDizzy"
+        case .insomnia: return "ColourInsomnia"
+        }
+    }
 }
 
 enum SymptomSeverity: Int16, Codable, CaseIterable {
@@ -217,11 +229,13 @@ struct SymptomLogStore {
 
         let entities = try context.fetch(request)
 
-        let ratings = entities.map {
-            SymptomRating(
-                name: SymptomType(rawValue: $0.symptom)!.displayName,
+        let ratings = entities.compactMap { entity -> SymptomRating? in
+            guard let type = SymptomType(rawValue: entity.symptom) else { return nil }
+            return SymptomRating(
+                name: type.displayName,
+                iconName: type.iconName,
                 selectedIntensity: SymptomRating.Intensity(
-                    rawValue: $0.severity
+                    rawValue: entity.severity
                 )
             )
         }

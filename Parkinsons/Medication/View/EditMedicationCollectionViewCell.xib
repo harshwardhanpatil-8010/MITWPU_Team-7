@@ -30,24 +30,21 @@
                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="2" translatesAutoresizingMaskIntoConstraints="NO" id="PJe-K8-KY5">
                                 <rect key="frame" x="78" y="14.333333333333332" width="276" height="35.666666666666671"/>
                                 <subviews>
-                                    <stackView opaque="NO" contentMode="scaleToFill" spacing="15" translatesAutoresizingMaskIntoConstraints="NO" id="9UL-xj-Hwz">
+                                    <stackView opaque="NO" contentMode="scaleToFill" distribution="fillProportionally" spacing="15" translatesAutoresizingMaskIntoConstraints="NO" id="9UL-xj-Hwz">
                                         <rect key="frame" x="0.0" y="0.0" width="276" height="18"/>
                                         <subviews>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ds0-ix-avf">
-                                                <rect key="frame" x="0.0" y="0.0" width="171" height="18"/>
-                                                <constraints>
-                                                    <constraint firstAttribute="width" constant="171" id="zAj-tV-hV9"/>
-                                                </constraints>
+                                                <rect key="frame" x="0.0" y="0.0" width="125.33333333333333" height="18"/>
                                                 <fontDescription key="fontDescription" type="system" weight="medium" pointSize="15"/>
                                                 <nil key="textColor"/>
                                                 <nil key="highlightedColor"/>
                                             </label>
                                             <stackView opaque="NO" contentMode="scaleToFill" spacing="3" translatesAutoresizingMaskIntoConstraints="NO" id="o08-eN-Vha" userLabel="calenderStack">
-                                                <rect key="frame" x="186" y="0.0" width="90" height="18"/>
+                                                <rect key="frame" x="140.33333333333331" y="0.0" width="135.66666666666669" height="18"/>
                                                 <subviews>
-                                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" verticalHuggingPriority="251" text="Label" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Cnk-5B-2Ma">
-                                                        <rect key="frame" x="0.0" y="0.0" width="90" height="18"/>
-                                                        <fontDescription key="fontDescription" type="system" pointSize="13"/>
+                                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="lsR-fh-bJC">
+                                                        <rect key="frame" x="0.0" y="0.0" width="135.66666666666666" height="18"/>
+                                                        <fontDescription key="fontDescription" type="system" pointSize="12"/>
                                                         <nil key="textColor"/>
                                                         <nil key="highlightedColor"/>
                                                     </label>
@@ -62,14 +59,8 @@
                                     <stackView opaque="NO" contentMode="scaleToFill" spacing="40" translatesAutoresizingMaskIntoConstraints="NO" id="YEF-GG-wn9">
                                         <rect key="frame" x="0.0" y="20.000000000000004" width="276" height="15.666666666666668"/>
                                         <subviews>
-                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="lsR-fh-bJC">
-                                                <rect key="frame" x="0.0" y="0.0" width="31" height="15.666666666666666"/>
-                                                <fontDescription key="fontDescription" type="system" pointSize="12"/>
-                                                <nil key="textColor"/>
-                                                <nil key="highlightedColor"/>
-                                            </label>
-                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" verticalHuggingPriority="251" text="Label" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="FGR-hw-ati">
-                                                <rect key="frame" x="71" y="0.0" width="205" height="15.666666666666666"/>
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" verticalHuggingPriority="251" text="Label" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Cnk-5B-2Ma">
+                                                <rect key="frame" x="0.0" y="0.0" width="276" height="15.666666666666666"/>
                                                 <fontDescription key="fontDescription" type="system" pointSize="13"/>
                                                 <nil key="textColor"/>
                                                 <nil key="highlightedColor"/>
@@ -103,7 +94,6 @@
             </constraints>
             <connections>
                 <outlet property="cardView" destination="WLL-lf-4U1" id="upR-Qs-T5v"/>
-                <outlet property="frequencyLabel" destination="FGR-hw-ati" id="VFA-7d-gXY"/>
                 <outlet property="medIcon" destination="hoq-1B-U5n" id="cSS-6B-LeO"/>
                 <outlet property="scheduleLabel" destination="lsR-fh-bJC" id="lSb-zL-Ja0"/>
                 <outlet property="subtitleLabel" destination="Cnk-5B-2Ma" id="ixH-gZ-cZo"/>

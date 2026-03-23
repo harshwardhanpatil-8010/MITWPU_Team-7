@@ -23,7 +23,7 @@ extension HealthKitManager {
             HKQuantityType.quantityType(forIdentifier: .walkingStepLength)!,
             HKQuantityType.quantityType(forIdentifier: .walkingSpeed)!,
             HKQuantityType.quantityType(forIdentifier: .walkingAsymmetryPercentage)!,
-            HKQuantityType.quantityType(forIdentifier: .appleWalkingSteadiness)! // ✅ ADD THIS
+            HKQuantityType.quantityType(forIdentifier: .appleWalkingSteadiness)! 
         ]
     }
 

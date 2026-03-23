@@ -527,7 +527,7 @@
                                     </button>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ux0-Xz-2li">
                                         <rect key="frame" x="126" y="0.0" width="118" height="48"/>
-                                        <color key="tintColor" systemColor="systemYellowColor"/>
+                                        <color key="tintColor" red="0.0" green="0.7247163955479452" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                         <buttonConfiguration key="configuration" style="filled" title="Perfect" cornerStyle="capsule"/>
                                         <connections>
                                             <action selector="perfectButtonTapped:" destination="TZO-vY-iUG" eventType="touchUpInside" id="mDh-9r-lO3"/>
@@ -843,9 +843,6 @@
         </systemColor>
         <systemColor name="systemPinkColor">
             <color red="1" green="0.1764705882" blue="0.33333333329999998" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-        </systemColor>
-        <systemColor name="systemYellowColor">
-            <color red="1" green="0.80000000000000004" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </systemColor>
     </resources>
 </document>

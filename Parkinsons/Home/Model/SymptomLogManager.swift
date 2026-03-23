@@ -57,7 +57,7 @@ final class SymptomLogManager {
 
                 return SymptomRating(
                     name: symptom.displayName,
-                    iconName: nil,
+                    iconName: symptom.iconName,
                     selectedIntensity: SymptomRating.Intensity(rawValue: severity.rawValue)
                 )
             }

@@ -15,10 +15,10 @@ class SymptomDetailCell: UITableViewCell {
         
         let assetName: String
         switch intensity {
-        case .mild: assetName = "faceMild"
-        case .moderate: assetName = "moderateFace"
-        case .severe: assetName = "SevereFace 1"
-        case .notPresent: assetName = "xMark"
+        case .mild: assetName = "mild1"
+        case .moderate: assetName = "moderate1"
+        case .severe: assetName = "severe1"
+        case .notPresent: assetName = "notpresent1"
         }
         return UIImage(named: assetName)
     }
@@ -26,18 +26,17 @@ class SymptomDetailCell: UITableViewCell {
     func configure(with rating: SymptomRating, isEditable: Bool) {
         symptomNameLabel.text = rating.name
         
-        symptomIconImageView.image = UIImage(named: rating.iconName ?? "doc.text.image")
+        if let iconName = rating.iconName {
+            symptomIconImageView.image = UIImage(named: iconName)
+        } else {
+            symptomIconImageView.image = UIImage(systemName: "doc.text.image")
+        }
         symptomIconImageView.tintColor = .label
         
         if let intensity = rating.selectedIntensity {
             intensityIconImageView.isHidden = false
             intensityIconImageView.image = imageForIntensity(intensity)
-            
-            switch intensity {
-            case .notPresent: intensityIconImageView.tintColor = .systemRed
-            case .severe: intensityIconImageView.tintColor = .systemOrange
-            default: intensityIconImageView.tintColor = .systemBlue
-            }
+            intensityIconImageView.tintColor = nil 
         } else {
             intensityIconImageView.image = nil
             intensityIconImageView.isHidden = true

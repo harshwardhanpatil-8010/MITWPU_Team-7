@@ -262,8 +262,6 @@ class SummaryViewController: UIViewController {
 
                 emptyLabel.centerXAnchor.constraint(equalTo: containerView.centerXAnchor),
 
-                // Precisely 145 units above center as per your functional code
-
                 emptyLabel.centerYAnchor.constraint(equalTo: containerView.centerYAnchor, constant: -145)
 
             ])
@@ -286,21 +284,20 @@ class SummaryViewController: UIViewController {
             let sectionType = self.summarySections[sectionIndex]
             let section: NSCollectionLayoutSection
             
-            // Let's set a clear variable for height so it's easy to change
+
             let medicationHeight: CGFloat = 80
             
             switch sectionType {
             case .medicationsSummary:
                 let item = NSCollectionLayoutItem(layoutSize: .init(widthDimension: .fractionalWidth(1.0), heightDimension: .fractionalHeight(1.0)))
-                
-                // UPDATED: Changed height from 80 to medicationHeight (150)
+
                 let group = NSCollectionLayoutGroup.horizontal(layoutSize: .init(widthDimension: .fractionalWidth(0.9), heightDimension: .absolute(medicationHeight)), subitems: [item])
                 
                 section = NSCollectionLayoutSection(group: group)
                 section.orthogonalScrollingBehavior = .groupPaging
                 section.interGroupSpacing = 12
 
-                // UPDATED: Footer height now matches the group height
+
                 let footerHeight: CGFloat = self.dailyMedications.isEmpty ? medicationHeight : 0
                 let footerSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: .absolute(footerHeight))
                 
@@ -416,7 +413,7 @@ extension SummaryViewController: UICollectionViewDataSource, UICollectionViewDel
             
         case .medicationsSummary:
             
-            return dailyMedications.count // Returns 0 if empty, so NO card shows
+            return dailyMedications.count
             
         case .exercises:
             
@@ -505,9 +502,7 @@ extension SummaryViewController: UICollectionViewDataSource, UICollectionViewDel
             
             let selectedExercise = exerciseData[indexPath.item]
             
-            
-            
-            // 1. Handle 10-Min Workout
+
             
             if selectedExercise.title == "10-Min Workout" {
                 
@@ -515,10 +510,7 @@ extension SummaryViewController: UICollectionViewDataSource, UICollectionViewDel
                 
                 if let workoutVC = sb.instantiateViewController(withIdentifier: "exerciseLandingPage") as? _0minworkoutLandingPageViewController {
                     
-                    // This line will now work because 'as?' tells Swift
-                    
-                    // exactly which class (and variables) to look for.
-                    
+
                     workoutVC.shouldHideStartButton = true
                     workoutVC.displayDate = dateToDisplay
                     
@@ -528,10 +520,7 @@ extension SummaryViewController: UICollectionViewDataSource, UICollectionViewDel
                     
                     navController.modalPresentationStyle = .pageSheet
                     
-                    
-                    
-                    // Create the "X" button dynamically
-                    
+
                     let closeButton = UIBarButtonItem(
                         
                         image: UIImage(systemName: "xmark"),
@@ -555,16 +544,13 @@ extension SummaryViewController: UICollectionViewDataSource, UICollectionViewDel
                 }
                 
             }
-            
-            // 2. Handle Rhythmic Walking
-            
+
             else if selectedExercise.title == "Rhythmic Walking" {
                 
                 let storyboard = UIStoryboard(name: "Home", bundle: nil)
                 
                 if let walkingVC = storyboard.instantiateViewController(withIdentifier: "RhythmicWalkingSummaryViewController") as? RhythmicWalkingSummaryViewController {
-                    
-                    // Pass the selected calendar date so only that day's sessions are shown
+
                     walkingVC.dateToDisplay = dateToDisplay ?? Date()
                     
                     let navController = UINavigationController(rootViewController: walkingVC)
@@ -584,7 +570,7 @@ extension SummaryViewController: UICollectionViewDataSource, UICollectionViewDel
         
         let sectionType = summarySections[indexPath.section]
         
-        // 1. Handle Headers
+
         if kind == UICollectionView.elementKindSectionHeader {
             let header = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: "HeaderView", for: indexPath) as! SectionHeaderView
             header.configure(title: sectionType == .exercises ? "Guided Exercise" : "Medications Log")
@@ -593,11 +579,11 @@ extension SummaryViewController: UICollectionViewDataSource, UICollectionViewDel
             return header
         }
         
-        // 2. Handle Footers (specifically for medications)
+
         if kind == UICollectionView.elementKindSectionFooter && sectionType == .medicationsSummary {
             let footer = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: "EmptyMedicationFooter", for: indexPath)
             
-            // Clean up old views
+
             footer.subviews.forEach { $0.removeFromSuperview() }
             
             if dailyMedications.isEmpty {
@@ -615,11 +601,10 @@ extension SummaryViewController: UICollectionViewDataSource, UICollectionViewDel
                     label.centerYAnchor.constraint(equalTo: footer.centerYAnchor, constant: -15)
                 ])
             }
-            // FIX: Return the footer you just created/configured
+            
             return footer
         }
-        
-        // 3. Fallback: Swift requires a return for any other case (e.g., Exercise footer)
+
         return collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: "EmptyMedicationFooter", for: indexPath)
     }
 }
