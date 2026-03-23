@@ -29,6 +29,7 @@ class SymptomRatingCell: UITableViewCell {
         contentView.addSubview(bubbleLabel)
         
         setupButtonActions()
+        setupButtonImageViews()
     }
     
     private func setupButtonActions() {
@@ -41,6 +42,18 @@ class SymptomRatingCell: UITableViewCell {
                 self.handleRatingSelection(intensity: intensity, from: sender)
             }
             button.addAction(action, for: .touchUpInside)
+        }
+    }
+    
+    /// Ensure button imageViews scale images properly instead of expanding
+    private func setupButtonImageViews() {
+        ratingButtons.forEach { button in
+            button.imageView?.contentMode = .scaleAspectFit
+            button.imageView?.clipsToBounds = true
+            button.contentHorizontalAlignment = .fill
+            button.contentVerticalAlignment = .fill
+            // Add padding so the image doesn't touch button edges
+            button.configuration?.contentInsets = NSDirectionalEdgeInsets(top: 4, leading: 4, bottom: 4, trailing: 4)
         }
     }
     
@@ -76,12 +89,23 @@ class SymptomRatingCell: UITableViewCell {
             self.bubbleLabel.transform = .identity
         }
     }
+    
+    /// Resize a UIImage to a target size
+    private func resizedImage(_ image: UIImage?, to size: CGSize) -> UIImage? {
+        guard let image = image else { return nil }
+        let renderer = UIGraphicsImageRenderer(size: size)
+        return renderer.image { _ in
+            image.draw(in: CGRect(origin: .zero, size: size))
+        }
+    }
 
     func configure(with rating: SymptomRating) {
         symptomLabel.text = rating.name
         symptomIcon.image = UIImage(named: rating.iconName ?? "questionmark.circle.fill")
         
         bubbleLabel.alpha = 0
+        
+        let imageSize = CGSize(width: 22, height: 22)
         
         ratingButtons.forEach { button in
             guard let buttonIntensity = SymptomRating.Intensity(rawValue: Int16(button.tag)) else { return }
@@ -93,11 +117,18 @@ class SymptomRatingCell: UITableViewCell {
             case .mild: baseIconName = "mild1"
             case .moderate: baseIconName = "moderate1"
             case .severe: baseIconName = "severe1"
-            case .notPresent: baseIconName = "notPresent1"
+            case .notPresent: baseIconName = "notpresent1"
             }
             
             let finalIconName = isSelected ? baseIconName + ".fill" : baseIconName
-            button.setImage(UIImage(systemName: finalIconName), for: .normal)
+            let originalImage = UIImage(named: finalIconName) ?? UIImage(named: baseIconName)
+            let scaledImage = resizedImage(originalImage, to: imageSize)?
+                .withRenderingMode(.alwaysOriginal)
+            
+            var config = UIButton.Configuration.plain()
+            config.image = scaledImage
+            config.contentInsets = NSDirectionalEdgeInsets(top: 4, leading: 4, bottom: 4, trailing: 4)
+            button.configuration = config
             
             if isSelected {
                 let selectedColor: UIColor = (buttonIntensity == .notPresent) ? .systemRed : .systemBlue
