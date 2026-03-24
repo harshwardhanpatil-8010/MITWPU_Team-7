@@ -433,7 +433,6 @@ extension _0minworkoutViewController: RestScreenDelegate {
             skippedIndicesToRevisit.removeAll()
             showCompletion()
         } else {
-            // Normal pass finished — check for skipped exercises
             checkForSkippedExercises()
         }
     }
