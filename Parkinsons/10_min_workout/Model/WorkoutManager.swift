@@ -416,25 +416,11 @@ class WorkoutManager {
     ) -> (reps: Int, seconds: Int) {
         guard let previous = previous else { return (0, 0) }
 
-        if previous == today {
+        if previous == today || (previous == .seated && today == .standing) || (previous == .standing && today == .seated) {
             switch feedback {
-            case .easy:    return ( 1,   5)
+            case .easy:    return ( 2, -10)
             case .perfect: return ( 0,   0)
-            case .hard:    return (-1,  -5)
-            }
-        }
-        if previous == .seated && today == .standing {
-            switch feedback {
-            case .easy:    return ( 1,   5)
-            case .perfect: return ( 0,   0)
-            case .hard:    return (-1,  -5)
-            }
-        }
-        if previous == .standing && today == .seated {
-            switch feedback {
-            case .easy:    return ( 1,   5)
-            case .perfect: return ( 0,   0)
-            case .hard:    return (-1,  -5)
+            case .hard:    return (-1,  10)
             }
         }
         return (0, 0)
@@ -454,7 +440,7 @@ class WorkoutManager {
             let base = exercise.duration ?? 40
             modified.duration = max(20, min(60, base + adjustment.seconds))
         default:
-            modified.reps = max(6, min(15, modified.reps + adjustment.reps))
+            modified.reps = max(6, min(14, modified.reps + adjustment.reps))
         }
         return modified
     }

@@ -214,16 +214,14 @@ class _0minworkoutViewController: UIViewController {
                 let cat = self.exercises[i].category
                 if cat == .warmup || cat == .cooldown {
 
-                    self.exercises[i].duration = min(self.exercises[i].duration ?? 40, 30)
+                    self.exercises[i].duration = 50
                     if let mi = WorkoutManager.shared.exercises.firstIndex(where: { $0.id == exerciseID }) {
-                        WorkoutManager.shared.exercises[mi].duration =
-                            min(WorkoutManager.shared.exercises[mi].duration ?? 40, 30)
+                        WorkoutManager.shared.exercises[mi].duration = 50
                     }
                 } else {
-                    self.exercises[i].reps = min(self.exercises[i].reps, 8)
+                    self.exercises[i].reps = 6
                     if let mi = WorkoutManager.shared.exercises.firstIndex(where: { $0.id == exerciseID }) {
-                        WorkoutManager.shared.exercises[mi].reps =
-                            min(WorkoutManager.shared.exercises[mi].reps, 8)
+                        WorkoutManager.shared.exercises[mi].reps = 6
                     }
                 }
             }
