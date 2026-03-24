@@ -44,6 +44,8 @@ class ExerciseCountdownViewController: UIViewController {
 
     var exercises: [WorkoutExercise] = []
     var startingIndex: Int = 0
+    var isRevisitingSkipped: Bool = false
+    var skippedIndicesToRevisit: [Int] = []
 
     private var countDown = 10
     private var hasNavigated = false
@@ -261,6 +263,11 @@ class ExerciseCountdownViewController: UIViewController {
                 as? _0minworkoutViewController else { return }
         vc.exercises    = exercises
         vc.currentIndex = startingIndex
+        vc.isRevisitingSkipped = isRevisitingSkipped
+        if isRevisitingSkipped {
+            vc.skippedIndicesToRevisit = skippedIndicesToRevisit
+            vc.hasHandledSkippedExercises = true
+        }
         navigationController?.pushViewController(vc, animated: false)
     }
 }

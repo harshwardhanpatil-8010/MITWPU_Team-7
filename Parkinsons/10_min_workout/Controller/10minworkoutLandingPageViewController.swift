@@ -108,7 +108,7 @@ class _0minworkoutLandingPageViewController: UIViewController, UICollectionViewD
         tabBarController?.tabBar.isHidden = false
     }
 
-    // MARK: - Progress & Button UI
+
 
     private func loadHistoricalWorkout() {
         guard let displayDate else { return }
@@ -125,7 +125,7 @@ class _0minworkoutLandingPageViewController: UIViewController, UICollectionViewD
         var placeholderExercises: [WorkoutExercise] = []
         let knownNames = completedNames + skippedNames
 
-        for (index, name) in knownNames.enumerated() {
+        for (_, name) in knownNames.enumerated() {
             placeholderExercises.append(
                 WorkoutExercise(
                     id: UUID(),
@@ -215,16 +215,39 @@ class _0minworkoutLandingPageViewController: UIViewController, UICollectionViewD
 
     private func navigateToWorkout() {
         let allExercises = WorkoutManager.shared.exercises
-        let completedSet = WorkoutManager.shared.completedToday
+        let completedSet = Set(WorkoutManager.shared.completedToday)
+        let skippedSet   = Set(WorkoutManager.shared.skippedToday)
 
-        let resumeIndex  = allExercises.firstIndex { !completedSet.contains($0.id) } ?? 0
+        let resumeIndex  = allExercises.firstIndex { 
+            !completedSet.contains($0.id) && !skippedSet.contains($0.id) 
+        }
 
-
-        // Push the code-based countdown VC directly — no storyboard ID needed.
-        let countdown = ExerciseCountdownViewController()
-        countdown.exercises     = allExercises
-        countdown.startingIndex = resumeIndex
-        navigationController?.pushViewController(countdown, animated: true)
+        if let idx = resumeIndex {
+            let countdown = ExerciseCountdownViewController()
+            countdown.exercises     = allExercises
+            countdown.startingIndex = idx
+            navigationController?.pushViewController(countdown, animated: true)
+        } else {
+            let unresolvedSkipped = WorkoutManager.shared.skippedToday.filter { skippedID in
+                Set(allExercises.map(\.id)).contains(skippedID) && !completedSet.contains(skippedID)
+            }
+            if let skipIdx = allExercises.firstIndex(where: { unresolvedSkipped.contains($0.id) }) {
+                let countdown = ExerciseCountdownViewController()
+                countdown.exercises     = allExercises
+                countdown.startingIndex = skipIdx
+                countdown.isRevisitingSkipped = true
+                countdown.skippedIndicesToRevisit = allExercises.indices.filter {
+                    unresolvedSkipped.contains(allExercises[$0].id)
+                }
+                navigationController?.pushViewController(countdown, animated: true)
+            } else {
+                let sb = UIStoryboard(name: "10 minworkout", bundle: nil)
+                if let vc = sb.instantiateViewController(withIdentifier: "GoodJobViewController") as? _0minworkoutGoodJobViewController {
+                    vc.completed = WorkoutManager.shared.completedToday.count
+                    navigationController?.pushViewController(vc, animated: true)
+                }
+            }
+        }
     }
 
     // MARK: - Med / position alerts

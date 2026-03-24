@@ -20,6 +20,8 @@ class RestScreenViewController: UIViewController {
     weak var delegate: RestScreenDelegate?
 
     var currentIndex: Int = 0        // already-incremented index of the NEXT exercise
+    var isRevisitingSkipped: Bool = false
+    var skippedIndicesToRevisit: [Int] = []
 
     var totalExercises: Int = 0
     var exercises: [WorkoutExercise] = []
@@ -142,6 +144,8 @@ class RestScreenViewController: UIViewController {
         let countdown = ExerciseCountdownViewController()
         countdown.exercises     = exercises
         countdown.startingIndex = currentIndex
+        countdown.isRevisitingSkipped = isRevisitingSkipped
+        countdown.skippedIndicesToRevisit = skippedIndicesToRevisit
 
         let transition = CATransition()
         transition.duration = 0.4

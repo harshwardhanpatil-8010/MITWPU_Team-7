@@ -23,8 +23,8 @@ class _0minworkoutViewController: UIViewController {
     private var avPlayer: AVQueuePlayer?
     private var avPlayerLayer: AVPlayerLayer?
     private var playerLooper: AVPlayerLooper?
-    private var hasHandledSkippedExercises = false
-    private var skippedIndicesToRevisit: [Int] = []
+    var hasHandledSkippedExercises = false
+    var skippedIndicesToRevisit: [Int] = []
     private var skippedRevisitPointer: Int = 0
     private var pendingSpeechWorkItem: DispatchWorkItem?
 
@@ -93,10 +93,12 @@ class _0minworkoutViewController: UIViewController {
     }
 
     func configureExercise() {
-        if !isRevisitingSkipped,
-           let nextPendingIndex = nextMainRunIndex(startingAt: currentIndex),
-           nextPendingIndex != currentIndex {
-            currentIndex = nextPendingIndex
+        if !isRevisitingSkipped {
+            if let nextPendingIndex = nextMainRunIndex(startingAt: currentIndex) {
+                currentIndex = nextPendingIndex
+            } else {
+                currentIndex = exercises.count
+            }
         }
 
         guard currentIndex < exercises.count else {
@@ -259,7 +261,13 @@ class _0minworkoutViewController: UIViewController {
             }
             WorkoutManager.shared.skippedToday.removeAll { $0 == currentID }
         }
-        currentIndex += 1
+        
+        if let next = nextIndex {
+            currentIndex = next
+        } else {
+            currentIndex = exercises.count
+        }
+        
         WorkoutManager.shared.syncSessionPersistence()
         goToRest(nextExerciseIndex: nextIndex)
     }
@@ -274,8 +282,9 @@ class _0minworkoutViewController: UIViewController {
         guard startIndex < exercises.count else { return nil }
 
         let completedIDs = Set(WorkoutManager.shared.completedToday)
+        let skippedIDs = Set(WorkoutManager.shared.skippedToday)
         return exercises.indices[startIndex...].first { index in
-            !completedIDs.contains(exercises[index].id)
+            !completedIDs.contains(exercises[index].id) && !skippedIDs.contains(exercises[index].id)
         }
     }
 
@@ -303,10 +312,12 @@ class _0minworkoutViewController: UIViewController {
         let sb = UIStoryboard(name: "10 minworkout", bundle: nil)
         if let vc = sb.instantiateViewController(withIdentifier: "RestScreenViewController") as? RestScreenViewController {
 
-            vc.currentIndex   = currentIndex      // already incremented — index of NEXT exercise
+            vc.currentIndex   = currentIndex   
             vc.totalExercises = exercises.count
             vc.exercises      = exercises
             vc.delegate       = self
+            vc.isRevisitingSkipped = self.isRevisitingSkipped
+            vc.skippedIndicesToRevisit = self.skippedIndicesToRevisit
 
             navigationController?.pushViewController(vc, animated: true)
         }
@@ -374,8 +385,6 @@ class _0minworkoutViewController: UIViewController {
             message: "Would you like to try the exercises you skipped?",
             preferredStyle: .alert
         )
-
-        // "Maybe later" — go straight to Good Job, no more screens
         alert.addAction(UIAlertAction(title: "Maybe later", style: .cancel) { [weak self] _ in
             self?.hasHandledSkippedExercises = true
             self?.showCompletion()
@@ -422,16 +431,9 @@ extension _0minworkoutViewController: RestScreenDelegate {
     /// The rest screen already popped itself; now we decide what comes next.
     func restCompletedWorkoutDone() {
         if isRevisitingSkipped {
-            // Mid-revisit pass — advance to the next skipped exercise or finish
-            skippedRevisitPointer += 1
-            if skippedRevisitPointer < skippedIndicesToRevisit.count {
-                currentIndex = skippedIndicesToRevisit[skippedRevisitPointer]
-                configureExercise()
-            } else {
-                isRevisitingSkipped = false
-                skippedIndicesToRevisit.removeAll()
-                showCompletion()
-            }
+            isRevisitingSkipped = false
+            skippedIndicesToRevisit.removeAll()
+            showCompletion()
         } else {
             // Normal pass finished — check for skipped exercises
             checkForSkippedExercises()
