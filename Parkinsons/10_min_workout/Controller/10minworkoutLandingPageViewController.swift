@@ -273,13 +273,13 @@ class _0minworkoutLandingPageViewController: UIViewController, UICollectionViewD
             message: "Would you like to perform standing or seated exercises today?",
             preferredStyle: .alert
         )
-        alert.addAction(UIAlertAction(title: "Seated (Recommended)", style: .default) { [weak self] _ in
+        alert.addAction(UIAlertAction(title: "􁺼 Seated (Recommended)", style: .default) { [weak self] _ in
             let manager = WorkoutManager.shared
             manager.generateDailyWorkoutReducedWithFeedback(for: .seated)
             manager.lastCheckedMedState = manager.currentMedState()
             self?.refreshWorkoutList()
         })
-        alert.addAction(UIAlertAction(title: "Standing", style: .default) { [weak self] _ in
+        alert.addAction(UIAlertAction(title: "􀳾 Standing", style: .default) { [weak self] _ in
             let manager = WorkoutManager.shared
             if manager.allMedsTaken {
                 manager.generateDailyWorkout(for: .standing)
@@ -298,13 +298,13 @@ class _0minworkoutLandingPageViewController: UIViewController, UICollectionViewD
             message: "How would you like to exercise today?",
             preferredStyle: .alert
         )
-        alert.addAction(UIAlertAction(title: "Standing", style: .default) { [weak self] _ in
+        alert.addAction(UIAlertAction(title: "􀳾 Standing", style: .default) { [weak self] _ in
             let manager = WorkoutManager.shared
             manager.generateDailyWorkout(for: .standing)
             manager.lastCheckedMedState = manager.currentMedState()
             self?.refreshWorkoutList()
         })
-        alert.addAction(UIAlertAction(title: "Seated", style: .default) { [weak self] _ in
+        alert.addAction(UIAlertAction(title: "􁺼 Seated", style: .default) { [weak self] _ in
             let manager = WorkoutManager.shared
             manager.generateDailyWorkout(for: .seated)
             manager.lastCheckedMedState = manager.currentMedState()

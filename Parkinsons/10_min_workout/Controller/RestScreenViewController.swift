@@ -19,7 +19,7 @@ class RestScreenViewController: UIViewController {
     
     weak var delegate: RestScreenDelegate?
 
-    var currentIndex: Int = 0        // already-incremented index of the NEXT exercise
+    var currentIndex: Int = 0       
     var isRevisitingSkipped: Bool = false
     var skippedIndicesToRevisit: [Int] = []
 

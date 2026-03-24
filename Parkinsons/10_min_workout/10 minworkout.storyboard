@@ -592,7 +592,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="5T6-RI-xm1" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="5862.686567164179" y="137.98627002288328"/>
+            <point key="canvasLocation" x="5684" y="138"/>
         </scene>
         <!--10 min Workout-->
         <scene sceneID="czI-ub-xzR">
@@ -827,7 +827,7 @@
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="WFO-5P-xaf" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1751" y="138"/>
+            <point key="canvasLocation" x="1910" y="138"/>
         </scene>
     </scenes>
     <resources>
