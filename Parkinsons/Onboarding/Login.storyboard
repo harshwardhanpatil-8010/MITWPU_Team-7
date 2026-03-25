@@ -58,7 +58,7 @@
         <!--Onboarding Info View Controller-->
         <scene sceneID="Rjb-oH-bMM">
             <objects>
-                <viewController id="rha-gI-HeE" customClass="OnboardingInfoViewController" customModule="Parkinsons" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController restorationIdentifier="OnboardingInfoView" storyboardIdentifier="OnboardingInfoView" id="rha-gI-HeE" customClass="OnboardingInfoViewController" customModule="Parkinsons" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="reF-ob-lio">
                         <rect key="frame" x="0.0" y="0.0" width="402" height="874"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -215,7 +215,10 @@
                         </constraints>
                     </view>
                     <connections>
+                        <outlet property="dateOfBirthTextField" destination="XpM-rf-Vs6" id="igp-2F-bQY"/>
+                        <outlet property="genderLabelField" destination="eur-y1-qbT" id="mCU-F9-3YM"/>
                         <outlet property="nameTextField" destination="Ot9-Iq-SJA" id="ev0-yC-qLE"/>
+                        <outlet property="stageLabelField" destination="jaa-Ng-mnm" id="uDT-ma-W4Y"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="2R1-pP-4s0" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
