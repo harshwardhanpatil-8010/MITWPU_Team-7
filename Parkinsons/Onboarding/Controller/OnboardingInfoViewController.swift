@@ -14,16 +14,13 @@ class OnboardingInfoViewController: UIViewController, UITextFieldDelegate {
        @IBOutlet weak var genderLabelButton: UIButton!
     @IBOutlet weak var dateOfBirthPicker: UIDatePicker!
     @IBOutlet weak var nameTextField: UITextField!
-    @IBOutlet weak var emergencyTextField: UITextField!
     
-    @IBOutlet weak var backgroundStackView: UIStackView!
     let genderOptions = ["Male", "Female", "Other"]
        let stageOptions = ["Stage 1", "Stage 2", "Stage 3", "Stage 4", "Stage 5"]
 
        override func viewDidLoad() {
            super.viewDidLoad()
-           backgroundStackView.layer.cornerRadius = 25
-           backgroundStackView.clipsToBounds = true
+       
            navigationItem.hidesBackButton = true
            navigationController?.interactivePopGestureRecognizer?.isEnabled = false
 
@@ -31,7 +28,6 @@ class OnboardingInfoViewController: UIViewController, UITextFieldDelegate {
            configureStagePickerMenu()
            configureTextFields()
            configureKeyboardDismissGesture()
-           
            genderLabelButton.setTitle("", for: .normal)
            genderLabelButton.setTitleColor(.systemBlue, for: .normal)
            stageLabelButton.setTitle("", for: .normal)
@@ -67,9 +63,9 @@ class OnboardingInfoViewController: UIViewController, UITextFieldDelegate {
 
     private func configureTextFields() {
         nameTextField.delegate = self
-        emergencyTextField.delegate = self
+       
         nameTextField.returnKeyType = .done
-        emergencyTextField.returnKeyType = .done
+      
     }
 
     private func configureKeyboardDismissGesture() {
@@ -101,7 +97,6 @@ class OnboardingInfoViewController: UIViewController, UITextFieldDelegate {
     @IBAction func nextButtonTapped(_ sender: Any) {
 
         let name = nameTextField.text?.trimmingCharacters(in: .whitespacesAndNewlines) ?? ""
-        let emergencyContact = emergencyTextField.text?.trimmingCharacters(in: .whitespacesAndNewlines) ?? ""
         let selectedGender = genderLabelButton.title(for: .normal) ?? ""
         let stageText = stageLabelButton.title(for: .normal) ?? ""
 
@@ -109,7 +104,7 @@ class OnboardingInfoViewController: UIViewController, UITextFieldDelegate {
 
         let defaults = UserDefaults.standard
         defaults.set(name, forKey: "userName")
-        defaults.set(emergencyContact, forKey: "emergencyContact")
+   
         defaults.set(stageNumber, forKey: "diseaseStage")
         defaults.set(selectedGender, forKey: "userGender")
         defaults.set(dateOfBirthPicker.date, forKey: "userDOB")
