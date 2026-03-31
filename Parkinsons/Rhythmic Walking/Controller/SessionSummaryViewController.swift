@@ -67,6 +67,13 @@ class SessionSummaryViewController: UIViewController {
         } else {
             navigationItem.title = "Rhythmic Walking"
         }
+        
+        tabBarController?.tabBar.isHidden = true
+    }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        tabBarController?.tabBar.isHidden = false
     }
 
     @objc private func backTapped() {
@@ -79,12 +86,9 @@ class SessionSummaryViewController: UIViewController {
             progressView.setProgress(0.0)
             return
         }
-        // Only compute a fallback endDate if none was recorded.
-        // Do NOT overwrite a real endDate that was set when the session finished.
         if session.endDate == nil {
             let fallback = session.startDate
                 .addingTimeInterval(TimeInterval(session.elapsedSeconds))
-            // Only apply fallback if elapsedSeconds > 0, otherwise HealthKit window is zero-width
             if session.elapsedSeconds > 0 {
                 session.endDate = fallback
                 sessionData = session
@@ -114,7 +118,6 @@ class SessionSummaryViewController: UIViewController {
                 self.apply(summary: summary)
                 self.applyChangePercents(summary: summary, previous: previousManaged)
             } else if let cached = DataStore.shared.cachedSummary(for: fixedSession) {
-                // Bug fix: apply cached data to labels AND show change percents
                 self.apply(summary: cached)
                 self.applyChangePercents(summary: cached, previous: previousManaged)
             }
