@@ -8,10 +8,9 @@ import UIKit
 class OnboardingInfoViewController: UIViewController, UITextFieldDelegate,
                                      UIPickerViewDelegate, UIPickerViewDataSource {
 
-  
     @IBOutlet weak var stageLabelField: UITextField!
     @IBOutlet weak var genderLabelField: UITextField!
-    @IBOutlet weak var dateOfBirthTextField: UITextField!   // replaces UIDatePicker
+    @IBOutlet weak var dateOfBirthTextField: UITextField!
     @IBOutlet weak var nameTextField: UITextField!
 
     // MARK: - Data
@@ -76,15 +75,14 @@ class OnboardingInfoViewController: UIViewController, UITextFieldDelegate,
         stageLabelField.resignFirstResponder()
     }
 
-    // MARK: - Date Picker (Inline scroll wheel)
+    // MARK: - Date Picker
 
     private func configureDatePicker() {
-        // Wheel style gives the classic iOS scroll drum
         datePicker.preferredDatePickerStyle = .wheels
         datePicker.datePickerMode           = .date
         datePicker.maximumDate              = Calendar.current.date(
                                                 byAdding: .year, value: -1,
-                                                to: Date())   // must be at least 1 yr old
+                                                to: Date())
 
         dateOfBirthTextField.inputView          = datePicker
         dateOfBirthTextField.inputAccessoryView = makeToolbar(doneAction: #selector(dateDoneTapped))
@@ -94,7 +92,7 @@ class OnboardingInfoViewController: UIViewController, UITextFieldDelegate,
 
     @objc private func dateDoneTapped() {
         let formatter        = DateFormatter()
-        formatter.dateStyle  = .long          // e.g. "March 25, 2026"
+        formatter.dateStyle  = .long
         formatter.timeStyle  = .none
         dateOfBirthTextField.text = formatter.string(from: datePicker.date)
         dateOfBirthTextField.resignFirstResponder()
@@ -142,7 +140,6 @@ class OnboardingInfoViewController: UIViewController, UITextFieldDelegate,
         return true
     }
 
-    // Block manual typing in picker-backed fields
     func textField(_ textField: UITextField,
                    shouldChangeCharactersIn range: NSRange,
                    replacementString string: String) -> Bool {
@@ -164,7 +161,6 @@ class OnboardingInfoViewController: UIViewController, UITextFieldDelegate,
 
     // MARK: - Toolbar Helper
 
-    /// Reusable toolbar with a right-aligned Done button
     private func makeToolbar(doneAction: Selector) -> UIToolbar {
         let toolbar    = UIToolbar()
         toolbar.sizeToFit()
@@ -185,11 +181,11 @@ class OnboardingInfoViewController: UIViewController, UITextFieldDelegate,
         let stageNumber    = Int(stageText.components(separatedBy: " ").last ?? "")
 
         let defaults = UserDefaults.standard
-        defaults.set(name,           forKey: "userName")
-        defaults.set(stageNumber,    forKey: "diseaseStage")
-        defaults.set(selectedGender, forKey: "userGender")
-        defaults.set(datePicker.date, forKey: "userDOB")   // always save the picker's date
-        defaults.set(true,           forKey: "hasCompletedOnboarding")
+        defaults.set(name,            forKey: "userName")
+        defaults.set(stageNumber,     forKey: "diseaseStage")
+        defaults.set(selectedGender,  forKey: "userGender")
+        defaults.set(datePicker.date, forKey: "userDOB")
+        defaults.set(true,            forKey: "hasCompletedOnboarding")
 
         NotificationCenter.default.post(
             name: NSNotification.Name("UserProfileUpdated"), object: nil)
@@ -204,8 +200,8 @@ class OnboardingInfoViewController: UIViewController, UITextFieldDelegate,
         let tabBarVC   = storyboard.instantiateViewController(withIdentifier: "HomeTabBar")
 
         let windowScene = UIApplication.shared.connectedScenes
-            .compactMap  { $0 as? UIWindowScene }
-            .first       { $0.activationState == .foregroundActive }
+            .compactMap { $0 as? UIWindowScene }
+            .first      { $0.activationState == .foregroundActive }
             ?? UIApplication.shared.connectedScenes.first as? UIWindowScene
 
         if let sceneDelegate = windowScene?.delegate as? SceneDelegate {

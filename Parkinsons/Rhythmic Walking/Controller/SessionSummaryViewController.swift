@@ -44,6 +44,7 @@ class SessionSummaryViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        tabBarController?.tabBar.isHidden = true
         goalCompletedTLabel.isHidden = true
 
         setupProgressView()
@@ -79,12 +80,9 @@ class SessionSummaryViewController: UIViewController {
             progressView.setProgress(0.0)
             return
         }
-        // Only compute a fallback endDate if none was recorded.
-        // Do NOT overwrite a real endDate that was set when the session finished.
         if session.endDate == nil {
             let fallback = session.startDate
                 .addingTimeInterval(TimeInterval(session.elapsedSeconds))
-            // Only apply fallback if elapsedSeconds > 0, otherwise HealthKit window is zero-width
             if session.elapsedSeconds > 0 {
                 session.endDate = fallback
                 sessionData = session
