@@ -84,12 +84,18 @@ class _0minworkoutViewController: UIViewController {
     }
 
     private func setupAVPlayer() {
-        if avPlayer != nil { return }
-        avPlayer = AVQueuePlayer()
-        avPlayerLayer = AVPlayerLayer(player: avPlayer)
-        avPlayerLayer?.videoGravity = .resizeAspectFill
-        guard let avPlayerLayer else { return }
-        playerView.layer.addSublayer(avPlayerLayer)
+        
+        if avPlayer == nil {
+            avPlayer = AVQueuePlayer()
+            avPlayerLayer = AVPlayerLayer(player: avPlayer)
+            avPlayerLayer?.videoGravity = .resizeAspectFill
+            guard let avPlayerLayer else { return }
+            playerView.layer.addSublayer(avPlayerLayer)
+        }
+        // Reset looper each time
+        playerLooper = nil
+        avPlayer?.pause()
+        avPlayer?.removeAllItems()
     }
 
     func configureExercise() {
@@ -177,16 +183,63 @@ class _0minworkoutViewController: UIViewController {
     }
 
     @IBAction func previousButtonTapped(_ sender: UIButton) {
-        if currentIndex > 0 {
-            currentIndex -= 1
-            let transition = CATransition()
-            transition.duration = 0.4
-            transition.type = .push
-            transition.subtype = .fromLeft
-            view.window?.layer.add(transition, forKey: kCATransition)
-            configureExercise()
-            UISelectionFeedbackGenerator().selectionChanged()
+        guard currentIndex > 0 else { return }
+        currentIndex -= 1
+
+        // Stop current timer/speech
+        timer?.invalidate()
+        timer = nil
+        pendingSpeechWorkItem?.cancel()
+        SpeechManager.shared.stop()
+
+        // Animate and load directly — do NOT go through configureExercise()
+        // because that would skip forward past any completed exercises
+        let transition = CATransition()
+        transition.duration = 0.4
+        transition.type = .push
+        transition.subtype = .fromLeft
+        view.window?.layer.add(transition, forKey: kCATransition)
+
+        setupAVPlayer()
+        let exercise = exercises[currentIndex]
+        exerciseName.text = exercise.name
+
+        if exercise.category == .warmup || exercise.category == .cooldown {
+            repsLabel.text = "-"
+            timerLabel.isHidden = false
+            startCountdown(seconds: exercise.timerSeconds)
+        } else {
+            repsLabel.text = "\(exercise.reps)"
+            timerLabel.text = "-"
         }
+
+        if let videoName = exercise.videoID,
+           let url = Bundle.main.url(forResource: videoName, withExtension: "mp4") {
+            let asset = AVURLAsset(url: url)
+            let item = AVPlayerItem(asset: asset)
+            playerLooper = AVPlayerLooper(player: avPlayer!, templateItem: item)
+            avPlayer?.play()
+        }
+
+        if let instruction = exercise.voiceInstruction?.trimmingCharacters(in: .whitespacesAndNewlines),
+           !instruction.isEmpty {
+            let exerciseID = exercise.id
+            let workItem = DispatchWorkItem { [weak self] in
+                guard let self,
+                      self.currentIndex < self.exercises.count,
+                      self.exercises[self.currentIndex].id == exerciseID
+                else { return }
+                SpeechManager.shared.speak(instruction)
+            }
+            pendingSpeechWorkItem = workItem
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.35, execute: workItem)
+        }
+
+        exerciseStartTime = Date()
+        updateProgressBars()
+        updateTopLabels()
+        updatePreviousButton()
+        UISelectionFeedbackGenerator().selectionChanged()
     }
 
     @IBAction func closeButtonTapped(_ sender: Any) {
