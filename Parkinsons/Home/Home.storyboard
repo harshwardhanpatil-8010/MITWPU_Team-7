@@ -41,7 +41,7 @@
                                 </items>
                             </navigationBar>
                             <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="VtX-jr-dYm">
-                                <rect key="frame" x="0.0" y="118" width="393" height="734"/>
+                                <rect key="frame" x="0.0" y="130" width="393" height="722"/>
                                 <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                                 <collectionViewFlowLayout key="collectionViewLayout" automaticEstimatedItemSize="YES" minimumLineSpacing="10" minimumInteritemSpacing="10" id="mZc-ho-9sF">
                                     <size key="itemSize" width="393" height="114"/>
@@ -66,7 +66,7 @@
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                         <constraints>
                             <constraint firstItem="VtX-jr-dYm" firstAttribute="trailing" secondItem="vDu-zF-Fre" secondAttribute="trailing" id="DeS-lh-Vfv"/>
-                            <constraint firstItem="VtX-jr-dYm" firstAttribute="top" secondItem="5EZ-qb-Rvc" secondAttribute="top" constant="118" id="Hs6-uQ-ceN"/>
+                            <constraint firstItem="VtX-jr-dYm" firstAttribute="top" secondItem="5EZ-qb-Rvc" secondAttribute="top" constant="130" id="Hs6-uQ-ceN"/>
                             <constraint firstAttribute="bottom" secondItem="VtX-jr-dYm" secondAttribute="bottom" id="HwU-Zy-3Bh"/>
                             <constraint firstItem="Byu-25-vaf" firstAttribute="leading" secondItem="5EZ-qb-Rvc" secondAttribute="leading" id="IBK-OZ-l2T"/>
                             <constraint firstItem="VtX-jr-dYm" firstAttribute="leading" secondItem="vDu-zF-Fre" secondAttribute="leading" id="SOd-hS-iEF"/>
@@ -848,8 +848,8 @@
                 <navigationController storyboardIdentifier="home" automaticallyAdjustsScrollViewInsets="NO" useStoryboardIdentifierAsRestorationIdentifier="YES" id="nLe-cF-Rbs" sceneMemberID="viewController">
                     <tabBarItem key="tabBarItem" title="Today" image="sun.max" catalog="system" selectedImage="sun.max.fill" id="cFu-hJ-Xek"/>
                     <toolbarItems/>
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" largeTitles="YES" id="PWn-Qa-ghx">
-                        <rect key="frame" x="0.0" y="118" width="393" height="106"/>
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="PWn-Qa-ghx">
+                        <rect key="frame" x="0.0" y="118" width="393" height="54"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
                     <nil name="viewControllers"/>

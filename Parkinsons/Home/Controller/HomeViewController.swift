@@ -67,19 +67,13 @@ class HomeViewController: UIViewController, UICollectionViewDelegate {
     // MARK: - Navigation Title with Subtitle
    
     private func configureNavigationTitle() {
-        let sunImage = UIImage(systemName: "sun.max.fill",
-            withConfiguration: UIImage.SymbolConfiguration(pointSize: 30, weight: .bold))
-        let sunImageView = UIImageView(image: sunImage)
-        sunImageView.tintColor = .label
-        sunImageView.contentMode = .scaleAspectFit
-        sunImageView.translatesAutoresizingMaskIntoConstraints = false
 
         let titleLabel = UILabel()
         titleLabel.text = "Today"
         titleLabel.font = UIFont.systemFont(ofSize: 34, weight: .bold)
         titleLabel.translatesAutoresizingMaskIntoConstraints = false
 
-        let titleStack = UIStackView(arrangedSubviews: [sunImageView, titleLabel])
+        let titleStack = UIStackView(arrangedSubviews: [titleLabel])
         titleStack.axis = .horizontal
         titleStack.alignment = .center
         titleStack.spacing = 8
@@ -89,8 +83,6 @@ class HomeViewController: UIViewController, UICollectionViewDelegate {
 
         // Replace the constraints with:
         NSLayoutConstraint.activate([
-            sunImageView.widthAnchor.constraint(equalToConstant: 32),
-            sunImageView.heightAnchor.constraint(equalToConstant: 32),
             titleStack.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16),
             titleStack.centerYAnchor.constraint(equalTo: navigationBar.centerYAnchor)
         ])
@@ -282,7 +274,7 @@ class HomeViewController: UIViewController, UICollectionViewDelegate {
                     elementKind: UICollectionView.elementKindSectionHeader,
                     alignment: .top
                 )
-                calendarHeader.pinToVisibleBounds = true
+//                calendarHeader.pinToVisibleBounds = true
                 section.boundarySupplementaryItems = [calendarHeader]
                 section.contentInsets = NSDirectionalEdgeInsets(top: 0, leading: 8, bottom: 0, trailing: 8)
                 return section
@@ -579,12 +571,14 @@ extension HomeViewController: UICollectionViewDataSource {
 
             switch sectionType {
             case .calendar:
+                
                 let dateString = formattedDateString(for: selectedDate)
                 let isToday = Calendar.current.isDateInToday(selectedDate)
                 header.configure(title: isToday ? "\(dateString)" : dateString, showInfoIcon: false)
                
                 header.setTitleAlignment(.center)
-                header.setFont(size: 17, weight: .bold)
+                header.setFont(size: 17, weight: .semibold)
+                header.titleLabel.textColor = .secondaryLabel
                 
             case .medications:
                 header.configure(title: "Upcoming Medications", showInfoIcon: false)
