@@ -273,24 +273,51 @@ class _0minworkoutLandingPageViewController: UIViewController, UICollectionViewD
             message: "Would you like to perform standing or seated exercises today?",
             preferredStyle: .alert
         )
-        alert.addAction(UIAlertAction(title: "􁺼 Seated (Recommended)", style: .default) { [weak self] _ in
+
+        let seatedAction = UIAlertAction(
+            title: "Seated (Recommended)",
+            style: .default
+        ) { [weak self] _ in
             let manager = WorkoutManager.shared
             manager.generateDailyWorkoutReducedWithFeedback(for: .seated)
             manager.lastCheckedMedState = manager.currentMedState()
             self?.refreshWorkoutList()
-        })
-        alert.addAction(UIAlertAction(title: "􀳾 Standing", style: .default) { [weak self] _ in
+        }
+
+        let seatedImage = UIImage(
+            systemName: "figure.seated.side.left"
+        )
+
+        seatedAction.setValue(seatedImage, forKey: "image")
+
+        let standingAction = UIAlertAction(
+            title: "Standing",
+            style: .default
+        ) { [weak self] _ in
             let manager = WorkoutManager.shared
+
             if manager.allMedsTaken {
                 manager.generateDailyWorkout(for: .standing)
             } else {
                 manager.generateDailyWorkoutIgnoringFeedback(for: .standing)
             }
+
             manager.lastCheckedMedState = manager.currentMedState()
             self?.refreshWorkoutList()
-        })
+        }
+
+        let standingImage = UIImage(
+            systemName: "figure.stand"
+        )
+
+        standingAction.setValue(standingImage, forKey: "image")
+
+        alert.addAction(seatedAction)
+        alert.addAction(standingAction)
+
         present(alert, animated: true)
     }
+
 
     private func showStage12SafetyAlert() {
         let alert = UIAlertController(
@@ -298,18 +325,52 @@ class _0minworkoutLandingPageViewController: UIViewController, UICollectionViewD
             message: "How would you like to exercise today?",
             preferredStyle: .alert
         )
-        alert.addAction(UIAlertAction(title: "􀳾 Standing", style: .default) { [weak self] _ in
+
+        let standingAction = UIAlertAction(
+            title: "Standing",
+            style: .default
+        ) { [weak self] _ in
             let manager = WorkoutManager.shared
+
             manager.generateDailyWorkout(for: .standing)
             manager.lastCheckedMedState = manager.currentMedState()
+
             self?.refreshWorkoutList()
-        })
-        alert.addAction(UIAlertAction(title: "􁺼 Seated", style: .default) { [weak self] _ in
+        }
+
+        let standingImage = UIImage(
+            systemName: "figure.stand"
+        )
+
+        standingAction.setValue(
+            standingImage,
+            forKey: "image"
+        )
+
+        let seatedAction = UIAlertAction(
+            title: "Seated",
+            style: .default
+        ) { [weak self] _ in
             let manager = WorkoutManager.shared
+
             manager.generateDailyWorkout(for: .seated)
             manager.lastCheckedMedState = manager.currentMedState()
+
             self?.refreshWorkoutList()
-        })
+        }
+
+        let seatedImage = UIImage(
+            systemName: "figure.seated.side.left"
+        )
+
+        seatedAction.setValue(
+            seatedImage,
+            forKey: "image"
+        )
+
+        alert.addAction(standingAction)
+        alert.addAction(seatedAction)
+
         present(alert, animated: true)
     }
 }

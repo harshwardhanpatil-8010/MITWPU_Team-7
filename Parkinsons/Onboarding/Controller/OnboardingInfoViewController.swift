@@ -1,14 +1,12 @@
-//
 //  OnboardingInfoViewController.swift
 //  Parkinsons
-//
 
 import UIKit
-
 class OnboardingInfoViewController: UIViewController, UITextFieldDelegate,
                                      UIPickerViewDelegate, UIPickerViewDataSource {
 
-  
+    @IBOutlet weak var nextButton: UIButton!
+    
     @IBOutlet weak var stageLabelField: UITextField!
     @IBOutlet weak var genderLabelField: UITextField!
     @IBOutlet weak var dateOfBirthTextField: UITextField!   // replaces UIDatePicker
@@ -30,7 +28,8 @@ class OnboardingInfoViewController: UIViewController, UITextFieldDelegate,
 
         navigationItem.hidesBackButton = true
         navigationController?.interactivePopGestureRecognizer?.isEnabled = false
-
+        configureValidation()
+        updateNextButtonState()
         configureGenderPicker()
         configureStagePicker()
         configureDatePicker()
@@ -55,6 +54,69 @@ class OnboardingInfoViewController: UIViewController, UITextFieldDelegate,
         let row = genderPickerView.selectedRow(inComponent: 0)
         genderLabelField.text = genderOptions[row]
         genderLabelField.resignFirstResponder()
+        updateNextButtonState()
+    }
+    private func configureValidation() {
+
+        nameTextField.addTarget(
+            self,
+            action: #selector(textFieldDidChange),
+            for: .editingChanged
+        )
+
+        genderLabelField.addTarget(
+            self,
+            action: #selector(textFieldDidChange),
+            for: .editingChanged
+        )
+
+        stageLabelField.addTarget(
+            self,
+            action: #selector(textFieldDidChange),
+            for: .editingChanged
+        )
+
+        dateOfBirthTextField.addTarget(
+            self,
+            action: #selector(textFieldDidChange),
+            for: .editingChanged
+        )
+    }
+
+    @objc private func textFieldDidChange() {
+        updateNextButtonState()
+    }
+
+    private func updateNextButtonState() {
+
+        let isNameFilled =
+        !(nameTextField.text?
+            .trimmingCharacters(in: .whitespacesAndNewlines)
+            .isEmpty ?? true)
+
+        let isGenderFilled =
+        !(genderLabelField.text?
+            .trimmingCharacters(in: .whitespacesAndNewlines)
+            .isEmpty ?? true)
+
+        let isStageFilled =
+        !(stageLabelField.text?
+            .trimmingCharacters(in: .whitespacesAndNewlines)
+            .isEmpty ?? true)
+
+        let isDOBFilled =
+        !(dateOfBirthTextField.text?
+            .trimmingCharacters(in: .whitespacesAndNewlines)
+            .isEmpty ?? true)
+
+        let isFormValid =
+        isNameFilled &&
+        isGenderFilled &&
+        isStageFilled &&
+        isDOBFilled
+
+        nextButton.isEnabled = isFormValid
+        nextButton.alpha = isFormValid ? 1.0 : 0.5
     }
 
     // MARK: - Stage Picker
@@ -74,6 +136,7 @@ class OnboardingInfoViewController: UIViewController, UITextFieldDelegate,
         let row = stagePickerView.selectedRow(inComponent: 0)
         stageLabelField.text = stageOptions[row]
         stageLabelField.resignFirstResponder()
+        updateNextButtonState()
     }
 
     // MARK: - Date Picker (Inline scroll wheel)
@@ -93,13 +156,18 @@ class OnboardingInfoViewController: UIViewController, UITextFieldDelegate,
     }
 
     @objc private func dateDoneTapped() {
-        let formatter        = DateFormatter()
-        formatter.dateStyle  = .long          // e.g. "March 25, 2026"
-        formatter.timeStyle  = .none
-        dateOfBirthTextField.text = formatter.string(from: datePicker.date)
-        dateOfBirthTextField.resignFirstResponder()
-    }
 
+        let formatter = DateFormatter()
+        formatter.dateStyle = .long
+        formatter.timeStyle = .none
+
+        dateOfBirthTextField.text =
+        formatter.string(from: datePicker.date)
+
+        dateOfBirthTextField.resignFirstResponder()
+
+        updateNextButtonState()
+    }
     // MARK: - UIPickerView DataSource
 
     func numberOfComponents(in pickerView: UIPickerView) -> Int { 1 }
