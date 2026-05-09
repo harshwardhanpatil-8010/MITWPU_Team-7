@@ -16,18 +16,20 @@
 
 
 import Foundation
+import UIKit
 
 struct TherapeuticGameModel {
     let title: String
     let description: String
     let iconName: String?
-    /// e.g. (completed: 1, total: 31). When non-nil, shows the badge instead of plain description.
+    let iconColor: UIColor
     let progress: (completed: Int, total: Int)?
 
-    init(title: String, description: String, iconName: String?, progress: (completed: Int, total: Int)? = nil) {
+    init(title: String, description: String, iconName: String?, iconColor: UIColor, progress: (completed: Int, total: Int)? = nil) {
         self.title = title
         self.description = description
         self.iconName = iconName
+        self.iconColor = iconColor
         self.progress = progress
     }
 }

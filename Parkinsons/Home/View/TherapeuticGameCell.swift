@@ -32,10 +32,8 @@ class TherapeuticGameCell: UICollectionViewCell {
         descriptionLabel.text = isTodayCompleted ? "Daily challenge completed!" : model.description
         completionLabel.text = completionText
         
-        if let imageName = model.iconName {
-            iconImageView.image = UIImage(named: imageName)
-            iconImageView.tintColor = nil
-        }
+        iconImageView.image = UIImage(systemName: model.iconName ?? "")
+        iconImageView.tintColor = model.iconColor
     }
 }
 

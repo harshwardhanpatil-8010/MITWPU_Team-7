@@ -47,8 +47,8 @@ class HomeViewController: UIViewController, UICollectionViewDelegate {
     ]
     
     var therapeuticGamesData: [TherapeuticGameModel] = [
-        TherapeuticGameModel(title: "Mimic the Emoji", description: "Complete your daily challenge!", iconName: "mimicTheEmoji"),
-        TherapeuticGameModel(title: "Match the Cards", description: "Complete your daily challenge!", iconName: "cards")
+        TherapeuticGameModel(title: "Mimic the Emoji", description: "Complete your daily challenge!", iconName: "face.smiling", iconColor: .systemOrange),
+        TherapeuticGameModel(title: "Match the Cards", description: "Complete your daily challenge!", iconName: "brain.fill", iconColor: .systemPurple)
     ]
     
     private let floatingBar: UIView = {
