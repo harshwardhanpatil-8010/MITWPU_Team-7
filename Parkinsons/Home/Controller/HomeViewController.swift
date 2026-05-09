@@ -10,17 +10,19 @@ enum Section: Int, CaseIterable {
 
 class HomeViewController: UIViewController, UICollectionViewDelegate {
     
-    @IBOutlet weak var NameOfUser: UILabel!
+//    @IBOutlet weak var NameOfUser: UILabel!
     private let todayViewModel = TodayMedicationViewModel()
     private var todayDoses: [TodayDoseItem] = []
 
 
-    @IBOutlet weak var NameLabel: UILabel!
+//    @IBOutlet weak var NameLabel: UILabel!
     
 
 
 
     @IBOutlet weak var mainCollectionView: UICollectionView!
+    
+    @IBOutlet weak var navigationBar: UINavigationBar!
     
     private var medicationLoggedObserver: NSObjectProtocol?
     private var userProfileUpdatedObserver: NSObjectProtocol?
@@ -62,18 +64,52 @@ class HomeViewController: UIViewController, UICollectionViewDelegate {
         view.translatesAutoresizingMaskIntoConstraints = false
         return view
     }()
-    
+    // MARK: - Navigation Title with Subtitle
+   
+    private func configureNavigationTitle() {
+        let sunImage = UIImage(systemName: "sun.max.fill",
+            withConfiguration: UIImage.SymbolConfiguration(pointSize: 30, weight: .bold))
+        let sunImageView = UIImageView(image: sunImage)
+        sunImageView.tintColor = .label
+        sunImageView.contentMode = .scaleAspectFit
+        sunImageView.translatesAutoresizingMaskIntoConstraints = false
+
+        let titleLabel = UILabel()
+        titleLabel.text = "Today"
+        titleLabel.font = UIFont.systemFont(ofSize: 34, weight: .bold)
+        titleLabel.translatesAutoresizingMaskIntoConstraints = false
+
+        let titleStack = UIStackView(arrangedSubviews: [sunImageView, titleLabel])
+        titleStack.axis = .horizontal
+        titleStack.alignment = .center
+        titleStack.spacing = 8
+        titleStack.translatesAutoresizingMaskIntoConstraints = false
+
+        view.addSubview(titleStack)
+
+        // Replace the constraints with:
+        NSLayoutConstraint.activate([
+            sunImageView.widthAnchor.constraint(equalToConstant: 32),
+            sunImageView.heightAnchor.constraint(equalToConstant: 32),
+            titleStack.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16),
+            titleStack.centerYAnchor.constraint(equalTo: navigationBar.centerYAnchor)
+        ])
+    }
     override func viewDidLoad() {
         super.viewDidLoad()
+//        navigationController?.navigationBar.prefersLargeTitles = true
+//        navigationItem.largeTitleDisplayMode = .always
+//        title = "Today"
+        configureNavigationTitle()
+        mainCollectionView.backgroundColor = .clear
+//
+//            let savedFull = UserDefaults.standard.string(forKey: "UserFullName") ?? "John"
+//            let firstName = savedFull.components(separatedBy: " ").first ?? savedFull
+//            self.NameOfUser.text = "Hello, \(firstName)!"
 
-        
-        // 1. Initial Load: Look for the FULL name, then split it
-            let savedFull = UserDefaults.standard.string(forKey: "UserFullName") ?? "John"
-            let firstName = savedFull.components(separatedBy: " ").first ?? savedFull
-            self.NameOfUser.text = "Hello, \(firstName)!"
 
+//        updateGreeting()
 
-        updateGreeting()
 
         registerCells()
         
@@ -97,7 +133,7 @@ class HomeViewController: UIViewController, UICollectionViewDelegate {
             object: nil,
             queue: .main
         ) { [weak self] _ in
-            self?.updateGreeting()
+//            self?.updateGreeting()
         }
     }
     
@@ -113,7 +149,7 @@ class HomeViewController: UIViewController, UICollectionViewDelegate {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
 
-        updateGreeting()
+//        updateGreeting()
 
         mainCollectionView.performBatchUpdates({
             mainCollectionView.reloadData()
@@ -130,21 +166,21 @@ class HomeViewController: UIViewController, UICollectionViewDelegate {
         present(nav, animated: true)
     }
 
-    private func updateGreeting() {
-        if let fullName = UserDefaults.standard.string(forKey: "userName")?
-            .trimmingCharacters(in: .whitespacesAndNewlines),
-           !fullName.isEmpty {
-            let firstName = fullName
-                .split(whereSeparator: { $0.isWhitespace })
-                .first
-                .map(String.init) ?? fullName
-            NameLabel.text = "Hello \(firstName)"
-            NameOfUser.text = "Hello \(firstName)"
-        } else {
-            NameLabel.text = "Hello John"
-            NameOfUser.text = "Hello John"
-        }
-    }
+//    private func updateGreeting() {
+//        if let fullName = UserDefaults.standard.string(forKey: "userName")?
+//            .trimmingCharacters(in: .whitespacesAndNewlines),
+//           !fullName.isEmpty {
+//            let firstName = fullName
+//                .split(whereSeparator: { $0.isWhitespace })
+//                .first
+//                .map(String.init) ?? fullName
+//            NameLabel.text = "Hello \(firstName)"
+//            NameOfUser.text = "Hello \(firstName)"
+//        } else {
+//            NameLabel.text = "Hello John"
+//            NameOfUser.text = "Hello John"
+//        }
+//    }
     private func loadRealMedicationData() {
         let context = PersistenceController.shared.viewContext
 
@@ -238,7 +274,7 @@ class HomeViewController: UIViewController, UICollectionViewDelegate {
                 let section = NSCollectionLayoutSection(group: group)
                 section.orthogonalScrollingBehavior = .continuous
                 section.interGroupSpacing = 1
-                section.contentInsets = NSDirectionalEdgeInsets(top: 8, leading: 8, bottom: 0, trailing: 8)
+               
                 
                 let calendarHeaderSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: .absolute(30))
                 let calendarHeader = NSCollectionLayoutBoundarySupplementaryItem(
@@ -248,6 +284,7 @@ class HomeViewController: UIViewController, UICollectionViewDelegate {
                 )
                 calendarHeader.pinToVisibleBounds = true
                 section.boundarySupplementaryItems = [calendarHeader]
+                section.contentInsets = NSDirectionalEdgeInsets(top: 0, leading: 8, bottom: 0, trailing: 8)
                 return section
                 
             case .medications:
@@ -260,7 +297,7 @@ class HomeViewController: UIViewController, UICollectionViewDelegate {
                 let section = NSCollectionLayoutSection(group: group)
                 section.orthogonalScrollingBehavior = .groupPaging
                 section.interGroupSpacing = 12
-                section.contentInsets = NSDirectionalEdgeInsets(top: 8, leading: 16, bottom: 24, trailing: 16)
+                section.contentInsets = NSDirectionalEdgeInsets(top: 10, leading: 16, bottom: 24, trailing: 16)
                 
                 let headerSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: .absolute(30))
                 let header = NSCollectionLayoutBoundarySupplementaryItem(
@@ -287,7 +324,7 @@ class HomeViewController: UIViewController, UICollectionViewDelegate {
                 let groupSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: .absolute(179))
                 let group = NSCollectionLayoutGroup.horizontal(layoutSize: groupSize, subitems: [item, item])
                 let section = NSCollectionLayoutSection(group: group)
-                section.contentInsets = NSDirectionalEdgeInsets(top: 8, leading: 16, bottom: 24, trailing: 16)
+                section.contentInsets = NSDirectionalEdgeInsets(top: 10, leading: 16, bottom: 24, trailing: 16)
                 
                 let headerSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: .absolute(30))
                 let header = NSCollectionLayoutBoundarySupplementaryItem(
@@ -305,7 +342,7 @@ class HomeViewController: UIViewController, UICollectionViewDelegate {
                 let groupSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: .absolute(80))
                 let group = NSCollectionLayoutGroup.horizontal(layoutSize: groupSize, subitems: [item, item])
                 let section = NSCollectionLayoutSection(group: group)
-                section.contentInsets = NSDirectionalEdgeInsets(top: 8, leading: 16, bottom: 24, trailing: 16)
+                section.contentInsets = NSDirectionalEdgeInsets(top: 10, leading: 16, bottom: 24, trailing: 16)
                 section.interGroupSpacing = 10
                 
                 let headerSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: .absolute(30))
@@ -544,7 +581,8 @@ extension HomeViewController: UICollectionViewDataSource {
             case .calendar:
                 let dateString = formattedDateString(for: selectedDate)
                 let isToday = Calendar.current.isDateInToday(selectedDate)
-                header.configure(title: isToday ? "Today, \(dateString)" : dateString, showInfoIcon: false)
+                header.configure(title: isToday ? "\(dateString)" : dateString, showInfoIcon: false)
+               
                 header.setTitleAlignment(.center)
                 header.setFont(size: 17, weight: .bold)
                 

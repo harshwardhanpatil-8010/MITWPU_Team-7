@@ -148,11 +148,9 @@ extension CalendarViewController: UICollectionViewDataSource, UICollectionViewDe
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         let dayData = sections[indexPath.section].days[indexPath.item]
         
-        // Guard against dummy cells AND future dates
         let isFuture = dayData.date > Date()
         if dayData.isDummy || isFuture { return }
 
-        // Existing selection logic...
         for s in 0..<sections.count {
             for d in 0..<sections[s].days.count {
                 sections[s].days[d].isSelected = false
