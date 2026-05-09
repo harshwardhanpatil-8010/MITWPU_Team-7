@@ -1,25 +1,24 @@
 import UIKit
 
 class profileViewController: UIViewController, UITextFieldDelegate {
-
-    @IBOutlet weak var StageInfo: UITextField!
+    
+    //    @IBOutlet weak var StageInfo: UITextField!
     @IBOutlet weak var backButton: UIBarButtonItem!
     @IBOutlet weak var editButton: UIBarButtonItem!
     @IBOutlet weak var logoBackground: UIView!
     @IBOutlet weak var logoLabel: UILabel!
     @IBOutlet weak var nameLabel: UILabel!
-    @IBOutlet weak var emergencyNoLabel: UILabel!
     @IBOutlet weak var dateOfBirthLabel: UILabel!
     @IBOutlet weak var sexLabel: UILabel!
     @IBOutlet weak var nameTextField: UITextField!
-    @IBOutlet weak var emergencyNoTextField: UITextField!
     @IBOutlet weak var dateOfBirthSelector: UIDatePicker!
     @IBOutlet weak var sexsSelector: UIButton!
     
+    @IBOutlet weak var stageSelector: UIButton!
+    
     @IBOutlet weak var stackViewBackground: UIStackView!
     
-    @IBOutlet weak var symptomButton: UIButton!
-    @IBOutlet weak var medicationButton: UIButton!
+    @IBOutlet weak var uiViewProfile: UIView!
     var isEditingMode: Bool = false
     
     var selectedSex: String = "Male" {
@@ -33,92 +32,66 @@ class profileViewController: UIViewController, UITextFieldDelegate {
             }
         }
     }
-
+    var selectedStage: String = "Not Known" {
+        didSet {
+            stageSelector.setTitle(selectedStage, for: .normal)
+            
+            if #available(iOS 15.0, *) {
+                var config = stageSelector.configuration
+                config?.title = selectedStage
+                stageSelector.configuration = config
+            }
+        }
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-
+        
         loadUserData()
         setupInitialUI()
         configureTextFields()
         configureKeyboardDismissGesture()
+        uiViewProfile.applyCardStyle()
     }
-
+    
     private func configureTextFields() {
         nameTextField.delegate = self
-        emergencyNoTextField.delegate = self
-        StageInfo.delegate = self
         nameTextField.returnKeyType = .done
-        emergencyNoTextField.returnKeyType = .done
-        StageInfo.returnKeyType = .done
     }
-
+    
     private func configureKeyboardDismissGesture() {
         let tapGesture = UITapGestureRecognizer(target: self, action: #selector(dismissKeyboard))
         tapGesture.cancelsTouchesInView = false
         view.addGestureRecognizer(tapGesture)
     }
-
+    
     @objc private func dismissKeyboard() {
         view.endEditing(true)
     }
-
+    
     func loadUserData() {
-
+        
         let defaults = UserDefaults.standard
-
+        
         let fullName = defaults.string(forKey: "userName") ?? ""
         let firstName = fullName
             .split(whereSeparator: { $0.isWhitespace })
             .first
             .map(String.init) ?? "User"
-
+        
         nameTextField.text = fullName
         logoLabel.text = String(firstName.prefix(1))
-
-        let emergency = defaults.string(forKey: "emergencyContact") ?? ""
-        emergencyNoTextField.text = emergency
-
+        
+        
         let gender = defaults.string(forKey: "userGender") ?? "Male"
         selectedSex = gender
-
-        let savedStage = defaults.integer(forKey: "diseaseStage")
-        StageInfo.text = savedStage > 0 ? "Stage \(savedStage)" : "Not Set"
-
+        
+        let savedStage = defaults.string(forKey: "diseaseStage") ?? "Not Known"
+        selectedStage = savedStage
+        
         if let dob = defaults.object(forKey: "userDOB") as? Date {
             dateOfBirthSelector.date = dob
         }
-    }
-
-
-    @IBAction func pastSymptomRecordsNavigation(_ sender: Any) {
-        
-        let storyboard = UIStoryboard(name: "Symptom", bundle: nil)
-        
-        if let symptomVC = storyboard.instantiateViewController(withIdentifier: "symptom") as? SymptomViewController {
-            
-            symptomVC.modalPresentationStyle = .pageSheet
-            self.present(symptomVC, animated: true, completion: nil)
-        }
-    }
-
-    @IBAction func medicationNavigation(_ sender: Any) {
-        let storyboard = UIStoryboard(name: "Medication", bundle: nil)
-        
-        if let medicationVC = storyboard.instantiateViewController(withIdentifier: "MainMedicationVC") as? MainMedicationViewController {
-            
-            // 1. Tell the destination it's coming from Profile
-            medicationVC.isPresentedFromProfile = true
-            
-            // 2. Wrap in Navigation Controller to enable the "X" button
-            let navController = UINavigationController(rootViewController: medicationVC)
-            navController.modalPresentationStyle = .pageSheet
-            
-            self.present(navController, animated: true, completion: nil)
-        }
-    }
-    override func viewDidLayoutSubviews() {
-        super.viewDidLayoutSubviews()
-        logoBackground.layer.cornerRadius = logoBackground.frame.size.height / 2
     }
     
     private func setupInitialUI() {
@@ -130,56 +103,50 @@ class profileViewController: UIViewController, UITextFieldDelegate {
         
         isEditingMode = false
         editButton.title = "Edit"
-        emergencyNoTextField.borderStyle = .none
-
+        
         updateUI(forEditing: false)
     }
     @IBAction func editButtonTapped(_ sender: UIBarButtonItem) {
         isEditingMode.toggle()
-
+        
         if isEditingMode {
             let config = UIImage.SymbolConfiguration(weight: .bold)
             editButton.image = UIImage(systemName: "checkmark", withConfiguration: config)
             editButton.title = nil
             editButton.style = .prominent
-
+            
             updateUI(forEditing: true)
-
+            
         } else {
-
+            
             saveUserData()
-
+            
             editButton.image = nil
             editButton.title = "Edit"
             editButton.style = .plain
-
-
+            
+            
             updateUI(forEditing: false)
-
+            
             loadUserData()
-
+            
         }
     }
-
+    
     func saveUserData() {
-
+        
         let defaults = UserDefaults.standard
-
+        
         let name = nameTextField.text?.trimmingCharacters(in: .whitespacesAndNewlines) ?? ""
-        let emergency = emergencyNoTextField.text?.trimmingCharacters(in: .whitespacesAndNewlines) ?? ""
-
+        
         defaults.set(name, forKey: "userName")
-        defaults.set(emergency, forKey: "emergencyContact")
         defaults.set(selectedSex, forKey: "userGender")
         defaults.set(dateOfBirthSelector.date, forKey: "userDOB")
-        if let stageText = StageInfo.text?.trimmingCharacters(in: .whitespacesAndNewlines),
-           let stageNumber = Int(stageText.components(separatedBy: " ").last ?? "") {
-            defaults.set(stageNumber, forKey: "diseaseStage")
-        }
+        defaults.set(selectedStage, forKey: "diseaseStage")
         NotificationCenter.default.post(name: NSNotification.Name("UserProfileUpdated"), object: nil)
     }
-
-
+    
+    
     @IBAction func backButtonTapped(_ sender: UIBarButtonItem) {
         if isEditingMode {
             let alert = UIAlertController(
@@ -198,14 +165,13 @@ class profileViewController: UIViewController, UITextFieldDelegate {
             self.dismiss(animated: true)
         }
     }
-
+    
     func updateUI(forEditing isEditing: Bool) {
         let editableFields: [UIView] = [
             nameTextField,
-            emergencyNoTextField,
             dateOfBirthSelector,
             sexsSelector,
-            StageInfo
+            stageSelector
         ]
         
         for field in editableFields {
@@ -222,8 +188,8 @@ class profileViewController: UIViewController, UITextFieldDelegate {
                 }
             }
             if let picker = field as? UIDatePicker {
-                        picker.tintColor = isEditing ? .systemBlue : .label
-                    }
+                picker.tintColor = isEditing ? .systemBlue : .label
+            }
             
             if let button = field as? UIButton {
                 button.setTitleColor(isEditing ? .systemBlue : .label, for: .normal)
@@ -234,12 +200,13 @@ class profileViewController: UIViewController, UITextFieldDelegate {
             view.endEditing(true)
         }
     }
-
+    
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         textField.resignFirstResponder()
         return true
     }
-
+    
+    
     
     @IBAction func sexSelectorTapped(_ sender: UIButton) {
         guard isEditingMode else { return }
@@ -263,4 +230,29 @@ class profileViewController: UIViewController, UITextFieldDelegate {
         
         present(actionSheet, animated: true)
     }
+    
+    @IBAction func stageButtonTapped(_ sender: Any) {
+        guard isEditingMode else { return }
+        
+        let actionSheet = UIAlertController(title: "Select Stage", message: nil, preferredStyle: .actionSheet)
+        
+        let stages = ["Stage 1", "Stage 2", "Stage 3", "Stage 4", "Stage 5", "Not Known"]
+        
+        for stage in stages {
+            let action = UIAlertAction(title: stage, style: .default) { [weak self] _ in
+                self?.selectedStage = stage
+            }
+            actionSheet.addAction(action)
+        }
+        
+        actionSheet.addAction(UIAlertAction(title: "Cancel", style: .cancel))
+        
+        if let popoverController = actionSheet.popoverPresentationController {
+            popoverController.sourceView = sender as? UIView
+            popoverController.sourceRect = (sender as AnyObject).bounds
+        }
+        
+        present(actionSheet, animated: true)
+    }
+    
 }
