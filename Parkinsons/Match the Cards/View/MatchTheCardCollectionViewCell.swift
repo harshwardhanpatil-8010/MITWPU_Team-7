@@ -72,7 +72,7 @@ class MatchTheCardCollectionViewCell: UICollectionViewCell {
     private func updateBorder(isFlipped: Bool) {
         if isFlipped {
             contentContainer.layer.borderWidth = 0.5
-            contentContainer.layer.borderColor = UIColor.orange.cgColor
+            contentContainer.layer.borderColor = UIColor.systemPurple.cgColor
         } else {
             contentContainer.layer.borderWidth = 0.5
             contentContainer.layer.borderColor = UIColor.systemGray5.cgColor

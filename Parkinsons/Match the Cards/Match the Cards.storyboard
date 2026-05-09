@@ -12,19 +12,27 @@
         <!--Match the Cards-->
         <scene sceneID="PI8-Ar-JOi">
             <objects>
-                <viewController storyboardIdentifier="matchTheCardsLandingPage" useStoryboardIdentifierAsRestorationIdentifier="YES" id="JqZ-U1-ZY8" customClass="LevelSelectionViewController" customModule="Parkinsons" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="matchTheCardsLandingPage" useStoryboardIdentifierAsRestorationIdentifier="YES" id="JqZ-U1-ZY8" customClass="LevelSelectionViewController" customModule="ParkEase" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="5Dl-Ag-ztt">
                         <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
+                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="brain.fill" catalog="system" translatesAutoresizingMaskIntoConstraints="NO" id="Jln-MY-x4G">
+                                <rect key="frame" x="106" y="123.00000000000001" width="180" height="180.33333333333337"/>
+                                <color key="tintColor" systemColor="systemPurpleColor"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="180" id="1M8-gd-nVL"/>
+                                    <constraint firstAttribute="height" constant="180" id="MOx-9l-JPD"/>
+                                </constraints>
+                            </imageView>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Daily Challenge" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="bFM-Tb-Pm4">
-                                <rect key="frame" x="16" y="158" width="361" height="23"/>
+                                <rect key="frame" x="16" y="363" width="361" height="23"/>
                                 <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="19"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="ehY-tb-4fN">
-                                <rect key="frame" x="0.0" y="191" width="393" height="551"/>
+                                <rect key="frame" x="0.0" y="389" width="393" height="353"/>
                                 <subviews>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="January 2026" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="bWV-1L-duc">
                                         <rect key="frame" x="16" y="0.0" width="361" height="20.333333333333332"/>
@@ -33,7 +41,7 @@
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <stackView opaque="NO" contentMode="scaleToFill" distribution="equalCentering" spacing="13" baselineRelativeArrangement="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Mec-uH-u2K">
-                                        <rect key="frame" x="16" y="27.333333333333343" width="361" height="20.333333333333329"/>
+                                        <rect key="frame" x="16" y="27.333333333333314" width="361" height="20.333333333333329"/>
                                         <subviews>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Mon" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="mPu-DQ-Sa2">
                                                 <rect key="frame" x="0.0" y="0.0" width="33.666666666666664" height="20.333333333333332"/>
@@ -80,7 +88,7 @@
                                         </subviews>
                                     </stackView>
                                     <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="G6S-L3-cyg">
-                                        <rect key="frame" x="0.0" y="51" width="393" height="460"/>
+                                        <rect key="frame" x="0.0" y="51" width="393" height="262"/>
                                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                                         <collectionViewFlowLayout key="collectionViewLayout" automaticEstimatedItemSize="YES" minimumLineSpacing="0.0" minimumInteritemSpacing="0.0" id="01K-fL-Ef5">
                                             <size key="itemSize" width="128" height="128"/>
@@ -89,7 +97,7 @@
                                             <inset key="sectionInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
                                         </collectionViewFlowLayout>
                                         <cells>
-                                            <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="DateCell" id="6Nm-KV-UlB" customClass="DateCell" customModule="Parkinsons" customModuleProvider="target">
+                                            <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="DateCell" id="6Nm-KV-UlB" customClass="DateCell" customModule="ParkEase" customModuleProvider="target">
                                                 <rect key="frame" x="0.0" y="0.0" width="127.99999999999997" height="128"/>
                                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                                 <collectionViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" id="Q65-6l-kjJ">
@@ -183,15 +191,18 @@
                         <viewLayoutGuide key="safeArea" id="9oP-sP-g9N"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                         <constraints>
+                            <constraint firstItem="Jln-MY-x4G" firstAttribute="top" secondItem="9oP-sP-g9N" secondAttribute="top" constant="5" id="4G7-XB-AMQ"/>
                             <constraint firstItem="9oP-sP-g9N" firstAttribute="bottom" secondItem="ehY-tb-4fN" secondAttribute="bottom" constant="42" id="4uh-gu-d70"/>
-                            <constraint firstItem="bFM-Tb-Pm4" firstAttribute="top" secondItem="9oP-sP-g9N" secondAttribute="top" constant="40" id="5Dw-YU-ugU"/>
                             <constraint firstItem="9oP-sP-g9N" firstAttribute="trailing" secondItem="bFM-Tb-Pm4" secondAttribute="trailing" constant="16" id="8HC-0h-eZR"/>
                             <constraint firstItem="ehY-tb-4fN" firstAttribute="trailing" secondItem="9oP-sP-g9N" secondAttribute="trailing" id="BAI-0K-5Hg"/>
+                            <constraint firstItem="Jln-MY-x4G" firstAttribute="leading" secondItem="9oP-sP-g9N" secondAttribute="leading" constant="106" id="BFc-PX-3UL"/>
+                            <constraint firstItem="bFM-Tb-Pm4" firstAttribute="top" secondItem="Jln-MY-x4G" secondAttribute="bottom" constant="60" id="C41-Sf-NWJ"/>
                             <constraint firstItem="bFM-Tb-Pm4" firstAttribute="leading" secondItem="9oP-sP-g9N" secondAttribute="leading" constant="16" id="Jkh-Mf-Xyp"/>
                             <constraint firstItem="9oP-sP-g9N" firstAttribute="bottom" secondItem="rR8-W1-hW2" secondAttribute="bottom" constant="16" id="Jor-2o-FtJ"/>
+                            <constraint firstItem="9oP-sP-g9N" firstAttribute="trailing" secondItem="Jln-MY-x4G" secondAttribute="trailing" constant="107" id="ccp-hr-qTt"/>
                             <constraint firstItem="rR8-W1-hW2" firstAttribute="centerX" secondItem="5Dl-Ag-ztt" secondAttribute="centerX" id="kAD-Uz-A5I"/>
                             <constraint firstItem="ehY-tb-4fN" firstAttribute="leading" secondItem="9oP-sP-g9N" secondAttribute="leading" id="niW-f3-agH"/>
-                            <constraint firstItem="ehY-tb-4fN" firstAttribute="top" secondItem="bFM-Tb-Pm4" secondAttribute="bottom" constant="10" id="thV-nE-AmA"/>
+                            <constraint firstItem="ehY-tb-4fN" firstAttribute="top" secondItem="bFM-Tb-Pm4" secondAttribute="bottom" constant="3" id="thV-nE-AmA"/>
                         </constraints>
                     </view>
                     <navigationItem key="navigationItem" title="Match the Cards" id="ZRD-lo-8DI">
@@ -215,7 +226,7 @@
         <!--Info Match The Cards View Controller-->
         <scene sceneID="OzG-1b-fjQ">
             <objects>
-                <viewController id="nXu-fE-t2i" customClass="InfoMatchTheCardsViewController" customModule="Parkinsons" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController id="nXu-fE-t2i" customClass="InfoMatchTheCardsViewController" customModule="ParkEase" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="CIW-uW-C5v">
                         <rect key="frame" x="0.0" y="0.0" width="393" height="793"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -307,7 +318,7 @@
         <!--Game View Controller-->
         <scene sceneID="WfP-G2-Dat">
             <objects>
-                <viewController storyboardIdentifier="GameViewController" id="cR1-vI-89a" customClass="GameViewController" customModule="Parkinsons" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="GameViewController" id="cR1-vI-89a" customClass="GameViewController" customModule="ParkEase" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="ZPa-rp-8Vz">
                         <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -328,7 +339,7 @@
                                     <inset key="sectionInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
                                 </collectionViewFlowLayout>
                                 <cells>
-                                    <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="CardCell" id="nbq-z8-vsD" customClass="MatchTheCardCollectionViewCell" customModule="Parkinsons" customModuleProvider="target">
+                                    <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="CardCell" id="nbq-z8-vsD" customClass="MatchTheCardCollectionViewCell" customModule="ParkEase" customModuleProvider="target">
                                         <rect key="frame" x="56.666666666666664" y="0.0" width="248" height="186"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <collectionViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" id="ETV-Sd-P4R">
@@ -384,7 +395,7 @@
         <!--Success View Controller-->
         <scene sceneID="SPz-Im-EKC">
             <objects>
-                <viewController storyboardIdentifier="SuccessViewController" id="F4j-j0-rPB" customClass="SuccessViewController" customModule="Parkinsons" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="SuccessViewController" id="F4j-j0-rPB" customClass="SuccessViewController" customModule="ParkEase" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="CIa-cA-WP3">
                         <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -457,6 +468,7 @@
         </scene>
     </scenes>
     <resources>
+        <image name="brain.fill" catalog="system" width="128" height="107"/>
         <image name="checkmark.circle.fill" catalog="system" width="128" height="123"/>
         <image name="chevron.left" catalog="system" width="97" height="128"/>
         <image name="lightbulb.fill" catalog="system" width="92" height="128"/>
@@ -464,13 +476,16 @@
         <image name="xmark" catalog="system" width="128" height="113"/>
         <image name="🎊" width="150" height="150"/>
         <systemColor name="separatorColor">
-            <color red="0.23529411764705882" green="0.23529411764705882" blue="0.2627450980392157" alpha="0.12" colorSpace="custom" customColorSpace="sRGB"/>
+            <color red="0.23529411759999999" green="0.23529411759999999" blue="0.26274509800000001" alpha="0.28999999999999998" colorSpace="custom" customColorSpace="sRGB"/>
         </systemColor>
         <systemColor name="systemBackgroundColor">
             <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
         </systemColor>
         <systemColor name="systemGrayColor">
-            <color red="0.55686274509803924" green="0.55686274509803924" blue="0.57647058823529407" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <color red="0.5568627451" green="0.5568627451" blue="0.57647058819999997" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </systemColor>
+        <systemColor name="systemPurpleColor">
+            <color red="0.68627450980000004" green="0.32156862749999998" blue="0.87058823529999996" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </systemColor>
     </resources>
 </document>

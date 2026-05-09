@@ -12,7 +12,7 @@
         <!--Mimic the Emoji-->
         <scene sceneID="w4R-e2-MAU">
             <objects>
-                <viewController storyboardIdentifier="EmojiLandingScreenID" title="Mimic the Emoji" useStoryboardIdentifierAsRestorationIdentifier="YES" id="AEg-aT-B4j" customClass="EmojiLandingScreen" customModule="Parkinsons" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="EmojiLandingScreenID" title="Mimic the Emoji" useStoryboardIdentifierAsRestorationIdentifier="YES" id="AEg-aT-B4j" customClass="EmojiLandingScreen" customModule="ParkEase" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="40a-JY-YdK">
                         <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -30,8 +30,9 @@
                                     </navigationItem>
                                 </items>
                             </navigationBar>
-                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Emoji Landing" translatesAutoresizingMaskIntoConstraints="NO" id="7aX-Yq-Jzs">
-                                <rect key="frame" x="106.66666666666669" y="123" width="180" height="140"/>
+                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="smiley" catalog="system" translatesAutoresizingMaskIntoConstraints="NO" id="7aX-Yq-Jzs">
+                                <rect key="frame" x="106.66666666666669" y="123.66666666666667" width="180" height="138.66666666666669"/>
+                                <color key="tintColor" systemColor="systemOrangeColor"/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="180" id="9gu-oy-vWe"/>
                                     <constraint firstAttribute="height" constant="140" id="KIN-xM-EzW"/>
@@ -122,7 +123,7 @@
                                             <inset key="sectionInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
                                         </collectionViewFlowLayout>
                                         <cells>
-                                            <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="DateCell" id="7n7-1Z-khN" customClass="DateCell" customModule="Parkinsons" customModuleProvider="target">
+                                            <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="DateCell" id="7n7-1Z-khN" customClass="DateCell" customModule="ParkEase" customModuleProvider="target">
                                                 <rect key="frame" x="0.0" y="0.0" width="127.99999999999997" height="128"/>
                                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                                 <collectionViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" id="EBs-pO-oHY">
@@ -201,7 +202,7 @@
         <!--Emoji Game View Controller-->
         <scene sceneID="L1D-vc-qa5">
             <objects>
-                <viewController storyboardIdentifier="EmojiGameViewController" useStoryboardIdentifierAsRestorationIdentifier="YES" id="mD5-tf-3Ic" customClass="EmojiGameViewController" customModule="Parkinsons" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="EmojiGameViewController" useStoryboardIdentifierAsRestorationIdentifier="YES" id="mD5-tf-3Ic" customClass="EmojiGameViewController" customModule="ParkEase" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="PVl-rL-XER">
                         <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -312,7 +313,7 @@
         <!--Result Mimic The Emoji-->
         <scene sceneID="Ttr-CQ-R0h">
             <objects>
-                <viewController storyboardIdentifier="resultMimicTheEmoji" useStoryboardIdentifierAsRestorationIdentifier="YES" id="zFe-Fq-c1L" customClass="resultMimicTheEmoji" customModule="Parkinsons" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="resultMimicTheEmoji" useStoryboardIdentifierAsRestorationIdentifier="YES" id="zFe-Fq-c1L" customClass="resultMimicTheEmoji" customModule="ParkEase" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="HrB-cI-GHf">
                         <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -484,7 +485,7 @@
         <!--Info Mimic The Emoji View Controller-->
         <scene sceneID="hSF-0V-XdX">
             <objects>
-                <viewController id="D9s-Va-0Dw" customClass="InfoMimicTheEmojiViewController" customModule="Parkinsons" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController id="D9s-Va-0Dw" customClass="InfoMimicTheEmojiViewController" customModule="ParkEase" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="ORw-h4-3Y1">
                         <rect key="frame" x="0.0" y="0.0" width="393" height="793"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -575,9 +576,9 @@
         </scene>
     </scenes>
     <resources>
-        <image name="Emoji Landing" width="185" height="220"/>
         <image name="checkmark.circle.fill" catalog="system" width="128" height="123"/>
         <image name="questionmark.circle" catalog="system" width="128" height="123"/>
+        <image name="smiley" catalog="system" width="128" height="123"/>
         <image name="xmark" catalog="system" width="128" height="113"/>
         <image name="🎊" width="150" height="150"/>
         <systemColor name="separatorColor">
