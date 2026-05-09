@@ -65,7 +65,6 @@ class HomeViewController: UIViewController, UICollectionViewDelegate {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-
         
         // 1. Initial Load: Look for the FULL name, then split it
             let savedFull = UserDefaults.standard.string(forKey: "UserFullName") ?? "John"
@@ -351,6 +350,7 @@ class HomeViewController: UIViewController, UICollectionViewDelegate {
         default: break
         }
     }
+    
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         let sectionType = homeSections[indexPath.section]

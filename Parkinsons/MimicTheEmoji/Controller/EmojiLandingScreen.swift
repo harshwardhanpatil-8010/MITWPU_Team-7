@@ -44,12 +44,18 @@ class EmojiLandingScreen: UIViewController, UICollectionViewDataSource, UICollec
 
         setupMonth()
         updateCompletionCount()
+        let gradient = navGradientOverlay
+        gradient.frame = CGRect(x: 0, y: 0, width: view.bounds.width, height: 140)
+            view.layer.addSublayer(gradient)
         configureLayout()
     }
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         tabBarController?.tabBar.isHidden = true
+        let gradient = navGradientOverlay
+        gradient.frame = CGRect(x: 0, y: 0, width: view.bounds.width, height: 140)
+            view.layer.addSublayer(gradient)
     }
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
@@ -72,18 +78,6 @@ class EmojiLandingScreen: UIViewController, UICollectionViewDataSource, UICollec
             print("Error: Could not find InfoMimicTheEmojiViewController. Check Storyboard ID.")
         }
     }
-//    @IBAction func infoButtonTapped(_ sender: UIBarButtonItem) {
-//        print("Info button was tapped!") // If this doesn't print, the Storyboard connection is broken.
-//        
-//        let storyboard = UIStoryboard(name: "MimicTheEmoji", bundle: nil)
-//        
-//        if let infoVC = storyboard.instantiateViewController(withIdentifier: "InfoMimicTheEmojiViewController") as? InfoMimicTheEmojiViewController {
-//            infoVC.modalPresentationStyle = .pageSheet
-//            self.present(infoVC, animated: true, completion: nil)
-//        } else {
-//            print("Could not find InfoMimicTheEmojiViewController in Storyboard")
-//        }
-//    }
     private func updateCompletionCount() {
         let completedCount = (0..<daysInMonth).filter { offset in
             guard let date = calendar.date(byAdding: .day, value: offset, to: firstDayOfMonth) else { return false }
@@ -116,6 +110,16 @@ class EmojiLandingScreen: UIViewController, UICollectionViewDataSource, UICollec
 
         selectedDate = today
         collectionView.reloadData()
+    }
+    private var navGradientOverlay: CAGradientLayer {
+        let gradient = CAGradientLayer()
+        gradient.colors = [
+            UIColor(hex: "FF9500").withAlphaComponent(0.30).cgColor,
+            UIColor(hex: "FF9500").withAlphaComponent(0.0).cgColor
+        ]
+        gradient.startPoint = CGPoint(x: 0.5, y: 0)
+        gradient.endPoint   = CGPoint(x: 0.5, y: 1)
+        return gradient
     }
 
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
