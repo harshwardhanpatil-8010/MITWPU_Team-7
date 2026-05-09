@@ -47,8 +47,8 @@ class HomeViewController: UIViewController, UICollectionViewDelegate {
     ]
     
     var therapeuticGamesData: [TherapeuticGameModel] = [
-        TherapeuticGameModel(title: "Mimic the Emoji", description: "Complete your daily challenge!", iconName: "mimicTheEmoji"),
-        TherapeuticGameModel(title: "Match the Cards", description: "Complete your daily challenge!", iconName: "cards")
+        TherapeuticGameModel(title: "Mimic the Emoji", description: "Complete your daily challenge!", iconName: "face.smiling", iconColor: .systemOrange),
+           TherapeuticGameModel(title: "Match the Cards", description: "Complete your daily challenge!", iconName: "brain.fill", iconColor: .systemPurple)
     ]
     
     private let floatingBar: UIView = {
@@ -284,7 +284,7 @@ class HomeViewController: UIViewController, UICollectionViewDelegate {
                 let itemSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(0.5), heightDimension: .fractionalHeight(1.0))
                 let item = NSCollectionLayoutItem(layoutSize: itemSize)
                 item.contentInsets = NSDirectionalEdgeInsets(top: 0, leading: 2, bottom: 0, trailing: 4)
-                let groupSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: .absolute(179))
+                let groupSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: .absolute(189))
                 let group = NSCollectionLayoutGroup.horizontal(layoutSize: groupSize, subitems: [item, item])
                 let section = NSCollectionLayoutSection(group: group)
                 section.contentInsets = NSDirectionalEdgeInsets(top: 8, leading: 16, bottom: 24, trailing: 16)
