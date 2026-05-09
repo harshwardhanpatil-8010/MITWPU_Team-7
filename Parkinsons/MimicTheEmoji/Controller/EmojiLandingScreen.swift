@@ -149,7 +149,8 @@ class EmojiLandingScreen: UIViewController, UICollectionViewDataSource, UICollec
             isSelected: isSelected,
             isCompleted: isCompleted,
             showTodayOutline: isToday && !isSelected,
-            enabled: !isFuture
+            enabled: !isFuture,
+            themeColor: UIColor(hex: "FF9500")
         )
         return cell
     }

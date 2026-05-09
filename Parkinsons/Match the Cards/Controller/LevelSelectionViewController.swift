@@ -135,7 +135,8 @@ UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
             isSelected: isSelected,
             isCompleted: isCompleted,
             showTodayOutline: showTodayOutline,
-            enabled: !isFuture
+            enabled: !isFuture,
+            themeColor: UIColor(hex: "BF5AF2")
         )
         return cell
     }

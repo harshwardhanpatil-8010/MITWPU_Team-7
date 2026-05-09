@@ -55,28 +55,27 @@ class DateCell: UICollectionViewCell {
                    isSelected: Bool,
                    isCompleted: Bool,
                    showTodayOutline: Bool,
-                   enabled: Bool) {
+                   enabled: Bool,
+                   themeColor: UIColor) {
 
         resetAppearance()
         dateLabel.text = "\(day)"
         isUserInteractionEnabled = enabled
 
         if isCompleted {
-            labelBackgroundView.backgroundColor = UIColor(hex: "#BF5AF2")
+            labelBackgroundView.backgroundColor = themeColor
             dateLabel.textColor = .white
         } else {
             dateLabel.textColor = enabled ? .black : .systemGray4
         }
 
         if isToday && !isSelected && !isCompleted {
-            labelBackgroundView.layer.borderWidth = 2
-            labelBackgroundView.layer.borderColor = UIColor.purple.cgColor
-            dateLabel.textColor = .purple
+            dateLabel.textColor = themeColor
         }
 
         if isSelected {
             labelBackgroundView.layer.borderWidth = 2
-            labelBackgroundView.layer.borderColor = UIColor.purple.cgColor
+            labelBackgroundView.layer.borderColor = themeColor.cgColor
             if !isCompleted {
                 dateLabel.textColor = .black
             }
