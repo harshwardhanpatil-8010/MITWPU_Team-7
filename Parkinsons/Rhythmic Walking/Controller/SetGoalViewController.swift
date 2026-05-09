@@ -106,6 +106,9 @@ class SetGoalViewController: UIViewController,
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        let gradient = navGradientOverlay
+        gradient.frame = CGRect(x: 0, y: 0, width: view.bounds.width, height: 140)
+        view.layer.addSublayer(gradient)
         DurationPicker.dataSource = self
         DurationPicker.delegate   = self
         DurationPicker.selectRow(10, inComponent: 1, animated: false)
@@ -126,6 +129,9 @@ class SetGoalViewController: UIViewController,
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         tabBarController?.tabBar.isHidden = true
+        let gradient = navGradientOverlay
+        gradient.frame = CGRect(x: 0, y: 0, width: view.bounds.width, height: 140)
+        view.layer.addSublayer(gradient)
         sessionTableView.reloadData()
         checkGoalStatus()
         refreshListVisibility()
@@ -157,6 +163,17 @@ class SetGoalViewController: UIViewController,
             startButton.setTitle("Start", for: .normal)
         }
     }
+    private var navGradientOverlay: CAGradientLayer {
+        let gradient = CAGradientLayer()
+        gradient.colors = [
+            UIColor(hex: "90AF81").withAlphaComponent(0.35).cgColor,
+            UIColor(hex: "90AF81").withAlphaComponent(0.0).cgColor
+        ]
+        gradient.startPoint = CGPoint(x: 0.5, y: 0)
+        gradient.endPoint   = CGPoint(x: 0.5, y: 1)
+        return gradient
+    }
+    
 
     func updateStartButtonState() {
         let h = dataForColumn1[DurationPicker.selectedRow(inComponent: 0)]

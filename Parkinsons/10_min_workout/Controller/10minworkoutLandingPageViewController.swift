@@ -63,6 +63,9 @@ class _0minworkoutLandingPageViewController: UIViewController, UICollectionViewD
         setupProgressView()
         setupCollectionView()
         startButtonOutlet.isHidden = shouldHideStartButton
+        let gradient = navGradientOverlay
+        gradient.frame = CGRect(x: 0, y: 0, width: view.bounds.width, height: 140)
+        view.layer.addSublayer(gradient)
     }
 
     override func viewWillAppear(_ animated: Bool) {
@@ -372,6 +375,16 @@ class _0minworkoutLandingPageViewController: UIViewController, UICollectionViewD
         alert.addAction(seatedAction)
 
         present(alert, animated: true)
+    }
+    private var navGradientOverlay: CAGradientLayer {
+        let gradient = CAGradientLayer()
+        gradient.colors = [
+            UIColor(hex: "0088FF").withAlphaComponent(0.35).cgColor,
+            UIColor(hex: "0088FF").withAlphaComponent(0.0).cgColor
+        ]
+        gradient.startPoint = CGPoint(x: 0.5, y: 0)
+        gradient.endPoint   = CGPoint(x: 0.5, y: 1)
+        return gradient
     }
 }
 
