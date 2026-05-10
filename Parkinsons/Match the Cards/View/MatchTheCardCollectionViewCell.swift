@@ -100,16 +100,26 @@ class MatchTheCardCollectionViewCell: UICollectionViewCell {
         alpha = 0.15
         isUserInteractionEnabled = false
     }
-    func revealForHint() {
+    func animateHint() {
+        let shake = CAKeyframeAnimation(keyPath: "transform.rotation.z")
+        shake.timingFunction = CAMediaTimingFunction(name: .linear)
+        shake.duration = 0.5
+        shake.values = [-0.08, 0.08, -0.05, 0.05, -0.02, 0.02, 0.0]
+        self.contentContainer.layer.add(shake, forKey: "shake")
+        
+        let originalBorderColor = self.contentContainer.layer.borderColor
+        let originalBorderWidth = self.contentContainer.layer.borderWidth
+        
         UIView.animate(withDuration: 0.25, animations: {
-            self.contentContainer.transform =
-                CGAffineTransform(scaleX: 0.92, y: 0.92)
-            self.alpha = 0.5
+            self.contentContainer.layer.borderColor = UIColor.systemYellow.cgColor
+            self.contentContainer.layer.borderWidth = 3.0
+            self.contentContainer.transform = CGAffineTransform(scaleX: 1.05, y: 1.05)
         }) { _ in
-            UIView.animate(withDuration: 0.25) {
+            UIView.animate(withDuration: 0.25, animations: {
+                self.contentContainer.layer.borderColor = originalBorderColor
+                self.contentContainer.layer.borderWidth = originalBorderWidth
                 self.contentContainer.transform = .identity
-                self.alpha = 1.0
-            }
+            })
         }
     }
 }

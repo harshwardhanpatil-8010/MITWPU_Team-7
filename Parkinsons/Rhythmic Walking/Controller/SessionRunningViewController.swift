@@ -50,6 +50,7 @@ class SessionRunningViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        self.isModalInPresentation = true
         selectedBPM = PaceConfig.bpm(for: selectedPace)
 
         setupProgressView()
@@ -153,7 +154,7 @@ class SessionRunningViewController: UIViewController {
         guard let timerModel = timerModel else { return }
         if timerModel.isPaused {
             timerModel.resume()
-            RhythmicAudioManager.shared.resume()
+            RhythmicAudioManager.shared.playBeat(beatType: selectedBeat, bpm: selectedBPM)
         } else {
             timerModel.pause()
             RhythmicAudioManager.shared.pause()
@@ -216,6 +217,8 @@ extension SessionRunningViewController: TimerModelDelegate {
         updateDisplay(seconds: 0)
         progressView.setProgress(0)
         pauseButton.isEnabled = false
-        endSession(fullyCompleted: true)
+        timerModel?.pause()
+        RhythmicAudioManager.shared.stop()
+        // Modal will stay presented until the user explicitly taps 'End Session'
     }
 }

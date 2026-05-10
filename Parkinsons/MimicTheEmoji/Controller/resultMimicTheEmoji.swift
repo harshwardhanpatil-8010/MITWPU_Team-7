@@ -7,6 +7,7 @@ class resultMimicTheEmoji: UIViewController {
     @IBOutlet weak var completedEmojiCount: UILabel!
     @IBOutlet weak var resultCardBackground: UIView!
     @IBOutlet weak var finishButton: UIButton!
+    @IBOutlet weak var resultTitleLabel: UILabel!
     
     var completedCount: Int = 0
     var skippedCount: Int = 0
@@ -42,6 +43,17 @@ class resultMimicTheEmoji: UIViewController {
         completedEmojiCount.text = "\(completedCount)"
         skippedEmojiCount.text = "\(skippedCount)"
         timeTakenCount.text = "\(timeTaken)"
+        
+        switch completedCount {
+        case 0...3:
+            resultTitleLabel.text = "You can do better"
+        case 4...7:
+            resultTitleLabel.text = "Good Job"
+        case 8...10:
+            resultTitleLabel.text = "Excellent"
+        default:
+            resultTitleLabel.text = "Good Job"
+        }
     }
     @IBAction func finishButtonTapped(_ sender: UIButton) {
         if let nav = self.navigationController {

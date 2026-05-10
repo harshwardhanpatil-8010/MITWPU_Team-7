@@ -206,30 +206,33 @@ class GameViewController: UIViewController {
 
         let unmatched = cards.enumerated().filter { !$0.element.isMatched }
         let groups = Dictionary(grouping: unmatched, by: { $0.element.identifier })
-        guard let pair = groups.values.first(where: { $0.count == 2 }) else { return }
+        
+        var targetIdentifier: Int?
+        if let firstIdx = firstIndex {
+            targetIdentifier = cards[firstIdx.item].identifier
+        }
+        
+        let pairToHint: [EnumeratedSequence<[Card]>.Element]
+        if let targetId = targetIdentifier, let group = groups[targetId], group.count == 2 {
+            pairToHint = group
+        } else if let group = groups.values.first(where: { $0.count == 2 }) {
+            pairToHint = group
+        } else {
+            return
+        }
 
-        let first = pair[0].offset
-        let second = pair[1].offset
-        let indexPaths = [IndexPath(item: first, section: 0),
-                          IndexPath(item: second, section: 0)]
+        let indexPaths = [IndexPath(item: pairToHint[0].offset, section: 0),
+                          IndexPath(item: pairToHint[1].offset, section: 0)]
 
-        interactionsEnabled = false
-        cards[first].isFlipped = true
-        cards[second].isFlipped = true
-        collectionView.reloadItems(at: indexPaths)
-
-        DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
-            self.cards[first].isMatched = true
-            self.cards[second].isMatched = true
-            self.matchedPairs += 1
-            self.collectionView.reloadItems(at: indexPaths)
-            self.resetSelection()
-
-            if self.matchedPairs == self.cards.count / 2 {
-                self.stopTimer()
-                DailyGameManager.shared.markCompleted(date: self.selectedDate)
-                self.goToSuccess()
+        for indexPath in indexPaths {
+            if let cell = collectionView.cellForItem(at: indexPath) as? MatchTheCardCollectionViewCell {
+                cell.animateHint()
             }
+        }
+        
+        interactionsEnabled = false
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.6) {
+            self.interactionsEnabled = true
         }
     }
 

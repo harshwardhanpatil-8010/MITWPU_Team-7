@@ -172,6 +172,10 @@ class MedicationAlarmViewController: UIViewController {
     private let stackView = UIStackView()
     private let headerLabel = UILabel()
     private var activeCards = 0
+    
+    private let takenAllButton = UIButton(configuration: .tinted())
+    private let skipAllButton = UIButton(configuration: .tinted())
+    private let bottomStackView = UIStackView()
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -194,8 +198,32 @@ class MedicationAlarmViewController: UIViewController {
         stackView.spacing = 20
         stackView.translatesAutoresizingMaskIntoConstraints = false
         
+        takenAllButton.setTitle("Taken All", for: .normal)
+        takenAllButton.setImage(UIImage(systemName: "checkmark"), for: .normal)
+        takenAllButton.configuration?.baseForegroundColor = .systemBlue
+        takenAllButton.configuration?.baseBackgroundColor = .systemBlue
+        takenAllButton.configuration?.cornerStyle = .capsule
+        takenAllButton.configuration?.imagePadding = 8
+        takenAllButton.addTarget(self, action: #selector(takenAllTapped), for: .touchUpInside)
+        
+        skipAllButton.setTitle("Skipped All", for: .normal)
+        skipAllButton.setImage(UIImage(systemName: "xmark"), for: .normal)
+        skipAllButton.configuration?.baseForegroundColor = .systemGray
+        skipAllButton.configuration?.baseBackgroundColor = .systemGray
+        skipAllButton.configuration?.cornerStyle = .capsule
+        skipAllButton.configuration?.imagePadding = 8
+        skipAllButton.addTarget(self, action: #selector(skipAllTapped), for: .touchUpInside)
+        
+        bottomStackView.axis = .horizontal
+        bottomStackView.spacing = 16
+        bottomStackView.distribution = .fillEqually
+        bottomStackView.translatesAutoresizingMaskIntoConstraints = false
+        bottomStackView.addArrangedSubview(takenAllButton)
+        bottomStackView.addArrangedSubview(skipAllButton)
+        
         view.addSubview(headerLabel)
         view.addSubview(scrollView)
+        view.addSubview(bottomStackView)
         scrollView.addSubview(stackView)
         
         NSLayoutConstraint.activate([
@@ -206,7 +234,12 @@ class MedicationAlarmViewController: UIViewController {
             scrollView.topAnchor.constraint(equalTo: headerLabel.bottomAnchor, constant: 20),
             scrollView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
             scrollView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
-            scrollView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
+            scrollView.bottomAnchor.constraint(equalTo: bottomStackView.topAnchor, constant: -16),
+            
+            bottomStackView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 24),
+            bottomStackView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -24),
+            bottomStackView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -16),
+            bottomStackView.heightAnchor.constraint(equalToConstant: 50),
             
             stackView.topAnchor.constraint(equalTo: scrollView.contentLayoutGuide.topAnchor, constant: 10),
             stackView.leadingAnchor.constraint(equalTo: scrollView.contentLayoutGuide.leadingAnchor, constant: 24),
@@ -224,6 +257,29 @@ class MedicationAlarmViewController: UIViewController {
                 self?.logDose(payload: p, status: status, cardView: card)
             }
             stackView.addArrangedSubview(card)
+        }
+    }
+    
+    @objc private func takenAllTapped() {
+        processAll(status: .taken)
+    }
+
+    @objc private func skipAllTapped() {
+        processAll(status: .skipped)
+    }
+
+    private func processAll(status: DoseStatus) {
+        // Disable bulk buttons to prevent duplicate touches
+        takenAllButton.isEnabled = false
+        skipAllButton.isEnabled = false
+        
+        let cards = stackView.arrangedSubviews
+            .compactMap { $0 as? MedicationCardView }
+            .filter { !$0.isHidden && $0.isUserInteractionEnabled }
+        
+        for card in cards {
+            // Reuses the exact same logic and animations as individual buttons
+            card.onAction?(card.payload, status)
         }
     }
     
@@ -262,7 +318,7 @@ class MedicationAlarmViewController: UIViewController {
             PersistenceController.shared.save(context)
 
             NotificationCenter.default.post(
-                name: .medicationDoseLogged,
+                name: NSNotification.Name("MedicationLogged"),
                 object: nil,
                 userInfo: ["doseID": payload.doseID]
             )
@@ -326,6 +382,4 @@ class MedicationAlarmViewController: UIViewController {
     }
 }
 
-extension Notification.Name {
-    static let medicationDoseLogged = Notification.Name("medicationDoseLogged")
-}
+// Extension removed to use shared "MedicationLogged" notification name

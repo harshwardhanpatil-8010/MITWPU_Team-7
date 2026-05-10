@@ -237,7 +237,7 @@ extension AppDelegate: UNUserNotificationCenterDelegate {
             // Notify UI on main thread
             DispatchQueue.main.async {
                 NotificationCenter.default.post(
-                    name: .medicationDoseLogged,
+                    name: NSNotification.Name("MedicationLogged"),
                     object: nil,
                     userInfo: ["doseID": payload.doseID]
                 )

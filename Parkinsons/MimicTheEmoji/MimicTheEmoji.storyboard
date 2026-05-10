@@ -457,6 +457,7 @@
                         <outlet property="completedEmojiCount" destination="n8D-22-oZ3" id="0bL-BS-pUp"/>
                         <outlet property="finishButton" destination="AF7-HU-aqk" id="PV3-IN-3rV"/>
                         <outlet property="resultCardBackground" destination="NG2-Vw-qgD" id="TQy-2E-Q4g"/>
+                        <outlet property="resultTitleLabel" destination="CwJ-CA-yG0" id="AbC-De-FGH"/>
                         <outlet property="skippedEmojiCount" destination="cl6-f7-dxk" id="yWJ-qZ-ee5"/>
                         <outlet property="timeTakenCount" destination="TKX-WX-crb" id="Mwx-DL-uK2"/>
                     </connections>
