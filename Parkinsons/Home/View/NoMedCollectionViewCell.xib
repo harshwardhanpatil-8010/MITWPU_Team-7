@@ -66,7 +66,7 @@
             <connections>
                 <outlet property="uiView" destination="65H-nm-vw7" id="LWh-Ji-MON"/>
             </connections>
-            <point key="canvasLocation" x="229.00763358778624" y="142.95774647887325"/>
+            <point key="canvasLocation" x="269" y="134"/>
         </collectionViewCell>
     </objects>
     <resources>
