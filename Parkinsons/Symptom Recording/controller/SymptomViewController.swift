@@ -45,6 +45,14 @@ class SymptomViewController: UIViewController, SymptomRatingCellDelegate {
         setupTableViewUI()
         updateDataForSelectedDate()
         setupSymptomBackgroundUI()
+        let appearance = UINavigationBarAppearance()
+            appearance.titleTextAttributes = [
+                .font: UIFont.systemFont(ofSize: 32, weight: .bold),
+                .foregroundColor: UIColor.label
+            ]
+
+            navigationController?.navigationBar.standardAppearance = appearance
+            navigationController?.navigationBar.scrollEdgeAppearance = appearance
     }
 
 

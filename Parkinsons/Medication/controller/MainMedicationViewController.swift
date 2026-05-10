@@ -72,6 +72,15 @@ final class MainMedicationViewController: UIViewController {
         ) { [weak self] _ in
             self?.loadMedications()
         }
+        
+        let appearance = UINavigationBarAppearance()
+            appearance.titleTextAttributes = [
+                .font: UIFont.systemFont(ofSize: 32, weight: .bold),
+                .foregroundColor: UIColor.label
+            ]
+
+            navigationController?.navigationBar.standardAppearance = appearance
+            navigationController?.navigationBar.scrollEdgeAppearance = appearance
     }
 
     override func viewDidLayoutSubviews() {

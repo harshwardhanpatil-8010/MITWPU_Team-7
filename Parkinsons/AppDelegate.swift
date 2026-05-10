@@ -20,8 +20,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         let storedJSONVersion  = UserDefaults.standard.string(forKey: "loadedExerciseJSONVersion")
 
         if storedJSONVersion != currentJSONVersion {
-            // JSON has been updated (or this is first ever launch).
-            // Perform a full controlled workout reset and immediately persist it.
             WorkoutManager.shared.resetAllExercises()
             WorkoutManager.shared.syncSessionPersistence()
 
