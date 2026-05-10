@@ -102,8 +102,13 @@ final class MedicationCardView: UIView {
         titleLabel.textAlignment = .center
         titleLabel.numberOfLines = 0
         
-        let strengthStr = payload.medStrength > 0 ? "\(payload.medStrength)\(payload.medUnit) • " : ""
-        subtitleLabel.text = "\(strengthStr)\(payload.medForm)"
+        var unitStr = payload.medUnit
+        if let dotIndex = unitStr.firstIndex(of: "•") {
+            unitStr = String(unitStr[..<dotIndex]).trimmingCharacters(in: .whitespaces)
+        }
+        
+        let strengthStr = payload.medStrength > 0 ? "\(payload.medStrength)\(unitStr)" : unitStr
+        subtitleLabel.text = strengthStr
         subtitleLabel.font = .systemFont(ofSize: 17, weight: .medium)
         subtitleLabel.textColor = .secondaryLabel
         subtitleLabel.textAlignment = .center

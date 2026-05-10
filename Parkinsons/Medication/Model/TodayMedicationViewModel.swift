@@ -27,11 +27,21 @@ final class TodayMedicationViewModel {
                 }
 
 
+                let strength = med.medicationStrength
+                var unit = med.medicationUnit ?? ""
+                
+                // If CoreData has old strings like "Mg • Capsule" saved in the unit field, strip them out:
+                if let dotIndex = unit.firstIndex(of: "•") {
+                    unit = String(unit[..<dotIndex]).trimmingCharacters(in: .whitespaces)
+                }
+
+                let detailString = strength > 0 ? "\(strength)\(unit)" : unit
+
                 let item = TodayDoseItem(
                     id: dose.id ?? UUID(),
                     medicationID: med.id ?? UUID(),
                     medicationName: med.medicationName ?? "",
-                    medicationForm: med.medicationForm ?? "",
+                    medicationForm: detailString,
                     iconName: med.medicationIconName ?? "tablet",
                     scheduledTime: normalizeDoseTime(time),
                     logStatus: .none
@@ -61,10 +71,19 @@ final class TodayMedicationViewModel {
 
             guard let med = log.medication else { continue }
 
+            let strength = med.medicationStrength
+            var unit = med.medicationUnit ?? ""
+            
+            if let dotIndex = unit.firstIndex(of: "•") {
+                unit = String(unit[..<dotIndex]).trimmingCharacters(in: .whitespaces)
+            }
+
+            let detailString = strength > 0 ? "\(strength)\(unit)" : unit
+
             let item = LoggedDoseItem(
                 id: log.id ?? UUID(),
                 medicationName: med.medicationName ?? "",
-                medicationForm: med.medicationForm ?? "",
+                medicationForm: detailString,
                 loggedTime: log.doseLoggedAt ?? Date(),
                 status: DoseStatus(rawValue: log.doseLogStatus ?? "") ?? .none,
                 iconName: med.medicationIconName ?? "pill"
