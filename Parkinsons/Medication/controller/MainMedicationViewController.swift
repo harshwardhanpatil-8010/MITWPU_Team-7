@@ -1,6 +1,7 @@
 import UIKit
 import Foundation
 import CoreData
+
 final class MainMedicationViewController: UIViewController {
 
     @IBOutlet weak var medSegment: UISegmentedControl!
@@ -44,6 +45,7 @@ final class MainMedicationViewController: UIViewController {
     private var myMedications: [Medication] = []
     
     private var didBecomeActiveObserver: NSObjectProtocol?
+    private var doseLoggedObserver: NSObjectProtocol?
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -67,6 +69,15 @@ final class MainMedicationViewController: UIViewController {
         }
         NotificationCenter.default.addObserver(
             forName: NSNotification.Name("MedicationLogged"),
+            object: nil,
+            queue: .main
+        ) { [weak self] _ in
+            self?.loadMedications()
+        }
+
+        // Observe dose logged from alarm screen / notification actions
+        doseLoggedObserver = NotificationCenter.default.addObserver(
+            forName: .medicationDoseLogged,
             object: nil,
             queue: .main
         ) { [weak self] _ in
@@ -100,6 +111,9 @@ final class MainMedicationViewController: UIViewController {
 
     deinit {
         if let observer = didBecomeActiveObserver {
+            NotificationCenter.default.removeObserver(observer)
+        }
+        if let observer = doseLoggedObserver {
             NotificationCenter.default.removeObserver(observer)
         }
         NotificationCenter.default.removeObserver(self, name: NSNotification.Name("MedicationLogged"), object: nil)
@@ -365,6 +379,28 @@ extension MainMedicationViewController {
                 context: PersistenceController.shared.viewContext
             )
 
+            if status == .skipped,
+               let med = myMedications.first(where: { $0.id == dose.medicationID }) {
+                let iso = ISO8601DateFormatter()
+                let userInfo: [AnyHashable: Any] = [
+                    MedNotifKey.doseID:        dose.id.uuidString,
+                    MedNotifKey.medID:         dose.medicationID.uuidString,
+                    MedNotifKey.medName:       med.medicationName ?? "Medication",
+                    MedNotifKey.medForm:       med.medicationForm ?? "",
+                    MedNotifKey.medStrength:   Int(med.medicationStrength),
+                    MedNotifKey.medUnit:       med.medicationUnit ?? "",
+                    MedNotifKey.iconName:      med.medicationIconName ?? "tablet1",
+                    MedNotifKey.scheduledTime: iso.string(from: dose.scheduledTime)
+                ]
+                if let payload = MedicationAlarmPayload(userInfo: userInfo) {
+                    MedicationNotificationManager.shared.cancelOnTimeNotification(forDoseID: dose.id)
+                    MedicationNotificationManager.shared.scheduleSkipFollowUp(payload: payload)
+                }
+            } else {
+                // Cancel any pending follow-up notifications for this dose
+                MedicationNotificationManager.shared.cancelNotifications(forDoseID: dose.id)
+            }
+
             loadMedications()
 
             NotificationCenter.default.post(
@@ -415,6 +451,11 @@ extension MainMedicationViewController: EditLogDelegate {
                 log.doseLogStatus = item.status.rawValue
                 if let coreDose = log.dose {
                     coreDose.doseStatus = item.status.rawValue
+
+                    // Cancel follow-up notifications for doses now marked taken/skipped
+                    if item.status != .none, let doseID = coreDose.id {
+                        MedicationNotificationManager.shared.cancelNotifications(forDoseID: doseID)
+                    }
                 }
             }
         }

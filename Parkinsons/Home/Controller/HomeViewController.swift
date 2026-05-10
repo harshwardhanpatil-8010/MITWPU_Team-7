@@ -67,10 +67,9 @@ class HomeViewController: UIViewController, UICollectionViewDelegate {
         super.viewDidLoad()
         
         // 1. Initial Load: Look for the FULL name, then split it
-            let savedFull = UserDefaults.standard.string(forKey: "UserFullName") ?? "John"
-            let firstName = savedFull.components(separatedBy: " ").first ?? savedFull
-            self.NameOfUser.text = "Hello, \(firstName)!"
-
+        let savedFull = UserDefaults.standard.string(forKey: "UserFullName") ?? "John"
+        let firstName = savedFull.components(separatedBy: " ").first ?? savedFull
+        NameOfUser?.text = "Hello, \(firstName)!"
 
         updateGreeting()
 
@@ -98,6 +97,7 @@ class HomeViewController: UIViewController, UICollectionViewDelegate {
         ) { [weak self] _ in
             self?.updateGreeting()
         }
+        print("[HOME] viewDidLoad END")
     }
     
     deinit {
@@ -137,11 +137,11 @@ class HomeViewController: UIViewController, UICollectionViewDelegate {
                 .split(whereSeparator: { $0.isWhitespace })
                 .first
                 .map(String.init) ?? fullName
-            NameLabel.text = "Hello \(firstName)"
-            NameOfUser.text = "Hello \(firstName)"
+            NameLabel?.text = "Hello \(firstName)"
+            NameOfUser?.text = "Hello \(firstName)"
         } else {
-            NameLabel.text = "Hello John"
-            NameOfUser.text = "Hello John"
+            NameLabel?.text = "Hello John"
+            NameOfUser?.text = "Hello John"
         }
     }
     private func loadRealMedicationData() {
@@ -169,6 +169,7 @@ class HomeViewController: UIViewController, UICollectionViewDelegate {
             logs: logs,
             for: Date()
         )
+        print("[HOME-DEBUG] loadLoggedDoses DONE")
 
         let unloggedDoses = todayViewModel.todayDoses.filter { dose in
             !todayViewModel.loggedDoses.contains(where: { $0.id == dose.id })

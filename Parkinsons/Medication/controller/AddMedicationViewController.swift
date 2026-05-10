@@ -4,9 +4,12 @@
 //
 //  Created by SDC-USER on 27/11/25.
 //
+//  Additions: calls MedicationNotificationManager.shared.rescheduleAll()
+//  after every save and delete so notifications always stay in sync.
 
 import UIKit
 import CoreData
+
 protocol AddMedicationDelegate: AnyObject {
     func didUpdateMedication()
 }
@@ -15,8 +18,10 @@ class AddMedicationViewController: UIViewController,
                                     UITableViewDelegate,
                                     UITableViewDataSource,
                                     DoseTableViewCellDelegate,
-                                    UnitsAndTypeDelegate,RepeatSelectionDelegate,
-                                    UITextFieldDelegate{
+                                    UnitsAndTypeDelegate,
+                                    RepeatSelectionDelegate,
+                                    UITextFieldDelegate {
+
     func didSelectSchedule(type: String, days: [Int]?) {
         selectedScheduleType = type
         selectedScheduleDays = days
@@ -321,12 +326,17 @@ class AddMedicationViewController: UIViewController,
         context.delete(med)
         PersistenceController.shared.save(context)
 
+        // ✅ Keep notifications in sync after deletion
+        MedicationNotificationManager.shared.rescheduleAll()
+
         delegate?.didUpdateMedication()
         dismiss(animated: true)
     }
 
     
     @IBAction func onTickPressed(_ sender: UIBarButtonItem) {
+        // Prevent double-tapping
+        sender.isEnabled = false
 
         guard let name = medicationNameTextField.text,
               !name.trimmingCharacters(in: .whitespaces).isEmpty else { return }
@@ -373,6 +383,9 @@ class AddMedicationViewController: UIViewController,
 
         // MARK: - Save
         PersistenceController.shared.save(context)
+
+        // ✅ Keep notifications in sync after add/edit
+        MedicationNotificationManager.shared.rescheduleAll()
 
         delegate?.didUpdateMedication()
         dismiss(animated: true)

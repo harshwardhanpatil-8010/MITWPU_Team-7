@@ -1,5 +1,6 @@
 import AVFoundation
 
+
 class SpeechManager {
 
     static let shared = SpeechManager()
@@ -26,9 +27,11 @@ class SpeechManager {
             return
         }
 
+
         if synthesizer.isSpeaking {
             synthesizer.stopSpeaking(at: .immediate)
         }
+
 
         // Ensure the audio session is active right before speaking.
         // This prevents silent failures if the session was deactivated by the system.
@@ -49,6 +52,7 @@ class SpeechManager {
         utterance.pitchMultiplier = 1.0
         utterance.volume = 1.0
 
+
         synthesizer.speak(utterance)
     }
 
@@ -64,6 +68,8 @@ class SpeechManager {
 
     func resume() {
 
+
         synthesizer.continueSpeaking()
     }
+
 }
