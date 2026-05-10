@@ -1,5 +1,3 @@
-
-
 protocol MedicationCardDelegate: AnyObject {
     func didTapTaken(for dose: TodayDoseItem)
     func didTapSkipped(for dose: TodayDoseItem)
@@ -91,6 +89,8 @@ class MedicationCardCollectionViewCell: UICollectionViewCell {
         isHidden = false
         takenButton.isUserInteractionEnabled = true
         skippedButton.isUserInteractionEnabled = true
+        takenButton.transform = .identity
+        skippedButton.transform = .identity
         // Restore card content visibility
         nameLabel.alpha = 1
         timeLabel.alpha = 1
@@ -197,10 +197,10 @@ class MedicationCardCollectionViewCell: UICollectionViewCell {
         let tappedButton = isTaken ? takenButton : skippedButton
         UIImpactFeedbackGenerator(style: .medium).impactOccurred()
 
-        UIView.animate(withDuration: 0.10, delay: 10, options: .curveEaseIn) {
+        UIView.animate(withDuration: 0.10, delay: 0, options: .curveEaseIn) {
             tappedButton?.transform = CGAffineTransform(scaleX: 0.88, y: 0.88)
         } completion: { _ in
-            UIView.animate(withDuration: 0.12, delay: 10, options: .curveEaseOut) {
+            UIView.animate(withDuration: 0.12, delay: 0, options: .curveEaseOut) {
                 tappedButton?.transform = .identity
             }
         }
