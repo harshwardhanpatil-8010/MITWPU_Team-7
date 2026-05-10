@@ -21,7 +21,6 @@ class profileViewController: UIViewController, UITextFieldDelegate {
     @IBOutlet weak var stackViewBackground: UIStackView!
     @IBOutlet weak var uiViewProfile: UIView!
 
-    @IBOutlet weak var profileNameLabel: UILabel!
 
     private let genderOptions = [
         "Male",
@@ -131,7 +130,7 @@ class profileViewController: UIViewController, UITextFieldDelegate {
 
         let currentText = nameTextField.text ?? ""
 
-        profileNameLabel.text = currentText
+
 
         let firstName = currentText
             .split(whereSeparator: { $0.isWhitespace })
@@ -233,7 +232,7 @@ class profileViewController: UIViewController, UITextFieldDelegate {
 
         logoLabel.text = String(firstName.prefix(1))
 
-        profileNameLabel.text = fullName
+        
 
         let gender = defaults.string(
             forKey: "userGender"
