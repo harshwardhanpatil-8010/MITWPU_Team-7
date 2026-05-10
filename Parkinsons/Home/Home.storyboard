@@ -142,14 +142,8 @@
                                             <constraint firstItem="1md-zb-Ckb" firstAttribute="leading" secondItem="YCm-Cl-pvf" secondAttribute="leading" constant="29" id="p40-H2-AiV"/>
                                         </constraints>
                                     </view>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Prf-4Q-sA4">
-                                        <rect key="frame" x="16" y="239.33333333333334" width="361" height="25.333333333333343"/>
-                                        <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="21"/>
-                                        <nil key="textColor"/>
-                                        <nil key="highlightedColor"/>
-                                    </label>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="VVs-SS-Yja">
-                                        <rect key="frame" x="8" y="338" width="377" height="247"/>
+                                        <rect key="frame" x="8" y="301.66666666666669" width="377" height="247.00000000000006"/>
                                         <subviews>
                                             <stackView opaque="NO" contentMode="scaleAspectFit" axis="vertical" alignment="center" spacing="2" translatesAutoresizingMaskIntoConstraints="NO" id="LWa-Ap-rd7">
                                                 <rect key="frame" x="4" y="12" width="369" height="223"/>
@@ -367,7 +361,7 @@
                                         </constraints>
                                     </view>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Patient Information" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="w6B-Tp-hJo">
-                                        <rect key="frame" x="16" y="309.66666666666669" width="361" height="20.333333333333314"/>
+                                        <rect key="frame" x="16" y="273.33333333333331" width="361" height="20.333333333333314"/>
                                         <fontDescription key="fontDescription" type="system" weight="medium" pointSize="17"/>
                                         <color key="textColor" white="0.33333333333333331" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <color key="highlightedColor" systemColor="labelColor"/>
@@ -376,13 +370,8 @@
                                 <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                                 <constraints>
                                     <constraint firstItem="YCm-Cl-pvf" firstAttribute="top" secondItem="zue-hZ-5cI" secondAttribute="bottom" constant="25" id="4OJ-Zr-nSO"/>
-                                    <constraint firstItem="VVs-SS-Yja" firstAttribute="leading" secondItem="lse-ik-cY0" secondAttribute="leading" constant="16" id="D9s-dk-4MU"/>
-                                    <constraint firstItem="Prf-4Q-sA4" firstAttribute="leading" secondItem="lse-ik-cY0" secondAttribute="leading" constant="16" id="HgH-5O-vaX"/>
                                     <constraint firstItem="VVs-SS-Yja" firstAttribute="leading" secondItem="lse-ik-cY0" secondAttribute="leading" constant="8" id="IfR-00-xOI"/>
-                                    <constraint firstItem="Prf-4Q-sA4" firstAttribute="top" secondItem="YCm-Cl-pvf" secondAttribute="bottom" constant="16" id="Qap-GB-LD4"/>
-                                    <constraint firstAttribute="trailing" secondItem="VVs-SS-Yja" secondAttribute="trailing" constant="16" id="TZI-sa-YFC"/>
-                                    <constraint firstItem="w6B-Tp-hJo" firstAttribute="top" secondItem="Prf-4Q-sA4" secondAttribute="bottom" constant="45" id="Vq4-0J-2N9"/>
-                                    <constraint firstAttribute="trailing" secondItem="Prf-4Q-sA4" secondAttribute="trailing" constant="16" id="WKi-hl-o6E"/>
+                                    <constraint firstItem="w6B-Tp-hJo" firstAttribute="top" secondItem="YCm-Cl-pvf" secondAttribute="bottom" constant="50" id="Lkd-aN-h3Z"/>
                                     <constraint firstAttribute="trailing" secondItem="w6B-Tp-hJo" secondAttribute="trailing" constant="16" id="brH-1r-JJy"/>
                                     <constraint firstAttribute="trailing" secondItem="zue-hZ-5cI" secondAttribute="trailing" id="dh7-vo-OgZ"/>
                                     <constraint firstAttribute="trailing" secondItem="VVs-SS-Yja" secondAttribute="trailing" constant="8" id="ggY-oD-Gdi"/>
@@ -412,7 +401,6 @@
                         <outlet property="logoLabel" destination="1md-zb-Ckb" id="KOw-9O-d4F"/>
                         <outlet property="nameLabel" destination="lwg-cG-ZcQ" id="GEz-5D-Lsw"/>
                         <outlet property="nameTextField" destination="QZK-0s-sSa" id="lMH-q9-dfo"/>
-                        <outlet property="profileNameLabel" destination="Prf-4Q-sA4" id="9Ag-gO-wKL"/>
                         <outlet property="sexLabel" destination="7P3-0P-yh8" id="G6R-TY-kSb"/>
                         <outlet property="sexsSelector" destination="x2m-25-ZBh" id="mmO-Iw-x2O"/>
                         <outlet property="stackViewBackground" destination="LWa-Ap-rd7" id="02G-e1-G7I"/>
