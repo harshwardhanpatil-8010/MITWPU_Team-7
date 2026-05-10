@@ -101,9 +101,7 @@
         <!--Profile-->
         <scene sceneID="TTy-7d-Wv7">
             <objects>
-
                 <viewController storyboardIdentifier="profileViewController" title="Profile" id="E2u-Yx-rAh" customClass="profileViewController" customModule="ParkEase" customModuleProvider="target" sceneMemberID="viewController">
-
                     <view key="view" contentMode="scaleToFill" id="y1m-XG-2eK">
                         <rect key="frame" x="0.0" y="0.0" width="393" height="793"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -148,7 +146,7 @@
                                         </constraints>
                                     </view>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="VVs-SS-Yja">
-                                        <rect key="frame" x="8" y="301.66666666666669" width="377" height="247.00000000000006"/>
+                                        <rect key="frame" x="8" y="306.66666666666669" width="377" height="247.00000000000006"/>
                                         <subviews>
                                             <stackView opaque="NO" contentMode="scaleAspectFit" axis="vertical" alignment="center" spacing="2" translatesAutoresizingMaskIntoConstraints="NO" id="LWa-Ap-rd7">
                                                 <rect key="frame" x="4" y="12" width="369" height="223"/>
@@ -366,9 +364,9 @@
                                         </constraints>
                                     </view>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Patient Information" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="w6B-Tp-hJo">
-                                        <rect key="frame" x="16" y="273.33333333333331" width="361" height="20.333333333333314"/>
-                                        <fontDescription key="fontDescription" type="system" weight="medium" pointSize="17"/>
-                                        <color key="textColor" white="0.33333333333333331" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                        <rect key="frame" x="16" y="273.33333333333331" width="361" height="25.333333333333314"/>
+                                        <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="21"/>
+                                        <color key="textColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <color key="highlightedColor" systemColor="labelColor"/>
                                     </label>
                                 </subviews>
