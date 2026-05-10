@@ -14,6 +14,7 @@ class profileViewController: UIViewController, UITextFieldDelegate {
 
     @IBOutlet weak var nameTextField: UITextField!
     @IBOutlet weak var dateOfBirthSelector: UIDatePicker!
+
     @IBOutlet weak var sexsSelector: UIButton!
     @IBOutlet weak var stageSelector: UIButton!
 
@@ -22,18 +23,39 @@ class profileViewController: UIViewController, UITextFieldDelegate {
 
     @IBOutlet weak var profileNameLabel: UILabel!
 
+    private let genderOptions = [
+        "Male",
+        "Female",
+        "Other",
+        "Prefer not to say"
+    ]
+
+    private let stageOptions = [
+        "Stage 1",
+        "Stage 2",
+        "Stage 3",
+        "Stage 4",
+        "Stage 5",
+        "Not Known"
+    ]
+
     var isEditingMode: Bool = false
 
     var selectedSex: String = "Male" {
 
         didSet {
 
-            sexsSelector.setTitle(selectedSex, for: .normal)
+            sexsSelector.setTitle(
+                selectedSex,
+                for: .normal
+            )
 
             if #available(iOS 15.0, *) {
 
                 var config = sexsSelector.configuration
+
                 config?.title = selectedSex
+
                 sexsSelector.configuration = config
             }
         }
@@ -43,12 +65,17 @@ class profileViewController: UIViewController, UITextFieldDelegate {
 
         didSet {
 
-            stageSelector.setTitle(selectedStage, for: .normal)
+            stageSelector.setTitle(
+                selectedStage,
+                for: .normal
+            )
 
             if #available(iOS 15.0, *) {
 
                 var config = stageSelector.configuration
+
                 config?.title = selectedStage
+
                 stageSelector.configuration = config
             }
         }
@@ -65,6 +92,8 @@ class profileViewController: UIViewController, UITextFieldDelegate {
 
         configureKeyboardDismissGesture()
 
+        configureDropdownMenus()
+
         nameTextField.addTarget(
             self,
             action: #selector(nameTextChanged),
@@ -77,6 +106,7 @@ class profileViewController: UIViewController, UITextFieldDelegate {
     private func configureTextFields() {
 
         nameTextField.delegate = self
+
         nameTextField.returnKeyType = .done
     }
 
@@ -111,11 +141,88 @@ class profileViewController: UIViewController, UITextFieldDelegate {
         logoLabel.text = String(firstName.prefix(1))
     }
 
+    private func configureDropdownMenus() {
+
+        configureGenderMenu()
+
+        configureStageMenu()
+    }
+
+    private func configureGenderMenu() {
+
+        let actions = genderOptions.map { gender in
+
+            UIAction(
+                title: gender,
+                state: selectedSex == gender
+                ? .on
+                : .off
+            ) { [weak self] _ in
+
+                guard let self = self else {
+                    return
+                }
+
+                guard self.isEditingMode else {
+                    return
+                }
+
+                self.selectedSex = gender
+
+                self.configureGenderMenu()
+            }
+        }
+
+        sexsSelector.menu = UIMenu(
+            title: "",
+            options: .singleSelection,
+            children: actions
+        )
+
+        sexsSelector.showsMenuAsPrimaryAction = true
+    }
+
+    private func configureStageMenu() {
+
+        let actions = stageOptions.map { stage in
+
+            UIAction(
+                title: stage,
+                state: selectedStage == stage
+                ? .on
+                : .off
+            ) { [weak self] _ in
+
+                guard let self = self else {
+                    return
+                }
+
+                guard self.isEditingMode else {
+                    return
+                }
+
+                self.selectedStage = stage
+
+                self.configureStageMenu()
+            }
+        }
+
+        stageSelector.menu = UIMenu(
+            title: "",
+            options: .singleSelection,
+            children: actions
+        )
+
+        stageSelector.showsMenuAsPrimaryAction = true
+    }
+
     func loadUserData() {
 
         let defaults = UserDefaults.standard
 
-        let fullName = defaults.string(forKey: "userName") ?? ""
+        let fullName = defaults.string(
+            forKey: "userName"
+        ) ?? ""
 
         let firstName = fullName
             .split(whereSeparator: { $0.isWhitespace })
@@ -128,7 +235,9 @@ class profileViewController: UIViewController, UITextFieldDelegate {
 
         profileNameLabel.text = fullName
 
-        let gender = defaults.string(forKey: "userGender") ?? "Male"
+        let gender = defaults.string(
+            forKey: "userGender"
+        ) ?? "Male"
 
         selectedSex = gender
 
@@ -155,6 +264,11 @@ class profileViewController: UIViewController, UITextFieldDelegate {
 
         sexsSelector.setTitle(
             selectedSex,
+            for: .normal
+        )
+
+        stageSelector.setTitle(
+            selectedStage,
             for: .normal
         )
 
@@ -217,7 +331,10 @@ class profileViewController: UIViewController, UITextFieldDelegate {
                 in: .whitespacesAndNewlines
             ) ?? ""
 
-        defaults.set(name, forKey: "userName")
+        defaults.set(
+            name,
+            forKey: "userName"
+        )
 
         defaults.set(
             selectedSex,
@@ -299,26 +416,26 @@ class profileViewController: UIViewController, UITextFieldDelegate {
 
                 textField.textAlignment = .right
 
-                if isEditing {
-
-                    textField.textColor = .systemBlue
-
-                } else {
-
-                    textField.textColor = .label
-                }
+                textField.textColor =
+                    isEditing
+                    ? .systemBlue
+                    : .label
             }
 
             if let picker = field as? UIDatePicker {
 
                 picker.tintColor =
-                    isEditing ? .systemBlue : .label
+                    isEditing
+                    ? .systemBlue
+                    : .label
             }
 
             if let button = field as? UIButton {
 
                 button.setTitleColor(
-                    isEditing ? .systemBlue : .label,
+                    isEditing
+                    ? .systemBlue
+                    : .label,
                     for: .normal
                 )
             }
@@ -337,111 +454,5 @@ class profileViewController: UIViewController, UITextFieldDelegate {
         textField.resignFirstResponder()
 
         return true
-    }
-
-    @IBAction func sexSelectorTapped(
-        _ sender: UIButton
-    ) {
-
-        guard isEditingMode else {
-            return
-        }
-
-        let actionSheet = UIAlertController(
-            title: "Select Sex",
-            message: nil,
-            preferredStyle: .actionSheet
-        )
-
-        let sexes = [
-            "Male",
-            "Female",
-            "Other",
-            "Prefer not to say"
-        ]
-
-        for sex in sexes {
-
-            let action = UIAlertAction(
-                title: sex,
-                style: .default
-            ) { [weak self] _ in
-
-                self?.selectedSex = sex
-            }
-
-            actionSheet.addAction(action)
-        }
-
-        actionSheet.addAction(
-            UIAlertAction(
-                title: "Cancel",
-                style: .cancel
-            )
-        )
-
-        if let popoverController =
-            actionSheet.popoverPresentationController {
-
-            popoverController.sourceView = sender
-            popoverController.sourceRect = sender.bounds
-        }
-
-        present(actionSheet, animated: true)
-    }
-
-    @IBAction func stageButtonTapped(
-        _ sender: Any
-    ) {
-
-        guard isEditingMode else {
-            return
-        }
-
-        let actionSheet = UIAlertController(
-            title: "Select Stage",
-            message: nil,
-            preferredStyle: .actionSheet
-        )
-
-        let stages = [
-            "Stage 1",
-            "Stage 2",
-            "Stage 3",
-            "Stage 4",
-            "Stage 5",
-            "Not Known"
-        ]
-
-        for stage in stages {
-
-            let action = UIAlertAction(
-                title: stage,
-                style: .default
-            ) { [weak self] _ in
-
-                self?.selectedStage = stage
-            }
-
-            actionSheet.addAction(action)
-        }
-
-        actionSheet.addAction(
-            UIAlertAction(
-                title: "Cancel",
-                style: .cancel
-            )
-        )
-
-        if let popoverController =
-            actionSheet.popoverPresentationController {
-
-            popoverController.sourceView = sender as? UIView
-
-            popoverController.sourceRect =
-                (sender as AnyObject).bounds
-        }
-
-        present(actionSheet, animated: true)
     }
 }
