@@ -469,7 +469,8 @@ extension SummaryViewController: UICollectionViewDataSource, UICollectionViewDel
                 
                 cell.setThemeColor(UIColor(hex: "90AF81"))
                 
-                if let lastSession = DataStore.shared.sessions.first {
+                let targetDate = dateToDisplay ?? Date()
+                if let lastSession = DataStore.shared.fetchSessions(for: targetDate).first {
                     
                     let done = lastSession.elapsedSeconds
                     
