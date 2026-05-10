@@ -23,6 +23,7 @@ class EmojiGameViewController: UIViewController {
    
     var timeElapsed = 0
     var skippedCount = 0
+    var isAnimatingSuccess = false
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -137,12 +138,16 @@ class EmojiGameViewController: UIViewController {
     }
 
     @IBAction func skipButtonTapped(_ sender: UIButton) {
+        guard !isAnimatingSuccess else { return }
         skippedCount += 1
         currentLevel += 1
         nextChallenge()
     }
 
     func handleSuccess() {
+        guard !isAnimatingSuccess else { return }
+        isAnimatingSuccess = true
+        
         score += 1
         updateScoreLabel()
 
@@ -151,8 +156,49 @@ class EmojiGameViewController: UIViewController {
         }
         
         currentLevel += 1
-        DispatchQueue.main.asyncAfter(deadline: .now() + 0.8) {
-            self.nextChallenge()
+        
+        showSuccessAnimation { [weak self] in
+            self?.isAnimatingSuccess = false
+            self?.nextChallenge()
+        }
+    }
+
+    func showSuccessAnimation(completion: @escaping () -> Void) {
+        skipButton.isEnabled = false
+        
+        let config = UIImage.SymbolConfiguration(pointSize: 100, weight: .bold)
+        let checkmarkImage = UIImage(systemName: "checkmark.circle.fill", withConfiguration: config)
+        let checkmarkView = UIImageView(image: checkmarkImage)
+        checkmarkView.tintColor = .systemGreen
+        checkmarkView.translatesAutoresizingMaskIntoConstraints = false
+        checkmarkView.alpha = 0
+        checkmarkView.transform = CGAffineTransform(scaleX: 0.5, y: 0.5)
+        
+        view.addSubview(checkmarkView)
+        
+        NSLayoutConstraint.activate([
+            checkmarkView.centerXAnchor.constraint(equalTo: emojiLabel.centerXAnchor),
+            checkmarkView.centerYAnchor.constraint(equalTo: emojiLabel.centerYAnchor)
+        ])
+        
+        UIView.animate(withDuration: 0.25, delay: 0, options: .curveEaseOut, animations: {
+            checkmarkView.alpha = 1
+            checkmarkView.transform = CGAffineTransform(scaleX: 1.2, y: 1.2)
+        }) { _ in
+            UIView.animate(withDuration: 0.15, animations: {
+                checkmarkView.transform = .identity
+            }) { _ in
+                DispatchQueue.main.asyncAfter(deadline: .now() + 0.4) {
+                    UIView.animate(withDuration: 0.2, animations: {
+                        checkmarkView.alpha = 0
+                        checkmarkView.transform = CGAffineTransform(scaleX: 0.5, y: 0.5)
+                    }) { [weak self] _ in
+                        checkmarkView.removeFromSuperview()
+                        self?.skipButton.isEnabled = true
+                        completion()
+                    }
+                }
+            }
         }
     }
     
