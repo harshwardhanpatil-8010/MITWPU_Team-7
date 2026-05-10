@@ -30,7 +30,7 @@ class resultMimicTheEmoji: UIViewController {
     }
     
     func setupResultCard() {
-        resultCardBackground.layer.cornerRadius = 15
+        resultCardBackground.layer.cornerRadius = 25
         resultCardBackground.layer.shadowColor = UIColor.black.cgColor
         resultCardBackground.layer.shadowOpacity = 0.2
         resultCardBackground.layer.shadowOffset = CGSize(width: 0, height: 4)
