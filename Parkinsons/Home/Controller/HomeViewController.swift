@@ -65,12 +65,15 @@ class HomeViewController: UIViewController, UICollectionViewDelegate {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        print("[HOME] viewDidLoad START")
+        print("[HOME] NameOfUser outlet = \(String(describing: NameOfUser))")
+        print("[HOME] NameLabel outlet = \(String(describing: NameLabel))")
+        print("[HOME] mainCollectionView outlet = \(String(describing: mainCollectionView))")
         
         // 1. Initial Load: Look for the FULL name, then split it
-            let savedFull = UserDefaults.standard.string(forKey: "UserFullName") ?? "John"
-            let firstName = savedFull.components(separatedBy: " ").first ?? savedFull
-            self.NameOfUser.text = "Hello, \(firstName)!"
-
+        let savedFull = UserDefaults.standard.string(forKey: "UserFullName") ?? "John"
+        let firstName = savedFull.components(separatedBy: " ").first ?? savedFull
+        NameOfUser?.text = "Hello, \(firstName)!"
 
         updateGreeting()
 
@@ -81,7 +84,9 @@ class HomeViewController: UIViewController, UICollectionViewDelegate {
         mainCollectionView.setCollectionViewLayout(generateLayout(), animated: true)
         
         dates = HomeDataStore.shared.getDates()
+        print("[HOME] dates loaded: \(dates.count)")
         loadRealMedicationData()
+        print("[HOME] medication data loaded")
         
         medicationLoggedObserver = NotificationCenter.default.addObserver(
             forName: NSNotification.Name("MedicationLogged"),
@@ -98,6 +103,7 @@ class HomeViewController: UIViewController, UICollectionViewDelegate {
         ) { [weak self] _ in
             self?.updateGreeting()
         }
+        print("[HOME] viewDidLoad END")
     }
     
     deinit {
@@ -130,6 +136,7 @@ class HomeViewController: UIViewController, UICollectionViewDelegate {
     }
 
     private func updateGreeting() {
+        print("[HOME] updateGreeting called")
         if let fullName = UserDefaults.standard.string(forKey: "userName")?
             .trimmingCharacters(in: .whitespacesAndNewlines),
            !fullName.isEmpty {
@@ -137,11 +144,11 @@ class HomeViewController: UIViewController, UICollectionViewDelegate {
                 .split(whereSeparator: { $0.isWhitespace })
                 .first
                 .map(String.init) ?? fullName
-            NameLabel.text = "Hello \(firstName)"
-            NameOfUser.text = "Hello \(firstName)"
+            NameLabel?.text = "Hello \(firstName)"
+            NameOfUser?.text = "Hello \(firstName)"
         } else {
-            NameLabel.text = "Hello John"
-            NameOfUser.text = "Hello John"
+            NameLabel?.text = "Hello John"
+            NameOfUser?.text = "Hello John"
         }
     }
     private func loadRealMedicationData() {
