@@ -14,12 +14,12 @@
         <!--Item-->
         <scene sceneID="PlV-vA-0eo">
             <objects>
-                <viewController storyboardIdentifier="SessionRunningVC" useStoryboardIdentifierAsRestorationIdentifier="YES" id="1kc-gU-wrq" customClass="SessionRunningViewController" customModule="Parkinsons" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="SessionRunningVC" useStoryboardIdentifierAsRestorationIdentifier="YES" id="1kc-gU-wrq" customClass="SessionRunningViewController" customModule="ParkEase" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="Mdl-v4-X1O">
                         <rect key="frame" x="0.0" y="0.0" width="402" height="874"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <view userInteractionEnabled="NO" contentMode="center" translatesAutoresizingMaskIntoConstraints="NO" id="Qpe-gT-kER" customClass="CircularProgressView" customModule="Parkinsons" customModuleProvider="target">
+                            <view userInteractionEnabled="NO" contentMode="center" translatesAutoresizingMaskIntoConstraints="NO" id="Qpe-gT-kER" customClass="CircularProgressView" customModule="ParkEase" customModuleProvider="target">
                                 <rect key="frame" x="90" y="186" width="222" height="232"/>
                                 <subviews>
                                     <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="Xf8-ld-8JP">
@@ -188,7 +188,7 @@
         <!--Rhythmic Walking-->
         <scene sceneID="11U-OP-gRK">
             <objects>
-                <viewController storyboardIdentifier="SetGoalVCc" useStoryboardIdentifierAsRestorationIdentifier="YES" id="JJ7-RS-Dhn" customClass="SetGoalViewController" customModule="Parkinsons" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="SetGoalVCc" useStoryboardIdentifierAsRestorationIdentifier="YES" id="JJ7-RS-Dhn" customClass="SetGoalViewController" customModule="ParkEase" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" restorationIdentifier="Rhythmic_walking" id="wuG-Ru-sbe">
                         <rect key="frame" x="0.0" y="0.0" width="402" height="874"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -210,7 +210,7 @@
                                 <rect key="frame" x="16" y="740" width="370" height="55"/>
                                 <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                                 <prototypes>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="sessionCell" id="qZ7-XG-F0H" customClass="SessionTableViewCell" customModule="Parkinsons" customModuleProvider="target">
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="sessionCell" id="qZ7-XG-F0H" customClass="SessionTableViewCell" customModule="ParkEase" customModuleProvider="target">
                                         <rect key="frame" x="0.0" y="50" width="370" height="51"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="qZ7-XG-F0H" id="eBE-Zo-CQX">
@@ -419,7 +419,7 @@
         <!--Info View Controller-->
         <scene sceneID="R5Y-uo-jV3">
             <objects>
-                <viewController storyboardIdentifier="infoVC" useStoryboardIdentifierAsRestorationIdentifier="YES" id="llc-Di-Exy" userLabel="Info View Controller" customClass="RhythmicInfoViewController" customModule="Parkinsons" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="infoVC" useStoryboardIdentifierAsRestorationIdentifier="YES" id="llc-Di-Exy" userLabel="Info View Controller" customClass="RhythmicInfoViewController" customModule="ParkEase" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="XSL-GY-XgO">
                         <rect key="frame" x="0.0" y="0.0" width="402" height="874"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -515,7 +515,7 @@
         <!--Session Summary View Controller-->
         <scene sceneID="t6o-1p-YDN">
             <objects>
-                <viewController storyboardIdentifier="SessionSummaryVC" useStoryboardIdentifierAsRestorationIdentifier="YES" id="Pur-Wm-rd9" customClass="SessionSummaryViewController" customModule="Parkinsons" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="SessionSummaryVC" useStoryboardIdentifierAsRestorationIdentifier="YES" id="Pur-Wm-rd9" customClass="SessionSummaryViewController" customModule="ParkEase" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="bBS-zW-oR2">
                         <rect key="frame" x="0.0" y="0.0" width="402" height="874"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -804,7 +804,7 @@
         <!--Gait Summary Info View Controller-->
         <scene sceneID="myx-yR-NaW">
             <objects>
-                <viewController id="4L8-MZ-kMD" customClass="GaitSummaryInfoViewController" customModule="Parkinsons" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController id="4L8-MZ-kMD" customClass="GaitSummaryInfoViewController" customModule="ParkEase" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="zqc-TN-dQe">
                         <rect key="frame" x="0.0" y="0.0" width="402" height="812"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>

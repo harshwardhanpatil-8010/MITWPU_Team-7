@@ -1,20 +1,66 @@
-//
-//  RhythmicInfoViewController.swift
-//  Parkinsons
-//
-//  Created by SDC-USER on 10/12/25.
-//
-
-
 import UIKit
 
 class RhythmicInfoViewController: UIViewController {
+
     override func viewDidLoad() {
         super.viewDidLoad()
     }
-    
-    @IBAction func cancelButtonTapped(_ sender: Any) {
-        self.dismiss(animated: true, completion: nil)
+
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) {
+
+            let combinedText = self.collectAllLabelText(from: self.view)
+
+            SpeechManager.shared.speak(combinedText)
+        }
     }
-    
+
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+
+        SpeechManager.shared.stop()
+    }
+
+    @IBAction func cancelButtonTapped(_ sender: Any) {
+        SpeechManager.shared.stop()
+        dismiss(animated: true)
+    }
+
+    private func collectAllLabelText(from rootView: UIView) -> String {
+
+        var texts: [String] = []
+
+        func extractLabels(from view: UIView) {
+
+            let sortedSubviews = view.subviews.sorted {
+                $0.frame.minY < $1.frame.minY
+            }
+
+            for subview in sortedSubviews {
+
+                if let label = subview as? UILabel {
+
+                    let text = label.text?
+                        .trimmingCharacters(
+                            in: .whitespacesAndNewlines
+                        ) ?? ""
+
+                    if !text.isEmpty &&
+                        !label.isHidden &&
+                        label.alpha > 0 {
+
+                        texts.append(text)
+                    }
+                }
+
+                extractLabels(from: subview)
+            }
+        }
+
+        extractLabels(from: rootView)
+
+        return texts.joined(separator: ". ")
+    }
 }

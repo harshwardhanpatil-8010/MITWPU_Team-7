@@ -38,10 +38,15 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
         do {
             try AVAudioSession.sharedInstance().setCategory(
-                .playback, mode: .default, options: [.mixWithOthers])
+                .playback, mode: .default, options: [.mixWithOthers, .duckOthers])
             try AVAudioSession.sharedInstance().setActive(true)
         } catch {
             print("[Audio] Session setup failed: \(error)")
+        }
+
+        // Warm up SpeechManager to prevent initial hang
+        DispatchQueue.main.async {
+            _ = SpeechManager.shared
         }
 
         // MARK: - HealthKit
