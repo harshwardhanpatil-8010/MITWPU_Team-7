@@ -15,7 +15,6 @@ import CoreData
     }
     private init(inMemory: Bool = false) {
         container = NSPersistentContainer(name: "Data Model")
-        print("[COREDATA] Initializing PersistenceController...")
         
         if inMemory {
             container.persistentStoreDescriptions.first?.url =
@@ -26,20 +25,16 @@ import CoreData
         if let description = container.persistentStoreDescriptions.first {
             description.shouldMigrateStoreAutomatically = true
             description.shouldInferMappingModelAutomatically = true
-            print("[COREDATA] Store URL: \(description.url?.absoluteString ?? "nil")")
         }
         
         container.loadPersistentStores { storeDesc, error in
             if let error = error {
-                print("[COREDATA] FATAL: Core Data load error: \(error)")
                 fatalError("Core Data load error: \(error)")
             }
-            print("[COREDATA] Store loaded OK: \(storeDesc.url?.lastPathComponent ?? "unknown")")
         }
         container.viewContext.mergePolicy =
             NSMergeByPropertyObjectTrumpMergePolicy
         container.viewContext.automaticallyMergesChangesFromParent = true
-        print("[COREDATA] PersistenceController ready")
     }
     func newBackgroundContext() -> NSManagedObjectContext {
         let context = container.newBackgroundContext()

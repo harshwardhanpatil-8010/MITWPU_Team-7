@@ -27,26 +27,14 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         _ application: UIApplication,
         didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?
     ) -> Bool {
-        print("[LAUNCH] ========================================")
-        print("[LAUNCH] didFinishLaunching START")
-        let onboardingDone = UserDefaults.standard.bool(forKey: "hasCompletedOnboarding")
-        print("[LAUNCH] hasCompletedOnboarding = \(onboardingDone)")
-
         // MARK: - Exercise JSON Version Check
         let currentJSONVersion = "1.0"
         let storedJSONVersion  = UserDefaults.standard.string(forKey: "loadedExerciseJSONVersion")
-        let storedVersionDesc  = storedJSONVersion ?? "nil"
-        print("[LAUNCH] JSON version stored=\(storedVersionDesc) current=\(currentJSONVersion)")
 
         if storedJSONVersion != currentJSONVersion {
-            print("[LAUNCH] Running WorkoutManager.resetAllExercises...")
             WorkoutManager.shared.resetAllExercises()
-            print("[LAUNCH] WorkoutManager.syncSessionPersistence...")
             WorkoutManager.shared.syncSessionPersistence()
             UserDefaults.standard.set(currentJSONVersion, forKey: "loadedExerciseJSONVersion")
-            print("[LAUNCH] Exercise reset complete")
-        } else {
-            print("[LAUNCH] JSON unchanged, skipping exercise reset")
         }
 
         // NOTE: We do NOT call generateDailyWorkout() here.
@@ -55,14 +43,12 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
         // MARK: - Audio Session
 
-        print("[LAUNCH] Configuring AVAudioSession...")
         do {
             try AVAudioSession.sharedInstance().setCategory(
                 .playback, mode: .default, options: [.mixWithOthers])
             try AVAudioSession.sharedInstance().setActive(true)
-            print("[LAUNCH] AVAudioSession OK")
         } catch {
-            print("[LAUNCH] AVAudioSession FAILED: \(error)")
+            print("AVAudioSession FAILED: \(error)")
         }
 
         // MARK: - HealthKit
@@ -96,14 +82,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
         // MARK: - Medication Notifications
 
-        print("[LAUNCH] Registering notification categories...")
         MedicationNotificationManager.shared.registerCategories()
-        print("[LAUNCH] Setting notification delegate...")
         UNUserNotificationCenter.current().delegate = self
-        print("[LAUNCH] Requesting notification permission + scheduling...")
         MedicationNotificationManager.shared.requestPermissionAndScheduleAll()
-        print("[LAUNCH] didFinishLaunching END")
-        print("[LAUNCH] ========================================")
         return true
     }
 

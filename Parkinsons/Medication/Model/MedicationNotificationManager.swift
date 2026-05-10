@@ -87,11 +87,17 @@ final class MedicationNotificationManager {
 
     /// Request permission then schedule. Safe to call multiple times.
     func requestPermissionAndScheduleAll() {
-        UNUserNotificationCenter.current().requestAuthorization(
-            options: [.alert, .sound, .badge]
-        ) { [weak self] granted, _ in
-            guard granted else { return }
-            self?.scheduleAll()
+        UNUserNotificationCenter.current().requestAuthorization(options: [.alert, .sound, .badge]) { granted, error in
+            if let error = error {
+                print("[MedNotif] Permission error: \(error.localizedDescription)")
+            }
+            if granted {
+                DispatchQueue.main.async {
+                    self.rescheduleAll()
+                }
+            } else {
+                print("[MedNotif] Permission denied.")
+            }
         }
     }
 
