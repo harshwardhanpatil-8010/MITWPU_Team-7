@@ -45,14 +45,29 @@ class SymptomViewController: UIViewController, SymptomRatingCellDelegate {
         setupTableViewUI()
         updateDataForSelectedDate()
         setupSymptomBackgroundUI()
-        let appearance = UINavigationBarAppearance()
-            appearance.titleTextAttributes = [
-                .font: UIFont.systemFont(ofSize: 32, weight: .bold),
-                .foregroundColor: UIColor.label
-            ]
+        let scrollAppearance = UINavigationBarAppearance()
+        scrollAppearance.configureWithTransparentBackground()
+        scrollAppearance.titleTextAttributes = [
+            .font: UIFont.systemFont(ofSize: 32, weight: .bold),
+            .foregroundColor: UIColor.label
+        ]
+        // Push the large title to the left to match Apple Fitness zero-gap design
+        let screenWidth = UIScreen.main.bounds.width
+        scrollAppearance.titlePositionAdjustment = UIOffset(horizontal: -(screenWidth / 2) + 100, vertical: 0)
 
-            navigationController?.navigationBar.standardAppearance = appearance
-            navigationController?.navigationBar.scrollEdgeAppearance = appearance
+        let standardAppearance = UINavigationBarAppearance()
+        standardAppearance.configureWithDefaultBackground()
+        standardAppearance.titleTextAttributes = [
+            .font: UIFont.systemFont(ofSize: 17, weight: .semibold),
+            .foregroundColor: UIColor.label
+        ]
+        standardAppearance.titlePositionAdjustment = UIOffset(horizontal: 0, vertical: 0)
+
+        navigationController?.navigationBar.prefersLargeTitles = false
+        navigationItem.largeTitleDisplayMode = .never
+
+        navigationController?.navigationBar.standardAppearance = standardAppearance
+        navigationController?.navigationBar.scrollEdgeAppearance = scrollAppearance
     }
 
 
