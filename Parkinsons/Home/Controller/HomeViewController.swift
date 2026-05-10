@@ -368,25 +368,18 @@ class HomeViewController: UIViewController, UICollectionViewDelegate {
             }
 
             let newDate = model.date
-            if !calendar.isDate(newDate, inSameDayAs: selectedDate) {
-                selectedDate = newDate
-                collectionView.scrollToItem(at: indexPath, at: .centeredHorizontally, animated: true)
-                
-                if let header = collectionView.supplementaryView(forElementKind: UICollectionView.elementKindSectionHeader, at: IndexPath(item: 0, section: Section.calendar.rawValue)) as? SectionHeaderView {
-                    let dateString = formattedDateString(for: selectedDate)
-                    let isToday = calendar.isDateInToday(selectedDate)
-                    header.configure(title: isToday ? "Today, \(dateString)" : dateString)
-                }
-                let visibleCalendarIndices = collectionView.indexPathsForVisibleItems.filter { $0.section == Section.calendar.rawValue }
-                collectionView.reloadItems(at: visibleCalendarIndices)
-                collectionView.reloadSections(IndexSet(integer: Section.exercises.rawValue))
-            }
+            
+
 
             let storyboard = UIStoryboard(name: "Home", bundle: nil)
             guard let summaryVC = storyboard.instantiateViewController(withIdentifier: "SummaryViewController") as? SummaryViewController else { return }
-            summaryVC.dateToDisplay = selectedDate
+            summaryVC.dateToDisplay = newDate
+            summaryVC.onDismiss = { [weak self] in
+                self?.resetToToday()
+            }
             let navController = UINavigationController(rootViewController: summaryVC)
             navController.modalPresentationStyle = .pageSheet
+            navController.presentationController?.delegate = self
             present(navController, animated: true)
             
         case .exercises:
@@ -481,7 +474,7 @@ extension HomeViewController: UICollectionViewDataSource {
                 cell.setProgress(completed: completed, total: total)
             } else if indexPath.row == 1 {
                 cell.setThemeColor(UIColor(hex: "90AF81"))
-                if let lastSession = DataStore.shared.sessions.first {
+                if let lastSession = DataStore.shared.fetchSessions(for: selectedDate).first {
                     let done = lastSession.elapsedSeconds
                     let goal = max(lastSession.requestedDurationSeconds, 1)
                     let percentage = Int((Double(done) / Double(goal)) * 100)
@@ -631,5 +624,31 @@ extension HomeViewController {
         )
         alert.addAction(UIAlertAction(title: "Got it", style: .default))
         self.present(alert, animated: true)
+    }
+}
+
+extension HomeViewController: UIAdaptivePresentationControllerDelegate {
+    func presentationControllerDidDismiss(_ presentationController: UIPresentationController) {
+        resetToToday()
+    }
+    
+    private func resetToToday() {
+        let calendar = Calendar.current
+        let today = Date()
+        
+        if !calendar.isDate(today, inSameDayAs: selectedDate) {
+            selectedDate = today
+            scrollToSelectedDate(animated: true)
+            
+            if let header = mainCollectionView.supplementaryView(forElementKind: UICollectionView.elementKindSectionHeader, at: IndexPath(item: 0, section: Section.calendar.rawValue)) as? SectionHeaderView {
+                let dateString = formattedDateString(for: selectedDate)
+                header.configure(title: "Today, \(dateString)", showInfoIcon: false)
+                header.setTitleAlignment(.center)
+                header.setFont(size: 17, weight: .bold)
+            }
+            let visibleCalendarIndices = mainCollectionView.indexPathsForVisibleItems.filter { $0.section == Section.calendar.rawValue }
+            mainCollectionView.reloadItems(at: visibleCalendarIndices)
+            mainCollectionView.reloadSections(IndexSet(integer: Section.exercises.rawValue))
+        }
     }
 }
