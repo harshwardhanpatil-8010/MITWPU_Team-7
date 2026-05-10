@@ -1,4 +1,5 @@
 
+
 import UIKit
 import CoreData
 enum Section: Int, CaseIterable {
@@ -14,12 +15,14 @@ class HomeViewController: UIViewController, UICollectionViewDelegate {
     private let todayViewModel = TodayMedicationViewModel()
     private var todayDoses: [TodayDoseItem] = []
 
+    private var noMedicationsCreated: Bool {
+        let context = PersistenceController.shared.viewContext
+        let request: NSFetchRequest<Medication> = Medication.fetchRequest()
+        return ((try? context.count(for: request)) ?? 0) == 0
+    }
+
 
     @IBOutlet weak var NameLabel: UILabel!
-    
-
-
-
     @IBOutlet weak var mainCollectionView: UICollectionView!
     
     private var medicationLoggedObserver: NSObjectProtocol?
@@ -66,7 +69,6 @@ class HomeViewController: UIViewController, UICollectionViewDelegate {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        // 1. Initial Load: Look for the FULL name, then split it
         let savedFull = UserDefaults.standard.string(forKey: "UserFullName") ?? "John"
         let firstName = savedFull.components(separatedBy: " ").first ?? savedFull
         self.NameOfUser.text = "Hello \(firstName)!"
@@ -216,6 +218,7 @@ class HomeViewController: UIViewController, UICollectionViewDelegate {
     func registerCells() {
         mainCollectionView.register(UINib(nibName: "CalenderCollectionViewCell", bundle: nil), forCellWithReuseIdentifier: "calendar_cell")
         mainCollectionView.register(UINib(nibName: "MedicationCardCollectionViewCell", bundle: nil), forCellWithReuseIdentifier: "MedicationCardCell")
+        mainCollectionView.register(UINib(nibName: "NoMedCollectionViewCell", bundle: nil), forCellWithReuseIdentifier: "NoMedCell")
         mainCollectionView.register(UINib(nibName: "ExerciseCardCell", bundle: nil), forCellWithReuseIdentifier: "exercise_card_cell")
         mainCollectionView.register(UINib(nibName: "TherapeuticGameCell", bundle: nil), forCellWithReuseIdentifier: "therapeutic_game_cell")
         
@@ -253,12 +256,17 @@ class HomeViewController: UIViewController, UICollectionViewDelegate {
             case .medications:
                 let itemSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: .fractionalHeight(1.0))
                 let item = NSCollectionLayoutItem(layoutSize: itemSize)
-                
-                let groupSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(0.9), heightDimension: .absolute(90))
+
+                let groupSize: NSCollectionLayoutSize
+                if self.noMedicationsCreated {
+                    groupSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: .absolute(80))
+                } else {
+                    groupSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(0.9), heightDimension: .absolute(90))
+                }
                 let group = NSCollectionLayoutGroup.horizontal(layoutSize: groupSize, subitems: [item])
-                
+
                 let section = NSCollectionLayoutSection(group: group)
-                section.orthogonalScrollingBehavior = .groupPaging
+                section.orthogonalScrollingBehavior = self.noMedicationsCreated ? .none : .groupPaging
                 section.interGroupSpacing = 12
                 section.contentInsets = NSDirectionalEdgeInsets(top: 8, leading: 16, bottom: 24, trailing: 16)
                 
@@ -268,7 +276,7 @@ class HomeViewController: UIViewController, UICollectionViewDelegate {
                     elementKind: UICollectionView.elementKindSectionHeader,
                     alignment: .top
                 )
-                let footerHeight: CGFloat = self.todayDoses.isEmpty ? 40 : 0
+                let footerHeight: CGFloat = (!self.noMedicationsCreated && self.todayDoses.isEmpty) ? 40 : 0
                 let footerSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: .absolute(footerHeight))
                 let footer = NSCollectionLayoutBoundarySupplementaryItem(
                     layoutSize: footerSize,
@@ -432,7 +440,7 @@ extension HomeViewController: UICollectionViewDataSource {
         switch homeSections[section] {
         case .calendar: return dates.count
         case .medications:
-            return todayDoses.count
+            return noMedicationsCreated ? 1 : todayDoses.count
         case .exercises: return exerciseData.count
         case .therapeuticGames: return therapeuticGamesData.count
         }
@@ -457,6 +465,11 @@ extension HomeViewController: UICollectionViewDataSource {
             return cell
             
         case .medications:
+            if noMedicationsCreated {
+                let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "NoMedCell", for: indexPath) as! NoMedCollectionViewCell
+                cell.delegate = self
+                return cell
+            }
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "MedicationCardCell", for: indexPath) as! MedicationCardCollectionViewCell
             let doseItem = todayDoses[indexPath.row]
             cell.configure(with: doseItem)
@@ -566,41 +579,20 @@ extension HomeViewController: UICollectionViewDataSource {
         
         if kind == UICollectionView.elementKindSectionFooter && sectionType == .medications {
             let footer = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: "EmptyMedicationFooter", for: indexPath)
-            
-            
             footer.subviews.forEach { $0.removeFromSuperview() }
-            
-            let context = PersistenceController.shared.viewContext
-            let request: NSFetchRequest<Medication> = Medication.fetchRequest()
-            let count = (try? context.count(for: request)) ?? 0
-            let noMedicationsCreated = count == 0
-
-            
-            
-            let allDosesProcessed = todayDoses.isEmpty
-            
-            if allDosesProcessed {
+            if !noMedicationsCreated && todayDoses.isEmpty {
                 let label = UILabel()
+                label.text = "All medications Logged!"
                 label.textColor = .systemGray2
                 label.font = .systemFont(ofSize: 20, weight: .medium)
                 label.textAlignment = .center
                 label.translatesAutoresizingMaskIntoConstraints = false
-                
-             
-                if noMedicationsCreated {
-                    label.text = "No medications added yet."
-                } else {
-                    label.text = "All medications Logged!"
-                }
-                
                 footer.addSubview(label)
-                
                 NSLayoutConstraint.activate([
                     label.centerXAnchor.constraint(equalTo: footer.centerXAnchor),
                     label.centerYAnchor.constraint(equalTo: footer.centerYAnchor, constant: -15)
                 ])
             }
-            
             return footer
         }
         return UICollectionReusableView()
@@ -632,5 +624,15 @@ extension HomeViewController {
         )
         alert.addAction(UIAlertAction(title: "Got it", style: .default))
         self.present(alert, animated: true)
+    }
+}
+
+extension HomeViewController: NoMedCollectionViewCellDelegate {
+    func didTapAddNow() {
+        let storyboard = UIStoryboard(name: "Medication", bundle: nil)
+        guard let vc = storyboard.instantiateViewController(withIdentifier: "AddMedVC") as? UIViewController else { return }
+        let nav = UINavigationController(rootViewController: vc)
+        nav.modalPresentationStyle = .pageSheet
+        present(nav, animated: true)
     }
 }

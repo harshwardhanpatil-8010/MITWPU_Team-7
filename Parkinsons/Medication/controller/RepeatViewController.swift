@@ -18,7 +18,6 @@ class RepeatViewController: UIViewController,
 
     weak var delegate: RepeatSelectionDelegate?
 
-    // From AddMedicationVC
     var preselectedType: String?
     var preselectedDays: [Int]?
 
@@ -37,7 +36,6 @@ class RepeatViewController: UIViewController,
         restoreSelection()
     }
 
-    // MARK: - Restore Selection (Edit Mode)
 
     private func restoreSelection() {
         guard let type = preselectedType else { return }
@@ -70,7 +68,6 @@ class RepeatViewController: UIViewController,
         repeatTableView.reloadData()
     }
 
-    // MARK: - TableView
 
     func tableView(_ tableView: UITableView,
                    numberOfRowsInSection section: Int) -> Int {
@@ -110,7 +107,6 @@ class RepeatViewController: UIViewController,
         tableView.reloadData()
     }
 
-    // MARK: - Buttons
 
     @IBAction func onBackPressed(_ sender: UIBarButtonItem) {
         navigationController?.popViewController(animated: true)
@@ -122,14 +118,12 @@ class RepeatViewController: UIViewController,
             .filter { $0.isSelected }
             .map { $0.name }
 
-        // Everyday
         if selectedNames.contains("Everyday") {
             delegate?.didSelectSchedule(type: "everyday", days: nil)
             navigationController?.popViewController(animated: true)
             return
         }
 
-        // Weekly
         let map: [String: Int] = [
             "Every Sunday": 1,
             "Every Monday": 2,
@@ -152,7 +146,6 @@ class RepeatViewController: UIViewController,
     }
 }
 
-// MARK: - Model
 
 struct RepeatOption {
     let name: String

@@ -92,7 +92,6 @@ class _0minworkoutViewController: UIViewController {
             guard let avPlayerLayer else { return }
             playerView.layer.addSublayer(avPlayerLayer)
         }
-        // Reset looper each time
         playerLooper = nil
         avPlayer?.pause()
         avPlayer?.removeAllItems()
@@ -186,14 +185,11 @@ class _0minworkoutViewController: UIViewController {
         guard currentIndex > 0 else { return }
         currentIndex -= 1
 
-        // Stop current timer/speech
         timer?.invalidate()
         timer = nil
         pendingSpeechWorkItem?.cancel()
         SpeechManager.shared.stop()
 
-        // Animate and load directly — do NOT go through configureExercise()
-        // because that would skip forward past any completed exercises
         let transition = CATransition()
         transition.duration = 0.4
         transition.type = .push
@@ -463,23 +459,17 @@ class _0minworkoutViewController: UIViewController {
     }
 }
 
-// MARK: - RestScreenDelegate
-
 extension _0minworkoutViewController: RestScreenDelegate {
 
     func recordRestDuration(seconds: TimeInterval) {
         totalWorkoutSeconds += seconds
     }
 
-    /// Rest finished and there IS a next exercise — just sync our pointer.
-    /// The rest screen already pushed the countdown VC.
     func restCompleted(exercises: [WorkoutExercise], nextIndex: Int) {
         self.exercises    = exercises
         self.currentIndex = nextIndex
     }
 
-    /// Rest finished but there are NO more exercises left.
-    /// The rest screen already popped itself; now we decide what comes next.
     func restCompletedWorkoutDone() {
         if isRevisitingSkipped {
             isRevisitingSkipped = false

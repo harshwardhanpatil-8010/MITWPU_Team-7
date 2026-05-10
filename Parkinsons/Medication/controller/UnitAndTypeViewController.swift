@@ -56,12 +56,10 @@ class UnitAndTypeViewController: UIViewController,
 
         unitTextField.text = selectedUnit
 
-        // 🔥 Reset everything first
         for i in 0..<unitAndType.count {
             unitAndType[i].isSelected = false
         }
 
-        // Then apply selected type if editing
         if let selectedType,
            let index = unitAndType.firstIndex(where: { $0.name == selectedType }) {
 

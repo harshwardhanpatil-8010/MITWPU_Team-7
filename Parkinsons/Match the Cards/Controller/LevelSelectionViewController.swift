@@ -66,10 +66,10 @@ UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
     private func configureLayout() {
         guard let layout = collectionView.collectionViewLayout as? UICollectionViewFlowLayout else { return }
         let size = collectionView.bounds.width / 7
-        layout.itemSize = CGSize(width: size, height: size)   // square cells = equal row & column spacing
+        layout.itemSize = CGSize(width: size, height: size)
         layout.minimumInteritemSpacing = 0
         layout.minimumLineSpacing = 0
-        layout.estimatedItemSize = .zero                       // prevents auto-sizing from breaking row height
+        layout.estimatedItemSize = .zero                      
     }
 
     private func setupMonth() {
@@ -96,15 +96,9 @@ UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
             return DailyGameManager.shared.isCompleted(date: calendar.startOfDay(for: date))
         }.count
 
-        if completedCount == 0 {
-            completedLabel.text = "Select a date to start playing"
-            completedLabel.textColor = .systemOrange
-            imageView.isHidden = true
-        } else {
             completedLabel.text = "\(completedCount)/\(daysInMonth) Completed"
             completedLabel.textColor = .label
             imageView.isHidden = false
-        }
     }
 
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {

@@ -80,8 +80,6 @@ class AddMedicationViewController: UIViewController,
         
         let tap = UITapGestureRecognizer(target: self, action: #selector(dismissKeyboard))
         view.addGestureRecognizer(tap)
-        
-        // Set delegates for text fields to dismiss keyboard on return
         medicationNameTextField.delegate = self
         strengthLabel.delegate = self
         
@@ -109,7 +107,6 @@ class AddMedicationViewController: UIViewController,
         )
     }
     
-    // MARK: - UITextFieldDelegate
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         textField.resignFirstResponder()
         return true
@@ -225,7 +222,6 @@ class AddMedicationViewController: UIViewController,
             return
         }
 
-        // ---------- EDIT MODE (keep your existing logic) ----------
 
         guard let original = originalMedicationSnapshot else {
             tickButton.isEnabled = false
@@ -343,18 +339,15 @@ class AddMedicationViewController: UIViewController,
             medication.createdAt = Date()
         }
 
-        // MARK: - Basic fields
         medication.medicationName = name
         medication.medicationForm = typeLabel.text ?? "Capsule"
         medication.medicationUnit = unitLabel.text ?? "mg"
         medication.medicationStrength = Int16(Int(strengthLabel.text ?? "") ?? 0)
         medication.medicationIconName = UnitAndType.icon(for: typeLabel.text ?? "Capsule")
 
-        // MARK: - Schedule
         medication.medicationScheduleType = selectedScheduleType
         medication.medicationScheduleDays = selectedScheduleDays as NSObject?
 
-        // MARK: - Remove old doses (edit mode only)
         if isEditMode {
             let oldDoses = medication.doses as? Set<MedicationDose> ?? []
             for dose in oldDoses {
@@ -362,7 +355,6 @@ class AddMedicationViewController: UIViewController,
             }
         }
 
-        // MARK: - Add new doses
         for date in doseArray {
             let dose = MedicationDose(context: context)
             dose.id = UUID()
@@ -371,7 +363,6 @@ class AddMedicationViewController: UIViewController,
             dose.medication = medication
         }
 
-        // MARK: - Save
         PersistenceController.shared.save(context)
 
         delegate?.didUpdateMedication()

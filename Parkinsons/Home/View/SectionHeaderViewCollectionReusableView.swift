@@ -4,20 +4,17 @@ class SectionHeaderView: UICollectionReusableView {
     
     static let reuseIdentifier = "HeaderView"
     let titleLabel = UILabel()
-    
-    // 1. Add the info button
     let infoButton: UIButton = {
         let button = UIButton(type: .system)
         let config = UIImage.SymbolConfiguration(pointSize: 14, weight: .medium)
         let image = UIImage(systemName: "info.circle", withConfiguration: config)
         button.setImage(image, for: .normal)
         button.tintColor = .black
-        button.isHidden = true // Hidden by default, only shown for specific sections
+        button.isHidden = true
         button.translatesAutoresizingMaskIntoConstraints = false
         return button
     }()
     
-    // Callback for the tap action
     var onInfoTap: (() -> Void)?
     
     override init(frame: CGRect) {
@@ -30,9 +27,7 @@ class SectionHeaderView: UICollectionReusableView {
         infoButton.translatesAutoresizingMaskIntoConstraints = false
 
         NSLayoutConstraint.activate([
-            // Pin label to the leading edge
             titleLabel.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 8),
-            // Pin label to the trailing edge (important for text alignment to work)
             titleLabel.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -16),
             titleLabel.topAnchor.constraint(equalTo: topAnchor),
             titleLabel.bottomAnchor.constraint(equalTo: bottomAnchor),
@@ -58,9 +53,6 @@ class SectionHeaderView: UICollectionReusableView {
         titleLabel.text = title
         infoButton.isHidden = !showInfoIcon
         
-        // If we are showing the icon, we might need a slight offset
-        // to keep the TEXT itself perfectly centered.
-        // However, the constraints above usually handle this well.
     }
 
     func setTitleAlignment(_ alignment: NSTextAlignment) {

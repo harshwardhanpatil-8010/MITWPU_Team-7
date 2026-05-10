@@ -160,7 +160,6 @@ class WorkoutManager {
         return ExercisePosition(rawValue: raw)
     }
 
-    // MARK: - Feedback Persistence
 
     func saveFeedback(_ value: Int) {
         UserDefaults.standard.set(value, forKey: "lastWorkoutFeedback")

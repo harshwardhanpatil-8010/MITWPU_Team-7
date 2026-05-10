@@ -45,14 +45,12 @@ class SymptomRatingCell: UITableViewCell {
         }
     }
     
-    /// Ensure button imageViews scale images properly instead of expanding
     private func setupButtonImageViews() {
         ratingButtons.forEach { button in
             button.imageView?.contentMode = .scaleAspectFit
             button.imageView?.clipsToBounds = true
             button.contentHorizontalAlignment = .fill
             button.contentVerticalAlignment = .fill
-            // Add padding so the image doesn't touch button edges
             button.configuration?.contentInsets = NSDirectionalEdgeInsets(top: 4, leading: 4, bottom: 4, trailing: 4)
         }
     }
@@ -89,8 +87,6 @@ class SymptomRatingCell: UITableViewCell {
             self.bubbleLabel.transform = .identity
         }
     }
-    
-    /// Resize a UIImage to a target size
     private func resizedImage(_ image: UIImage?, to size: CGSize) -> UIImage? {
         guard let image = image else { return nil }
         let renderer = UIGraphicsImageRenderer(size: size)

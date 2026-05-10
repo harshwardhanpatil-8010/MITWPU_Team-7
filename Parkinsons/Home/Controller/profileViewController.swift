@@ -1,8 +1,7 @@
 import UIKit
 
 class profileViewController: UIViewController, UITextFieldDelegate {
-    
-    //    @IBOutlet weak var StageInfo: UITextField!
+
     @IBOutlet weak var backButton: UIBarButtonItem!
     @IBOutlet weak var editButton: UIBarButtonItem!
     @IBOutlet weak var logoBackground: UIView!
