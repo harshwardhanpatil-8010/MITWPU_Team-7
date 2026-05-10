@@ -17,6 +17,7 @@ class SummaryViewController: UIViewController {
         }
 
     var dateToDisplay: Date?
+    var onDismiss: (() -> Void)?
     var currentSymptomLog: SymptomLogEntry?
     let summarySections = Section.allCases
 
@@ -366,7 +367,9 @@ class SummaryViewController: UIViewController {
 
     @IBAction func closeButtonTapped(_ sender: Any) {
 
-        dismiss(animated: true)
+        dismiss(animated: true) { [weak self] in
+            self?.onDismiss?()
+        }
 
     }
 

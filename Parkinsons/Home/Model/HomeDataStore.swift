@@ -34,7 +34,7 @@ class HomeDataStore {
         var tempDates: [DateModel] = []
         let today = Date()
 
-        for diff in (-30...7) {
+        for diff in (-7...7) {
             let day = Calendar.current.date(byAdding: .day, value: diff, to: today)!
             tempDates.append(
                 DateModel(
