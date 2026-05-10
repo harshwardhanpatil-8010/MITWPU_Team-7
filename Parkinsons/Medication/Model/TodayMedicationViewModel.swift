@@ -5,8 +5,6 @@ final class TodayMedicationViewModel {
     private(set) var todayDoses: [TodayDoseItem] = []
     
 
-    // MARK: - Load Today Doses
-
     func loadTodayMedications(from medications: [Medication]) {
 
         todayDoses.removeAll()
@@ -21,7 +19,6 @@ final class TodayMedicationViewModel {
 
                 guard let time = dose.doseTime else { continue }
 
-                // Only show if not already taken
                 if dose.doseStatus == "taken" || dose.doseStatus == "skipped" {
                     continue
                 }
@@ -54,7 +51,6 @@ final class TodayMedicationViewModel {
         todayDoses.sort { $0.scheduledTime < $1.scheduledTime }
     }
 
-    // MARK: - Load Logged Doses (Core Data Based)
 
     private(set) var loggedDoses: [LoggedDoseItem] = []
 
@@ -95,8 +91,6 @@ final class TodayMedicationViewModel {
         loggedDoses.sort { $0.loggedTime > $1.loggedTime }
     }
 
-
-    // MARK: - Helpers
 
     private func normalizeDoseTime(_ date: Date) -> Date {
         let cal = Calendar.current

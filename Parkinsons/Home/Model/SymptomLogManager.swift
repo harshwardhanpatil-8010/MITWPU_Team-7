@@ -11,7 +11,6 @@ final class SymptomLogManager {
         self.context = PersistenceController.shared.container.viewContext
     }
 
-    // MARK: - Save
 
     func saveLogEntry(_ entry: SymptomLogEntry) {
 
@@ -34,8 +33,6 @@ final class SymptomLogManager {
 
         saveContext()
     }
-
-    // MARK: - Fetch (Daily Entry)
 
     func getLogEntry(for date: Date) -> SymptomLogEntry? {
 
@@ -70,7 +67,6 @@ final class SymptomLogManager {
         }
     }
 
-    // MARK: - Delete
 
     private func deleteLogs(for date: Date) {
         let request: NSFetchRequest<CDSymptomLog> = CDSymptomLog.fetchRequest()
@@ -85,7 +81,6 @@ final class SymptomLogManager {
         }
     }
 
-    // MARK: - Helpers
 
     private func saveContext() {
         guard context.hasChanges else { return }

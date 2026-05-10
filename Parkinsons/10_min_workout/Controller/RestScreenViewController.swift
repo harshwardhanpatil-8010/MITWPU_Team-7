@@ -5,8 +5,6 @@ import UIKit
 protocol RestScreenDelegate: AnyObject {
     func recordRestDuration(seconds: TimeInterval)
     func restCompleted(exercises: [WorkoutExercise], nextIndex: Int)
-    /// Called when rest finishes but there are no more exercises to show —
-    /// the workout VC should handle completion / skipped-exercise logic itself.
     func restCompletedWorkoutDone()
 }
 class RestScreenViewController: UIViewController {
@@ -126,13 +124,9 @@ class RestScreenViewController: UIViewController {
         restTimer?.invalidate()
         restTimer = nil
 
-        // Notify delegate to record rest duration first
         delegate?.recordRestDuration(seconds: restStartTime.map { Date().timeIntervalSince($0) } ?? 0)
 
-        // If there are no more exercises, hand control back to the workout VC
-        // so it can handle skipped-exercise prompts and the Good Job screen.
         guard currentIndex < exercises.count else {
-            // Pop back to the workout VC and let it call checkForSkippedExercises
             navigationController?.popViewController(animated: false)
             DispatchQueue.main.async {
                 self.delegate?.restCompletedWorkoutDone()
@@ -140,7 +134,6 @@ class RestScreenViewController: UIViewController {
             return
         }
 
-        // There IS a next exercise — push the countdown screen
         let countdown = ExerciseCountdownViewController()
         countdown.exercises     = exercises
         countdown.startingIndex = currentIndex

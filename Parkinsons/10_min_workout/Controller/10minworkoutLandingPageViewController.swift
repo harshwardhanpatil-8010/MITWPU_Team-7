@@ -210,8 +210,6 @@ class _0minworkoutLandingPageViewController: UIViewController, UICollectionViewD
         updateButtonUI()
     }
 
-    // MARK: - Start Workout
-
     @IBAction func StartWorkoutTapped(_ sender: Any) {
         navigateToWorkout()
     }
@@ -253,7 +251,6 @@ class _0minworkoutLandingPageViewController: UIViewController, UICollectionViewD
         }
     }
 
-    // MARK: - Med / position alerts
 
     private func checkMedTaken() {
         let manager = WorkoutManager.shared
@@ -388,7 +385,6 @@ class _0minworkoutLandingPageViewController: UIViewController, UICollectionViewD
     }
 }
 
-// MARK: - UICollectionViewDataSource
 
 extension _0minworkoutLandingPageViewController: UICollectionViewDataSource {
 

@@ -40,7 +40,7 @@ class DateCell: UICollectionViewCell {
 
     override func layoutSubviews() {
         super.layoutSubviews()
-        // Runs after bounds are final — guarantees a perfect circle
+       
         labelBackgroundView.layer.cornerRadius = labelBackgroundView.bounds.width / 2
         labelBackgroundView.clipsToBounds = true
     }

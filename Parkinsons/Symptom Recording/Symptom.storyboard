@@ -9,16 +9,16 @@
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
-        <!--Symptom Log-->
+        <!--Symptoms-->
         <scene sceneID="cSd-F8-m2U">
             <objects>
-                <viewController storyboardIdentifier="symptom" useStoryboardIdentifierAsRestorationIdentifier="YES" id="uuW-P4-EWo" customClass="SymptomViewController" customModule="Parkinsons" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="symptom" useStoryboardIdentifierAsRestorationIdentifier="YES" id="uuW-P4-EWo" customClass="SymptomViewController" customModule="ParkEase" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="hRj-r1-r9a">
                         <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="7Bi-mp-zbI">
-                                <rect key="frame" x="0.0" y="-32" width="393" height="792"/>
+                                <rect key="frame" x="0.0" y="-32" width="393" height="884"/>
                                 <subviews>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="fI8-bd-GlA">
                                         <rect key="frame" x="0.0" y="-279" width="393" height="1234.6666666666667"/>
@@ -63,7 +63,7 @@
                                                         </constraints>
                                                     </imageView>
                                                     <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="-1" estimatedSectionHeaderHeight="-1" sectionFooterHeight="-1" estimatedSectionFooterHeight="-1" translatesAutoresizingMaskIntoConstraints="NO" id="yTi-J9-lgr">
-                                                        <rect key="frame" x="0.0" y="146.33333333333331" width="361" height="379.99999999999994"/>
+                                                        <rect key="frame" x="0.0" y="146.33333333333337" width="361" height="380"/>
                                                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                                                         <constraints>
                                                             <constraint firstAttribute="height" constant="380" id="IU8-OF-q2t"/>
@@ -137,7 +137,7 @@
                             <constraint firstItem="7Bi-mp-zbI" firstAttribute="trailing" secondItem="hZO-CO-gnb" secondAttribute="trailing" id="nBu-bK-SZj"/>
                         </constraints>
                     </view>
-                    <navigationItem key="navigationItem" title="Symptom Log" largeTitleDisplayMode="always" id="J61-4l-7gg"/>
+                    <navigationItem key="navigationItem" title="Symptoms" largeTitleDisplayMode="never" style="browser" id="J61-4l-7gg"/>
                     <connections>
                         <outlet property="collectionView" destination="ZbZ-Mr-g82" id="Cbw-0u-5BS"/>
                         <outlet property="editAndSaveButton" destination="K65-6B-FHQ" id="VnQ-jq-01W"/>

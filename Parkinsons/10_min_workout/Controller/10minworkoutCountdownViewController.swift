@@ -30,10 +30,8 @@ class _0minworkoutCountdownViewController: UIViewController {
     
     private func playBeat(isGo: Bool) {
         if isGo {
-            // Higher pitched double-tap for GO!
             AudioServicesPlaySystemSound(1057)
         } else {
-            // Clean tick for 3, 2, 1
             AudioServicesPlaySystemSound(1104)
         }
     }
@@ -50,8 +48,6 @@ class _0minworkoutCountdownViewController: UIViewController {
         TimerLabel.alpha = 1
         TimerLabel.transform = .identity
         TimerLabel.text = countDown == 0 ? "GO!" : "\(countDown)"
-        
-        // Play beat on each count
         playBeat(isGo: countDown == 0)
 
         UIView.animate(withDuration: 0.85, animations: {

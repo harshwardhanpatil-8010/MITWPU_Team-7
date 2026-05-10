@@ -109,16 +109,13 @@ extension CalendarViewController: UICollectionViewDataSource, UICollectionViewDe
         cell.isHidden = dayData.isDummy
         if dayData.isDummy { return cell }
 
-        // Check if the date is after today
         let isFuture = dayData.date > Date()
         let isToday = Calendar.current.isDateInToday(dayData.date)
         
         let dateModel = DateModel(date: dayData.date, dayString: "", dateString: dayData.dayNumber)
         
-        // Configure visual appearance
         cell.configure(with: dateModel, isSelected: dayData.isSelected, isToday: isToday)
         
-        // Disable interaction and dim the cell if it's in the future
         cell.isUserInteractionEnabled = !isFuture
         cell.contentView.alpha = isFuture ? 0.3 : 1.0
         
@@ -148,11 +145,9 @@ extension CalendarViewController: UICollectionViewDataSource, UICollectionViewDe
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         let dayData = sections[indexPath.section].days[indexPath.item]
         
-        // Guard against dummy cells AND future dates
         let isFuture = dayData.date > Date()
         if dayData.isDummy || isFuture { return }
 
-        // Existing selection logic...
         for s in 0..<sections.count {
             for d in 0..<sections[s].days.count {
                 sections[s].days[d].isSelected = false

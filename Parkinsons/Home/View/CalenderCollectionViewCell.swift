@@ -26,24 +26,20 @@ class CalenderCollectionViewCell: UICollectionViewCell {
         calenderDay.text = model.dayString
         calenderDate.text = model.dateString
         
-        // 1. Handle Future Dates First (Highest Priority for Styling)
         if isFuture {
             calenderBackground.backgroundColor = .white
             calenderDay.textColor = .systemGray5
             calenderDate.textColor = .systemGray5
             calenderBackground.layer.borderWidth = 0
-            return // Exit early so selection/today logic doesn't override colors
+            return
         }
         
-        // 2. Default Styling for past/present
         calenderBackground.backgroundColor = .white
         calenderDay.textColor = .lightGray
         calenderDate.textColor = .black
         calenderBackground.layer.borderWidth = 0
         calenderBackground.layer.borderColor = nil
 
-
-        // 3. Selection Styling
         if isSelected {
             calenderDay.textColor = .white
             calenderDate.textColor = .white

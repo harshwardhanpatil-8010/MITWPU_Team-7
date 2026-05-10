@@ -26,7 +26,6 @@ extension MedicationDose {
 
 }
 
-// MARK: Generated accessors for logs
 extension MedicationDose {
 
     @objc(addLogsObject:)

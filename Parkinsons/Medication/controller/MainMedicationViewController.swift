@@ -75,14 +75,31 @@ final class MainMedicationViewController: UIViewController {
             self?.loadMedications()
         }
 
-        // Observe dose logged from alarm screen / notification actions
-        doseLoggedObserver = NotificationCenter.default.addObserver(
-            forName: .medicationDoseLogged,
-            object: nil,
-            queue: .main
-        ) { [weak self] _ in
-            self?.loadMedications()
-        }
+        
+        let scrollAppearance = UINavigationBarAppearance()
+        scrollAppearance.configureWithTransparentBackground()
+        scrollAppearance.titleTextAttributes = [
+            .font: UIFont.systemFont(ofSize: 32, weight: .bold),
+            .foregroundColor: UIColor.label
+        ]
+        // Push the large title to the left to match Apple Fitness zero-gap design
+        let screenWidth = UIScreen.main.bounds.width
+        scrollAppearance.titlePositionAdjustment = UIOffset(horizontal: -(screenWidth / 2) + 110, vertical: 0)
+
+        let standardAppearance = UINavigationBarAppearance()
+        standardAppearance.configureWithDefaultBackground()
+        standardAppearance.titleTextAttributes = [
+            .font: UIFont.systemFont(ofSize: 17, weight: .semibold),
+            .foregroundColor: UIColor.label
+        ]
+        standardAppearance.titlePositionAdjustment = UIOffset(horizontal: 0, vertical: 0)
+
+        navigationController?.navigationBar.prefersLargeTitles = false
+        navigationItem.largeTitleDisplayMode = .never
+
+        navigationController?.navigationBar.standardAppearance = standardAppearance
+        navigationController?.navigationBar.scrollEdgeAppearance = scrollAppearance
+
     }
 
     override func viewDidLayoutSubviews() {

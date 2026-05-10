@@ -32,7 +32,6 @@ extension Medication {
 
 }
 
-// MARK: Generated accessors for doses
 extension Medication {
 
     @objc(addDosesObject:)
@@ -49,7 +48,6 @@ extension Medication {
 
 }
 
-// MARK: Generated accessors for logs
 extension Medication {
 
     @objc(addLogsObject:)
