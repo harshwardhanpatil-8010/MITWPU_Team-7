@@ -7,7 +7,7 @@ import Foundation
 import UserNotifications
 import CoreData
 
-// MARK: - Notification payload keys (shared with AppDelegate & AlarmVC)
+// MARK: - Shared keys
 
 enum MedNotifKey {
     static let doseID        = "doseID"
@@ -21,14 +21,10 @@ enum MedNotifKey {
     static let isFollowUp    = "isFollowUp"
 }
 
-// MARK: - Notification category identifiers
-
 enum MedNotifCategory {
-    static let onTime    = "MED_ON_TIME"
-    static let followUp  = "MED_FOLLOW_UP"
+    static let onTime   = "MED_ON_TIME"
+    static let followUp = "MED_FOLLOW_UP"
 }
-
-// MARK: - Notification action identifiers
 
 enum MedNotifAction {
     static let taken   = "MED_ACTION_TAKEN"
@@ -43,12 +39,21 @@ final class MedicationNotificationManager {
     private init() {}
 
 
-    private let followUpSuffix = "_followup"
-
     private let followUpDelay: TimeInterval = 15 * 60
+    private let iso = ISO8601DateFormatter()
 
-    // MARK: - Public API
 
+
+
+    private func groupID(for date: Date, isFollowUp: Bool) -> String {
+        "group_" + iso.string(from: date) + (isFollowUp ? "_followup" : "")
+    }
+
+    private func perDoseFollowUpID(for doseID: UUID) -> String {
+        doseID.uuidString + "_followup"
+    }
+
+    // MARK: - Register categories (call once at launch)
 
     func registerCategories() {
         let takenAction = UNNotificationAction(
@@ -61,7 +66,6 @@ final class MedicationNotificationManager {
             title: "Skip",
             options: [.destructive]
         )
-
         let onTimeCategory = UNNotificationCategory(
             identifier: MedNotifCategory.onTime,
             actions: [takenAction, skippedAction],
@@ -74,24 +78,19 @@ final class MedicationNotificationManager {
             intentIdentifiers: [],
             options: []
         )
-
         UNUserNotificationCenter.current()
             .setNotificationCategories([onTimeCategory, followUpCategory])
     }
 
 
+
     func requestPermissionAndScheduleAll() {
-        UNUserNotificationCenter.current().requestAuthorization(options: [.alert, .sound, .badge]) { granted, error in
-            if let error = error {
-                print("[MedNotif] Permission error: \(error.localizedDescription)")
-            }
-            if granted {
-                DispatchQueue.main.async {
-                    self.rescheduleAll()
-                }
-            } else {
-                print("[MedNotif] Permission denied.")
-            }
+        UNUserNotificationCenter.current().requestAuthorization(
+            options: [.alert, .sound, .badge]
+        ) { granted, error in
+            if let error { print("[MedNotif] Permission error: \(error)") }
+            guard granted else { print("[MedNotif] Permission denied."); return }
+            DispatchQueue.main.async { self.rescheduleAll() }
         }
     }
 
@@ -110,23 +109,15 @@ final class MedicationNotificationManager {
             let request: NSFetchRequest<Medication> = Medication.fetchRequest()
             guard let medications = try? context.fetch(request) else { return }
 
-
             UNUserNotificationCenter.current().removeAllPendingNotificationRequests()
 
             let now = Date()
             let cal = Calendar.current
-            
 
-            struct PendingDose {
-                let doseID: UUID
-                let medID: UUID
-                let med: Medication
-                let dose: MedicationDose
-                let fireDate: Date
-                let isFollowUp: Bool
-            }
-            
-            var groupedDoses: [Date: [PendingDose]] = [:]
+
+            var onTimeGroups:  [Date: [(doseID: UUID, medID: UUID, med: Medication, dose: MedicationDose)]] = [:]
+            var followUpGroups:[Date: [(doseID: UUID, medID: UUID, med: Medication, dose: MedicationDose)]] = [:]
+
 
             for med in medications {
                 guard self.isMedicationDueToday(med) else { continue }
@@ -140,123 +131,233 @@ final class MedicationNotificationManager {
                     else { continue }
 
 
-                    let comps    = cal.dateComponents([.hour, .minute], from: doseTime)
+                    let comps = cal.dateComponents([.hour, .minute], from: doseTime)
+
                     guard let fireDate = cal.date(
-                        bySettingHour:   comps.hour ?? 0,
-                        minute:          comps.minute ?? 0,
-                        second:          0,
-                        of:              now
+                        bySettingHour: comps.hour ?? 0,
+                        minute:        comps.minute ?? 0,
+                        second:        0,
+                        of:            now
                     ) else { continue }
 
                     let followDate = fireDate.addingTimeInterval(self.followUpDelay)
-                    let status = dose.doseStatus ?? "none"
+                    let status     = dose.doseStatus ?? "none"
 
 
                     if status == "none" && fireDate > now {
-                        groupedDoses[fireDate, default: []].append(PendingDose(
-                            doseID: doseID, medID: medID, med: med, dose: dose, fireDate: fireDate, isFollowUp: false
-                        ))
+                        onTimeGroups[fireDate, default: []].append(
+                            (doseID: doseID, medID: medID, med: med, dose: dose)
+                        )
                     }
-                    
+
 
                     if status != "taken" && followDate > now {
-
-                        groupedDoses[followDate, default: []].append(PendingDose(
-                            doseID: doseID, medID: medID, med: med, dose: dose, fireDate: followDate, isFollowUp: true
-                        ))
+                        followUpGroups[followDate, default: []].append(
+                            (doseID: doseID, medID: medID, med: med, dose: dose)
+                        )
                     }
                 }
             }
-            
 
-            let iso = ISO8601DateFormatter()
-            
-            for (date, pendingGroup) in groupedDoses {
-                let isFollowUpGroup = pendingGroup.first?.isFollowUp ?? false
-                
-                let content = UNMutableNotificationContent()
-                content.categoryIdentifier = isFollowUpGroup ? MedNotifCategory.followUp : MedNotifCategory.onTime
-                content.interruptionLevel  = isFollowUpGroup ? .active : .timeSensitive
-                content.sound = .default
-                
 
-                let medNames = pendingGroup.compactMap { $0.med.medicationName }.prefix(3)
-                let joinedNames = medNames.joined(separator: ", ")
-                let moreText = pendingGroup.count > 3 ? " and \(pendingGroup.count - 3) more" : ""
-                
-                if isFollowUpGroup {
-                    content.title = "Did you take your medications?"
-                    content.body  = "\(joinedNames)\(moreText). You haven't logged these yet."
-                } else {
-                    content.title = pendingGroup.count == 1 ? "Time to take medication" : "Time to take medications"
-                    content.body  = "\(joinedNames)\(moreText)"
-                }
-                
+            for (date, group) in onTimeGroups {
+                self.scheduleGroupNotification(
+                    group: group, fireDate: date, isFollowUp: false)
+            }
 
-                var payloadsArray: [[String: Any]] = []
-                for p in pendingGroup {
-                    let dict: [String: Any] = [
-                        MedNotifKey.doseID:        p.doseID.uuidString,
-                        MedNotifKey.medID:         p.medID.uuidString,
-                        MedNotifKey.medName:       p.med.medicationName ?? "",
-                        MedNotifKey.medForm:       p.med.medicationForm ?? "",
-                        MedNotifKey.medStrength:   Int(p.med.medicationStrength),
-                        MedNotifKey.medUnit:       p.med.medicationUnit ?? "",
-                        MedNotifKey.iconName:      p.med.medicationIconName ?? "tablet1",
-                        MedNotifKey.scheduledTime: iso.string(from: p.fireDate),
-                        MedNotifKey.isFollowUp:    p.isFollowUp ? 1 : 0
-                    ]
-                    payloadsArray.append(dict)
-                }
-                content.userInfo = ["payloads": payloadsArray]
-                
-                let trigger = UNCalendarNotificationTrigger(
-                    dateMatching: Calendar.current.dateComponents(
-                        [.year, .month, .day, .hour, .minute, .second],
-                        from: date
-                    ),
-                    repeats: false
-                )
-                
 
-                let groupIdentifier = iso.string(from: date) + (isFollowUpGroup ? "_followup" : "")
-                let request = UNNotificationRequest(identifier: groupIdentifier, content: content, trigger: trigger)
-                
-                UNUserNotificationCenter.current().add(request)
+            for (date, group) in followUpGroups {
+                self.scheduleGroupNotification(
+                    group: group, fireDate: date, isFollowUp: true)
+
             }
         }
     }
 
-    // MARK: - Cancel a specific dose's notifications (call after logging)
+    // MARK: - Group notification builder
 
+
+    private func scheduleGroupNotification(
+        group: [(doseID: UUID, medID: UUID, med: Medication, dose: MedicationDose)],
+        fireDate: Date,
+        isFollowUp: Bool
+    ) {
+        let content = UNMutableNotificationContent()
+        content.categoryIdentifier = isFollowUp ? MedNotifCategory.followUp : MedNotifCategory.onTime
+        content.interruptionLevel  = isFollowUp ? .active : .timeSensitive
+        content.sound              = isFollowUp ? .default : .defaultCritical
+
+        // Build title + body from group members
+        let names    = group.prefix(3).compactMap { $0.med.medicationName }
+        let joined   = names.joined(separator: ", ")
+        let moreSufx = group.count > 3 ? " +\(group.count - 3) more" : ""
+
+        if isFollowUp {
+            content.title = group.count == 1
+                ? "Did you take \(joined)?"
+                : "Did you take your medications?"
+            content.body  = group.count == 1
+                ? "\(group[0].med.medicationStrength)\(group[0].med.medicationUnit ?? "") · \(group[0].med.medicationForm ?? "")"
+                : "\(joined)\(moreSufx) – not logged yet"
+        } else {
+            content.title = group.count == 1
+                ? "Time to take \(joined)"
+                : "Time for your medications"
+            content.body  = group.count == 1
+                ? "\(group[0].med.medicationStrength)\(group[0].med.medicationUnit ?? "") · \(group[0].med.medicationForm ?? "")"
+                : "\(joined)\(moreSufx)"
+        }
+
+        // Pack all payloads into userInfo so AppDelegate/AlarmVC can cycle through them
+        let payloadsArray: [[String: Any]] = group.map { item in
+            [
+                MedNotifKey.doseID:        item.doseID.uuidString,
+                MedNotifKey.medID:         item.medID.uuidString,
+                MedNotifKey.medName:       item.med.medicationName ?? "",
+                MedNotifKey.medForm:       item.med.medicationForm ?? "",
+                MedNotifKey.medStrength:   Int(item.med.medicationStrength),
+                MedNotifKey.medUnit:       item.med.medicationUnit ?? "",
+                MedNotifKey.iconName:      item.med.medicationIconName ?? "tablet1",
+                MedNotifKey.scheduledTime: iso.string(from: fireDate),
+                MedNotifKey.isFollowUp:    isFollowUp ? 1 : 0
+            ]
+        }
+        content.userInfo = ["payloads": payloadsArray]
+
+        let trigger = UNCalendarNotificationTrigger(
+            dateMatching: Calendar.current.dateComponents(
+                [.year, .month, .day, .hour, .minute, .second], from: fireDate),
+            repeats: false
+        )
+
+        let identifier = groupID(for: fireDate, isFollowUp: isFollowUp)
+        UNUserNotificationCenter.current().add(
+            UNNotificationRequest(identifier: identifier, content: content, trigger: trigger)
+        )
+    }
+
+    // MARK: - Precise cancel helpers
 
     func cancelNotifications(forDoseID doseID: UUID) {
+        rebuildGroupsExcluding(doseID: doseID, cancelFollowUp: true)
 
-        rescheduleAll()
+        let perDoseID = perDoseFollowUpID(for: doseID)
+        UNUserNotificationCenter.current().removePendingNotificationRequests(withIdentifiers: [perDoseID])
+        UNUserNotificationCenter.current().removeDeliveredNotifications(withIdentifiers: [perDoseID])
+
     }
 
     func cancelOnTimeNotification(forDoseID doseID: UUID) {
-        rescheduleAll()
+        rebuildGroupsExcluding(doseID: doseID, cancelFollowUp: false)
     }
 
-    
     func scheduleSkipFollowUp(payload: MedicationAlarmPayload) {
-        rescheduleAll()
+        let fireDate = Date().addingTimeInterval(followUpDelay)
+        let content  = UNMutableNotificationContent()
+        content.title              = "Did you take \(payload.medName)?"
+        content.body               = "\(payload.medStrength)\(payload.medUnit) · \(payload.medForm) – you marked this as skipped."
+        content.sound              = .default
+        content.categoryIdentifier = MedNotifCategory.followUp
+        content.interruptionLevel  = .active
+
+
+        let payloadsArray: [[String: Any]] = [[
+            MedNotifKey.doseID:        payload.doseID.uuidString,
+            MedNotifKey.medID:         payload.medID.uuidString,
+            MedNotifKey.medName:       payload.medName,
+            MedNotifKey.medForm:       payload.medForm,
+            MedNotifKey.medStrength:   payload.medStrength,
+            MedNotifKey.medUnit:       payload.medUnit,
+            MedNotifKey.iconName:      payload.iconName,
+            MedNotifKey.scheduledTime: iso.string(from: payload.scheduledTime),
+            MedNotifKey.isFollowUp:    1
+        ]]
+        content.userInfo = ["payloads": payloadsArray]
+
+        let trigger = UNCalendarNotificationTrigger(
+            dateMatching: Calendar.current.dateComponents(
+                [.year, .month, .day, .hour, .minute, .second], from: fireDate),
+            repeats: false
+        )
+
+
+        UNUserNotificationCenter.current().add(
+            UNNotificationRequest(
+                identifier: perDoseFollowUpID(for: payload.doseID),
+                content: content, trigger: trigger)
+        )
     }
 
-    // MARK: - Schedule rule (mirrors TodayMedicationViewModel)
+    // MARK: - Group rebuild helper
+
+    private func rebuildGroupsExcluding(doseID: UUID, cancelFollowUp: Bool) {
+        UNUserNotificationCenter.current().getPendingNotificationRequests { requests in
+            let doseIDStr = doseID.uuidString
+
+            for request in requests {
+                guard let payloads = request.content.userInfo["payloads"] as? [[String: Any]]
+                else { continue }
+
+                // Does this notification contain the dose we want to remove?
+                let containsDose = payloads.contains { $0[MedNotifKey.doseID] as? String == doseIDStr }
+                guard containsDose else { continue }
+
+                let isFollowUpGroup = request.identifier.hasSuffix("_followup")
+
+                // If we're only cancelling on-time, skip follow-up group notifications
+                if !cancelFollowUp && isFollowUpGroup { continue }
+
+                // Remove the whole group notification
+                UNUserNotificationCenter.current()
+                    .removePendingNotificationRequests(withIdentifiers: [request.identifier])
+                UNUserNotificationCenter.current()
+                    .removeDeliveredNotifications(withIdentifiers: [request.identifier])
+
+                // Re-add the notification with the logged dose removed
+                let remaining = payloads.filter { $0[MedNotifKey.doseID] as? String != doseIDStr }
+                guard !remaining.isEmpty else { continue }  // all done — group is empty
+
+                // Rebuild content for the reduced group
+                let newContent = (request.content.mutableCopy() as! UNMutableNotificationContent)
+                newContent.userInfo = ["payloads": remaining]
+
+                // Update title/body for the new count
+                let names = remaining.prefix(3).compactMap { $0[MedNotifKey.medName] as? String }
+                let joined = names.joined(separator: ", ")
+                let more   = remaining.count > 3 ? " +\(remaining.count - 3) more" : ""
+
+                if isFollowUpGroup {
+                    newContent.title = remaining.count == 1
+                        ? "Did you take \(joined)?"
+                        : "Did you take your medications?"
+                    newContent.body  = "\(joined)\(more) – not logged yet"
+                } else {
+                    newContent.title = remaining.count == 1
+                        ? "Time to take \(joined)"
+                        : "Time for your medications"
+                    newContent.body  = "\(joined)\(more)"
+                }
+
+                UNUserNotificationCenter.current().add(
+                    UNNotificationRequest(
+                        identifier: request.identifier,
+                        content: newContent,
+                        trigger: request.trigger)
+                )
+            }
+        }
+    }
+
+    // MARK: - Due-today check
 
     private func isMedicationDueToday(_ med: Medication) -> Bool {
         let type = med.medicationScheduleType ?? "none"
         let days = med.medicationScheduleDays as? [Int] ?? []
         switch type {
-        case "everyday":
-            return true
+        case "everyday": return true
         case "weekly":
-            let weekday = Calendar.current.component(.weekday, from: Date())
-            return days.contains(weekday)
-        default:
-            return false
+            return days.contains(Calendar.current.component(.weekday, from: Date()))
+        default: return false
         }
     }
 }

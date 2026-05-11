@@ -2,7 +2,7 @@
 
 ## Phase 1: Exploration Tests (BEFORE Fix)
 
-- [~] 1. Write bug condition exploration tests
+- [ ] 1. Write bug condition exploration tests
   - **Property 1: Bug Condition** - Workout Flow Bug Conditions
   - **CRITICAL**: These tests MUST FAIL on unfixed code - failure confirms the bugs exist
   - **DO NOT attempt to fix the tests or the code when they fail**
@@ -10,7 +10,7 @@
   - **GOAL**: Surface counterexamples that demonstrate the bugs exist
   - **Scoped PBT Approach**: For deterministic bugs, scope the properties to the concrete failing cases to ensure reproducibility
   
-  - [-] 1.1 Timer Leak Test
+  - [ ] 1.1 Timer Leak Test
     - Test that navigating exercise → rest → countdown → exercise results in only ONE active timer
     - Run test on UNFIXED code
     - **EXPECTED OUTCOME**: Test FAILS (multiple timers running simultaneously)
