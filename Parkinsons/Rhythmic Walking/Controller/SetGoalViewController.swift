@@ -437,14 +437,30 @@ class SetGoalViewController: UIViewController,
 
     private func checkGoalStatus() {
         if let goal = DataStore.shared.dailyGoalSession {
+            // Active incomplete session: lock picker on current goal
             DurationPicker.isUserInteractionEnabled = false
             DurationPicker.alpha = 0.3
             startButton.setTitle("Resume", for: .normal)
             let h = goal.requestedDurationSeconds / 3600
             let m = (goal.requestedDurationSeconds % 3600) / 60
             DurationPicker.selectRow(h, inComponent: 0, animated: false)
-            DurationPicker.selectRow(m, inComponent: 1, animated: false)
+            // dataForColumn2 starts at 10, so offset the row index
+            let mRow = max(0, m - (dataForColumn2.first ?? 0))
+            DurationPicker.selectRow(mRow, inComponent: 1, animated: false)
+        } else if let lastSession = DataStore.shared.sessions.last {
+            // Session completed: pre-fill picker with the last session's duration
+            // and re-enable so user can set a new goal
+            DurationPicker.isUserInteractionEnabled = true
+            DurationPicker.alpha = 1.0
+            startButton.setTitle("Start", for: .normal)
+            let h = lastSession.requestedDurationSeconds / 3600
+            let m = (lastSession.requestedDurationSeconds % 3600) / 60
+            DurationPicker.selectRow(h, inComponent: 0, animated: true)
+            let mRow = max(0, m - (dataForColumn2.first ?? 0))
+            DurationPicker.selectRow(mRow, inComponent: 1, animated: true)
+            updateStartButtonState()
         } else {
+            // No sessions today: fully reset
             DurationPicker.isUserInteractionEnabled = true
             DurationPicker.alpha = 1.0
             startButton.setTitle("Start", for: .normal)

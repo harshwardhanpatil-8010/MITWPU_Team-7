@@ -17,7 +17,6 @@ class SummaryViewController: UIViewController {
         }
 
     var dateToDisplay: Date?
-    var onDismiss: (() -> Void)?
     var currentSymptomLog: SymptomLogEntry?
     let summarySections = Section.allCases
 
@@ -367,7 +366,7 @@ class SummaryViewController: UIViewController {
 
     @IBAction func closeButtonTapped(_ sender: Any) {
         // Call onDismiss immediately so the home screen resets smoothly
-        onDismiss?()
+        //onDismiss?()
         dismiss(animated: true)
     }
 
