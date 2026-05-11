@@ -27,7 +27,7 @@ final class TodayMedicationViewModel {
                 let strength = med.medicationStrength
                 var unit = med.medicationUnit ?? ""
                 
-                // If CoreData has old strings like "Mg • Capsule" saved in the unit field, strip them out:
+                
                 if let dotIndex = unit.firstIndex(of: "•") {
                     unit = String(unit[..<dotIndex]).trimmingCharacters(in: .whitespaces)
                 }

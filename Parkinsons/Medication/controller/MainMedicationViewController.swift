@@ -82,7 +82,7 @@ final class MainMedicationViewController: UIViewController {
             .font: UIFont.systemFont(ofSize: 32, weight: .bold),
             .foregroundColor: UIColor.label
         ]
-        // Push the large title to the left to match Apple Fitness zero-gap design
+
         let screenWidth = UIScreen.main.bounds.width
         scrollAppearance.titlePositionAdjustment = UIOffset(horizontal: -(screenWidth / 2) + 110, vertical: 0)
 
@@ -285,8 +285,17 @@ extension MainMedicationViewController: UICollectionViewDataSource {
             let header = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: "MedicationSectionHeaderView", for: indexPath) as! MedicationSectionHeaderView
             if indexPath.section == 0 {
                 let hasMoreThanThreeUpcoming = upcomingDoses.count > 3
-                header.configure(title: "Today Medications", actionTitle: hasMoreThanThreeUpcoming ? (isShowingAllUpcoming ? "Show Less" : "Show All") : nil, action: hasMoreThanThreeUpcoming ? .showAll : nil, isExpanded: isShowingAllUpcoming)
-            } else {
+
+                header.configure(
+                    title: "Upcoming",
+                    actionTitle: hasMoreThanThreeUpcoming
+                        ? (isShowingAllUpcoming ? "Show Less" : "Show All")
+                        : nil,
+                    action: hasMoreThanThreeUpcoming ? .showAll : nil,
+                    isExpanded: isShowingAllUpcoming
+                )
+            }
+            else {
                 let isEditEnabled = !loggedDoses.isEmpty
 
                 header.configure(
@@ -414,7 +423,7 @@ extension MainMedicationViewController {
                     MedicationNotificationManager.shared.scheduleSkipFollowUp(payload: payload)
                 }
             } else {
-                // Cancel any pending follow-up notifications for this dose
+
                 MedicationNotificationManager.shared.cancelNotifications(forDoseID: dose.id)
             }
 
@@ -469,7 +478,7 @@ extension MainMedicationViewController: EditLogDelegate {
                 if let coreDose = log.dose {
                     coreDose.doseStatus = item.status.rawValue
 
-                    // Cancel follow-up notifications for doses now marked taken/skipped
+                    
                     if item.status != .none, let doseID = coreDose.id {
                         MedicationNotificationManager.shared.cancelNotifications(forDoseID: doseID)
                     }

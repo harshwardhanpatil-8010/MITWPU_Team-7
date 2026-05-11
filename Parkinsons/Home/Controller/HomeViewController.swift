@@ -89,10 +89,7 @@ class HomeViewController: UIViewController, UICollectionViewDelegate {
         
         dates = HomeDataStore.shared.getDates()
         loadRealMedicationData()
-        
-        // Only reload for external MedicationLogged events (e.g. other screens).
-        // Taps on THIS screen post the notification with object=self so we ignore
-        // them here — the section was already updated inline by updateDose.
+
         medicationLoggedObserver = NotificationCenter.default.addObserver(
             forName: NSNotification.Name("MedicationLogged"),
             object: nil,
@@ -193,9 +190,6 @@ class HomeViewController: UIViewController, UICollectionViewDelegate {
 
         self.todayDoses = unloggedDoses
 
-        // Only reload the medications section — not the whole collection view.
-        // A full reloadData() resets the calendar scroll offset, which makes
-        // the calendar jump back to today mid-session.
         UIView.performWithoutAnimation {
             self.mainCollectionView.reloadSections(IndexSet(integer: Section.medications.rawValue))
         }
@@ -204,9 +198,6 @@ class HomeViewController: UIViewController, UICollectionViewDelegate {
 
     // MARK: - Update Dose
 
-    /// Called by the cell delegate at the START of the exit animation (0.38s),
-    /// not the end. This means the next card is rendered and waiting before the
-    /// current one even finishes sliding away — it appears instant to the user.
     private func updateDose(_ dose: TodayDoseItem, status: DoseStatus) {
         let context = PersistenceController.shared.viewContext
         let medRequest: NSFetchRequest<Medication> = Medication.fetchRequest()
@@ -219,26 +210,22 @@ class HomeViewController: UIViewController, UICollectionViewDelegate {
             context: context
         )
 
-        // Remove the logged dose from the data source immediately
+
         todayDoses.removeAll { $0.id == dose.id }
 
         let medSection = Section.medications.rawValue
 
-        // Only regenerate layout when going empty — that's when the footer
-        // height changes. Regenerating every tap resets the calendar scroll.
+
         if todayDoses.isEmpty {
             mainCollectionView.setCollectionViewLayout(generateLayout(), animated: false)
         }
 
-        // Instant section reload — no animation. The next card is rendered
-        // off-screen while the current card is still mid-slide, so it's
-        // already in place the moment the exit animation finishes.
         UIView.performWithoutAnimation {
             mainCollectionView.reloadSections(IndexSet(integer: medSection))
         }
         self.scrollToSelectedDate(animated: false)
 
-        // Post with self as object so our own observer can ignore it
+        
         NotificationCenter.default.post(
             name: NSNotification.Name("MedicationLogged"),
             object: self

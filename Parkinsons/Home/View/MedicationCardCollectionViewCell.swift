@@ -19,8 +19,6 @@ class MedicationCardCollectionViewCell: UICollectionViewCell {
     private var currentDose: TodayDoseItem?
 
     // MARK: - Confirmation overlay
-    // A lightweight pill that fades in over the card content — no heavy flip,
-    // no full-screen takeover. Just a soft green/amber tint + icon + label.
 
     private let confirmationOverlay: UIView = {
         let v = UIView()
@@ -168,21 +166,12 @@ class MedicationCardCollectionViewCell: UICollectionViewCell {
 
     // MARK: - Animation
 
-    /// Three-act animation, entirely UIKit spring-based.
-    ///
-    /// Act 1 (0.00 – 0.18s): Button micro-press + haptic.
-    /// Act 2 (0.08 – 0.35s): Card content cross-fades to confirmation overlay;
-    ///                        icon + label spring-scale in.
-    /// Act 3 (0.38 – 0.62s): Card slides out to the LEFT and fades.
-    ///
-    /// The delegate fires at the START of Act 3 (0.38s) so HomeVC reloads the
-    /// section instantly while this card is still mid-slide — the next card is
-    /// already rendered and waiting the moment this one clears the frame.
+
     private func animateConfirmThenDismiss(isTaken: Bool, completion: @escaping () -> Void) {
         takenButton.isUserInteractionEnabled = false
         skippedButton.isUserInteractionEnabled = false
 
-        // ── Configure overlay ────────────────────────────────────────────────
+        
         let tint = isTaken
             ? UIColor(red: 0.20, green: 0.78, blue: 0.35, alpha: 1)
             : UIColor(red: 1.00, green: 0.62, blue: 0.04, alpha: 1)
@@ -193,7 +182,7 @@ class MedicationCardCollectionViewCell: UICollectionViewCell {
         confirmationLabel.text = isTaken ? "Logged as taken" : "Skipped for now"
         confirmationStack.transform = CGAffineTransform(scaleX: 0.5, y: 0.5)
 
-        // ── Act 1: button press + haptic ─────────────────────────────────────
+
         let tappedButton = isTaken ? takenButton : skippedButton
         UIImpactFeedbackGenerator(style: .medium).impactOccurred()
 
@@ -205,7 +194,7 @@ class MedicationCardCollectionViewCell: UICollectionViewCell {
             }
         }
 
-        // ── Act 2: cross-fade to confirmation ────────────────────────────────
+
         UIView.animate(withDuration: 0.18, delay: 0.08, options: .curveEaseInOut) {
             self.nameLabel.alpha     = 0
             self.timeLabel.alpha     = 0
@@ -226,14 +215,12 @@ class MedicationCardCollectionViewCell: UICollectionViewCell {
             self.confirmationStack.transform = .identity
         }
 
-        // ── Prefetch: fire delegate at Act 3 start so HomeVC reloads now ─────
-        // Section reloads instantly (performWithoutAnimation) while this card
-        // is still sliding — next card is already in place when exit finishes.
+
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.80) {
             completion()
         }
 
-        // ── Act 3: slide out to the LEFT ─────────────────────────────────────
+
         UIView.animate(
             withDuration: 0.24,
             delay: 0.90,

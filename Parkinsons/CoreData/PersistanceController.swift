@@ -21,7 +21,7 @@ import CoreData
                 URL(fileURLWithPath: "/dev/null")
         }
         
-        // Enable automatic lightweight migration so re-runs don't fail
+        
         if let description = container.persistentStoreDescriptions.first {
             description.shouldMigrateStoreAutomatically = true
             description.shouldInferMappingModelAutomatically = true

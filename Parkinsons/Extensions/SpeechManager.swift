@@ -8,8 +8,7 @@ class SpeechManager {
     private let synthesizer = AVSpeechSynthesizer()
 
     private init() {
-        // Robust warmup to force the internal audio graph to initialize.
-        // AVSpeechSynthesizer can swallow the first utterance if it's not pre-warmed with actual text.
+
         let dummyUtterance = AVSpeechUtterance(string: "Initialize")
         dummyUtterance.volume = 0.0
         dummyUtterance.rate = AVSpeechUtteranceMaximumSpeechRate
@@ -32,9 +31,6 @@ class SpeechManager {
             synthesizer.stopSpeaking(at: .immediate)
         }
 
-
-        // Ensure the audio session is active right before speaking.
-        // This prevents silent failures if the session was deactivated by the system.
         do {
             try AVAudioSession.sharedInstance().setCategory(.playback, mode: .default, options: [.mixWithOthers, .duckOthers])
             try AVAudioSession.sharedInstance().setActive(true)

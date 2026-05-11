@@ -18,7 +18,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="smiley" catalog="system" translatesAutoresizingMaskIntoConstraints="NO" id="7aX-Yq-Jzs">
-                                <rect key="frame" x="106.66666666666669" y="123.66666666666667" width="180" height="138.66666666666669"/>
+                                <rect key="frame" x="106.66666666666669" y="151.33333333333331" width="180" height="138.66666666666663"/>
                                 <color key="tintColor" systemColor="systemOrangeColor"/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="180" id="9gu-oy-vWe"/>
@@ -26,7 +26,7 @@
                                 </constraints>
                             </imageView>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="0aA-Qp-don">
-                                <rect key="frame" x="0.0" y="369" width="393" height="369"/>
+                                <rect key="frame" x="0.0" y="349" width="393" height="389"/>
                                 <subviews>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="January 2026" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="qhA-DW-pOk">
                                         <rect key="frame" x="16.000000000000007" y="0.0" width="110.66666666666669" height="20.333333333333332"/>
@@ -101,7 +101,7 @@
                                         </subviews>
                                     </stackView>
                                     <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="icA-Be-QOe">
-                                        <rect key="frame" x="0.0" y="46" width="393" height="273"/>
+                                        <rect key="frame" x="0.0" y="46" width="393" height="293"/>
                                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                                         <collectionViewFlowLayout key="collectionViewLayout" automaticEstimatedItemSize="YES" minimumLineSpacing="10" minimumInteritemSpacing="10" id="iXx-u3-aNW">
                                             <size key="itemSize" width="128" height="128"/>
@@ -137,7 +137,7 @@
                                 </constraints>
                             </view>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Daily Challenge" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="5fQ-k3-UFl">
-                                <rect key="frame" x="16" y="343" width="393" height="23"/>
+                                <rect key="frame" x="16" y="323" width="393" height="23"/>
                                 <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="19"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
@@ -159,13 +159,13 @@
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                         <constraints>
                             <constraint firstItem="5fQ-k3-UFl" firstAttribute="leading" secondItem="i17-Z1-IRh" secondAttribute="leading" constant="16" id="82p-U5-Ey5"/>
-                            <constraint firstItem="7aX-Yq-Jzs" firstAttribute="top" secondItem="i17-Z1-IRh" secondAttribute="top" constant="5" id="BmG-y2-Pyb"/>
+                            <constraint firstItem="7aX-Yq-Jzs" firstAttribute="top" secondItem="i17-Z1-IRh" secondAttribute="top" constant="32.5" id="BmG-y2-Pyb"/>
                             <constraint firstItem="0aA-Qp-don" firstAttribute="trailing" secondItem="i17-Z1-IRh" secondAttribute="trailing" id="DIV-vl-4cf"/>
                             <constraint firstItem="7aX-Yq-Jzs" firstAttribute="centerX" secondItem="40a-JY-YdK" secondAttribute="centerX" id="FKX-4Q-bQM"/>
                             <constraint firstItem="0aA-Qp-don" firstAttribute="bottom" secondItem="i17-Z1-IRh" secondAttribute="bottom" constant="-46" id="MFw-dd-ooe"/>
                             <constraint firstItem="5fQ-k3-UFl" firstAttribute="trailing" secondItem="i17-Z1-IRh" secondAttribute="trailing" constant="16" id="UAb-Fr-FJc"/>
                             <constraint firstItem="0aA-Qp-don" firstAttribute="leading" secondItem="i17-Z1-IRh" secondAttribute="leading" id="b0q-Tx-LhA"/>
-                            <constraint firstItem="5fQ-k3-UFl" firstAttribute="top" secondItem="7aX-Yq-Jzs" secondAttribute="bottom" constant="80" id="hHy-k5-SMb"/>
+                            <constraint firstItem="5fQ-k3-UFl" firstAttribute="top" secondItem="7aX-Yq-Jzs" secondAttribute="bottom" constant="32.5" id="hHy-k5-SMb"/>
                             <constraint firstItem="i17-Z1-IRh" firstAttribute="bottom" secondItem="d9j-NU-iKa" secondAttribute="bottom" constant="16" id="iiV-nt-DuO"/>
                             <constraint firstItem="d9j-NU-iKa" firstAttribute="centerX" secondItem="40a-JY-YdK" secondAttribute="centerX" id="kCC-Qh-0Mk"/>
                             <constraint firstItem="0aA-Qp-don" firstAttribute="top" secondItem="5fQ-k3-UFl" secondAttribute="bottom" constant="3" id="l4e-vh-C4C"/>
@@ -476,12 +476,12 @@
                         <subviews>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="taV-9A-5mD">
                                 <rect key="frame" x="16" y="113.00000000000001" width="361" height="240.33333333333337"/>
-                                <string key="text">1. You’ll see an Emoji on the screen
-2. You need to mimic the expression of that emoji
-3. If the expression matches the next emoji will appear
-4. If you are not able to match the emoji tap the skip button
-5. You will get a set of 10 emoji try and mimic all of them
-6. High score will be based on how many you complete and the time taken</string>
+                                <string key="text">1. You’ll see an Emoji on the screen.
+2. You need to mimic the expression of that emoji.
+3. If the expression matches the next emoji will appear.
+4. If you are not able to match the emoji tap the skip button.
+5. You will get a set of 10 emoji try and mimic all of them.
+6. High score will be based on how many you complete and the time taken.</string>
                                 <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
@@ -564,19 +564,19 @@
         <image name="xmark" catalog="system" width="128" height="113"/>
         <image name="🎊" width="150" height="150"/>
         <systemColor name="separatorColor">
-            <color red="0.23529411759999999" green="0.23529411759999999" blue="0.26274509800000001" alpha="0.28999999999999998" colorSpace="custom" customColorSpace="sRGB"/>
+            <color red="0.23529411764705882" green="0.23529411764705882" blue="0.2627450980392157" alpha="0.12" colorSpace="custom" customColorSpace="sRGB"/>
         </systemColor>
         <systemColor name="systemBackgroundColor">
             <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
         </systemColor>
         <systemColor name="systemGray5Color">
-            <color red="0.8980392157" green="0.8980392157" blue="0.91764705879999997" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <color red="0.89803921568627454" green="0.89803921568627454" blue="0.91764705882352937" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </systemColor>
         <systemColor name="systemGrayColor">
-            <color red="0.5568627451" green="0.5568627451" blue="0.57647058819999997" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <color red="0.55686274509803924" green="0.55686274509803924" blue="0.57647058823529407" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </systemColor>
         <systemColor name="systemOrangeColor">
-            <color red="1" green="0.58431372550000005" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <color red="1" green="0.55294117647058827" blue="0.15686274509803921" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </systemColor>
     </resources>
 </document>

@@ -96,7 +96,7 @@ class RepeatViewController: UIViewController,
                 repeatList[i].isSelected = (i == indexPath.row)
             }
         } else {
-            // Unselect Everyday if selecting specific days
+            
             if let everydayIndex = repeatList.firstIndex(where: { $0.name == "Everyday" }) {
                 repeatList[everydayIndex].isSelected = false
             }

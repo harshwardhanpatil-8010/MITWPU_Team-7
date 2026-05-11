@@ -46,13 +46,13 @@ class resultMimicTheEmoji: UIViewController {
         
         switch completedCount {
         case 0...3:
-            resultTitleLabel.text = "You can do better"
+            resultTitleLabel.text = "You can do better!"
         case 4...7:
-            resultTitleLabel.text = "Good Job"
+            resultTitleLabel.text = "Good Job!"
         case 8...10:
-            resultTitleLabel.text = "Excellent"
+            resultTitleLabel.text = "Excellent!"
         default:
-            resultTitleLabel.text = "Good Job"
+            resultTitleLabel.text = "Good Job!"
         }
     }
 

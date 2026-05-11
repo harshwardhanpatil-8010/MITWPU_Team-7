@@ -154,7 +154,8 @@ extension HealthKitManager {
             }
 
             let values = (samples as? [HKQuantitySample])?.map {
-                $0.quantity.doubleValue(for: .meter()) // meters
+                $0.quantity.doubleValue(for: .meter())
+                
             } ?? []
 
             completion(values)

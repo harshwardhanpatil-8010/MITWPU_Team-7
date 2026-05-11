@@ -365,8 +365,7 @@ class SummaryViewController: UIViewController {
 
 
     @IBAction func closeButtonTapped(_ sender: Any) {
-        // Call onDismiss immediately so the home screen resets smoothly
-        //onDismiss?()
+
         dismiss(animated: true)
     }
 
