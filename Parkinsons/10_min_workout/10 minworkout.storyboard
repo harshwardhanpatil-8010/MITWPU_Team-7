@@ -795,6 +795,7 @@
                         <outlet property="exerciseName" destination="MZl-LX-BdN" id="WX0-J5-G9b"/>
                         <outlet property="playerView" destination="KpT-vc-seY" id="J5x-bO-0c6"/>
                         <outlet property="previousButtonOutlet" destination="Zod-LQ-fDS" id="e4k-cP-E35"/>
+<outlet property="skipButtonOutlet" destination="ev3-IW-IQ3" id="Zyx-Wv-Uts"/>
                         <outlet property="repsLabel" destination="tne-nX-W55" id="Ff7-bI-78q"/>
                         <outlet property="timerLabel" destination="E53-Fa-HcK" id="gyg-wc-xfP"/>
                         <outletCollection property="progressBars" destination="vM8-kd-Z5N" collectionClass="NSMutableArray" id="ZlC-I3-hn9"/>

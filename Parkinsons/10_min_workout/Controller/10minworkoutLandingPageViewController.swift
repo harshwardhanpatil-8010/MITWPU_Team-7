@@ -215,39 +215,16 @@ class _0minworkoutLandingPageViewController: UIViewController, UICollectionViewD
     }
 
     private func navigateToWorkout() {
-        let allExercises = WorkoutManager.shared.exercises
-        let completedSet = Set(WorkoutManager.shared.completedToday)
-        let skippedSet   = Set(WorkoutManager.shared.skippedToday)
-
-        let resumeIndex  = allExercises.firstIndex { 
-            !completedSet.contains($0.id) && !skippedSet.contains($0.id) 
-        }
-
-        if let idx = resumeIndex {
-            let countdown = ExerciseCountdownViewController()
-            countdown.exercises     = allExercises
-            countdown.startingIndex = idx
-            navigationController?.pushViewController(countdown, animated: true)
+        let engine = WorkoutProgressionEngine(exercises: WorkoutManager.shared.exercises)
+        if engine.phase == .completed {
+            let sb = UIStoryboard(name: "10 minworkout", bundle: nil)
+            if let vc = sb.instantiateViewController(withIdentifier: "GoodJobViewController") as? _0minworkoutGoodJobViewController {
+                vc.completed = WorkoutManager.shared.completedToday.count
+                navigationController?.pushViewController(vc, animated: true)
+            }
         } else {
-            let unresolvedSkipped = WorkoutManager.shared.skippedToday.filter { skippedID in
-                Set(allExercises.map(\.id)).contains(skippedID) && !completedSet.contains(skippedID)
-            }
-            if let skipIdx = allExercises.firstIndex(where: { unresolvedSkipped.contains($0.id) }) {
-                let countdown = ExerciseCountdownViewController()
-                countdown.exercises     = allExercises
-                countdown.startingIndex = skipIdx
-                countdown.isRevisitingSkipped = true
-                countdown.skippedIndicesToRevisit = allExercises.indices.filter {
-                    unresolvedSkipped.contains(allExercises[$0].id)
-                }
-                navigationController?.pushViewController(countdown, animated: true)
-            } else {
-                let sb = UIStoryboard(name: "10 minworkout", bundle: nil)
-                if let vc = sb.instantiateViewController(withIdentifier: "GoodJobViewController") as? _0minworkoutGoodJobViewController {
-                    vc.completed = WorkoutManager.shared.completedToday.count
-                    navigationController?.pushViewController(vc, animated: true)
-                }
-            }
+            let container = WorkoutContainerViewController(engine: engine)
+            navigationController?.pushViewController(container, animated: true)
         }
     }
 

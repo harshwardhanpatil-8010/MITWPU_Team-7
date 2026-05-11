@@ -65,8 +65,8 @@ class _0minworkoutCountdownViewController: UIViewController {
     private func navigateToWorkout() {
         let sb = UIStoryboard(name: "10 minworkout", bundle: nil)
         let vc = sb.instantiateViewController(withIdentifier: "10minworkoutViewController") as! _0minworkoutViewController
-        vc.exercises = exercises
-        vc.currentIndex = startingIndex
+        // vc.exercises = exercises
+        // vc.currentIndex = startingIndex
         navigationController?.pushViewController(vc, animated: true)
     }
 }

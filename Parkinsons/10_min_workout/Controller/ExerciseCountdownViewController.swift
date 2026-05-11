@@ -42,12 +42,11 @@ private final class PlayerContainerView: UIView {
 }
 class ExerciseCountdownViewController: UIViewController {
 
-    var exercises: [WorkoutExercise] = []
-    var startingIndex: Int = 0
-    var isRevisitingSkipped: Bool = false
-    var skippedIndicesToRevisit: [Int] = []
+    weak var engine: WorkoutProgressionEngine?
+    weak var delegate: CountdownDelegate?
 
     private var countDown = 10
+    private var targetDate: Date?
     private var hasNavigated = false
     private var isCancelled = false
     private var countdownTimer: Timer?
@@ -85,7 +84,11 @@ class ExerciseCountdownViewController: UIViewController {
         avPlayer?.play()
         if !isCountdownRunning {
             isCountdownRunning = true
-            tickCountdown()
+            targetDate = Date().addingTimeInterval(10)
+            popNumber()
+            countdownTimer = Timer.scheduledTimer(withTimeInterval: 0.1, repeats: true) { [weak self] _ in
+                self?.tickCountdown()
+            }
         }
     }
 
@@ -95,6 +98,9 @@ class ExerciseCountdownViewController: UIViewController {
         countdownTimer?.invalidate()
         countdownTimer = nil
         avPlayer?.pause()
+        avPlayer?.removeAllItems()
+        playerLooper = nil
+        avPlayer = nil
         navigationController?.setNavigationBarHidden(false, animated: animated)
     }
 
@@ -189,20 +195,16 @@ class ExerciseCountdownViewController: UIViewController {
     }
 
     private func updateLabels() {
-        guard startingIndex < exercises.count else { return }
-        let exercise     = exercises[startingIndex]
-        let total        = exercises.count
-        let doneCount    = WorkoutManager.shared.completedToday.count
-                        + WorkoutManager.shared.skippedToday.count
-        let displayIndex = min(doneCount + 1, total)
+        guard let engine = engine, let exercise = engine.currentExercise else { return }
+        let total = engine.allExercises.count
+        let displayIndex = engine.currentIndexInGlobalArray + 1
         exerciseIndexLabel.text = "Exercise \(displayIndex)/\(total)"
         exerciseNameLabel.text  = exercise.name
     }
 
 
     private func setupVideo() {
-        guard startingIndex < exercises.count,
-              let videoID = exercises[startingIndex].videoID,
+        guard let videoID = engine?.currentExercise?.videoID,
               let url = Bundle.main.url(forResource: videoID, withExtension: "mp4") else { return }
 
         avPlayer = AVQueuePlayer()
@@ -214,16 +216,20 @@ class ExerciseCountdownViewController: UIViewController {
 
 
     private func tickCountdown() {
-        numberLabel.text = "\(countDown)"
-        popNumber()
-        countdownTimer = Timer.scheduledTimer(withTimeInterval: 1.0, repeats: false) { [weak self] _ in
-            guard let self, !self.isCancelled else { return }
-            self.countDown -= 1
-            if self.countDown > 0 {
-                self.tickCountdown()
-            } else {
-                self.navigateToWorkout()
-            }
+        guard let target = targetDate, !isCancelled else { return }
+        let remaining = Int(ceil(target.timeIntervalSinceNow))
+        
+        if remaining <= 0 {
+            countdownTimer?.invalidate()
+            countdownTimer = nil
+            navigateToWorkout()
+            return
+        }
+        
+        if remaining != self.countDown {
+            self.countDown = remaining
+            numberLabel.text = "\(self.countDown)"
+            popNumber()
         }
     }
 
@@ -248,26 +254,12 @@ class ExerciseCountdownViewController: UIViewController {
     @objc private func closeTapped() {
         isCancelled = true
         countdownTimer?.invalidate()
-        if let lp = navigationController?.viewControllers.first(where: { $0 is _0minworkoutLandingPageViewController }) {
-            navigationController?.popToViewController(lp, animated: true)
-        } else {
-            navigationController?.popToRootViewController(animated: true)
-        }
+        delegate?.countdownDidCancel()
     }
 
     private func navigateToWorkout() {
         guard !hasNavigated else { return }
         hasNavigated = true
-        let sb = UIStoryboard(name: "10 minworkout", bundle: nil)
-        guard let vc = sb.instantiateViewController(withIdentifier: "10minworkoutViewController")
-                as? _0minworkoutViewController else { return }
-        vc.exercises    = exercises
-        vc.currentIndex = startingIndex
-        vc.isRevisitingSkipped = isRevisitingSkipped
-        if isRevisitingSkipped {
-            vc.skippedIndicesToRevisit = skippedIndicesToRevisit
-            vc.hasHandledSkippedExercises = true
-        }
-        navigationController?.pushViewController(vc, animated: false)
+        delegate?.countdownDidFinish()
     }
 }
