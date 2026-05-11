@@ -40,7 +40,7 @@ class WorkoutContainerViewController: UIViewController {
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        navigationController?.setNavigationBarHidden(true, animated: animated)
+        navigationController?.setNavigationBarHidden(false, animated: animated)
         tabBarController?.tabBar.isHidden = true
     }
     
@@ -49,7 +49,7 @@ class WorkoutContainerViewController: UIViewController {
         
         if currentPhase == .revisiting && lastObservedPhase == .main {
             lastObservedPhase = .revisiting
-            showRevisitPrompt()
+            advanceToNextPhaseOrExercise(showCountdown: true)
             return
         }
         
@@ -144,6 +144,7 @@ class WorkoutContainerViewController: UIViewController {
                     oldChild.removeFromParent()
                     newChild.didMove(toParent: self)
                     self.activeChildVC = newChild
+                    self.syncNavigationItems(from: newChild)
                 }
             case .pushFromRight:
                 newChild.view.transform = CGAffineTransform(translationX: view.bounds.width, y: 0)
@@ -157,6 +158,7 @@ class WorkoutContainerViewController: UIViewController {
                     oldChild.removeFromParent()
                     newChild.didMove(toParent: self)
                     self.activeChildVC = newChild
+                    self.syncNavigationItems(from: newChild)
                 }
             case .pushFromLeft:
                 newChild.view.transform = CGAffineTransform(translationX: -view.bounds.width, y: 0)
@@ -170,13 +172,21 @@ class WorkoutContainerViewController: UIViewController {
                     oldChild.removeFromParent()
                     newChild.didMove(toParent: self)
                     self.activeChildVC = newChild
+                    self.syncNavigationItems(from: newChild)
                 }
             }
         } else {
             view.addSubview(newChild.view)
             newChild.didMove(toParent: self)
             activeChildVC = newChild
+            syncNavigationItems(from: newChild)
         }
+    }
+    
+    private func syncNavigationItems(from child: UIViewController) {
+        self.navigationItem.leftBarButtonItems = child.navigationItem.leftBarButtonItems
+        self.navigationItem.rightBarButtonItems = child.navigationItem.rightBarButtonItems
+        self.navigationItem.title = child.navigationItem.title
     }
 }
 
