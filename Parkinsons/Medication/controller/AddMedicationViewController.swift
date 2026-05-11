@@ -3,9 +3,6 @@
 //  Parkinsons
 //
 //  Created by SDC-USER on 27/11/25.
-//
-//  Additions: calls MedicationNotificationManager.shared.rescheduleAll()
-//  after every save and delete so notifications always stay in sync.
 
 import UIKit
 import CoreData
@@ -322,7 +319,7 @@ class AddMedicationViewController: UIViewController,
         context.delete(med)
         PersistenceController.shared.save(context)
 
-        // ✅ Keep notifications in sync after deletion
+
         MedicationNotificationManager.shared.rescheduleAll()
 
         delegate?.didUpdateMedication()
@@ -331,7 +328,7 @@ class AddMedicationViewController: UIViewController,
 
     
     @IBAction func onTickPressed(_ sender: UIBarButtonItem) {
-        // Prevent double-tapping
+        
         sender.isEnabled = false
 
         guard let name = medicationNameTextField.text,
@@ -375,7 +372,7 @@ class AddMedicationViewController: UIViewController,
 
         PersistenceController.shared.save(context)
 
-        // ✅ Keep notifications in sync after add/edit
+
         MedicationNotificationManager.shared.rescheduleAll()
 
         delegate?.didUpdateMedication()

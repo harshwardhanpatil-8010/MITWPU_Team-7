@@ -89,10 +89,7 @@ class HomeViewController: UIViewController, UICollectionViewDelegate {
         
         dates = HomeDataStore.shared.getDates()
         loadRealMedicationData()
-        
-        // Only reload for external MedicationLogged events (e.g. other screens).
-        // Taps on THIS screen post the notification with object=self so we ignore
-        // them here — the section was already updated inline by updateDose.
+
         medicationLoggedObserver = NotificationCenter.default.addObserver(
             forName: NSNotification.Name("MedicationLogged"),
             object: nil,
@@ -193,9 +190,6 @@ class HomeViewController: UIViewController, UICollectionViewDelegate {
 
         self.todayDoses = unloggedDoses
 
-        // Only reload the medications section — not the whole collection view.
-        // A full reloadData() resets the calendar scroll offset, which makes
-        // the calendar jump back to today mid-session.
         UIView.performWithoutAnimation {
             self.mainCollectionView.reloadSections(IndexSet(integer: Section.medications.rawValue))
         }
@@ -203,9 +197,6 @@ class HomeViewController: UIViewController, UICollectionViewDelegate {
 
     // MARK: - Update Dose
 
-    /// Called by the cell delegate at the START of the exit animation (0.38s),
-    /// not the end. This means the next card is rendered and waiting before the
-    /// current one even finishes sliding away — it appears instant to the user.
     private func updateDose(_ dose: TodayDoseItem, status: DoseStatus) {
         let context = PersistenceController.shared.viewContext
         let medRequest: NSFetchRequest<Medication> = Medication.fetchRequest()
@@ -218,25 +209,21 @@ class HomeViewController: UIViewController, UICollectionViewDelegate {
             context: context
         )
 
-        // Remove the logged dose from the data source immediately
+
         todayDoses.removeAll { $0.id == dose.id }
 
         let medSection = Section.medications.rawValue
 
-        // Only regenerate layout when going empty — that's when the footer
-        // height changes. Regenerating every tap resets the calendar scroll.
+
         if todayDoses.isEmpty {
             mainCollectionView.setCollectionViewLayout(generateLayout(), animated: false)
         }
 
-        // Instant section reload — no animation. The next card is rendered
-        // off-screen while the current card is still mid-slide, so it's
-        // already in place the moment the exit animation finishes.
         UIView.performWithoutAnimation {
             mainCollectionView.reloadSections(IndexSet(integer: medSection))
         }
 
-        // Post with self as object so our own observer can ignore it
+        
         NotificationCenter.default.post(
             name: NSNotification.Name("MedicationLogged"),
             object: self
@@ -418,34 +405,11 @@ class HomeViewController: UIViewController, UICollectionViewDelegate {
 
             let newDate = model.date
 
-            if !calendar.isDate(newDate, inSameDayAs: selectedDate) {
-                selectedDate = newDate
-                collectionView.scrollToItem(at: indexPath, at: .centeredHorizontally, animated: true)
-
-                if let header = collectionView.supplementaryView(
-                    forElementKind: UICollectionView.elementKindSectionHeader,
-                    at: IndexPath(item: 0, section: Section.calendar.rawValue)
-                ) as? SectionHeaderView {
-                    let dateString = formattedDateString(for: selectedDate)
-                    let isToday = calendar.isDateInToday(selectedDate)
-                    header.configure(title: isToday ? "Today, \(dateString)" : dateString)
-                }
-
-                let visibleCalendarIndices = collectionView.indexPathsForVisibleItems.filter { $0.section == Section.calendar.rawValue }
-                collectionView.reloadItems(at: visibleCalendarIndices)
-                collectionView.reloadSections(IndexSet(integer: Section.exercises.rawValue))
-            }
-
-
             let storyboard = UIStoryboard(name: "Home", bundle: nil)
             guard let summaryVC = storyboard.instantiateViewController(withIdentifier: "SummaryViewController") as? SummaryViewController else { return }
             summaryVC.dateToDisplay = newDate
-            summaryVC.onDismiss = { [weak self] in
-                self?.resetToToday()
-            }
             let navController = UINavigationController(rootViewController: summaryVC)
             navController.modalPresentationStyle = .pageSheet
-            navController.presentationController?.delegate = self
             present(navController, animated: true)
 
         case .exercises:
@@ -675,48 +639,7 @@ extension HomeViewController {
     }
 }
 
-// MARK: - UIAdaptivePresentationControllerDelegate
 
-extension HomeViewController: UIAdaptivePresentationControllerDelegate {
-    func presentationControllerDidDismiss(_ presentationController: UIPresentationController) {
-        resetToToday()
-    }
-
-    private func resetToToday() {
-        let calendar = Calendar.current
-        let today = Date()
-
-        if !calendar.isDate(today, inSameDayAs: selectedDate) {
-            selectedDate = today
-            scrollToSelectedDate(animated: true)
-
-            if let header = mainCollectionView.supplementaryView(
-                forElementKind: UICollectionView.elementKindSectionHeader,
-                at: IndexPath(item: 0, section: Section.calendar.rawValue)
-            ) as? SectionHeaderView {
-
-                let dateString = formattedDateString(for: selectedDate)
-
-                header.configure(
-                    title: "Today, \(dateString)",
-                    showInfoIcon: false
-                )
-
-                header.setTitleAlignment(.center)
-                header.setFont(size: 17, weight: .bold)
-            }
-
-            let visibleCalendarIndices = mainCollectionView.indexPathsForVisibleItems.filter {
-                $0.section == Section.calendar.rawValue
-            }
-
-            mainCollectionView.reloadItems(at: visibleCalendarIndices)
-            mainCollectionView.reloadSections(
-                IndexSet(integer: Section.exercises.rawValue)
-            )
-        }
-    }
-}
 
 // MARK: - AddMedicationDelegate
 

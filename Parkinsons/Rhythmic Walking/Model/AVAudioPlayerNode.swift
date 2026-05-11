@@ -93,7 +93,7 @@ final class RhythmicAudioManager {
         guard let buffer = beatBuffer else { return }
 
         let intervalNs = UInt64((60.0 / Double(currentBPM)) * 1_000_000_000)
-        let lookaheadFrames = AVAudioFramePosition(0.1 * sampleRate)  // 100 ms look-ahead
+        let lookaheadFrames = AVAudioFramePosition(0.1 * sampleRate)  
 
         let timer = DispatchSource.makeTimerSource(queue: .global(qos: .userInteractive))
         timer.schedule(deadline: .now(), repeating: .nanoseconds(Int(intervalNs)),

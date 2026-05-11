@@ -29,11 +29,11 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
             let storyboard = UIStoryboard(name: "Home", bundle: nil)
             let tabBarVC = storyboard.instantiateViewController(withIdentifier: "HomeTabBar") as! UITabBarController
             
-            // Force layout and view loading
+
             tabBarVC.view.frame = window.bounds
             tabBarVC.selectedIndex = 0
             
-            // Force the first tab to load its views
+
             if let firstTab = tabBarVC.viewControllers?.first {
                 firstTab.loadViewIfNeeded()
             }
@@ -61,7 +61,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     }
 
     func sceneWillEnterForeground(_ scene: UIScene) {
-        // Reschedule notifications so next-day doses are always queued
+        
         MedicationNotificationManager.shared.rescheduleAll()
     }
 

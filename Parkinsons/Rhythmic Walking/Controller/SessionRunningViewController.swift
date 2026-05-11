@@ -70,7 +70,7 @@ class SessionRunningViewController: UIViewController {
             progressView.setProgress(total > 0 ? CGFloat(timeLeft) / CGFloat(total) : 1.0)
 
         } else if totalSessionDuration > 0 {
-            // Use the session's recorded startDate so HealthKit query window aligns correctly.
+
             healthKitStartDate = session?.startDate ?? Date()
 
             timerModel = TimerModel(totalSeconds: totalSessionDuration)
@@ -219,6 +219,6 @@ extension SessionRunningViewController: TimerModelDelegate {
         pauseButton.isEnabled = false
         timerModel?.pause()
         RhythmicAudioManager.shared.stop()
-        // Modal will stay presented until the user explicitly taps 'End Session'
+        
     }
 }

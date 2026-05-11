@@ -51,7 +51,7 @@ class SymptomViewController: UIViewController, SymptomRatingCellDelegate {
             .font: UIFont.systemFont(ofSize: 32, weight: .bold),
             .foregroundColor: UIColor.label
         ]
-        // Push the large title to the left to match Apple Fitness zero-gap design
+        
         let screenWidth = UIScreen.main.bounds.width
         scrollAppearance.titlePositionAdjustment = UIOffset(horizontal: -(screenWidth / 2) + 100, vertical: 0)
 

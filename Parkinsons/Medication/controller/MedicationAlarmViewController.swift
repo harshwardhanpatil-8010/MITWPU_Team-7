@@ -1,14 +1,6 @@
 // MedicationAlarmViewController.swift
 // Parkinsons
 //
-// Full-screen alarm presented when a medication notification fires
-// while the app is in the foreground, OR when the user taps a notification
-// that opens the app.
-//
-// Layout is done entirely in code via Auto Layout so you only need to add
-// a blank UIViewController scene in the storyboard with the identifier
-// "MedicationAlarmVC", set its custom class to MedicationAlarmViewController,
-// and connect nothing — all outlets are created programmatically here.
 
 import UIKit
 import CoreData
@@ -264,7 +256,7 @@ class MedicationAlarmViewController: UIViewController {
     }
 
     private func processAll(status: DoseStatus) {
-        // Disable bulk buttons to prevent duplicate touches
+
         takenAllButton.isEnabled = false
         skipAllButton.isEnabled = false
         
@@ -273,16 +265,16 @@ class MedicationAlarmViewController: UIViewController {
             .filter { !$0.isHidden && $0.isUserInteractionEnabled }
         
         for card in cards {
-            // Reuses the exact same logic and animations as individual buttons
+
             card.onAction?(card.payload, status)
         }
     }
     
     private func logDose(payload: MedicationAlarmPayload, status: DoseStatus, cardView: MedicationCardView) {
-        // Disable buttons immediately
+
         cardView.isUserInteractionEnabled = false
         
-        // Notification management
+
         if status == .skipped {
             MedicationNotificationManager.shared.cancelOnTimeNotification(forDoseID: payload.doseID)
             MedicationNotificationManager.shared.scheduleSkipFollowUp(payload: payload)
@@ -290,7 +282,7 @@ class MedicationAlarmViewController: UIViewController {
             MedicationNotificationManager.shared.cancelNotifications(forDoseID: payload.doseID)
         }
 
-        // Core Data
+
         let context = PersistenceController.shared.viewContext
         let medRequest: NSFetchRequest<Medication> = Medication.fetchRequest()
         medRequest.predicate = NSPredicate(format: "id == %@", payload.medID as CVarArg)
@@ -319,7 +311,7 @@ class MedicationAlarmViewController: UIViewController {
             )
         }
 
-        // Animate card out
+
         UIView.animate(withDuration: 0.3, animations: {
             cardView.alpha = 0
             cardView.transform = CGAffineTransform(scaleX: 0.9, y: 0.9)
@@ -339,7 +331,7 @@ class MedicationAlarmViewController: UIViewController {
         guard !payloads.isEmpty else { return }
 
         DispatchQueue.main.async {
-            // Safety: Don't present if the app's UI isn't ready yet
+
             guard let top = topViewController() else { return }
             
             if let existing = top as? MedicationAlarmViewController {
@@ -377,4 +369,4 @@ class MedicationAlarmViewController: UIViewController {
     }
 }
 
-// Extension removed to use shared "MedicationLogged" notification name
+

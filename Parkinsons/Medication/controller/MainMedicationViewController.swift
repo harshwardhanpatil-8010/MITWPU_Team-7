@@ -82,7 +82,7 @@ final class MainMedicationViewController: UIViewController {
             .font: UIFont.systemFont(ofSize: 32, weight: .bold),
             .foregroundColor: UIColor.label
         ]
-        // Push the large title to the left to match Apple Fitness zero-gap design
+
         let screenWidth = UIScreen.main.bounds.width
         scrollAppearance.titlePositionAdjustment = UIOffset(horizontal: -(screenWidth / 2) + 110, vertical: 0)
 
@@ -414,7 +414,7 @@ extension MainMedicationViewController {
                     MedicationNotificationManager.shared.scheduleSkipFollowUp(payload: payload)
                 }
             } else {
-                // Cancel any pending follow-up notifications for this dose
+
                 MedicationNotificationManager.shared.cancelNotifications(forDoseID: dose.id)
             }
 
@@ -469,7 +469,7 @@ extension MainMedicationViewController: EditLogDelegate {
                 if let coreDose = log.dose {
                     coreDose.doseStatus = item.status.rawValue
 
-                    // Cancel follow-up notifications for doses now marked taken/skipped
+                    
                     if item.status != .none, let doseID = coreDose.id {
                         MedicationNotificationManager.shared.cancelNotifications(forDoseID: doseID)
                     }

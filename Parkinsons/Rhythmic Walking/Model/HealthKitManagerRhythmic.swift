@@ -12,7 +12,7 @@ final class HealthKitManagerRhythmic {
         HKQuantityType.quantityType(forIdentifier: .walkingStepLength)!,
         HKQuantityType.quantityType(forIdentifier: .walkingAsymmetryPercentage)!,
         HKQuantityType.quantityType(forIdentifier: .appleWalkingSteadiness)!,
-        HKQuantityType.quantityType(forIdentifier: .walkingSpeed)!          // NEW
+        HKQuantityType.quantityType(forIdentifier: .walkingSpeed)!         
     ]
 
     private init() {}

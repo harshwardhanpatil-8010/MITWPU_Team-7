@@ -9,7 +9,7 @@ class OnboardingInfoViewController: UIViewController, UITextFieldDelegate,
     
     @IBOutlet weak var stageLabelField: UITextField!
     @IBOutlet weak var genderLabelField: UITextField!
-    @IBOutlet weak var dateOfBirthTextField: UITextField!   // replaces UIDatePicker
+    @IBOutlet weak var dateOfBirthTextField: UITextField!
     @IBOutlet weak var nameTextField: UITextField!
 
     // MARK: - Data
@@ -142,7 +142,7 @@ class OnboardingInfoViewController: UIViewController, UITextFieldDelegate,
     // MARK: - Date Picker (Inline scroll wheel)
 
     private func configureDatePicker() {
-        // Wheel style gives the classic iOS scroll drum
+
         datePicker.preferredDatePickerStyle = .wheels
         datePicker.datePickerMode           = .date
         datePicker.maximumDate              = Calendar.current.date(
@@ -210,7 +210,7 @@ class OnboardingInfoViewController: UIViewController, UITextFieldDelegate,
         return true
     }
 
-    // Block manual typing in picker-backed fields
+
     func textField(_ textField: UITextField,
                    shouldChangeCharactersIn range: NSRange,
                    replacementString string: String) -> Bool {
@@ -232,7 +232,7 @@ class OnboardingInfoViewController: UIViewController, UITextFieldDelegate,
 
     // MARK: - Toolbar Helper
 
-    /// Reusable toolbar with a right-aligned Done button
+
     private func makeToolbar(doneAction: Selector) -> UIToolbar {
         let toolbar    = UIToolbar()
         toolbar.sizeToFit()
@@ -256,7 +256,7 @@ class OnboardingInfoViewController: UIViewController, UITextFieldDelegate,
         defaults.set(name,           forKey: "userName")
         defaults.set(stageNumber,    forKey: "diseaseStage")
         defaults.set(selectedGender, forKey: "userGender")
-        defaults.set(datePicker.date, forKey: "userDOB")   // always save the picker's date
+        defaults.set(datePicker.date, forKey: "userDOB")  
         defaults.set(true,           forKey: "hasCompletedOnboarding")
 
         NotificationCenter.default.post(
