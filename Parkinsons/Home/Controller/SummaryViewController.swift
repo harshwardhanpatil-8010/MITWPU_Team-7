@@ -366,8 +366,6 @@ class SummaryViewController: UIViewController {
 
     @IBAction func closeButtonTapped(_ sender: Any) {
 
-        
-
         dismiss(animated: true)
     }
 

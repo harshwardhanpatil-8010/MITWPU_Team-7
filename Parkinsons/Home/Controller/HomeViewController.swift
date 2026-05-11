@@ -193,6 +193,7 @@ class HomeViewController: UIViewController, UICollectionViewDelegate {
         UIView.performWithoutAnimation {
             self.mainCollectionView.reloadSections(IndexSet(integer: Section.medications.rawValue))
         }
+        self.scrollToSelectedDate(animated: false)
     }
 
     // MARK: - Update Dose
@@ -222,6 +223,7 @@ class HomeViewController: UIViewController, UICollectionViewDelegate {
         UIView.performWithoutAnimation {
             mainCollectionView.reloadSections(IndexSet(integer: medSection))
         }
+        self.scrollToSelectedDate(animated: false)
 
         
         NotificationCenter.default.post(
