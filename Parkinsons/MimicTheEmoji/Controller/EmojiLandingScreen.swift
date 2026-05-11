@@ -309,7 +309,25 @@ class EmojiLandingScreen: UIViewController, UICollectionViewDataSource, UICollec
     }
 
     @IBAction func playButtonTapped(_ sender: UIButton) {
+        guard let date = selectedDate else { return }
 
+        if EmojiGameManager.shared.isCompleted(date: date) {
+            let alert = UIAlertController(
+                title: "Challenge Completed",
+                message: "You have already completed this daily challenge. Do you want to play again?",
+                preferredStyle: .alert
+            )
+            alert.addAction(UIAlertAction(title: "Yes", style: .default) { _ in
+                self.navigateToGame(with: date)
+            })
+            alert.addAction(UIAlertAction(title: "No", style: .cancel))
+            present(alert, animated: true)
+        } else {
+            navigateToGame(with: date)
+        }
+    }
+
+    private func navigateToGame(with date: Date) {
         let storyboard = UIStoryboard(
             name: "MimicTheEmoji",
             bundle: nil
@@ -321,16 +339,12 @@ class EmojiLandingScreen: UIViewController, UICollectionViewDataSource, UICollec
             return
         }
 
-        gameVC.selectedDate = selectedDate
+        gameVC.selectedDate = date
 
         if let nav = self.navigationController {
-
             nav.pushViewController(gameVC, animated: true)
-
         } else {
-
             gameVC.modalPresentationStyle = .fullScreen
-
             present(gameVC, animated: true)
         }
     }
