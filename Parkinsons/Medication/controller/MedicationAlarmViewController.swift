@@ -79,13 +79,8 @@ final class MedicationCardView: UIView {
     required init?(coder: NSCoder) { fatalError("init(coder:) has not been implemented") }
     
     private func setupUI() {
-        backgroundColor = .secondarySystemGroupedBackground
-        layer.cornerRadius = 20
-        layer.cornerCurve = .continuous
-        layer.shadowColor = UIColor.black.cgColor
-        layer.shadowOpacity = 0.05
-        layer.shadowOffset = CGSize(width: 0, height: 4)
-        layer.shadowRadius = 12
+        backgroundColor = .white
+        applyCardStyle()
         
         medIconImageView.contentMode = .scaleAspectFit
         let icon = payload.iconName.isEmpty ? "tablet1" : payload.iconName
@@ -184,7 +179,7 @@ class MedicationAlarmViewController: UIViewController {
     }
     
     private func setupUI() {
-        view.backgroundColor = .systemGroupedBackground
+        view.backgroundColor = .white
         
         headerLabel.text = "Due Medications"
         headerLabel.font = .systemFont(ofSize: 32, weight: .bold)
