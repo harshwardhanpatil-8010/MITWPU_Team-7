@@ -285,8 +285,17 @@ extension MainMedicationViewController: UICollectionViewDataSource {
             let header = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: "MedicationSectionHeaderView", for: indexPath) as! MedicationSectionHeaderView
             if indexPath.section == 0 {
                 let hasMoreThanThreeUpcoming = upcomingDoses.count > 3
-                header.configure(title: "Today Medications", actionTitle: hasMoreThanThreeUpcoming ? (isShowingAllUpcoming ? "Show Less" : "Show All") : nil, action: hasMoreThanThreeUpcoming ? .showAll : nil, isExpanded: isShowingAllUpcoming)
-            } else {
+
+                header.configure(
+                    title: "Upcoming",
+                    actionTitle: hasMoreThanThreeUpcoming
+                        ? (isShowingAllUpcoming ? "Show Less" : "Show All")
+                        : nil,
+                    action: hasMoreThanThreeUpcoming ? .showAll : nil,
+                    isExpanded: isShowingAllUpcoming
+                )
+            }
+            else {
                 let isEditEnabled = !loggedDoses.isEmpty
 
                 header.configure(
