@@ -10,7 +10,7 @@
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
         <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
-        <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="therapeutic_game_cell" id="gTV-IL-0wX" customClass="TherapeuticGameCell" customModule="Parkinsons" customModuleProvider="target">
+        <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="therapeutic_game_cell" id="gTV-IL-0wX" customClass="TherapeuticGameCell" customModule="ParkEase" customModuleProvider="target">
             <rect key="frame" x="0.0" y="0.0" width="333" height="75"/>
             <autoresizingMask key="autoresizingMask"/>
             <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center">
@@ -59,13 +59,6 @@
                                     </stackView>
                                 </subviews>
                             </stackView>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Label" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="HRu-mw-IAh">
-                                <rect key="frame" x="206" y="-2" width="253" height="17"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                <nil key="highlightedColor"/>
-                            </label>
                         </subviews>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                         <constraints>
@@ -87,7 +80,6 @@
             <connections>
                 <outlet property="backgroundCardView" destination="hyf-t1-NL3" id="A6u-ND-oHx"/>
                 <outlet property="completionLabel" destination="w0B-dn-4fk" id="PlE-gY-P7l"/>
-                <outlet property="descriptionLabel" destination="HRu-mw-IAh" id="M6N-tE-K6k"/>
                 <outlet property="iconImageView" destination="UjS-u9-SWJ" id="f16-e3-Dny"/>
                 <outlet property="titleLabel" destination="hTJ-CF-CKg" id="ItI-XN-an4"/>
             </connections>

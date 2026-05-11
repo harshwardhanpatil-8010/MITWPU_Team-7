@@ -5,7 +5,7 @@ import UIKit
 class TherapeuticGameCell: UICollectionViewCell {
 
     @IBOutlet weak var titleLabel: UILabel!
-    @IBOutlet weak var descriptionLabel: UILabel!
+
     @IBOutlet weak var backgroundCardView: UIView!
     @IBOutlet weak var completionLabel: UILabel!
     @IBOutlet weak var iconImageView: UIImageView!
@@ -29,7 +29,7 @@ class TherapeuticGameCell: UICollectionViewCell {
 
     func configure(with model: TherapeuticGameModel, completionText: String, isTodayCompleted: Bool) {
         titleLabel.text = model.title
-        descriptionLabel.text = isTodayCompleted ? "Daily challenge completed!" : model.description
+
         completionLabel.text = completionText
         
         iconImageView.image = UIImage(systemName: model.iconName ?? "")
