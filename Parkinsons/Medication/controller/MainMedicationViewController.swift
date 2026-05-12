@@ -186,6 +186,34 @@ final class MainMedicationViewController: UIViewController {
     }
 
     private func presentDoseAlert(for dose: TodayDoseItem) {
+        let now = Date()
+        
+        // If scheduled for the future, show warning first
+        if dose.scheduledTime > now {
+            let formatter = DateFormatter()
+            formatter.timeStyle = .short
+            let timeString = formatter.string(from: dose.scheduledTime)
+            
+            let earlyAlert = UIAlertController(
+                title: "Early Logging",
+                message: "This medication is scheduled for \(timeString). Are you sure you want to log it now?",
+                preferredStyle: .alert
+            )
+            
+            let confirmAction = UIAlertAction(title: "Yes, Log It", style: .default) { [weak self] _ in
+                self?.showActionSheet(for: dose)
+            }
+            
+            earlyAlert.addAction(confirmAction)
+            earlyAlert.addAction(UIAlertAction(title: "Cancel", style: .cancel))
+            
+            present(earlyAlert, animated: true)
+        } else {
+            showActionSheet(for: dose)
+        }
+    }
+    
+    private func showActionSheet(for dose: TodayDoseItem) {
         let alert = UIAlertController(
             title: dose.medicationName,
             message: "Did you take the medicine?",

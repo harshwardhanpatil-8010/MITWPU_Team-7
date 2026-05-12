@@ -623,12 +623,47 @@ extension HomeViewController: UICollectionViewDataSource {
 // MARK: - MedicationCardDelegate
 
 extension HomeViewController: MedicationCardDelegate {
-    func didTapTaken(for dose: TodayDoseItem) {
-        updateDose(dose, status: .taken)
+    func didTapTaken(for dose: TodayDoseItem, cell: MedicationCardCollectionViewCell) {
+        handleDoseLogging(for: dose, status: .taken, cell: cell)
     }
 
-    func didTapSkipped(for dose: TodayDoseItem) {
-        updateDose(dose, status: .skipped)
+    func didTapSkipped(for dose: TodayDoseItem, cell: MedicationCardCollectionViewCell) {
+        handleDoseLogging(for: dose, status: .skipped, cell: cell)
+    }
+    
+    private func handleDoseLogging(for dose: TodayDoseItem, status: DoseStatus, cell: MedicationCardCollectionViewCell) {
+        let now = Date()
+        
+        // If the medication is not yet due (scheduled time is in the future)
+        if dose.scheduledTime > now {
+            let formatter = DateFormatter()
+            formatter.timeStyle = .short
+            let timeString = formatter.string(from: dose.scheduledTime)
+            
+            let alert = UIAlertController(
+                title: "Early Logging",
+                message: "This medication is scheduled for \(timeString). Are you sure you want to log it now?",
+                preferredStyle: .alert
+            )
+            
+            let confirmAction = UIAlertAction(title: "Yes, Log It", style: .default) { [weak self] _ in
+                cell.playAnimation(isTaken: status == .taken) {
+                    self?.updateDose(dose, status: status)
+                }
+            }
+            
+            let cancelAction = UIAlertAction(title: "Cancel", style: .cancel)
+            
+            alert.addAction(confirmAction)
+            alert.addAction(cancelAction)
+            
+            self.present(alert, animated: true)
+        } else {
+            // Already due, log normally with animation
+            cell.playAnimation(isTaken: status == .taken) { [weak self] in
+                self?.updateDose(dose, status: status)
+            }
+        }
     }
 }
 
