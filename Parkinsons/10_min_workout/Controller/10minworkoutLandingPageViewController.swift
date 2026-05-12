@@ -6,6 +6,7 @@ class _0minworkoutLandingPageViewController: UIViewController, UICollectionViewD
     @IBOutlet weak var progressContainer: UIView!
     @IBOutlet weak var exerciseNumberLabel: UILabel!
     @IBOutlet weak var collectionView: UICollectionView!
+    @IBOutlet weak var exercisesHeaderLabel: UILabel!
     public var shouldHideStartButton: Bool = false
     var displayDate: Date?
 
@@ -19,6 +20,17 @@ class _0minworkoutLandingPageViewController: UIViewController, UICollectionViewD
         guard let displayDate else { return false }
         return shouldHideStartButton && !Calendar.current.isDateInToday(displayDate)
     }
+
+    private let emptyLabel: UILabel = {
+        let label = UILabel()
+        label.text          = "No sessions performed."
+        label.textColor     = .secondaryLabel
+        label.font          = .systemFont(ofSize: 17, weight: .medium)
+        label.textAlignment = .center
+        label.translatesAutoresizingMaskIntoConstraints = false
+        label.isHidden      = true
+        return label
+    }()
 
     private var currentSortedExercises: [WorkoutExercise] {
         if isHistoricalMode {
@@ -63,6 +75,13 @@ class _0minworkoutLandingPageViewController: UIViewController, UICollectionViewD
         setupProgressView()
         setupCollectionView()
         startButtonOutlet.isHidden = shouldHideStartButton
+        
+        view.addSubview(emptyLabel)
+        NSLayoutConstraint.activate([
+            emptyLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            emptyLabel.centerYAnchor.constraint(equalTo: view.centerYAnchor)
+        ])
+        
         let gradient = navGradientOverlay
         gradient.frame = CGRect(x: 0, y: 0, width: view.bounds.width, height: 140)
         view.layer.addSublayer(gradient)
@@ -100,6 +119,19 @@ class _0minworkoutLandingPageViewController: UIViewController, UICollectionViewD
             collectionView.reloadData()
             updateProgress()
             updateButtonUI()
+        }
+
+        if shouldHideStartButton, let targetDate = displayDate {
+            let formatter = DateFormatter()
+            formatter.dateFormat = "d MMMM yyyy"
+            let calendar = Calendar.current
+            if calendar.isDateInToday(targetDate) {
+                navigationItem.title = "Today's Sessions"
+            } else if calendar.isDateInYesterday(targetDate) {
+                navigationItem.title = "Yesterday's Sessions"
+            } else {
+                navigationItem.title = formatter.string(from: targetDate)
+            }
         }
 
         navigationController?.setNavigationBarHidden(false, animated: animated)
@@ -170,16 +202,36 @@ class _0minworkoutLandingPageViewController: UIViewController, UICollectionViewD
 
     func updateProgress() {
         view.layoutIfNeeded()
+        
+        let completed: Int
+        let total: Int
+        
         if isHistoricalMode {
-            let total = max(historicalTotalCount, 1)
-            exerciseNumberLabel.text = "\(historicalCompletedCount)/\(historicalTotalCount)"
-            progressView.setProgress(CGFloat(historicalCompletedCount) / CGFloat(total))
-            return
+            completed = historicalCompletedCount
+            total = historicalTotalCount
+        } else {
+            completed = WorkoutManager.shared.completedToday.count
+            total = exercises.count
         }
-        let completed = WorkoutManager.shared.completedToday.count
-        let total     = exercises.count
-        exerciseNumberLabel.text = "\(completed)/\(total)"
-        progressView.setProgress(total > 0 ? CGFloat(completed) / CGFloat(total) : 0)
+        
+        let totalVal = max(total, 1)
+        exerciseNumberLabel.text = "\(completed)/\(totalVal)"
+        progressView.setProgress(total > 0 ? CGFloat(completed) / CGFloat(totalVal) : 0)
+        
+        // Empty state logic: If in summary mode and nothing completed, show empty label
+        if shouldHideStartButton && completed == 0 {
+            emptyLabel.isHidden = false
+            progressContainer.isHidden = true
+            collectionView.isHidden = true
+            exerciseNumberLabel.isHidden = true
+            exercisesHeaderLabel?.isHidden = true
+        } else {
+            emptyLabel.isHidden = true
+            progressContainer.isHidden = false
+            collectionView.isHidden = false
+            exerciseNumberLabel.isHidden = false
+            exercisesHeaderLabel?.isHidden = false
+        }
     }
 
     func updateButtonUI() {
