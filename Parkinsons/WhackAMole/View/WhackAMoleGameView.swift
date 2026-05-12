@@ -408,7 +408,7 @@ struct WhackAMoleGameView: View {
                     .font(.system(size: w * 0.65))
                     .scaleEffect(x: -1, y: 1)
                     .rotationEffect(.degrees(30))
-                    .offset(x: -w * 0.05, y: -h * 0.55)
+                    .offset(x: -w * 0.22, y: -h * 0.55)
                     .transition(.scale.combined(with: .opacity))
             }
         }
