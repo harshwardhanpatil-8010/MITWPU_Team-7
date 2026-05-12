@@ -25,6 +25,9 @@ class RhythmicWalkingSummaryViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        let gradient = navGradientOverlay
+        gradient.frame = CGRect(x: 0, y: 0, width: view.bounds.width, height: 140)
+        view.layer.addSublayer(gradient)
         tableView.dataSource = self
         tableView.delegate   = self
         tableView.layer.cornerRadius = 30
@@ -234,6 +237,17 @@ extension RhythmicWalkingSummaryViewController: UITableViewDataSource {
         cell.accessoryType = .disclosureIndicator
         return cell
     }
+    private var navGradientOverlay: CAGradientLayer {
+        let gradient = CAGradientLayer()
+        gradient.colors = [
+            UIColor(hex: "90AF81").withAlphaComponent(0.35).cgColor,
+            UIColor(hex: "90AF81").withAlphaComponent(0.0).cgColor
+        ]
+        gradient.startPoint = CGPoint(x: 0.5, y: 0)
+        gradient.endPoint   = CGPoint(x: 0.5, y: 1)
+        return gradient
+    }
+
 }
 
 
