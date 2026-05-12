@@ -466,7 +466,7 @@
                                                 </constraints>
                                             </tableView>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Symptom Faced" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="zAz-VH-ul4">
-                                                <rect key="frame" x="16" y="498" width="152.33333333333334" height="24"/>
+                                                <rect key="frame" x="20" y="498" width="152.33333333333334" height="24"/>
                                                 <fontDescription key="fontDescription" type="boldSystem" pointSize="20"/>
                                                 <nil key="textColor"/>
                                                 <nil key="highlightedColor"/>
@@ -493,7 +493,7 @@
                                         </subviews>
                                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                                         <constraints>
-                                            <constraint firstItem="zAz-VH-ul4" firstAttribute="leading" secondItem="mTm-Yk-S5Z" secondAttribute="leading" constant="16" id="2V3-Ge-i2A"/>
+                                            <constraint firstItem="zAz-VH-ul4" firstAttribute="leading" secondItem="mTm-Yk-S5Z" secondAttribute="leading" constant="20" id="2V3-Ge-i2A"/>
                                             <constraint firstItem="zAz-VH-ul4" firstAttribute="top" secondItem="3Sv-Y6-W7P" secondAttribute="bottom" constant="32" id="3Nt-nd-Wus"/>
                                             <constraint firstAttribute="trailing" secondItem="3Sv-Y6-W7P" secondAttribute="trailing" id="3sV-Xl-eLy"/>
                                             <constraint firstItem="yPm-mc-eYY" firstAttribute="top" secondItem="PCT-SJ-Xw4" secondAttribute="bottom" constant="8" id="9Tm-W2-fGu"/>
@@ -849,6 +849,7 @@
                     <tabBarItem key="tabBarItem" title="Today" image="sun.max" catalog="system" selectedImage="sun.max.fill" id="cFu-hJ-Xek"/>
                     <toolbarItems/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" id="PWn-Qa-ghx">
+                        <rect key="frame" x="0.0" y="118" width="393" height="54"/>
                         <autoresizingMask key="autoresizingMask"/>
                         <textAttributes key="largeTitleTextAttributes">
                             <offsetWrapper key="textShadowOffset" horizontal="0.0" vertical="0.0"/>
@@ -898,7 +899,7 @@
             <objects>
                 <viewController storyboardIdentifier="CalendarViewController" useStoryboardIdentifierAsRestorationIdentifier="YES" id="YxW-ZH-lhD" customClass="CalendarViewController" customModule="ParkEase" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="h36-Sr-ApG">
-                        <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
+                        <rect key="frame" x="0.0" y="0.0" width="393" height="793"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="KeU-1H-fum">
@@ -963,6 +964,7 @@
                     <tabBarItem key="tabBarItem" title="Medication" image="pill" catalog="system" selectedImage="pill.fill" id="VjS-7T-15O"/>
                     <toolbarItems/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" largeTitles="YES" id="2Do-JR-cEm">
+                        <rect key="frame" x="0.0" y="118" width="393" height="106"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
                     <nil name="viewControllers"/>
@@ -981,6 +983,7 @@
                     <tabBarItem key="tabBarItem" title="Symptoms" image="list.bullet.clipboard" catalog="system" selectedImage="list.bullet.clipboard.fill" id="rvJ-Q2-SpB"/>
                     <toolbarItems/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" largeTitles="YES" id="zhG-9Z-sou">
+                        <rect key="frame" x="0.0" y="118" width="393" height="106"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
                     <nil name="viewControllers"/>
@@ -1066,13 +1069,13 @@
             <color white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
         </systemColor>
         <systemColor name="separatorColor">
-            <color red="0.23529411759999999" green="0.23529411759999999" blue="0.26274509800000001" alpha="0.28999999999999998" colorSpace="custom" customColorSpace="sRGB"/>
+            <color red="0.23529411764705882" green="0.23529411764705882" blue="0.2627450980392157" alpha="0.12" colorSpace="custom" customColorSpace="sRGB"/>
         </systemColor>
         <systemColor name="systemBackgroundColor">
             <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
         </systemColor>
         <systemColor name="tintColor">
-            <color red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <color red="0.0" green="0.53333333333333333" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </systemColor>
     </resources>
 </document>

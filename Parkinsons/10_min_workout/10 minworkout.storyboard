@@ -12,7 +12,7 @@
         <!--10 min workout-->
         <scene sceneID="ebc-ya-hmf">
             <objects>
-                <viewController storyboardIdentifier="RestScreenViewController" useStoryboardIdentifierAsRestorationIdentifier="YES" id="J4b-8T-y2N" customClass="RestScreenViewController" customModule="Parkinsons" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="RestScreenViewController" useStoryboardIdentifierAsRestorationIdentifier="YES" id="J4b-8T-y2N" customClass="RestScreenViewController" customModule="ParkEase" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="6p5-RL-dAZ" customClass="RestScreen">
                         <rect key="frame" x="0.0" y="0.0" width="402" height="874"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -184,7 +184,7 @@
         <!--10 min Workout-->
         <scene sceneID="hG1-va-qNN">
             <objects>
-                <viewController storyboardIdentifier="exerciseLandingPage" useStoryboardIdentifierAsRestorationIdentifier="YES" id="Ndm-wp-35y" customClass="_0minworkoutLandingPageViewController" customModule="Parkinsons" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="exerciseLandingPage" useStoryboardIdentifierAsRestorationIdentifier="YES" id="Ndm-wp-35y" customClass="_0minworkoutLandingPageViewController" customModule="ParkEase" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="i6X-z3-sPf">
                         <rect key="frame" x="0.0" y="0.0" width="402" height="874"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -219,7 +219,7 @@
                                     <constraint firstItem="xWr-wC-5H9" firstAttribute="centerX" secondItem="bmk-RZ-sGy" secondAttribute="centerX" id="tTX-xB-oWQ"/>
                                 </constraints>
                             </view>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Exercises for Today" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="jcs-0T-Vqw">
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Exercises " lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="jcs-0T-Vqw">
                                 <rect key="frame" x="16" y="368" width="370" height="24"/>
                                 <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="20"/>
                                 <nil key="textColor"/>
@@ -317,7 +317,7 @@
         <!--10 min Workout-->
         <scene sceneID="fwz-WR-0Sv">
             <objects>
-                <viewController storyboardIdentifier="10minworkoutCountdownViewController" useStoryboardIdentifierAsRestorationIdentifier="YES" id="f2T-cn-qUt" customClass="_0minworkoutCountdownViewController" customModule="Parkinsons" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="10minworkoutCountdownViewController" useStoryboardIdentifierAsRestorationIdentifier="YES" id="f2T-cn-qUt" customClass="_0minworkoutCountdownViewController" customModule="ParkEase" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="D3K-98-ReG">
                         <rect key="frame" x="0.0" y="0.0" width="402" height="874"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -359,7 +359,7 @@
         <!--0minworkout Good Job View Controller-->
         <scene sceneID="hrK-dw-KUr">
             <objects>
-                <viewController storyboardIdentifier="GoodJobViewController" useStoryboardIdentifierAsRestorationIdentifier="YES" id="TZO-vY-iUG" customClass="_0minworkoutGoodJobViewController" customModule="Parkinsons" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="GoodJobViewController" useStoryboardIdentifierAsRestorationIdentifier="YES" id="TZO-vY-iUG" customClass="_0minworkoutGoodJobViewController" customModule="ParkEase" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="WXM-8e-z9q">
                         <rect key="frame" x="0.0" y="0.0" width="402" height="874"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -597,7 +597,7 @@
         <!--10 min Workout-->
         <scene sceneID="czI-ub-xzR">
             <objects>
-                <viewController storyboardIdentifier="10minworkoutViewController" useStoryboardIdentifierAsRestorationIdentifier="YES" id="kfw-Zk-5lP" customClass="_0minworkoutViewController" customModule="Parkinsons" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="10minworkoutViewController" useStoryboardIdentifierAsRestorationIdentifier="YES" id="kfw-Zk-5lP" customClass="_0minworkoutViewController" customModule="ParkEase" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="cog-hj-JbD">
                         <rect key="frame" x="0.0" y="0.0" width="402" height="874"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -645,7 +645,7 @@
                                     <constraint firstItem="mjt-iX-ntm" firstAttribute="leading" secondItem="2bR-8X-e0Q" secondAttribute="leading" id="gpO-Zg-yIb"/>
                                 </constraints>
                             </stackView>
-                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="KpT-vc-seY" customClass="FullScreenYTPlayerView" customModule="Parkinsons" customModuleProvider="target">
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="KpT-vc-seY" customClass="FullScreenYTPlayerView" customModule="ParkEase" customModuleProvider="target">
                                 <rect key="frame" x="0.0" y="179.33333333333334" width="402" height="385.66666666666663"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                             </view>
@@ -833,16 +833,16 @@
     <resources>
         <image name="hands.clap.fill" catalog="system" width="128" height="121"/>
         <systemColor name="separatorColor">
-            <color red="0.23529411759999999" green="0.23529411759999999" blue="0.26274509800000001" alpha="0.28999999999999998" colorSpace="custom" customColorSpace="sRGB"/>
+            <color red="0.23529411764705882" green="0.23529411764705882" blue="0.2627450980392157" alpha="0.12" colorSpace="custom" customColorSpace="sRGB"/>
         </systemColor>
         <systemColor name="systemBackgroundColor">
             <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
         </systemColor>
         <systemColor name="systemGreenColor">
-            <color red="0.20392156859999999" green="0.78039215689999997" blue="0.34901960780000002" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <color red="0.20392156862745098" green="0.7803921568627451" blue="0.34901960784313724" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </systemColor>
         <systemColor name="systemPinkColor">
-            <color red="1" green="0.1764705882" blue="0.33333333329999998" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <color red="1" green="0.17647058823529413" blue="0.33333333333333331" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </systemColor>
     </resources>
 </document>

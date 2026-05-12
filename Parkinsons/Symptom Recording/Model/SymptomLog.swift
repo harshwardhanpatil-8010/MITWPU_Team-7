@@ -26,7 +26,7 @@ enum SymptomType: Int16, CaseIterable, Codable {
     
     var iconName: String {
         switch self {
-        case .slowedMovement: return "ColourTortoise"
+        case .slowedMovement: return "ColourTortoise2"
         case .gaitDisturbance: return "ColourWalking"
         case .tremors: return "ColourTremor"
         case .facialStiffness: return "stiffFace"
