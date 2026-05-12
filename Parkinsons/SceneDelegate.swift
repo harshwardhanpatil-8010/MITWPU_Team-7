@@ -25,22 +25,29 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 
         let hasCompletedOnboarding = UserDefaults.standard.bool(forKey: "hasCompletedOnboarding")
 
+//        if hasCompletedOnboarding {
+//            let storyboard = UIStoryboard(name: "Home", bundle: nil)
+//            let tabBarVC = storyboard.instantiateViewController(withIdentifier: "HomeTabBar") as! UITabBarController
+//            
+//
+//            tabBarVC.view.frame = window.bounds
+//            tabBarVC.selectedIndex = 0
+//            
+//
+//            if let firstTab = tabBarVC.viewControllers?.first {
+//                firstTab.loadViewIfNeeded()
+//            }
+//            
+//            window.rootViewController = tabBarVC
+//            
+//        }
         if hasCompletedOnboarding {
-            let storyboard = UIStoryboard(name: "Home", bundle: nil)
-            let tabBarVC = storyboard.instantiateViewController(withIdentifier: "HomeTabBar") as! UITabBarController
+            let storyboard = UIStoryboard(name: "Jigsaw Puzzle", bundle: nil)
+            let rootVC = storyboard.instantiateInitialViewController()!
+                window.rootViewController = rootVC
             
-
-            tabBarVC.view.frame = window.bounds
-            tabBarVC.selectedIndex = 0
-            
-
-            if let firstTab = tabBarVC.viewControllers?.first {
-                firstTab.loadViewIfNeeded()
-            }
-            
-            window.rootViewController = tabBarVC
-            
-        } else {
+        }
+        else {
             let storyboard = UIStoryboard(name: "Login", bundle: nil)
             let featureVC = storyboard.instantiateViewController(withIdentifier: "OnboardingFeatureViewController")
             let navVC = UINavigationController(rootViewController: featureVC)

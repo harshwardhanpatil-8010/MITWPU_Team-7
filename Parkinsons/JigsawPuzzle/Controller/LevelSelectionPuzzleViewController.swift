@@ -1,0 +1,191 @@
+//
+//  LevelSelectionPuzzleViewController.swift
+//  ParkEase
+//
+//  Created by Unnatti Gogna on 12/05/26.
+//
+
+import UIKit
+
+class LevelSelectionPuzzleViewController: UIViewController, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
+
+    @IBOutlet weak var monthAndYearOutlet: UILabel!
+    @IBOutlet weak var collectionView: UICollectionView!
+    @IBOutlet weak var completedLabel: UILabel!
+    @IBOutlet weak var imageView: UIImageView!
+
+    private var calendar: Calendar = {
+        var c = Calendar(identifier: .gregorian)
+        c.firstWeekday = 2
+        return c
+    }()
+    private var navGradientOverlay: CAGradientLayer {
+        let gradient = CAGradientLayer()
+        gradient.colors = [
+            UIColor(hex: "#D98C6B").withAlphaComponent(0.30).cgColor,
+            UIColor(hex: "#D98C6B").withAlphaComponent(0.0).cgColor
+        ]
+        gradient.startPoint = CGPoint(x: 0.5, y: 0)
+        gradient.endPoint   = CGPoint(x: 0.5, y: 1)
+        return gradient
+    }
+    private let today = Calendar(identifier: .gregorian).startOfDay(for: Date())
+    private var firstDayOfMonth: Date!
+    private var firstWeekdayOffset = 0
+    private var daysInMonth = 0
+    private var selectedDate: Date?
+
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        setupCollectionView()
+        setupMonth()
+        updateCompletionCount()
+        let gradient = navGradientOverlay
+        gradient.frame = CGRect(x: 0, y: 0, width: view.bounds.width, height: 140)
+            view.layer.addSublayer(gradient)
+    }
+
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        updateCompletionCount()
+        collectionView.reloadData()
+        tabBarController?.tabBar.isHidden = true
+        let gradient = navGradientOverlay
+        gradient.frame = CGRect(x: 0, y: 0, width: view.bounds.width, height: 140)
+            view.layer.addSublayer(gradient)
+    }
+
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        tabBarController?.tabBar.isHidden = false
+    }
+
+    private func setupCollectionView() {
+        collectionView.register(DateCell.self, forCellWithReuseIdentifier: "DateCell")
+        collectionView.dataSource = self
+        collectionView.delegate = self
+        collectionView.isScrollEnabled = false
+        configureLayout()
+    }
+
+    private func configureLayout() {
+        guard let layout = collectionView.collectionViewLayout as? UICollectionViewFlowLayout else { return }
+        let size = collectionView.bounds.width / 7
+        layout.itemSize = CGSize(width: size, height: size)
+        layout.minimumInteritemSpacing = 0
+        layout.minimumLineSpacing = 0
+        layout.estimatedItemSize = .zero
+    }
+
+    private func setupMonth() {
+        let now = Date()
+        let comps = calendar.dateComponents([.year, .month], from: now)
+        firstDayOfMonth = calendar.date(from: comps)!
+        daysInMonth = calendar.range(of: .day, in: .month, for: firstDayOfMonth)!.count
+
+        let weekday = calendar.component(.weekday, from: firstDayOfMonth)
+        firstWeekdayOffset = (weekday - calendar.firstWeekday + 7) % 7
+
+        let formatter = DateFormatter()
+        formatter.calendar = calendar
+        formatter.dateFormat = "MMMM yyyy"
+        monthAndYearOutlet.text = formatter.string(from: firstDayOfMonth)
+
+        selectedDate = today
+        collectionView.reloadData()
+    }
+
+    private func updateCompletionCount() {
+        let completedCount = (0..<daysInMonth).filter { offset in
+            guard let date = calendar.date(byAdding: .day, value: offset, to: firstDayOfMonth) else { return false }
+            return DailyGameManager.shared.isCompleted(date: calendar.startOfDay(for: date))
+        }.count
+
+            completedLabel.text = "\(completedCount)/\(daysInMonth) Completed"
+            completedLabel.textColor = .label
+            imageView.isHidden = false
+    }
+
+    @objc func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        daysInMonth + firstWeekdayOffset
+    }
+
+    @objc(collectionView:cellForItemAtIndexPath:) func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "DateCell", for: indexPath) as! DateCell
+
+        guard indexPath.item >= firstWeekdayOffset else {
+            cell.configureEmpty()
+            return cell
+        }
+
+        let day = indexPath.item - firstWeekdayOffset + 1
+        let date = calendar.date(byAdding: .day, value: day - 1, to: firstDayOfMonth)!
+        let cellDate = calendar.startOfDay(for: date)
+
+        let isToday = calendar.isDate(cellDate, inSameDayAs: today)
+        let isFuture = cellDate > today
+        let isCompleted = DailyGameManager.shared.isCompleted(date: cellDate)
+        let isSelected = selectedDate.map { calendar.isDate(cellDate, inSameDayAs: $0) } ?? false
+        let showTodayOutline = isToday && selectedDate != nil && !isSelected
+
+        cell.configure(
+            day: day,
+            isToday: isToday,
+            isSelected: isSelected,
+            isCompleted: isCompleted,
+            showTodayOutline: showTodayOutline,
+            enabled: !isFuture,
+            themeColor: UIColor(hex: "D98C6B")
+        )
+        return cell
+    }
+
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        guard indexPath.item >= firstWeekdayOffset else { return }
+        let day = indexPath.item - firstWeekdayOffset + 1
+        let date = calendar.date(byAdding: .day, value: day - 1, to: firstDayOfMonth)!
+        let cellDate = calendar.startOfDay(for: date)
+        guard cellDate <= today else { return }
+        selectedDate = cellDate
+        collectionView.reloadData()
+    }
+
+    @IBAction func playButtonTapped(_ sender: UIButton) {
+        guard let date = selectedDate else { return }
+
+        if DailyGameManager.shared.isCompleted(date: date) {
+            let alert = UIAlertController(
+                title: "Challenge Completed",
+                message: "You have already completed this daily challenge. Do you want to play again?",
+                preferredStyle: .alert
+            )
+            alert.addAction(UIAlertAction(title: "Yes", style: .default) { _ in
+                self.navigateToGame(with: date)
+            })
+            alert.addAction(UIAlertAction(title: "No", style: .cancel))
+            present(alert, animated: true)
+        } else {
+            navigateToGame(with: date)
+        }
+    }
+
+    private func navigateToGame(with date: Date) {
+        let vc = storyboard!.instantiateViewController(withIdentifier: "GameViewController") as! GameViewController
+        vc.selectedDate = date
+        vc.level = DailyGameManager.shared.level(for: date)
+        navigationController?.pushViewController(vc, animated: true)
+    }
+    
+    
+
+    /*
+    // MARK: - Navigation
+
+    // In a storyboard-based application, you will often want to do a little preparation before navigation
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        // Get the new view controller using segue.destination.
+        // Pass the selected object to the new view controller.
+    }
+    */
+
+}
