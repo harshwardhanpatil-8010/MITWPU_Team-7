@@ -53,102 +53,109 @@ struct MedicationAlarmPayload {
 // MARK: - Card View
 
 final class MedicationCardView: UIView {
+
     let payload: MedicationAlarmPayload
     var onAction: ((MedicationAlarmPayload, DoseStatus) -> Void)?
-    
+
     private let medIconImageView = UIImageView()
     private let titleLabel = UILabel()
     private let subtitleLabel = UILabel()
     private let takenButton = UIButton(configuration: .tinted())
     private let skipButton = UIButton(configuration: .tinted())
-    
+
     init(payload: MedicationAlarmPayload) {
         self.payload = payload
         super.init(frame: .zero)
         setupUI()
     }
-    
+
     required init?(coder: NSCoder) { fatalError("init(coder:) has not been implemented") }
-    
+
     private func setupUI() {
         backgroundColor = .white
         applyCardStyle()
-        
+
+        // MARK: - Icon
         medIconImageView.contentMode = .scaleAspectFit
+        medIconImageView.translatesAutoresizingMaskIntoConstraints = false
+
         let icon = payload.iconName.isEmpty ? "tablet1" : payload.iconName
-        if let img = UIImage(named: icon) {
-            medIconImageView.image = img // Full color original image
-        } else {
-            medIconImageView.image = UIImage(systemName: "pills.fill")
-            medIconImageView.tintColor = .systemBlue
-        }
-        
+        medIconImageView.image = UIImage(named: icon) ?? UIImage(systemName: "pills.fill")
+
+        // MARK: - Labels
         titleLabel.text = payload.medName
-        titleLabel.font = .systemFont(ofSize: 24, weight: .bold)
+        titleLabel.font = .systemFont(ofSize: 16, weight: .semibold)
         titleLabel.textColor = .label
-        titleLabel.textAlignment = .center
-        titleLabel.numberOfLines = 0
-        
+        titleLabel.numberOfLines = 1
+
         var unitStr = payload.medUnit
         if let dotIndex = unitStr.firstIndex(of: "•") {
             unitStr = String(unitStr[..<dotIndex]).trimmingCharacters(in: .whitespaces)
         }
-        
+
         let strengthStr = payload.medStrength > 0 ? "\(payload.medStrength)\(unitStr)" : unitStr
         subtitleLabel.text = strengthStr
-        subtitleLabel.font = .systemFont(ofSize: 17, weight: .medium)
+        subtitleLabel.font = .systemFont(ofSize: 13)
         subtitleLabel.textColor = .secondaryLabel
-        subtitleLabel.textAlignment = .center
-        
+
+        let textStack = UIStackView(arrangedSubviews: [titleLabel, subtitleLabel])
+        textStack.axis = .vertical
+        textStack.spacing = 2
+
+        // MARK: - Buttons
         takenButton.setTitle("Taken", for: .normal)
-        //takenButton.setImage(UIImage(systemName: "checkmark"), for: .normal)
         takenButton.configuration?.baseForegroundColor = .systemBlue
         takenButton.configuration?.baseBackgroundColor = .systemBlue
         takenButton.configuration?.cornerStyle = .capsule
-        takenButton.configuration?.imagePadding = 8
         takenButton.addTarget(self, action: #selector(takenTapped), for: .touchUpInside)
-        
+
         skipButton.setTitle("Skip", for: .normal)
-        //skipButton.setImage(UIImage(systemName: "xmark"), for: .normal)
         skipButton.configuration?.baseForegroundColor = .systemGray
         skipButton.configuration?.baseBackgroundColor = .systemGray
         skipButton.configuration?.cornerStyle = .capsule
-        skipButton.configuration?.imagePadding = 8
         skipButton.addTarget(self, action: #selector(skipTapped), for: .touchUpInside)
-        
+
         let buttonStack = UIStackView(arrangedSubviews: [takenButton, skipButton])
         buttonStack.axis = .horizontal
-        buttonStack.spacing = 12
+        buttonStack.spacing = 8
         buttonStack.distribution = .fillEqually
-        
-        let mainStack = UIStackView(arrangedSubviews: [medIconImageView, titleLabel, subtitleLabel, buttonStack])
+
+        // MARK: - Top Row (icon + text)
+        let topRow = UIStackView(arrangedSubviews: [medIconImageView, textStack])
+        topRow.axis = .horizontal
+        topRow.spacing = 12
+        topRow.alignment = .center
+
+        // MARK: - Main Stack
+        let mainStack = UIStackView(arrangedSubviews: [topRow, buttonStack])
         mainStack.axis = .vertical
-        mainStack.alignment = .center
-        mainStack.spacing = 8
-        mainStack.setCustomSpacing(16, after: subtitleLabel)
+        mainStack.spacing = 10
         mainStack.translatesAutoresizingMaskIntoConstraints = false
-        
+
         addSubview(mainStack)
-        
+
         NSLayoutConstraint.activate([
-            medIconImageView.widthAnchor.constraint(equalToConstant: 80),
-            medIconImageView.heightAnchor.constraint(equalToConstant: 80),
-            
-            buttonStack.widthAnchor.constraint(equalTo: mainStack.widthAnchor),
-            takenButton.heightAnchor.constraint(equalToConstant: 50),
-            skipButton.heightAnchor.constraint(equalToConstant: 50),
-            
-            mainStack.topAnchor.constraint(equalTo: topAnchor, constant: 24),
-            mainStack.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 20),
-            mainStack.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -20),
-            mainStack.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -24)
+            medIconImageView.widthAnchor.constraint(equalToConstant: 40),
+            medIconImageView.heightAnchor.constraint(equalToConstant: 40),
+
+            takenButton.heightAnchor.constraint(equalToConstant: 36),
+            skipButton.heightAnchor.constraint(equalToConstant: 36),
+
+            mainStack.topAnchor.constraint(equalTo: topAnchor, constant: 12),
+            mainStack.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 12),
+            mainStack.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -12),
+            mainStack.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -12)
         ])
     }
-    
-    @objc private func takenTapped() { onAction?(payload, .taken) }
-    @objc private func skipTapped() { onAction?(payload, .skipped) }
-}
 
+    @objc private func takenTapped() {
+        onAction?(payload, .taken)
+    }
+
+    @objc private func skipTapped() {
+        onAction?(payload, .skipped)
+    }
+}
 // MARK: - View Controller
 
 class MedicationAlarmViewController: UIViewController {
