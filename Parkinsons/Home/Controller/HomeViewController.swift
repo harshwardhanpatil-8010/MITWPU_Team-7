@@ -182,7 +182,7 @@ class HomeViewController: UIViewController, UICollectionViewDelegate {
 
         let logs = (try? context.fetch(logRequest)) ?? []
 
-        todayViewModel.loadTodayMedications(from: medications)
+        todayViewModel.loadTodayMedications(from: medications, logs: logs)
         todayViewModel.loadLoggedDoses(
             medications: medications,
             logs: logs,
