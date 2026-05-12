@@ -187,7 +187,7 @@ final class MedicationNotificationManager {
         content.interruptionLevel  = isFollowUp ? .active : .timeSensitive
         content.sound              = isFollowUp ? .default : .defaultCritical
 
-        // Build title + body from group members
+        
         let names    = group.prefix(3).compactMap { $0.med.medicationName }
         let joined   = names.joined(separator: ", ")
         let moreSufx = group.count > 3 ? " +\(group.count - 3) more" : ""
@@ -208,7 +208,7 @@ final class MedicationNotificationManager {
                 : "\(joined)\(moreSufx)"
         }
 
-        // Pack all payloads into userInfo so AppDelegate/AlarmVC can cycle through them
+
         let payloadsArray: [[String: Any]] = group.map { item in
             [
                 MedNotifKey.doseID:        item.doseID.uuidString,
@@ -298,30 +298,28 @@ final class MedicationNotificationManager {
                 guard let payloads = request.content.userInfo["payloads"] as? [[String: Any]]
                 else { continue }
 
-                // Does this notification contain the dose we want to remove?
+
                 let containsDose = payloads.contains { $0[MedNotifKey.doseID] as? String == doseIDStr }
                 guard containsDose else { continue }
 
                 let isFollowUpGroup = request.identifier.hasSuffix("_followup")
 
-                // If we're only cancelling on-time, skip follow-up group notifications
+
                 if !cancelFollowUp && isFollowUpGroup { continue }
 
-                // Remove the whole group notification
+
                 UNUserNotificationCenter.current()
                     .removePendingNotificationRequests(withIdentifiers: [request.identifier])
                 UNUserNotificationCenter.current()
                     .removeDeliveredNotifications(withIdentifiers: [request.identifier])
 
-                // Re-add the notification with the logged dose removed
-                let remaining = payloads.filter { $0[MedNotifKey.doseID] as? String != doseIDStr }
-                guard !remaining.isEmpty else { continue }  // all done — group is empty
 
-                // Rebuild content for the reduced group
+                let remaining = payloads.filter { $0[MedNotifKey.doseID] as? String != doseIDStr }
+                guard !remaining.isEmpty else { continue }
                 let newContent = (request.content.mutableCopy() as! UNMutableNotificationContent)
                 newContent.userInfo = ["payloads": remaining]
 
-                // Update title/body for the new count
+
                 let names = remaining.prefix(3).compactMap { $0[MedNotifKey.medName] as? String }
                 let joined = names.joined(separator: ", ")
                 let more   = remaining.count > 3 ? " +\(remaining.count - 3) more" : ""

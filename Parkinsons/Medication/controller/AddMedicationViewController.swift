@@ -40,7 +40,7 @@ class AddMedicationViewController: UIViewController,
 
     @IBOutlet weak var tickButton: UIBarButtonItem!
     @IBOutlet weak var backgroundView: UIView!
-    @IBOutlet weak var strengthLabel: UITextField!   // numeric only, > 0
+    @IBOutlet weak var strengthLabel: UITextField!
     @IBOutlet weak var deleteButton: UIButton!
     @IBOutlet weak var medicationNameTextField: UITextField!
     @IBOutlet weak var strengthUnitLabel: UILabel!
@@ -59,14 +59,14 @@ class AddMedicationViewController: UIViewController,
         super.viewDidLoad()
         tickButton.isEnabled = false
 
-        // Name field
+
         medicationNameTextField.addAction(
             UIAction { [weak self] _ in self?.evaluateTickButtonState() },
             for: .editingChanged
         )
         medicationNameTextField.delegate = self
 
-        // Strength field — numbers only, no alphabet
+
         strengthLabel.keyboardType = .numberPad
         strengthLabel.delegate     = self
         strengthLabel.addAction(
@@ -112,7 +112,7 @@ class AddMedicationViewController: UIViewController,
         return true
     }
 
-    /// Block non-digit characters from strength field; also block leading zeros.
+
     func textField(
         _ textField: UITextField,
         shouldChangeCharactersIn range: NSRange,
@@ -120,14 +120,14 @@ class AddMedicationViewController: UIViewController,
     ) -> Bool {
         guard textField == strengthLabel else { return true }
 
-        // Allow backspace
+
         if string.isEmpty { return true }
 
-        // Only allow digits
+
         let allowedChars = CharacterSet.decimalDigits
         guard string.unicodeScalars.allSatisfy({ allowedChars.contains($0) }) else { return false }
 
-        // Prevent leading zero (e.g. "07")
+
         let current    = (textField.text ?? "") as NSString
         let newText    = current.replacingCharacters(in: range, with: string)
         if newText.hasPrefix("0") { return false }
@@ -315,7 +315,7 @@ class AddMedicationViewController: UIViewController,
 
     @IBAction func onTickPressed(_ sender: UIBarButtonItem) {
 
-        // Extra guard: reject strength <= 0
+
         let strengthValue = Int(strengthLabel.text ?? "") ?? 0
         guard strengthValue > 0 else {
             showStrengthError()
@@ -328,7 +328,7 @@ class AddMedicationViewController: UIViewController,
             !name.trimmingCharacters(in: .whitespaces).isEmpty
         else { return }
 
-        sender.isEnabled = false  // prevent double-tap
+        sender.isEnabled = false  
 
         let context    = PersistenceController.shared.viewContext
         let medication: Medication

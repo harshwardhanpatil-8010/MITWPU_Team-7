@@ -26,9 +26,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             UserDefaults.standard.set(currentJSONVersion, forKey: "loadedExerciseJSONVersion")
         }
 
-        // NOTE: We do NOT call generateDailyWorkout() here.
-        // The LandingPage's viewWillAppear triggers the med-state check and
-        // calls generateDailyWorkout(for:) AFTER the user has chosen a position.
 
         // MARK: - Audio Session
         do {
@@ -39,7 +36,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             print("AVAudioSession FAILED: \(error)")
         }
 
-        // Warm up SpeechManager to prevent initial hang
+
         DispatchQueue.main.async {
             _ = SpeechManager.shared
         }
@@ -93,7 +90,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
 extension AppDelegate: UNUserNotificationCenterDelegate {
 
-    // Notification fires while app is OPEN → show full-screen alarm
+
     func userNotificationCenter(
         _ center: UNUserNotificationCenter,
         willPresent notification: UNNotification,
@@ -114,10 +111,10 @@ extension AppDelegate: UNUserNotificationCenterDelegate {
         }
 
         MedicationAlarmViewController.present(payloads: unlogged)
-        completionHandler([])   // suppress system banner — we show our own alarm UI
+        completionHandler([])
     }
 
-    // User taps notification or action button (background / lock screen / terminated)
+
     func userNotificationCenter(
         _ center: UNUserNotificationCenter,
         didReceive response: UNNotificationResponse,
@@ -142,7 +139,7 @@ extension AppDelegate: UNUserNotificationCenterDelegate {
             completionHandler()
 
         case UNNotificationDefaultActionIdentifier:
-            // Body tap → open app → show alarm screen
+
             DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
                 let unlogged = payloads.filter { !self.isDoseAlreadyLogged(doseID: $0.doseID) }
                 if !unlogged.isEmpty {
@@ -170,9 +167,9 @@ extension AppDelegate: UNUserNotificationCenterDelegate {
                 let coreDose = doseSet.first(where: { $0.id == payload.doseID })
             else { return }
 
-            // Already taken → nothing to do
+
             if coreDose.doseStatus == "taken" { return }
-            // Already skipped and trying to skip again → nothing to do
+
             if coreDose.doseStatus == "skipped" && status == .skipped { return }
 
             coreDose.doseStatus   = status.rawValue
@@ -188,11 +185,11 @@ extension AppDelegate: UNUserNotificationCenterDelegate {
             try? context.save()
 
             if status == .skipped {
-                // Keep the follow-up reminder alive but reschedule it to 15 min from now
+
                 MedicationNotificationManager.shared.cancelOnTimeNotification(forDoseID: payload.doseID)
                 MedicationNotificationManager.shared.scheduleSkipFollowUp(payload: payload)
             } else {
-                // Taken → cancel everything
+
                 MedicationNotificationManager.shared.cancelNotifications(forDoseID: payload.doseID)
             }
 
@@ -207,7 +204,7 @@ extension AppDelegate: UNUserNotificationCenterDelegate {
     }
 
     // MARK: - Logged check
-    // Only suppresses alarm if "taken" — if "skipped" we still want the follow-up alarm to show.
+    
     private func isDoseAlreadyLogged(doseID: UUID) -> Bool {
         let context = PersistenceController.shared.viewContext
         let req: NSFetchRequest<MedicationDose> = MedicationDose.fetchRequest()
