@@ -15,6 +15,12 @@ enum Section: Int, CaseIterable {
 
 class HomeViewController: UIViewController, UICollectionViewDelegate {
     
+    private let calendar: Calendar = {
+        var cal = Calendar.current
+        cal.timeZone = TimeZone.current
+        return cal
+    }()
+    
     @IBOutlet weak var NameOfUser: UILabel!
     private let todayViewModel = TodayMedicationViewModel()
     private var todayDoses: [TodayDoseItem] = []
@@ -397,7 +403,6 @@ class HomeViewController: UIViewController, UICollectionViewDelegate {
         switch sectionType {
         case .calendar:
             let model = dates[indexPath.row]
-            let calendar = Calendar.current
             let tomorrow = calendar.startOfDay(for: calendar.date(byAdding: .day, value: 1, to: Date())!)
 
             if model.date >= tomorrow {
@@ -427,7 +432,7 @@ class HomeViewController: UIViewController, UICollectionViewDelegate {
         let sectionType = homeSections[indexPath.section]
         if sectionType == .calendar {
             let targetDate = dates[indexPath.row].date
-            let isToday = Calendar.current.isDateInToday(targetDate)
+            let isToday = calendar.isDateInToday(targetDate)
             let isFuture = targetDate > Date() && !isToday
             return !isFuture
         }
@@ -435,7 +440,7 @@ class HomeViewController: UIViewController, UICollectionViewDelegate {
     }
 
     func scrollToSelectedDate(animated: Bool) {
-        if let index = dates.firstIndex(where: { Calendar.current.isDate($0.date, inSameDayAs: selectedDate) }) {
+        if let index = dates.firstIndex(where: { calendar.isDate($0.date, inSameDayAs: selectedDate) }) {
             let indexPath = IndexPath(item: index, section: Section.calendar.rawValue)
             mainCollectionView.layoutIfNeeded()
             mainCollectionView.scrollToItem(at: indexPath, at: .centeredHorizontally, animated: animated)
@@ -468,7 +473,6 @@ extension HomeViewController: UICollectionViewDataSource {
         case .calendar:
             let cell = mainCollectionView.dequeueReusableCell(withReuseIdentifier: "calendar_cell", for: indexPath) as! CalenderCollectionViewCell
             let model = dates[indexPath.row]
-            let calendar = Calendar.current
             let isSelected = calendar.isDate(model.date, inSameDayAs: selectedDate)
             let isToday = calendar.isDateInToday(model.date)
             let isFuture = model.date > calendar.startOfDay(for: Date().addingTimeInterval(86400))
@@ -495,7 +499,7 @@ extension HomeViewController: UICollectionViewDataSource {
             if indexPath.row == 0 {
                 cell.setThemeColor(UIColor(hex: "0088FF"))
                 let targetDate = selectedDate
-                let isToday = Calendar.current.isDateInToday(targetDate)
+                let isToday = calendar.isDateInToday(targetDate)
                 let summary = DailyWorkoutSummaryStore.shared.fetchSummary(for: targetDate)
                 let storedCompleted = Int(summary?.completedCount ?? 0)
                 let storedTotal = Int(summary?.totalExercises ?? 0)
@@ -565,7 +569,7 @@ extension HomeViewController: UICollectionViewDataSource {
             switch sectionType {
             case .calendar:
                 let dateString = formattedDateString(for: selectedDate)
-                let isToday = Calendar.current.isDateInToday(selectedDate)
+                let isToday = calendar.isDateInToday(selectedDate)
                 header.configure(title: isToday ? "Today, \(dateString)" : dateString, showInfoIcon: false)
                 header.setTitleAlignment(.center)
                 header.setFont(size: 17, weight: .bold)

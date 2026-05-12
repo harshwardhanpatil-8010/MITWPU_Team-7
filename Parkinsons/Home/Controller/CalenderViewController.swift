@@ -13,6 +13,12 @@ class CalendarViewController: UIViewController {
     }()
 
 
+    private let calendar: Calendar = {
+        var cal = Calendar.current
+        cal.timeZone = TimeZone.current
+        return cal
+    }()
+
     private var selectedIndexPath: IndexPath?
     
     
@@ -30,7 +36,6 @@ class CalendarViewController: UIViewController {
     }
 
     func scrollToToday() {
-        let calendar = Calendar.current
         for (sectionIndex, section) in sections.enumerated() {
             if let dayIndex = section.days.firstIndex(where: { !$0.isDummy && calendar.isDateInToday($0.date) }) {
                 let indexPath = IndexPath(item: dayIndex, section: sectionIndex)
@@ -43,20 +48,18 @@ class CalendarViewController: UIViewController {
     func setupCalendarData() {
         sections.removeAll()
 
+        var cal = calendar
+        cal.firstWeekday = 2
 
-        var calendar = Calendar.current
-        calendar.timeZone = TimeZone.current
-        calendar.firstWeekday = 2
-
-        let currentYear = calendar.component(.year, from: Date())
+        let currentYear = cal.component(.year, from: Date())
 
         for month in 1...12 {
             let components = DateComponents(year: currentYear, month: month, day: 1)
-            guard let startDate = calendar.date(from: components),
-                  let range = calendar.range(of: .day, in: .month, for: startDate) else { continue }
+            guard let startDate = cal.date(from: components),
+                  let range = cal.range(of: .day, in: .month, for: startDate) else { continue }
 
-            let weekday = calendar.component(.weekday, from: startDate)
-            let offset = (weekday - calendar.firstWeekday + 7) % 7
+            let weekday = cal.component(.weekday, from: startDate)
+            let offset = (weekday - cal.firstWeekday + 7) % 7
 
             var monthDays: [DayModel] = []
 
@@ -67,8 +70,8 @@ class CalendarViewController: UIViewController {
             for day in range {
                 var dComp = components
                 dComp.day = day
-                if let date = calendar.date(from: dComp) {
-                    let isSelected = calendar.isDate(date, inSameDayAs: selectedDate)
+                if let date = cal.date(from: dComp) {
+                    let isSelected = cal.isDate(date, inSameDayAs: selectedDate)
                     monthDays.append(DayModel(date: date, isSelected: isSelected, isDummy: false))
                 }
             }
@@ -126,8 +129,9 @@ extension CalendarViewController: UICollectionViewDataSource, UICollectionViewDe
         }
 
 
-        let isFuture = Calendar.current.compare(dayData.date, to: Date(), toGranularity: .day) == .orderedDescending
-        let isToday = Calendar.current.isDateInToday(dayData.date)
+        // Fix #3 – Compare at day granularity to avoid time-of-day / timezone issues
+        let isFuture = calendar.compare(dayData.date, to: Date(), toGranularity: .day) == .orderedDescending
+        let isToday = calendar.isDateInToday(dayData.date)
 
         let dateModel = DateModel(date: dayData.date, dayString: "", dateString: dayData.dayNumber)
 
@@ -167,7 +171,8 @@ extension CalendarViewController: UICollectionViewDataSource, UICollectionViewDe
         let dayData = sections[indexPath.section].days[indexPath.item]
 
 
-        let isFuture = Calendar.current.compare(dayData.date, to: Date(), toGranularity: .day) == .orderedDescending
+        // Fix #3 – Day-granularity future check
+        let isFuture = calendar.compare(dayData.date, to: Date(), toGranularity: .day) == .orderedDescending
         if dayData.isDummy || isFuture { return }
 
 
