@@ -145,8 +145,10 @@ final class MainMedicationViewController: UIViewController {
         }
 
         if currentSegment == .today {
-            todayViewModel.loadTodayMedications(from: myMedications)
             let logRequest: NSFetchRequest<MedicationDoseLog> = MedicationDoseLog.fetchRequest()
+            let logs = (try? PersistenceController.shared.viewContext.fetch(logRequest)) ?? []
+            todayViewModel.loadTodayMedications(from: myMedications, logs: logs)
+            
             let startOfDay = Calendar.current.startOfDay(for: Date())
             let endOfDay = Calendar.current.date(byAdding: .day, value: 1, to: startOfDay)!
             logRequest.predicate = NSPredicate(
@@ -155,7 +157,7 @@ final class MainMedicationViewController: UIViewController {
                 endOfDay as NSDate
             )
 
-            let logs = (try? PersistenceController.shared.viewContext.fetch(logRequest)) ?? []
+            
 
             todayViewModel.loadLoggedDoses(medications: myMedications, logs: logs, for: Date())
             loggedDoses = todayViewModel.loggedDoses
