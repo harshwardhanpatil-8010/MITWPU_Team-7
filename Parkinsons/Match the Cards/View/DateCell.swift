@@ -38,7 +38,7 @@ class DateCell: UICollectionViewCell {
 
             labelBackgroundView.centerXAnchor.constraint(equalTo: contentView.centerXAnchor),
             labelBackgroundView.centerYAnchor.constraint(equalTo: contentView.centerYAnchor),
-            labelBackgroundView.widthAnchor.constraint(equalTo: contentView.widthAnchor, multiplier: 0.75),
+            labelBackgroundView.widthAnchor.constraint(equalTo: contentView.widthAnchor, multiplier: 0.88),
             labelBackgroundView.heightAnchor.constraint(equalTo: labelBackgroundView.widthAnchor),
 
             dateLabel.centerXAnchor.constraint(equalTo: contentView.centerXAnchor),
@@ -76,8 +76,10 @@ class DateCell: UICollectionViewCell {
         if isCompleted {
             labelBackgroundView.backgroundColor = themeColor
             dateLabel.textColor = .white
+            dateLabel.font = UIFont.systemFont(ofSize: 20, weight: .bold)
         } else {
             dateLabel.textColor = enabled ? .label : .systemGray4
+            dateLabel.font = UIFont.systemFont(ofSize: 20, weight: .medium)
         }
 
         if isToday && !isSelected && !isCompleted {
@@ -85,19 +87,10 @@ class DateCell: UICollectionViewCell {
         }
 
         if isSelected {
-            if isCompleted {
-                // Outer ring
-                outerRingView.isHidden = false
-                outerRingView.layer.borderWidth = 2
-                outerRingView.layer.borderColor = themeColor.cgColor
-                
-                // Inner ring
-                labelBackgroundView.layer.borderWidth = 2
-                labelBackgroundView.layer.borderColor = UIColor.systemBackground.cgColor
-            } else {
-                labelBackgroundView.layer.borderWidth = 2
-                labelBackgroundView.layer.borderColor = themeColor.cgColor
-                dateLabel.textColor = .label
+            labelBackgroundView.layer.borderWidth = 2
+            labelBackgroundView.layer.borderColor = themeColor.cgColor
+            if !isCompleted {
+                dateLabel.textColor = themeColor
             }
         }
         setNeedsLayout()

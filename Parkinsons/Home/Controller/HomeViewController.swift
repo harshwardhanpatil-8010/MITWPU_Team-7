@@ -60,7 +60,8 @@ class HomeViewController: UIViewController, UICollectionViewDelegate {
     
     var therapeuticGamesData: [TherapeuticGameModel] = [
         TherapeuticGameModel(title: "Mimic the Emoji", description: "Complete your daily challenge!", iconName: "face.smiling", iconColor: .systemOrange),
-        TherapeuticGameModel(title: "Match the Cards", description: "Complete your daily challenge!", iconName: "brain.fill", iconColor: .systemPurple)
+        TherapeuticGameModel(title: "Match the Cards", description: "Complete your daily challenge!", iconName: "brain.fill", iconColor: .systemPurple),
+        TherapeuticGameModel(title: "Jigsaw Puzzle", description: "Complete your daily challenge!", iconName: "puzzlepiece.extension.fill", iconColor: .systemBrown)
     ]
     
     private let floatingBar: UIView = {
@@ -375,6 +376,10 @@ class HomeViewController: UIViewController, UICollectionViewDelegate {
             let storyboard = UIStoryboard(name: "MimicTheEmoji", bundle: nil)
             guard let vc = storyboard.instantiateViewController(withIdentifier: "EmojiLandingScreenID") as? EmojiLandingScreen else { return }
             navigationController?.pushViewController(vc, animated: true)
+        case 2:
+            let storyboard = UIStoryboard(name: "Jigsaw Puzzle", bundle: nil)
+            guard let vc = storyboard.instantiateViewController(withIdentifier: "PuzzleLandingPage") as? LevelSelectionPuzzleViewController else { return }
+            navigationController?.pushViewController(vc, animated: true)
         default:
             break
         }
@@ -548,9 +553,19 @@ extension HomeViewController: UICollectionViewDataSource {
                 }.count
                 completionText = "\(completedCount)/\(daysInMonth) daily challenges completed"
                 isTodayCompleted = DailyGameManager.shared.isCompleted(date: today)
+            case 2:
+                let completedCount = (0..<daysInMonth).filter { offset in
+                    guard let date = calendar.date(byAdding: .day, value: offset, to: firstDayOfMonth) else { return false }
+                    return PuzzleGameManager.shared.isCompleted(date: calendar.startOfDay(for: date))
+                }.count
+                completionText = "\(completedCount)/\(daysInMonth) daily challenges completed"
+                isTodayCompleted = DailyGameManager.shared.isCompleted(date: today)
             default:
                 completionText = ""
                 isTodayCompleted = false
+                
+                
+            
             }
             cell.configure(with: therapeuticGamesData[indexPath.item], completionText: completionText, isTodayCompleted: isTodayCompleted)
             return cell

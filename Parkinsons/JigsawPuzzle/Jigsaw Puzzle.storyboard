@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="24506" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="FJU-3F-czI">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="24506" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
     <device id="retina6_12" orientation="portrait" appearance="light"/>
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="24504"/>
@@ -9,10 +9,10 @@
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
-        <!--Match the Cards-->
+        <!--PUZZLE -->
         <scene sceneID="Z1R-nq-4zZ">
             <objects>
-                <viewController storyboardIdentifier="matchTheCardsLandingPage" useStoryboardIdentifierAsRestorationIdentifier="YES" id="FJU-3F-czI" customClass="LevelSelectionPuzzleViewController" customModule="ParkEase" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="PuzzleLandingPage" useStoryboardIdentifierAsRestorationIdentifier="YES" id="FJU-3F-czI" userLabel="PUZZLE " customClass="LevelSelectionPuzzleViewController" customModule="ParkEase" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="TUD-tt-8GS">
                         <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -140,18 +140,10 @@
                                         </cells>
                                     </collectionView>
                                     <stackView opaque="NO" contentMode="scaleToFill" spacing="2" translatesAutoresizingMaskIntoConstraints="NO" id="gu1-Ha-zLM">
-                                        <rect key="frame" x="330.33333333333331" y="0.0" width="46.666666666666686" height="16"/>
+                                        <rect key="frame" x="348.33333333333331" y="0.0" width="28.666666666666686" height="15.666666666666666"/>
                                         <subviews>
-                                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="checkmark.circle.fill" catalog="system" translatesAutoresizingMaskIntoConstraints="NO" id="GIE-ud-WYR">
-                                                <rect key="frame" x="0.0" y="0.66666666666666607" width="16" height="14.666666666666668"/>
-                                                <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                                <constraints>
-                                                    <constraint firstAttribute="width" constant="16" id="L6A-pb-pjz"/>
-                                                    <constraint firstAttribute="height" constant="16" id="rS7-Eq-Zw1"/>
-                                                </constraints>
-                                            </imageView>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="1/31 " textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="3FA-Om-sxy">
-                                                <rect key="frame" x="18" y="0.0" width="28.666666666666671" height="16"/>
+                                                <rect key="frame" x="0.0" y="0.0" width="28.666666666666668" height="15.666666666666666"/>
                                                 <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="13"/>
                                                 <nil key="textColor"/>
                                                 <nil key="highlightedColor"/>
@@ -215,13 +207,27 @@
                     <connections>
                         <outlet property="collectionView" destination="qis-bY-meL" id="3ZD-PS-eVH"/>
                         <outlet property="completedLabel" destination="3FA-Om-sxy" id="WuM-Tg-U6s"/>
-                        <outlet property="imageView" destination="GIE-ud-WYR" id="PLA-DQ-viC"/>
                         <outlet property="monthAndYearOutlet" destination="TKt-UG-eal" id="WVs-N2-bIj"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="M9V-nZ-Eih" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="3867.9389312977096" y="144.36619718309859"/>
+            <point key="canvasLocation" x="4794.6564885496182" y="144.36619718309859"/>
+        </scene>
+        <!--Game Puzzle View Controller-->
+        <scene sceneID="0ag-kD-bGx">
+            <objects>
+                <viewController id="8py-ei-nb3" customClass="GamePuzzleViewController" customModule="ParkEase" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="cHL-Bw-LJV">
+                        <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <viewLayoutGuide key="safeArea" id="sTc-uN-5wP"/>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                    </view>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="Gc9-1o-6Ey" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="5582.4427480916029" y="146.47887323943664"/>
         </scene>
         <!--Info Match The Cards View Controller-->
         <scene sceneID="yVe-Iu-QpB">
@@ -315,12 +321,87 @@
             </objects>
             <point key="canvasLocation" x="3868" y="880"/>
         </scene>
+        <!--Result View Controller-->
+        <scene sceneID="UVK-w5-Umo">
+            <objects>
+                <viewController storyboardIdentifier="ResultViewController" id="qzw-tZ-3Bh" customClass="resultViewController" customModule="ParkEase" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="Kvg-KJ-Sra">
+                        <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Good job!" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="yxR-2D-U72">
+                                <rect key="frame" x="103.00000000000001" y="148" width="187.33333333333337" height="52"/>
+                                <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="43"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="🎊" translatesAutoresizingMaskIntoConstraints="NO" id="7mb-23-F0J">
+                                <rect key="frame" x="56" y="280" width="281" height="150"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" secondItem="7mb-23-F0J" secondAttribute="height" multiplier="15:8" id="gbo-gu-6Gg"/>
+                                </constraints>
+                            </imageView>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="You are strengthening your memory! " textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ItW-Hl-fZp">
+                                <rect key="frame" x="16" y="495.99999999999994" width="361" height="57.333333333333314"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="24"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ITA-Of-tKs">
+                                <rect key="frame" x="107.66666666666669" y="678.33333333333337" width="178" height="52"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="52" id="Ij1-G3-2xp"/>
+                                    <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="178" id="Nuj-lx-uXd"/>
+                                </constraints>
+                                <state key="normal" title="Button"/>
+                                <buttonConfiguration key="configuration" style="filled" title="Finish" cornerStyle="capsule"/>
+                                <connections>
+                                    <action selector="FinishButtonAction:" destination="qzw-tZ-3Bh" eventType="touchUpInside" id="Y6V-Nj-6Nc"/>
+                                    <action selector="finishButtonTapped:" destination="qzw-tZ-3Bh" eventType="touchUpInside" id="Yst-Au-hna"/>
+                                </connections>
+                            </button>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="4oF-Cq-nGM">
+                                <rect key="frame" x="16" y="573.33333333333337" width="361" height="21"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                        </subviews>
+                        <viewLayoutGuide key="safeArea" id="nHd-x2-R61"/>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                        <constraints>
+                            <constraint firstItem="7mb-23-F0J" firstAttribute="centerX" secondItem="Kvg-KJ-Sra" secondAttribute="centerX" id="05i-XG-yUa"/>
+                            <constraint firstItem="nHd-x2-R61" firstAttribute="trailing" secondItem="ItW-Hl-fZp" secondAttribute="trailing" constant="16" id="2C7-gl-ccx"/>
+                            <constraint firstItem="ItW-Hl-fZp" firstAttribute="leading" secondItem="nHd-x2-R61" secondAttribute="leading" constant="16" id="7v4-sB-oDH"/>
+                            <constraint firstItem="4oF-Cq-nGM" firstAttribute="top" secondItem="ItW-Hl-fZp" secondAttribute="bottom" constant="20" id="91A-Sg-irP"/>
+                            <constraint firstItem="4oF-Cq-nGM" firstAttribute="centerX" secondItem="Kvg-KJ-Sra" secondAttribute="centerX" id="9jc-iA-2Rb"/>
+                            <constraint firstItem="nHd-x2-R61" firstAttribute="trailing" secondItem="4oF-Cq-nGM" secondAttribute="trailing" constant="16" id="AeG-MR-Smo"/>
+                            <constraint firstItem="ITA-Of-tKs" firstAttribute="centerX" secondItem="Kvg-KJ-Sra" secondAttribute="centerX" id="Dfx-Ko-xEa"/>
+                            <constraint firstItem="4oF-Cq-nGM" firstAttribute="leading" secondItem="nHd-x2-R61" secondAttribute="leading" constant="16" id="KJX-Tc-nos"/>
+                            <constraint firstItem="7mb-23-F0J" firstAttribute="top" secondItem="yxR-2D-U72" secondAttribute="bottom" constant="80" id="OP7-cp-ehK"/>
+                            <constraint firstItem="ITA-Of-tKs" firstAttribute="top" secondItem="4oF-Cq-nGM" secondAttribute="bottom" constant="84" id="WRh-z5-lnQ"/>
+                            <constraint firstItem="yxR-2D-U72" firstAttribute="centerX" secondItem="Kvg-KJ-Sra" secondAttribute="centerX" id="hJ8-yl-8kV"/>
+                            <constraint firstItem="yxR-2D-U72" firstAttribute="top" secondItem="nHd-x2-R61" secondAttribute="top" constant="30" id="inD-Bp-CLE"/>
+                            <constraint firstItem="ItW-Hl-fZp" firstAttribute="top" secondItem="7mb-23-F0J" secondAttribute="bottom" constant="66" id="xPE-od-p5i"/>
+                        </constraints>
+                    </view>
+                    <toolbarItems/>
+                    <simulatedToolbarMetrics key="simulatedBottomBarMetrics"/>
+                    <connections>
+                        <outlet property="FinishButton" destination="ITA-Of-tKs" id="s6S-I9-VGI"/>
+                        <outlet property="timeTakenLabel" destination="4oF-Cq-nGM" id="bxM-bb-Ziq"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="Szu-lb-Bb9" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="6315.2671755725187" y="143.66197183098592"/>
+        </scene>
     </scenes>
     <resources>
-        <image name="checkmark.circle.fill" catalog="system" width="128" height="123"/>
         <image name="puzzlepiece.extension.fill" catalog="system" width="128" height="100"/>
         <image name="questionmark.circle" catalog="system" width="128" height="123"/>
         <image name="xmark" catalog="system" width="128" height="113"/>
+        <image name="🎊" width="150" height="150"/>
         <systemColor name="separatorColor">
             <color red="0.23529411764705882" green="0.23529411764705882" blue="0.2627450980392157" alpha="0.12" colorSpace="custom" customColorSpace="sRGB"/>
         </systemColor>

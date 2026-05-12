@@ -19,10 +19,20 @@
 		198FFF6D2F50082A004949FC /* CDSymptomLog+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 198FFF6A2F50082A004949FC /* CDSymptomLog+CoreDataClass.swift */; };
 		19C7FADF2F1F4DA600A3A885 /* ARKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 19C7FADE2F1F4DA600A3A885 /* ARKit.framework */; };
 		19C7FAE12F1F4DB700A3A885 /* RealityKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 19C7FAE02F1F4DB700A3A885 /* RealityKit.framework */; };
+		45D69B5A74F8CB399E2CF1F0 /* PuzzleViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3434FB9C3D71E7FE05675221 /* PuzzleViewModel.swift */; };
+		57395797520F62FA7CE4B58C /* PuzzlePieceShape.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA739B8B27632171879503E8 /* PuzzlePieceShape.swift */; };
+		573D86363EB92C0F855326E6 /* PuzzlePiece.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6625E57E32B4934A286B5D6 /* PuzzlePiece.swift */; };
+		7262C34C6293268D57002B30 /* PuzzleGameView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BDB7222569F8095A692476A1 /* PuzzleGameView.swift */; };
+		7FA768CF65071291C3FE568F /* PuzzlePreviewOverlay.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E146CB66C911F40F8536E10 /* PuzzlePreviewOverlay.swift */; };
+		85E5C7FBEB8F758D4D145B81 /* PuzzleGeneratorService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B74288A383E38C9C1A9D423 /* PuzzleGeneratorService.swift */; };
+		CD191061AF0759C969C7D2E3 /* PuzzleHomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A0514C787C3FAB425EB38BF /* PuzzleHomeView.swift */; };
 		D0E11A9F2F0FD17F0018CE58 /* (null) in Frameworks */ = {isa = PBXBuildFile; };
+		E926DD1317BA1F610CB6510A /* PuzzleBoardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9C54B7BEA6DCCEDE9E336D42 /* PuzzleBoardView.swift */; };
+		E999265046E95913875BA06A /* HapticService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9DE95A24BB29147E03020F39 /* HapticService.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		0E146CB66C911F40F8536E10 /* PuzzlePreviewOverlay.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = PuzzlePreviewOverlay.swift; sourceTree = "<group>"; };
 		1905DBA72F3DF8A900EA6419 /* Medication+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Medication+CoreDataClass.swift"; sourceTree = "<group>"; };
 		1905DBA82F3DF8A900EA6419 /* Medication+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Medication+CoreDataProperties.swift"; sourceTree = "<group>"; };
 		1905DBA92F3DF8A900EA6419 /* MedicationDose+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "MedicationDose+CoreDataClass.swift"; sourceTree = "<group>"; };
@@ -36,6 +46,14 @@
 		198FFF6B2F50082A004949FC /* CDSymptomLog+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CDSymptomLog+CoreDataProperties.swift"; sourceTree = "<group>"; };
 		19C7FADE2F1F4DA600A3A885 /* ARKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ARKit.framework; path = System/Library/Frameworks/ARKit.framework; sourceTree = SDKROOT; };
 		19C7FAE02F1F4DB700A3A885 /* RealityKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = RealityKit.framework; path = System/Library/Frameworks/RealityKit.framework; sourceTree = SDKROOT; };
+		3434FB9C3D71E7FE05675221 /* PuzzleViewModel.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = PuzzleViewModel.swift; sourceTree = "<group>"; };
+		3B74288A383E38C9C1A9D423 /* PuzzleGeneratorService.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = PuzzleGeneratorService.swift; sourceTree = "<group>"; };
+		5A0514C787C3FAB425EB38BF /* PuzzleHomeView.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = PuzzleHomeView.swift; sourceTree = "<group>"; };
+		9C54B7BEA6DCCEDE9E336D42 /* PuzzleBoardView.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = PuzzleBoardView.swift; sourceTree = "<group>"; };
+		9DE95A24BB29147E03020F39 /* HapticService.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = HapticService.swift; sourceTree = "<group>"; };
+		AA739B8B27632171879503E8 /* PuzzlePieceShape.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = PuzzlePieceShape.swift; sourceTree = "<group>"; };
+		BDB7222569F8095A692476A1 /* PuzzleGameView.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = PuzzleGameView.swift; sourceTree = "<group>"; };
+		D6625E57E32B4934A286B5D6 /* PuzzlePiece.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = PuzzlePiece.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
@@ -89,6 +107,7 @@
 				19423B6F2ED6BD590004C99E /* Parkinsons */,
 				19C7FADD2F1F4DA500A3A885 /* Frameworks */,
 				19423B6E2ED6BD590004C99E /* Products */,
+				85024BA88269F258B5EC2C3F /* Parkinsons */,
 			);
 			sourceTree = "<group>";
 		};
@@ -107,6 +126,62 @@
 				19C7FADE2F1F4DA600A3A885 /* ARKit.framework */,
 			);
 			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		4F4F4A9ECBB918D8D9CCCE0D /* JigsawPuzzle */ = {
+			isa = PBXGroup;
+			children = (
+				88613E2A06EF2788F6012726 /* Models */,
+				8FAABE771318675FF1B6E6EA /* ViewModels */,
+				4FA57A11693057B4105AA09C /* Services */,
+				DBB8B6B1B657D94E588B2D73 /* Views */,
+			);
+			path = JigsawPuzzle;
+			sourceTree = "<group>";
+		};
+		4FA57A11693057B4105AA09C /* Services */ = {
+			isa = PBXGroup;
+			children = (
+				3B74288A383E38C9C1A9D423 /* PuzzleGeneratorService.swift */,
+				9DE95A24BB29147E03020F39 /* HapticService.swift */,
+			);
+			path = Services;
+			sourceTree = "<group>";
+		};
+		85024BA88269F258B5EC2C3F /* Parkinsons */ = {
+			isa = PBXGroup;
+			children = (
+				4F4F4A9ECBB918D8D9CCCE0D /* JigsawPuzzle */,
+			);
+			path = Parkinsons;
+			sourceTree = "<group>";
+		};
+		88613E2A06EF2788F6012726 /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				D6625E57E32B4934A286B5D6 /* PuzzlePiece.swift */,
+			);
+			path = Models;
+			sourceTree = "<group>";
+		};
+		8FAABE771318675FF1B6E6EA /* ViewModels */ = {
+			isa = PBXGroup;
+			children = (
+				3434FB9C3D71E7FE05675221 /* PuzzleViewModel.swift */,
+			);
+			path = ViewModels;
+			sourceTree = "<group>";
+		};
+		DBB8B6B1B657D94E588B2D73 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				5A0514C787C3FAB425EB38BF /* PuzzleHomeView.swift */,
+				BDB7222569F8095A692476A1 /* PuzzleGameView.swift */,
+				9C54B7BEA6DCCEDE9E336D42 /* PuzzleBoardView.swift */,
+				0E146CB66C911F40F8536E10 /* PuzzlePreviewOverlay.swift */,
+				AA739B8B27632171879503E8 /* PuzzlePieceShape.swift */,
+			);
+			path = Views;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -128,8 +203,6 @@
 				19423B6F2ED6BD590004C99E /* Parkinsons */,
 			);
 			name = ParkEase;
-			packageProductDependencies = (
-			);
 			productName = Parkinsons;
 			productReference = 19423B6D2ED6BD590004C99E /* ParkEase.app */;
 			productType = "com.apple.product-type.application";
@@ -158,8 +231,6 @@
 			);
 			mainGroup = 19423B642ED6BD590004C99E;
 			minimizedProjectReferenceProxies = 1;
-			packageReferences = (
-			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = 19423B6E2ED6BD590004C99E /* Products */;
 			projectDirPath = "";
@@ -195,6 +266,15 @@
 				198FFF692F5003F9004949FC /* RhythmicSession+CoreDataClass.swift in Sources */,
 				198FFF6C2F50082A004949FC /* CDSymptomLog+CoreDataProperties.swift in Sources */,
 				198FFF6D2F50082A004949FC /* CDSymptomLog+CoreDataClass.swift in Sources */,
+				573D86363EB92C0F855326E6 /* PuzzlePiece.swift in Sources */,
+				45D69B5A74F8CB399E2CF1F0 /* PuzzleViewModel.swift in Sources */,
+				85E5C7FBEB8F758D4D145B81 /* PuzzleGeneratorService.swift in Sources */,
+				E999265046E95913875BA06A /* HapticService.swift in Sources */,
+				CD191061AF0759C969C7D2E3 /* PuzzleHomeView.swift in Sources */,
+				7262C34C6293268D57002B30 /* PuzzleGameView.swift in Sources */,
+				E926DD1317BA1F610CB6510A /* PuzzleBoardView.swift in Sources */,
+				7FA768CF65071291C3FE568F /* PuzzlePreviewOverlay.swift in Sources */,
+				57395797520F62FA7CE4B58C /* PuzzlePieceShape.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
