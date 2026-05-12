@@ -183,11 +183,11 @@ class SymptomViewController: UIViewController, SymptomRatingCellDelegate {
         currentDayLogs = [
             SymptomRating(name: "Slowed Movement", iconName: "SlowedMovement", selectedIntensity: .notPresent),
             SymptomRating(name: "Tremor", iconName: "tremor", selectedIntensity: .notPresent),
-            SymptomRating(name: "Loss of Balance", iconName: "lossOfBalance", selectedIntensity: .notPresent),
+            SymptomRating(name: "Loss of Balance", iconName: "ColorDizzy", selectedIntensity: .notPresent),
             SymptomRating(name: "Facial Stiffness", iconName: "stiffFace", selectedIntensity: .notPresent),
-            SymptomRating(name: "Body Stiffness", iconName: "bodyStiffness", selectedIntensity: .notPresent),
-            SymptomRating(name: "Gait Disturbance", iconName: "walking", selectedIntensity: .notPresent),
-            SymptomRating(name: "Insomnia", iconName: "insomnia", selectedIntensity: .notPresent),
+            SymptomRating(name: "Body Stiffness", iconName: "ColorBodyStiff", selectedIntensity: .notPresent),
+            SymptomRating(name: "Gait Disturbance", iconName: "Colorwalking", selectedIntensity: .notPresent),
+            SymptomRating(name: "Insomnia", iconName: "ColorInsomnia", selectedIntensity: .notPresent),
         ]
     }
 
