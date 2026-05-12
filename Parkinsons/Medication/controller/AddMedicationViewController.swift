@@ -6,6 +6,11 @@
 import UIKit
 import CoreData
 
+struct DoseData {
+    var dose: MedicationDose?
+    var time: Date
+}
+
 protocol AddMedicationDelegate: AnyObject {
     func didUpdateMedication()
 }
@@ -36,7 +41,7 @@ class AddMedicationViewController: UIViewController,
     weak var delegate: AddMedicationDelegate?
     var isEditMode: Bool   = false
     var medicationToEdit: Medication!
-    var doseArray: [Date]  = [Date()]
+    var doseArray: [DoseData]  = [DoseData(dose: nil, time: Date())]
 
     @IBOutlet weak var tickButton: UIBarButtonItem!
     @IBOutlet weak var backgroundView: UIView!
@@ -167,7 +172,7 @@ class AddMedicationViewController: UIViewController,
 
     func didUpdateTime(cell: DoseTableViewCell, newTime: Date) {
         if let indexPath = doseTableView.indexPath(for: cell) {
-            doseArray[indexPath.row] = newTime
+            doseArray[indexPath.row].time = newTime
             evaluateTickButtonState()
         }
     }
@@ -200,9 +205,9 @@ class AddMedicationViewController: UIViewController,
         repeatLabel.textColor = .label
 
         let doseSet = med.doses as? Set<MedicationDose> ?? []
-        doseArray   = doseSet
+        doseArray = doseSet
             .sorted { $0.doseTime ?? Date() < $1.doseTime ?? Date() }
-            .compactMap { $0.doseTime }
+            .map { DoseData(dose: $0, time: $0.doseTime ?? Date()) }
 
         doseStepper.value = Double(doseArray.count)
         doseTableView.reloadData()
@@ -247,7 +252,7 @@ class AddMedicationViewController: UIViewController,
 
         let originalDoseTimes = (original.doses as? Set<MedicationDose> ?? [])
             .compactMap { $0.doseTime?.timeIntervalSince1970 }.sorted()
-        let currentDoseTimes  = doseArray.map { $0.timeIntervalSince1970 }.sorted()
+        let currentDoseTimes  = doseArray.map { $0.time.timeIntervalSince1970 }.sorted()
         let dosesChanged      = originalDoseTimes != currentDoseTimes
 
         tickButton.isEnabled = nameChanged || strengthChanged || unitChanged ||
@@ -296,7 +301,7 @@ class AddMedicationViewController: UIViewController,
 
     @IBAction func doseStepperChanged(_ sender: UIStepper) {
         let newCount = Int(sender.value)
-        if newCount > doseArray.count { doseArray.append(Date()) }
+        if newCount > doseArray.count { doseArray.append(DoseData(dose: nil, time: Date())) }
         else                          { doseArray.removeLast() }
         doseTableView.reloadData()
         evaluateTickButtonState()
@@ -349,17 +354,28 @@ class AddMedicationViewController: UIViewController,
         medication.medicationScheduleType = selectedScheduleType
         medication.medicationScheduleDays = selectedScheduleDays as NSObject?
 
-        if isEditMode {
-            let oldDoses = medication.doses as? Set<MedicationDose> ?? []
-            for dose in oldDoses { context.delete(dose) }
+        let oldDoses = isEditMode ? (medication.doses as? Set<MedicationDose> ?? []) : []
+        var usedDoses: Set<MedicationDose> = []
+
+        for data in doseArray {
+            let dose: MedicationDose
+            if let existing = data.dose {
+                dose = existing
+                usedDoses.insert(existing)
+            } else {
+                dose = MedicationDose(context: context)
+                dose.id = UUID()
+                dose.doseStatus = "none"
+                dose.medication = medication
+            }
+            dose.doseTime = data.time
         }
 
-        for date in doseArray {
-            let dose        = MedicationDose(context: context)
-            dose.id         = UUID()
-            dose.doseTime   = date
-            dose.doseStatus = "none"
-            dose.medication = medication
+        if isEditMode {
+            let dosesToDelete = oldDoses.subtracting(usedDoses)
+            for dose in dosesToDelete {
+                context.delete(dose)
+            }
         }
 
         PersistenceController.shared.save(context)
@@ -392,7 +408,7 @@ extension AddMedicationViewController {
         let cell = tableView.dequeueReusableCell(withIdentifier: "DoseCell", for: indexPath) as! DoseTableViewCell
         cell.delegate             = self
         cell.doseNumberLabel.text = "\(indexPath.row + 1)"
-        cell.timePicker.date      = doseArray[indexPath.row]
+        cell.timePicker.date      = doseArray[indexPath.row].time
         return cell
     }
 

@@ -4,6 +4,7 @@ import UIKit
 
 class DateCell: UICollectionViewCell {
 
+    let outerRingView = UIView()
     let labelBackgroundView = UIView()
     let dateLabel = UILabel()
 
@@ -18,16 +19,23 @@ class DateCell: UICollectionViewCell {
     }
 
     private func setupViews() {
+        outerRingView.translatesAutoresizingMaskIntoConstraints = false
         labelBackgroundView.translatesAutoresizingMaskIntoConstraints = false
         dateLabel.translatesAutoresizingMaskIntoConstraints = false
 
         dateLabel.textAlignment = .center
         dateLabel.font = UIFont.systemFont(ofSize: 20, weight: .medium)
 
+        contentView.addSubview(outerRingView)
         contentView.addSubview(labelBackgroundView)
         contentView.addSubview(dateLabel)
 
         NSLayoutConstraint.activate([
+            outerRingView.centerXAnchor.constraint(equalTo: contentView.centerXAnchor),
+            outerRingView.centerYAnchor.constraint(equalTo: contentView.centerYAnchor),
+            outerRingView.widthAnchor.constraint(equalTo: labelBackgroundView.widthAnchor, constant: 4),
+            outerRingView.heightAnchor.constraint(equalTo: outerRingView.widthAnchor),
+
             labelBackgroundView.centerXAnchor.constraint(equalTo: contentView.centerXAnchor),
             labelBackgroundView.centerYAnchor.constraint(equalTo: contentView.centerYAnchor),
             labelBackgroundView.widthAnchor.constraint(equalTo: contentView.widthAnchor, multiplier: 0.75),
@@ -41,6 +49,9 @@ class DateCell: UICollectionViewCell {
     override func layoutSubviews() {
         super.layoutSubviews()
        
+        outerRingView.layer.cornerRadius = outerRingView.bounds.width / 2
+        outerRingView.clipsToBounds = true
+
         labelBackgroundView.layer.cornerRadius = labelBackgroundView.bounds.width / 2
         labelBackgroundView.clipsToBounds = true
     }
@@ -66,7 +77,7 @@ class DateCell: UICollectionViewCell {
             labelBackgroundView.backgroundColor = themeColor
             dateLabel.textColor = .white
         } else {
-            dateLabel.textColor = enabled ? .black : .systemGray4
+            dateLabel.textColor = enabled ? .label : .systemGray4
         }
 
         if isToday && !isSelected && !isCompleted {
@@ -74,10 +85,19 @@ class DateCell: UICollectionViewCell {
         }
 
         if isSelected {
-            labelBackgroundView.layer.borderWidth = 2
-            labelBackgroundView.layer.borderColor = themeColor.cgColor
-            if !isCompleted {
-                dateLabel.textColor = .black
+            if isCompleted {
+                // Outer ring
+                outerRingView.isHidden = false
+                outerRingView.layer.borderWidth = 2
+                outerRingView.layer.borderColor = themeColor.cgColor
+                
+                // Inner ring
+                labelBackgroundView.layer.borderWidth = 2
+                labelBackgroundView.layer.borderColor = UIColor.systemBackground.cgColor
+            } else {
+                labelBackgroundView.layer.borderWidth = 2
+                labelBackgroundView.layer.borderColor = themeColor.cgColor
+                dateLabel.textColor = .label
             }
         }
         setNeedsLayout()
@@ -93,6 +113,11 @@ class DateCell: UICollectionViewCell {
     }
 
     private func resetAppearance() {
+        outerRingView.isHidden = true
+        outerRingView.backgroundColor = .clear
+        outerRingView.layer.borderWidth = 0
+        outerRingView.layer.borderColor = nil
+        
         labelBackgroundView.backgroundColor = .clear
         labelBackgroundView.layer.borderWidth = 0
         labelBackgroundView.layer.borderColor = nil
