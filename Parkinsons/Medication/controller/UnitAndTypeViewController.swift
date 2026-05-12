@@ -21,7 +21,7 @@ class UnitAndTypeViewController: UIViewController,
     var selectedType: String?
 
     // MARK: - Common unit presets shown in the dropdown
-    private let commonUnits = ["mg", "ml", "mcg", "g", "IU", "%", "mEq", "mmol"]
+    private let commonUnits = ["mg", "ml", "mcg", "g", "mEq", "mmol"]
 
     // MARK: - Lifecycle
 
