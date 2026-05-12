@@ -58,7 +58,7 @@ final class MedicationNotificationManager {
     func registerCategories() {
         let takenAction = UNNotificationAction(
             identifier: MedNotifAction.taken,
-            title: "Taken ✓",
+            title: "Taken",
             options: [.authenticationRequired]
         )
         let skippedAction = UNNotificationAction(

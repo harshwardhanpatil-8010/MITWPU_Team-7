@@ -9,7 +9,9 @@ final class TodayMedicationViewModel {
 
         todayDoses.removeAll()
 
-        let today = Calendar.current.startOfDay(for: Date())
+        let todayLogs = logs.filter {
+            Calendar.current.isDate($0.doseDay ?? Date(), inSameDayAs: Date())
+        }
 
         for med in medications {
 
@@ -21,20 +23,15 @@ final class TodayMedicationViewModel {
 
                 guard let time = dose.doseTime else { continue }
 
-                // ✅ Check if this dose is already logged TODAY
-                let isLoggedToday = logs.contains {
-                    guard let logDay = $0.doseDay,
-                          let scheduled = $0.doseScheduledTime else { return false }
-
-                    return Calendar.current.isDate(logDay, inSameDayAs: today) &&
-                           scheduled == time &&
-                           $0.medication?.id == med.id
+                // ✅ Check if already logged
+                let isLogged = todayLogs.contains { log in
+                    log.dose?.id == dose.id
                 }
 
-                // ❌ Skip if already taken/skipped today
-                if isLoggedToday { continue }
+                if isLogged {
+                    continue // ❗ THIS is what removes it from Today
+                }
 
-                // --- Your existing logic (unchanged) ---
                 let strength = med.medicationStrength
                 var unit = med.medicationUnit ?? ""
 
