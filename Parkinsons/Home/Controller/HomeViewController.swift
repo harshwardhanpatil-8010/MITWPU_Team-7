@@ -60,7 +60,8 @@ class HomeViewController: UIViewController, UICollectionViewDelegate {
     
     var therapeuticGamesData: [TherapeuticGameModel] = [
         TherapeuticGameModel(title: "Mimic the Emoji", description: "Complete your daily challenge!", iconName: "face.smiling", iconColor: .systemOrange),
-        TherapeuticGameModel(title: "Match the Cards", description: "Complete your daily challenge!", iconName: "brain.fill", iconColor: .systemPurple)
+        TherapeuticGameModel(title: "Match the Cards", description: "Complete your daily challenge!", iconName: "brain.fill", iconColor: .systemPurple),
+        TherapeuticGameModel(title: "Whack-a-Mole", description: "Complete your daily challenge!", iconName: "hand.tap.fill", iconColor: .systemGreen)
     ]
     
     private let floatingBar: UIView = {
@@ -375,6 +376,9 @@ class HomeViewController: UIViewController, UICollectionViewDelegate {
             let storyboard = UIStoryboard(name: "MimicTheEmoji", bundle: nil)
             guard let vc = storyboard.instantiateViewController(withIdentifier: "EmojiLandingScreenID") as? EmojiLandingScreen else { return }
             navigationController?.pushViewController(vc, animated: true)
+        case 2:
+            let vc = WhackAMoleLandingViewController()
+            navigationController?.pushViewController(vc, animated: true)
         default:
             break
         }
@@ -548,6 +552,13 @@ extension HomeViewController: UICollectionViewDataSource {
                 }.count
                 completionText = "\(completedCount)/\(daysInMonth) daily challenges completed"
                 isTodayCompleted = DailyGameManager.shared.isCompleted(date: today)
+            case 2:
+                let completedCount = (0..<daysInMonth).filter { offset in
+                    guard let date = calendar.date(byAdding: .day, value: offset, to: firstDayOfMonth) else { return false }
+                    return WhackAMoleGameManager.shared.isCompleted(date: calendar.startOfDay(for: date))
+                }.count
+                completionText = "\(completedCount)/\(daysInMonth) daily challenges completed"
+                isTodayCompleted = WhackAMoleGameManager.shared.isCompleted(date: today)
             default:
                 completionText = ""
                 isTodayCompleted = false
@@ -612,12 +623,47 @@ extension HomeViewController: UICollectionViewDataSource {
 // MARK: - MedicationCardDelegate
 
 extension HomeViewController: MedicationCardDelegate {
-    func didTapTaken(for dose: TodayDoseItem) {
-        updateDose(dose, status: .taken)
+    func didTapTaken(for dose: TodayDoseItem, cell: MedicationCardCollectionViewCell) {
+        handleDoseLogging(for: dose, status: .taken, cell: cell)
     }
 
-    func didTapSkipped(for dose: TodayDoseItem) {
-        updateDose(dose, status: .skipped)
+    func didTapSkipped(for dose: TodayDoseItem, cell: MedicationCardCollectionViewCell) {
+        handleDoseLogging(for: dose, status: .skipped, cell: cell)
+    }
+    
+    private func handleDoseLogging(for dose: TodayDoseItem, status: DoseStatus, cell: MedicationCardCollectionViewCell) {
+        let now = Date()
+        
+        // If the medication is not yet due (scheduled time is in the future)
+        if dose.scheduledTime > now {
+            let formatter = DateFormatter()
+            formatter.timeStyle = .short
+            let timeString = formatter.string(from: dose.scheduledTime)
+            
+            let alert = UIAlertController(
+                title: "Early Logging",
+                message: "This medication is scheduled for \(timeString). Are you sure you want to log it now?",
+                preferredStyle: .alert
+            )
+            
+            let confirmAction = UIAlertAction(title: "Yes, Log It", style: .default) { [weak self] _ in
+                cell.playAnimation(isTaken: status == .taken) {
+                    self?.updateDose(dose, status: status)
+                }
+            }
+            
+            let cancelAction = UIAlertAction(title: "Cancel", style: .cancel)
+            
+            alert.addAction(confirmAction)
+            alert.addAction(cancelAction)
+            
+            self.present(alert, animated: true)
+        } else {
+            // Already due, log normally with animation
+            cell.playAnimation(isTaken: status == .taken) { [weak self] in
+                self?.updateDose(dose, status: status)
+            }
+        }
     }
 }
 
@@ -637,7 +683,7 @@ extension HomeViewController {
     private func showGamesInfoPopup() {
         let alert = UIAlertController(
             title: "Therapeutic Games",
-            message: "Daily games to enhance memory, focus and facial movement for people with Parkinson's disease. Mimic the Emoji boosts facial expression by copying emojis. Match the Cards improves memory and attention. Play regularly to keep your mind active!",
+            message: "Daily games to enhance memory, focus and facial movement for people with Parkinson's disease. Mimic the Emoji boosts facial expression by copying emojis. Match the Cards improves memory and attention. Whack-a-Mole sharpens reaction time and hand-eye coordination. Play regularly to keep your mind active!",
             preferredStyle: .alert
         )
         alert.addAction(UIAlertAction(title: "Got it", style: .default))

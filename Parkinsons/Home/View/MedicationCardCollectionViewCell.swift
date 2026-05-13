@@ -1,6 +1,6 @@
 protocol MedicationCardDelegate: AnyObject {
-    func didTapTaken(for dose: TodayDoseItem)
-    func didTapSkipped(for dose: TodayDoseItem)
+    func didTapTaken(for dose: TodayDoseItem, cell: MedicationCardCollectionViewCell)
+    func didTapSkipped(for dose: TodayDoseItem, cell: MedicationCardCollectionViewCell)
 }
 
 import UIKit
@@ -152,22 +152,17 @@ class MedicationCardCollectionViewCell: UICollectionViewCell {
 
     @IBAction func takenTapped(_ sender: Any) {
         guard let dose = currentDose else { return }
-        animateConfirmThenDismiss(isTaken: true) { [weak self] in
-            self?.delegate?.didTapTaken(for: dose)
-        }
+        delegate?.didTapTaken(for: dose, cell: self)
     }
 
     @IBAction func skippedTapped(_ sender: Any) {
         guard let dose = currentDose else { return }
-        animateConfirmThenDismiss(isTaken: false) { [weak self] in
-            self?.delegate?.didTapSkipped(for: dose)
-        }
+        delegate?.didTapSkipped(for: dose, cell: self)
     }
 
     // MARK: - Animation
 
-
-    private func animateConfirmThenDismiss(isTaken: Bool, completion: @escaping () -> Void) {
+    func playAnimation(isTaken: Bool, completion: @escaping () -> Void) {
         takenButton.isUserInteractionEnabled = false
         skippedButton.isUserInteractionEnabled = false
 
