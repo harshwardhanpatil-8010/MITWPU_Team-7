@@ -1,0 +1,21 @@
+{
+  "images" : [
+    {
+      "filename" : "CBB20C08-E135-4FDF-9163-CA048972746F.png",
+      "idiom" : "universal",
+      "scale" : "1x"
+    },
+    {
+      "idiom" : "universal",
+      "scale" : "2x"
+    },
+    {
+      "idiom" : "universal",
+      "scale" : "3x"
+    }
+  ],
+  "info" : {
+    "author" : "xcode",
+    "version" : 1
+  }
+}
