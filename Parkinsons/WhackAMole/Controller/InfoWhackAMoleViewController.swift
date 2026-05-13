@@ -29,7 +29,7 @@ class InfoWhackAMoleViewController: UIViewController {
     // MARK: - Top Bar (X left, speaker right — matches screenshot exactly)
 
     private func setupTopBar() {
-        // Close (X) button — native style
+
         let closeBtn = UIButton(type: .system)
         closeBtn.setImage(UIImage(systemName: "xmark",
             withConfiguration: UIImage.SymbolConfiguration(pointSize: 16, weight: .semibold)), for: .normal)
@@ -41,7 +41,7 @@ class InfoWhackAMoleViewController: UIViewController {
         closeBtn.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(closeBtn)
 
-        // Mute/speaker button
+
         muteButton = UIButton(type: .system)
         muteButton.setImage(UIImage(systemName: "speaker.wave.2.fill",
             withConfiguration: UIImage.SymbolConfiguration(pointSize: 16, weight: .semibold)), for: .normal)
@@ -88,12 +88,12 @@ class InfoWhackAMoleViewController: UIViewController {
             stack.widthAnchor.constraint(equalTo: scrollView.widthAnchor, constant: -40),
         ])
 
-        // "How to Play ?" heading
+
         let heading = makeLabel("How to Play ?", size: 20, weight: .bold)
         stack.addArrangedSubview(heading)
         stack.setCustomSpacing(12, after: heading)
 
-        // Numbered instructions
+
         let instructions = [
             "Moles will pop up from holes on the screen.",
             "Tap on a mole to whack it and earn 10 points.",
@@ -107,7 +107,7 @@ class InfoWhackAMoleViewController: UIViewController {
             stack.addArrangedSubview(lbl)
         }
 
-        // Divider
+
         let divider = UIView()
         divider.backgroundColor = .separator
         divider.translatesAutoresizingMaskIntoConstraints = false
@@ -117,7 +117,7 @@ class InfoWhackAMoleViewController: UIViewController {
         stack.setCustomSpacing(16, after: instructions.last != nil ? stack.arrangedSubviews[stack.arrangedSubviews.count - 2] : heading)
         stack.setCustomSpacing(16, after: divider)
 
-        // "Daily challenges" heading
+        
         let dailyHeading = makeLabel("Daily challenges", size: 20, weight: .bold)
         stack.addArrangedSubview(dailyHeading)
         stack.setCustomSpacing(12, after: dailyHeading)

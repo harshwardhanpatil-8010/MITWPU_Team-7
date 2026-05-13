@@ -54,7 +54,7 @@ class WhackAMoleLandingViewController: UIViewController,
     // MARK: - UI Setup
 
     private func setupUI() {
-        // Game icon
+
         let config = UIImage.SymbolConfiguration(pointSize: 100, weight: .medium)
         iconImageView.image = UIImage(systemName: "hand.tap.fill", withConfiguration: config)
         iconImageView.tintColor = themeColor
@@ -62,13 +62,13 @@ class WhackAMoleLandingViewController: UIViewController,
         iconImageView.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(iconImageView)
 
-        // "Daily Challenge" label
+
         dailyChallengeLabel.text = "Daily Challenge"
         dailyChallengeLabel.font = .systemFont(ofSize: 22, weight: .bold)
         dailyChallengeLabel.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(dailyChallengeLabel)
 
-        // Month + Completed row
+
         monthLabel.font = .systemFont(ofSize: 17, weight: .semibold)
         monthLabel.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(monthLabel)
@@ -79,7 +79,7 @@ class WhackAMoleLandingViewController: UIViewController,
         completedLabel.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(completedLabel)
 
-        // Day headers (Mon Tue Wed ...)
+
         dayHeaderStack.axis = .horizontal
         dayHeaderStack.distribution = .fillEqually
         dayHeaderStack.translatesAutoresizingMaskIntoConstraints = false
@@ -94,7 +94,7 @@ class WhackAMoleLandingViewController: UIViewController,
         }
         view.addSubview(dayHeaderStack)
 
-        // Collection View
+
         let layout = UICollectionViewFlowLayout()
         layout.minimumInteritemSpacing = 0
         layout.minimumLineSpacing = 0
@@ -109,7 +109,7 @@ class WhackAMoleLandingViewController: UIViewController,
         collectionView.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(collectionView)
 
-        // Play button — BLUE like Match the Cards
+
         var btnConfig = UIButton.Configuration.filled()
         btnConfig.title = "Play"
         btnConfig.baseBackgroundColor = .systemBlue
@@ -122,36 +122,36 @@ class WhackAMoleLandingViewController: UIViewController,
         view.addSubview(playButton)
 
         NSLayoutConstraint.activate([
-            // Icon
+
             iconImageView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 20),
             iconImageView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
             iconImageView.heightAnchor.constraint(equalToConstant: 130),
             iconImageView.widthAnchor.constraint(equalToConstant: 130),
 
-            // Daily Challenge
+
             dailyChallengeLabel.topAnchor.constraint(equalTo: iconImageView.bottomAnchor, constant: 20),
             dailyChallengeLabel.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20),
 
-            // Month label
+
             monthLabel.topAnchor.constraint(equalTo: dailyChallengeLabel.bottomAnchor, constant: 4),
             monthLabel.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20),
 
-            // Completed label
+
             completedLabel.centerYAnchor.constraint(equalTo: monthLabel.centerYAnchor),
             completedLabel.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20),
 
-            // Day headers
+
             dayHeaderStack.topAnchor.constraint(equalTo: monthLabel.bottomAnchor, constant: 12),
             dayHeaderStack.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16),
             dayHeaderStack.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -16),
 
-            // Calendar
+
             collectionView.topAnchor.constraint(equalTo: dayHeaderStack.bottomAnchor, constant: 4),
             collectionView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16),
             collectionView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -16),
             collectionView.heightAnchor.constraint(equalTo: collectionView.widthAnchor, multiplier: 6.0/7.0),
 
-            // Play button
+            
             playButton.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -24),
             playButton.centerXAnchor.constraint(equalTo: view.centerXAnchor),
             playButton.widthAnchor.constraint(greaterThanOrEqualToConstant: 200),

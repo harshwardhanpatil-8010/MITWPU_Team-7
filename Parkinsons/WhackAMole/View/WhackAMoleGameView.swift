@@ -170,7 +170,7 @@ private struct SeededPos: Identifiable {
     let y: CGFloat
     let size: CGFloat
     let rotation: Double
-    let type: Int // 0=grass tuft, 1=mud spot, 2=small rock
+    let type: Int
 }
 
 // MARK: - Main Game View
@@ -244,15 +244,13 @@ struct WhackAMoleGameView: View {
         let holeH = holeW * 1.2
         let rowGap: CGFloat = max(geo.size.height * 0.04, 28)
 
-        // Dynamic field height based on content
-        let gridH = CGFloat(rows.count) * holeH + CGFloat(rows.count - 1) * rowGap
-        let fieldH = gridH + 70  // padding top + bottom
 
-        // Generate decorations deterministically
+        let gridH = CGFloat(rows.count) * holeH + CGFloat(rows.count - 1) * rowGap
+        let fieldH = gridH + 70
         let decos = generateDecorations(fieldW: fieldW, fieldH: fieldH, count: 18)
 
         return ZStack {
-            // Main grass ground
+
             RoundedRectangle(cornerRadius: 22)
                 .fill(
                     LinearGradient(
@@ -263,22 +261,22 @@ struct WhackAMoleGameView: View {
                 .frame(width: fieldW, height: fieldH)
                 .shadow(color: .black.opacity(0.18), radius: 10, y: 5)
 
-            // Scattered decorations (grass tufts, mud spots, rocks)
+
             ForEach(decos) { d in
                 if d.type == 0 {
-                    // Grass tuft
+
                     grassTuft(size: d.size)
                         .offset(x: d.x - fieldW / 2, y: d.y - fieldH / 2)
                         .rotationEffect(.degrees(d.rotation))
                 } else if d.type == 1 {
-                    // Mud spot
+
                     Ellipse()
                         .fill(dirtMain.opacity(0.4))
                         .frame(width: d.size * 1.5, height: d.size)
                         .offset(x: d.x - fieldW / 2, y: d.y - fieldH / 2)
                         .rotationEffect(.degrees(d.rotation))
                 } else {
-                    // Small rock
+
                     Ellipse()
                         .fill(
                             LinearGradient(
@@ -291,7 +289,7 @@ struct WhackAMoleGameView: View {
                 }
             }
 
-            // Holes grid
+
             VStack(spacing: rowGap) {
                 ForEach(rows, id: \.self) { row in
                     let colGap: CGFloat = row.count >= 4 ? holeW * 0.12 : holeW * 0.35
@@ -309,7 +307,7 @@ struct WhackAMoleGameView: View {
     // MARK: - Decorations generator
 
     private func generateDecorations(fieldW: CGFloat, fieldH: CGFloat, count: Int) -> [SeededPos] {
-        // Use a fixed seed pattern so decorations don't change on re-render
+
         let positions: [(CGFloat, CGFloat)] = [
             (0.08, 0.12), (0.85, 0.08), (0.15, 0.88), (0.90, 0.85),
             (0.05, 0.45), (0.92, 0.50), (0.50, 0.05), (0.50, 0.95),
@@ -350,7 +348,7 @@ struct WhackAMoleGameView: View {
 
         return ZStack(alignment: .bottom) {
             VStack(spacing: 0) {
-                // Mole area
+
                 ZStack(alignment: .bottom) {
                     Color.clear
                     if hole.isActive && !hole.wasWhacked {
@@ -365,9 +363,9 @@ struct WhackAMoleGameView: View {
                 .frame(width: w * 1.1, height: h * 0.72)
                 .clipped()
 
-                // Mud ring around hole
+
                 ZStack {
-                    // Outer mud ring
+
                     Ellipse()
                         .fill(
                             RadialGradient(
@@ -378,7 +376,7 @@ struct WhackAMoleGameView: View {
                         )
                         .frame(width: w * 1.15, height: h * 0.32)
 
-                    // Inner dark hole
+
                     Ellipse()
                         .fill(
                             RadialGradient(
@@ -390,7 +388,7 @@ struct WhackAMoleGameView: View {
                         .frame(width: w * 0.7, height: h * 0.17)
                         .offset(y: -h * 0.02)
 
-                    // Dirt chunks on rim
+                    
                     HStack(spacing: w * 0.15) {
                         Circle().fill(dirtMain.opacity(0.6)).frame(width: 5, height: 5)
                             .offset(y: -h * 0.08)

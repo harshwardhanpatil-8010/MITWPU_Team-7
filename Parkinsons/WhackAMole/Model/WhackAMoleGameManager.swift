@@ -7,7 +7,7 @@ final class WhackAMoleGameManager {
     private let calendar = Calendar.current
     private let storageKey = "CompletedWhackAMoleDates"
 
-    // Randomized durations for each day of the month (deterministic per day)
+
     private let dailyDurations = [
         60, 45, 30, 45, 60, 30, 45, 60, 30, 45,
         60, 30, 45, 60, 45, 30, 60, 45, 30, 60,
@@ -54,9 +54,9 @@ final class WhackAMoleGameManager {
     func holeCount(for date: Date) -> Int {
         let day = calendar.component(.day, from: date)
         switch gameDuration(for: date) {
-        case ...30:  return 8 + (day % 3)       // 8, 9, or 10
-        case ...45:  return 6 + (day % 3)       // 6, 7, or 8
-        default:     return 5 + (day % 3)       // 5, 6, or 7
+        case ...30:  return 8 + (day % 3)
+        case ...45:  return 6 + (day % 3)
+        default:     return 5 + (day % 3)      
         }
     }
 
