@@ -34,6 +34,7 @@ class LevelSelectionPuzzleViewController: UIViewController,
         setupMonth()
         updateMonthLabel()
         title = "Jigsaw Puzzle"
+        tabBarController?.tabBar.isHidden = true
     }
 
     override func viewDidLayoutSubviews() {
@@ -52,7 +53,7 @@ class LevelSelectionPuzzleViewController: UIViewController,
         updateCompletionCount()
         collectionView?.reloadData()
         title = "Jigsaw Puzzle"
-        tabBarController?.tabBar.isHidden = false
+        tabBarController?.tabBar.isHidden = true
     }
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
