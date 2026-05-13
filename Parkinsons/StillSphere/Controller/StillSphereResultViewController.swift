@@ -28,7 +28,7 @@ class StillSphereResultViewController: UIViewController {
         navigationItem.hidesBackButton = true
         view.backgroundColor = .systemBackground
         
-        titleLabel.text = "Session Complete"
+        titleLabel.text = "Good Job!"
         titleLabel.font = .systemFont(ofSize: 32, weight: .bold)
         
         let messages = [

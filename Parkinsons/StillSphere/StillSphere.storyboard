@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="24506" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="24506" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="SS-Landing-VC">
     <device id="retina6_12" orientation="portrait" appearance="light"/>
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="24504"/>
@@ -11,7 +11,7 @@
         <!--Still Sphere Landing View Controller-->
         <scene sceneID="SS-Landing-Scene">
             <objects>
-                <viewController storyboardIdentifier="StillSphereLandingViewController" id="SS-Landing-VC" customClass="StillSphereLandingViewController" customModule="ParkyCare" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="StillSphereLandingViewController" id="SS-Landing-VC" customClass="StillSphereLandingViewController" customModule="ParkEase" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="SS-Landing-View">
                         <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -162,7 +162,7 @@
         <!--Still Sphere Info View Controller-->
         <scene sceneID="SS-Info-Scene">
             <objects>
-                <viewController storyboardIdentifier="StillSphereInfoViewController" useStoryboardIdentifierAsRestorationIdentifier="YES" id="SS-Info-VC" customClass="StillSphereInfoViewController" customModule="ParkyCare" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="StillSphereInfoViewController" useStoryboardIdentifierAsRestorationIdentifier="YES" id="SS-Info-VC" customClass="StillSphereInfoViewController" customModule="ParkEase" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="SS-Info-View">
                         <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -253,7 +253,7 @@
         <!--Still Sphere Game View Controller-->
         <scene sceneID="SS-Game-Scene">
             <objects>
-                <viewController storyboardIdentifier="StillSphereGameViewController" id="SS-Game-VC" customClass="StillSphereGameViewController" customModule="ParkyCare" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="StillSphereGameViewController" id="SS-Game-VC" customClass="StillSphereGameViewController" customModule="ParkEase" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="SS-Game-View">
                         <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -326,12 +326,12 @@
         <!--Still Sphere Result View Controller-->
         <scene sceneID="SS-Result-Scene">
             <objects>
-                <viewController storyboardIdentifier="StillSphereResultViewController" id="SS-Result-VC" customClass="StillSphereResultViewController" customModule="ParkyCare" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="StillSphereResultViewController" id="SS-Result-VC" customClass="StillSphereResultViewController" customModule="ParkEase" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="SS-Result-View">
                         <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Session Complete" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="SS-Res-Title">
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Good Job!" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="SS-Res-Title">
                                 <rect key="frame" x="24" y="159" width="345" height="36"/>
                                 <fontDescription key="fontDescription" type="boldSystem" pointSize="30"/>
                                 <nil key="textColor"/>
@@ -353,52 +353,90 @@
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="40" translatesAutoresizingMaskIntoConstraints="NO" id="SS-Res-Stats">
-                                <rect key="frame" x="40" y="479.33333333333326" width="313" height="152"/>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="SS-Res-Card">
+                                <rect key="frame" x="24" y="479.33333333333326" width="345" height="100"/>
                                 <subviews>
-                                    <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="SS-Stat-S1">
-                                        <rect key="frame" x="0.0" y="0.0" width="313" height="56"/>
+                                    <stackView opaque="NO" contentMode="scaleToFill" distribution="fillEqually" translatesAutoresizingMaskIntoConstraints="NO" id="SS-Res-Card-Stack">
+                                        <rect key="frame" x="0.0" y="16" width="345" height="68"/>
                                         <subviews>
-                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="STEADINESS" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="SS-Stat-L1">
-                                                <rect key="frame" x="0.0" y="0.0" width="313" height="14.333333333333334"/>
-                                                <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="12"/>
-                                                <color key="textColor" systemColor="secondaryLabelColor"/>
-                                                <nil key="highlightedColor"/>
-                                            </label>
-                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="85%" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="SS-Out-SteadVal">
-                                                <rect key="frame" x="0.0" y="22.333333333333368" width="313" height="33.666666666666657"/>
-                                                <fontDescription key="fontDescription" type="boldSystem" pointSize="28"/>
-                                                <nil key="textColor"/>
-                                                <nil key="highlightedColor"/>
-                                            </label>
+                                            <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" alignment="center" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="SS-Res-Card-S1">
+                                                <rect key="frame" x="0.0" y="0.0" width="172.66666666666666" height="68"/>
+                                                <subviews>
+                                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" text="STEADINESS" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="SS-Stat-L1">
+                                                        <rect key="frame" x="48.000000000000007" y="0.0" width="76.666666666666686" height="26.333333333333332"/>
+                                                        <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="12"/>
+                                                        <color key="textColor" systemColor="secondaryLabelColor"/>
+                                                        <nil key="highlightedColor"/>
+                                                    </label>
+                                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" text="85%" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="SS-Out-SteadVal">
+                                                        <rect key="frame" x="55.333333333333329" y="34.333333333333314" width="62" height="33.666666666666657"/>
+                                                        <fontDescription key="fontDescription" type="boldSystem" pointSize="28"/>
+                                                        <nil key="textColor"/>
+                                                        <nil key="highlightedColor"/>
+                                                    </label>
+                                                </subviews>
+                                            </stackView>
+                                            <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" alignment="center" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="SS-Res-Card-S2">
+                                                <rect key="frame" x="172.66666666666663" y="0.0" width="172.33333333333337" height="68"/>
+                                                <subviews>
+                                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" text="DURATION" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="SS-Stat-L2">
+                                                        <rect key="frame" x="54.333333333333343" y="0.0" width="63.666666666666657" height="14.333333333333334"/>
+                                                        <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="12"/>
+                                                        <color key="textColor" systemColor="secondaryLabelColor"/>
+                                                        <nil key="highlightedColor"/>
+                                                    </label>
+                                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" text="02:15" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="SS-Out-DurVal">
+                                                        <rect key="frame" x="48.666666666666686" y="22.333333333333311" width="75" height="45.666666666666657"/>
+                                                        <fontDescription key="fontDescription" type="boldSystem" pointSize="28"/>
+                                                        <nil key="textColor"/>
+                                                        <nil key="highlightedColor"/>
+                                                    </label>
+                                                </subviews>
+                                            </stackView>
                                         </subviews>
                                     </stackView>
-                                    <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="SS-Stat-S2">
-                                        <rect key="frame" x="0.0" y="96.000000000000057" width="313" height="56"/>
-                                        <subviews>
-                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="DURATION" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="SS-Stat-L2">
-                                                <rect key="frame" x="0.0" y="0.0" width="313" height="14.333333333333334"/>
-                                                <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="12"/>
-                                                <color key="textColor" systemColor="secondaryLabelColor"/>
-                                                <nil key="highlightedColor"/>
-                                            </label>
-                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="02:15" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="SS-Out-DurVal">
-                                                <rect key="frame" x="0.0" y="22.333333333333254" width="313" height="33.666666666666657"/>
-                                                <fontDescription key="fontDescription" type="boldSystem" pointSize="28"/>
-                                                <nil key="textColor"/>
-                                                <nil key="highlightedColor"/>
-                                            </label>
-                                        </subviews>
-                                    </stackView>
+                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="SS-Res-Card-Sep">
+                                        <rect key="frame" x="172" y="20" width="1" height="60"/>
+                                        <color key="backgroundColor" systemColor="systemGray5Color"/>
+                                        <constraints>
+                                            <constraint firstAttribute="width" constant="1" id="SS-Sep-W"/>
+                                        </constraints>
+                                    </view>
                                 </subviews>
-                            </stackView>
+                                <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                                <constraints>
+                                    <constraint firstItem="SS-Res-Card-Stack" firstAttribute="leading" secondItem="SS-Res-Card" secondAttribute="leading" id="SS-Card-C1"/>
+                                    <constraint firstAttribute="trailing" secondItem="SS-Res-Card-Stack" secondAttribute="trailing" id="SS-Card-C2"/>
+                                    <constraint firstItem="SS-Res-Card-Stack" firstAttribute="top" secondItem="SS-Res-Card" secondAttribute="top" constant="16" id="SS-Card-C3"/>
+                                    <constraint firstAttribute="bottom" secondItem="SS-Res-Card-Stack" secondAttribute="bottom" constant="16" id="SS-Card-C4"/>
+                                    <constraint firstItem="SS-Res-Card-Sep" firstAttribute="centerX" secondItem="SS-Res-Card" secondAttribute="centerX" id="SS-Card-C5"/>
+                                    <constraint firstItem="SS-Res-Card-Sep" firstAttribute="top" secondItem="SS-Res-Card" secondAttribute="top" constant="20" id="SS-Card-C6"/>
+                                    <constraint firstAttribute="bottom" secondItem="SS-Res-Card-Sep" secondAttribute="bottom" constant="20" id="SS-Card-C7"/>
+                                    <constraint firstAttribute="height" constant="100" id="SS-Card-H"/>
+                                </constraints>
+                                <userDefinedRuntimeAttributes>
+                                    <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
+                                        <integer key="value" value="20"/>
+                                    </userDefinedRuntimeAttribute>
+                                    <userDefinedRuntimeAttribute type="boolean" keyPath="layer.masksToBounds" value="NO"/>
+                                    <userDefinedRuntimeAttribute type="number" keyPath="layer.shadowOpacity">
+                                        <real key="value" value="0.10000000000000001"/>
+                                    </userDefinedRuntimeAttribute>
+                                    <userDefinedRuntimeAttribute type="size" keyPath="layer.shadowOffset">
+                                        <size key="value" width="0.0" height="0.0"/>
+                                    </userDefinedRuntimeAttribute>
+                                    <userDefinedRuntimeAttribute type="number" keyPath="layer.shadowRadius">
+                                        <integer key="value" value="10"/>
+                                    </userDefinedRuntimeAttribute>
+                                </userDefinedRuntimeAttributes>
+                            </view>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="SS-Res-Done">
                                 <rect key="frame" x="40" y="714" width="313" height="50"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="50" id="SS-Res-Done-H"/>
                                 </constraints>
                                 <state key="normal" title="Button"/>
-                                <buttonConfiguration key="configuration" style="filled" title="Return to Home"/>
+                                <buttonConfiguration key="configuration" style="filled" title="Finish" cornerStyle="capsule"/>
                                 <connections>
                                     <action selector="doneTapped:" destination="SS-Result-VC" eventType="touchUpInside" id="SS-Done-Action-2"/>
                                 </connections>
@@ -408,8 +446,8 @@
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                         <constraints>
                             <constraint firstItem="SS-Res-Title" firstAttribute="top" secondItem="SS-Result-Safe" secondAttribute="top" constant="41" id="SS-R1"/>
-                            <constraint firstItem="SS-Res-Stats" firstAttribute="leading" secondItem="SS-Result-Safe" secondAttribute="leading" constant="40" id="SS-R10"/>
-                            <constraint firstItem="SS-Result-Safe" firstAttribute="trailing" secondItem="SS-Res-Stats" secondAttribute="trailing" constant="40" id="SS-R11"/>
+                            <constraint firstItem="SS-Res-Card" firstAttribute="leading" secondItem="SS-Result-Safe" secondAttribute="leading" constant="24" id="SS-R10"/>
+                            <constraint firstItem="SS-Result-Safe" firstAttribute="trailing" secondItem="SS-Res-Card" secondAttribute="trailing" constant="24" id="SS-R11"/>
                             <constraint firstItem="SS-Result-Safe" firstAttribute="bottom" secondItem="SS-Res-Done" secondAttribute="bottom" constant="20" id="SS-R12"/>
                             <constraint firstItem="SS-Res-Done" firstAttribute="leading" secondItem="SS-Result-Safe" secondAttribute="leading" constant="40" id="SS-R13"/>
                             <constraint firstItem="SS-Result-Safe" firstAttribute="trailing" secondItem="SS-Res-Done" secondAttribute="trailing" constant="40" id="SS-R14"/>
@@ -420,7 +458,7 @@
                             <constraint firstItem="SS-Res-Msg" firstAttribute="top" secondItem="SS-Res-Emoji" secondAttribute="bottom" constant="40" id="SS-R6"/>
                             <constraint firstItem="SS-Res-Msg" firstAttribute="leading" secondItem="SS-Res-Title" secondAttribute="leading" id="SS-R7"/>
                             <constraint firstItem="SS-Res-Msg" firstAttribute="trailing" secondItem="SS-Res-Title" secondAttribute="trailing" id="SS-R8"/>
-                            <constraint firstItem="SS-Res-Stats" firstAttribute="top" secondItem="SS-Res-Msg" secondAttribute="bottom" constant="80" id="SS-R9"/>
+                            <constraint firstItem="SS-Res-Card" firstAttribute="top" secondItem="SS-Res-Msg" secondAttribute="bottom" constant="80" id="SS-R9"/>
                         </constraints>
                     </view>
                     <connections>
@@ -447,6 +485,9 @@
         </systemColor>
         <systemColor name="systemBackgroundColor">
             <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+        </systemColor>
+        <systemColor name="systemGray5Color">
+            <color red="0.89803921568627454" green="0.89803921568627454" blue="0.91764705882352937" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </systemColor>
         <systemColor name="systemGreenColor">
             <color red="0.20392156862745098" green="0.7803921568627451" blue="0.34901960784313724" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
