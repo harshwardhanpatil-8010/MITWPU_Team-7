@@ -39,7 +39,7 @@ final class TremorMotionManager {
         let maxSamples = Int(duration * sampleRate)
         motionManager.deviceMotionUpdateInterval = 1.0 / sampleRate
 
-        motionManager.startDeviceMotionUpdates(to: queue) { [weak self] data, _ in
+        motionManager.startDeviceMotionUpdates(to: queue) { [weak self] data, error in
             guard let self = self, self.isRecording else { return }
             guard let motion = data else { return }
 
@@ -83,7 +83,7 @@ final class TremorMotionManager {
 
         var real = [Double](repeating: 0, count: n / 2)
         var imag = [Double](repeating: 0, count: n / 2)
-        var detected: Double?
+        var detected: Double? = nil
 
         real.withUnsafeMutableBufferPointer { realPtr in
             imag.withUnsafeMutableBufferPointer { imagPtr in
