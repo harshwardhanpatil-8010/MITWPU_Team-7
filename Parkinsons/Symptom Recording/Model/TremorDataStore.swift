@@ -67,7 +67,7 @@ final class TremorDataStore {
     func fetchAll() -> [TremorSample] {
         let req = NSFetchRequest<NSManagedObject>(entityName: "Tremor")
         req.sortDescriptors = [NSSortDescriptor(key: "date", ascending: true)]
-        return (try? context.fetch(req))?.compactMap { map($0) } ?? []
+        return (try? context.fetch(req))?.compactMap { mapToSample($0) } ?? []
     }
 
     func fetchSamples(for date: Date) -> [TremorSample] {
@@ -87,10 +87,10 @@ final class TremorDataStore {
         let req = NSFetchRequest<NSManagedObject>(entityName: "Tremor")
         req.predicate = NSPredicate(format: "date >= %@ AND date < %@", start as CVarArg, end as CVarArg)
         req.sortDescriptors = [NSSortDescriptor(key: "date", ascending: true)]
-        return (try? context.fetch(req))?.compactMap { map($0) } ?? []
+        return (try? context.fetch(req))?.compactMap { mapToSample($0) } ?? []
     }
 
-    private func map(_ obj: NSManagedObject) -> TremorSample? {
+    private func mapToSample(_ obj: NSManagedObject) -> TremorSample? {
         guard
             let date = obj.value(forKey: "date")        as? Date,
             let hz   = obj.value(forKey: "frequencyHz") as? Double
