@@ -100,9 +100,10 @@ class SymptomViewController: UIViewController, SymptomRatingCellDelegate {
             case .tremor(let hz): self.tremorFrequencyHz = hz
             }
             self.loadTodayTremorData()
-            DispatchQueue.main.async {
-                self.collectionView.reloadSections(IndexSet(integer: Section.tremor.rawValue))
-            }
+            // Only reload if the view is still on screen — avoids NSInternalInconsistencyException
+            // when the completion fires during a navigation transition away from this screen.
+            guard self.isViewLoaded, self.view.window != nil else { return }
+            self.collectionView.reloadSections(IndexSet(integer: Section.tremor.rawValue))
         }
     }
 

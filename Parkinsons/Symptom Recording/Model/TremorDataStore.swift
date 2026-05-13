@@ -52,8 +52,8 @@ final class TremorDataStore {
         }
 
         let e = NSEntityDescription.insertNewObject(forEntityName: "Tremor", into: context)
-        e.setValue(UUID(), forKey: "id")
-        e.setValue(sample.date, forKey: "date")
+        e.setValue(UUID(),             forKey: "id")
+        e.setValue(sample.date,        forKey: "date")
         e.setValue(sample.frequencyHz, forKey: "frequencyHz")
 
         if e.entity.attributesByName["isSteady"] != nil {
@@ -62,6 +62,7 @@ final class TremorDataStore {
 
         PersistenceController.shared.save(context)
     }
+
 
     func fetchAll() -> [TremorSample] {
         let req = NSFetchRequest<NSManagedObject>(entityName: "Tremor")
@@ -75,6 +76,7 @@ final class TremorDataStore {
         let end   = cal.date(byAdding: .day, value: 1, to: start)!
         return fetchSamples(from: start, to: end)
     }
+
 
     func fetchSamples(for range: TremorRange, referenceDate: Date) -> [TremorSample] {
         let (start, end) = dateRange(for: range, referenceDate: referenceDate)
@@ -142,11 +144,11 @@ extension TremorDataStore {
         bg.perform {
             for s in old {
                 let e = NSEntityDescription.insertNewObject(forEntityName: "Tremor", into: bg)
-                e.setValue(UUID(), forKey: "id")
-                e.setValue(s.date, forKey: "date")
-                e.setValue(s.frequencyHz, forKey: "frequencyHz")
+                e.setValue(UUID(),          forKey: "id")
+                e.setValue(s.date,          forKey: "date")
+                e.setValue(s.frequencyHz,   forKey: "frequencyHz")
                 if e.entity.attributesByName["isSteady"] != nil {
-                    e.setValue(s.isSteady, forKey: "isSteady")
+                    e.setValue(s.isSteady,  forKey: "isSteady")
                 }
             }
             PersistenceController.shared.save(bg)

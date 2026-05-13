@@ -58,6 +58,8 @@ class TremorViewController: UIViewController {
                 self.tremorFreq.textColor = .black
             }
 
+            // Guard against updating UI if the view has already left the screen
+            guard self.isViewLoaded, self.view.window != nil else { return }
             self.updateTremorUI(for: self.currentRange)
         }
     }
