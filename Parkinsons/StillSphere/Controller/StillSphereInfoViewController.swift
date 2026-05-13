@@ -4,11 +4,6 @@
 import UIKit
 
 class StillSphereInfoViewController: UIViewController {
-
-    @IBOutlet weak var titleLabel: UILabel!
-    @IBOutlet weak var descriptionLabel: UILabel!
-    @IBOutlet weak var infoStackView: UIStackView!
-
     private var isMuted = false
     private var muteBarButtonItem: UIBarButtonItem?
 
@@ -16,12 +11,10 @@ class StillSphereInfoViewController: UIViewController {
         super.viewDidLoad()
         setupUI()
         setupNavigationBar()
-        populateInfo()
     }
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-        // Automatic speech on appearance
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
             if !self.isMuted {
                 self.startNarration()
@@ -39,87 +32,14 @@ class StillSphereInfoViewController: UIViewController {
     }
     
     private func setupNavigationBar() {
-        self.title = ""
-        
-        // Close (X) Button on the LEFT
-        let closeImage = UIImage(systemName: "xmark")
-        let closeButton = UIBarButtonItem(image: closeImage, style: .plain, target: self, action: #selector(dismissInfoAction))
-        closeButton.tintColor = UIColor.label
-        navigationItem.leftBarButtonItem = closeButton
-        
-        // Mute/Speaker Button on the RIGHT
-        let speakerImage = UIImage(systemName: "speaker.wave.2.fill")
-        let speakerButton = UIBarButtonItem(image: speakerImage, style: .plain, target: self, action: #selector(muteButtonTapped))
-        speakerButton.tintColor = UIColor.label
-        self.muteBarButtonItem = speakerButton
-        navigationItem.rightBarButtonItem = speakerButton
-        
-        let appearance = UINavigationBarAppearance()
-        appearance.configureWithTransparentBackground()
-        appearance.shadowColor = .clear
-        
-        navigationController?.navigationBar.standardAppearance = appearance
-        navigationController?.navigationBar.scrollEdgeAppearance = appearance
-    }
-
-    private func populateInfo() {
-        titleLabel.text = "How to Play StillSphere"
-        descriptionLabel.text = "Follow these steps to improve hand control and steadiness."
-        
-        let instructions = [
-            ("Preparation", "Hold your phone comfortably with both hands or one steady hand.", "hand.raised.fill"),
-            ("Control", "Tilt your phone gently to move the glowing sphere.", "iphone.radiowaves.left.and.right"),
-            ("Objective", "Guide the sphere along the path toward the glowing target circle.", "scope"),
-            ("Technique", "Move slowly and steadily for better control.", "slowmo"),
-            ("Correction", "Avoid sudden fast tilts — smooth movements work best. If the sphere starts drifting, gently correct the direction.", "arrow.triangle.2.circlepath"),
-            ("Completion", "Reach the glowing calm zone to complete the session.", "checkmark.circle.fill"),
-            ("Daily Challenge", "Complete daily sessions to improve steadiness and track your progress over time.", "calendar.badge.clock")
-        ]
-        
-        infoStackView.arrangedSubviews.forEach { $0.removeFromSuperview() }
-        
-        for (title, desc, icon) in instructions {
-            let row = createInfoRow(title: title, desc: desc, icon: icon)
-            infoStackView.addArrangedSubview(row)
+        // Find the navigation bar in subviews (as it's added in storyboard)
+        if let navBar = view.subviews.first(where: { $0 is UINavigationBar }) as? UINavigationBar {
+            let speakerImage = UIImage(systemName: "speaker.wave.2.fill")
+            let speakerButton = UIBarButtonItem(image: speakerImage, style: .plain, target: self, action: #selector(muteButtonTapped))
+            speakerButton.tintColor = UIColor.label
+            self.muteBarButtonItem = speakerButton
+            navBar.topItem?.rightBarButtonItem = speakerButton
         }
-    }
-    
-    private func createInfoRow(title: String, desc: String, icon: String) -> UIView {
-        let container = UIStackView()
-        container.axis = .horizontal
-        container.spacing = 16
-        container.alignment = .top
-        
-        let iconView = UIImageView(image: UIImage(systemName: icon))
-        iconView.tintColor = .systemGreen
-        iconView.contentMode = .scaleAspectFit
-        iconView.translatesAutoresizingMaskIntoConstraints = false
-        NSLayoutConstraint.activate([
-            iconView.widthAnchor.constraint(equalToConstant: 28),
-            iconView.heightAnchor.constraint(equalToConstant: 28)
-        ])
-        
-        let textStack = UIStackView()
-        textStack.axis = .vertical
-        textStack.spacing = 2
-        
-        let titleLbl = UILabel()
-        titleLbl.text = title
-        titleLbl.font = .boldSystemFont(ofSize: 17)
-        
-        let descLbl = UILabel()
-        descLbl.text = desc
-        descLbl.font = .systemFont(ofSize: 15)
-        descLbl.textColor = .secondaryLabel
-        descLbl.numberOfLines = 0
-        
-        textStack.addArrangedSubview(titleLbl)
-        textStack.addArrangedSubview(descLbl)
-        
-        container.addArrangedSubview(iconView)
-        container.addArrangedSubview(textStack)
-        
-        return container
     }
 
     @objc private func muteButtonTapped() {
@@ -161,8 +81,9 @@ class StillSphereInfoViewController: UIViewController {
         return texts.joined(separator: ". ")
     }
 
-    @objc private func dismissInfoAction() {
+    @objc @IBAction func dismissInfoAction() {
         SpeechManager.shared.stop()
         dismiss(animated: true)
     }
 }
+

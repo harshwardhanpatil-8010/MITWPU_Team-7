@@ -125,52 +125,91 @@
             <point key="canvasLocation" x="0.0" y="0.0"/>
         </scene>
 
-        <!-- Still Sphere Info View Controller -->
         <scene sceneID="SS-Info-Scene">
             <objects>
-                <viewController storyboardIdentifier="StillSphereInfoViewController" id="SS-Info-VC" customClass="StillSphereInfoViewController" customModule="Parkinsons" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="StillSphereInfoViewController" useStoryboardIdentifierAsRestorationIdentifier="YES" id="SS-Info-VC" customClass="StillSphereInfoViewController" customModule="Parkinsons" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="SS-Info-View">
                         <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="StillSphere Info" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="SS-Info-Title">
-                                <rect key="frame" x="24" y="80" width="345" height="34"/>
-                                <fontDescription key="fontDescription" type="boldSystem" pointSize="28"/>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="SS-HowToPlay-Content">
+                                <rect key="frame" x="16" y="113" width="361" height="240.33333333333337"/>
+                                <string key="text">1. You’ll see a glowing sphere on the screen.
+2. You need to tilt your phone to move the sphere along the path.
+3. Guide the sphere toward the glowing target circle.
+4. Move slowly and steadily for better control.
+5. Avoid sudden fast tilts to keep the sphere from drifting.
+6. Reach the glowing calm zone to complete the session.</string>
+                                <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Description text" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="SS-Info-Desc">
-                                <rect key="frame" x="24" y="130" width="345" height="20.333333333333343"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Daily challenges" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="SS-Daily-Title">
+                                <rect key="frame" x="16" y="384.33333333333331" width="361" height="21"/>
+                                <fontDescription key="fontDescription" style="UICTFontTextStyleHeadline"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="20" translatesAutoresizingMaskIntoConstraints="NO" id="SS-Info-Stack">
-                                <rect key="frame" x="24" y="190.33333333333337" width="345" height="200"/>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="SS-Daily-Content">
+                                <rect key="frame" x="16" y="412.33333333333331" width="361" height="174.33333333333331"/>
+                                <string key="text">1. Everyday brings a brand-new path to navigate.
+2. New daily challenges help improve hand control and steadiness.
+3. Take your time, you can retry the challenge whenever you want.
+4. Complete the daily set to track your progress over time.</string>
+                                <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="How to Play ?" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="SS-HowToPlay-Title">
+                                <rect key="frame" x="16" y="85" width="361" height="21"/>
+                                <fontDescription key="fontDescription" style="UICTFontTextStyleHeadline"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="SS-Separator">
+                                <rect key="frame" x="16" y="368.33333333333331" width="361" height="1"/>
+                                <color key="backgroundColor" systemColor="separatorColor"/>
                                 <constraints>
-                                    <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="200" id="SS-Info-Stack-H"/>
+                                    <constraint firstAttribute="height" constant="1" id="SS-Sep-H"/>
                                 </constraints>
-                            </stackView>
+                            </view>
+                            <navigationBar contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="SS-NavBar">
+                                <rect key="frame" x="0.0" y="15" width="393" height="54"/>
+                                <items>
+                                    <navigationItem id="SS-NavItems">
+                                        <barButtonItem key="leftBarButtonItem" title="Item" image="xmark" catalog="system" id="SS-Close-Btn">
+                                            <connections>
+                                                <action selector="dismissInfoAction" destination="SS-Info-VC" id="SS-Close-Conn"/>
+                                            </connections>
+                                        </barButtonItem>
+                                    </navigationItem>
+                                </items>
+                            </navigationBar>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="SS-Info-Safe"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                         <constraints>
-                            <constraint firstItem="SS-Info-Title" firstAttribute="top" secondItem="SS-Info-Safe" secondAttribute="top" constant="21" id="SS-I1"/>
-                            <constraint firstItem="SS-Info-Safe" firstAttribute="trailing" secondItem="SS-Info-Title" secondAttribute="trailing" constant="24" id="SS-I2"/>
-                            <constraint firstItem="SS-Info-Title" firstAttribute="leading" secondItem="SS-Info-Safe" secondAttribute="leading" constant="24" id="SS-I3"/>
-                            <constraint firstItem="SS-Info-Desc" firstAttribute="top" secondItem="SS-Info-Title" secondAttribute="bottom" constant="16" id="SS-I4"/>
-                            <constraint firstItem="SS-Info-Desc" firstAttribute="leading" secondItem="SS-Info-Title" secondAttribute="leading" id="SS-I5"/>
-                            <constraint firstItem="SS-Info-Desc" firstAttribute="trailing" secondItem="SS-Info-Title" secondAttribute="trailing" id="SS-I6"/>
-                            <constraint firstItem="SS-Info-Stack" firstAttribute="top" secondItem="SS-Info-Desc" secondAttribute="bottom" constant="40" id="SS-I7"/>
-                            <constraint firstItem="SS-Info-Stack" firstAttribute="leading" secondItem="SS-Info-Title" secondAttribute="leading" id="SS-I8"/>
-                            <constraint firstItem="SS-Info-Stack" firstAttribute="trailing" secondItem="SS-Info-Title" secondAttribute="trailing" id="SS-I9"/>
+                            <constraint firstAttribute="trailing" secondItem="SS-NavBar" secondAttribute="trailing" id="SS-I-C1"/>
+                            <constraint firstItem="SS-Daily-Title" firstAttribute="leading" secondItem="SS-Info-Safe" secondAttribute="leading" constant="16" id="SS-I-C2"/>
+                            <constraint firstItem="SS-Info-Safe" firstAttribute="trailing" secondItem="SS-HowToPlay-Content" secondAttribute="trailing" constant="16" id="SS-I-C3"/>
+                            <constraint firstItem="SS-Separator" firstAttribute="leading" secondItem="SS-Info-View" secondAttribute="leading" constant="16" id="SS-I-C4"/>
+                            <constraint firstItem="SS-Daily-Title" firstAttribute="top" secondItem="SS-Separator" secondAttribute="bottom" constant="15" id="SS-I-C5"/>
+                            <constraint firstItem="SS-Separator" firstAttribute="top" secondItem="SS-HowToPlay-Content" secondAttribute="bottom" constant="15" id="SS-I-C6"/>
+                            <constraint firstItem="SS-Daily-Content" firstAttribute="top" secondItem="SS-Daily-Title" secondAttribute="bottom" constant="7" id="SS-I-C7"/>
+                            <constraint firstItem="SS-HowToPlay-Content" firstAttribute="leading" secondItem="SS-Info-Safe" secondAttribute="leading" constant="16" id="SS-I-C8"/>
+                            <constraint firstItem="SS-NavBar" firstAttribute="top" secondItem="SS-Info-View" secondAttribute="top" constant="15" id="SS-I-C9"/>
+                            <constraint firstItem="SS-Info-Safe" firstAttribute="trailing" secondItem="SS-HowToPlay-Title" secondAttribute="trailing" constant="16" id="SS-I-C10"/>
+                            <constraint firstAttribute="trailing" secondItem="SS-Separator" secondAttribute="trailing" constant="16" id="SS-I-C11"/>
+                            <constraint firstItem="SS-Info-Safe" firstAttribute="trailing" secondItem="SS-Daily-Title" secondAttribute="trailing" constant="16" id="SS-I-C12"/>
+                            <constraint firstItem="SS-Info-Safe" firstAttribute="trailing" secondItem="SS-Daily-Content" secondAttribute="trailing" constant="16" id="SS-I-C13"/>
+                            <constraint firstItem="SS-NavBar" firstAttribute="leading" secondItem="SS-Info-View" secondAttribute="leading" id="SS-I-C14"/>
+                            <constraint firstItem="SS-HowToPlay-Content" firstAttribute="top" secondItem="SS-HowToPlay-Title" secondAttribute="bottom" constant="7" id="SS-I-C15"/>
+                            <constraint firstItem="SS-Daily-Content" firstAttribute="leading" secondItem="SS-Info-Safe" secondAttribute="leading" constant="16" id="SS-I-C16"/>
+                            <constraint firstItem="SS-HowToPlay-Title" firstAttribute="leading" secondItem="SS-Info-Safe" secondAttribute="leading" constant="16" id="SS-I-C17"/>
+                            <constraint firstItem="SS-HowToPlay-Title" firstAttribute="top" secondItem="SS-NavBar" secondAttribute="bottom" constant="16" id="SS-I-C18"/>
                         </constraints>
                     </view>
-                    <connections>
-                        <outlet property="descriptionLabel" destination="SS-Info-Desc" id="SS-Out-InfoDesc"/>
-                        <outlet property="infoStackView" destination="SS-Info-Stack" id="SS-Out-InfoStack"/>
-                        <outlet property="titleLabel" destination="SS-Info-Title" id="SS-Out-InfoTitle"/>
-                    </connections>
+                    <navigationItem key="navigationItem" id="SS-Nav-Item-ID"/>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="SS-Info-Resp" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
