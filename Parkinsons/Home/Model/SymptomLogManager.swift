@@ -1,58 +1,101 @@
-// SymptomLogManager.swift
-
 import Foundation
+import CoreData
 
-class SymptomLogManager {
-    
+final class SymptomLogManager {
+
     static let shared = SymptomLogManager()
-    private init() {}
-    
-    private let logKey = "SymptomLogEntries"
-    
-    
-    func saveLogEntry(_ newEntry: SymptomLogEntry) {
-        var allLogs = loadAllLogs()
-        let calendar = Calendar.current
-        
-        allLogs.removeAll { log in
-            return calendar.isDate(log.date, inSameDayAs: newEntry.date)
-        }
-        
-        allLogs.append(newEntry)
-        
-        do {
-            let encodedData = try JSONEncoder().encode(allLogs)
-            UserDefaults.standard.set(encodedData, forKey: logKey)
-        } catch {
-           
-        }
+
+    private let context: NSManagedObjectContext
+
+    private init() {
+        self.context = PersistenceController.shared.container.viewContext
     }
-    func loadAllLogs() -> [SymptomLogEntry] {
-        guard let savedData = UserDefaults.standard.data(forKey: logKey) else {
-            return []
+
+
+    func saveLogEntry(_ entry: SymptomLogEntry) {
+
+        deleteLogs(for: entry.date)
+
+        for rating in entry.ratings {
+
+            guard let intensity = rating.selectedIntensity,
+                  let symptomType = SymptomType.allCases.first(where: {
+                      $0.displayName == rating.name
+                  }) else { continue }
+
+            let cdLog = CDSymptomLog(context: context)
+            cdLog.id = UUID()
+            cdLog.date = entry.date
+            cdLog.symptom = symptomType.rawValue
+            cdLog.severity = intensity.rawValue
+            cdLog.notes = nil
         }
-        
-        do {
-            let decodedLogs = try JSONDecoder().decode([SymptomLogEntry].self, from: savedData)
-            return decodedLogs
-        } catch {
-            return []
-        }
+
+        saveContext()
     }
 
     func getLogEntry(for date: Date) -> SymptomLogEntry? {
-        let allLogs = loadAllLogs()
-        
-        return allLogs.first { Calendar.current.isDate($0.date, inSameDayAs: date) }
-    }
-    
-    func getLogForToday() -> SymptomLogEntry? {
-        let allLogs = loadAllLogs()
-        let today = Date()
-        let calendar = Calendar.current
-        
-        return allLogs.first { log in
-            return calendar.isDate(log.date, inSameDayAs: today)
+
+        let request: NSFetchRequest<CDSymptomLog> = CDSymptomLog.fetchRequest()
+        request.predicate = NSPredicate(
+            format: "date >= %@ AND date < %@",
+            startOfDay(date) as NSDate,
+            startOfNextDay(date) as NSDate
+        )
+
+        do {
+            let results = try context.fetch(request)
+            guard !results.isEmpty else { return nil }
+
+            let ratings = results.compactMap { cd -> SymptomRating? in
+                guard let symptom = SymptomType(rawValue: cd.symptom),
+                      let severity = SymptomSeverity(rawValue: cd.severity)
+                else { return nil }
+
+                return SymptomRating(
+                    name: symptom.displayName,
+                    iconName: symptom.iconName,
+                    selectedIntensity: SymptomRating.Intensity(rawValue: severity.rawValue)
+                )
+            }
+
+            return SymptomLogEntry(date: date, ratings: ratings)
+
+        } catch {
+            print(" Fetch error:", error)
+            return nil
         }
+    }
+
+
+    private func deleteLogs(for date: Date) {
+        let request: NSFetchRequest<CDSymptomLog> = CDSymptomLog.fetchRequest()
+        request.predicate = NSPredicate(
+            format: "date >= %@ AND date < %@",
+            startOfDay(date) as NSDate,
+            startOfNextDay(date) as NSDate
+        )
+
+        if let results = try? context.fetch(request) {
+            results.forEach { context.delete($0) }
+        }
+    }
+
+
+    private func saveContext() {
+        guard context.hasChanges else { return }
+        do {
+            try context.save()
+        } catch {
+            print("❌ Core Data save failed:", error)
+        }
+    }
+
+    private func startOfDay(_ date: Date) -> Date {
+        Calendar.current.startOfDay(for: date)
+    }
+
+    private func startOfNextDay(_ date: Date) -> Date {
+        Calendar.current.date(byAdding: .day, value: 1, to: startOfDay(date))!
     }
 }

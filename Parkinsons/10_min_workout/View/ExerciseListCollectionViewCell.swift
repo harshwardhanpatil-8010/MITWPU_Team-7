@@ -1,4 +1,5 @@
 import UIKit
+import AVFoundation
 
 class ExerciseListCollectionViewCell: UICollectionViewCell {
     @IBOutlet weak var thumbnailOutlet: UIImageView!
@@ -10,7 +11,11 @@ class ExerciseListCollectionViewCell: UICollectionViewCell {
         thumbnailOutlet.layer.cornerRadius = 10
         thumbnailOutlet.clipsToBounds = true
     }
-
+    override func prepareForReuse() {
+        super.prepareForReuse()
+        thumbnailOutlet.image = nil
+    }
+    
     func configureCompleted() {
         exerciseNameOutlet.textColor = .systemGray
         repsOutlet.textColor = .systemGray2
@@ -23,13 +28,9 @@ class ExerciseListCollectionViewCell: UICollectionViewCell {
         thumbnailOutlet.alpha = 1
     }
 
-    func loadThumbnail(videoID: String) {
-        let url = URL(string: "https://img.youtube.com/vi/\(videoID)/0.jpg")!
-        DispatchQueue.global().async {
-            let data = try? Data(contentsOf: url)
-            DispatchQueue.main.async {
-                if let d = data { self.thumbnailOutlet.image = UIImage(data: d) }
-            }
+    func loadThumbnail(exercise: WorkoutExercise) {
+        if let name = exercise.thumbnailName {
+            thumbnailOutlet.image = UIImage(named: name)
         }
     }
 }

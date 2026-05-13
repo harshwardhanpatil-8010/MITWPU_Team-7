@@ -29,6 +29,7 @@ class SymptomRatingCell: UITableViewCell {
         contentView.addSubview(bubbleLabel)
         
         setupButtonActions()
+        setupButtonImageViews()
     }
     
     private func setupButtonActions() {
@@ -36,11 +37,21 @@ class SymptomRatingCell: UITableViewCell {
             let action = UIAction { [weak self] action in
                 guard let self = self,
                       let sender = action.sender as? UIButton,
-                      let intensity = SymptomRating.Intensity(rawValue: sender.tag) else { return }
+                      let intensity = SymptomRating.Intensity(rawValue: Int16(sender.tag)) else { return }
                 
                 self.handleRatingSelection(intensity: intensity, from: sender)
             }
             button.addAction(action, for: .touchUpInside)
+        }
+    }
+    
+    private func setupButtonImageViews() {
+        ratingButtons.forEach { button in
+            button.imageView?.contentMode = .scaleAspectFit
+            button.imageView?.clipsToBounds = true
+            button.contentHorizontalAlignment = .fill
+            button.contentVerticalAlignment = .fill
+            button.configuration?.contentInsets = NSDirectionalEdgeInsets(top: 4, leading: 4, bottom: 4, trailing: 4)
         }
     }
     
@@ -76,6 +87,13 @@ class SymptomRatingCell: UITableViewCell {
             self.bubbleLabel.transform = .identity
         }
     }
+    private func resizedImage(_ image: UIImage?, to size: CGSize) -> UIImage? {
+        guard let image = image else { return nil }
+        let renderer = UIGraphicsImageRenderer(size: size)
+        return renderer.image { _ in
+            image.draw(in: CGRect(origin: .zero, size: size))
+        }
+    }
 
     func configure(with rating: SymptomRating) {
         symptomLabel.text = rating.name
@@ -83,21 +101,30 @@ class SymptomRatingCell: UITableViewCell {
         
         bubbleLabel.alpha = 0
         
+        let imageSize = CGSize(width: 22, height: 22)
+        
         ratingButtons.forEach { button in
-            guard let buttonIntensity = SymptomRating.Intensity(rawValue: button.tag) else { return }
+            guard let buttonIntensity = SymptomRating.Intensity(rawValue: Int16(button.tag)) else { return }
             
             let isSelected = (buttonIntensity == rating.selectedIntensity)
             
             let baseIconName: String
             switch buttonIntensity {
-            case .mild: baseIconName = "mild"
-            case .moderate: baseIconName = "moderate"
-            case .severe: baseIconName = "severe"
-            case .notPresent: baseIconName = "notPresent"
+            case .mild: baseIconName = "mild1"
+            case .moderate: baseIconName = "moderate1"
+            case .severe: baseIconName = "severe1"
+            case .notPresent: baseIconName = "notpresent1"
             }
             
             let finalIconName = isSelected ? baseIconName + ".fill" : baseIconName
-            button.setImage(UIImage(systemName: finalIconName), for: .normal)
+            let originalImage = UIImage(named: finalIconName) ?? UIImage(named: baseIconName)
+            let scaledImage = resizedImage(originalImage, to: imageSize)?
+                .withRenderingMode(.alwaysOriginal)
+            
+            var config = UIButton.Configuration.plain()
+            config.image = scaledImage
+            config.contentInsets = NSDirectionalEdgeInsets(top: 4, leading: 4, bottom: 4, trailing: 4)
+            button.configuration = config
             
             if isSelected {
                 let selectedColor: UIColor = (buttonIntensity == .notPresent) ? .systemRed : .systemBlue

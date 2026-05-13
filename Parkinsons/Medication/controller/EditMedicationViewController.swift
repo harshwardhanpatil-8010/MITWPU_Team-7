@@ -6,7 +6,7 @@
 //
 
 import UIKit
-
+import CoreData
 class EditMedicationViewController: UIViewController,
                                     UICollectionViewDelegate,
                                     AddMedicationDelegate {
@@ -35,7 +35,14 @@ class EditMedicationViewController: UIViewController,
     }
 
     private func reloadMedications() {
-        medications = MedicationDataStore.shared.medications
+        let request: NSFetchRequest<Medication> = Medication.fetchRequest()
+
+        do {
+            medications = try PersistenceController.shared.viewContext.fetch(request)
+        } catch {
+            print("Failed to fetch medications:", error)
+        }
+
         collectionView.reloadData()
     }
 

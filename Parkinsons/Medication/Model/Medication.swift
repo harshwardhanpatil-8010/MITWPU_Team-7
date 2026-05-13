@@ -1,11 +1,5 @@
 import Foundation
 import UIKit
-struct MedicationDose: Codable, Identifiable {
-    let id: UUID 
-    var time: Date
-    var status: DoseStatus
-    var medicationID: UUID // foreign key
-}
 
 enum RepeatRule: Codable, Equatable {
     case everyday
@@ -50,47 +44,32 @@ enum RepeatRule: Codable, Equatable {
     }
 }
 
-struct Medication: Codable {
-    let id: UUID
-    var name: String
-    var form: String
-    var unit: String
-    var strength: Int?
-    var iconName: String
-    var schedule: RepeatRule
-    var doses: [MedicationDose]
-    let createdAt: Date
-}
-
 extension RepeatRule {
     func displayString() -> String {
         switch self {
-
         case .everyday:
             return "Everyday"
-
         case .none:
             return "None"
-
         case .weekly(let days):
-            if Set(days) == Set([1, 2, 3, 4, 5, 6, 7]) {
-                return "Everyday"
-            }
-
-            let weekdayMap: [Int: String] = [
-                1: "Sun",
-                2: "Mon",
-                3: "Tue",
-                4: "Wed",
-                5: "Thu",
-                6: "Fri",
-                7: "Sat"
-            ]
-
+            if days.count == 7 { return "Everyday" }
+            
+            
+            let symbols = Calendar.current.shortWeekdaySymbols
             return days
                 .sorted()
-                .compactMap { weekdayMap[$0] }
+                .compactMap { dayIndex in
+                    
+                    return symbols[safe: dayIndex - 1]
+                }
                 .joined(separator: ", ")
         }
+    }
+}
+
+
+extension Array {
+    subscript(safe index: Index) -> Element? {
+        return indices.contains(index) ? self[index] : nil
     }
 }

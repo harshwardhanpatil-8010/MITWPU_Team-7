@@ -1,13 +1,12 @@
 
 
+
 import UIKit
-
-
 protocol RestScreenDelegate: AnyObject {
     func recordRestDuration(seconds: TimeInterval)
-    func restCompleted(nextIndex: Int)
+    func restCompleted(exercises: [WorkoutExercise], nextIndex: Int)
+    func restCompletedWorkoutDone()
 }
-
 class RestScreenViewController: UIViewController {
     
     @IBOutlet weak var timerLabel: UILabel!
@@ -17,11 +16,17 @@ class RestScreenViewController: UIViewController {
     @IBOutlet weak var backgroundView: UIView!
     
     weak var delegate: RestScreenDelegate?
-    var currentIndex: Int = 0
+
+    var currentIndex: Int = 0       
+    var isRevisitingSkipped: Bool = false
+    var skippedIndicesToRevisit: [Int] = []
+
     var totalExercises: Int = 0
+    var exercises: [WorkoutExercise] = []
     var totalTime = 60
     var restStartTime: Date?
     private var isCompleting = false
+    private var restTimer: Timer?
 
     private func setupBreathGuide() {
         breatheView.layer.cornerRadius = 75
@@ -36,6 +41,7 @@ class RestScreenViewController: UIViewController {
         super.viewWillAppear(animated)
         tabBarController?.tabBar.isHidden = true
     }
+
     override func viewDidLoad() {
         super.viewDidLoad()
         backgroundView.layer.cornerRadius = 35
@@ -48,9 +54,15 @@ class RestScreenViewController: UIViewController {
         setupUI()
         setupBreathGuide()
         
-        Timer.scheduledTimer(withTimeInterval: 1.0, repeats: true) { [weak self] t in
+        restTimer = Timer.scheduledTimer(withTimeInterval: 1.0, repeats: true) { [weak self] t in
             self?.tick(t)
         }
+    }
+
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        restTimer?.invalidate()
+        restTimer = nil
     }
 
     private func setupUI() {
@@ -63,31 +75,31 @@ class RestScreenViewController: UIViewController {
     private func updateProgressBars() {
         guard progressBars != nil else { return }
         let sortedBars = progressBars.sorted { $0.frame.origin.x < $1.frame.origin.x }
-        
+
         let allExercises = WorkoutManager.shared.exercises
-        
         for (index, bar) in sortedBars.enumerated() {
             if index < allExercises.count {
                 let exerciseID = allExercises[index].id
-                
+
                 if WorkoutManager.shared.completedToday.contains(exerciseID) {
                     bar.progress = 1.0
                     bar.progressTintColor = .systemBlue
-                }
-                else if WorkoutManager.shared.skippedToday.contains(exerciseID) {
+                } else if WorkoutManager.shared.skippedToday.contains(exerciseID) {
                     bar.progress = 1.0
                     bar.progressTintColor = .systemGray4
-                }
-                
-                else if index == currentIndex {
+
+                } else if index == currentIndex {
+
                     bar.progress = 1.0
                     bar.progressTintColor = UIColor.systemBlue.withAlphaComponent(0.3)
-                }
-  
-                else {
+                } else {
                     bar.progress = 0.0
-                    bar.trackTintColor = .systemGray5
+                    bar.progressTintColor = .systemBlue
                 }
+                bar.trackTintColor = .systemGray5
+                bar.isHidden = false
+            } else {
+                bar.isHidden = true
             }
         }
     }
@@ -101,7 +113,6 @@ class RestScreenViewController: UIViewController {
             finishRest()
         }
     }
-    
 
     @IBAction func skipButtonTapped(_ sender: Any) {
         finishRest()
@@ -110,24 +121,40 @@ class RestScreenViewController: UIViewController {
     private func finishRest() {
         guard !isCompleting else { return }
         isCompleting = true
-        
-        delegate?.restCompleted(nextIndex: currentIndex + 1)
-       
+        restTimer?.invalidate()
+        restTimer = nil
+
+        delegate?.recordRestDuration(seconds: restStartTime.map { Date().timeIntervalSince($0) } ?? 0)
+
+        guard currentIndex < exercises.count else {
+            navigationController?.popViewController(animated: false)
+            DispatchQueue.main.async {
+                self.delegate?.restCompletedWorkoutDone()
+            }
+            return
+        }
+
+        let countdown = ExerciseCountdownViewController()
+        countdown.exercises     = exercises
+        countdown.startingIndex = currentIndex
+        countdown.isRevisitingSkipped = isRevisitingSkipped
+        countdown.skippedIndicesToRevisit = skippedIndicesToRevisit
+
         let transition = CATransition()
         transition.duration = 0.4
         transition.type = .push
         transition.subtype = .fromRight
         transition.timingFunction = CAMediaTimingFunction(name: .easeInEaseOut)
-        
-        self.navigationController?.view.layer.add(transition, forKey: kCATransition)
-        
-        navigationController?.popViewController(animated: false)
+        navigationController?.view.layer.add(transition, forKey: kCATransition)
+        navigationController?.pushViewController(countdown, animated: false)
+
+        DispatchQueue.main.async {
+            self.delegate?.restCompleted(exercises: self.exercises, nextIndex: self.currentIndex)
+        }
     }
+
     @IBAction func addTimeButtonTapped(_ sender: UIButton) {
         totalTime += 20
-        updateTimerLabel()
+        timerLabel.text = "\(totalTime)"
     }
-    func updateTimerLabel() {
-            timerLabel.text = "\(totalTime)"
-       }
 }

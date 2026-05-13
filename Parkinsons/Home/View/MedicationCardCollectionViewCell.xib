@@ -37,29 +37,29 @@
                                         </constraints>
                                     </imageView>
                                     <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="9fR-qp-8Zl">
-                                        <rect key="frame" x="48" y="2.6666666666666643" width="129" height="35"/>
+                                        <rect key="frame" x="48" y="2.6666666666666643" width="131" height="35"/>
                                         <subviews>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Levodpa" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="H9H-0u-Yyt">
-                                                <rect key="frame" x="0.0" y="0.0" width="129" height="19.333333333333332"/>
+                                                <rect key="frame" x="0.0" y="0.0" width="131" height="19.333333333333332"/>
                                                 <fontDescription key="fontDescription" type="system" weight="medium" pointSize="16"/>
                                                 <nil key="textColor"/>
                                                 <nil key="highlightedColor"/>
                                             </label>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="y68-j8-HlM">
-                                                <rect key="frame" x="0.0" y="19.333333333333336" width="129" height="15.666666666666664"/>
+                                                <rect key="frame" x="0.0" y="19.333333333333336" width="131" height="15.666666666666664"/>
                                                 <fontDescription key="fontDescription" type="system" pointSize="13"/>
                                                 <nil key="textColor"/>
                                                 <nil key="highlightedColor"/>
                                             </label>
                                         </subviews>
                                     </stackView>
-                                    <stackView opaque="NO" contentMode="scaleToFill" alignment="center" spacing="4" translatesAutoresizingMaskIntoConstraints="NO" id="itF-8X-gao">
-                                        <rect key="frame" x="185" y="3" width="180" height="34.333333333333336"/>
+                                    <stackView opaque="NO" contentMode="scaleToFill" distribution="fillEqually" alignment="center" spacing="2" translatesAutoresizingMaskIntoConstraints="NO" id="itF-8X-gao">
+                                        <rect key="frame" x="187" y="3" width="178" height="34.333333333333336"/>
                                         <subviews>
                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ov8-Gj-nfi">
                                                 <rect key="frame" x="0.0" y="0.0" width="88" height="34.333333333333336"/>
                                                 <constraints>
-                                                    <constraint firstAttribute="width" constant="88" id="MQW-Dq-Vsf"/>
+                                                    <constraint firstAttribute="width" relation="lessThanOrEqual" constant="88" id="MQW-Dq-Vsf"/>
                                                 </constraints>
                                                 <state key="normal" title="Button"/>
                                                 <buttonConfiguration key="configuration" style="filled" title="Taken" cornerStyle="capsule"/>
@@ -68,7 +68,10 @@
                                                 </connections>
                                             </button>
                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="S9C-h3-rMm">
-                                                <rect key="frame" x="92" y="0.0" width="88" height="34.333333333333336"/>
+                                                <rect key="frame" x="90" y="0.0" width="88" height="34.333333333333336"/>
+                                                <constraints>
+                                                    <constraint firstAttribute="width" relation="lessThanOrEqual" constant="88" id="COi-he-6TG"/>
+                                                </constraints>
                                                 <state key="normal" title="Button"/>
                                                 <buttonConfiguration key="configuration" style="filled" title="Skipped" cornerStyle="capsule"/>
                                                 <connections>
@@ -87,7 +90,7 @@
                             <constraint firstItem="Bt6-g5-kih" firstAttribute="leading" secondItem="d2F-1Q-w9l" secondAttribute="leading" constant="16" id="dey-vD-iPv"/>
                             <constraint firstAttribute="bottom" secondItem="Bt6-g5-kih" secondAttribute="bottom" constant="12" id="fjl-CT-jfo"/>
                             <constraint firstItem="qIE-uB-JZ7" firstAttribute="leading" secondItem="d2F-1Q-w9l" secondAttribute="leading" constant="16" id="gGs-Hr-Vo7"/>
-                            <constraint firstAttribute="trailing" secondItem="Bt6-g5-kih" secondAttribute="trailing" constant="16" id="gNY-cz-jIz"/>
+                            <constraint firstAttribute="trailing" relation="lessThanOrEqual" secondItem="Bt6-g5-kih" secondAttribute="trailing" constant="16" id="gNY-cz-jIz"/>
                         </constraints>
                     </view>
                 </subviews>

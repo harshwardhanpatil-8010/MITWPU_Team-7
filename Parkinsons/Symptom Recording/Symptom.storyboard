@@ -9,25 +9,25 @@
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
-        <!--Symptom Log-->
+        <!--Symptoms-->
         <scene sceneID="cSd-F8-m2U">
             <objects>
-                <viewController storyboardIdentifier="symptom" useStoryboardIdentifierAsRestorationIdentifier="YES" id="uuW-P4-EWo" customClass="SymptomViewController" customModule="Parkinsons" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="symptom" useStoryboardIdentifierAsRestorationIdentifier="YES" id="uuW-P4-EWo" customClass="SymptomViewController" customModule="ParkEase" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="hRj-r1-r9a">
                         <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="7Bi-mp-zbI">
-                                <rect key="frame" x="0.0" y="-32" width="393" height="792"/>
+                                <rect key="frame" x="0.0" y="-32" width="393" height="884"/>
                                 <subviews>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="fI8-bd-GlA">
-                                        <rect key="frame" x="0.0" y="-279" width="393" height="1364.6666666666667"/>
+                                        <rect key="frame" x="0.0" y="-279" width="393" height="1234.6666666666667"/>
                                         <subviews>
                                             <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="ZbZ-Mr-g82">
-                                                <rect key="frame" x="0.0" y="320" width="393" height="477"/>
+                                                <rect key="frame" x="0.0" y="320" width="393" height="360"/>
                                                 <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                                                 <constraints>
-                                                    <constraint firstAttribute="height" constant="477" id="Oil-UI-RR7"/>
+                                                    <constraint firstAttribute="height" constant="360" id="Oil-UI-RR7"/>
                                                 </constraints>
                                                 <collectionViewFlowLayout key="collectionViewLayout" automaticEstimatedItemSize="YES" minimumLineSpacing="10" minimumInteritemSpacing="10" id="tzo-bK-GF9">
                                                     <size key="itemSize" width="128" height="128"/>
@@ -47,7 +47,7 @@
                                                 </cells>
                                             </collectionView>
                                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="n2t-av-6Wh">
-                                                <rect key="frame" x="16" y="810" width="361" height="534.66666666666652"/>
+                                                <rect key="frame" x="16" y="680" width="361" height="534.66666666666652"/>
                                                 <subviews>
                                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Symptoms Logged" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="D8p-TE-7pa">
                                                         <rect key="frame" x="16" y="14" width="177" height="24"/>
@@ -56,7 +56,7 @@
                                                         <nil key="highlightedColor"/>
                                                     </label>
                                                     <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="menu final" translatesAutoresizingMaskIntoConstraints="NO" id="wbL-ey-J4U">
-                                                        <rect key="frame" x="1.6666666666666572" y="58.333333333333371" width="358" height="77"/>
+                                                        <rect key="frame" x="1.6666666666666572" y="58.333333333333314" width="358" height="77"/>
                                                         <constraints>
                                                             <constraint firstAttribute="height" constant="77" id="0uQ-3d-IVV"/>
                                                             <constraint firstAttribute="width" constant="358" id="DU5-OU-tyD"/>
@@ -112,7 +112,7 @@
                                             <constraint firstItem="ZbZ-Mr-g82" firstAttribute="top" secondItem="fI8-bd-GlA" secondAttribute="top" constant="320" id="2ep-8E-F2f"/>
                                             <constraint firstAttribute="trailing" secondItem="n2t-av-6Wh" secondAttribute="trailing" constant="16" id="JXc-f2-xVU"/>
                                             <constraint firstAttribute="bottom" secondItem="n2t-av-6Wh" secondAttribute="bottom" constant="20" id="Xdc-D4-XJn"/>
-                                            <constraint firstItem="n2t-av-6Wh" firstAttribute="top" secondItem="ZbZ-Mr-g82" secondAttribute="bottom" constant="13" id="csZ-nw-dgY"/>
+                                            <constraint firstItem="n2t-av-6Wh" firstAttribute="top" secondItem="ZbZ-Mr-g82" secondAttribute="bottom" id="csZ-nw-dgY"/>
                                             <constraint firstItem="n2t-av-6Wh" firstAttribute="leading" secondItem="fI8-bd-GlA" secondAttribute="leading" constant="16" id="g3I-zu-Bgj"/>
                                             <constraint firstItem="ZbZ-Mr-g82" firstAttribute="leading" secondItem="fI8-bd-GlA" secondAttribute="leading" id="rMz-1T-tiL"/>
                                             <constraint firstAttribute="trailing" secondItem="ZbZ-Mr-g82" secondAttribute="trailing" id="z8W-hW-5Iw"/>
@@ -131,15 +131,13 @@
                         <viewLayoutGuide key="safeArea" id="hZO-CO-gnb"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                         <constraints>
-                            <constraint firstAttribute="bottom" secondItem="7Bi-mp-zbI" secondAttribute="bottom" constant="92" id="Hz6-RM-7Z0"/>
+                            <constraint firstAttribute="bottom" secondItem="7Bi-mp-zbI" secondAttribute="bottom" id="Hz6-RM-7Z0"/>
                             <constraint firstItem="7Bi-mp-zbI" firstAttribute="leading" secondItem="hZO-CO-gnb" secondAttribute="leading" id="fYu-h7-9K4"/>
                             <constraint firstItem="7Bi-mp-zbI" firstAttribute="top" secondItem="hRj-r1-r9a" secondAttribute="top" constant="-32" id="kLr-JY-Gv2"/>
                             <constraint firstItem="7Bi-mp-zbI" firstAttribute="trailing" secondItem="hZO-CO-gnb" secondAttribute="trailing" id="nBu-bK-SZj"/>
                         </constraints>
                     </view>
-                    <navigationItem key="navigationItem" title="Symptom Log" style="browser" id="J61-4l-7gg">
-                        <barButtonItem key="rightBarButtonItem" image="calendar" catalog="system" id="BnN-rM-4Cm"/>
-                    </navigationItem>
+                    <navigationItem key="navigationItem" title="Symptoms" largeTitleDisplayMode="never" style="browser" id="J61-4l-7gg"/>
                     <connections>
                         <outlet property="collectionView" destination="ZbZ-Mr-g82" id="Cbw-0u-5BS"/>
                         <outlet property="editAndSaveButton" destination="K65-6B-FHQ" id="VnQ-jq-01W"/>
@@ -154,7 +152,6 @@
         </scene>
     </scenes>
     <resources>
-        <image name="calendar" catalog="system" width="128" height="107"/>
         <image name="menu final" width="2848" height="396"/>
         <systemColor name="systemBackgroundColor">
             <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>

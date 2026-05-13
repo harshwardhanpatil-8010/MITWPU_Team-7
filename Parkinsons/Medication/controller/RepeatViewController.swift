@@ -2,54 +2,51 @@
 //  RepeatViewController.swift
 //  Parkinsons
 //
-//  Created by SDC-USER on 28/11/25.
-//
 
 import UIKit
 
 protocol RepeatSelectionDelegate: AnyObject {
-    func didSelectRepeatRule(_ rule: RepeatRule)
+    func didSelectSchedule(type: String, days: [Int]?)
 }
 
 class RepeatViewController: UIViewController,
                             UITableViewDataSource,
-                            UITableViewDelegate{
-    
+                            UITableViewDelegate {
+
     @IBOutlet weak var tickButton: UIBarButtonItem!
-    @IBOutlet weak var RepeatTableView: UITableView!
-    
+    @IBOutlet weak var repeatTableView: UITableView!
+
     weak var delegate: RepeatSelectionDelegate?
-    var preselectedSchedule: RepeatRule?
+
+    var preselectedType: String?
+    var preselectedDays: [Int]?
+
     private var repeatList: [RepeatOption] = []
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        repeatList = RepeatOption.defaultList()
-        RepeatTableView.layer.cornerRadius = 25
-        RepeatTableView.clipsToBounds = true
-        RepeatTableView.layer.masksToBounds = true
-        RepeatTableView.delegate = self
-        RepeatTableView.dataSource = self
-        RepeatTableView.layer.maskedCorners = [.layerMinXMinYCorner, .layerMaxXMinYCorner, .layerMinXMaxYCorner, .layerMaxXMaxYCorner]
 
-        if let schedule = preselectedSchedule {
-            restoreSelection(from: schedule)
-        }
-    }
-
-    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return repeatList.count
-    }
-
-    private func restoreSelection(from schedule: RepeatRule) {
         repeatList = RepeatOption.defaultList()
 
-        switch schedule {
-        case .everyday:
+        repeatTableView.delegate = self
+        repeatTableView.dataSource = self
+        repeatTableView.layer.cornerRadius = 25
+        repeatTableView.clipsToBounds = true
+
+        restoreSelection()
+    }
+
+
+    private func restoreSelection() {
+        guard let type = preselectedType else { return }
+
+        if type == "everyday" {
             if let index = repeatList.firstIndex(where: { $0.name == "Everyday" }) {
                 repeatList[index].isSelected = true
             }
-        case .weekly(let days):
+        }
+
+        if type == "weekly", let days = preselectedDays {
             let weekdayMap: [Int: String] = [
                 1: "Every Sunday",
                 2: "Every Monday",
@@ -59,33 +56,39 @@ class RepeatViewController: UIViewController,
                 6: "Every Friday",
                 7: "Every Saturday"
             ]
+
             for day in days {
                 if let name = weekdayMap[day],
                    let index = repeatList.firstIndex(where: { $0.name == name }) {
                     repeatList[index].isSelected = true
                 }
             }
-        case .none:
-            break
         }
 
-        RepeatTableView.reloadData()
+        repeatTableView.reloadData()
+    }
+
+
+    func tableView(_ tableView: UITableView,
+                   numberOfRowsInSection section: Int) -> Int {
+        repeatList.count
     }
 
     func tableView(_ tableView: UITableView,
                    cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        
+
         let cell = tableView.dequeueReusableCell(
             withIdentifier: "cell",
             for: indexPath
         ) as! RepeatTableViewCell
-        
-        let type = repeatList[indexPath.row]
-        cell.configureCell(type: type)
+
+        cell.configureCell(type: repeatList[indexPath.row])
         return cell
     }
 
-    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+    func tableView(_ tableView: UITableView,
+                   didSelectRowAt indexPath: IndexPath) {
+
         let tapped = repeatList[indexPath.row]
 
         if tapped.name == "Everyday" {
@@ -93,9 +96,11 @@ class RepeatViewController: UIViewController,
                 repeatList[i].isSelected = (i == indexPath.row)
             }
         } else {
+            
             if let everydayIndex = repeatList.firstIndex(where: { $0.name == "Everyday" }) {
                 repeatList[everydayIndex].isSelected = false
             }
+
             repeatList[indexPath.row].isSelected.toggle()
         }
 
@@ -106,26 +111,41 @@ class RepeatViewController: UIViewController,
     @IBAction func onBackPressed(_ sender: UIBarButtonItem) {
         navigationController?.popViewController(animated: true)
     }
-   
-    @IBAction func onTickPressed(_ sender: Any) {
-        let selectedDays = repeatList.filter { $0.isSelected }.map { $0.name }
-        let rule: RepeatRule
 
-        if selectedDays.contains("Everyday") {
-            rule = .everyday
-        } else {
-            let map: [String:Int] = [
-                "Every Sunday":1,"Every Monday":2,"Every Tuesday":3,
-                "Every Wednesday":4,"Every Thursday":5,"Every Friday":6,"Every Saturday":7
-            ]
-            let days = selectedDays.compactMap { map[$0] }
-            rule = days.isEmpty ? .none : .weekly(days)
+    @IBAction func onTickPressed(_ sender: Any) {
+
+        let selectedNames = repeatList
+            .filter { $0.isSelected }
+            .map { $0.name }
+
+        if selectedNames.contains("Everyday") {
+            delegate?.didSelectSchedule(type: "everyday", days: nil)
+            navigationController?.popViewController(animated: true)
+            return
         }
 
-        delegate?.didSelectRepeatRule(rule)
+        let map: [String: Int] = [
+            "Every Sunday": 1,
+            "Every Monday": 2,
+            "Every Tuesday": 3,
+            "Every Wednesday": 4,
+            "Every Thursday": 5,
+            "Every Friday": 6,
+            "Every Saturday": 7
+        ]
+
+        let days = selectedNames.compactMap { map[$0] }
+
+        if days.isEmpty {
+            delegate?.didSelectSchedule(type: "none", days: nil)
+        } else {
+            delegate?.didSelectSchedule(type: "weekly", days: days.sorted())
+        }
+
         navigationController?.popViewController(animated: true)
     }
 }
+
 
 struct RepeatOption {
     let name: String
@@ -146,4 +166,3 @@ extension RepeatOption {
         ]
     }
 }
-

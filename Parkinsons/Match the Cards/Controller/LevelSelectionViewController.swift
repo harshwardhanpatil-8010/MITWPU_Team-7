@@ -14,7 +14,16 @@ UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
         c.firstWeekday = 2
         return c
     }()
-
+    private var navGradientOverlay: CAGradientLayer {
+        let gradient = CAGradientLayer()
+        gradient.colors = [
+            UIColor(hex: "BF5AF2").withAlphaComponent(0.30).cgColor,
+            UIColor(hex: "BF5AF2").withAlphaComponent(0.0).cgColor
+        ]
+        gradient.startPoint = CGPoint(x: 0.5, y: 0)
+        gradient.endPoint   = CGPoint(x: 0.5, y: 1)
+        return gradient
+    }
     private let today = Calendar(identifier: .gregorian).startOfDay(for: Date())
     private var firstDayOfMonth: Date!
     private var firstWeekdayOffset = 0
@@ -26,6 +35,9 @@ UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
         setupCollectionView()
         setupMonth()
         updateCompletionCount()
+        let gradient = navGradientOverlay
+        gradient.frame = CGRect(x: 0, y: 0, width: view.bounds.width, height: 140)
+            view.layer.addSublayer(gradient)
     }
 
     override func viewWillAppear(_ animated: Bool) {
@@ -33,6 +45,9 @@ UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
         updateCompletionCount()
         collectionView.reloadData()
         tabBarController?.tabBar.isHidden = true
+        let gradient = navGradientOverlay
+        gradient.frame = CGRect(x: 0, y: 0, width: view.bounds.width, height: 140)
+            view.layer.addSublayer(gradient)
     }
 
     override func viewWillDisappear(_ animated: Bool) {
@@ -41,6 +56,7 @@ UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
     }
 
     private func setupCollectionView() {
+        collectionView.register(DateCell.self, forCellWithReuseIdentifier: "DateCell")
         collectionView.dataSource = self
         collectionView.delegate = self
         collectionView.isScrollEnabled = false
@@ -49,17 +65,16 @@ UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
 
     private func configureLayout() {
         guard let layout = collectionView.collectionViewLayout as? UICollectionViewFlowLayout else { return }
-        let width = collectionView.bounds.width / 7
-        layout.itemSize = CGSize(width: width, height: width)
+        let size = collectionView.bounds.width / 7
+        layout.itemSize = CGSize(width: size, height: size)
         layout.minimumInteritemSpacing = 0
         layout.minimumLineSpacing = 0
-        layout.estimatedItemSize = .zero
+        layout.estimatedItemSize = .zero                      
     }
 
     private func setupMonth() {
         let now = Date()
         let comps = calendar.dateComponents([.year, .month], from: now)
-
         firstDayOfMonth = calendar.date(from: comps)!
         daysInMonth = calendar.range(of: .day, in: .month, for: firstDayOfMonth)!.count
 
@@ -81,29 +96,17 @@ UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
             return DailyGameManager.shared.isCompleted(date: calendar.startOfDay(for: date))
         }.count
 
-        if completedCount == 0 {
-            completedLabel.text = "Select a date to start playing"
-            completedLabel.textColor = .systemOrange
-            imageView.isHidden = true
-        } else {
-            completedLabel.text = "\(completedCount)/\(daysInMonth)"
+            completedLabel.text = "\(completedCount)/\(daysInMonth) Completed"
             completedLabel.textColor = .label
             imageView.isHidden = false
-        }
     }
 
-    func collectionView(_ collectionView: UICollectionView,
-                        numberOfItemsInSection section: Int) -> Int {
+    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         daysInMonth + firstWeekdayOffset
     }
 
-    func collectionView(_ collectionView: UICollectionView,
-                        cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-
-        let cell = collectionView.dequeueReusableCell(
-            withReuseIdentifier: "DateCell",
-            for: indexPath
-        ) as! DateCell
+    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "DateCell", for: indexPath) as! DateCell
 
         guard indexPath.item >= firstWeekdayOffset else {
             cell.configureEmpty()
@@ -126,29 +129,22 @@ UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
             isSelected: isSelected,
             isCompleted: isCompleted,
             showTodayOutline: showTodayOutline,
-            enabled: !isFuture
+            enabled: !isFuture,
+            themeColor: UIColor(hex: "BF5AF2")
         )
-
         return cell
     }
 
-    func collectionView(_ collectionView: UICollectionView,
-                        didSelectItemAt indexPath: IndexPath) {
-
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         guard indexPath.item >= firstWeekdayOffset else { return }
-
         let day = indexPath.item - firstWeekdayOffset + 1
         let date = calendar.date(byAdding: .day, value: day - 1, to: firstDayOfMonth)!
         let cellDate = calendar.startOfDay(for: date)
-
         guard cellDate <= today else { return }
-
         selectedDate = cellDate
         collectionView.reloadData()
     }
-    
 
-    
     @IBAction func playButtonTapped(_ sender: UIButton) {
         guard let date = selectedDate else { return }
 
@@ -158,13 +154,10 @@ UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
                 message: "You have already completed this daily challenge. Do you want to play again?",
                 preferredStyle: .alert
             )
-
             alert.addAction(UIAlertAction(title: "Yes", style: .default) { _ in
                 self.navigateToGame(with: date)
             })
-
             alert.addAction(UIAlertAction(title: "No", style: .cancel))
-
             present(alert, animated: true)
         } else {
             navigateToGame(with: date)
@@ -172,13 +165,10 @@ UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
     }
 
     private func navigateToGame(with date: Date) {
-        let vc = storyboard!.instantiateViewController(
-            withIdentifier: "GameViewController"
-        ) as! GameViewController
-
+        let vc = storyboard!.instantiateViewController(withIdentifier: "GameViewController") as! GameViewController
         vc.selectedDate = date
         vc.level = DailyGameManager.shared.level(for: date)
-
         navigationController?.pushViewController(vc, animated: true)
     }
+    
 }

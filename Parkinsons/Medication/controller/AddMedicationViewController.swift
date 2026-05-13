@@ -1,40 +1,48 @@
-//
-//  AddMedicationViewController.swift
-//  Parkinsons
-//
-//  Created by SDC-USER on 27/11/25.
+// AddMedicationViewController.swift
+// Parkinsons
 //
 
+
 import UIKit
+import CoreData
+
+struct DoseData {
+    var dose: MedicationDose?
+    var time: Date
+}
 
 protocol AddMedicationDelegate: AnyObject {
     func didUpdateMedication()
 }
 
 class AddMedicationViewController: UIViewController,
-                                   UITableViewDelegate,
-                                   UITableViewDataSource,
-                                   DoseTableViewCellDelegate,
-                                   UnitsAndTypeDelegate,
-                                   RepeatSelectionDelegate {
-    func didSelectRepeatRule(_ rule: RepeatRule) {
-        selectedRepeatRule = rule
-        repeatLabel.text = rule.displayString()
+                                    UITableViewDelegate,
+                                    UITableViewDataSource,
+                                    DoseTableViewCellDelegate,
+                                    UnitsAndTypeDelegate,
+                                    RepeatSelectionDelegate,
+                                    UITextFieldDelegate {
+
+    func didSelectSchedule(type: String, days: [Int]?) {
+        selectedScheduleType = type
+        selectedScheduleDays = days
+        repeatLabel.text      = Medication.scheduleDisplayText(type: type, days: days)
         repeatLabel.textColor = .label
         evaluateTickButtonState()
     }
-    
+
     private var originalMedicationSnapshot: Medication?
-    private var selectedRepeatRule: RepeatRule = .everyday
-    private let unitPlaceholder = "Add unit,"
-    private let typePlaceholder = "Select type"
-    private let repeatPlaceholder = "Select days"
-    
+    private var selectedScheduleType: String?
+    private var selectedScheduleDays: [Int]?
+
+    private let unitPlaceholder   = "Add unit"
+    private let typePlaceholder   = "Select type"
+
     weak var delegate: AddMedicationDelegate?
-    var isEditMode: Bool = false
+    var isEditMode: Bool   = false
     var medicationToEdit: Medication!
-    var doseArray: [Date] = [Date()]
-    
+    var doseArray: [DoseData]  = [DoseData(dose: nil, time: Date())]
+
     @IBOutlet weak var tickButton: UIBarButtonItem!
     @IBOutlet weak var backgroundView: UIView!
     @IBOutlet weak var strengthLabel: UITextField!
@@ -49,141 +57,208 @@ class AddMedicationViewController: UIViewController,
     @IBOutlet weak var doseStepper: UIStepper!
     @IBOutlet weak var doseTableView: UITableView!
     @IBOutlet weak var uiStackView: UIStackView!
-    
+
+    // MARK: - Lifecycle
+
     override func viewDidLoad() {
         super.viewDidLoad()
         tickButton.isEnabled = false
-        
+
+
         medicationNameTextField.addAction(
-            UIAction { [weak self] _ in
-                self?.evaluateTickButtonState()
-            },
+            UIAction { [weak self] _ in self?.evaluateTickButtonState() },
             for: .editingChanged
         )
-        
+        medicationNameTextField.delegate = self
+
+
+        strengthLabel.keyboardType = .numberPad
+        strengthLabel.delegate     = self
         strengthLabel.addAction(
-            UIAction { [weak self] _ in
-                self?.evaluateTickButtonState()
-            },
+            UIAction { [weak self] _ in self?.evaluateTickButtonState() },
             for: .editingChanged
         )
-        
-        
+
         let tap = UITapGestureRecognizer(target: self, action: #selector(dismissKeyboard))
         view.addGestureRecognizer(tap)
-        
-        deleteButton.isHidden = !isEditMode
+
+        deleteButton.isHidden             = !isEditMode
         backgroundView.layer.cornerRadius = 16
-        doseTableView.dataSource = self
-        doseTableView.delegate = self
-        doseStepper.value = Double(doseArray.count)
-        
-        repeatStack.isUserInteractionEnabled = true
+        doseTableView.dataSource          = self
+        doseTableView.delegate            = self
+        doseStepper.value                 = Double(doseArray.count)
+
+        repeatStack.isUserInteractionEnabled     = true
         unitandTypeStack.isUserInteractionEnabled = true
-        
+
         if isEditMode {
             fillFieldsForEditing()
-            navigationItem.title = "Edit Medication"
+            navigationItem.title  = "Edit Medication"
             deleteButton.isHidden = false
-        }
-        if !isEditMode {
+        } else {
             UnitAndTypeStore.shared.reset()
             resetUnitAndTypeUI()
         }
-        
+
         repeatStack.addGestureRecognizer(
             UITapGestureRecognizer(target: self, action: #selector(repeatStackTapped))
         )
     }
-    
-    @objc func dismissKeyboard() {
-        view.endEditing(true)
+
+    override func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
+        updateDoseTableInsets()
     }
-    
+
+    // MARK: - UITextFieldDelegate
+
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        textField.resignFirstResponder()
+        return true
+    }
+
+
+    func textField(
+        _ textField: UITextField,
+        shouldChangeCharactersIn range: NSRange,
+        replacementString string: String
+    ) -> Bool {
+        guard textField == strengthLabel else { return true }
+
+
+        if string.isEmpty { return true }
+
+
+        let allowedChars = CharacterSet.decimalDigits
+        guard string.unicodeScalars.allSatisfy({ allowedChars.contains($0) }) else { return false }
+
+
+        let current    = (textField.text ?? "") as NSString
+        let newText    = current.replacingCharacters(in: range, with: string)
+        if newText.hasPrefix("0") { return false }
+
+        return true
+    }
+
+    // MARK: - Helpers
+
+    @objc private func dismissKeyboard() { view.endEditing(true) }
+
     func didSelectUnitsAndType(unitText: String, selectedType: String) {
-        unitLabel.attributedText = nil
-        typeLabel.attributedText = nil
+        unitLabel.attributedText        = nil
+        typeLabel.attributedText        = nil
         strengthUnitLabel.attributedText = nil
-        
-        unitLabel.text = unitText
-        typeLabel.text = selectedType
+
+        unitLabel.text         = unitText
+        typeLabel.text         = selectedType
         strengthUnitLabel.text = unitText
-        
-        unitLabel.textColor = .label
-        typeLabel.textColor = .label
+
+        unitLabel.textColor         = .label
+        typeLabel.textColor         = .label
         strengthUnitLabel.textColor = .label
-        
+
         evaluateTickButtonState()
     }
-    
+
     private func resetUnitAndTypeUI() {
-        unitLabel.text = unitPlaceholder
-        typeLabel.text = typePlaceholder
+        unitLabel.text         = unitPlaceholder
+        typeLabel.text         = typePlaceholder
         strengthUnitLabel.text = "Units"
-        
-        unitLabel.textColor = .placeholderText
-        typeLabel.textColor = .placeholderText
+
+        unitLabel.textColor         = .placeholderText
+        typeLabel.textColor         = .placeholderText
         strengthUnitLabel.textColor = .placeholderText
     }
-    
+
     func didUpdateTime(cell: DoseTableViewCell, newTime: Date) {
         if let indexPath = doseTableView.indexPath(for: cell) {
-            doseArray[indexPath.row] = newTime
+            doseArray[indexPath.row].time = newTime
             evaluateTickButtonState()
         }
     }
-    
+
+    // MARK: - Edit mode fill
+
     func fillFieldsForEditing() {
         guard let med = medicationToEdit else { return }
-        
-        medicationNameTextField.text = med.name
-        typeLabel.text = med.form
-        unitLabel.text = med.unit
-        strengthUnitLabel.text = med.unit
-        
-        typeLabel.textColor = .label
-        unitLabel.textColor = .label
+
+        medicationNameTextField.text = med.medicationName
+        typeLabel.text               = med.medicationForm
+        unitLabel.text               = med.medicationUnit
+        strengthUnitLabel.text       = med.medicationUnit
+
+        typeLabel.textColor         = .label
+        unitLabel.textColor         = .label
         strengthUnitLabel.textColor = .label
-        
-        if let strength = med.strength {
-            strengthLabel.text = "\(strength)"
-        }
-        
-        selectedRepeatRule = med.schedule
-        repeatLabel.text = med.schedule.displayString()
+
+
+        let strength = Int(med.medicationStrength)
+        strengthLabel.text = strength > 0 ? "\(strength)" : ""
+
+        selectedScheduleType = med.medicationScheduleType
+        selectedScheduleDays = med.medicationScheduleDays as? [Int]
+
+        repeatLabel.text = Medication.scheduleDisplayText(
+            type: med.medicationScheduleType ?? "none",
+            days: med.medicationScheduleDays as? [Int]
+        )
         repeatLabel.textColor = .label
-        
-        doseArray = med.doses.map { $0.time }
+
+        let doseSet = med.doses as? Set<MedicationDose> ?? []
+        doseArray = doseSet
+            .sorted { $0.doseTime ?? Date() < $1.doseTime ?? Date() }
+            .map { DoseData(dose: $0, time: $0.doseTime ?? Date()) }
 
         doseStepper.value = Double(doseArray.count)
-
         doseTableView.reloadData()
         originalMedicationSnapshot = med
-        tickButton.isEnabled = false
+        tickButton.isEnabled       = false
     }
-    
+
+    // MARK: - Validation
+
     private func evaluateTickButtonState() {
         if !isEditMode {
-            let text = medicationNameTextField.text ?? ""
-            tickButton.isEnabled = !text.trimmingCharacters(in: .whitespaces).isEmpty
+            let nameValid     = !(medicationNameTextField.text ?? "").trimmingCharacters(in: .whitespaces).isEmpty
+            let strengthValue = Int(strengthLabel.text ?? "") ?? 0
+            let strengthValid = strengthValue > 0           // must be > 0
+            let unitValid     = unitLabel.textColor == .label
+            let typeValid     = typeLabel.textColor == .label
+            let repeatValid   = selectedScheduleType != nil
+            let hasDose       = !doseArray.isEmpty
+
+            tickButton.isEnabled = nameValid && strengthValid && unitValid && typeValid && repeatValid && hasDose
             return
         }
-        
+
         guard let original = originalMedicationSnapshot else {
             tickButton.isEnabled = false
             return
         }
-        
-        let nameChanged = medicationNameTextField.text != original.name
-        let strengthChanged = Int(strengthLabel.text ?? "") != original.strength
-        let unitChanged = unitLabel.text != original.unit
-        let typeChanged = typeLabel.text != original.form
-        let repeatChanged = selectedRepeatRule != original.schedule
-        let dosesChanged = doseArray.map { $0.timeIntervalSince1970 } != original.doses.map { $0.time.timeIntervalSince1970 }
-        
-        tickButton.isEnabled = nameChanged || strengthChanged || unitChanged || typeChanged || repeatChanged || dosesChanged
+
+
+        let strengthValue = Int(strengthLabel.text ?? "") ?? 0
+        guard strengthValue > 0 else {
+            tickButton.isEnabled = false
+            return
+        }
+
+        let nameChanged     = medicationNameTextField.text != original.medicationName
+        let strengthChanged = Int16(strengthValue) != original.medicationStrength
+        let unitChanged     = unitLabel.text != original.medicationUnit
+        let typeChanged     = typeLabel.text != original.medicationForm
+        let repeatChanged   = selectedScheduleType != original.medicationScheduleType ||
+                              (selectedScheduleDays ?? []) != (original.medicationScheduleDays as? [Int] ?? [])
+
+        let originalDoseTimes = (original.doses as? Set<MedicationDose> ?? [])
+            .compactMap { $0.doseTime?.timeIntervalSince1970 }.sorted()
+        let currentDoseTimes  = doseArray.map { $0.time.timeIntervalSince1970 }.sorted()
+        let dosesChanged      = originalDoseTimes != currentDoseTimes
+
+        tickButton.isEnabled = nameChanged || strengthChanged || unitChanged ||
+                               typeChanged || repeatChanged || dosesChanged
     }
-    
+
     func renumberDoses() {
         for i in 0..<doseArray.count {
             if let cell = doseTableView.cellForRow(at: IndexPath(row: i, section: 0)) as? DoseTableViewCell {
@@ -191,118 +266,152 @@ class AddMedicationViewController: UIViewController,
             }
         }
     }
-    
-    @IBAction func backButtonTapped(_ sender: Any) {
-        dismiss(animated: true, completion: nil)
+
+    private func updateDoseTableInsets() {
+        let bottomInset: CGFloat = deleteButton.isHidden ? 16 : (deleteButton.bounds.height + 56)
+        doseTableView.contentInset.bottom                = bottomInset
+        doseTableView.verticalScrollIndicatorInsets.bottom = bottomInset
     }
-    
+
+    // MARK: - IBActions
+
+    @IBAction func backButtonTapped(_ sender: Any) {
+        dismiss(animated: true)
+    }
+
     @IBAction func onUnitStackTapped(_ sender: UITapGestureRecognizer) {
         let storyboard = UIStoryboard(name: "Medication", bundle: nil)
-        guard let vc = storyboard.instantiateViewController(withIdentifier: "UnitAndTypeVC") as? UnitAndTypeViewController else { return }
-        
-        vc.delegate = self
+        guard let vc = storyboard.instantiateViewController(withIdentifier: "UnitAndTypeVC")
+                as? UnitAndTypeViewController else { return }
+        vc.delegate     = self
         vc.selectedUnit = unitLabel.textColor == .label ? unitLabel.text : nil
         vc.selectedType = typeLabel.textColor == .label ? typeLabel.text : nil
-        
         navigationController?.pushViewController(vc, animated: true)
     }
-    
+
     @IBAction func repeatStackTapped(_ sender: Any) {
         let storyboard = UIStoryboard(name: "Medication", bundle: nil)
-        guard let vc = storyboard.instantiateViewController(withIdentifier: "RepeatVC") as? RepeatViewController else { return }
-        
-        vc.delegate = self
-        vc.preselectedSchedule = selectedRepeatRule
+        guard let vc = storyboard.instantiateViewController(withIdentifier: "RepeatVC")
+                as? RepeatViewController else { return }
+        vc.delegate          = self
+        vc.preselectedType   = selectedScheduleType
+        vc.preselectedDays   = selectedScheduleDays
         navigationController?.pushViewController(vc, animated: true)
     }
-    
+
     @IBAction func doseStepperChanged(_ sender: UIStepper) {
         let newCount = Int(sender.value)
-        if newCount > doseArray.count {
-            doseArray.append(Date())
-        } else {
-            doseArray.removeLast()
-        }
+        if newCount > doseArray.count { doseArray.append(DoseData(dose: nil, time: Date())) }
+        else                          { doseArray.removeLast() }
         doseTableView.reloadData()
         evaluateTickButtonState()
     }
-    
+
     @IBAction func deleteMedication(_ sender: UIButton) {
         guard let med = medicationToEdit else { return }
-        MedicationDataStore.shared.deleteMedication(med.id)
+        let context = PersistenceController.shared.viewContext
+        context.delete(med)
+        PersistenceController.shared.save(context)
+
+        MedicationNotificationManager.shared.rescheduleAll()
         delegate?.didUpdateMedication()
         dismiss(animated: true)
     }
-    
+
     @IBAction func onTickPressed(_ sender: UIBarButtonItem) {
-        let strengthValue = Int(strengthLabel.text ?? "")
-        guard let name = medicationNameTextField.text, !name.isEmpty else { return }
-        
-        let medicationID = isEditMode ? medicationToEdit.id : UUID()
-        let schedule = selectedRepeatRule
-        
-        let updatedDoses = doseArray.enumerated().map { (index, date) -> MedicationDose in
-            if isEditMode, index < medicationToEdit.doses.count {
-                let existingDose = medicationToEdit.doses[index]
-                return MedicationDose(
-                    id: existingDose.id,
-                    time: date,
-                    status: .none,
-                    medicationID: medicationID
-                )
+
+
+        let strengthValue = Int(strengthLabel.text ?? "") ?? 0
+        guard strengthValue > 0 else {
+            showStrengthError()
+            return
+        }
+
+
+        guard
+            let name = medicationNameTextField.text,
+            !name.trimmingCharacters(in: .whitespaces).isEmpty
+        else { return }
+
+        sender.isEnabled = false  
+
+        let context    = PersistenceController.shared.viewContext
+        let medication: Medication
+
+        if isEditMode {
+            medication = medicationToEdit
+        } else {
+            medication          = Medication(context: context)
+            medication.id       = UUID()
+            medication.createdAt = Date()
+        }
+
+        medication.medicationName      = name
+        medication.medicationForm      = typeLabel.text ?? "Capsule"
+        medication.medicationUnit      = unitLabel.text ?? "mg"
+        medication.medicationStrength  = Int16(strengthValue)
+        medication.medicationIconName  = UnitAndType.icon(for: typeLabel.text ?? "Capsule")
+        medication.medicationScheduleType = selectedScheduleType
+        medication.medicationScheduleDays = selectedScheduleDays as NSObject?
+
+        let oldDoses = isEditMode ? (medication.doses as? Set<MedicationDose> ?? []) : []
+        var usedDoses: Set<MedicationDose> = []
+
+        for data in doseArray {
+            let dose: MedicationDose
+            if let existing = data.dose {
+                dose = existing
+                usedDoses.insert(existing)
             } else {
-                return MedicationDose(
-                    id: UUID(),
-                    time: date,
-                    status: .none,
-                    medicationID: medicationID
-                )
+                dose = MedicationDose(context: context)
+                dose.id = UUID()
+                dose.doseStatus = "none"
+                dose.medication = medication
+            }
+            dose.doseTime = data.time
+        }
+
+        if isEditMode {
+            let dosesToDelete = oldDoses.subtracting(usedDoses)
+            for dose in dosesToDelete {
+                context.delete(dose)
             }
         }
-        
-        if isEditMode {
-            MedicationDataStore.shared.updateMedication(
-                originalID: medicationToEdit.id,
-                newName: name,
-                newForm: typeLabel.text ?? "Capsule",
-                newSchedule: schedule,
-                newDoses: updatedDoses,
-                newUnit: unitLabel.text ?? "mg",
-                newStrength: strengthValue
-            )
-        } else {
-            let newMedication = Medication(
-                id: medicationID,
-                name: name,
-                form: typeLabel.text ?? "Capsule",
-                unit: unitLabel.text ?? "mg",
-                strength: strengthValue,
-                iconName: UnitAndType.icon(for: typeLabel.text ?? "Capsule"),
-                schedule: schedule,
-                doses: updatedDoses,
-                createdAt: Date()
-            )
-            MedicationDataStore.shared.addMedication(newMedication)
-        }
-        
+
+        PersistenceController.shared.save(context)
+
+        MedicationNotificationManager.shared.rescheduleAll()
         delegate?.didUpdateMedication()
         dismiss(animated: true)
+    }
+
+    private func showStrengthError() {
+        let alert = UIAlertController(
+            title: "Invalid Strength",
+            message: "Please enter a strength value greater than 0.",
+            preferredStyle: .alert
+        )
+        alert.addAction(UIAlertAction(title: "OK", style: .default))
+        present(alert, animated: true)
     }
 }
 
+// MARK: - TableView (Dose rows)
+
 extension AddMedicationViewController {
+
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         doseArray.count
     }
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "DoseCell", for: indexPath) as! DoseTableViewCell
-        cell.delegate = self
+        cell.delegate             = self
         cell.doseNumberLabel.text = "\(indexPath.row + 1)"
-        cell.timePicker.date = doseArray[indexPath.row]
+        cell.timePicker.date      = doseArray[indexPath.row].time
         return cell
     }
- 
+
     func didTapDelete(cell: DoseTableViewCell) {
         guard let indexPath = doseTableView.indexPath(for: cell) else { return }
         doseArray.remove(at: indexPath.row)
@@ -312,4 +421,3 @@ extension AddMedicationViewController {
         evaluateTickButtonState()
     }
 }
-

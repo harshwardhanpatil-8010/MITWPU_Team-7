@@ -10,29 +10,43 @@ class CalenderCollectionViewCell: UICollectionViewCell {
         super.awakeFromNib()
         self.clipsToBounds = false
         self.contentView.clipsToBounds = false
-        
         setupShadow()
     }
     
     private func setupShadow() {
         calenderBackground.layer.cornerRadius = 17.8
-        
         calenderBackground.layer.masksToBounds = false
-        
         calenderBackground.layer.shadowColor = UIColor.black.cgColor
         calenderBackground.layer.shadowOpacity = 0.1
         calenderBackground.layer.shadowRadius = 3
         calenderBackground.layer.shadowOffset = CGSize(width: 0, height: 1)
     }
     
-    func configure(with model: DateModel, isSelected: Bool, isToday: Bool) {
+    private let calendar: Calendar = {
+        var cal = Calendar.current
+        cal.timeZone = TimeZone.current
+        return cal
+    }()
+
+    func configure(with model: DateModel, isSelected: Bool, isToday: Bool, isFuture: Bool) {
         calenderDay.text = model.dayString
         calenderDate.text = model.dateString
+        
+        // Fix #10 - Accessibility
+        self.accessibilityLabel = "\(model.dayString) \(model.dateString)"
+        self.accessibilityTraits = isFuture ? [.notEnabled] : (isSelected ? [.selected] : [])
+        
+        if isFuture {
+            calenderBackground.backgroundColor = .white
+            calenderDay.textColor = .systemGray5
+            calenderDate.textColor = .systemGray5
+            calenderBackground.layer.borderWidth = 0
+            return
+        }
         
         calenderBackground.backgroundColor = .white
         calenderDay.textColor = .lightGray
         calenderDate.textColor = .black
-        
         calenderBackground.layer.borderWidth = 0
         calenderBackground.layer.borderColor = nil
 

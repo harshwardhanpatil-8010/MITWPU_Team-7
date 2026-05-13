@@ -2,6 +2,16 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
+        <key>UIBackgroundModes</key>
+        <array>
+            <string>fetch</string>
+        </array>
+        <key>NSUserNotificationsUsageDescription</key>
+        <string>We send reminders when it's time to take your medication.</string>
+        <key>NSHealthShareUsageDescription</key>
+        <string>This app reads your walking data to track Parkinson's symptoms.</string>
+        <key>NSHealthUpdateUsageDescription</key>
+        <string>This app saves your session health data.</string>
     <key>UIApplicationSceneManifest</key>
     <dict>
         <key>UIApplicationSupportsMultipleScenes</key>
@@ -17,6 +27,7 @@
                     <string>$(PRODUCT_MODULE_NAME).SceneDelegate</string>
                     <key>UISceneStoryboardFile</key>
                     <string>Medication</string>
+                    
                 </dict>
             </array>
         </dict>

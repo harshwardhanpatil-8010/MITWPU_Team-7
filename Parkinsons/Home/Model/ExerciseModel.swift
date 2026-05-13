@@ -11,8 +11,6 @@ import Foundation
 struct ExerciseModel {
     let title: String
     let detail: String
-    //var progressPercentage: Int
-   
     let progressColorHex: String
 }
 

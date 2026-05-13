@@ -1,39 +1,53 @@
 import Foundation
-import UIKit
 
 final class TodayMedicationViewModel {
 
     private(set) var todayDoses: [TodayDoseItem] = []
+    
 
-    func loadTodayMedications(from medications: [Medication]) {
+    func loadTodayMedications(from medications: [Medication], logs: [MedicationDoseLog]) {
+
         todayDoses.removeAll()
 
-        let todayLogs = DoseLogDataStore.shared.logs
-            .filter { $0.day == Date().startOfDay }
+        let todayLogs = logs.filter {
+            Calendar.current.isDate($0.doseDay ?? Date(), inSameDayAs: Date())
+        }
 
         for med in medications {
+
             guard isMedicationDueToday(med) else { continue }
 
-            for dose in med.doses {
+            let doseSet = med.doses as? Set<MedicationDose> ?? []
 
-                let alreadyLogged = todayLogs.contains {
-                    $0.medicationID == med.id &&
-                    Calendar.current.isDate(
-                        $0.scheduledTime,
-                        equalTo: dose.time,
-                        toGranularity: .minute
-                    )
+            for dose in doseSet {
+
+                guard let time = dose.doseTime else { continue }
+
+                // ✅ Check if already logged
+                let isLogged = todayLogs.contains { log in
+                    log.dose?.id == dose.id
                 }
 
-                guard !alreadyLogged else { continue }
+                if isLogged {
+                    continue // ❗ THIS is what removes it from Today
+                }
+
+                let strength = med.medicationStrength
+                var unit = med.medicationUnit ?? ""
+
+                if let dotIndex = unit.firstIndex(of: "•") {
+                    unit = String(unit[..<dotIndex]).trimmingCharacters(in: .whitespaces)
+                }
+
+                let detailString = strength > 0 ? "\(strength)\(unit)" : unit
 
                 let item = TodayDoseItem(
-                    id: UUID(),
-                    medicationID: med.id,
-                    medicationName: med.name,
-                    medicationForm: med.form,
-                    iconName: med.iconName,
-                    scheduledTime: normalizeDoseTime(dose.time),
+                    id: dose.id ?? UUID(),
+                    medicationID: med.id ?? UUID(),
+                    medicationName: med.medicationName ?? "",
+                    medicationForm: detailString,
+                    iconName: med.medicationIconName ?? "tablet",
+                    scheduledTime: normalizeDoseTime(time),
                     logStatus: .none
                 )
 
@@ -48,38 +62,48 @@ final class TodayMedicationViewModel {
 
     func loadLoggedDoses(
         medications: [Medication],
-        logs: [DoseLog],
+        logs: [MedicationDoseLog],
         for day: Date
     ) {
         loggedDoses.removeAll()
 
-        let todayLogs = logs.filter { $0.day == day.startOfDay }
+        let todayLogs = logs.filter {
+            Calendar.current.isDate($0.doseDay ?? Date(), inSameDayAs: day)
+        }
 
         for log in todayLogs {
-            guard let med = medications.first(where: { $0.id == log.medicationID }) else {
-                continue
+
+            guard let med = log.medication else { continue }
+
+            let strength = med.medicationStrength
+            var unit = med.medicationUnit ?? ""
+            
+            if let dotIndex = unit.firstIndex(of: "•") {
+                unit = String(unit[..<dotIndex]).trimmingCharacters(in: .whitespaces)
             }
 
+            let detailString = strength > 0 ? "\(strength)\(unit)" : unit
+
             let item = LoggedDoseItem(
-                id: log.id,
-                medicationName: med.name,
-                medicationForm: med.form,
-                loggedTime: log.loggedAt,
-                status: log.status,
-                iconName: med.iconName
+                id: log.id ?? UUID(),
+                medicationName: med.medicationName ?? "",
+                medicationForm: detailString,
+                loggedTime: log.doseLoggedAt ?? Date(),
+                status: DoseStatus(rawValue: log.doseLogStatus ?? "") ?? .none,
+                iconName: med.medicationIconName ?? "pill"
             )
 
             loggedDoses.append(item)
         }
 
-        loggedDoses.sort { lhs, rhs in
-            lhs.loggedTime > rhs.loggedTime
-        }
+        loggedDoses.sort { $0.loggedTime > $1.loggedTime }
     }
+
 
     private func normalizeDoseTime(_ date: Date) -> Date {
         let cal = Calendar.current
         let comp = cal.dateComponents([.hour, .minute], from: date)
+
         return cal.date(
             bySettingHour: comp.hour ?? 0,
             minute: comp.minute ?? 0,
@@ -89,15 +113,21 @@ final class TodayMedicationViewModel {
     }
 
     private func isMedicationDueToday(_ med: Medication) -> Bool {
-        switch med.schedule {
-        case .everyday:
+
+        let type = med.medicationScheduleType ?? "none"
+        let days = med.medicationScheduleDays as? [Int] ?? []
+
+        switch type {
+
+        case "everyday":
             return true
-        case .weekly(let days):
+
+        case "weekly":
             let weekday = Calendar.current.component(.weekday, from: Date())
             return days.contains(weekday)
-        case .none:
+
+        default:
             return false
         }
     }
 }
-

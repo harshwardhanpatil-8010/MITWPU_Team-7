@@ -1,0 +1,167 @@
+[
+  {
+    "id": "3336511E-A002-4271-9171-87E85DCAF578",
+    "name": "Standing Shoulder Warmup",
+    "reps": 12,
+    "duration": 40,
+    "videoID": "standing_shoulder_warmup",
+    "category": "warmup",
+    "position": "standing",
+    "targetJoints": ["Shoulder"],
+    "voiceInstruction": "Stand tall. Gently roll your shoulders backward in slow circles, keeping your arms relaxed."
+  },
+  {
+    "id": "748CB6A5-8C06-4C98-8A55-87DAF9ADC0C3",
+    "name": "Standing Sideways Stretch",
+    "reps": 12,
+    "duration": 40,
+    "videoID": "standing_sideways_stretch",
+    "category": "cooldown",
+    "position": "standing",
+    "targetJoints": ["Spine"],
+    "voiceInstruction": "Stand tall. Raise one arm overhead and gently lean to the opposite side. Feel the stretch along your side, then switch."
+  },
+  {
+    "id": "0B9D3C03-2259-4C03-897C-BA5B68E25AE5",
+    "name": "Standing Trunk Rotations",
+    "reps": 12,
+    "duration": 40,
+    "videoID": "standing_trunk_rotations",
+    "category": "warmup",
+    "position": "standing",
+    "targetJoints": ["Spine"],
+    "voiceInstruction": "Stand with feet shoulder-width apart. Slowly twist your upper body left and right, keeping your hips facing forward."
+  },
+  {
+    "id": "D766E221-7602-4EB3-AC88-F50EC7FC2918",
+    "name": "Wrist Rotations",
+    "reps": 12,
+    "duration": 40,
+    "videoID": "wrist_rotations",
+    "category": "cooldown",
+    "position": "standing",
+    "targetJoints": ["Wrist"],
+    "voiceInstruction": "Extend both arms in front of you. Slowly rotate your wrists in circles, first inward then outward."
+  },
+  {
+    "id": "E18B52D5-76DE-450E-B9CB-6746D099F364",
+    "name": "Standing March",
+    "reps": 12,
+    "duration": 40,
+    "videoID": "standing_march",
+    "category": "aerobic",
+    "position": "standing",
+    "targetJoints": ["Hip", "Knee"],
+    "voiceInstruction": "Stand tall and march in place, lifting your knees to hip height. Swing your arms naturally with each step."
+  },
+  {
+    "id": "24EFE1C3-2FD8-4304-9C68-3FE6E3B0CC22",
+    "name": "Bicep Curls",
+    "reps": 12,
+    "duration": 40,
+    "videoID": "bicep_curls",
+    "category": "strength",
+    "position": "standing",
+    "targetJoints": ["Elbow"],
+    "voiceInstruction": "Stand tall with arms at your sides. Slowly curl both arms up toward your shoulders, then lower them back down."
+  },
+  {
+    "id": "B03B742A-D21A-449E-B052-64E8D63AE9F9",
+    "name": "Chair Squats",
+    "reps": 12,
+    "duration": 40,
+    "videoID": "chair_squats",
+    "category": "strength",
+    "position": "seated",
+    "targetJoints": ["Hip", "Knee"],
+    "voiceInstruction": "Sit at the edge of your chair. Press through your feet to stand up slowly, then sit back down with control."
+  },
+  {
+    "id": "DDFA910C-9B74-438D-8DFB-6521CBE60E6F",
+    "name": "Neck Tilts Sideways",
+    "reps": 12,
+    "duration": 40,
+    "videoID": "neck_tilts_sideways",
+    "category": "balance",
+    "position": "seated",
+    "targetJoints": ["Neck"],
+    "voiceInstruction": "Sit upright. Gently tilt your head toward one shoulder until you feel a light stretch, then return to center and switch sides."
+  },
+  {
+    "id": "E2F98AE4-940C-4C2A-877E-5A415C7D1EBB",
+    "name": "Palm Stretch",
+    "reps": 12,
+    "duration": 40,
+    "videoID": "palm_stretch",
+    "category": "warmup",
+    "position": "seated",
+    "targetJoints": ["Wrist", "Fingers"],
+    "voiceInstruction": "Extend one arm forward with palm facing out. Use your other hand to gently pull your fingers back. Hold, then switch hands."
+  },
+  {
+    "id": "DE2D3A2E-A706-4EF8-9AAE-B9162DA31A39",
+    "name": "Seated Ankle Stretch",
+    "reps": 12,
+    "duration": 40,
+    "videoID": "seated_ankle_stretch",
+    "category": "cooldown",
+    "position": "seated",
+    "targetJoints": ["Ankle"],
+    "voiceInstruction": "Sit upright with one leg extended. Slowly rotate your ankle in circles, then switch to the other foot."
+  },
+  {
+    "id": "A931AE68-C59D-4238-906D-236415A84D8D",
+    "name": "Seated March",
+    "reps": 12,
+    "duration": 40,
+    "videoID": "seated_march",
+    "category": "aerobic",
+    "position": "seated",
+    "targetJoints": ["Hip"],
+    "voiceInstruction": "Sit upright with feet flat on the floor. Alternate lifting each knee upward in a marching rhythm, keeping your back straight."
+  },
+  {
+    "id": "F516A324-64C8-4A36-AB27-B1B8CB6AED78",
+    "name": "Seated Shoulder Stretch 1",
+    "reps": 12,
+    "duration": 40,
+    "videoID": "seated_shoulder_stretch1",
+    "category": "cooldown",
+    "position": "seated",
+    "targetJoints": ["Shoulder"],
+    "voiceInstruction": "Sit tall. Bring one arm across your chest and use your other arm to gently press it closer. Hold the stretch, then switch sides."
+  },
+  {
+    "id": "0E99FF63-938B-42EE-8581-70506F9D0CBE",
+    "name": "Seated Trunk Rotations",
+    "reps": 12,
+    "duration": 40,
+    "videoID": "seated_trunk_rotations",
+    "category": "warmup",
+    "position": "seated",
+    "targetJoints": ["Spine"],
+    "voiceInstruction": "Sit upright with arms crossed over your chest. Slowly rotate your upper body to one side, then the other, keeping your hips still."
+  },
+  {
+    "id": "D6C8AF6D-9D55-4CEB-A24F-6B68B00E73B1",
+    "name": "Standing Hamstring Curls",
+    "reps": 12,
+    "duration": 40,
+    "videoID": "standing_hamstring_curls",
+    "category": "balance",
+    "position": "standing",
+    "targetJoints": ["Knee", "Hip"],
+    "voiceInstruction": "Stand behind a chair for support. Slowly bend one knee, bringing your heel toward your buttocks, then lower it. Alternate legs."
+  },
+  {
+    "id": "B792C9D1-5F8D-438E-88F0-65644AEAF717",
+    "name": "Standing Shoulder Warmup 2",
+    "reps": 12,
+    "duration": 40,
+    "videoID": "standing_shoulder_warmup2",
+    "category": "warmup",
+    "position": "standing",
+    "targetJoints": ["Shoulder"],
+    "voiceInstruction": "Stand tall. Lift both arms out to the sides and make small forward circles, gradually increasing the circle size."
+  }
+]

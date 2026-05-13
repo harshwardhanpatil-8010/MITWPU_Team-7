@@ -1,13 +1,17 @@
 import UIKit
 import Foundation
+import CoreData
 
 final class MainMedicationViewController: UIViewController {
 
     @IBOutlet weak var medSegment: UISegmentedControl!
     @IBOutlet weak var medicationCollectionView: UICollectionView!
+    @IBOutlet weak var medicationCollectionViewHeightConstraint: NSLayoutConstraint!
     @IBOutlet weak var noMedicationLabel: UIStackView!
     @IBOutlet weak var editButton: UIBarButtonItem!
-    
+    var isPresentedFromProfile: Bool = false
+    @IBOutlet weak var plusButton: UIButton!
+
     enum SegmentType {
         case today
         case myMedication
@@ -41,9 +45,14 @@ final class MainMedicationViewController: UIViewController {
     private var myMedications: [Medication] = []
     
     private var didBecomeActiveObserver: NSObjectProtocol?
+    private var doseLoggedObserver: NSObjectProtocol?
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        if isPresentedFromProfile {
+                    setupProfilePresentationUI()
+                }
+        
         setupCollectionView()
         updateUIForSegment()
         self.definesPresentationContext = true
@@ -58,7 +67,60 @@ final class MainMedicationViewController: UIViewController {
         ) { [weak self] _ in
             self?.loadMedications()
         }
+        NotificationCenter.default.addObserver(
+            forName: NSNotification.Name("MedicationLogged"),
+            object: nil,
+            queue: .main
+        ) { [weak self] _ in
+            self?.loadMedications()
+        }
+
+        
+        let scrollAppearance = UINavigationBarAppearance()
+        scrollAppearance.configureWithTransparentBackground()
+        scrollAppearance.titleTextAttributes = [
+            .font: UIFont.systemFont(ofSize: 32, weight: .bold),
+            .foregroundColor: UIColor.label
+        ]
+
+        let screenWidth = UIScreen.main.bounds.width
+        scrollAppearance.titlePositionAdjustment = UIOffset(horizontal: -(screenWidth / 2) + 110, vertical: 0)
+
+        let standardAppearance = UINavigationBarAppearance()
+        standardAppearance.configureWithDefaultBackground()
+        standardAppearance.titleTextAttributes = [
+            .font: UIFont.systemFont(ofSize: 17, weight: .semibold),
+            .foregroundColor: UIColor.label
+        ]
+        standardAppearance.titlePositionAdjustment = UIOffset(horizontal: 0, vertical: 0)
+
+        navigationController?.navigationBar.prefersLargeTitles = false
+        navigationItem.largeTitleDisplayMode = .never
+
+        navigationController?.navigationBar.standardAppearance = standardAppearance
+        navigationController?.navigationBar.scrollEdgeAppearance = scrollAppearance
+
     }
+
+    override func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
+        updateCollectionViewHeight()
+    }
+    private func setupProfilePresentationUI() {
+       
+            let closeButton = UIBarButtonItem(barButtonSystemItem: .close, target: self, action: #selector(dismissModal))
+            self.navigationItem.leftBarButtonItem = closeButton
+            
+
+            plusButton.isHidden = true
+            
+
+            medSegment.selectedSegmentIndex = 1
+            currentSegment = .myMedication
+        }
+    @objc private func dismissModal() {
+            self.dismiss(animated: true, completion: nil)
+        }
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         loadMedications()
@@ -68,24 +130,42 @@ final class MainMedicationViewController: UIViewController {
         if let observer = didBecomeActiveObserver {
             NotificationCenter.default.removeObserver(observer)
         }
+        if let observer = doseLoggedObserver {
+            NotificationCenter.default.removeObserver(observer)
+        }
+        NotificationCenter.default.removeObserver(self, name: NSNotification.Name("MedicationLogged"), object: nil)
     }
     
     private func loadMedications() {
-        myMedications = MedicationDataStore.shared.medications
+        let request: NSFetchRequest<Medication> = Medication.fetchRequest()
+        do {
+            myMedications = try PersistenceController.shared.viewContext.fetch(request)
+        } catch {
+            print("Failed to fetch medications:", error)
+        }
 
         if currentSegment == .today {
-            todayViewModel.loadTodayMedications(from: myMedications)
-
-            todayViewModel.loadLoggedDoses(
-                medications: myMedications,
-                logs: DoseLogDataStore.shared.logs,
-                for: Date()
+            let logRequest: NSFetchRequest<MedicationDoseLog> = MedicationDoseLog.fetchRequest()
+            let logs = (try? PersistenceController.shared.viewContext.fetch(logRequest)) ?? []
+            todayViewModel.loadTodayMedications(from: myMedications, logs: logs)
+            
+            let startOfDay = Calendar.current.startOfDay(for: Date())
+            let endOfDay = Calendar.current.date(byAdding: .day, value: 1, to: startOfDay)!
+            logRequest.predicate = NSPredicate(
+                format: "doseDay >= %@ AND doseDay < %@",
+                startOfDay as NSDate,
+                endOfDay as NSDate
             )
 
+            
+
+            todayViewModel.loadLoggedDoses(medications: myMedications, logs: logs, for: Date())
             loggedDoses = todayViewModel.loggedDoses
         }
 
         medicationCollectionView.reloadData()
+        medicationCollectionView.layoutIfNeeded()
+        updateCollectionViewHeight()
         updateNoMedicationState()
         updateUIForSegment()
     }
@@ -133,12 +213,20 @@ final class MainMedicationViewController: UIViewController {
         medicationCollectionView.dataSource = self
         medicationCollectionView.delegate = self
         medicationCollectionView.backgroundColor = .clear
+        medicationCollectionView.alwaysBounceVertical = false
+        medicationCollectionView.isScrollEnabled = false
 
         medicationCollectionView.register(UINib(nibName: "TodayMedicationCollectionViewCell", bundle: nil), forCellWithReuseIdentifier: "TodayMedicationCollectionViewCell")
         medicationCollectionView.register(UINib(nibName: "MyMedicationCollectionViewCell", bundle: nil), forCellWithReuseIdentifier: "MyMedicationCollectionViewCell")
         medicationCollectionView.register(UINib(nibName: "LoggedMedicationCollectionViewCell", bundle: nil), forCellWithReuseIdentifier: "LoggedMedicationCollectionViewCell")
         medicationCollectionView.register(UINib(nibName: "MedicationSectionHeaderView", bundle: nil), forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: "MedicationSectionHeaderView")
         medicationCollectionView.register(UINib(nibName: "LoggedEmptyFooterView", bundle: nil), forSupplementaryViewOfKind: UICollectionView.elementKindSectionFooter, withReuseIdentifier: "LoggedEmptyFooterView")
+    }
+
+    private func updateCollectionViewHeight() {
+        let contentHeight = medicationCollectionView.collectionViewLayout.collectionViewContentSize.height
+        guard contentHeight > 0 else { return }
+        medicationCollectionViewHeightConstraint.constant = contentHeight
     }
 
     @IBAction func segmentChanged(_ sender: UISegmentedControl) {
@@ -148,12 +236,20 @@ final class MainMedicationViewController: UIViewController {
     }
 
     private func updateLoggedStatus(_ item: LoggedDoseItem, status: DoseStatus) {
-        DoseLogDataStore.shared.updateLogStatus(
-            logID: item.id,
-            status: status
-        )
+        let context = PersistenceController.shared.viewContext
+
+        let logRequest: NSFetchRequest<MedicationDoseLog> = MedicationDoseLog.fetchRequest()
+        logRequest.predicate = NSPredicate(format: "id == %@", item.id as CVarArg)
+
+        if let log = (try? context.fetch(logRequest))?.first {
+            log.doseLogStatus = status.rawValue
+            log.dose?.doseStatus = status.rawValue
+        }
+
+        PersistenceController.shared.save(context)
         loadMedications()
     }
+
 
     private func updateUIForSegment() {
         if currentSegment == .myMedication {
@@ -191,8 +287,17 @@ extension MainMedicationViewController: UICollectionViewDataSource {
             let header = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: "MedicationSectionHeaderView", for: indexPath) as! MedicationSectionHeaderView
             if indexPath.section == 0 {
                 let hasMoreThanThreeUpcoming = upcomingDoses.count > 3
-                header.configure(title: "Today Medications", actionTitle: hasMoreThanThreeUpcoming ? (isShowingAllUpcoming ? "Show Less" : "Show All") : nil, action: hasMoreThanThreeUpcoming ? .showAll : nil, isExpanded: isShowingAllUpcoming)
-            } else {
+
+                header.configure(
+                    title: "Upcoming",
+                    actionTitle: hasMoreThanThreeUpcoming
+                        ? (isShowingAllUpcoming ? "Show Less" : "Show All")
+                        : nil,
+                    action: hasMoreThanThreeUpcoming ? .showAll : nil,
+                    isExpanded: isShowingAllUpcoming
+                )
+            }
+            else {
                 let isEditEnabled = !loggedDoses.isEmpty
 
                 header.configure(
@@ -292,21 +397,48 @@ extension MainMedicationViewController: UICollectionViewDelegate {
 }
 
 extension MainMedicationViewController {
-    private func updateDose(_ dose: TodayDoseItem, status: DoseStatus) {
-        let log = DoseLog(
-            id: UUID(),
-            medicationID: dose.medicationID,
-            doseID: dose.id,
-            scheduledTime: dose.scheduledTime,
-            loggedAt: Date(),
-            status: status,
-            day: Date().startOfDay
-        )
+   
+        private func updateDose(_ dose: TodayDoseItem, status: DoseStatus) {
 
-        DoseLogDataStore.shared.logDose(log)
-        loadMedications()
-        NotificationCenter.default.post(name: NSNotification.Name("MedicationLogged"), object: nil)
-    }
+            MedicationDoseLogger.shared.log(
+                dose: dose,
+                status: status,
+                medications: myMedications,
+                context: PersistenceController.shared.viewContext
+            )
+
+            if status == .skipped,
+               let med = myMedications.first(where: { $0.id == dose.medicationID }) {
+                let iso = ISO8601DateFormatter()
+                let userInfo: [AnyHashable: Any] = [
+                    MedNotifKey.doseID:        dose.id.uuidString,
+                    MedNotifKey.medID:         dose.medicationID.uuidString,
+                    MedNotifKey.medName:       med.medicationName ?? "Medication",
+                    MedNotifKey.medForm:       med.medicationForm ?? "",
+                    MedNotifKey.medStrength:   Int(med.medicationStrength),
+                    MedNotifKey.medUnit:       med.medicationUnit ?? "",
+                    MedNotifKey.iconName:      med.medicationIconName ?? "tablet1",
+                    MedNotifKey.scheduledTime: iso.string(from: dose.scheduledTime)
+                ]
+                if let payload = MedicationAlarmPayload(userInfo: userInfo) {
+                    MedicationNotificationManager.shared.cancelOnTimeNotification(forDoseID: dose.id)
+                    MedicationNotificationManager.shared.scheduleSkipFollowUp(payload: payload)
+                }
+            } else {
+
+                MedicationNotificationManager.shared.cancelNotifications(forDoseID: dose.id)
+            }
+
+            loadMedications()
+
+            NotificationCenter.default.post(
+                name: NSNotification.Name("MedicationLogged"),
+                object: nil
+            )
+        }
+    
+
+
 }
 
 extension MainMedicationViewController: MedicationSectionHeaderViewDelegate {
@@ -337,8 +469,27 @@ extension MainMedicationViewController: AddMedicationDelegate {
 
 extension MainMedicationViewController: EditLogDelegate {
     func didUpdateLoggedDoses(_ updated: [LoggedDoseItem]) {
-        self.loggedDoses = updated
-        medicationCollectionView.reloadSections(IndexSet(integer: 1))
+        let context = PersistenceController.shared.viewContext
+
+        for item in updated {
+            let logRequest: NSFetchRequest<MedicationDoseLog> = MedicationDoseLog.fetchRequest()
+            logRequest.predicate = NSPredicate(format: "id == %@", item.id as CVarArg)
+
+            if let log = (try? context.fetch(logRequest))?.first {
+                log.doseLogStatus = item.status.rawValue
+                if let coreDose = log.dose {
+                    coreDose.doseStatus = item.status.rawValue
+
+                    
+                    if item.status != .none, let doseID = coreDose.id {
+                        MedicationNotificationManager.shared.cancelNotifications(forDoseID: doseID)
+                    }
+                }
+            }
+        }
+
+        PersistenceController.shared.save(context)
+        NotificationCenter.default.post(name: NSNotification.Name("MedicationLogged"), object: nil)
+        loadMedications()
     }
 }
-

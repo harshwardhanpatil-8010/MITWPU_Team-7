@@ -1,11 +1,11 @@
 
 import UIKit
-import YouTubeiOSPlayerHelper
+
+import AVFoundation
 
 class _0minworkoutViewController: UIViewController {
     
-
-    @IBOutlet weak var playerView: FullScreenYTPlayerView!
+    @IBOutlet weak var playerView: UIView!
     @IBOutlet weak var exerciseName: UILabel!
     @IBOutlet weak var timerLabel: UILabel!
     @IBOutlet weak var repsLabel: UILabel!
@@ -13,7 +13,7 @@ class _0minworkoutViewController: UIViewController {
     @IBOutlet weak var backgroundView: UIView!
     @IBOutlet weak var exerciseCompletedLabel: UILabel!
     @IBOutlet weak var previousButtonOutlet: UIButton!
-    
+
 
     var exercises: [WorkoutExercise] = []
     var currentIndex: Int = 0
@@ -23,11 +23,29 @@ class _0minworkoutViewController: UIViewController {
     var exerciseStartTime: Date?
     var isRevisitingSkipped = false
 
+    private var avPlayer: AVQueuePlayer?
+    private var avPlayerLayer: AVPlayerLayer?
+    private var playerLooper: AVPlayerLooper?
+    var hasHandledSkippedExercises = false
+    var skippedIndicesToRevisit: [Int] = []
+    private var skippedRevisitPointer: Int = 0
+    private var pendingSpeechWorkItem: DispatchWorkItem?
+
+    private var sortedProgressBars: [UIProgressView] {
+        (progressBars ?? []).sorted { $0.frame.origin.x < $1.frame.origin.x }
+    }
+
+    private var unresolvedSkippedIDs: [UUID] {
+        let validExerciseIDs = Set(exercises.map(\.id))
+        let completedIDs = Set(WorkoutManager.shared.completedToday)
+        return WorkoutManager.shared.skippedToday.filter { skippedID in
+            validExerciseIDs.contains(skippedID) && !completedIDs.contains(skippedID)
+        }
+    }
 
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        
         backgroundView.layer.cornerRadius = 35
         backgroundView.clipsToBounds = true
         playerView.isUserInteractionEnabled = false
@@ -35,7 +53,6 @@ class _0minworkoutViewController: UIViewController {
         if exercises.isEmpty {
             exercises = WorkoutManager.shared.getTodayWorkout()
         }
-        
         configureExercise()
     }
     
@@ -43,45 +60,110 @@ class _0minworkoutViewController: UIViewController {
         super.viewWillAppear(animated)
         updateProgressBars()
         updateTopLabels()
+
+        updatePreviousButton()
         tabBarController?.tabBar.isHidden = true
+    }
+    
+    override func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
+        avPlayerLayer?.frame = playerView.bounds
+    }
+
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        pendingSpeechWorkItem?.cancel()
+        avPlayer?.pause()
+        SpeechManager.shared.stop()
+    }
+    
+    private func updatePreviousButton() {
+        let isFirst = currentIndex == 0
+        previousButtonOutlet.isEnabled = !isFirst
+        previousButtonOutlet.alpha     = isFirst ? 0.4 : 1.0
     }
 
 
-    // MARK: - Configuration & UI
     func updateTopLabels() {
         let completedCount = WorkoutManager.shared.completedToday.count
         exerciseCompletedLabel.text = "\(completedCount) of \(exercises.count)"
     }
 
 
+    private func setupAVPlayer() {
+        
+        if avPlayer == nil {
+            avPlayer = AVQueuePlayer()
+            avPlayerLayer = AVPlayerLayer(player: avPlayer)
+            avPlayerLayer?.videoGravity = .resizeAspectFill
+            guard let avPlayerLayer else { return }
+            playerView.layer.addSublayer(avPlayerLayer)
+        }
+        playerLooper = nil
+        avPlayer?.pause()
+        avPlayer?.removeAllItems()
+    }
+
     func configureExercise() {
+        if !isRevisitingSkipped {
+            if let nextPendingIndex = nextMainRunIndex(startingAt: currentIndex) {
+                currentIndex = nextPendingIndex
+            } else {
+                currentIndex = exercises.count
+            }
+        }
+
+
         guard currentIndex < exercises.count else {
             checkForSkippedExercises()
             return
         }
-        
-        previousButtonOutlet.isEnabled = (currentIndex > 0)
-        previousButtonOutlet.alpha = (currentIndex > 0) ? 1.0 : 0.5
-        
+
+        setupAVPlayer()
         let exercise = exercises[currentIndex]
         exerciseName.text = exercise.name
-        
+
+        pendingSpeechWorkItem?.cancel()
+        SpeechManager.shared.stop()
+
+        if let videoName = exercise.videoID,
+           let url = Bundle.main.url(forResource: videoName, withExtension: "mp4") {
+            let asset = AVURLAsset(url: url)
+            let item = AVPlayerItem(asset: asset)
+            playerLooper = AVPlayerLooper(player: avPlayer!, templateItem: item)
+            avPlayer?.play()
+        }
+
         if exercise.category == .warmup || exercise.category == .cooldown {
             repsLabel.text = "-"
             timerLabel.isHidden = false
-            startCountdown(seconds: exercise.reps)
+            startCountdown(seconds: exercise.timerSeconds)
         } else {
             repsLabel.text = "\(exercise.reps)"
             timerLabel.text = "-"
-            
             timer?.invalidate()
             timer = nil
         }
-        
-        
-        playerView.load(withVideoId: exercise.videoID ?? "", playerVars: playerView.getParkinsonsFriendlyVars())
+
+        if let instruction = exercise.voiceInstruction?.trimmingCharacters(in: .whitespacesAndNewlines),
+           !instruction.isEmpty {
+            let exerciseID = exercise.id
+            let workItem = DispatchWorkItem { [weak self] in
+                guard
+                    let self,
+                    self.currentIndex < self.exercises.count,
+                    self.exercises[self.currentIndex].id == exerciseID
+                else { return }
+                SpeechManager.shared.speak(instruction)
+            }
+            pendingSpeechWorkItem = workItem
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.35, execute: workItem)
+        }
+
         updateProgressBars()
         updateTopLabels()
+        updatePreviousButton()
+
         exerciseStartTime = Date()
     }
 
@@ -89,7 +171,7 @@ class _0minworkoutViewController: UIViewController {
         timer?.invalidate()
         timeLeft = seconds
         timerLabel.text = "\(timeLeft)"
-        
+
         timer = Timer.scheduledTimer(withTimeInterval: 1.0, repeats: true) { [weak self] _ in
             guard let self = self else { return }
             if self.timeLeft > 0 {
@@ -101,63 +183,90 @@ class _0minworkoutViewController: UIViewController {
             }
         }
     }
-    
+
+
     @IBAction func doneButtonTapped(_ sender: UIButton) {
         handleCompletion(skipped: false)
     }
-    
+
+
     @IBAction func skipButtonTapped(_ sender: UIButton) {
         handleCompletion(skipped: true)
     }
 
     @IBAction func previousButtonTapped(_ sender: UIButton) {
-        if currentIndex > 0 {
-            currentIndex -= 1
-            let transition = CATransition()
-            transition.duration = 0.4
-            transition.type = .push
-            transition.subtype = .fromLeft
-            view.window?.layer.add(transition, forKey: kCATransition)
-            
-            configureExercise()
-            UISelectionFeedbackGenerator().selectionChanged()
-        }
-    }
 
-    
-    @IBAction func infoButtonTapped(_ sender: Any) {
-        let sb = UIStoryboard(name: "10 minworkout", bundle: nil)
-           if let vc = sb.instantiateViewController(withIdentifier: "InfoModalViewController") as? InfoModalViewController {
-               vc.exercises = exercises
-               vc.currentIndex = currentIndex
-               
-               let nav = UINavigationController(rootViewController: vc)
-               nav.modalPresentationStyle = .pageSheet
-               present(nav, animated: true)
-           }
-        
+        guard currentIndex > 0 else { return }
+        currentIndex -= 1
+
+        timer?.invalidate()
+        timer = nil
+        pendingSpeechWorkItem?.cancel()
+        SpeechManager.shared.stop()
+
+        let transition = CATransition()
+        transition.duration = 0.4
+        transition.type = .push
+        transition.subtype = .fromLeft
+        view.window?.layer.add(transition, forKey: kCATransition)
+
+        setupAVPlayer()
+        let exercise = exercises[currentIndex]
+        exerciseName.text = exercise.name
+
+        if exercise.category == .warmup || exercise.category == .cooldown {
+            repsLabel.text = "-"
+            timerLabel.isHidden = false
+            startCountdown(seconds: exercise.timerSeconds)
+        } else {
+            repsLabel.text = "\(exercise.reps)"
+            timerLabel.text = "-"
+        }
+
+        if let videoName = exercise.videoID,
+           let url = Bundle.main.url(forResource: videoName, withExtension: "mp4") {
+            let asset = AVURLAsset(url: url)
+            let item = AVPlayerItem(asset: asset)
+            playerLooper = AVPlayerLooper(player: avPlayer!, templateItem: item)
+            avPlayer?.play()
+        }
+
+        if let instruction = exercise.voiceInstruction?.trimmingCharacters(in: .whitespacesAndNewlines),
+           !instruction.isEmpty {
+            let exerciseID = exercise.id
+            let workItem = DispatchWorkItem { [weak self] in
+                guard let self,
+                      self.currentIndex < self.exercises.count,
+                      self.exercises[self.currentIndex].id == exerciseID
+                else { return }
+                SpeechManager.shared.speak(instruction)
+            }
+            pendingSpeechWorkItem = workItem
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.35, execute: workItem)
+        }
+
+        exerciseStartTime = Date()
+        updateProgressBars()
+        updateTopLabels()
+        updatePreviousButton()
+        UISelectionFeedbackGenerator().selectionChanged()
     }
 
     @IBAction func closeButtonTapped(_ sender: Any) {
-        let quitConfirmAlert = UIAlertController(
+        let alert = UIAlertController(
+
             title: "Are you sure you want to quit?",
             message: "Your progress will be saved.",
             preferredStyle: .alert
         )
-       
-        let resumeAction = UIAlertAction(title: "Resume", style: .cancel, handler: nil)
-        
-        let quitAction = UIAlertAction(title: "Quit", style: .destructive) { _ in
+
+        alert.addAction(UIAlertAction(title: "Resume", style: .cancel, handler: nil))
+        alert.addAction(UIAlertAction(title: "Quit", style: .destructive) { _ in
             self.showReasonForStoppingAlert()
-        }
-        
-        quitConfirmAlert.addAction(resumeAction)
-        quitConfirmAlert.addAction(quitAction)
-        
-        present(quitConfirmAlert, animated: true)
+        })
+        present(alert, animated: true)
     }
-    
-   
+
 
     private func showReasonForStoppingAlert() {
         let reasonAlert = UIAlertController(
@@ -167,39 +276,47 @@ class _0minworkoutViewController: UIViewController {
         )
         let painAction = UIAlertAction(title: "Physical Pain / Fatigue", style: .default) { _ in
             for i in self.currentIndex..<self.exercises.count {
+
+                let exerciseID = self.exercises[i].id
                 let cat = self.exercises[i].category
-                let reducedReps = (cat == .warmup || cat == .cooldown) ? 20 : 6
-                
-                self.exercises[i].reps = reducedReps
-                WorkoutManager.shared.exercises[i].reps = reducedReps
+                if cat == .warmup || cat == .cooldown {
+
+                    self.exercises[i].duration = 50
+                    if let mi = WorkoutManager.shared.exercises.firstIndex(where: { $0.id == exerciseID }) {
+                        WorkoutManager.shared.exercises[mi].duration = 50
+                    }
+                } else {
+                    self.exercises[i].reps = 6
+                    if let mi = WorkoutManager.shared.exercises.firstIndex(where: { $0.id == exerciseID }) {
+                        WorkoutManager.shared.exercises[mi].reps = 6
+                    }
+                }
             }
+            WorkoutManager.shared.syncSessionPersistence()
             self.navigateToLandingPage()
         }
-        
-        let laterAction = UIAlertAction(title: "Resume Later", style: .destructive) { _ in
-            self.navigateToLandingPage()
-        }
-        
         reasonAlert.addAction(painAction)
-        reasonAlert.addAction(laterAction)
+        reasonAlert.addAction(UIAlertAction(title: "Resume Later", style: .destructive) { _ in
+            self.navigateToLandingPage()
+        })
         reasonAlert.addAction(UIAlertAction(title: "Cancel", style: .cancel))
-        
         present(reasonAlert, animated: true)
     }
 
-    // MARK: - Navigation Helper
     private func navigateToLandingPage() {
-        if let landingVC = self.navigationController?.viewControllers.first(where: { $0 is _0minworkoutLandingPageViewController }) {
-            self.navigationController?.popToViewController(landingVC, animated: true)
+        if let lp = navigationController?.viewControllers.first(where: { $0 is _0minworkoutLandingPageViewController }) {
+            navigationController?.popToViewController(lp, animated: true)
         } else {
-            self.navigationController?.popToRootViewController(animated: true)
+            navigationController?.popToRootViewController(animated: true)
         }
     }
-    
+
     private func handleCompletion(skipped: Bool) {
         recordDuration()
         let currentID = exercises[currentIndex].id
-        
+        let nextIndex = nextExerciseIndex(afterCompletingAt: currentIndex)
+
+
         if skipped {
             if !WorkoutManager.shared.skippedToday.contains(currentID) {
                 WorkoutManager.shared.skippedToday.append(currentID)
@@ -211,7 +328,16 @@ class _0minworkoutViewController: UIViewController {
             WorkoutManager.shared.skippedToday.removeAll { $0 == currentID }
         }
         
-        goToRest()
+
+        if let next = nextIndex {
+            currentIndex = next
+        } else {
+            currentIndex = exercises.count
+        }
+        
+        WorkoutManager.shared.syncSessionPersistence()
+        goToRest(nextExerciseIndex: nextIndex)
+
     }
 
     private func recordDuration() {
@@ -220,13 +346,49 @@ class _0minworkoutViewController: UIViewController {
         }
     }
 
-    func goToRest() {
+
+    private func nextMainRunIndex(startingAt startIndex: Int) -> Int? {
+        guard startIndex < exercises.count else { return nil }
+
+        let completedIDs = Set(WorkoutManager.shared.completedToday)
+        let skippedIDs = Set(WorkoutManager.shared.skippedToday)
+        return exercises.indices[startIndex...].first { index in
+            !completedIDs.contains(exercises[index].id) && !skippedIDs.contains(exercises[index].id)
+        }
+    }
+
+    private func nextExerciseIndex(afterCompletingAt completedIndex: Int) -> Int? {
+        if isRevisitingSkipped {
+            guard let currentSkippedPointer = skippedIndicesToRevisit.firstIndex(of: completedIndex) else {
+                return nil
+            }
+
+            let nextPointer = currentSkippedPointer + 1
+            guard nextPointer < skippedIndicesToRevisit.count else {
+                return nil
+            }
+            return skippedIndicesToRevisit[nextPointer]
+        }
+
+
+        let nextIndex = completedIndex + 1
+        return nextIndex < exercises.count ? nextIndex : nil
+
+    }
+
+    func goToRest(nextExerciseIndex: Int?) {
         timer?.invalidate()
         let sb = UIStoryboard(name: "10 minworkout", bundle: nil)
         if let vc = sb.instantiateViewController(withIdentifier: "RestScreenViewController") as? RestScreenViewController {
-            vc.currentIndex = currentIndex
+
+            vc.currentIndex   = currentIndex   
             vc.totalExercises = exercises.count
-            vc.delegate = self
+            vc.exercises      = exercises
+            vc.delegate       = self
+            vc.isRevisitingSkipped = self.isRevisitingSkipped
+            vc.skippedIndicesToRevisit = self.skippedIndicesToRevisit
+
+
             navigationController?.pushViewController(vc, animated: true)
         }
     }
@@ -241,21 +403,29 @@ class _0minworkoutViewController: UIViewController {
     }
 
 
-
     func updateProgressBars() {
         guard progressBars != nil else { return }
-        for (index, bar) in progressBars.enumerated() {
+        for (index, bar) in sortedProgressBars.enumerated() {
+
             if index < exercises.count {
                 let exerciseID = exercises[index].id
                 if WorkoutManager.shared.completedToday.contains(exerciseID) {
                     bar.progress = 1.0
                     bar.progressTintColor = .systemBlue
+
+                } else if WorkoutManager.shared.skippedToday.contains(exerciseID) {
+                    bar.progress = 1.0
+                    bar.progressTintColor = .systemGray4
+
                 } else if index == currentIndex {
                     bar.progress = 0.5
                     bar.progressTintColor = .systemBlue
                 } else {
                     bar.progress = 0.0
+         bar.progressTintColor = .systemBlue
                 }
+                bar.trackTintColor = .systemGray5
+
                 bar.isHidden = false
             } else {
                 bar.isHidden = true
@@ -264,78 +434,80 @@ class _0minworkoutViewController: UIViewController {
     }
 
     func checkForSkippedExercises() {
-        let skippedIDs = WorkoutManager.shared.skippedToday
-        
-        if !isRevisitingSkipped && !skippedIDs.isEmpty {
-            let alert = UIAlertController(
-                title: "Skipped Exercises",
-                message: "Would you like to try the exercises you skipped?",
-                preferredStyle: .alert
-            )
-            
-            alert.addAction(UIAlertAction(title: "Maybe later", style: .cancel) { [weak self] _ in
-                self?.showCompletion()
-            })
-            
-            alert.addAction(UIAlertAction(title: "Yes", style: .default) { [weak self] _ in
-                guard let self = self else { return }
-                self.isRevisitingSkipped = true
-                
-                if let firstSkipIndex = self.exercises.firstIndex(where: { skippedIDs.contains($0.id) }) {
-                    self.currentIndex = firstSkipIndex
-                    
-                   
-                    if self.navigationController?.topViewController != self {
-                        self.navigationController?.popToViewController(self, animated: true)
-                    }
-                    
-                    self.configureExercise()
-                } else {
-                    self.showCompletion()
-                }
-            })
-            if let topVC = navigationController?.topViewController {
-                topVC.present(alert, animated: true)
-            } else {
-                present(alert, animated: true)
-            }
-        } else {
-            showCompletion()
+
+        let unresolvedSkipped = unresolvedSkippedIDs
+        let staleSkipped = Set(WorkoutManager.shared.skippedToday).subtracting(unresolvedSkipped)
+        if !staleSkipped.isEmpty {
+            WorkoutManager.shared.skippedToday.removeAll { staleSkipped.contains($0) }
+            WorkoutManager.shared.syncSessionPersistence()
         }
+
+        if hasHandledSkippedExercises {
+            showCompletion()
+            return
+        }
+
+
+        let skippedIDs = WorkoutManager.shared.skippedToday
+        guard !skippedIDs.isEmpty else {
+
+            showCompletion()
+            return
+        }
+
+        let alert = UIAlertController(
+            title: "Skipped Exercises",
+            message: "Would you like to try the exercises you skipped?",
+            preferredStyle: .alert
+        )
+        alert.addAction(UIAlertAction(title: "Maybe later", style: .cancel) { [weak self] _ in
+            self?.hasHandledSkippedExercises = true
+            self?.showCompletion()
+        })
+
+        alert.addAction(UIAlertAction(title: "Yes", style: .default) { [weak self] _ in
+            guard let self = self else { return }
+            self.hasHandledSkippedExercises = true
+            self.isRevisitingSkipped = true
+
+            self.skippedIndicesToRevisit = self.exercises.indices.filter {
+                unresolvedSkipped.contains(self.exercises[$0].id)
+            }
+            self.skippedRevisitPointer = 0
+
+            if let first = self.skippedIndicesToRevisit.first {
+                self.currentIndex = first
+                self.configureExercise()
+            } else {
+                self.showCompletion()
+            }
+        })
+
+        present(alert, animated: true)
     }
-    
 }
 
 extension _0minworkoutViewController: RestScreenDelegate {
+
+
     func recordRestDuration(seconds: TimeInterval) {
         totalWorkoutSeconds += seconds
     }
 
-    func restCompleted(nextIndex: Int) {
-        let skippedIDs = WorkoutManager.shared.skippedToday
-        
-        if !isRevisitingSkipped {
-            if nextIndex < exercises.count {
-                currentIndex = nextIndex
-                configureExercise()
-            } else {
-                checkForSkippedExercises()
-            }
-        } else {
-            let nextSkip = exercises.enumerated().first { (index, exercise) in
-                return index > currentIndex && skippedIDs.contains(exercise.id)
-            }
-            
-            if let next = nextSkip {
-                currentIndex = next.offset
-                configureExercise()
-            } else {
-                showCompletion()
-            }
-        }
+
+    func restCompleted(exercises: [WorkoutExercise], nextIndex: Int) {
+        self.exercises    = exercises
+        self.currentIndex = nextIndex
     }
 
+    func restCompletedWorkoutDone() {
+        if isRevisitingSkipped {
+            isRevisitingSkipped = false
+            skippedIndicesToRevisit.removeAll()
+            showCompletion()
+        } else {
+            checkForSkippedExercises()
+        }
+    }
 }
-
-
 

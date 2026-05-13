@@ -1,44 +1,40 @@
+
+
 import UIKit
 
 class TherapeuticGameCell: UICollectionViewCell {
-    
+
     @IBOutlet weak var titleLabel: UILabel!
-    @IBOutlet weak var descriptionLabel: UILabel!
-    @IBOutlet weak var iconImageView: UIImageView!
+
     @IBOutlet weak var backgroundCardView: UIView!
+    @IBOutlet weak var completionLabel: UILabel!
+    @IBOutlet weak var iconImageView: UIImageView!
+    
     
     override func awakeFromNib() {
         super.awakeFromNib()
-        
         self.clipsToBounds = false
         self.contentView.clipsToBounds = false
-        
         setupCardStyle()
     }
-    
-    func setupCardStyle() {
-        let cornerRadius: CGFloat = 23
-        let shadowColor: UIColor = .black
-        let shadowOpacity: Float = 0.15
-        let shadowRadius: CGFloat = 3
-        let shadowOffset: CGSize = .init(width: 0, height: 1)
 
-        backgroundCardView.layer.cornerRadius = cornerRadius
+    private func setupCardStyle() {
+        backgroundCardView.layer.cornerRadius = 23
         backgroundCardView.layer.masksToBounds = false
-
-        backgroundCardView.layer.shadowColor = shadowColor.cgColor
-        backgroundCardView.layer.shadowOpacity = shadowOpacity
-        backgroundCardView.layer.shadowRadius = shadowRadius
-        backgroundCardView.layer.shadowOffset = shadowOffset
+        backgroundCardView.layer.shadowColor = UIColor.black.cgColor
+        backgroundCardView.layer.shadowOpacity = 0.15
+        backgroundCardView.layer.shadowRadius = 3
+        backgroundCardView.layer.shadowOffset = CGSize(width: 0, height: 1)
     }
-    
-    func configure(with model: TherapeuticGameModel) {
+
+    func configure(with model: TherapeuticGameModel, completionText: String, isTodayCompleted: Bool) {
         titleLabel.text = model.title
-        descriptionLabel.text = model.description
+
+        completionLabel.text = completionText
         
-        if let imageName = model.iconName {
-            iconImageView.image = UIImage(named: imageName)
-            iconImageView.tintColor = nil
-        }
+        iconImageView.image = UIImage(systemName: model.iconName ?? "")
+             iconImageView.tintColor = model.iconColor
     }
 }
+
+
