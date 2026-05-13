@@ -10,11 +10,27 @@ enum SymptomType: Int16, CaseIterable, Codable {
     case lossOfBalance
     case insomnia
 
+    var sortOrder: Int {
+        switch self {
+        case .slowedMovement: return 1
+        case .tremors: return 2
+        case .lossOfBalance: return 3
+        case .facialStiffness: return 4
+        case .bodyStiffness: return 5
+        case .gaitDisturbance: return 6
+        case .insomnia: return 7
+        }
+    }
+
+    static var allSorted: [SymptomType] {
+        return allCases.sorted { $0.sortOrder < $1.sortOrder }
+    }
+
     var displayName: String {
         switch self {
         case .slowedMovement: return "Slowed Movement"
         case .gaitDisturbance: return "Gait Disturbance"
-        case .tremors: return "Tremors"
+        case .tremors: return "Tremor"
         case .facialStiffness: return "Facial Stiffness"
         case .bodyStiffness: return "Body Stiffness"
         case .lossOfBalance: return "Loss of Balance"
@@ -56,6 +72,7 @@ struct SymptomRating: Codable, Identifiable {
     let name: String
     let iconName: String?
     var selectedIntensity: Intensity?
+    var type: SymptomType?
 
     enum Intensity: Int16, Codable, CaseIterable {
         case mild = 0
@@ -72,12 +89,14 @@ struct SymptomRating: Codable, Identifiable {
         id: UUID = UUID(),
         name: String,
         iconName: String? = nil,
-        selectedIntensity: Intensity? = nil
+        selectedIntensity: Intensity? = nil,
+        type: SymptomType? = nil
     ) {
         self.id = id
         self.name = name
         self.iconName = iconName
         self.selectedIntensity = selectedIntensity
+        self.type = type
     }
 }
 
@@ -229,8 +248,13 @@ struct SymptomLogStore {
                 iconName: type.iconName,
                 selectedIntensity: SymptomRating.Intensity(
                     rawValue: entity.severity
-                )
+                ),
+                type: type
             )
+        }.sorted { (r1, r2) -> Bool in
+            let s1 = r1.type?.sortOrder ?? Int.max
+            let s2 = r2.type?.sortOrder ?? Int.max
+            return s1 < s2
         }
 
         return SymptomLogEntry(

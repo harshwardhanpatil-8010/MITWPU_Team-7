@@ -177,15 +177,14 @@ class SymptomViewController: UIViewController, SymptomRatingCellDelegate {
     }
 
     private func loadDefaultSymptoms() {
-        currentDayLogs = [
-                    SymptomRating(name: "Slowed Movement", iconName: "SlowedMovement", selectedIntensity: .notPresent),
-                    SymptomRating(name: "Tremor", iconName: "tremor", selectedIntensity: .notPresent),
-                    SymptomRating(name: "Loss of Balance", iconName: "lossOfBalance", selectedIntensity: .notPresent),
-                    SymptomRating(name: "Facial Stiffness", iconName: "stiffFace", selectedIntensity: .notPresent),
-                    SymptomRating(name: "Body Stiffness", iconName: "bodyStiffness", selectedIntensity: .notPresent),
-                    SymptomRating(name: "Gait Disturbance", iconName: "walking", selectedIntensity: .notPresent),
-                    SymptomRating(name: "Insomnia", iconName: "insomnia", selectedIntensity: .notPresent)
-                ]
+        currentDayLogs = SymptomType.allSorted.map { type in
+            SymptomRating(
+                name: type.displayName,
+                iconName: type.iconName,
+                selectedIntensity: .notPresent,
+                type: type
+            )
+        }
     }
 
     @IBAction func editAndSaveTapped(_ sender: UIButton) {

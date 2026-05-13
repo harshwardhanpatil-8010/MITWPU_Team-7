@@ -25,15 +25,14 @@ class SymptomLogDetailViewController: UIViewController {
     }
 
     private func loadDefaultSymptoms() {
-        self.symptoms = [
-                    SymptomRating(name: "Slowed Movement", iconName: "ColourTortoise"),
-                    SymptomRating(name: "Tremor", iconName: "ColourTremor"),
-                    SymptomRating(name: "Loss of Balance", iconName: "ColourDizzy"),
-                    SymptomRating(name: "Facial Stiffness", iconName: "stiffFace"),
-                    SymptomRating(name: "Body Stiffness", iconName: "ColourBodyStiff"),
-                    SymptomRating(name: "Gait Disturbance", iconName: "ColourWalking"),
-                    SymptomRating(name: "Insomnia", iconName: "ColourInsomnia")
-                ]
+        self.symptoms = SymptomType.allSorted.map { type in
+            SymptomRating(
+                name: type.displayName,
+                iconName: type.iconName,
+                selectedIntensity: .notPresent,
+                type: type
+            )
+        }
     }
 
     private func setupTableViewFromStoryboard() {

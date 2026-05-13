@@ -54,8 +54,13 @@ final class SymptomLogManager {
                 return SymptomRating(
                     name: symptom.displayName,
                     iconName: symptom.iconName,
-                    selectedIntensity: SymptomRating.Intensity(rawValue: severity.rawValue)
+                    selectedIntensity: SymptomRating.Intensity(rawValue: severity.rawValue),
+                    type: symptom
                 )
+            }.sorted { (r1, r2) -> Bool in
+                let s1 = r1.type?.sortOrder ?? Int.max
+                let s2 = r2.type?.sortOrder ?? Int.max
+                return s1 < s2
             }
 
             return SymptomLogEntry(date: date, ratings: ratings)
