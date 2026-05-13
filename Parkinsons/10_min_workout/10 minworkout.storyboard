@@ -277,6 +277,7 @@
                     <connections>
                         <outlet property="collectionView" destination="8Ik-1f-ItZ" id="K0F-dX-F1i"/>
                         <outlet property="exerciseNumberLabel" destination="EZX-J2-hy3" id="3h1-tO-cTJ"/>
+                        <outlet property="exercisesHeaderLabel" destination="jcs-0T-Vqw" id="z1e-WF-Ftw"/>
                         <outlet property="progressContainer" destination="bmk-RZ-sGy" id="bSx-gd-ena"/>
                         <outlet property="startButtonOutlet" destination="xbg-g6-n8k" id="9Nw-5h-WIx"/>
                     </connections>

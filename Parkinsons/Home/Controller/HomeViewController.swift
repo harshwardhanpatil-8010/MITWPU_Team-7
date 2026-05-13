@@ -56,7 +56,9 @@ class HomeViewController: UIViewController, UICollectionViewDelegate {
     var therapeuticGamesData: [TherapeuticGameModel] = [
         TherapeuticGameModel(title: "Mimic the Emoji", description: "Complete your daily challenge!", iconName: "face.smiling", iconColor: .systemOrange),
         TherapeuticGameModel(title: "Match the Cards", description: "Complete your daily challenge!", iconName: "brain.fill", iconColor: .systemPurple),
-        TherapeuticGameModel(title: "Whack-a-Mole", description: "Complete your daily challenge!", iconName: "hand.tap.fill", iconColor: .systemGreen)
+
+        TherapeuticGameModel(title: "StillSphere", description: "Complete your daily challenge!", iconName: "gyroscope", iconColor: .systemGreen)
+
     ]
 
     private let floatingBar: UIView = {
@@ -358,6 +360,10 @@ class HomeViewController: UIViewController, UICollectionViewDelegate {
 
     private func handleGamesSelection(at row: Int) {
         switch row {
+        case 2:
+            let storyboard = UIStoryboard(name: "StillSphere", bundle: nil)
+            guard let vc = storyboard.instantiateViewController(withIdentifier: "StillSphereLandingViewController") as? StillSphereLandingViewController else { return }
+            navigationController?.pushViewController(vc, animated: true)
         case 1:
             let storyboard = UIStoryboard(name: "Match the Cards", bundle: nil)
             guard let vc = storyboard.instantiateViewController(withIdentifier: "matchTheCardsLandingPage") as? LevelSelectionViewController else { return }
@@ -540,6 +546,14 @@ extension HomeViewController: UICollectionViewDataSource {
                 }.count
                 completionText = "\(completedCount)/\(daysInMonth) daily challenges completed"
                 isTodayCompleted = DailyGameManager.shared.isCompleted(date: today)
+
+            case 2:
+                let completedCount = (0..<daysInMonth).filter { offset in
+                    guard let date = calendar.date(byAdding: .day, value: offset, to: firstDayOfMonth) else { return false }
+                    return StillSphereManager.shared.isCompleted(date: calendar.startOfDay(for: date))
+                }.count
+                completionText = "\(completedCount)/\(daysInMonth) daily challenges completed"
+                isTodayCompleted = StillSphereManager.shared.isCompleted(date: today)
 
             default:
                 completionText = ""

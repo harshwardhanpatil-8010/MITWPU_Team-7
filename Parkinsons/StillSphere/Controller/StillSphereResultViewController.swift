@@ -1,0 +1,99 @@
+// StillSphereResultViewController.swift
+// Parkinsons
+
+import UIKit
+
+class StillSphereResultViewController: UIViewController {
+
+    @IBOutlet weak var titleLabel: UILabel!
+    @IBOutlet weak var messageLabel: UILabel!
+    @IBOutlet weak var steadinessValueLabel: UILabel!
+    @IBOutlet weak var durationValueLabel: UILabel!
+    @IBOutlet weak var doneButton: UIButton!
+    
+    var steadinessScore: Double = 0
+    var duration: TimeInterval = 0
+
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        setupUI()
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        tabBarController?.tabBar.isHidden = true
+    }
+
+    private func setupUI() {
+        navigationItem.hidesBackButton = true
+        view.backgroundColor = .systemBackground
+        
+        titleLabel.text = "Session Complete"
+        titleLabel.font = .systemFont(ofSize: 32, weight: .bold)
+        
+        let messages = [
+            "Wonderful balance!",
+            "Great steady movement!",
+            "Nice calm corrections!",
+            "You're improving consistently!"
+        ]
+        messageLabel.text = messages.randomElement()
+        messageLabel.textColor = .secondaryLabel
+        
+        steadinessValueLabel.text = String(format: "%.0f%%", steadinessScore)
+        steadinessValueLabel.textColor = .systemGreen
+        
+        let minutes = Int(duration) / 60
+        let seconds = Int(duration) % 60
+        durationValueLabel.text = String(format: "%02d:%02d", minutes, seconds)
+        
+        doneButton.layer.cornerRadius = 12
+        doneButton.backgroundColor = .systemGreen
+        doneButton.setTitleColor(.white, for: .normal)
+        
+        // Trigger confetti or similar reinforcement if available
+        showConfetti()
+    }
+    
+    private func showConfetti() {
+        let emitter = CAEmitterLayer()
+        emitter.emitterPosition = CGPoint(x: view.bounds.midX, y: -10)
+        emitter.emitterShape = .line
+        emitter.emitterSize = CGSize(width: view.bounds.width, height: 1)
+        
+        let colors: [UIColor] = [.systemGreen, .systemTeal, .systemBlue, .white]
+        let cells: [CAEmitterCell] = colors.map { color in
+            let cell = CAEmitterCell()
+            cell.birthRate = 4
+            cell.lifetime = 5.0
+            cell.velocity = 150
+            cell.velocityRange = 50
+            cell.emissionLongitude = .pi
+            cell.emissionRange = .pi / 4
+            cell.spin = 2
+            cell.spinRange = 3
+            cell.scale = 0.1
+            cell.scaleRange = 0.05
+            cell.color = color.cgColor
+            
+            // Create a small circle image for the particle
+            let size = CGSize(width: 10, height: 10)
+            UIGraphicsBeginImageContextWithOptions(size, false, 0)
+            let context = UIGraphicsGetCurrentContext()!
+            context.setFillColor(UIColor.white.cgColor)
+            context.fillEllipse(in: CGRect(origin: .zero, size: size))
+            let image = UIGraphicsGetImageFromCurrentImageContext()!
+            UIGraphicsEndImageContext()
+            
+            cell.contents = image.cgImage
+            return cell
+        }
+        
+        emitter.emitterCells = cells
+        view.layer.addSublayer(emitter)
+    }
+
+    @IBAction func doneTapped(_ sender: Any) {
+        navigationController?.popToRootViewController(animated: true)
+    }
+}
