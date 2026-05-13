@@ -22,6 +22,16 @@
 		D0E11A9F2F0FD17F0018CE58 /* (null) in Frameworks */ = {isa = PBXBuildFile; };
 /* End PBXBuildFile section */
 
+/* Begin PBXContainerItemProxy section */
+		84E97E042FB4523E0057D236 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 19423B652ED6BD590004C99E /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 19423B6C2ED6BD590004C99E;
+			remoteInfo = ParkyCare;
+		};
+/* End PBXContainerItemProxy section */
+
 /* Begin PBXFileReference section */
 		1905DBA72F3DF8A900EA6419 /* Medication+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Medication+CoreDataClass.swift"; sourceTree = "<group>"; };
 		1905DBA82F3DF8A900EA6419 /* Medication+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Medication+CoreDataProperties.swift"; sourceTree = "<group>"; };
@@ -36,6 +46,8 @@
 		198FFF6B2F50082A004949FC /* CDSymptomLog+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CDSymptomLog+CoreDataProperties.swift"; sourceTree = "<group>"; };
 		19C7FADE2F1F4DA600A3A885 /* ARKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ARKit.framework; path = System/Library/Frameworks/ARKit.framework; sourceTree = SDKROOT; };
 		19C7FAE02F1F4DB700A3A885 /* RealityKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = RealityKit.framework; path = System/Library/Frameworks/RealityKit.framework; sourceTree = SDKROOT; };
+		84E97DFE2FB4523E0057D236 /* ParkyCareUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = ParkyCareUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		84E97E092FB453D60057D236 /* knowledge-base-template.xctestplan */ = {isa = PBXFileReference; lastKnownFileType = text; name = "knowledge-base-template.xctestplan"; path = "../../Downloads/knowledge-base-template.xctestplan"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
@@ -57,6 +69,11 @@
 			path = Parkinsons;
 			sourceTree = "<group>";
 		};
+		84E97DFF2FB4523E0057D236 /* ParkyCareUITests */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			path = ParkyCareUITests;
+			sourceTree = "<group>";
+		};
 /* End PBXFileSystemSynchronizedRootGroup section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -70,12 +87,20 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		84E97DFB2FB4523E0057D236 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
 		19423B642ED6BD590004C99E = {
 			isa = PBXGroup;
 			children = (
+				84E97E092FB453D60057D236 /* knowledge-base-template.xctestplan */,
 				198FFF6A2F50082A004949FC /* CDSymptomLog+CoreDataClass.swift */,
 				198FFF6B2F50082A004949FC /* CDSymptomLog+CoreDataProperties.swift */,
 				198FFF662F5003F9004949FC /* RhythmicSession+CoreDataClass.swift */,
@@ -87,6 +112,7 @@
 				1905DBAB2F3DF8A900EA6419 /* MedicationDoseLog+CoreDataClass.swift */,
 				1905DBAC2F3DF8A900EA6419 /* MedicationDoseLog+CoreDataProperties.swift */,
 				19423B6F2ED6BD590004C99E /* Parkinsons */,
+				84E97DFF2FB4523E0057D236 /* ParkyCareUITests */,
 				19C7FADD2F1F4DA500A3A885 /* Frameworks */,
 				19423B6E2ED6BD590004C99E /* Products */,
 			);
@@ -96,6 +122,7 @@
 			isa = PBXGroup;
 			children = (
 				19423B6D2ED6BD590004C99E /* ParkyCare.app */,
+				84E97DFE2FB4523E0057D236 /* ParkyCareUITests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -134,6 +161,29 @@
 			productReference = 19423B6D2ED6BD590004C99E /* ParkyCare.app */;
 			productType = "com.apple.product-type.application";
 		};
+		84E97DFD2FB4523E0057D236 /* ParkyCareUITests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 84E97E062FB4523E0057D236 /* Build configuration list for PBXNativeTarget "ParkyCareUITests" */;
+			buildPhases = (
+				84E97DFA2FB4523E0057D236 /* Sources */,
+				84E97DFB2FB4523E0057D236 /* Frameworks */,
+				84E97DFC2FB4523E0057D236 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				84E97E052FB4523E0057D236 /* PBXTargetDependency */,
+			);
+			fileSystemSynchronizedGroups = (
+				84E97DFF2FB4523E0057D236 /* ParkyCareUITests */,
+			);
+			name = ParkyCareUITests;
+			packageProductDependencies = (
+			);
+			productName = ParkyCareUITests;
+			productReference = 84E97DFE2FB4523E0057D236 /* ParkyCareUITests.xctest */;
+			productType = "com.apple.product-type.bundle.ui-testing";
+		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
@@ -141,11 +191,15 @@
 			isa = PBXProject;
 			attributes = {
 				BuildIndependentTargetsInParallel = 1;
-				LastSwiftUpdateCheck = 2610;
+				LastSwiftUpdateCheck = 2630;
 				LastUpgradeCheck = 2610;
 				TargetAttributes = {
 					19423B6C2ED6BD590004C99E = {
 						CreatedOnToolsVersion = 26.1.1;
+					};
+					84E97DFD2FB4523E0057D236 = {
+						CreatedOnToolsVersion = 26.3;
+						TestTargetID = 19423B6C2ED6BD590004C99E;
 					};
 				};
 			};
@@ -166,12 +220,20 @@
 			projectRoot = "";
 			targets = (
 				19423B6C2ED6BD590004C99E /* ParkyCare */,
+				84E97DFD2FB4523E0057D236 /* ParkyCareUITests */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
 		19423B6B2ED6BD590004C99E /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		84E97DFC2FB4523E0057D236 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -198,7 +260,22 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		84E97DFA2FB4523E0057D236 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		84E97E052FB4523E0057D236 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 19423B6C2ED6BD590004C99E /* ParkyCare */;
+			targetProxy = 84E97E042FB4523E0057D236 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
 
 /* Begin XCBuildConfiguration section */
 		19423B812ED6BD5A0004C99E /* Debug */ = {
@@ -412,6 +489,48 @@
 			};
 			name = Release;
 		};
+		84E97E072FB4523E0057D236 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 6CP4H6BAQW;
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 26.2;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.MyOrganization.ParkyCareUITests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				STRING_CATALOG_GENERATE_SYMBOLS = NO;
+				SWIFT_APPROACHABLE_CONCURRENCY = YES;
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_TARGET_NAME = ParkyCare;
+			};
+			name = Debug;
+		};
+		84E97E082FB4523E0057D236 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 6CP4H6BAQW;
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 26.2;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.MyOrganization.ParkyCareUITests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				STRING_CATALOG_GENERATE_SYMBOLS = NO;
+				SWIFT_APPROACHABLE_CONCURRENCY = YES;
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_TARGET_NAME = ParkyCare;
+			};
+			name = Release;
+		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
@@ -429,6 +548,15 @@
 			buildConfigurations = (
 				19423B812ED6BD5A0004C99E /* Debug */,
 				19423B822ED6BD5A0004C99E /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		84E97E062FB4523E0057D236 /* Build configuration list for PBXNativeTarget "ParkyCareUITests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				84E97E072FB4523E0057D236 /* Debug */,
+				84E97E082FB4523E0057D236 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;

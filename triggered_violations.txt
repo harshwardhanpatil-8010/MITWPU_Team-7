@@ -1,0 +1,17 @@
+ 274 identifier_name
+ 159 line_length
+  44 force_cast
+  20 function_body_length
+  10 type_body_length
+   9 file_length
+   8 type_name
+   6 multiple_closures_with_trailing_closure
+   5 cyclomatic_complexity
+   4 vertical_parameter_alignment
+   3 large_tuple
+   2 function_parameter_count
+   2 _:
+   1 void_function_in_ternary
+   1 unused_enumerated
+   1 for_where
+   1 
