@@ -79,7 +79,7 @@ struct EmojiData {
                     let puckerLower = anchor.blendShapes[.mouthLowerDownLeft]?.floatValue ?? 0
                     return frownL > 0.5 && frownR > 0.5 || puckerLower > 0.4
                 }),
-                
+
                 EmojiChallenge(emoji: "😗", name: "Suck in Cheeks", check: { anchor in
                     let cheekSuck = anchor.blendShapes[.cheekPuff]?.floatValue ?? 0
                     let pressL = anchor.blendShapes[.mouthPressLeft]?.floatValue ?? 0
@@ -99,8 +99,7 @@ struct EmojiData {
                     let dimpleL = anchor.blendShapes[.cheekSquintLeft]?.floatValue ?? 0
                     let dimpleR = anchor.blendShapes[.cheekSquintRight]?.floatValue ?? 0
                     return dimpleL > 0.5 && dimpleR > 0.5
-                }),
-                
-            
+                })
+
     ]
 }

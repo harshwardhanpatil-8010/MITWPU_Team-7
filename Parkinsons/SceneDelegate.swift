@@ -28,18 +28,16 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         if hasCompletedOnboarding {
             let storyboard = UIStoryboard(name: "Home", bundle: nil)
             let tabBarVC = storyboard.instantiateViewController(withIdentifier: "HomeTabBar") as! UITabBarController
-            
 
             tabBarVC.view.frame = window.bounds
             tabBarVC.selectedIndex = 0
-            
 
             if let firstTab = tabBarVC.viewControllers?.first {
                 firstTab.loadViewIfNeeded()
             }
-            
+
             window.rootViewController = tabBarVC
-            
+
         } else {
             let storyboard = UIStoryboard(name: "Login", bundle: nil)
             let featureVC = storyboard.instantiateViewController(withIdentifier: "OnboardingFeatureViewController")
@@ -61,7 +59,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     }
 
     func sceneWillEnterForeground(_ scene: UIScene) {
-        
+
         MedicationNotificationManager.shared.rescheduleAll()
     }
 

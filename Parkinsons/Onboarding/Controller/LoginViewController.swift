@@ -14,9 +14,7 @@ class LoginViewController: UIViewController {
             super.viewDidLoad()
             logoView.layer.cornerRadius = 100
             logoView.clipsToBounds = true
-            
+
         }
-
-
 
 }

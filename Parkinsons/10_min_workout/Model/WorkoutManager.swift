@@ -1,4 +1,3 @@
-
 import Foundation
 import CoreData
 import CryptoKit
@@ -20,8 +19,8 @@ class WorkoutManager {
     func currentMedState() -> MedState {
         let adherence = medicationAdherenceSnapshot()
         return .snapshot(
-            hasMeds:   hasMedicationsAdded,
-            allTaken:  allMedsTaken,
+            hasMeds: hasMedicationsAdded,
+            allTaken: allMedsTaken,
             effectRaw: String(describing: getMedicationEffect()),
             adherenceRaw: adherence.signature
         )
@@ -30,9 +29,7 @@ class WorkoutManager {
     var userWantsToPushLimits: Bool = false
     var exercises: [WorkoutExercise] = []
     var completedToday: [UUID] = []
-    var skippedToday:   [UUID] = []
-
-
+    var skippedToday: [UUID] = []
 
     private let lastWorkoutCompletionDateKey = "lastWorkoutCompletionDate"
     private let lastWorkoutPositionKey       = "lastWorkoutPosition"
@@ -41,8 +38,6 @@ class WorkoutManager {
     private let workoutSessionExercisesKey   = "workoutSessionExercises"
     private let workoutSessionCompletedKey   = "workoutSessionCompletedIDs"
     private let workoutSessionSkippedKey     = "workoutSessionSkippedIDs"
-
-
 
     enum Feedback {
         case easy
@@ -72,11 +67,9 @@ class WorkoutManager {
         }
     }
 
-
     var diseaseStage: Int {
         return UserDefaults.standard.integer(forKey: "diseaseStage")
     }
-
 
     private var lastWorkoutCompletionDate: Date? {
         get { UserDefaults.standard.object(forKey: lastWorkoutCompletionDateKey) as? Date }
@@ -91,7 +84,6 @@ class WorkoutManager {
     func setWorkoutCompleted() {
         lastWorkoutCompletionDate = Date()
     }
-
 
     func syncSessionPersistence() {
         persistCurrentSession()
@@ -151,7 +143,6 @@ class WorkoutManager {
         }
     }
 
-
     func saveTodayPosition(_ position: ExercisePosition) {
         UserDefaults.standard.set(position.rawValue, forKey: lastWorkoutPositionKey)
     }
@@ -160,7 +151,6 @@ class WorkoutManager {
         guard let raw = UserDefaults.standard.string(forKey: lastWorkoutPositionKey) else { return nil }
         return ExercisePosition(rawValue: raw)
     }
-
 
     func saveFeedback(_ value: Int) {
         UserDefaults.standard.set(value, forKey: "lastWorkoutFeedback")
@@ -317,7 +307,6 @@ class WorkoutManager {
         ) ?? Date()
     }
 
-
     func generateDailyWorkout(for position: ExercisePosition) {
         rollOverSessionIfNeeded()
         saveTodayPosition(position)
@@ -340,7 +329,6 @@ class WorkoutManager {
         saveCurrentJSONHash()
         persistCurrentSession()
     }
-
 
     private func buildExerciseSet(
         position: ExercisePosition,
@@ -382,7 +370,6 @@ class WorkoutManager {
         return dailySet
     }
 
-
     private func transform(
         _ exercise: WorkoutExercise,
         position: ExercisePosition,
@@ -399,7 +386,6 @@ class WorkoutManager {
         return ex
     }
 
-
     func getTodayWorkout() -> [WorkoutExercise] {
         rollOverSessionIfNeeded()
         if exercises.isEmpty || bundleJSONChanged() {
@@ -407,7 +393,6 @@ class WorkoutManager {
         }
         return exercises
     }
-
 
     private func calculateAdjustment(
         previous: ExercisePosition?,
@@ -419,8 +404,8 @@ class WorkoutManager {
         if previous == today || (previous == .seated && today == .standing) || (previous == .standing && today == .seated) {
             switch feedback {
             case .easy:    return ( 2, -10)
-            case .perfect: return ( 0,   0)
-            case .hard:    return (-1,  10)
+            case .perfect: return ( 0, 0)
+            case .hard:    return (-1, 10)
             }
         }
         return (0, 0)
@@ -445,7 +430,6 @@ class WorkoutManager {
         return modified
     }
 
-
     private func applyMinimumIntensity(to exercise: WorkoutExercise) -> WorkoutExercise {
         var modified = exercise
         switch exercise.category {
@@ -456,7 +440,6 @@ class WorkoutManager {
         }
         return modified
     }
-
 
     private func bundleJSONChanged() -> Bool {
         guard let currentHash = currentBundleJSONHash() else { return false }
@@ -477,7 +460,6 @@ class WorkoutManager {
         }
     }
 
-
     private func getStageFilteredLibrary(for stage: Int) -> [WorkoutExercise] {
         _ = stage
         return getFullLibrary()
@@ -492,7 +474,6 @@ class WorkoutManager {
             return []
         }
     }
-
 
     func resetDailyProgress() {
         completedToday.removeAll()
@@ -511,4 +492,3 @@ class WorkoutManager {
         generateDailyWorkout(for: loadLastWorkoutPosition() ?? .seated)
     }
 }
-

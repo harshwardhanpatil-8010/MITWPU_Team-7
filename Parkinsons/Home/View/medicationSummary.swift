@@ -1,7 +1,7 @@
 import UIKit
 
 class MedicationSummaryCell: UICollectionViewCell {
-    
+
     @IBOutlet weak var timeLabel: UILabel!
     @IBOutlet weak var amPmLabel: UILabel!
     @IBOutlet weak var nameLabel: UILabel!
@@ -9,15 +9,15 @@ class MedicationSummaryCell: UICollectionViewCell {
     @IBOutlet weak var statusLabel: UILabel!
     @IBOutlet weak var medicationIconImageView: UIImageView!
     @IBOutlet weak var backgroundCardView: UIView!
-    
+
     static let reuseIdentifier = "MedicationSummaryCell"
-    
+
     override func awakeFromNib() {
         super.awakeFromNib()
         self.clipsToBounds = false
         self.contentView.clipsToBounds = false
         setupCardStyle()
-        
+
         medicationIconImageView.layer.cornerRadius = medicationIconImageView.frame.height / 2.0
         medicationIconImageView.clipsToBounds = true
     }
@@ -40,16 +40,16 @@ class MedicationSummaryCell: UICollectionViewCell {
         ).cgPath
         medicationIconImageView.layer.cornerRadius = medicationIconImageView.frame.height / 2.0
     }
-    
+
     func configure(with model: MedicationModel, totalTaken: Int, totalScheduled: Int) {
         let timeParts = model.time.split(separator: " ")
         timeLabel.text = String(timeParts.first ?? "9:00")
         amPmLabel.text = String(timeParts.last ?? "AM")
-        
+
         nameLabel.text = model.name
         detailLabel.text = model.detail
         medicationIconImageView.image = UIImage(named: model.iconName)
-        
+
         if model.status == .skipped {
             statusLabel.attributedText = imageAttachment(systemName: "xmark", color: .systemRed)
             statusLabel.textColor = .systemRed
@@ -72,12 +72,12 @@ class MedicationSummaryCell: UICollectionViewCell {
 
     func imageAttachment(systemName: String, color: UIColor) -> NSAttributedString {
         let attachment = NSTextAttachment()
-        
+
         let config = UIImage.SymbolConfiguration(pointSize: 32, weight: .regular)
         let image = UIImage(systemName: systemName, withConfiguration: config)?.withTintColor(color, renderingMode: .alwaysOriginal)
-        
+
         attachment.image = image
-        
+
         return NSAttributedString(attachment: attachment)
     }
 }

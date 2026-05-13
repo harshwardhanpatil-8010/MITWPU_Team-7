@@ -1,4 +1,3 @@
-
 import UIKit
 
 class _0minworkoutLandingPageViewController: UIViewController, UICollectionViewDelegate {
@@ -110,14 +109,10 @@ class _0minworkoutLandingPageViewController: UIViewController, UICollectionViewD
         tabBarController?.tabBar.isHidden = true
     }
 
-
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
         tabBarController?.tabBar.isHidden = false
     }
-
-
-
 
     private func loadHistoricalWorkout() {
         guard let displayDate else { return }
@@ -210,7 +205,6 @@ class _0minworkoutLandingPageViewController: UIViewController, UICollectionViewD
         }
     }
 
-
     private func refreshWorkoutList() {
         self.exercises = WorkoutManager.shared.exercises
         collectionView.reloadData()
@@ -227,8 +221,8 @@ class _0minworkoutLandingPageViewController: UIViewController, UICollectionViewD
         let completedSet = Set(WorkoutManager.shared.completedToday)
         let skippedSet   = Set(WorkoutManager.shared.skippedToday)
 
-        let resumeIndex  = allExercises.firstIndex { 
-            !completedSet.contains($0.id) && !skippedSet.contains($0.id) 
+        let resumeIndex  = allExercises.firstIndex {
+            !completedSet.contains($0.id) && !skippedSet.contains($0.id)
         }
 
         if let idx = resumeIndex {
@@ -259,8 +253,6 @@ class _0minworkoutLandingPageViewController: UIViewController, UICollectionViewD
 
         }
     }
-
-
 
     private func checkMedTaken() {
         let manager = WorkoutManager.shared
@@ -328,7 +320,6 @@ class _0minworkoutLandingPageViewController: UIViewController, UICollectionViewD
         present(alert, animated: true)
     }
 
-
     private func showStage12SafetyAlert() {
         let alert = UIAlertController(
             title: "Choose Exercise Position",
@@ -394,7 +385,6 @@ class _0minworkoutLandingPageViewController: UIViewController, UICollectionViewD
         return gradient
     }
 }
-
 
 extension _0minworkoutLandingPageViewController: UICollectionViewDataSource {
 

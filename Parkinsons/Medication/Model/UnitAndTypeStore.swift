@@ -4,13 +4,10 @@ class UnitAndTypeStore {
 
     var savedUnit: String?
     var savedType: String?
-    
+
     func reset() {
             savedUnit = nil
             savedType = nil
         }
 
 }
-
-
-               

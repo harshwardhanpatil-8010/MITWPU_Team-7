@@ -28,11 +28,11 @@ class MedicationSectionHeaderView: UICollectionReusableView {
     ) {
         timeLabel.text = title
         self.action = action
-        
+
         actionButton.isHidden = actionTitle == nil
         actionButton.setTitle(actionTitle, for: .normal)
         actionButton.isEnabled = isActionEnabled
-        
+
         if action == .showAll {
             arrowImageView.isHidden = false
             arrowImageView.image = UIImage(

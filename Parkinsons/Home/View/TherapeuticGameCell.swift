@@ -1,5 +1,3 @@
-
-
 import UIKit
 
 class TherapeuticGameCell: UICollectionViewCell {
@@ -9,8 +7,7 @@ class TherapeuticGameCell: UICollectionViewCell {
     @IBOutlet weak var backgroundCardView: UIView!
     @IBOutlet weak var completionLabel: UILabel!
     @IBOutlet weak var iconImageView: UIImageView!
-    
-    
+
     override func awakeFromNib() {
         super.awakeFromNib()
         self.clipsToBounds = false
@@ -31,10 +28,8 @@ class TherapeuticGameCell: UICollectionViewCell {
         titleLabel.text = model.title
 
         completionLabel.text = completionText
-        
+
         iconImageView.image = UIImage(systemName: model.iconName ?? "")
              iconImageView.tintColor = model.iconColor
     }
 }
-
-

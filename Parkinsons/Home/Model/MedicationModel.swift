@@ -9,7 +9,7 @@ import Foundation
 struct MedicationModel {
     let name: String
     let time: String
-    let detail: String 
+    let detail: String
     let iconName: String
-    var status: DoseStatus = .none 
+    var status: DoseStatus = .none
 }

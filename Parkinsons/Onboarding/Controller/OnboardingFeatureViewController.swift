@@ -9,7 +9,6 @@ import UIKit
 
 class OnboardingFeatureViewController: UIViewController {
 
-   
     @IBOutlet weak var imageView: UIImageView!
     @IBOutlet weak var featureName: UILabel!
     @IBOutlet weak var featureDescription: UILabel!
@@ -19,8 +18,7 @@ class OnboardingFeatureViewController: UIViewController {
     @IBOutlet weak var progressBar2: UIProgressView!
     @IBOutlet weak var progressBar3: UIProgressView!
     @IBOutlet weak var progressBar4: UIProgressView!
-    
-    
+
     var progressBars: [UIProgressView] = []
     var currentIndex = 0
     override func viewDidLoad() {
@@ -32,12 +30,10 @@ class OnboardingFeatureViewController: UIViewController {
         imageView.clipsToBounds = true
 
     }
-    
-    
-    
+
     func onboardingChange() {
         let feature =  features[currentIndex]
-       
+
         imageView.image = feature.image
         featureName.text = feature.name
         featureDescription.text = feature.description
@@ -61,17 +57,15 @@ class OnboardingFeatureViewController: UIViewController {
             currentIndex += 1
             onboardingChange()
             progressBars[currentIndex].setProgress(1.0, animated: true)
-            
+
         } else {
             progressBars[currentIndex].setProgress(1.0, animated: true)
             navigateToOnboardingInfo()
         }
     }
-    
-    
+
     @IBAction func skipTapped(_ sender: UIButton) {
         navigateToOnboardingInfo()
     }
-    
 
 }

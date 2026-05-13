@@ -7,7 +7,6 @@ final class WhackAMoleGameManager {
     private let calendar = Calendar.current
     private let storageKey = "CompletedWhackAMoleDates"
 
-
     private let dailyDurations = [
         60, 45, 30, 45, 60, 30, 45, 60, 30, 45,
         60, 30, 45, 60, 45, 30, 60, 45, 30, 60,
@@ -56,7 +55,7 @@ final class WhackAMoleGameManager {
         switch gameDuration(for: date) {
         case ...30:  return 8 + (day % 3)
         case ...45:  return 6 + (day % 3)
-        default:     return 5 + (day % 3)      
+        default:     return 5 + (day % 3)
         }
     }
 

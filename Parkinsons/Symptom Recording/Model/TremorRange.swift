@@ -1,4 +1,3 @@
-
 import Foundation
 enum TremorRange {
     case day

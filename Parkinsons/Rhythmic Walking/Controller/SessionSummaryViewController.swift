@@ -1,22 +1,21 @@
-
 import UIKit
 
 class SessionSummaryViewController: UIViewController {
 
-    @IBOutlet weak var timeLabel:                  UILabel!
-    @IBOutlet weak var walkingUIView:              UIView!
-    @IBOutlet weak var GaitUIView:                 UIView!
-    @IBOutlet weak var timeContainer:              UIView!
-    @IBOutlet weak var stepsTaken:                 UILabel!
-    @IBOutlet weak var distanceCovered:            UILabel!
-    @IBOutlet weak var speed:                      UILabel!
-    @IBOutlet weak var stepsLength:                UILabel!
-    @IBOutlet weak var walkingAsymmetry:           UILabel!
-    @IBOutlet weak var walkingSteadiness:          UILabel!
-    @IBOutlet weak var stepLengthPercent:          UILabel!
-    @IBOutlet weak var walkingAsymmetryPercent:    UILabel!
-    @IBOutlet weak var walkingSteadinessPercent:   UILabel!
-    @IBOutlet weak var goalCompletedTLabel:        UIStackView!
+    @IBOutlet weak var timeLabel: UILabel!
+    @IBOutlet weak var walkingUIView: UIView!
+    @IBOutlet weak var GaitUIView: UIView!
+    @IBOutlet weak var timeContainer: UIView!
+    @IBOutlet weak var stepsTaken: UILabel!
+    @IBOutlet weak var distanceCovered: UILabel!
+    @IBOutlet weak var speed: UILabel!
+    @IBOutlet weak var stepsLength: UILabel!
+    @IBOutlet weak var walkingAsymmetry: UILabel!
+    @IBOutlet weak var walkingSteadiness: UILabel!
+    @IBOutlet weak var stepLengthPercent: UILabel!
+    @IBOutlet weak var walkingAsymmetryPercent: UILabel!
+    @IBOutlet weak var walkingSteadinessPercent: UILabel!
+    @IBOutlet weak var goalCompletedTLabel: UIStackView!
 
     var sessionData: RhythmicSessionDTO?
 
@@ -35,7 +34,7 @@ class SessionSummaryViewController: UIViewController {
             target: self,
             action: #selector(backTapped)
         )
-        backButton.tintColor             = .label  
+        backButton.tintColor             = .label
         navigationItem.leftBarButtonItem  = backButton
         navigationItem.hidesBackButton    = false
         navigationController?.interactivePopGestureRecognizer?.isEnabled = true
@@ -119,7 +118,7 @@ class SessionSummaryViewController: UIViewController {
                 self.apply(summary: summary)
                 self.applyChangePercents(summary: summary, previous: previousManaged)
             } else if let cached = DataStore.shared.cachedSummary(for: fixedSession) {
-                
+
                 self.apply(summary: cached)
                 self.applyChangePercents(summary: cached, previous: previousManaged)
             }
@@ -154,19 +153,19 @@ class SessionSummaryViewController: UIViewController {
             return
         }
 
-        applyChange(label:          stepLengthPercent,
-                    current:        summary.stepLengthMeters,
-                    previous:       prev.stepLengthMeters,
+        applyChange(label: stepLengthPercent,
+                    current: summary.stepLengthMeters,
+                    previous: prev.stepLengthMeters,
                     higherIsBetter: true)
 
-        applyChange(label:          walkingAsymmetryPercent,
-                    current:        summary.walkingAsymmetryPercent,
-                    previous:       prev.walkingAsymmetry,
+        applyChange(label: walkingAsymmetryPercent,
+                    current: summary.walkingAsymmetryPercent,
+                    previous: prev.walkingAsymmetry,
                     higherIsBetter: false)
 
-        applyChange(label:          walkingSteadinessPercent,
-                    current:        steadinessScore(summary.walkingSteadiness),
-                    previous:       prev.walkingSteadiness,
+        applyChange(label: walkingSteadinessPercent,
+                    current: steadinessScore(summary.walkingSteadiness),
+                    previous: prev.walkingSteadiness,
                     higherIsBetter: true)
     }
 

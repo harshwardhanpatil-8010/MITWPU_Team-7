@@ -1,4 +1,3 @@
-
 import Foundation
 
 struct Card {
@@ -7,4 +6,3 @@ struct Card {
     var isFlipped: Bool = false
     var isMatched: Bool = false
 }
-

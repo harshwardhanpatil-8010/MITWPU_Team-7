@@ -13,14 +13,6 @@ class UnitAndTypeTableViewCell: UITableViewCell {
     @IBOutlet weak var typeName: UILabel!
     @IBOutlet weak var typeImage: UIImageView!
 
-    override func awakeFromNib() {
-        super.awakeFromNib()
-    }
-
-    override func setSelected(_ selected: Bool, animated: Bool) {
-        super.setSelected(selected, animated: animated)
-    }
-    
     func configureCell(type: UnitAndType) {
         typeName.text = type.name
         typeImage.image = UIImage(named: type.image)
@@ -33,4 +25,3 @@ class UnitAndTypeTableViewCell: UITableViewCell {
         }
     }
 }
-

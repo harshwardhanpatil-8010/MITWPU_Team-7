@@ -1,4 +1,3 @@
-
 import UIKit
 
 class GameViewController: UIViewController {
@@ -6,9 +5,6 @@ class GameViewController: UIViewController {
     @IBOutlet weak var timeLabel: UILabel!
     @IBOutlet weak var collectionView: UICollectionView!
 
-
-    
-    
     var selectedDate: Date!
     var level: Int = 1
 
@@ -91,11 +87,11 @@ class GameViewController: UIViewController {
 
     private func generateCards() {
         let symbols = [
-            "🤖","🔥","🌈","🐶","🚀","🍕","⚡️","🎧",
-            "🏖️","🌙","⭐️","🐰","🐢","🍎","🎈","🎉",
-            "🍀","🐠","🦋","🎮","🐸","🍩","🧠","🎯",
-            "🎲","🧩","🎵","🚴","🛸","🌋","🍔","🥑",
-            "❤️","🧤","🌸"
+            "🤖", "🔥", "🌈", "🐶", "🚀", "🍕", "⚡️", "🎧",
+            "🏖️", "🌙", "⭐️", "🐰", "🐢", "🍎", "🎈", "🎉",
+            "🍀", "🐠", "🦋", "🎮", "🐸", "🍩", "🧠", "🎯",
+            "🎲", "🧩", "🎵", "🚴", "🛸", "🌋", "🍔", "🥑",
+            "❤️", "🧤", "🌸"
         ]
 
         let grid = gridForLevel(level)
@@ -161,8 +157,7 @@ class GameViewController: UIViewController {
 
         layout.invalidateLayout()
     }
-    
-    
+
     private func startTimer() {
         secondsElapsed = 0
         updateTimeLabel()
@@ -206,12 +201,12 @@ class GameViewController: UIViewController {
 
         let unmatched = cards.enumerated().filter { !$0.element.isMatched }
         let groups = Dictionary(grouping: unmatched, by: { $0.element.identifier })
-        
+
         var targetIdentifier: Int?
         if let firstIdx = firstIndex {
             targetIdentifier = cards[firstIdx.item].identifier
         }
-        
+
         let pairToHint: [EnumeratedSequence<[Card]>.Element]
         if let targetId = targetIdentifier, let group = groups[targetId], group.count == 2 {
             pairToHint = group
@@ -229,7 +224,7 @@ class GameViewController: UIViewController {
                 cell.animateHint()
             }
         }
-        
+
         interactionsEnabled = false
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.6) {
             self.interactionsEnabled = true
@@ -333,4 +328,3 @@ extension GameViewController: UICollectionViewDataSource, UICollectionViewDelega
         }
     }
 }
-

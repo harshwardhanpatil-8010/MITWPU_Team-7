@@ -15,7 +15,6 @@ final class HealthKitManager {
     private init() {}
 }
 
-
 extension HealthKitManager {
 
     var gaitTypes: Set<HKObjectType> {
@@ -23,12 +22,11 @@ extension HealthKitManager {
             HKQuantityType.quantityType(forIdentifier: .walkingStepLength)!,
             HKQuantityType.quantityType(forIdentifier: .walkingSpeed)!,
             HKQuantityType.quantityType(forIdentifier: .walkingAsymmetryPercentage)!,
-            HKQuantityType.quantityType(forIdentifier: .appleWalkingSteadiness)! 
+            HKQuantityType.quantityType(forIdentifier: .appleWalkingSteadiness)!
         ]
     }
 
 }
-
 
 extension HealthKitManager {
 
@@ -51,15 +49,13 @@ extension HealthKitManager {
     }
 }
 
-
 extension HealthKitManager {
     func fetchWalkingSteadinessSamples(
         from startDate: Date,
         to endDate: Date,
         completion: @escaping ([(Date, Double)]) -> Void
-        
+
     ) {
-        
 
         guard let type = HKObjectType.quantityType(
             forIdentifier: .appleWalkingSteadiness
@@ -155,7 +151,7 @@ extension HealthKitManager {
 
             let values = (samples as? [HKQuantitySample])?.map {
                 $0.quantity.doubleValue(for: .meter())
-                
+
             } ?? []
 
             completion(values)
@@ -164,7 +160,6 @@ extension HealthKitManager {
         healthStore.execute(query)
     }
 }
-
 
 extension HealthKitManager {
 
@@ -233,7 +228,7 @@ extension HealthKitManager {
     ) {
         let group = DispatchGroup()
         var speedSamples: [(Date, Double)] = []
-        var stepSamples:  [(Date, Double)] = []
+        var stepSamples: [(Date, Double)] = []
 
         group.enter()
         fetchWalkingSpeedSamples(from: startDate, to: endDate) { pairs in
@@ -269,17 +264,17 @@ extension HealthKitManager {
 
                 let value: Double
                 if speeds.count >= 2 && steps.count >= 2 {
-                    let sMean = speeds.reduce(0,+)/Double(speeds.count)
-                    let lMean = steps.reduce(0,+)/Double(steps.count)
+                    let sMean = speeds.reduce(0, +)/Double(speeds.count)
+                    let lMean = steps.reduce(0, +)/Double(steps.count)
                     let sCV   = self.standardDeviation(speeds) / sMean
                     let lCV   = self.standardDeviation(steps)  / lMean
                     value = max(0, min(100 * (1 - (sCV + lCV) / 2), 100))
                 } else if speeds.count >= 2 {
-                    let sMean = speeds.reduce(0,+)/Double(speeds.count)
+                    let sMean = speeds.reduce(0, +)/Double(speeds.count)
                     let sCV   = self.standardDeviation(speeds) / sMean
                     value = max(0, min(100 * (1 - sCV), 100))
                 } else if steps.count >= 2 {
-                    let lMean = steps.reduce(0,+)/Double(steps.count)
+                    let lMean = steps.reduce(0, +)/Double(steps.count)
                     let lCV   = self.standardDeviation(steps) / lMean
                     value = max(0, min(100 * (1 - lCV), 100))
                 } else {

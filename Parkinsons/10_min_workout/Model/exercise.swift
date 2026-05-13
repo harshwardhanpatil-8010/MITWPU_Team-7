@@ -1,4 +1,3 @@
-
 import Foundation
 
 enum ExerciseCategory: String, CaseIterable, Codable {
@@ -14,7 +13,6 @@ enum ExercisePosition: String, Codable {
     case seated
     case standing
 }
-
 
 enum MedicationEffect {
     case optimal
@@ -32,9 +30,7 @@ struct WorkoutExercise: Codable, Identifiable {
     let position: ExercisePosition
     let targetJoints: [String]
     let voiceInstruction: String?
- 
 
-  
     var timerSeconds: Int {
         switch category {
         case .warmup, .cooldown:
@@ -43,7 +39,7 @@ struct WorkoutExercise: Codable, Identifiable {
             return reps
         }
     }
-    
+
     var thumbnailName: String? {
             guard let videoID else { return nil }
             return "\(videoID)_thumb"

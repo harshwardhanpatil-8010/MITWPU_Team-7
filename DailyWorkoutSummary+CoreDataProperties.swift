@@ -9,7 +9,6 @@
 public import Foundation
 public import CoreData
 
-
 public typealias DailyWorkoutSummaryCoreDataPropertiesSet = NSSet
 
 extension DailyWorkoutSummary {
@@ -29,6 +28,6 @@ extension DailyWorkoutSummary {
 
 }
 
-extension DailyWorkoutSummary : Identifiable {
+extension DailyWorkoutSummary: Identifiable {
 
 }

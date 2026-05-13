@@ -20,4 +20,3 @@ class LoggedEmptyFooterView: UICollectionReusableView {
         messageLabel.text = message
     }
 }
-

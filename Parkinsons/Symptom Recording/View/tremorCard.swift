@@ -3,7 +3,7 @@ import UIKit
 class tremorCard: UICollectionViewCell {
 
     private var pendingPoints: [AggregatedTremorPoint] = []
-    private var pendingHz: Double? = nil
+    private var pendingHz: Double?
 
     @IBOutlet weak var cardBackground: UIView!
     @IBOutlet weak var cardGraphView: UIView!
@@ -22,7 +22,6 @@ class tremorCard: UICollectionViewCell {
         DispatchQueue.main.async { self.drawMiniGraph() }
     }
 
-
     private func setupCardStyle() {
         cardBackground.layer.cornerRadius = 20
         cardBackground.layer.masksToBounds = false
@@ -31,7 +30,6 @@ class tremorCard: UICollectionViewCell {
         cardBackground.layer.shadowRadius  = 8
         cardBackground.layer.shadowOffset  = CGSize(width: 0, height: 3)
     }
-
 
     func configure(frequencyHz: Double?, isSteady: Bool = false, graphPoints: [AggregatedTremorPoint]) {
         pendingPoints = graphPoints
@@ -43,9 +41,7 @@ class tremorCard: UICollectionViewCell {
             tremorValueLabel.textColor = .black
         } else if let hz = frequencyHz {
             tremorValueLabel.text = String(format: "%.1f Hz", hz)
-            if hz < 4.0      { tremorValueLabel.textColor = .black }
-            else if hz < 6.0 { tremorValueLabel.textColor = .black }
-            else              { tremorValueLabel.textColor = .black    }
+            if hz < 4.0 { tremorValueLabel.textColor = .black } else if hz < 6.0 { tremorValueLabel.textColor = .black } else { tremorValueLabel.textColor = .black    }
         } else {
             tremorValueLabel.text      = "Measuring…"
             tremorValueLabel.textColor = .secondaryLabel
@@ -108,7 +104,7 @@ class tremorCard: UICollectionViewCell {
 
         guard pts.count > 0 else {
             addLine(from: CGPoint(x: pL, y: H - pB - uh / 2),
-                    to:   CGPoint(x: W - pR, y: H - pB - uh / 2),
+                    to: CGPoint(x: W - pR, y: H - pB - uh / 2),
                     color: UIColor.systemGray4.cgColor, width: 1,
                     dash: [3, 3])
             return
@@ -191,7 +187,6 @@ class tremorCard: UICollectionViewCell {
             cardGraphView.layer.addSublayer(dot)
         }
     }
-
 
     private func addTextLayer(_ text: String, frame: CGRect, alignment: CATextLayerAlignmentMode, color: UIColor) {
         let l = CATextLayer()

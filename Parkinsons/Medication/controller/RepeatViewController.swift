@@ -36,7 +36,6 @@ class RepeatViewController: UIViewController,
         restoreSelection()
     }
 
-
     private func restoreSelection() {
         guard let type = preselectedType else { return }
 
@@ -68,7 +67,6 @@ class RepeatViewController: UIViewController,
         repeatTableView.reloadData()
     }
 
-
     func tableView(_ tableView: UITableView,
                    numberOfRowsInSection section: Int) -> Int {
         repeatList.count
@@ -96,7 +94,7 @@ class RepeatViewController: UIViewController,
                 repeatList[i].isSelected = (i == indexPath.row)
             }
         } else {
-            
+
             if let everydayIndex = repeatList.firstIndex(where: { $0.name == "Everyday" }) {
                 repeatList[everydayIndex].isSelected = false
             }
@@ -106,7 +104,6 @@ class RepeatViewController: UIViewController,
 
         tableView.reloadData()
     }
-
 
     @IBAction func onBackPressed(_ sender: UIBarButtonItem) {
         navigationController?.popViewController(animated: true)
@@ -145,7 +142,6 @@ class RepeatViewController: UIViewController,
         navigationController?.popViewController(animated: true)
     }
 }
-
 
 struct RepeatOption {
     let name: String

@@ -26,7 +26,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             UserDefaults.standard.set(currentJSONVersion, forKey: "loadedExerciseJSONVersion")
         }
 
-
         // MARK: - Audio Session
         do {
             try AVAudioSession.sharedInstance().setCategory(
@@ -35,7 +34,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         } catch {
             print("AVAudioSession FAILED: \(error)")
         }
-
 
         DispatchQueue.main.async {
             _ = SpeechManager.shared
@@ -90,7 +88,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
 extension AppDelegate: UNUserNotificationCenterDelegate {
 
-
     func userNotificationCenter(
         _ center: UNUserNotificationCenter,
         willPresent notification: UNNotification,
@@ -113,7 +110,6 @@ extension AppDelegate: UNUserNotificationCenterDelegate {
         MedicationAlarmViewController.present(payloads: unlogged)
         completionHandler([])
     }
-
 
     func userNotificationCenter(
         _ center: UNUserNotificationCenter,
@@ -167,7 +163,6 @@ extension AppDelegate: UNUserNotificationCenterDelegate {
                 let coreDose = doseSet.first(where: { $0.id == payload.doseID })
             else { return }
 
-
             if coreDose.doseStatus == "taken" { return }
 
             if coreDose.doseStatus == "skipped" && status == .skipped { return }
@@ -204,7 +199,7 @@ extension AppDelegate: UNUserNotificationCenterDelegate {
     }
 
     // MARK: - Logged check
-    
+
     private func isDoseAlreadyLogged(doseID: UUID) -> Bool {
         let context = PersistenceController.shared.viewContext
         let req: NSFetchRequest<MedicationDose> = MedicationDose.fetchRequest()

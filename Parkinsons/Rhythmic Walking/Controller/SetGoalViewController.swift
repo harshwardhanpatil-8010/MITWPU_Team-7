@@ -1,10 +1,3 @@
-
-
-
-
-
-
-
 import UIKit
 import CoreData
 
@@ -12,14 +5,14 @@ class SetGoalViewController: UIViewController,
                              UITableViewDataSource, UITableViewDelegate,
                              UIPickerViewDataSource, UIPickerViewDelegate {
 
-    @IBOutlet weak var datePickerUIView:  UIView!
-    @IBOutlet weak var DurationPicker:    UIPickerView!
-    @IBOutlet weak var beatButton:        UIButton!
-    @IBOutlet weak var paceButton:        UIButton!
-    @IBOutlet weak var startButton:       UIButton!
-    @IBOutlet weak var paceBeatUIView:    UIView!
-    @IBOutlet weak var sessionTableView:  UITableView!
-    @IBOutlet weak var noSessionsOutlet:  UIStackView!
+    @IBOutlet weak var datePickerUIView: UIView!
+    @IBOutlet weak var DurationPicker: UIPickerView!
+    @IBOutlet weak var beatButton: UIButton!
+    @IBOutlet weak var paceButton: UIButton!
+    @IBOutlet weak var startButton: UIButton!
+    @IBOutlet weak var paceBeatUIView: UIView!
+    @IBOutlet weak var sessionTableView: UITableView!
+    @IBOutlet weak var noSessionsOutlet: UIStackView!
 
     private var selectedBeat: String = BeatType.click.rawValue
     private var selectedPace: String = "Slow"
@@ -156,7 +149,7 @@ class SetGoalViewController: UIViewController,
 
     private func checkGoalStatus() {
         if let goal = DataStore.shared.dailyGoalSession {
-            
+
             DurationPicker.isUserInteractionEnabled = false
             DurationPicker.alpha = 0.3
             startButton.setTitle("Resume", for: .normal)

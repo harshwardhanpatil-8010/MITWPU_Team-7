@@ -19,7 +19,7 @@ class InfoMatchTheCardsViewController: UIViewController {
             action: #selector(muteButtonTapped)
         )
         self.muteBarButtonItem = muteButton
-        
+
         if let navBar = view.subviews.first(where: { $0 is UINavigationBar }) as? UINavigationBar {
             navBar.topItem?.rightBarButtonItem = muteButton
         }
@@ -29,7 +29,7 @@ class InfoMatchTheCardsViewController: UIViewController {
         isMuted.toggle()
         let imageName = isMuted ? "speaker.slash.fill" : "speaker.wave.2.fill"
         muteBarButtonItem?.image = UIImage(systemName: imageName)
-        
+
         if isMuted {
             SpeechManager.shared.stop()
         } else {

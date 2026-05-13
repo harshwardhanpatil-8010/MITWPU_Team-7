@@ -1,17 +1,17 @@
 import UIKit
 
  class CircularProgressView: UIView {
-    
+
     private let trackLayer = CAShapeLayer()
     private let progressLayer = CAShapeLayer()
     var trackColor: UIColor = .systemGray4 {
         didSet { trackLayer.strokeColor = trackColor.cgColor }
     }
-    
+
     var progressColor: UIColor = .systemGreen {
         didSet { progressLayer.strokeColor = progressColor.cgColor }
     }
-    
+
     var lineWidth: CGFloat = 20 {
         didSet {
             trackLayer.lineWidth = lineWidth
@@ -28,12 +28,12 @@ import UIKit
         super.init(frame: frame)
         setupLayers()
     }
-    
+
     required init?(coder: NSCoder) {
         super.init(coder: coder)
         setupLayers()
     }
-    
+
      private func setupLayers() {
          let circularPath = UIBezierPath(
              arcCenter: centerPoint,
@@ -59,19 +59,14 @@ import UIKit
          layer.addSublayer(progressLayer)
      }
 
-
-
-
-    
     private var centerPoint: CGPoint {
         CGPoint(x: bounds.midX, y: bounds.midY)
     }
-     
+
      func setProgress(_ progress: CGFloat) {
          progressLayer.strokeEnd = min(max(progress, 0), 1)
      }
 
-     
      override func layoutSubviews() {
          super.layoutSubviews()
          updatePath()

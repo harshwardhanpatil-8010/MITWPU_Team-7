@@ -1,4 +1,3 @@
-
 import UIKit
 import AudioToolbox
 
@@ -12,13 +11,11 @@ class _0minworkoutCountdownViewController: UIViewController {
     private var hasNavigated = false
     private var isCountdownCancelled = false
 
-
     override func viewDidLoad() {
         super.viewDidLoad()
         startCountDown()
     }
 
-    
     override func viewWillAppear(_ animated: Bool) {
         isCountdownCancelled = false
         self.navigationController?.setNavigationBarHidden(false, animated: animated)
@@ -30,7 +27,7 @@ class _0minworkoutCountdownViewController: UIViewController {
         isCountdownCancelled = true
         TimerLabel.layer.removeAllAnimations()
     }
-    
+
     private func playBeat(isGo: Bool) {
         if isGo {
             AudioServicesPlaySystemSound(1057)
@@ -38,7 +35,7 @@ class _0minworkoutCountdownViewController: UIViewController {
             AudioServicesPlaySystemSound(1104)
         }
     }
-    
+
     func startCountDown() {
         guard !hasNavigated, !isCountdownCancelled else { return }
 

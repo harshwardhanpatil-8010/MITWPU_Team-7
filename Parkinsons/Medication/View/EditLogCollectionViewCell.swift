@@ -17,7 +17,7 @@ class EditLogCollectionViewCell: UICollectionViewCell {
     @IBOutlet weak var timeLabel: UILabel!
     @IBOutlet weak var MedContainer: UIView!
     var onStatusChange: ((DoseStatus) -> Void)?
-    
+
     override func awakeFromNib() {
         super.awakeFromNib()
         MedContainer.applyCardStyle()
@@ -41,8 +41,7 @@ class EditLogCollectionViewCell: UICollectionViewCell {
             takenButton.alpha = takenButton.isSelected ? 1.0 : 0.4
             skippedButton.alpha = skippedButton.isSelected ? 1.0 : 0.4
         }
-    
-    
+
     @IBAction func skippedButtonTapped(_ sender: UIButton) {
         updateSelection(status: .skipped)
                 onStatusChange?(.skipped)
@@ -51,7 +50,5 @@ class EditLogCollectionViewCell: UICollectionViewCell {
         updateSelection(status: .taken)
                 onStatusChange?(.taken)
     }
-    
-    
-}
 
+}

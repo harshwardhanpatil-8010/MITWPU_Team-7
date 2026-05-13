@@ -1,31 +1,28 @@
-
-
 import UIKit
 
 class SessionRunningViewController: UIViewController {
 
     @IBOutlet weak var circularContainer: UIView!
-    @IBOutlet weak var timeLabel:         UILabel!
-    @IBOutlet weak var pauseButton:       UIButton!
-    @IBOutlet weak var beatButton:        UIButton!
-    @IBOutlet weak var paceButton:        UIButton!
-    @IBOutlet weak var beatPaceUIView:    UIView!
+    @IBOutlet weak var timeLabel: UILabel!
+    @IBOutlet weak var pauseButton: UIButton!
+    @IBOutlet weak var beatButton: UIButton!
+    @IBOutlet weak var paceButton: UIButton!
+    @IBOutlet weak var beatPaceUIView: UIView!
 
     var totalSessionDuration: Int = 0
     var selectedBeat: String      = BeatType.click.rawValue
     var selectedPace: String      = "Slow"
-    var selectedBPM:  Int         = 80
-    var hrs:  Int = 0
+    var selectedBPM: Int         = 80
+    var hrs: Int = 0
     var minn: Int = 0
     var session: RhythmicSessionDTO?
 
     var onSessionEnded: ((RhythmicSessionDTO) -> Void)?
 
-    private var progressView:      CircularProgressView!
-    private var timerModel:        TimerModel!
+    private var progressView: CircularProgressView!
+    private var timerModel: TimerModel!
     private var sessionEndHandled  = false
     private var healthKitStartDate: Date = Date()
-
 
     private func setupProgressView() {
         progressView = CircularProgressView(frame: circularContainer.bounds)
@@ -46,7 +43,6 @@ class SessionRunningViewController: UIViewController {
     private func updatePauseButtonUI() {
         pauseButton.setTitle((timerModel?.isPaused ?? false) ? "Resume" : "Pause", for: .normal)
     }
-
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -95,21 +91,20 @@ class SessionRunningViewController: UIViewController {
         if !sessionEndHandled { saveProgress() }
     }
 
-
     @discardableResult
     private func saveProgress(endDate: Date? = nil) -> RhythmicSessionDTO? {
         guard var s = session else { return nil }
         let elapsed      = s.requestedDurationSeconds - (timerModel?.timeLeft ?? 0)
         s.elapsedSeconds = max(0, elapsed)
         s = RhythmicSessionDTO(
-            id:                       s.id,
-            sessionNumber:            s.sessionNumber,
-            startDate:                healthKitStartDate,
-            endDate:                  endDate ?? s.endDate,
+            id: s.id,
+            sessionNumber: s.sessionNumber,
+            startDate: healthKitStartDate,
+            endDate: endDate ?? s.endDate,
             requestedDurationSeconds: s.requestedDurationSeconds,
-            elapsedSeconds:           s.elapsedSeconds,
-            beat:                     s.beat,
-            pace:                     s.pace
+            elapsedSeconds: s.elapsedSeconds,
+            beat: s.beat,
+            pace: s.pace
         )
         DataStore.shared.update(s)
         session = s
@@ -128,14 +123,14 @@ class SessionRunningViewController: UIViewController {
         if fullyCompleted, var s = session {
             s.elapsedSeconds = s.requestedDurationSeconds
             s = RhythmicSessionDTO(
-                id:                       s.id,
-                sessionNumber:            s.sessionNumber,
-                startDate:                healthKitStartDate,
-                endDate:                  endDate,
+                id: s.id,
+                sessionNumber: s.sessionNumber,
+                startDate: healthKitStartDate,
+                endDate: endDate,
                 requestedDurationSeconds: s.requestedDurationSeconds,
-                elapsedSeconds:           s.elapsedSeconds,
-                beat:                     s.beat,
-                pace:                     s.pace
+                elapsedSeconds: s.elapsedSeconds,
+                beat: s.beat,
+                pace: s.pace
             )
             DataStore.shared.update(s)
             session = s
@@ -219,6 +214,6 @@ extension SessionRunningViewController: TimerModelDelegate {
         pauseButton.isEnabled = false
         timerModel?.pause()
         RhythmicAudioManager.shared.stop()
-        
+
     }
 }

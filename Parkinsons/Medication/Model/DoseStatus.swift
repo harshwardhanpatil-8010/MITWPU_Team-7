@@ -11,4 +11,3 @@ enum DoseStatus: String, Codable {
     case taken
     case skipped
 }
-

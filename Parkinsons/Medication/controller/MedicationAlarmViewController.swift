@@ -9,13 +9,13 @@ import AVFoundation
 // MARK: - Notification payload model (decoded from userInfo)
 
 struct MedicationAlarmPayload {
-    let doseID:        UUID
-    let medID:         UUID
-    let medName:       String
-    let medForm:       String
-    let medStrength:   Int
-    let medUnit:       String
-    let iconName:      String
+    let doseID: UUID
+    let medID: UUID
+    let medName: String
+    let medForm: String
+    let medStrength: Int
+    let medUnit: String
+    let iconName: String
     let scheduledTime: Date
 
     init?(userInfo: [AnyHashable: Any]) {
@@ -38,7 +38,7 @@ struct MedicationAlarmPayload {
         self.iconName      = userInfo[MedNotifKey.iconName]    as? String ?? "tablet1"
         self.scheduledTime = iso.date(from: timeStr) ?? Date()
     }
-    
+
     static func parsePayloads(from userInfo: [AnyHashable: Any]) -> [MedicationAlarmPayload] {
         if let arr = userInfo["payloads"] as? [[AnyHashable: Any]] {
             return arr.compactMap { MedicationAlarmPayload(userInfo: $0) }
@@ -159,14 +159,14 @@ final class MedicationCardView: UIView {
 // MARK: - View Controller
 
 class MedicationAlarmViewController: UIViewController {
-    
+
     var payloads: [MedicationAlarmPayload] = []
-    
+
     private let scrollView = UIScrollView()
     private let stackView = UIStackView()
     private let headerLabel = UILabel()
     private var activeCards = 0
-    
+
     private let takenAllButton = UIButton(configuration: .tinted())
     private let skipAllButton = UIButton(configuration: .tinted())
     private let bottomStackView = UIStackView()
@@ -176,65 +176,65 @@ class MedicationAlarmViewController: UIViewController {
         setupUI()
         populateCards()
     }
-    
+
     private func setupUI() {
         view.backgroundColor = .white
-        
+
         headerLabel.text = "Due Medications"
         headerLabel.font = .systemFont(ofSize: 32, weight: .bold)
         headerLabel.textColor = .label
         headerLabel.translatesAutoresizingMaskIntoConstraints = false
-        
+
         scrollView.alwaysBounceVertical = true
         scrollView.translatesAutoresizingMaskIntoConstraints = false
-        
+
         stackView.axis = .vertical
         stackView.spacing = 20
         stackView.translatesAutoresizingMaskIntoConstraints = false
-        
+
         takenAllButton.setTitle("Taken All", for: .normal)
-        //takenAllButton.setImage(UIImage(systemName: "checkmark"), for: .normal)
+        // takenAllButton.setImage(UIImage(systemName: "checkmark"), for: .normal)
         takenAllButton.configuration?.baseForegroundColor = .systemBlue
         takenAllButton.configuration?.baseBackgroundColor = .systemBlue
         takenAllButton.configuration?.cornerStyle = .capsule
         takenAllButton.configuration?.imagePadding = 8
         takenAllButton.addTarget(self, action: #selector(takenAllTapped), for: .touchUpInside)
-        
+
         skipAllButton.setTitle("Skipped All", for: .normal)
-        //skipAllButton.setImage(UIImage(systemName: "xmark"), for: .normal)
+        // skipAllButton.setImage(UIImage(systemName: "xmark"), for: .normal)
         skipAllButton.configuration?.baseForegroundColor = .systemGray
         skipAllButton.configuration?.baseBackgroundColor = .systemGray
         skipAllButton.configuration?.cornerStyle = .capsule
         skipAllButton.configuration?.imagePadding = 8
         skipAllButton.addTarget(self, action: #selector(skipAllTapped), for: .touchUpInside)
-        
+
         bottomStackView.axis = .horizontal
         bottomStackView.spacing = 16
         bottomStackView.distribution = .fillEqually
         bottomStackView.translatesAutoresizingMaskIntoConstraints = false
         bottomStackView.addArrangedSubview(takenAllButton)
         bottomStackView.addArrangedSubview(skipAllButton)
-        
+
         view.addSubview(headerLabel)
         view.addSubview(scrollView)
         view.addSubview(bottomStackView)
         scrollView.addSubview(stackView)
-        
+
         NSLayoutConstraint.activate([
             headerLabel.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 24),
             headerLabel.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 24),
             headerLabel.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -24),
-            
+
             scrollView.topAnchor.constraint(equalTo: headerLabel.bottomAnchor, constant: 20),
             scrollView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
             scrollView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
             scrollView.bottomAnchor.constraint(equalTo: bottomStackView.topAnchor, constant: -16),
-            
+
             bottomStackView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 24),
             bottomStackView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -24),
             bottomStackView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -16),
             bottomStackView.heightAnchor.constraint(equalToConstant: 50),
-            
+
             stackView.topAnchor.constraint(equalTo: scrollView.contentLayoutGuide.topAnchor, constant: 10),
             stackView.leadingAnchor.constraint(equalTo: scrollView.contentLayoutGuide.leadingAnchor, constant: 24),
             stackView.trailingAnchor.constraint(equalTo: scrollView.contentLayoutGuide.trailingAnchor, constant: -24),
@@ -242,7 +242,7 @@ class MedicationAlarmViewController: UIViewController {
             stackView.widthAnchor.constraint(equalTo: scrollView.frameLayoutGuide.widthAnchor, constant: -48)
         ])
     }
-    
+
     private func populateCards() {
         activeCards = payloads.count
         for payload in payloads {
@@ -253,7 +253,7 @@ class MedicationAlarmViewController: UIViewController {
             stackView.addArrangedSubview(card)
         }
     }
-    
+
     @objc private func takenAllTapped() {
         processAll(status: .taken)
     }
@@ -266,21 +266,20 @@ class MedicationAlarmViewController: UIViewController {
 
         takenAllButton.isEnabled = false
         skipAllButton.isEnabled = false
-        
+
         let cards = stackView.arrangedSubviews
             .compactMap { $0 as? MedicationCardView }
             .filter { !$0.isHidden && $0.isUserInteractionEnabled }
-        
+
         for card in cards {
 
             card.onAction?(card.payload, status)
         }
     }
-    
+
     private func logDose(payload: MedicationAlarmPayload, status: DoseStatus, cardView: MedicationCardView) {
 
         cardView.isUserInteractionEnabled = false
-        
 
         if status == .skipped {
             MedicationNotificationManager.shared.cancelOnTimeNotification(forDoseID: payload.doseID)
@@ -289,7 +288,6 @@ class MedicationAlarmViewController: UIViewController {
             MedicationNotificationManager.shared.cancelNotifications(forDoseID: payload.doseID)
         }
 
-
         let context = PersistenceController.shared.viewContext
         let medRequest: NSFetchRequest<Medication> = Medication.fetchRequest()
         medRequest.predicate = NSPredicate(format: "id == %@", payload.medID as CVarArg)
@@ -297,7 +295,7 @@ class MedicationAlarmViewController: UIViewController {
         if let med = try? context.fetch(medRequest).first,
            let doseSet = med.doses as? Set<MedicationDose>,
            let coreDose = doseSet.first(where: { $0.id == payload.doseID }) {
-            
+
             coreDose.doseStatus = status.rawValue
 
             let log = MedicationDoseLog(context: context)
@@ -317,7 +315,6 @@ class MedicationAlarmViewController: UIViewController {
                 userInfo: ["doseID": payload.doseID]
             )
         }
-
 
         UIView.animate(withDuration: 0.3, animations: {
             cardView.alpha = 0
@@ -340,7 +337,7 @@ class MedicationAlarmViewController: UIViewController {
         DispatchQueue.main.async {
 
             guard let top = topViewController() else { return }
-            
+
             if let existing = top as? MedicationAlarmViewController {
                 let existingIDs = Set(existing.payloads.map { $0.doseID })
                 let filtered = payloads.filter { !existingIDs.contains($0.doseID) }
@@ -375,5 +372,3 @@ class MedicationAlarmViewController: UIViewController {
         return base
     }
 }
-
-

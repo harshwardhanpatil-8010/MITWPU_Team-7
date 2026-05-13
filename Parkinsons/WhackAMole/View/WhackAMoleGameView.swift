@@ -25,7 +25,7 @@ class WhackAMoleViewModel: ObservableObject {
     @Published var score = 0
     @Published var timeRemaining: Int
     @Published var gameState: WAMGameState = .ready
-    @Published var hammerHoleIndex: Int? = nil
+    @Published var hammerHoleIndex: Int?
     @Published var popups: [ScorePopup] = []
 
     let totalTime: Int
@@ -244,7 +244,6 @@ struct WhackAMoleGameView: View {
         let holeH = holeW * 1.2
         let rowGap: CGFloat = max(geo.size.height * 0.04, 28)
 
-
         let gridH = CGFloat(rows.count) * holeH + CGFloat(rows.count - 1) * rowGap
         let fieldH = gridH + 70
         let decos = generateDecorations(fieldW: fieldW, fieldH: fieldH, count: 18)
@@ -260,7 +259,6 @@ struct WhackAMoleGameView: View {
                 )
                 .frame(width: fieldW, height: fieldH)
                 .shadow(color: .black.opacity(0.18), radius: 10, y: 5)
-
 
             ForEach(decos) { d in
                 if d.type == 0 {
@@ -289,7 +287,6 @@ struct WhackAMoleGameView: View {
                 }
             }
 
-
             VStack(spacing: rowGap) {
                 ForEach(rows, id: \.self) { row in
                     let colGap: CGFloat = row.count >= 4 ? holeW * 0.12 : holeW * 0.35
@@ -313,7 +310,7 @@ struct WhackAMoleGameView: View {
             (0.05, 0.45), (0.92, 0.50), (0.50, 0.05), (0.50, 0.95),
             (0.20, 0.30), (0.75, 0.25), (0.30, 0.70), (0.70, 0.75),
             (0.12, 0.60), (0.88, 0.35), (0.40, 0.15), (0.60, 0.90),
-            (0.25, 0.50), (0.78, 0.60),
+            (0.25, 0.50), (0.78, 0.60)
         ]
         return positions.prefix(count).enumerated().map { (i, pos) in
             SeededPos(
@@ -363,7 +360,6 @@ struct WhackAMoleGameView: View {
                 .frame(width: w * 1.1, height: h * 0.72)
                 .clipped()
 
-
                 ZStack {
 
                     Ellipse()
@@ -376,7 +372,6 @@ struct WhackAMoleGameView: View {
                         )
                         .frame(width: w * 1.15, height: h * 0.32)
 
-
                     Ellipse()
                         .fill(
                             RadialGradient(
@@ -388,7 +383,6 @@ struct WhackAMoleGameView: View {
                         .frame(width: w * 0.7, height: h * 0.17)
                         .offset(y: -h * 0.02)
 
-                    
                     HStack(spacing: w * 0.15) {
                         Circle().fill(dirtMain.opacity(0.6)).frame(width: 5, height: 5)
                             .offset(y: -h * 0.08)

@@ -7,7 +7,7 @@
 
 import CoreData
  class PersistenceController {
-    
+
     static let shared = PersistenceController()
     let container: NSPersistentContainer
     var viewContext: NSManagedObjectContext {
@@ -15,19 +15,18 @@ import CoreData
     }
     private init(inMemory: Bool = false) {
         container = NSPersistentContainer(name: "Data Model")
-        
+
         if inMemory {
             container.persistentStoreDescriptions.first?.url =
                 URL(fileURLWithPath: "/dev/null")
         }
-        
-        
+
         if let description = container.persistentStoreDescriptions.first {
             description.shouldMigrateStoreAutomatically = true
             description.shouldInferMappingModelAutomatically = true
         }
-        
-        container.loadPersistentStores { storeDesc, error in
+
+        container.loadPersistentStores { _, error in
             if let error = error {
                 fatalError("Core Data load error: \(error)")
             }
@@ -52,5 +51,3 @@ import CoreData
         }
     }
 }
-
-

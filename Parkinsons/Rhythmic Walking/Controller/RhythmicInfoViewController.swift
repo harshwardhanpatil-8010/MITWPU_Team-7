@@ -42,7 +42,7 @@ class RhythmicInfoViewController: UIViewController {
         isMuted.toggle()
         let imageName = isMuted ? "speaker.slash.fill" : "speaker.wave.2.fill"
         muteBarButtonItem?.image = UIImage(systemName: imageName)
-        
+
         if isMuted {
             SpeechManager.shared.stop()
         } else {

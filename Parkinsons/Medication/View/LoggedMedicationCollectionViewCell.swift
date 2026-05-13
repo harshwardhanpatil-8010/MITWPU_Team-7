@@ -19,10 +19,6 @@ class LoggedMedicationCollectionViewCell: UICollectionViewCell {
 
     var onStatusTap: (() -> Void)?
 
-    override func awakeFromNib() {
-        super.awakeFromNib()
-    }
-
     func configure(with item: LoggedDoseItem) {
         medNameLabel.text = item.medicationName
         medUnitandformLabel.text = item.medicationForm
@@ -52,4 +48,3 @@ class LoggedMedicationCollectionViewCell: UICollectionViewCell {
         medStatusImage.isUserInteractionEnabled = editing
     }
 }
-

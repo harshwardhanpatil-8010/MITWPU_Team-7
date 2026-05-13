@@ -16,11 +16,11 @@ final class MainMedicationViewController: UIViewController {
         case today
         case myMedication
     }
-    
+
     private var allMedicationsLoggedToday: Bool {
         dueDoses.isEmpty && upcomingDoses.isEmpty && !loggedDoses.isEmpty
     }
-    
+
     private var isShowingAllUpcoming = false
     private var displayedUpcomingDoses: [TodayDoseItem] {
         if isShowingAllUpcoming {
@@ -43,7 +43,7 @@ final class MainMedicationViewController: UIViewController {
     private let todayViewModel = TodayMedicationViewModel()
     private var currentSegment: SegmentType = .today
     private var myMedications: [Medication] = []
-    
+
     private var didBecomeActiveObserver: NSObjectProtocol?
     private var doseLoggedObserver: NSObjectProtocol?
 
@@ -52,11 +52,11 @@ final class MainMedicationViewController: UIViewController {
         if isPresentedFromProfile {
                     setupProfilePresentationUI()
                 }
-        
+
         setupCollectionView()
         updateUIForSegment()
         self.definesPresentationContext = true
-        
+
         if let layout = medicationCollectionView.collectionViewLayout as? UICollectionViewFlowLayout {
             layout.headerReferenceSize = .zero
         }
@@ -75,7 +75,6 @@ final class MainMedicationViewController: UIViewController {
             self?.loadMedications()
         }
 
-        
         let scrollAppearance = UINavigationBarAppearance()
         scrollAppearance.configureWithTransparentBackground()
         scrollAppearance.titleTextAttributes = [
@@ -107,13 +106,11 @@ final class MainMedicationViewController: UIViewController {
         updateCollectionViewHeight()
     }
     private func setupProfilePresentationUI() {
-       
+
             let closeButton = UIBarButtonItem(barButtonSystemItem: .close, target: self, action: #selector(dismissModal))
             self.navigationItem.leftBarButtonItem = closeButton
-            
 
             plusButton.isHidden = true
-            
 
             medSegment.selectedSegmentIndex = 1
             currentSegment = .myMedication
@@ -135,7 +132,7 @@ final class MainMedicationViewController: UIViewController {
         }
         NotificationCenter.default.removeObserver(self, name: NSNotification.Name("MedicationLogged"), object: nil)
     }
-    
+
     private func loadMedications() {
         let request: NSFetchRequest<Medication> = Medication.fetchRequest()
         do {
@@ -148,7 +145,7 @@ final class MainMedicationViewController: UIViewController {
             let logRequest: NSFetchRequest<MedicationDoseLog> = MedicationDoseLog.fetchRequest()
             let logs = (try? PersistenceController.shared.viewContext.fetch(logRequest)) ?? []
             todayViewModel.loadTodayMedications(from: myMedications, logs: logs)
-            
+
             let startOfDay = Calendar.current.startOfDay(for: Date())
             let endOfDay = Calendar.current.date(byAdding: .day, value: 1, to: startOfDay)!
             logRequest.predicate = NSPredicate(
@@ -156,8 +153,6 @@ final class MainMedicationViewController: UIViewController {
                 startOfDay as NSDate,
                 endOfDay as NSDate
             )
-
-            
 
             todayViewModel.loadLoggedDoses(medications: myMedications, logs: logs, for: Date())
             loggedDoses = todayViewModel.loggedDoses
@@ -187,32 +182,32 @@ final class MainMedicationViewController: UIViewController {
 
     private func presentDoseAlert(for dose: TodayDoseItem) {
         let now = Date()
-        
+
         // If scheduled for the future, show warning first
         if dose.scheduledTime > now {
             let formatter = DateFormatter()
             formatter.timeStyle = .short
             let timeString = formatter.string(from: dose.scheduledTime)
-            
+
             let earlyAlert = UIAlertController(
                 title: "Early Logging",
                 message: "This medication is scheduled for \(timeString). Are you sure you want to log it now?",
                 preferredStyle: .alert
             )
-            
+
             let confirmAction = UIAlertAction(title: "Yes, Log It", style: .default) { [weak self] _ in
                 self?.showActionSheet(for: dose)
             }
-            
+
             earlyAlert.addAction(confirmAction)
             earlyAlert.addAction(UIAlertAction(title: "Cancel", style: .cancel))
-            
+
             present(earlyAlert, animated: true)
         } else {
             showActionSheet(for: dose)
         }
     }
-    
+
     private func showActionSheet(for dose: TodayDoseItem) {
         let alert = UIAlertController(
             title: dose.medicationName,
@@ -278,7 +273,6 @@ final class MainMedicationViewController: UIViewController {
         loadMedications()
     }
 
-
     private func updateUIForSegment() {
         if currentSegment == .myMedication {
             editButton.isHidden = false
@@ -287,7 +281,6 @@ final class MainMedicationViewController: UIViewController {
             editButton.isHidden = true
         }
     }
-
 
     @IBAction func editButtonTapped(_ sender: Any) {
         let storyboard = UIStoryboard(name: "Medication", bundle: nil)
@@ -324,8 +317,7 @@ extension MainMedicationViewController: UICollectionViewDataSource {
                     action: hasMoreThanThreeUpcoming ? .showAll : nil,
                     isExpanded: isShowingAllUpcoming
                 )
-            }
-            else {
+            } else {
                 let isEditEnabled = !loggedDoses.isEmpty
 
                 header.configure(
@@ -425,7 +417,7 @@ extension MainMedicationViewController: UICollectionViewDelegate {
 }
 
 extension MainMedicationViewController {
-   
+
         private func updateDose(_ dose: TodayDoseItem, status: DoseStatus) {
 
             MedicationDoseLogger.shared.log(
@@ -439,13 +431,13 @@ extension MainMedicationViewController {
                let med = myMedications.first(where: { $0.id == dose.medicationID }) {
                 let iso = ISO8601DateFormatter()
                 let userInfo: [AnyHashable: Any] = [
-                    MedNotifKey.doseID:        dose.id.uuidString,
-                    MedNotifKey.medID:         dose.medicationID.uuidString,
-                    MedNotifKey.medName:       med.medicationName ?? "Medication",
-                    MedNotifKey.medForm:       med.medicationForm ?? "",
-                    MedNotifKey.medStrength:   Int(med.medicationStrength),
-                    MedNotifKey.medUnit:       med.medicationUnit ?? "",
-                    MedNotifKey.iconName:      med.medicationIconName ?? "tablet1",
+                    MedNotifKey.doseID: dose.id.uuidString,
+                    MedNotifKey.medID: dose.medicationID.uuidString,
+                    MedNotifKey.medName: med.medicationName ?? "Medication",
+                    MedNotifKey.medForm: med.medicationForm ?? "",
+                    MedNotifKey.medStrength: Int(med.medicationStrength),
+                    MedNotifKey.medUnit: med.medicationUnit ?? "",
+                    MedNotifKey.iconName: med.medicationIconName ?? "tablet1",
                     MedNotifKey.scheduledTime: iso.string(from: dose.scheduledTime)
                 ]
                 if let payload = MedicationAlarmPayload(userInfo: userInfo) {
@@ -464,8 +456,6 @@ extension MainMedicationViewController {
                 object: nil
             )
         }
-    
-
 
 }
 
@@ -508,7 +498,6 @@ extension MainMedicationViewController: EditLogDelegate {
                 if let coreDose = log.dose {
                     coreDose.doseStatus = item.status.rawValue
 
-                    
                     if item.status != .none, let doseID = coreDose.id {
                         MedicationNotificationManager.shared.cancelNotifications(forDoseID: doseID)
                     }

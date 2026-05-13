@@ -1,4 +1,3 @@
-
 import AVFoundation
 
 enum BeatType: String, CaseIterable {
@@ -17,10 +16,10 @@ final class RhythmicAudioManager {
     private let playerNode = AVAudioPlayerNode()
     private let sampleRate: Double = 44100
 
-    private var beatBuffer:  AVAudioPCMBuffer?
-    private var currentBPM:  Int      = 80
+    private var beatBuffer: AVAudioPCMBuffer?
+    private var currentBPM: Int      = 80
     private var currentBeat: BeatType = .click
-    private var beatTimer:   DispatchSourceTimer?
+    private var beatTimer: DispatchSourceTimer?
 
     private(set) var isPlaying = false
     private(set) var isPaused  = false
@@ -84,8 +83,7 @@ final class RhythmicAudioManager {
 
     private func startEngineIfNeeded() {
         guard !engine.isRunning else { return }
-        do { try engine.start() }
-        catch { print("[RhythmicAudio] Engine start error: \(error)") }
+        do { try engine.start() } catch { print("[RhythmicAudio] Engine start error: \(error)") }
     }
 
     private func startTimer() {
@@ -93,7 +91,7 @@ final class RhythmicAudioManager {
         guard let buffer = beatBuffer else { return }
 
         let intervalNs = UInt64((60.0 / Double(currentBPM)) * 1_000_000_000)
-        let lookaheadFrames = AVAudioFramePosition(0.1 * sampleRate)  
+        let lookaheadFrames = AVAudioFramePosition(0.1 * sampleRate)
 
         let timer = DispatchSource.makeTimerSource(queue: .global(qos: .userInteractive))
         timer.schedule(deadline: .now(), repeating: .nanoseconds(Int(intervalNs)),
@@ -196,7 +194,7 @@ final class RhythmicAudioManager {
         var phase = 0.0
         for i in 0..<Int(buf.frameLength) {
             let t     = Double(i) / sampleRate
-            let freq  = 120.0 * exp(-t / 0.04) + 55.0 
+            let freq  = 120.0 * exp(-t / 0.04) + 55.0
             let env   = exp(-t / 0.07)
             let noise = Double.random(in: -0.2...0.2) * exp(-t / 0.008)
             phase    += 2 * .pi * freq / sampleRate

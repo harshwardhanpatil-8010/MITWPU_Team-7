@@ -1,4 +1,3 @@
-
 import UIKit
 import AVFoundation
 
@@ -98,7 +97,6 @@ class ExerciseCountdownViewController: UIViewController {
         navigationController?.setNavigationBarHidden(false, animated: animated)
     }
 
-
     private func applyTextShadow(to label: UILabel) {
         label.layer.shadowColor   = UIColor.black.cgColor
         label.layer.shadowOpacity = 0.75
@@ -184,7 +182,7 @@ class ExerciseCountdownViewController: UIViewController {
             stack.trailingAnchor.constraint(lessThanOrEqualTo: view.trailingAnchor, constant: -24),
 
             startButton.heightAnchor.constraint(equalToConstant: 60),
-            startButton.widthAnchor.constraint(greaterThanOrEqualToConstant: 200),
+            startButton.widthAnchor.constraint(greaterThanOrEqualToConstant: 200)
         ])
     }
 
@@ -199,7 +197,6 @@ class ExerciseCountdownViewController: UIViewController {
         exerciseNameLabel.text  = exercise.name
     }
 
-
     private func setupVideo() {
         guard startingIndex < exercises.count,
               let videoID = exercises[startingIndex].videoID,
@@ -211,7 +208,6 @@ class ExerciseCountdownViewController: UIViewController {
         let item = AVPlayerItem(asset: AVURLAsset(url: url))
         playerLooper = AVPlayerLooper(player: avPlayer!, templateItem: item)
     }
-
 
     private func tickCountdown() {
         numberLabel.text = "\(countDown)"
@@ -237,7 +233,6 @@ class ExerciseCountdownViewController: UIViewController {
             self.numberLabel.transform = .identity
         }
     }
-
 
     @objc private func startTapped() {
         guard !hasNavigated else { return }

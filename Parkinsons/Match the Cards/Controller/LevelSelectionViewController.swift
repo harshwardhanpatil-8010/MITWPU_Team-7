@@ -1,4 +1,3 @@
-
 import UIKit
 
 class LevelSelectionViewController: UIViewController,
@@ -69,7 +68,7 @@ UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
         layout.itemSize = CGSize(width: size, height: size)
         layout.minimumInteritemSpacing = 0
         layout.minimumLineSpacing = 0
-        layout.estimatedItemSize = .zero                      
+        layout.estimatedItemSize = .zero
     }
 
     private func setupMonth() {
@@ -170,5 +169,5 @@ UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
         vc.level = DailyGameManager.shared.level(for: date)
         navigationController?.pushViewController(vc, animated: true)
     }
-    
+
 }

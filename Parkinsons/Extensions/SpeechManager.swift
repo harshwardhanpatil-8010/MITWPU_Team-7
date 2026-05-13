@@ -1,6 +1,5 @@
 import AVFoundation
 
-
 class SpeechManager {
 
     static let shared = SpeechManager()
@@ -26,7 +25,6 @@ class SpeechManager {
             return
         }
 
-
         if synthesizer.isSpeaking {
             synthesizer.stopSpeaking(at: .immediate)
         }
@@ -48,7 +46,6 @@ class SpeechManager {
         utterance.pitchMultiplier = 1.0
         utterance.volume = 1.0
 
-
         synthesizer.speak(utterance)
     }
 
@@ -63,7 +60,6 @@ class SpeechManager {
     }
 
     func resume() {
-
 
         synthesizer.continueSpeaking()
     }

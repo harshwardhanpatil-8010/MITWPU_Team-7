@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct UnitAndType {//UI support model,Static
+struct UnitAndType {// UI support model,Static
     var name: String
     var image: String
     var isSelected: Bool
@@ -32,4 +32,3 @@ extension UnitAndType {
         }?.image ?? "tablet"
     }
 }
-

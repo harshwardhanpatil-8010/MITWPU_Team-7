@@ -8,7 +8,6 @@ class WhackAMoleGameViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        
         navigationItem.hidesBackButton = true
         let closeAction = UIAction { [weak self] _ in
             self?.handleQuit()

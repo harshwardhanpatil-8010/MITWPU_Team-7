@@ -46,7 +46,6 @@ class EditMedicationViewController: UIViewController,
         collectionView.reloadData()
     }
 
-
     func didUpdateMedication() {
         reloadMedications()
         delegate?.didUpdateMedication()
@@ -112,7 +111,7 @@ extension EditMedicationViewController: UICollectionViewDelegateFlowLayout {
     ) -> UIEdgeInsets {
         return .zero
     }
-    
+
     func collectionView(
         _ collectionView: UICollectionView,
         layout collectionViewLayout: UICollectionViewLayout,
@@ -121,4 +120,3 @@ extension EditMedicationViewController: UICollectionViewDelegateFlowLayout {
         return 0
     }
 }
-

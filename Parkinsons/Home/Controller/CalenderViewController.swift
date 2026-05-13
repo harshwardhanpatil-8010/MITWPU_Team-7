@@ -6,12 +6,10 @@ class CalendarViewController: UIViewController {
     var sections: [MonthSection] = []
     var selectedDate: Date = Date()
 
-
     private static let sharedMonthFormatter: DateFormatter = {
         let formatter = DateFormatter()
         return formatter
     }()
-
 
     private let calendar: Calendar = {
         var cal = Calendar.current
@@ -20,14 +18,12 @@ class CalendarViewController: UIViewController {
     }()
 
     private var selectedIndexPath: IndexPath?
-    
-    
-    
+
     override func viewDidLoad() {
         super.viewDidLoad()
         setupCalendarData()
         setupCollectionView()
-        
+
     }
 
     override func viewDidAppear(_ animated: Bool) {
@@ -76,28 +72,27 @@ class CalendarViewController: UIViewController {
                 }
             }
 
-
             let monthName = CalendarViewController.sharedMonthFormatter.monthSymbols[month - 1]
             sections.append(MonthSection(monthName: monthName, days: monthDays))
         }
     }
     private func setupCollectionView() {
         collectionView.register(UINib(nibName: "DataCapsuleCell", bundle: nil), forCellWithReuseIdentifier: "date_capsule_cell")
-        
+
         let headerNib = UINib(nibName: "MonthHeaderViewCollectionReusableView", bundle: nil)
         collectionView.register(headerNib, forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: "MonthHeaderView")
-        
+
         collectionView.dataSource = self
         collectionView.delegate = self
-        
+
         let layout = UICollectionViewFlowLayout()
         layout.scrollDirection = .vertical
-        
+
         layout.sectionInset = UIEdgeInsets(top: 8, left: 16, bottom: 50, right: 16)
         layout.minimumInteritemSpacing = 12
         layout.minimumLineSpacing = 18
         layout.sectionHeadersPinToVisibleBounds = true
-        
+
         collectionView.collectionViewLayout = layout
     }
     @IBAction func cancelButtonTapped(_ sender: Any) {
@@ -105,10 +100,8 @@ class CalendarViewController: UIViewController {
     }
 }
 
-
-
 extension CalendarViewController: UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
-    
+
     func numberOfSections(in collectionView: UICollectionView) -> Int {
         return sections.count
     }
@@ -121,13 +114,11 @@ extension CalendarViewController: UICollectionViewDataSource, UICollectionViewDe
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "date_capsule_cell", for: indexPath) as! DateCapsuleCell
         let dayData = sections[indexPath.section].days[indexPath.item]
 
-
         if dayData.isDummy {
             cell.contentView.alpha = 0
             cell.isUserInteractionEnabled = false
             return cell
         }
-
 
         // Fix #3 – Compare at day granularity to avoid time-of-day / timezone issues
         let isFuture = calendar.compare(dayData.date, to: Date(), toGranularity: .day) == .orderedDescending
@@ -139,7 +130,6 @@ extension CalendarViewController: UICollectionViewDataSource, UICollectionViewDe
 
         cell.isUserInteractionEnabled = !isFuture
         cell.contentView.alpha = isFuture ? 0.3 : 1.0
-
 
         cell.accessibilityLabel = "\(dayData.dayNumber)"
         cell.accessibilityTraits = isFuture ? [.notEnabled] : (dayData.isSelected ? [.selected] : [])
@@ -161,8 +151,6 @@ extension CalendarViewController: UICollectionViewDataSource, UICollectionViewDe
         return CGSize(width: width, height: 70)
     }
 
-
-
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, referenceSizeForHeaderInSection section: Int) -> CGSize {
         return CGSize(width: collectionView.frame.width, height: 70)
     }
@@ -170,11 +158,9 @@ extension CalendarViewController: UICollectionViewDataSource, UICollectionViewDe
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         let dayData = sections[indexPath.section].days[indexPath.item]
 
-
         // Fix #3 – Day-granularity future check
         let isFuture = calendar.compare(dayData.date, to: Date(), toGranularity: .day) == .orderedDescending
         if dayData.isDummy || isFuture { return }
-
 
         if let old = selectedIndexPath {
             sections[old.section].days[old.item].isSelected = false
@@ -189,10 +175,8 @@ extension CalendarViewController: UICollectionViewDataSource, UICollectionViewDe
 
         sections[indexPath.section].days[indexPath.item].isSelected = true
 
-
         selectedDate = dayData.date
 
-        
         var pathsToReload: [IndexPath] = [indexPath]
         if let old = selectedIndexPath, old != indexPath {
             pathsToReload.append(old)
@@ -202,7 +186,7 @@ extension CalendarViewController: UICollectionViewDataSource, UICollectionViewDe
 
         presentSummary(for: dayData.date)
     }
-    
+
     private func presentSummary(for date: Date) {
         let storyboard = UIStoryboard(name: "Home", bundle: nil)
         guard let summaryVC = storyboard.instantiateViewController(withIdentifier: "SummaryViewController") as? SummaryViewController else { return }

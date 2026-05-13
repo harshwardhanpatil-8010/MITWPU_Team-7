@@ -1,6 +1,3 @@
-
-
-
 import UIKit
 protocol RestScreenDelegate: AnyObject {
     func recordRestDuration(seconds: TimeInterval)
@@ -8,16 +5,16 @@ protocol RestScreenDelegate: AnyObject {
     func restCompletedWorkoutDone()
 }
 class RestScreenViewController: UIViewController {
-    
+
     @IBOutlet weak var timerLabel: UILabel!
     @IBOutlet weak var breatheView: UIView!
     @IBOutlet weak var exerciseLabel: UILabel!
     @IBOutlet var progressBars: [UIProgressView]!
     @IBOutlet weak var backgroundView: UIView!
-    
+
     weak var delegate: RestScreenDelegate?
 
-    var currentIndex: Int = 0       
+    var currentIndex: Int = 0
     var isRevisitingSkipped: Bool = false
     var skippedIndicesToRevisit: [Int] = []
 
@@ -36,7 +33,7 @@ class RestScreenViewController: UIViewController {
             breatheView.backgroundColor = UIColor.systemCyan.withAlphaComponent(0.4)
         }, completion: nil)
     }
-    
+
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         tabBarController?.tabBar.isHidden = true
@@ -53,7 +50,7 @@ class RestScreenViewController: UIViewController {
         backgroundView.layer.masksToBounds = false
         setupUI()
         setupBreathGuide()
-        
+
         restTimer = Timer.scheduledTimer(withTimeInterval: 1.0, repeats: true) { [weak self] t in
             self?.tick(t)
         }

@@ -1,5 +1,3 @@
-
-
 import UIKit
 
 class DateCell: UICollectionViewCell {
@@ -42,13 +40,13 @@ class DateCell: UICollectionViewCell {
             labelBackgroundView.heightAnchor.constraint(equalTo: labelBackgroundView.widthAnchor),
 
             dateLabel.centerXAnchor.constraint(equalTo: contentView.centerXAnchor),
-            dateLabel.centerYAnchor.constraint(equalTo: contentView.centerYAnchor),
+            dateLabel.centerYAnchor.constraint(equalTo: contentView.centerYAnchor)
         ])
     }
 
     override func layoutSubviews() {
         super.layoutSubviews()
-       
+
         outerRingView.layer.cornerRadius = outerRingView.bounds.width / 2
         outerRingView.clipsToBounds = true
 
@@ -90,7 +88,7 @@ class DateCell: UICollectionViewCell {
                 outerRingView.isHidden = false
                 outerRingView.layer.borderWidth = 2
                 outerRingView.layer.borderColor = themeColor.cgColor
-                
+
                 // Inner ring
                 labelBackgroundView.layer.borderWidth = 2
                 labelBackgroundView.layer.borderColor = UIColor.systemBackground.cgColor
@@ -117,7 +115,7 @@ class DateCell: UICollectionViewCell {
         outerRingView.backgroundColor = .clear
         outerRingView.layer.borderWidth = 0
         outerRingView.layer.borderColor = nil
-        
+
         labelBackgroundView.backgroundColor = .clear
         labelBackgroundView.layer.borderWidth = 0
         labelBackgroundView.layer.borderColor = nil

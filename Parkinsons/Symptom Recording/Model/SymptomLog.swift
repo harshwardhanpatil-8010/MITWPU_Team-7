@@ -1,5 +1,3 @@
-
-
 import Foundation
 import CoreData
 
@@ -23,7 +21,7 @@ enum SymptomType: Int16, CaseIterable, Codable {
         case .insomnia: return "Insomnia"
         }
     }
-    
+
     var iconName: String {
         switch self {
         case .slowedMovement: return "ColourTortoise2"
@@ -52,7 +50,6 @@ enum SymptomSeverity: Int16, Codable, CaseIterable {
         }
     }
 }
-
 
 struct SymptomRating: Codable, Identifiable {
     let id: UUID
@@ -100,7 +97,6 @@ struct SymptomLogEntry: Codable, Identifiable {
     }
 }
 
-
 struct SymptomLog: Codable, Identifiable {
     let id: UUID
     let date: Date
@@ -122,7 +118,6 @@ struct SymptomLog: Codable, Identifiable {
         self.notes = notes
     }
 }
-
 
 extension SymptomLog {
 
@@ -181,7 +176,6 @@ struct SymptomLogStore {
         try context.save()
     }
 
-
     static func fetchAll(
         context: NSManagedObjectContext
     ) throws -> [SymptomLog] {
@@ -215,7 +209,6 @@ struct SymptomLogStore {
         }
     }
 
-
     static func buildDailyEntry(
         for date: Date,
         context: NSManagedObjectContext
@@ -245,7 +238,6 @@ struct SymptomLogStore {
             ratings: ratings
         )
     }
-
 
     static func deleteAll(
         context: NSManagedObjectContext

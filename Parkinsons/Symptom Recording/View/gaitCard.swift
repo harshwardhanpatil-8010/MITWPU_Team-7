@@ -9,7 +9,6 @@ class gaitCard: UICollectionViewCell {
 
     private var graphPoints: [(date: Date, value: Double)] = []
 
-
     override func awakeFromNib() {
         super.awakeFromNib()
         self.clipsToBounds = false
@@ -23,7 +22,6 @@ class gaitCard: UICollectionViewCell {
         DispatchQueue.main.async { self.redrawGraph() }
     }
 
-
     private func setupCardStyle() {
         cardBackground.layer.cornerRadius = 20
         cardBackground.layer.masksToBounds = false
@@ -32,7 +30,6 @@ class gaitCard: UICollectionViewCell {
         cardBackground.layer.shadowRadius  = 8
         cardBackground.layer.shadowOffset  = CGSize(width: 0, height: 3)
     }
-
 
     func configure(range: String) {
         configureWithPoints(range: range, points: [])
@@ -64,7 +61,6 @@ class gaitCard: UICollectionViewCell {
         return .systemRed
     }
 
-
     private func redrawGraph() {
         walkingSteadinessView.layer.sublayers?.forEach { $0.removeFromSuperlayer() }
         walkingSteadinessView.backgroundColor = .clear
@@ -91,12 +87,12 @@ class gaitCard: UICollectionViewCell {
 
         addText("100", frame: CGRect(x: 0, y: pT - 1, width: pL - 3, height: 10),
                 align: .right, color: .tertiaryLabel)
-        addText("0",   frame: CGRect(x: 0, y: H - pB - 8, width: pL - 3, height: 10),
+        addText("0", frame: CGRect(x: 0, y: H - pB - 8, width: pL - 3, height: 10),
                 align: .right, color: .tertiaryLabel)
 
-        addLine(from: CGPoint(x: pL, y: pT),      to: CGPoint(x: pL, y: H - pB),
+        addLine(from: CGPoint(x: pL, y: pT), to: CGPoint(x: pL, y: H - pB),
                 color: UIColor.systemGray5.cgColor, w: 0.5)
-        addLine(from: CGPoint(x: pL, y: H - pB),  to: CGPoint(x: W - pR, y: H - pB),
+        addLine(from: CGPoint(x: pL, y: H - pB), to: CGPoint(x: W - pR, y: H - pB),
                 color: UIColor.systemGray5.cgColor, w: 0.5)
         if pts.count >= 2 {
             let fmt = DateFormatter()
@@ -112,8 +108,8 @@ class gaitCard: UICollectionViewCell {
         }
 
         guard pts.count > 0 else {
-            addLine(from: CGPoint(x: pL,     y: H - pB - uh / 2),
-                    to:   CGPoint(x: W - pR, y: H - pB - uh / 2),
+            addLine(from: CGPoint(x: pL, y: H - pB - uh / 2),
+                    to: CGPoint(x: W - pR, y: H - pB - uh / 2),
                     color: UIColor.systemGray4.cgColor, w: 1, dash: [3, 3])
             return
         }

@@ -1,5 +1,3 @@
-
-
 import Foundation
 
 struct RhythmicSessionDTO: Codable, Identifiable {
@@ -46,7 +44,6 @@ enum PaceConfig {
         }
     }
 }
-
 
 struct GaitSummary {
     var steps: Int

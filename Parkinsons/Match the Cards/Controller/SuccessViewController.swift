@@ -1,4 +1,3 @@
-
 import UIKit
 
 class SuccessViewController: UIViewController {
@@ -106,13 +105,12 @@ class SuccessViewController: UIViewController {
 
     @IBAction func FinishButtonAction(_ sender: UIButton) {
          if let existingLandingVC = self.navigationController?.viewControllers.first(where: { vc in
-             return vc is LevelSelectionViewController})
-            {
+             return vc is LevelSelectionViewController}) {
              self.navigationController?.popToViewController(existingLandingVC, animated: true)
          } else {
              let storyboard = UIStoryboard(name: "Match the Cards", bundle: nil)
              let homeVC = storyboard.instantiateViewController(withIdentifier: "matchTheCardsLandingPage") as! LevelSelectionViewController
-       
+
              self.navigationController?.setViewControllers([homeVC], animated: true)
          }
     }

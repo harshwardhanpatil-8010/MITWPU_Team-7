@@ -2,7 +2,6 @@
 // Parkinsons
 //
 
-
 import Foundation
 import UserNotifications
 import CoreData
@@ -38,12 +37,8 @@ final class MedicationNotificationManager {
     static let shared = MedicationNotificationManager()
     private init() {}
 
-
     private let followUpDelay: TimeInterval = 15 * 60
     private let iso = ISO8601DateFormatter()
-
-
-
 
     private func groupID(for date: Date, isFollowUp: Bool) -> String {
         "group_" + iso.string(from: date) + (isFollowUp ? "_followup" : "")
@@ -82,8 +77,6 @@ final class MedicationNotificationManager {
             .setNotificationCategories([onTimeCategory, followUpCategory])
     }
 
-
-
     func requestPermissionAndScheduleAll() {
         UNUserNotificationCenter.current().requestAuthorization(
             options: [.alert, .sound, .badge]
@@ -93,7 +86,6 @@ final class MedicationNotificationManager {
             DispatchQueue.main.async { self.rescheduleAll() }
         }
     }
-
 
     func rescheduleAll() {
         scheduleAll()
@@ -114,10 +106,8 @@ final class MedicationNotificationManager {
             let now = Date()
             let cal = Calendar.current
 
-
-            var onTimeGroups:  [Date: [(doseID: UUID, medID: UUID, med: Medication, dose: MedicationDose)]] = [:]
-            var followUpGroups:[Date: [(doseID: UUID, medID: UUID, med: Medication, dose: MedicationDose)]] = [:]
-
+            var onTimeGroups: [Date: [(doseID: UUID, medID: UUID, med: Medication, dose: MedicationDose)]] = [:]
+            var followUpGroups: [Date: [(doseID: UUID, medID: UUID, med: Medication, dose: MedicationDose)]] = [:]
 
             for med in medications {
                 guard self.isMedicationDueToday(med) else { continue }
@@ -130,26 +120,23 @@ final class MedicationNotificationManager {
                         let medID    = med.id
                     else { continue }
 
-
                     let comps = cal.dateComponents([.hour, .minute], from: doseTime)
 
                     guard let fireDate = cal.date(
                         bySettingHour: comps.hour ?? 0,
-                        minute:        comps.minute ?? 0,
-                        second:        0,
-                        of:            now
+                        minute: comps.minute ?? 0,
+                        second: 0,
+                        of: now
                     ) else { continue }
 
                     let followDate = fireDate.addingTimeInterval(self.followUpDelay)
                     let status     = dose.doseStatus ?? "none"
-
 
                     if status == "none" && fireDate > now {
                         onTimeGroups[fireDate, default: []].append(
                             (doseID: doseID, medID: medID, med: med, dose: dose)
                         )
                     }
-
 
                     if status != "taken" && followDate > now {
                         followUpGroups[followDate, default: []].append(
@@ -159,12 +146,10 @@ final class MedicationNotificationManager {
                 }
             }
 
-
             for (date, group) in onTimeGroups {
                 self.scheduleGroupNotification(
                     group: group, fireDate: date, isFollowUp: false)
             }
-
 
             for (date, group) in followUpGroups {
                 self.scheduleGroupNotification(
@@ -176,7 +161,6 @@ final class MedicationNotificationManager {
 
     // MARK: - Group notification builder
 
-
     private func scheduleGroupNotification(
         group: [(doseID: UUID, medID: UUID, med: Medication, dose: MedicationDose)],
         fireDate: Date,
@@ -187,7 +171,6 @@ final class MedicationNotificationManager {
         content.interruptionLevel  = isFollowUp ? .active : .timeSensitive
         content.sound              = isFollowUp ? .default : .defaultCritical
 
-        
         let names    = group.prefix(3).compactMap { $0.med.medicationName }
         let joined   = names.joined(separator: ", ")
         let moreSufx = group.count > 3 ? " +\(group.count - 3) more" : ""
@@ -208,18 +191,17 @@ final class MedicationNotificationManager {
                 : "\(joined)\(moreSufx)"
         }
 
-
         let payloadsArray: [[String: Any]] = group.map { item in
             [
-                MedNotifKey.doseID:        item.doseID.uuidString,
-                MedNotifKey.medID:         item.medID.uuidString,
-                MedNotifKey.medName:       item.med.medicationName ?? "",
-                MedNotifKey.medForm:       item.med.medicationForm ?? "",
-                MedNotifKey.medStrength:   Int(item.med.medicationStrength),
-                MedNotifKey.medUnit:       item.med.medicationUnit ?? "",
-                MedNotifKey.iconName:      item.med.medicationIconName ?? "tablet1",
+                MedNotifKey.doseID: item.doseID.uuidString,
+                MedNotifKey.medID: item.medID.uuidString,
+                MedNotifKey.medName: item.med.medicationName ?? "",
+                MedNotifKey.medForm: item.med.medicationForm ?? "",
+                MedNotifKey.medStrength: Int(item.med.medicationStrength),
+                MedNotifKey.medUnit: item.med.medicationUnit ?? "",
+                MedNotifKey.iconName: item.med.medicationIconName ?? "tablet1",
                 MedNotifKey.scheduledTime: iso.string(from: fireDate),
-                MedNotifKey.isFollowUp:    isFollowUp ? 1 : 0
+                MedNotifKey.isFollowUp: isFollowUp ? 1 : 0
             ]
         }
         content.userInfo = ["payloads": payloadsArray]
@@ -260,17 +242,16 @@ final class MedicationNotificationManager {
         content.categoryIdentifier = MedNotifCategory.followUp
         content.interruptionLevel  = .active
 
-
         let payloadsArray: [[String: Any]] = [[
-            MedNotifKey.doseID:        payload.doseID.uuidString,
-            MedNotifKey.medID:         payload.medID.uuidString,
-            MedNotifKey.medName:       payload.medName,
-            MedNotifKey.medForm:       payload.medForm,
-            MedNotifKey.medStrength:   payload.medStrength,
-            MedNotifKey.medUnit:       payload.medUnit,
-            MedNotifKey.iconName:      payload.iconName,
+            MedNotifKey.doseID: payload.doseID.uuidString,
+            MedNotifKey.medID: payload.medID.uuidString,
+            MedNotifKey.medName: payload.medName,
+            MedNotifKey.medForm: payload.medForm,
+            MedNotifKey.medStrength: payload.medStrength,
+            MedNotifKey.medUnit: payload.medUnit,
+            MedNotifKey.iconName: payload.iconName,
             MedNotifKey.scheduledTime: iso.string(from: payload.scheduledTime),
-            MedNotifKey.isFollowUp:    1
+            MedNotifKey.isFollowUp: 1
         ]]
         content.userInfo = ["payloads": payloadsArray]
 
@@ -279,7 +260,6 @@ final class MedicationNotificationManager {
                 [.year, .month, .day, .hour, .minute, .second], from: fireDate),
             repeats: false
         )
-
 
         UNUserNotificationCenter.current().add(
             UNNotificationRequest(
@@ -298,27 +278,22 @@ final class MedicationNotificationManager {
                 guard let payloads = request.content.userInfo["payloads"] as? [[String: Any]]
                 else { continue }
 
-
                 let containsDose = payloads.contains { $0[MedNotifKey.doseID] as? String == doseIDStr }
                 guard containsDose else { continue }
 
                 let isFollowUpGroup = request.identifier.hasSuffix("_followup")
 
-
                 if !cancelFollowUp && isFollowUpGroup { continue }
-
 
                 UNUserNotificationCenter.current()
                     .removePendingNotificationRequests(withIdentifiers: [request.identifier])
                 UNUserNotificationCenter.current()
                     .removeDeliveredNotifications(withIdentifiers: [request.identifier])
 
-
                 let remaining = payloads.filter { $0[MedNotifKey.doseID] as? String != doseIDStr }
                 guard !remaining.isEmpty else { continue }
                 let newContent = (request.content.mutableCopy() as! UNMutableNotificationContent)
                 newContent.userInfo = ["payloads": remaining]
-
 
                 let names = remaining.prefix(3).compactMap { $0[MedNotifKey.medName] as? String }
                 let joined = names.joined(separator: ", ")

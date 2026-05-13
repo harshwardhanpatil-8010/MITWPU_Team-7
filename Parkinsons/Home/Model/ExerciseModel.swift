@@ -5,7 +5,6 @@
 //  Created by SDC-USER on 08/12/25.
 //
 
-
 import Foundation
 
 struct ExerciseModel {
@@ -13,4 +12,3 @@ struct ExerciseModel {
     let detail: String
     let progressColorHex: String
 }
-

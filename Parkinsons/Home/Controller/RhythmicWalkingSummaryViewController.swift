@@ -1,4 +1,3 @@
-
 import UIKit
 import CoreData
 
@@ -112,9 +111,7 @@ class RhythmicWalkingSummaryViewController: UIViewController {
         for session in sessions {
             let date = session.startDate ?? Date()
             let title: String
-            if calendar.isDateInToday(date)          { title = ""     }
-            else if calendar.isDateInYesterday(date) { title = "" }
-            else                                     { title = "" }
+            if calendar.isDateInToday(date) { title = ""     } else if calendar.isDateInYesterday(date) { title = "" } else { title = "" }
 
             if map[title] == nil {
                 orderedTitles.append(title)
@@ -127,17 +124,16 @@ class RhythmicWalkingSummaryViewController: UIViewController {
         sessionsBySection = orderedTitles.map { map[$0] ?? [] }
     }
 
-
     private func makeDTO(from managed: RhythmicSession, sessionNumber: Int) -> RhythmicSessionDTO {
         let uid = managed.id ?? UUID()
         let key = uid.uuidString
         return RhythmicSessionDTO(
-            id:                       uid,
-            sessionNumber:            sessionNumber,
-            startDate:                managed.startDate ?? Date(),
-            endDate:                  managed.endDate,
+            id: uid,
+            sessionNumber: sessionNumber,
+            startDate: managed.startDate ?? Date(),
+            endDate: managed.endDate,
             requestedDurationSeconds: Int(managed.requestedDuration),
-            elapsedSeconds:           Int(managed.elapsedSeconds),
+            elapsedSeconds: Int(managed.elapsedSeconds),
             beat: UserDefaults.standard.string(forKey: "beat_\(key)") ?? "Click",
             pace: UserDefaults.standard.string(forKey: "pace_\(key)") ?? "Slow"
         )
@@ -158,7 +154,6 @@ class RhythmicWalkingSummaryViewController: UIViewController {
         summaryVC.isHistoryView = true
         navigationController?.pushViewController(summaryVC, animated: true)
     }
-
 
     @IBAction func closeButtonTapped(_ sender: Any) {
         dismiss(animated: true)
@@ -249,7 +244,6 @@ extension RhythmicWalkingSummaryViewController: UITableViewDataSource {
     }
 
 }
-
 
 extension RhythmicWalkingSummaryViewController: UITableViewDelegate {
 

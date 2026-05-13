@@ -1,4 +1,3 @@
-
 import HealthKit
 import CoreData
 
@@ -12,7 +11,7 @@ final class HealthKitManagerRhythmic {
         HKQuantityType.quantityType(forIdentifier: .walkingStepLength)!,
         HKQuantityType.quantityType(forIdentifier: .walkingAsymmetryPercentage)!,
         HKQuantityType.quantityType(forIdentifier: .appleWalkingSteadiness)!,
-        HKQuantityType.quantityType(forIdentifier: .walkingSpeed)!         
+        HKQuantityType.quantityType(forIdentifier: .walkingSpeed)!
     ]
 
     private init() {}
@@ -107,11 +106,11 @@ final class HealthKitManagerRhythmic {
             let calculatedSpeedKmH = durationHours > 0 ? (distance / 1000.0) / durationHours : 0.0
             let speedKmH = speedMS > 0 ? speedMS * 3.6 : calculatedSpeedKmH
 
-            print("[HealthKit] ✅ steps:\(steps) dist:\(String(format:"%.1f",distance))m "
-                  + "stepLen:\(String(format:"%.2f",stepLen))m "
-                  + "asym:\(String(format:"%.1f",asymmetry))% "
-                  + "steady:\(String(format:"%.1f",steadiness))% "
-                  + "speed:\(String(format:"%.2f",speedKmH))km/h")
+            print("[HealthKit] ✅ steps:\(steps) dist:\(String(format: "%.1f", distance))m "
+                  + "stepLen:\(String(format: "%.2f", stepLen))m "
+                  + "asym:\(String(format: "%.1f", asymmetry))% "
+                  + "steady:\(String(format: "%.1f", steadiness))% "
+                  + "speed:\(String(format: "%.2f", speedKmH))km/h")
 
             if steps == 0 && distance == 0 {
                 print("[HealthKit] ⚠️ All zero — check: (a) HealthKit permission granted, "

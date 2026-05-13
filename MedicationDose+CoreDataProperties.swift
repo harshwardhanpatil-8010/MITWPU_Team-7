@@ -9,7 +9,6 @@
 public import Foundation
 public import CoreData
 
-
 public typealias MedicationDoseCoreDataPropertiesSet = NSSet
 
 extension MedicationDose {
@@ -42,6 +41,6 @@ extension MedicationDose {
 
 }
 
-extension MedicationDose : Identifiable {
+extension MedicationDose: Identifiable {
 
 }

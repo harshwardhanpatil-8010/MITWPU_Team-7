@@ -3,7 +3,6 @@ import Foundation
 final class TodayMedicationViewModel {
 
     private(set) var todayDoses: [TodayDoseItem] = []
-    
 
     func loadTodayMedications(from medications: [Medication], logs: [MedicationDoseLog]) {
 
@@ -77,7 +76,7 @@ final class TodayMedicationViewModel {
 
             let strength = med.medicationStrength
             var unit = med.medicationUnit ?? ""
-            
+
             if let dotIndex = unit.firstIndex(of: "•") {
                 unit = String(unit[..<dotIndex]).trimmingCharacters(in: .whitespaces)
             }
@@ -98,7 +97,6 @@ final class TodayMedicationViewModel {
 
         loggedDoses.sort { $0.loggedTime > $1.loggedTime }
     }
-
 
     private func normalizeDoseTime(_ date: Date) -> Date {
         let cal = Calendar.current

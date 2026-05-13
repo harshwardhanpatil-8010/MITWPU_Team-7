@@ -41,7 +41,6 @@ class UnitAndTypeViewController: UIViewController,
         TypeTableView.delegate           = self
         TypeTableView.dataSource         = self
 
-
         unitTextField.text = selectedUnit
 
         for i in 0..<unitAndType.count { unitAndType[i].isSelected = false }
@@ -68,17 +67,13 @@ class UnitAndTypeViewController: UIViewController,
         unitTextField.autocorrectionType = .no
         unitTextField.spellCheckingType = .no
 
-
         let dropdownButton = UIButton(type: .system)
         dropdownButton.setImage(UIImage(systemName: "chevron.down"), for: .normal)
         dropdownButton.tintColor = .secondaryLabel
-        
 
         dropdownButton.frame = CGRect(x: 0, y: 0, width: 48, height: 36)
-        
 
         dropdownButton.contentHorizontalAlignment = .center
-        
 
         var config = UIButton.Configuration.plain()
         config.image = UIImage(systemName: "chevron.down")
@@ -110,9 +105,7 @@ class UnitAndTypeViewController: UIViewController,
             })
         }
 
-
         alert.addAction(UIAlertAction(title: "Cancel", style: .cancel))
-
 
         if let popover = alert.popoverPresentationController {
             popover.sourceView = unitTextField
@@ -129,7 +122,6 @@ class UnitAndTypeViewController: UIViewController,
         return true
     }
 
-
     func textField(
         _ textField: UITextField,
         shouldChangeCharactersIn range: NSRange,
@@ -137,9 +129,7 @@ class UnitAndTypeViewController: UIViewController,
     ) -> Bool {
         guard textField == unitTextField else { return true }
 
-
         if string.isEmpty { return true }
-
 
         let digitsOnly = CharacterSet.decimalDigits
         if string.unicodeScalars.allSatisfy({ digitsOnly.contains($0) }) {
@@ -178,7 +168,6 @@ class UnitAndTypeViewController: UIViewController,
         let rawText  = unitTextField.text ?? ""
         let unit     = rawText.trimmingCharacters(in: .whitespaces)
 
-        
         let hasLetter = unit.unicodeScalars.contains { CharacterSet.letters.contains($0) }
         let hasUnit   = !unit.isEmpty && hasLetter
         let hasType   = selectedType != nil

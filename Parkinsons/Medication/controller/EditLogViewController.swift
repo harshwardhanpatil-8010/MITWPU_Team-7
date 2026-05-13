@@ -1,4 +1,3 @@
-
 //  EditLogViewController.swift
 //  Parkinsons
 //
@@ -38,8 +37,7 @@ class EditLogViewController: UIViewController, UICollectionViewDelegate {
     @IBAction func cancelTapped(_ sender: UIBarButtonItem) {
         dismiss(animated: true)
     }
-    
-    
+
 }
 extension EditLogViewController: UICollectionViewDataSource {
 
@@ -69,7 +67,6 @@ extension EditLogViewController: UICollectionViewDataSource {
             self.loggedDoses[currentIndexPath.item].status = newStatus
         }
 
-
         return cell
     }
 }
@@ -80,9 +77,8 @@ extension EditLogViewController: UICollectionViewDelegateFlowLayout {
         layout collectionViewLayout: UICollectionViewLayout,
         sizeForItemAt indexPath: IndexPath
     ) -> CGSize {
-        CGSize(width: collectionView.bounds.width - 32 , height: 110)
+        CGSize(width: collectionView.bounds.width - 32, height: 110)
     }
-
 
     func collectionView(
         _ collectionView: UICollectionView,
@@ -99,4 +95,3 @@ extension EditLogViewController: UICollectionViewDelegateFlowLayout {
         8
     }
 }
-

@@ -6,7 +6,7 @@ class OnboardingInfoViewController: UIViewController, UITextFieldDelegate,
                                      UIPickerViewDelegate, UIPickerViewDataSource {
 
     @IBOutlet weak var nextButton: UIButton!
-    
+
     @IBOutlet weak var stageLabelField: UITextField!
     @IBOutlet weak var genderLabelField: UITextField!
     @IBOutlet weak var dateOfBirthTextField: UITextField!
@@ -210,7 +210,6 @@ class OnboardingInfoViewController: UIViewController, UITextFieldDelegate,
         return true
     }
 
-
     func textField(_ textField: UITextField,
                    shouldChangeCharactersIn range: NSRange,
                    replacementString string: String) -> Bool {
@@ -232,7 +231,6 @@ class OnboardingInfoViewController: UIViewController, UITextFieldDelegate,
 
     // MARK: - Toolbar Helper
 
-
     private func makeToolbar(doneAction: Selector) -> UIToolbar {
         let toolbar    = UIToolbar()
         toolbar.sizeToFit()
@@ -253,11 +251,11 @@ class OnboardingInfoViewController: UIViewController, UITextFieldDelegate,
         let stageNumber    = Int(stageText.components(separatedBy: " ").last ?? "")
 
         let defaults = UserDefaults.standard
-        defaults.set(name,           forKey: "userName")
-        defaults.set(stageNumber,    forKey: "diseaseStage")
+        defaults.set(name, forKey: "userName")
+        defaults.set(stageNumber, forKey: "diseaseStage")
         defaults.set(selectedGender, forKey: "userGender")
-        defaults.set(datePicker.date, forKey: "userDOB")  
-        defaults.set(true,           forKey: "hasCompletedOnboarding")
+        defaults.set(datePicker.date, forKey: "userDOB")
+        defaults.set(true, forKey: "hasCompletedOnboarding")
 
         NotificationCenter.default.post(
             name: NSNotification.Name("UserProfileUpdated"), object: nil)
@@ -272,8 +270,8 @@ class OnboardingInfoViewController: UIViewController, UITextFieldDelegate,
         let tabBarVC   = storyboard.instantiateViewController(withIdentifier: "HomeTabBar")
 
         let windowScene = UIApplication.shared.connectedScenes
-            .compactMap  { $0 as? UIWindowScene }
-            .first       { $0.activationState == .foregroundActive }
+            .compactMap { $0 as? UIWindowScene }
+            .first { $0.activationState == .foregroundActive }
             ?? UIApplication.shared.connectedScenes.first as? UIWindowScene
 
         if let sceneDelegate = windowScene?.delegate as? SceneDelegate {

@@ -1,4 +1,3 @@
-
 import Foundation
 import CoreData
 
@@ -48,12 +47,12 @@ final class DataStore {
             ? (managed.distanceMeters / 1000.0) / durationHours : 0.0
 
         return GaitSummary(
-            steps:                   Int(managed.steps),
-            distanceMeters:          managed.distanceMeters,
-            speedKmH:                speed,
-            stepLengthMeters:        managed.stepLengthMeters,
+            steps: Int(managed.steps),
+            distanceMeters: managed.distanceMeters,
+            speedKmH: speed,
+            stepLengthMeters: managed.stepLengthMeters,
             walkingAsymmetryPercent: managed.walkingAsymmetry,
-            walkingSteadiness:       classifySteadiness(managed.walkingSteadiness)
+            walkingSteadiness: classifySteadiness(managed.walkingSteadiness)
         )
     }
 
@@ -62,7 +61,6 @@ final class DataStore {
         if value >= 45 { return "Low" }
         return value > 0 ? "Very Low" : "No data"
     }
-
 
     func previousSession(before session: RhythmicSessionDTO) -> RhythmicSession? {
         let request: NSFetchRequest<RhythmicSession> = RhythmicSession.fetchRequest()

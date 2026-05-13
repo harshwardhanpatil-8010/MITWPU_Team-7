@@ -13,14 +13,13 @@ class EmojiGameViewController: UIViewController {
     @IBOutlet weak var emojiNameLabel: UILabel!
 
     let arModel = EmojiARModel()
-    
+
     var shuffledChallenges: [EmojiChallenge] = []
     var currentLevel = 0
-    
+
     var score = 0
     var timer: Timer?
-    
-   
+
     var timeElapsed = 0
     var skippedCount = 0
     var isAnimatingSuccess = false
@@ -33,7 +32,7 @@ class EmojiGameViewController: UIViewController {
         arModel.onMatch = { [weak self] in
             self?.handleSuccess()
         }
-        
+
         startGame()
     }
     override func viewWillAppear(_ animated: Bool) {
@@ -41,14 +40,14 @@ class EmojiGameViewController: UIViewController {
     }
     func setupCustomBackButton() {
         self.navigationItem.hidesBackButton = true
-        
+
         let closeAction = UIAction { [weak self] _ in
             self?.showQuitAlert()
         }
-        
+
         let closeButton = UIBarButtonItem(barButtonSystemItem: .close, target: nil, action: nil)
         closeButton.primaryAction = closeAction
-        
+
         self.navigationItem.leftBarButtonItem = closeButton
     }
 
@@ -58,16 +57,16 @@ class EmojiGameViewController: UIViewController {
             message: "Are you sure you want to quit? Your progress will not be saved.",
             preferredStyle: .alert
         )
-        
+
         let quitAction = UIAlertAction(title: "Quit", style: .destructive) { [weak self] _ in
             self?.navigationController?.popViewController(animated: true)
         }
-        
+
         let cancelAction = UIAlertAction(title: "Cancel", style: .cancel)
-        
+
         alert.addAction(quitAction)
         alert.addAction(cancelAction)
-        
+
         present(alert, animated: true)
     }
     func startGame() {
@@ -75,9 +74,9 @@ class EmojiGameViewController: UIViewController {
         skippedCount = 0
         currentLevel = 0
         timeElapsed = 0
-        
+
         shuffledChallenges = EmojiData.challenges.shuffled()
-        
+
         updateScoreLabel()
         startTimer()
         nextChallenge()
@@ -86,7 +85,7 @@ class EmojiGameViewController: UIViewController {
     func startTimer() {
         timer?.invalidate()
         updateTimerLabel()
-        
+
         timer = Timer.scheduledTimer(withTimeInterval: 1.0, repeats: true) { [weak self] _ in
             self?.tick()
         }
@@ -102,7 +101,7 @@ class EmojiGameViewController: UIViewController {
             resultVC.skippedCount = self.skippedCount
             resultVC.timeTaken = self.timeElapsed
             resultVC.playedDate = self.selectedDate
-            
+
             if let nav = self.navigationController {
                 nav.pushViewController(resultVC, animated: true)
             } else {
@@ -111,7 +110,7 @@ class EmojiGameViewController: UIViewController {
             }
         }
     }
-    
+
     func updateTimerLabel() {
         timeLeftLabel.text = "Time: \(timeElapsed)s"
     }
@@ -122,13 +121,13 @@ class EmojiGameViewController: UIViewController {
 
     func nextChallenge() {
         let totalPlayed = score + skippedCount
-        
+
         if totalPlayed >= 10 {
             timer?.invalidate()
             goToResults()
             return
         }
-        
+
         if currentLevel < shuffledChallenges.count {
             let challenge = shuffledChallenges[currentLevel]
             arModel.currentChallenge = challenge
@@ -147,16 +146,16 @@ class EmojiGameViewController: UIViewController {
     func handleSuccess() {
         guard !isAnimatingSuccess else { return }
         isAnimatingSuccess = true
-        
+
         score += 1
         updateScoreLabel()
 
         if let scene = cameraContainerView.scene.anchors.first as? FaceRing.Scene {
             scene.notifications.ringAnimation.post()
         }
-        
+
         currentLevel += 1
-        
+
         showSuccessAnimation { [weak self] in
             self?.isAnimatingSuccess = false
             self?.nextChallenge()
@@ -165,7 +164,7 @@ class EmojiGameViewController: UIViewController {
 
     func showSuccessAnimation(completion: @escaping () -> Void) {
         skipButton.isEnabled = false
-        
+
         let config = UIImage.SymbolConfiguration(pointSize: 100, weight: .bold)
         let checkmarkImage = UIImage(systemName: "checkmark.circle.fill", withConfiguration: config)
         let checkmarkView = UIImageView(image: checkmarkImage)
@@ -173,14 +172,14 @@ class EmojiGameViewController: UIViewController {
         checkmarkView.translatesAutoresizingMaskIntoConstraints = false
         checkmarkView.alpha = 0
         checkmarkView.transform = CGAffineTransform(scaleX: 0.5, y: 0.5)
-        
+
         view.addSubview(checkmarkView)
-        
+
         NSLayoutConstraint.activate([
             checkmarkView.centerXAnchor.constraint(equalTo: emojiLabel.centerXAnchor),
             checkmarkView.centerYAnchor.constraint(equalTo: emojiLabel.centerYAnchor)
         ])
-        
+
         UIView.animate(withDuration: 0.25, delay: 0, options: .curveEaseOut, animations: {
             checkmarkView.alpha = 1
             checkmarkView.transform = CGAffineTransform(scaleX: 1.2, y: 1.2)
@@ -201,15 +200,14 @@ class EmojiGameViewController: UIViewController {
             }
         }
     }
-    
+
     func setupUI() {
         backgroundCard.layer.cornerRadius = 24
         backgroundCard.backgroundColor = .white
         cameraContainerView.layer.cornerRadius = 20
         cameraContainerView.clipsToBounds = true
         emojiLabel.font = UIFont.systemFont(ofSize: 150)
-        
+
         skipButton.addTarget(self, action: #selector(skipButtonTapped(_:)), for: .touchUpInside)
     }
 }
-

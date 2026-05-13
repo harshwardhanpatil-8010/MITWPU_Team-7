@@ -5,7 +5,6 @@
 //  Created by SDC-USER on 08/12/25.
 //
 
-
 import UIKit
 
 class ExerciseCardCell: UICollectionViewCell {
@@ -15,7 +14,7 @@ class ExerciseCardCell: UICollectionViewCell {
     @IBOutlet weak var progressLabel: UILabel!
     @IBOutlet weak var progressRingContainer: UIView!
     @IBOutlet weak var backgroundCardView: UIView!
-    
+
     private var progressView: CircularProgressViewHome!
     private var themeColor: UIColor = UIColor(hex: "#0088FF")
     override func awakeFromNib() {
@@ -26,20 +25,19 @@ class ExerciseCardCell: UICollectionViewCell {
         progressView.trackColor = themeColor.withAlphaComponent(0.3)
         setupCardStyle()
     }
-    
+
     private func setupCircularProgress() {
         progressView = CircularProgressViewHome(frame: progressRingContainer.bounds)
         progressView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
         progressRingContainer.addSubview(progressView)
         progressRingContainer.backgroundColor = .clear
     }
-    
+
     func setThemeColor(_ color: UIColor) {
         self.themeColor = color
         progressView.progressColor = color
         progressView.trackColor = color.withAlphaComponent(0.2)
     }
-
 
     func configure(with model: ExerciseModel) {
         titleLabel.text = model.title
@@ -58,7 +56,6 @@ class ExerciseCardCell: UICollectionViewCell {
         progressView.trackColor = themeColor.withAlphaComponent(0.2)
     }
 
-        
     func setupCardStyle() {
         let cornerRadius: CGFloat = 18
         backgroundCardView.layer.cornerRadius = cornerRadius
@@ -68,6 +65,5 @@ class ExerciseCardCell: UICollectionViewCell {
         backgroundCardView.layer.shadowRadius = 3
         backgroundCardView.layer.shadowOffset = CGSize(width: 0, height: 1)
     }
-
 
 }

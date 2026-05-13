@@ -1,7 +1,6 @@
 import UIKit
 
 class SymptomViewController: UIViewController, SymptomRatingCellDelegate {
-    
 
     @IBOutlet weak var collectionView: UICollectionView!
     @IBOutlet weak var editAndSaveButton: UIButton!
@@ -29,7 +28,6 @@ class SymptomViewController: UIViewController, SymptomRatingCellDelegate {
 
     var currentMode: ViewMode = .history
 
-
     override func viewDidLoad() {
         super.viewDidLoad()
         requestHealthKitIfNeeded()
@@ -51,7 +49,7 @@ class SymptomViewController: UIViewController, SymptomRatingCellDelegate {
             .font: UIFont.systemFont(ofSize: 32, weight: .bold),
             .foregroundColor: UIColor.label
         ]
-        
+
         let screenWidth = UIScreen.main.bounds.width
         scrollAppearance.titlePositionAdjustment = UIOffset(horizontal: -(screenWidth / 2) + 100, vertical: 0)
 
@@ -69,7 +67,6 @@ class SymptomViewController: UIViewController, SymptomRatingCellDelegate {
         navigationController?.navigationBar.standardAppearance = standardAppearance
         navigationController?.navigationBar.scrollEdgeAppearance = scrollAppearance
     }
-
 
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
@@ -136,7 +133,6 @@ class SymptomViewController: UIViewController, SymptomRatingCellDelegate {
 
     }
 
-
     func setupTableViewUI() {
         tableView.layer.cornerRadius = 25
         tableView.layer.masksToBounds = true
@@ -187,7 +183,7 @@ class SymptomViewController: UIViewController, SymptomRatingCellDelegate {
                     SymptomRating(name: "Facial Stiffness", iconName: "stiffFace", selectedIntensity: .notPresent),
                     SymptomRating(name: "Body Stiffness", iconName: "bodyStiffness", selectedIntensity: .notPresent),
                     SymptomRating(name: "Gait Disturbance", iconName: "walking", selectedIntensity: .notPresent),
-                    SymptomRating(name: "Insomnia", iconName: "insomnia", selectedIntensity: .notPresent),
+                    SymptomRating(name: "Insomnia", iconName: "insomnia", selectedIntensity: .notPresent)
                 ]
     }
 
@@ -206,7 +202,7 @@ class SymptomViewController: UIViewController, SymptomRatingCellDelegate {
     }
 
     func generateLayout() -> UICollectionViewLayout {
-        return UICollectionViewCompositionalLayout { sectionIndex, env in
+        return UICollectionViewCompositionalLayout { sectionIndex, _ in
             guard let sectionType = Section(rawValue: sectionIndex) else { return nil }
             switch sectionType {
             case .tremor:
@@ -228,11 +224,10 @@ class SymptomViewController: UIViewController, SymptomRatingCellDelegate {
 }
 
 extension SymptomViewController: UICollectionViewDataSource, UICollectionViewDelegate {
-    
+
     func numberOfSections(in collectionView: UICollectionView) -> Int { Section.allCases.count }
 
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int { 1 }
-
 
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         guard let sectionType = Section(rawValue: indexPath.section) else { return UICollectionViewCell() }
@@ -244,7 +239,7 @@ extension SymptomViewController: UICollectionViewDataSource, UICollectionViewDel
             let isSteady = tremorFrequencyHz == 0.0
             cell.configure(frequencyHz: displayHz, isSteady: isSteady, graphPoints: todayAggregatedPoints)
             return cell
-            
+
         case .gait:
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "gait_cell", for: indexPath) as! gaitCard
             cell.configureWithPoints(range: gaitRangeText ?? "Loading…", points: gaitGraphPoints)
@@ -303,6 +298,3 @@ extension SymptomViewController {
         currentDayLogs[indexPath.row].selectedIntensity = intensity
     }
 }
-
-
-

@@ -166,7 +166,6 @@ class MedicationCardCollectionViewCell: UICollectionViewCell {
         takenButton.isUserInteractionEnabled = false
         skippedButton.isUserInteractionEnabled = false
 
-        
         let tint = isTaken
             ? UIColor(red: 0.20, green: 0.78, blue: 0.35, alpha: 1)
             : UIColor(red: 1.00, green: 0.62, blue: 0.04, alpha: 1)
@@ -176,7 +175,6 @@ class MedicationCardCollectionViewCell: UICollectionViewCell {
         )
         confirmationLabel.text = isTaken ? "Logged as taken" : "Skipped for now"
         confirmationStack.transform = CGAffineTransform(scaleX: 0.5, y: 0.5)
-
 
         let tappedButton = isTaken ? takenButton : skippedButton
         UIImpactFeedbackGenerator(style: .medium).impactOccurred()
@@ -188,7 +186,6 @@ class MedicationCardCollectionViewCell: UICollectionViewCell {
                 tappedButton?.transform = .identity
             }
         }
-
 
         UIView.animate(withDuration: 0.18, delay: 0.08, options: .curveEaseInOut) {
             self.nameLabel.alpha     = 0
@@ -210,11 +207,9 @@ class MedicationCardCollectionViewCell: UICollectionViewCell {
             self.confirmationStack.transform = .identity
         }
 
-
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.80) {
             completion()
         }
-
 
         UIView.animate(
             withDuration: 0.24,
@@ -230,4 +225,3 @@ class MedicationCardCollectionViewCell: UICollectionViewCell {
         }
     }
 }
-

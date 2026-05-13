@@ -9,7 +9,6 @@
 public import Foundation
 public import CoreData
 
-
 public typealias RhythmicSessionCoreDataPropertiesSet = NSSet
 
 extension RhythmicSession {
@@ -31,6 +30,6 @@ extension RhythmicSession {
 
 }
 
-extension RhythmicSession : Identifiable {
+extension RhythmicSession: Identifiable {
 
 }

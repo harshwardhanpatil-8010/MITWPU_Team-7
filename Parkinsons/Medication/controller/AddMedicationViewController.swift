@@ -2,7 +2,6 @@
 // Parkinsons
 //
 
-
 import UIKit
 import CoreData
 
@@ -64,13 +63,11 @@ class AddMedicationViewController: UIViewController,
         super.viewDidLoad()
         tickButton.isEnabled = false
 
-
         medicationNameTextField.addAction(
             UIAction { [weak self] _ in self?.evaluateTickButtonState() },
             for: .editingChanged
         )
         medicationNameTextField.delegate = self
-
 
         strengthLabel.keyboardType = .numberPad
         strengthLabel.delegate     = self
@@ -117,7 +114,6 @@ class AddMedicationViewController: UIViewController,
         return true
     }
 
-
     func textField(
         _ textField: UITextField,
         shouldChangeCharactersIn range: NSRange,
@@ -125,13 +121,10 @@ class AddMedicationViewController: UIViewController,
     ) -> Bool {
         guard textField == strengthLabel else { return true }
 
-
         if string.isEmpty { return true }
-
 
         let allowedChars = CharacterSet.decimalDigits
         guard string.unicodeScalars.allSatisfy({ allowedChars.contains($0) }) else { return false }
-
 
         let current    = (textField.text ?? "") as NSString
         let newText    = current.replacingCharacters(in: range, with: string)
@@ -191,7 +184,6 @@ class AddMedicationViewController: UIViewController,
         unitLabel.textColor         = .label
         strengthUnitLabel.textColor = .label
 
-
         let strength = Int(med.medicationStrength)
         strengthLabel.text = strength > 0 ? "\(strength)" : ""
 
@@ -235,7 +227,6 @@ class AddMedicationViewController: UIViewController,
             tickButton.isEnabled = false
             return
         }
-
 
         let strengthValue = Int(strengthLabel.text ?? "") ?? 0
         guard strengthValue > 0 else {
@@ -301,8 +292,7 @@ class AddMedicationViewController: UIViewController,
 
     @IBAction func doseStepperChanged(_ sender: UIStepper) {
         let newCount = Int(sender.value)
-        if newCount > doseArray.count { doseArray.append(DoseData(dose: nil, time: Date())) }
-        else                          { doseArray.removeLast() }
+        if newCount > doseArray.count { doseArray.append(DoseData(dose: nil, time: Date())) } else { doseArray.removeLast() }
         doseTableView.reloadData()
         evaluateTickButtonState()
     }
@@ -320,20 +310,18 @@ class AddMedicationViewController: UIViewController,
 
     @IBAction func onTickPressed(_ sender: UIBarButtonItem) {
 
-
         let strengthValue = Int(strengthLabel.text ?? "") ?? 0
         guard strengthValue > 0 else {
             showStrengthError()
             return
         }
 
-
         guard
             let name = medicationNameTextField.text,
             !name.trimmingCharacters(in: .whitespaces).isEmpty
         else { return }
 
-        sender.isEnabled = false  
+        sender.isEnabled = false
 
         let context    = PersistenceController.shared.viewContext
         let medication: Medication

@@ -2,7 +2,6 @@ import UIKit
 
 import CoreData
 
-
 class _0minworkoutGoodJobViewController: UIViewController {
     @IBOutlet weak var completedExerciseNumberLabel: UILabel!
     @IBOutlet weak var totalTimeLabel: UILabel!
@@ -10,7 +9,7 @@ class _0minworkoutGoodJobViewController: UIViewController {
     @IBOutlet weak var skippedExerciseNumber: UILabel!
     var completed: Int = 0
     var totalWorkoutSeconds: TimeInterval = 0
-    
+
     override func viewDidLoad() {
         super.viewDidLoad()
         navigationItem.hidesBackButton = true
@@ -32,21 +31,20 @@ class _0minworkoutGoodJobViewController: UIViewController {
         super.viewWillDisappear(animated)
         tabBarController?.tabBar.isHidden = false
     }
-    
+
     @IBAction func easyButtonTapped(_ sender: Any) {
 
         saveFeedbackAndExit(value: 1)
     }
-    
+
     @IBAction func perfectButtonTapped(_ sender: Any) {
         saveFeedbackAndExit(value: 2)
     }
-    
+
     @IBAction func hardButtonTapped(_ sender: Any) {
         saveFeedbackAndExit(value: 3)
     }
 
-   
     private func showConfetti() {
         let confettiLayer = CAEmitterLayer()
         confettiLayer.emitterPosition = CGPoint(x: view.bounds.midX, y: -10)

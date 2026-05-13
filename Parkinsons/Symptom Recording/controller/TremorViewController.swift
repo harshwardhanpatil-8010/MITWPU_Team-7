@@ -1,7 +1,3 @@
-
-
-
-
 import UIKit
 
 struct AggregatedTremorPoint {
@@ -66,7 +62,6 @@ class TremorViewController: UIViewController {
         }
     }
 
-
     private func setupNavigationBar() {
         title = "Tremors"
         navigationItem.largeTitleDisplayMode = .never
@@ -90,7 +85,6 @@ class TremorViewController: UIViewController {
         updateTremorUI(for: currentRange)
     }
 
-
     private func aggregateSamples(_ samples: [TremorSample], for range: TremorRange) -> [AggregatedTremorPoint] {
         let calendar = Calendar.current
         switch range {
@@ -110,7 +104,6 @@ class TremorViewController: UIViewController {
                 .sorted { $0.date < $1.date }
         }
     }
-
 
     private func updateTremorUI(for range: TremorRange) {
         let rawSamples = TremorDataStore.shared.fetchSamples(for: range, referenceDate: selectedDate)
@@ -329,7 +322,6 @@ class TremorViewController: UIViewController {
         }
     }
 }
-
 
 extension Array where Element == Double {
     func average() -> Double {

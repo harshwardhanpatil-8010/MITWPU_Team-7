@@ -64,7 +64,6 @@ class DailyWorkoutSummaryStore {
         PersistenceController.shared.save()
     }
 
-
     func fetchSummary(for date: Date) -> DailyWorkoutSummary? {
         fetchSummaries(for: date).first
     }

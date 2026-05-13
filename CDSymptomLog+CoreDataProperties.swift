@@ -9,7 +9,6 @@
 public import Foundation
 public import CoreData
 
-
 public typealias CDSymptomLogCoreDataPropertiesSet = NSSet
 
 extension CDSymptomLog {
@@ -26,6 +25,6 @@ extension CDSymptomLog {
 
 }
 
-extension CDSymptomLog : Identifiable {
+extension CDSymptomLog: Identifiable {
 
 }

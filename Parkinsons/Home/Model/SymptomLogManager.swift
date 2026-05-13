@@ -11,7 +11,6 @@ final class SymptomLogManager {
         self.context = PersistenceController.shared.container.viewContext
     }
 
-
     func saveLogEntry(_ entry: SymptomLogEntry) {
 
         deleteLogs(for: entry.date)
@@ -67,7 +66,6 @@ final class SymptomLogManager {
         }
     }
 
-
     private func deleteLogs(for date: Date) {
         let request: NSFetchRequest<CDSymptomLog> = CDSymptomLog.fetchRequest()
         request.predicate = NSPredicate(
@@ -80,7 +78,6 @@ final class SymptomLogManager {
             results.forEach { context.delete($0) }
         }
     }
-
 
     private func saveContext() {
         guard context.hasChanges else { return }

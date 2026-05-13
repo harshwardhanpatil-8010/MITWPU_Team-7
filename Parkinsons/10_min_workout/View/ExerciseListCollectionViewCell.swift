@@ -15,7 +15,7 @@ class ExerciseListCollectionViewCell: UICollectionViewCell {
         super.prepareForReuse()
         thumbnailOutlet.image = nil
     }
-    
+
     func configureCompleted() {
         exerciseNameOutlet.textColor = .systemGray
         repsOutlet.textColor = .systemGray2

@@ -52,9 +52,8 @@ class HomeDataStore {
         self.dates = tempDates
     }
 
-  
     func getDates() -> [DateModel] {
         return dates
     }
-    
+
 }

@@ -21,10 +21,6 @@ class DoseTableViewCell: UITableViewCell {
 
     weak var delegate: DoseTableViewCellDelegate?
 
-    override func awakeFromNib() {
-        super.awakeFromNib()
-    }
-
     @IBAction func deleteTapped(_ sender: UIButton) {
         delegate?.didTapDelete(cell: self)
     }
@@ -33,4 +29,3 @@ class DoseTableViewCell: UITableViewCell {
         delegate?.didUpdateTime(cell: self, newTime: sender.date)
     }
 }
-

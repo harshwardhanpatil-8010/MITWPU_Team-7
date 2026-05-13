@@ -5,13 +5,13 @@ protocol SymptomRatingCellDelegate: AnyObject {
 }
 
 class SymptomRatingCell: UITableViewCell {
-    
+
     weak var delegate: SymptomRatingCellDelegate?
-    
+
     @IBOutlet weak var symptomIcon: UIImageView!
     @IBOutlet weak var symptomLabel: UILabel!
     @IBOutlet var ratingButtons: [UIButton]!
-    
+
     private let bubbleLabel: UILabel = {
         let label = UILabel()
         label.backgroundColor = UIColor.systemGray6
@@ -27,24 +27,24 @@ class SymptomRatingCell: UITableViewCell {
     override func awakeFromNib() {
         super.awakeFromNib()
         contentView.addSubview(bubbleLabel)
-        
+
         setupButtonActions()
         setupButtonImageViews()
     }
-    
+
     private func setupButtonActions() {
         ratingButtons.forEach { button in
             let action = UIAction { [weak self] action in
                 guard let self = self,
                       let sender = action.sender as? UIButton,
                       let intensity = SymptomRating.Intensity(rawValue: Int16(sender.tag)) else { return }
-                
+
                 self.handleRatingSelection(intensity: intensity, from: sender)
             }
             button.addAction(action, for: .touchUpInside)
         }
     }
-    
+
     private func setupButtonImageViews() {
         ratingButtons.forEach { button in
             button.imageView?.contentMode = .scaleAspectFit
@@ -54,7 +54,7 @@ class SymptomRatingCell: UITableViewCell {
             button.configuration?.contentInsets = NSDirectionalEdgeInsets(top: 4, leading: 4, bottom: 4, trailing: 4)
         }
     }
-    
+
     private func handleRatingSelection(intensity: SymptomRating.Intensity, from button: UIButton) {
         showBubble(above: button, text: intensity.displayName, animated: true)
         delegate?.didSelectIntensity(intensity, in: self)
@@ -62,20 +62,20 @@ class SymptomRatingCell: UITableViewCell {
 
     private func showBubble(above button: UIButton, text: String, animated: Bool) {
         self.layoutIfNeeded()
-        
+
         bubbleLabel.text = text
         bubbleLabel.sizeToFit()
-        
+
         let padding: CGFloat = 20
         bubbleLabel.frame.size.width += padding
         bubbleLabel.frame.size.height = 30
         let buttonFrameInCell = button.convert(button.bounds, to: self.contentView)
         let calculatedCenterX = buttonFrameInCell.midX
         let calculatedCenterY = buttonFrameInCell.maxY + 8
-        
+
         bubbleLabel.center = CGPoint(x: calculatedCenterX, y: calculatedCenterY)
         contentView.bringSubviewToFront(bubbleLabel)
-        
+
         if animated {
             bubbleLabel.transform = CGAffineTransform(scaleX: 0.5, y: 0.5)
             UIView.animate(withDuration: 0.4, delay: 0, usingSpringWithDamping: 0.6, initialSpringVelocity: 0.5, options: .beginFromCurrentState, animations: {
@@ -98,16 +98,16 @@ class SymptomRatingCell: UITableViewCell {
     func configure(with rating: SymptomRating) {
         symptomLabel.text = rating.name
         symptomIcon.image = UIImage(named: rating.iconName ?? "questionmark.circle.fill")
-        
+
         bubbleLabel.alpha = 0
-        
+
         let imageSize = CGSize(width: 22, height: 22)
-        
+
         ratingButtons.forEach { button in
             guard let buttonIntensity = SymptomRating.Intensity(rawValue: Int16(button.tag)) else { return }
-            
+
             let isSelected = (buttonIntensity == rating.selectedIntensity)
-            
+
             let baseIconName: String
             switch buttonIntensity {
             case .mild: baseIconName = "mild1"
@@ -115,17 +115,17 @@ class SymptomRatingCell: UITableViewCell {
             case .severe: baseIconName = "severe1"
             case .notPresent: baseIconName = "notpresent1"
             }
-            
+
             let finalIconName = isSelected ? baseIconName + ".fill" : baseIconName
             let originalImage = UIImage(named: finalIconName) ?? UIImage(named: baseIconName)
             let scaledImage = resizedImage(originalImage, to: imageSize)?
                 .withRenderingMode(.alwaysOriginal)
-            
+
             var config = UIButton.Configuration.plain()
             config.image = scaledImage
             config.contentInsets = NSDirectionalEdgeInsets(top: 4, leading: 4, bottom: 4, trailing: 4)
             button.configuration = config
-            
+
             if isSelected {
                 let selectedColor: UIColor = (buttonIntensity == .notPresent) ? .systemRed : .systemBlue
                 button.tintColor = selectedColor

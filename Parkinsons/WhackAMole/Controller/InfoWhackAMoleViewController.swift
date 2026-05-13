@@ -41,7 +41,6 @@ class InfoWhackAMoleViewController: UIViewController {
         closeBtn.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(closeBtn)
 
-
         muteButton = UIButton(type: .system)
         muteButton.setImage(UIImage(systemName: "speaker.wave.2.fill",
             withConfiguration: UIImage.SymbolConfiguration(pointSize: 16, weight: .semibold)), for: .normal)
@@ -57,7 +56,7 @@ class InfoWhackAMoleViewController: UIViewController {
             closeBtn.heightAnchor.constraint(equalToConstant: 32),
 
             muteButton.centerYAnchor.constraint(equalTo: closeBtn.centerYAnchor),
-            muteButton.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -16),
+            muteButton.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -16)
         ])
     }
 
@@ -85,14 +84,12 @@ class InfoWhackAMoleViewController: UIViewController {
             stack.leadingAnchor.constraint(equalTo: scrollView.leadingAnchor, constant: 20),
             stack.trailingAnchor.constraint(equalTo: scrollView.trailingAnchor, constant: -20),
             stack.bottomAnchor.constraint(equalTo: scrollView.bottomAnchor, constant: -24),
-            stack.widthAnchor.constraint(equalTo: scrollView.widthAnchor, constant: -40),
+            stack.widthAnchor.constraint(equalTo: scrollView.widthAnchor, constant: -40)
         ])
-
 
         let heading = makeLabel("How to Play ?", size: 20, weight: .bold)
         stack.addArrangedSubview(heading)
         stack.setCustomSpacing(12, after: heading)
-
 
         let instructions = [
             "Moles will pop up from holes on the screen.",
@@ -100,13 +97,12 @@ class InfoWhackAMoleViewController: UIViewController {
             "Some moles carry a bomb on their head — do NOT tap those!",
             "If you tap a bomb mole, the game ends immediately.",
             "Keep whacking moles until the timer runs out.",
-            "Your score depends on how many moles you whack in time.",
+            "Your score depends on how many moles you whack in time."
         ]
         for (i, text) in instructions.enumerated() {
             let lbl = makeLabel("\(i + 1). \(text)", size: 16, weight: .regular)
             stack.addArrangedSubview(lbl)
         }
-
 
         let divider = UIView()
         divider.backgroundColor = .separator
@@ -117,7 +113,6 @@ class InfoWhackAMoleViewController: UIViewController {
         stack.setCustomSpacing(16, after: instructions.last != nil ? stack.arrangedSubviews[stack.arrangedSubviews.count - 2] : heading)
         stack.setCustomSpacing(16, after: divider)
 
-        
         let dailyHeading = makeLabel("Daily challenges", size: 20, weight: .bold)
         stack.addArrangedSubview(dailyHeading)
         stack.setCustomSpacing(12, after: dailyHeading)
@@ -126,7 +121,7 @@ class InfoWhackAMoleViewController: UIViewController {
             "Every day brings a new challenge with a random difficulty.",
             "Difficulty affects the time limit, number of holes, and bomb frequency.",
             "You can play past days' challenges but not future ones.",
-            "Complete the daily set to track your progress and improve reaction time.",
+            "Complete the daily set to track your progress and improve reaction time."
         ]
         for (i, text) in dailyItems.enumerated() {
             let lbl = makeLabel("\(i + 1). \(text)", size: 16, weight: .regular)

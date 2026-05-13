@@ -1,10 +1,9 @@
-
 import UIKit
 
 import AVFoundation
 
 class _0minworkoutViewController: UIViewController {
-    
+
     @IBOutlet weak var playerView: UIView!
     @IBOutlet weak var exerciseName: UILabel!
     @IBOutlet weak var timerLabel: UILabel!
@@ -13,7 +12,6 @@ class _0minworkoutViewController: UIViewController {
     @IBOutlet weak var backgroundView: UIView!
     @IBOutlet weak var exerciseCompletedLabel: UILabel!
     @IBOutlet weak var previousButtonOutlet: UIButton!
-
 
     var exercises: [WorkoutExercise] = []
     var currentIndex: Int = 0
@@ -49,13 +47,13 @@ class _0minworkoutViewController: UIViewController {
         backgroundView.layer.cornerRadius = 35
         backgroundView.clipsToBounds = true
         playerView.isUserInteractionEnabled = false
-        
+
         if exercises.isEmpty {
             exercises = WorkoutManager.shared.getTodayWorkout()
         }
         configureExercise()
     }
-    
+
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         updateProgressBars()
@@ -64,7 +62,7 @@ class _0minworkoutViewController: UIViewController {
         updatePreviousButton()
         tabBarController?.tabBar.isHidden = true
     }
-    
+
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
         avPlayerLayer?.frame = playerView.bounds
@@ -76,22 +74,20 @@ class _0minworkoutViewController: UIViewController {
         avPlayer?.pause()
         SpeechManager.shared.stop()
     }
-    
+
     private func updatePreviousButton() {
         let isFirst = currentIndex == 0
         previousButtonOutlet.isEnabled = !isFirst
         previousButtonOutlet.alpha     = isFirst ? 0.4 : 1.0
     }
 
-
     func updateTopLabels() {
         let completedCount = WorkoutManager.shared.completedToday.count
         exerciseCompletedLabel.text = "\(completedCount) of \(exercises.count)"
     }
 
-
     private func setupAVPlayer() {
-        
+
         if avPlayer == nil {
             avPlayer = AVQueuePlayer()
             avPlayerLayer = AVPlayerLayer(player: avPlayer)
@@ -112,7 +108,6 @@ class _0minworkoutViewController: UIViewController {
                 currentIndex = exercises.count
             }
         }
-
 
         guard currentIndex < exercises.count else {
             checkForSkippedExercises()
@@ -184,11 +179,9 @@ class _0minworkoutViewController: UIViewController {
         }
     }
 
-
     @IBAction func doneButtonTapped(_ sender: UIButton) {
         handleCompletion(skipped: false)
     }
-
 
     @IBAction func skipButtonTapped(_ sender: UIButton) {
         handleCompletion(skipped: true)
@@ -267,7 +260,6 @@ class _0minworkoutViewController: UIViewController {
         present(alert, animated: true)
     }
 
-
     private func showReasonForStoppingAlert() {
         let reasonAlert = UIAlertController(
             title: "What made you stop?",
@@ -316,7 +308,6 @@ class _0minworkoutViewController: UIViewController {
         let currentID = exercises[currentIndex].id
         let nextIndex = nextExerciseIndex(afterCompletingAt: currentIndex)
 
-
         if skipped {
             if !WorkoutManager.shared.skippedToday.contains(currentID) {
                 WorkoutManager.shared.skippedToday.append(currentID)
@@ -327,14 +318,13 @@ class _0minworkoutViewController: UIViewController {
             }
             WorkoutManager.shared.skippedToday.removeAll { $0 == currentID }
         }
-        
 
         if let next = nextIndex {
             currentIndex = next
         } else {
             currentIndex = exercises.count
         }
-        
+
         WorkoutManager.shared.syncSessionPersistence()
         goToRest(nextExerciseIndex: nextIndex)
 
@@ -345,7 +335,6 @@ class _0minworkoutViewController: UIViewController {
             totalWorkoutSeconds += Date().timeIntervalSince(start)
         }
     }
-
 
     private func nextMainRunIndex(startingAt startIndex: Int) -> Int? {
         guard startIndex < exercises.count else { return nil }
@@ -370,7 +359,6 @@ class _0minworkoutViewController: UIViewController {
             return skippedIndicesToRevisit[nextPointer]
         }
 
-
         let nextIndex = completedIndex + 1
         return nextIndex < exercises.count ? nextIndex : nil
 
@@ -381,13 +369,12 @@ class _0minworkoutViewController: UIViewController {
         let sb = UIStoryboard(name: "10 minworkout", bundle: nil)
         if let vc = sb.instantiateViewController(withIdentifier: "RestScreenViewController") as? RestScreenViewController {
 
-            vc.currentIndex   = currentIndex   
+            vc.currentIndex   = currentIndex
             vc.totalExercises = exercises.count
             vc.exercises      = exercises
             vc.delegate       = self
             vc.isRevisitingSkipped = self.isRevisitingSkipped
             vc.skippedIndicesToRevisit = self.skippedIndicesToRevisit
-
 
             navigationController?.pushViewController(vc, animated: true)
         }
@@ -401,7 +388,6 @@ class _0minworkoutViewController: UIViewController {
             navigationController?.pushViewController(vc, animated: true)
         }
     }
-
 
     func updateProgressBars() {
         guard progressBars != nil else { return }
@@ -447,7 +433,6 @@ class _0minworkoutViewController: UIViewController {
             return
         }
 
-
         let skippedIDs = WorkoutManager.shared.skippedToday
         guard !skippedIDs.isEmpty else {
 
@@ -489,11 +474,9 @@ class _0minworkoutViewController: UIViewController {
 
 extension _0minworkoutViewController: RestScreenDelegate {
 
-
     func recordRestDuration(seconds: TimeInterval) {
         totalWorkoutSeconds += seconds
     }
-
 
     func restCompleted(exercises: [WorkoutExercise], nextIndex: Int) {
         self.exercises    = exercises
@@ -510,4 +493,3 @@ extension _0minworkoutViewController: RestScreenDelegate {
         }
     }
 }
-

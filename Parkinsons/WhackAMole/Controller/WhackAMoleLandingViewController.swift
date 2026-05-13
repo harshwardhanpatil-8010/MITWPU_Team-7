@@ -62,12 +62,10 @@ class WhackAMoleLandingViewController: UIViewController,
         iconImageView.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(iconImageView)
 
-
         dailyChallengeLabel.text = "Daily Challenge"
         dailyChallengeLabel.font = .systemFont(ofSize: 22, weight: .bold)
         dailyChallengeLabel.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(dailyChallengeLabel)
-
 
         monthLabel.font = .systemFont(ofSize: 17, weight: .semibold)
         monthLabel.translatesAutoresizingMaskIntoConstraints = false
@@ -78,7 +76,6 @@ class WhackAMoleLandingViewController: UIViewController,
         completedLabel.textAlignment = .right
         completedLabel.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(completedLabel)
-
 
         dayHeaderStack.axis = .horizontal
         dayHeaderStack.distribution = .fillEqually
@@ -94,7 +91,6 @@ class WhackAMoleLandingViewController: UIViewController,
         }
         view.addSubview(dayHeaderStack)
 
-
         let layout = UICollectionViewFlowLayout()
         layout.minimumInteritemSpacing = 0
         layout.minimumLineSpacing = 0
@@ -108,7 +104,6 @@ class WhackAMoleLandingViewController: UIViewController,
         collectionView.backgroundColor = .clear
         collectionView.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(collectionView)
-
 
         var btnConfig = UIButton.Configuration.filled()
         btnConfig.title = "Play"
@@ -128,33 +123,27 @@ class WhackAMoleLandingViewController: UIViewController,
             iconImageView.heightAnchor.constraint(equalToConstant: 130),
             iconImageView.widthAnchor.constraint(equalToConstant: 130),
 
-
             dailyChallengeLabel.topAnchor.constraint(equalTo: iconImageView.bottomAnchor, constant: 20),
             dailyChallengeLabel.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20),
-
 
             monthLabel.topAnchor.constraint(equalTo: dailyChallengeLabel.bottomAnchor, constant: 4),
             monthLabel.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20),
 
-
             completedLabel.centerYAnchor.constraint(equalTo: monthLabel.centerYAnchor),
             completedLabel.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20),
-
 
             dayHeaderStack.topAnchor.constraint(equalTo: monthLabel.bottomAnchor, constant: 12),
             dayHeaderStack.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16),
             dayHeaderStack.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -16),
-
 
             collectionView.topAnchor.constraint(equalTo: dayHeaderStack.bottomAnchor, constant: 4),
             collectionView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16),
             collectionView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -16),
             collectionView.heightAnchor.constraint(equalTo: collectionView.widthAnchor, multiplier: 6.0/7.0),
 
-            
             playButton.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -24),
             playButton.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-            playButton.widthAnchor.constraint(greaterThanOrEqualToConstant: 200),
+            playButton.widthAnchor.constraint(greaterThanOrEqualToConstant: 200)
         ])
     }
 

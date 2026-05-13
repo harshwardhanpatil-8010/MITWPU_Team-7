@@ -1,4 +1,3 @@
-
 import UIKit
 import CoreData
 
@@ -51,8 +50,6 @@ class SummaryViewController: UIViewController {
 
     }
 
-    
-
     override func viewWillAppear(_ animated: Bool) {
 
         super.viewWillAppear(animated)
@@ -63,8 +60,6 @@ class SummaryViewController: UIViewController {
 
     }
 
-    
-
     private func setupUI() {
 
         view.backgroundColor = .systemBackground
@@ -74,8 +69,6 @@ class SummaryViewController: UIViewController {
         setupCollectionView()
 
     }
-
-    
 
     private func setupTableView() {
 
@@ -92,8 +85,6 @@ class SummaryViewController: UIViewController {
         symptomTableView.isScrollEnabled = false
 
     }
-
-
 
     private func updateSymptomTableBackground() {
 
@@ -117,8 +108,6 @@ class SummaryViewController: UIViewController {
 
             containerView.addSubview(emptyLabel)
 
-            
-
             NSLayoutConstraint.activate([
 
                 emptyLabel.centerXAnchor.constraint(equalTo: containerView.centerXAnchor),
@@ -136,8 +125,6 @@ class SummaryViewController: UIViewController {
         }
 
     }
-
-
 
     private func setupCollectionView() {
 
@@ -157,8 +144,6 @@ class SummaryViewController: UIViewController {
 
     }
 
-    
-
     func loadDataForSelectedDate() {
 
         let targetDate = dateToDisplay ?? Date()
@@ -167,13 +152,9 @@ class SummaryViewController: UIViewController {
 
         let context = PersistenceController.shared.viewContext
 
-
-
         let logRequest: NSFetchRequest<MedicationDoseLog> = MedicationDoseLog.fetchRequest()
 
         logRequest.predicate = NSPredicate(format: "doseDay == %@", targetDate.startOfDay as NSDate)
-
-
 
         do {
 
@@ -183,13 +164,9 @@ class SummaryViewController: UIViewController {
 
             self.totalTaken = logs.filter { $0.doseLogStatus == "taken" }.count
 
-
-
             let formatter = DateFormatter()
 
             formatter.dateFormat = "h:mm a"
-
-
 
             self.dailyMedications = logs.compactMap { log in
 
@@ -219,8 +196,6 @@ class SummaryViewController: UIViewController {
 
         }
 
-
-
         selectedWorkoutSummary = DailyWorkoutSummaryStore.shared.fetchSummary(for: targetDate)
 
         updateTitleUI(with: targetDate)
@@ -233,8 +208,6 @@ class SummaryViewController: UIViewController {
         mainCollectionView.collectionViewLayout.invalidateLayout()
 
     }
-
-
 
     private func updateMedicationBackground(isEmpty: Bool) {
 
@@ -256,8 +229,6 @@ class SummaryViewController: UIViewController {
 
             containerView.addSubview(emptyLabel)
 
-            
-
             NSLayoutConstraint.activate([
 
                 emptyLabel.centerXAnchor.constraint(equalTo: containerView.centerXAnchor),
@@ -276,39 +247,35 @@ class SummaryViewController: UIViewController {
 
     }
 
-    
-
     func generateSummaryLayout() -> UICollectionViewLayout {
-        return UICollectionViewCompositionalLayout { [weak self] (sectionIndex, env) -> NSCollectionLayoutSection? in
+        return UICollectionViewCompositionalLayout { [weak self] (sectionIndex, _) -> NSCollectionLayoutSection? in
             guard let self = self else { return nil }
             let sectionType = self.summarySections[sectionIndex]
             let section: NSCollectionLayoutSection
-            
 
             let medicationHeight: CGFloat = 80
-            
+
             switch sectionType {
             case .medicationsSummary:
                 let item = NSCollectionLayoutItem(layoutSize: .init(widthDimension: .fractionalWidth(1.0), heightDimension: .fractionalHeight(1.0)))
 
                 let group = NSCollectionLayoutGroup.horizontal(layoutSize: .init(widthDimension: .fractionalWidth(0.9), heightDimension: .absolute(medicationHeight)), subitems: [item])
-                
+
                 section = NSCollectionLayoutSection(group: group)
                 section.orthogonalScrollingBehavior = .groupPaging
                 section.interGroupSpacing = 12
 
-
                 let footerHeight: CGFloat = self.dailyMedications.isEmpty ? medicationHeight : 0
                 let footerSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: .absolute(footerHeight))
-                
+
                 let footer = NSCollectionLayoutBoundarySupplementaryItem(
                     layoutSize: footerSize,
                     elementKind: UICollectionView.elementKindSectionFooter,
                     alignment: .bottom
                 )
-                
+
                 section.boundarySupplementaryItems = [self.createHeaderItem(), footer]
-                
+
             case .exercises:
                 let item = NSCollectionLayoutItem(layoutSize: .init(widthDimension: .fractionalWidth(0.5), heightDimension: .fractionalHeight(1.0)))
                 item.contentInsets = .init(top: 0, leading: 2, bottom: 0, trailing: 4)
@@ -316,13 +283,11 @@ class SummaryViewController: UIViewController {
                 section = NSCollectionLayoutSection(group: group)
                 section.boundarySupplementaryItems = [self.createHeaderItem()]
             }
-            
+
             section.contentInsets = .init(top: 8, leading: 16, bottom: 24, trailing: 16)
             return section
         }
     }
-
-    
 
     private func createHeaderItem() -> NSCollectionLayoutBoundarySupplementaryItem {
 
@@ -337,8 +302,6 @@ class SummaryViewController: UIViewController {
         )
 
     }
-
-
 
     private func updateTitleUI(with date: Date) {
 
@@ -362,16 +325,12 @@ class SummaryViewController: UIViewController {
 
     }
 
-
-
     @IBAction func closeButtonTapped(_ sender: Any) {
 
         dismiss(animated: true)
     }
 
 }
-
-
 
 extension SummaryViewController: UITableViewDataSource, UITableViewDelegate {
 
@@ -380,8 +339,6 @@ extension SummaryViewController: UITableViewDataSource, UITableViewDelegate {
         return currentSymptomLog?.ratings.count ?? 0
 
     }
-
-    
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
 
@@ -397,179 +354,162 @@ extension SummaryViewController: UITableViewDataSource, UITableViewDelegate {
 
 }
 
-
-
 extension SummaryViewController: UICollectionViewDataSource, UICollectionViewDelegate {
-    
+
     func numberOfSections(in collectionView: UICollectionView) -> Int {
-        
+
         return summarySections.count
-        
+
     }
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        
+
         switch summarySections[section] {
-            
+
         case .medicationsSummary:
-            
+
             return dailyMedications.count
-            
+
         case .exercises:
-            
+
             return exerciseData.count
-            
+
         }
-        
+
     }
-    
+
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        
+
         let sectionType = summarySections[indexPath.section]
-        
+
         switch sectionType {
-            
+
         case .medicationsSummary:
-            
+
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "MedicationSummaryCell", for: indexPath) as! MedicationSummaryCell
-            
+
             let model = dailyMedications[indexPath.item]
-            
+
             cell.configure(with: model, totalTaken: totalTaken, totalScheduled: totalScheduled)
-            
+
             return cell
-            
+
         case .exercises:
-            
+
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "exercise_card_cell", for: indexPath) as! ExerciseCardCell
-            
+
             let model = exerciseData[indexPath.item]
-            
+
             cell.configure(with: model)
-            
-            
-            
+
             if indexPath.item == 0 {
-                
+
                 cell.setThemeColor(UIColor(hex: "0088FF"))
-                
+
                 let targetDate = dateToDisplay ?? Date()
                 let isToday = Calendar.current.isDateInToday(targetDate)
                 let storedCompleted = Int(selectedWorkoutSummary?.completedCount ?? 0)
                 let storedTotal = Int(selectedWorkoutSummary?.totalExercises ?? 0)
                 let completed = isToday ? max(storedCompleted, WorkoutManager.shared.completedToday.count) : storedCompleted
                 let total = max(isToday ? max(storedTotal, WorkoutManager.shared.exercises.count) : storedTotal, 7)
-                
+
                 cell.setProgress(completed: completed, total: total)
-                
+
             } else {
-                
+
                 cell.setThemeColor(UIColor(hex: "90AF81"))
-                
+
                 let targetDate = dateToDisplay ?? Date()
                 if let lastSession = DataStore.shared.fetchSessions(for: targetDate).first {
-                    
-                    let done = lastSession.elapsedSeconds
-                    
-                    let goal = max(lastSession.requestedDurationSeconds, 1)
-                    
-                    cell.setProgress(completed: done, total: goal)
-                    
-                    cell.progressLabel.text = "\(Int((Double(done)/Double(goal))*100))%"
-                    
-                } else {
-                    
-                    cell.setProgress(completed: 0, total: 1)
-                    
-                    cell.progressLabel.text = "0%"
-                    
-                }
-                
-            }
-            
-            return cell
-            
-        }
-        
-    }
-    
-    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        
-        let sectionType = summarySections[indexPath.section]
-        
-        
-        
-        if sectionType == .exercises {
-            
-            let selectedExercise = exerciseData[indexPath.item]
-            
 
-            
+                    let done = lastSession.elapsedSeconds
+
+                    let goal = max(lastSession.requestedDurationSeconds, 1)
+
+                    cell.setProgress(completed: done, total: goal)
+
+                    cell.progressLabel.text = "\(Int((Double(done)/Double(goal))*100))%"
+
+                } else {
+
+                    cell.setProgress(completed: 0, total: 1)
+
+                    cell.progressLabel.text = "0%"
+
+                }
+
+            }
+
+            return cell
+
+        }
+
+    }
+
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+
+        let sectionType = summarySections[indexPath.section]
+
+        if sectionType == .exercises {
+
+            let selectedExercise = exerciseData[indexPath.item]
+
             if selectedExercise.title == "10-Min Workout" {
-                
+
                 let sb = UIStoryboard(name: "10 minworkout", bundle: nil)
-                
+
                 if let workoutVC = sb.instantiateViewController(withIdentifier: "exerciseLandingPage") as? _0minworkoutLandingPageViewController {
-                    
 
                     workoutVC.shouldHideStartButton = true
                     workoutVC.displayDate = dateToDisplay
-                    
-                    
-                    
+
                     let navController = UINavigationController(rootViewController: workoutVC)
-                    
+
                     navController.modalPresentationStyle = .pageSheet
-                    
 
                     let closeButton = UIBarButtonItem(
-                        
-                        image: UIImage(systemName: "xmark"),
-                        
-                        style: .plain,
-                        
-                        target: self,
-                        
-                        action: #selector(dismissWorkoutModal)
-                        
-                    )
-                    
-                    closeButton.tintColor = .label
-                    
-                    workoutVC.navigationItem.leftBarButtonItem = closeButton
-                    
-                    
-                    
-                    self.present(navController, animated: true)
-                    
-                }
-                
-            }
 
-            else if selectedExercise.title == "Rhythmic Walking" {
-                
+                        image: UIImage(systemName: "xmark"),
+
+                        style: .plain,
+
+                        target: self,
+
+                        action: #selector(dismissWorkoutModal)
+
+                    )
+
+                    closeButton.tintColor = .label
+
+                    workoutVC.navigationItem.leftBarButtonItem = closeButton
+
+                    self.present(navController, animated: true)
+
+                }
+
+            } else if selectedExercise.title == "Rhythmic Walking" {
+
                 let storyboard = UIStoryboard(name: "Home", bundle: nil)
-                
+
                 if let walkingVC = storyboard.instantiateViewController(withIdentifier: "RhythmicWalkingSummaryViewController") as? RhythmicWalkingSummaryViewController {
 
                     walkingVC.dateToDisplay = dateToDisplay ?? Date()
-                    
+
                     let navController = UINavigationController(rootViewController: walkingVC)
                     navController.modalPresentationStyle = .pageSheet
-                    
+
                     self.present(navController, animated: true)
-                    
+
                 }
-                
+
             }
-            
+
         }
-        
+
     }
-    
+
     func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
-        
+
         let sectionType = summarySections[indexPath.section]
-        
 
         if kind == UICollectionView.elementKindSectionHeader {
             let header = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: "HeaderView", for: indexPath) as! SectionHeaderView
@@ -578,14 +518,12 @@ extension SummaryViewController: UICollectionViewDataSource, UICollectionViewDel
             header.setTitleAlignment(.left)
             return header
         }
-        
 
         if kind == UICollectionView.elementKindSectionFooter && sectionType == .medicationsSummary {
             let footer = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: "EmptyMedicationFooter", for: indexPath)
-            
 
             footer.subviews.forEach { $0.removeFromSuperview() }
-            
+
             if dailyMedications.isEmpty {
                 let label = UILabel()
                 label.text = "No medications logged."
@@ -593,15 +531,15 @@ extension SummaryViewController: UICollectionViewDataSource, UICollectionViewDel
                 label.font = .systemFont(ofSize: 24, weight: .medium)
                 label.textAlignment = .center
                 label.translatesAutoresizingMaskIntoConstraints = false
-                
+
                 footer.addSubview(label)
-                
+
                 NSLayoutConstraint.activate([
                     label.centerXAnchor.constraint(equalTo: footer.centerXAnchor),
                     label.centerYAnchor.constraint(equalTo: footer.centerYAnchor, constant: -15)
                 ])
             }
-            
+
             return footer
         }
 

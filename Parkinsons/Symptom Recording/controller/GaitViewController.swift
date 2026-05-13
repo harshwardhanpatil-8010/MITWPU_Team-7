@@ -1,9 +1,3 @@
-
-
-
-
-
-
 import UIKit
 import HealthKit
 
@@ -20,10 +14,9 @@ class GaitViewController: UIViewController {
     private let chartView = WalkingSteadinessChartView()
     private var aggregatedPoints: [(date: Date, value: Double)] = []
     private var currentRange: SteadinessRange = .day
-    private var pendingChartData: [(date: Date, value: Double)]? = nil
+    private var pendingChartData: [(date: Date, value: Double)]?
 
     enum SteadinessRange { case day, week, month, sixMonth, year }
-
 
 override func viewDidLoad() {
         super.viewDidLoad()
@@ -35,7 +28,6 @@ override func viewDidLoad() {
         setupChart()
         walkingSteadinessGraph.backgroundColor = .clear
 
-        
         let scrollEdgeAppearance = UINavigationBarAppearance()
         scrollEdgeAppearance.configureWithTransparentBackground()
 
@@ -60,8 +52,6 @@ override func viewDidLoad() {
         authorizeAndFetch()
     }
 
-
-
     private func setupChart() {
         chartView.translatesAutoresizingMaskIntoConstraints = false
         chartView.backgroundColor = .clear
@@ -71,10 +61,9 @@ override func viewDidLoad() {
             chartView.topAnchor.constraint(equalTo: walkingSteadinessGraph.topAnchor),
             chartView.leadingAnchor.constraint(equalTo: walkingSteadinessGraph.leadingAnchor),
             chartView.trailingAnchor.constraint(equalTo: walkingSteadinessGraph.trailingAnchor),
-            chartView.bottomAnchor.constraint(equalTo: walkingSteadinessGraph.bottomAnchor),
+            chartView.bottomAnchor.constraint(equalTo: walkingSteadinessGraph.bottomAnchor)
         ])
     }
-
 
     @IBAction func segmentChanged(_ sender: UISegmentedControl) {
         switch sender.selectedSegmentIndex {
@@ -87,7 +76,6 @@ override func viewDidLoad() {
         }
         fetchData(for: currentRange)
     }
-
 
     private func authorizeAndFetch() {
         HealthKitManager.shared.requestAuthorization { [weak self] granted in
@@ -108,7 +96,6 @@ override func viewDidLoad() {
         configureChart(with: [])
     }
 
-
     private func fetchData(for range: SteadinessRange) {
         let cal = Calendar.current
         let now = Date()
@@ -118,10 +105,10 @@ override func viewDidLoad() {
         let start: Date = {
             switch range {
             case .day:      return cal.date(byAdding: .weekOfYear, value: -1, to: now)!
-            case .week:     return cal.date(byAdding: .day,        value: -7, to: now)!
-            case .month:    return cal.date(byAdding: .month,      value: -1, to: now)!
-            case .sixMonth: return cal.date(byAdding: .month,      value: -6, to: now)!
-            case .year:     return cal.date(byAdding: .year,       value: -1, to: now)!
+            case .week:     return cal.date(byAdding: .day, value: -7, to: now)!
+            case .month:    return cal.date(byAdding: .month, value: -1, to: now)!
+            case .sixMonth: return cal.date(byAdding: .month, value: -6, to: now)!
+            case .year:     return cal.date(byAdding: .year, value: -1, to: now)!
             }
         }()
 
@@ -158,7 +145,6 @@ override func viewDidLoad() {
         }
     }
 
-
     private func finalize(points: [(date: Date, value: Double)]) {
         aggregatedPoints = points
         configureChart(with: points)
@@ -183,7 +169,6 @@ override func viewDidLoad() {
         }
     }
 
-
     private func configureChart(with points: [(date: Date, value: Double)]) {
         if chartView.bounds.width > 0 {
             chartView.configure(with: points)
@@ -193,8 +178,8 @@ override func viewDidLoad() {
     }
 
     private func classificationFor(_ v: Double) -> (String, UIColor) {
-        if v >= 80 { return ("Good",              .systemGreen)  }
-        if v >= 60 { return ("Moderate",          .systemOrange) }
+        if v >= 80 { return ("Good", .systemGreen)  }
+        if v >= 60 { return ("Moderate", .systemOrange) }
         return             ("Low", .systemRed)
     }
 

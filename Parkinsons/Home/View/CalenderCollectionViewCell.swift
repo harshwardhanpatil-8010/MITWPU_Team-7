@@ -12,7 +12,7 @@ class CalenderCollectionViewCell: UICollectionViewCell {
         self.contentView.clipsToBounds = false
         setupShadow()
     }
-    
+
     private func setupShadow() {
         calenderBackground.layer.cornerRadius = 17.8
         calenderBackground.layer.masksToBounds = false
@@ -21,7 +21,7 @@ class CalenderCollectionViewCell: UICollectionViewCell {
         calenderBackground.layer.shadowRadius = 3
         calenderBackground.layer.shadowOffset = CGSize(width: 0, height: 1)
     }
-    
+
     private let calendar: Calendar = {
         var cal = Calendar.current
         cal.timeZone = TimeZone.current
@@ -31,11 +31,11 @@ class CalenderCollectionViewCell: UICollectionViewCell {
     func configure(with model: DateModel, isSelected: Bool, isToday: Bool, isFuture: Bool) {
         calenderDay.text = model.dayString
         calenderDate.text = model.dateString
-        
+
         // Fix #10 - Accessibility
         self.accessibilityLabel = "\(model.dayString) \(model.dateString)"
         self.accessibilityTraits = isFuture ? [.notEnabled] : (isSelected ? [.selected] : [])
-        
+
         if isFuture {
             calenderBackground.backgroundColor = .white
             calenderDay.textColor = .systemGray5
@@ -43,7 +43,7 @@ class CalenderCollectionViewCell: UICollectionViewCell {
             calenderBackground.layer.borderWidth = 0
             return
         }
-        
+
         calenderBackground.backgroundColor = .white
         calenderDay.textColor = .lightGray
         calenderDate.textColor = .black
@@ -56,7 +56,7 @@ class CalenderCollectionViewCell: UICollectionViewCell {
             calenderBackground.backgroundColor = .systemBlue
             return
         }
-        
+
         if isToday {
             calenderDay.textColor = .systemBlue
             calenderDate.textColor = .systemBlue

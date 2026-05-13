@@ -53,20 +53,18 @@ extension RepeatRule {
             return "None"
         case .weekly(let days):
             if days.count == 7 { return "Everyday" }
-            
-            
+
             let symbols = Calendar.current.shortWeekdaySymbols
             return days
                 .sorted()
                 .compactMap { dayIndex in
-                    
+
                     return symbols[safe: dayIndex - 1]
                 }
                 .joined(separator: ", ")
         }
     }
 }
-
 
 extension Array {
     subscript(safe index: Index) -> Element? {

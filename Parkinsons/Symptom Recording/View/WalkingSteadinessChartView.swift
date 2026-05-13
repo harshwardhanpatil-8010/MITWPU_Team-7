@@ -38,10 +38,10 @@ class WalkingSteadinessChartView: UIView {
         if animationProgress >= 1.0 { link.invalidate() }
         setNeedsDisplay()
     }
-    private let pLeft:   CGFloat = 38
+    private let pLeft: CGFloat = 38
     private let pBottom: CGFloat = 30
-    private let pTop:    CGFloat = 16
-    private let pRight:  CGFloat = 16
+    private let pTop: CGFloat = 16
+    private let pRight: CGFloat = 16
 
     private func uw(_ r: CGRect) -> CGFloat { r.width  - pLeft - pRight  }
     private func uh(_ r: CGRect) -> CGFloat { r.height - pBottom - pTop  }
@@ -52,7 +52,6 @@ class WalkingSteadinessChartView: UIView {
         let y = rect.height - pBottom - CGFloat(points[i].value / 100.0) * uh(rect)
         return CGPoint(x: x, y: y)
     }
-
 
     override func draw(_ rect: CGRect) {
         guard let ctx = UIGraphicsGetCurrentContext() else { return }
@@ -73,7 +72,6 @@ class WalkingSteadinessChartView: UIView {
         }
         drawAxes(ctx: ctx, rect: rect)
     }
-
 
     private func drawEmpty(ctx: CGContext, rect: CGRect) {
         ctx.setStrokeColor(UIColor.systemGray5.cgColor)
@@ -97,7 +95,6 @@ class WalkingSteadinessChartView: UIView {
         }
     }
 
-
     private func drawReferenceZones(ctx: CGContext, rect: CGRect) {
         let y100 = rect.height - pBottom - uh(rect)
         let y80  = rect.height - pBottom - CGFloat(80.0 / 100.0) * uh(rect)
@@ -112,7 +109,7 @@ class WalkingSteadinessChartView: UIView {
         ctx.setFillColor(UIColor.systemRed.withAlphaComponent(0.03).cgColor)
         ctx.fill(CGRect(x: pLeft, y: y60, width: w, height: y0 - y60))
 
-        drawRefLine(at: 80, label: "Good",     color: .systemGreen,  ctx: ctx, rect: rect)
+        drawRefLine(at: 80, label: "Good", color: .systemGreen, ctx: ctx, rect: rect)
         drawRefLine(at: 60, label: "Moderate", color: .systemYellow, ctx: ctx, rect: rect)
     }
 
@@ -130,7 +127,7 @@ class WalkingSteadinessChartView: UIView {
 
         let attrs: [NSAttributedString.Key: Any] = [
             .font: UIFont.systemFont(ofSize: 9, weight: .semibold),
-            .foregroundColor: color.withAlphaComponent(0.8),
+            .foregroundColor: color.withAlphaComponent(0.8)
         ]
         let sz = (label as NSString).size(withAttributes: attrs)
         (label as NSString).draw(
@@ -138,7 +135,6 @@ class WalkingSteadinessChartView: UIView {
             withAttributes: attrs
         )
     }
-
 
     private func drawGradientFill(rect: CGRect) {
         guard points.count > 0, let ctx = UIGraphicsGetCurrentContext() else { return }
@@ -168,10 +164,9 @@ class WalkingSteadinessChartView: UIView {
         let grad = CGGradient(colorsSpace: CGColorSpaceCreateDeviceRGB(), colors: colors, locations: [0, 1])!
         ctx.drawLinearGradient(grad,
             start: CGPoint(x: rect.midX, y: pTop),
-            end:   CGPoint(x: rect.midX, y: rect.height - pBottom), options: [])
+            end: CGPoint(x: rect.midX, y: rect.height - pBottom), options: [])
         ctx.restoreGState()
     }
-
 
     private func drawSmoothLine(ctx: CGContext, rect: CGRect) {
         guard points.count > 0 else { return }
@@ -198,7 +193,6 @@ class WalkingSteadinessChartView: UIView {
         ctx.restoreGState()
     }
 
-
     private func drawDots(ctx: CGContext, rect: CGRect) {
         let radius: CGFloat = points.count > 14 ? 3 : 5
         let animatedCount = Int(ceil(Double(points.count) * Double(animationProgress)))
@@ -217,11 +211,10 @@ class WalkingSteadinessChartView: UIView {
         }
     }
 
-
     private func drawYLabels(ctx: CGContext, rect: CGRect) {
         let attrs: [NSAttributedString.Key: Any] = [
             .font: UIFont.monospacedDigitSystemFont(ofSize: 9, weight: .regular),
-            .foregroundColor: UIColor.secondaryLabel,
+            .foregroundColor: UIColor.secondaryLabel
         ]
         for v in [0, 25, 50, 75, 100] {
             let y    = rect.height - pBottom - CGFloat(v) / 100.0 * uh(rect)
@@ -232,7 +225,7 @@ class WalkingSteadinessChartView: UIView {
         }
         let unitAttrs: [NSAttributedString.Key: Any] = [
             .font: UIFont.systemFont(ofSize: 8),
-            .foregroundColor: UIColor.tertiaryLabel,
+            .foregroundColor: UIColor.tertiaryLabel
         ]
         ("%" as NSString).draw(at: CGPoint(x: 2, y: pTop - 4), withAttributes: unitAttrs)
     }
@@ -243,7 +236,7 @@ class WalkingSteadinessChartView: UIView {
         f.dateFormat = points.count > 20 ? "MMM" : "d MMM"
         let attrs: [NSAttributedString.Key: Any] = [
             .font: UIFont.systemFont(ofSize: 9),
-            .foregroundColor: UIColor.secondaryLabel,
+            .foregroundColor: UIColor.secondaryLabel
         ]
         let count = min(5, points.count)
         for i in 0..<count {
@@ -255,7 +248,6 @@ class WalkingSteadinessChartView: UIView {
             text.draw(at: CGPoint(x: x, y: rect.height - pBottom + 6), withAttributes: attrs)
         }
     }
-
 
     private func drawAxes(ctx: CGContext, rect: CGRect) {
         ctx.setStrokeColor(UIColor.systemGray4.cgColor)

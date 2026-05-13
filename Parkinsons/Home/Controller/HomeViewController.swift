@@ -1,8 +1,3 @@
-
-
-
-
-
 import UIKit
 import CoreData
 
@@ -14,13 +9,13 @@ enum Section: Int, CaseIterable {
 }
 
 class HomeViewController: UIViewController, UICollectionViewDelegate {
-    
+
     private let calendar: Calendar = {
         var cal = Calendar.current
         cal.timeZone = TimeZone.current
         return cal
     }()
-    
+
     @IBOutlet weak var NameOfUser: UILabel!
     private let todayViewModel = TodayMedicationViewModel()
     private var todayDoses: [TodayDoseItem] = []
@@ -33,10 +28,10 @@ class HomeViewController: UIViewController, UICollectionViewDelegate {
 
     @IBOutlet weak var NameLabel: UILabel!
     @IBOutlet weak var mainCollectionView: UICollectionView!
-    
+
     private var medicationLoggedObserver: NSObjectProtocol?
     private var userProfileUpdatedObserver: NSObjectProtocol?
-    
+
     let homeSections = Section.allCases
     private let separatorView: UIView = {
         let view = UIView()
@@ -47,23 +42,23 @@ class HomeViewController: UIViewController, UICollectionViewDelegate {
 
     var dates: [DateModel] = []
     var selectedDate: Date = Date()
-    
+
     var medicationData: [MedicationModel] = [
         MedicationModel(name: "Levodopa", time: "6:00 PM", detail: "1 capsule", iconName: "medication"),
-        MedicationModel(name: "Carbidopa", time: "10:00 AM", detail: "1 capsule", iconName: "pills.fill"),
+        MedicationModel(name: "Carbidopa", time: "10:00 AM", detail: "1 capsule", iconName: "pills.fill")
     ]
-    
+
     var exerciseData: [ExerciseModel] = [
         ExerciseModel(title: "10-Min Workout", detail: "Repeat everyday", progressColorHex: "0088FF"),
         ExerciseModel(title: "Rhythmic Walking", detail: "Repeat everyday", progressColorHex: "90AF81")
     ]
-    
+
     var therapeuticGamesData: [TherapeuticGameModel] = [
         TherapeuticGameModel(title: "Mimic the Emoji", description: "Complete your daily challenge!", iconName: "face.smiling", iconColor: .systemOrange),
         TherapeuticGameModel(title: "Match the Cards", description: "Complete your daily challenge!", iconName: "brain.fill", iconColor: .systemPurple),
         TherapeuticGameModel(title: "Whack-a-Mole", description: "Complete your daily challenge!", iconName: "hand.tap.fill", iconColor: .systemGreen)
     ]
-    
+
     private let floatingBar: UIView = {
         let view = UIView()
         view.backgroundColor = .white
@@ -75,25 +70,23 @@ class HomeViewController: UIViewController, UICollectionViewDelegate {
         view.translatesAutoresizingMaskIntoConstraints = false
         return view
     }()
-    
+
     // MARK: - Lifecycle
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        
 
         let savedFull = UserDefaults.standard.string(forKey: "UserFullName") ?? "John"
         let firstName = savedFull.components(separatedBy: " ").first ?? savedFull
         self.NameOfUser.text = "Hello \(firstName)!"
 
-
         updateGreeting()
         registerCells()
-        
+
         mainCollectionView.dataSource = self
         mainCollectionView.delegate = self
         mainCollectionView.setCollectionViewLayout(generateLayout(), animated: true)
-        
+
         dates = HomeDataStore.shared.getDates()
         loadRealMedicationData()
 
@@ -116,7 +109,7 @@ class HomeViewController: UIViewController, UICollectionViewDelegate {
         }
         print("[HOME] viewDidLoad END")
     }
-    
+
     deinit {
         if let observer = medicationLoggedObserver {
             NotificationCenter.default.removeObserver(observer)
@@ -125,7 +118,7 @@ class HomeViewController: UIViewController, UICollectionViewDelegate {
             NotificationCenter.default.removeObserver(observer)
         }
     }
-    
+
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         updateGreeting()
@@ -217,11 +210,9 @@ class HomeViewController: UIViewController, UICollectionViewDelegate {
             context: context
         )
 
-
         todayDoses.removeAll { $0.id == dose.id }
 
         let medSection = Section.medications.rawValue
-
 
         if todayDoses.isEmpty {
             mainCollectionView.setCollectionViewLayout(generateLayout(), animated: false)
@@ -232,7 +223,6 @@ class HomeViewController: UIViewController, UICollectionViewDelegate {
         }
         self.scrollToSelectedDate(animated: false)
 
-        
         NotificationCenter.default.post(
             name: NSNotification.Name("MedicationLogged"),
             object: self
@@ -266,10 +256,10 @@ class HomeViewController: UIViewController, UICollectionViewDelegate {
     // MARK: - Layout
 
     func generateLayout() -> UICollectionViewLayout {
-        let layout = UICollectionViewCompositionalLayout { [weak self] sectionIndex, env in
+        let layout = UICollectionViewCompositionalLayout { [weak self] sectionIndex, _ in
             guard let self = self else { return nil }
             let sectionType = self.homeSections[sectionIndex]
-            
+
             switch sectionType {
             case .calendar:
                 let itemSize = NSCollectionLayoutSize(widthDimension: .absolute(60), heightDimension: .absolute(65))
@@ -630,33 +620,33 @@ extension HomeViewController: MedicationCardDelegate {
     func didTapSkipped(for dose: TodayDoseItem, cell: MedicationCardCollectionViewCell) {
         handleDoseLogging(for: dose, status: .skipped, cell: cell)
     }
-    
+
     private func handleDoseLogging(for dose: TodayDoseItem, status: DoseStatus, cell: MedicationCardCollectionViewCell) {
         let now = Date()
-        
+
         // If the medication is not yet due (scheduled time is in the future)
         if dose.scheduledTime > now {
             let formatter = DateFormatter()
             formatter.timeStyle = .short
             let timeString = formatter.string(from: dose.scheduledTime)
-            
+
             let alert = UIAlertController(
                 title: "Early Logging",
                 message: "This medication is scheduled for \(timeString). Are you sure you want to log it now?",
                 preferredStyle: .alert
             )
-            
+
             let confirmAction = UIAlertAction(title: "Yes, Log It", style: .default) { [weak self] _ in
                 cell.playAnimation(isTaken: status == .taken) {
                     self?.updateDose(dose, status: status)
                 }
             }
-            
+
             let cancelAction = UIAlertAction(title: "Cancel", style: .cancel)
-            
+
             alert.addAction(confirmAction)
             alert.addAction(cancelAction)
-            
+
             self.present(alert, animated: true)
         } else {
             // Already due, log normally with animation
@@ -690,8 +680,6 @@ extension HomeViewController {
         self.present(alert, animated: true)
     }
 }
-
-
 
 // MARK: - AddMedicationDelegate
 

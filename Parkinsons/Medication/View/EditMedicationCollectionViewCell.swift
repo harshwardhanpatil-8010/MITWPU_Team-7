@@ -15,7 +15,6 @@ class EditMedicationCollectionViewCell: UICollectionViewCell {
     @IBOutlet weak var medIcon: UIImageView!
     @IBOutlet weak var cardView: UIView!
 
-
     override func awakeFromNib() {
         super.awakeFromNib()
         cardView.applyCardStyle()
@@ -23,17 +22,16 @@ class EditMedicationCollectionViewCell: UICollectionViewCell {
     }
 
     func configure(with medication: Medication) {
-        
+
         titleLabel.text = medication.medicationName
         subtitleLabel.text = medication.medicationForm
-        
+
         medIcon.image = UIImage(
             named: medication.medicationIconName ?? ""
         ) ?? UIImage(named: "tablet")
 
         let doseCount = medication.doses?.count ?? 0
 
-        
         scheduleLabel.text = Medication.scheduleDisplayText(
             type: medication.medicationScheduleType ?? "none",
             days: medication.medicationScheduleDays as? [Int]
@@ -71,5 +69,3 @@ extension Medication {
         }
     }
 }
-
-

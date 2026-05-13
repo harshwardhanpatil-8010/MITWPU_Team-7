@@ -35,7 +35,7 @@ final class MedicationDoseLogger {
         let log: MedicationDoseLog
         if let existing = existingLog {
             log = existing
-     
+
         } else {
             log = MedicationDoseLog(context: context)
             log.id = UUID()
@@ -43,7 +43,7 @@ final class MedicationDoseLogger {
             log.doseDay = Calendar.current.startOfDay(for: Date())
             log.dose = coreDose
             log.medication = medication
-         
+
         }
 
         log.doseLoggedAt = Date()
