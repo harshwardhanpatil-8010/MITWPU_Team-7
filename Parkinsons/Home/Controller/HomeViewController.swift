@@ -366,9 +366,7 @@ class HomeViewController: UIViewController, UICollectionViewDelegate {
             let storyboard = UIStoryboard(name: "MimicTheEmoji", bundle: nil)
             guard let vc = storyboard.instantiateViewController(withIdentifier: "EmojiLandingScreenID") as? EmojiLandingScreen else { return }
             navigationController?.pushViewController(vc, animated: true)
-        case 2:
-            let vc = WhackAMoleLandingViewController()
-            navigationController?.pushViewController(vc, animated: true)
+        
         default:
             break
         }
@@ -542,13 +540,7 @@ extension HomeViewController: UICollectionViewDataSource {
                 }.count
                 completionText = "\(completedCount)/\(daysInMonth) daily challenges completed"
                 isTodayCompleted = DailyGameManager.shared.isCompleted(date: today)
-            case 2:
-                let completedCount = (0..<daysInMonth).filter { offset in
-                    guard let date = calendar.date(byAdding: .day, value: offset, to: firstDayOfMonth) else { return false }
-                    return WhackAMoleGameManager.shared.isCompleted(date: calendar.startOfDay(for: date))
-                }.count
-                completionText = "\(completedCount)/\(daysInMonth) daily challenges completed"
-                isTodayCompleted = WhackAMoleGameManager.shared.isCompleted(date: today)
+
             default:
                 completionText = ""
                 isTodayCompleted = false
