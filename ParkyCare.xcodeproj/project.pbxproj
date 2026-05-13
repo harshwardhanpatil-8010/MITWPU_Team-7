@@ -29,7 +29,7 @@
 		1905DBAA2F3DF8A900EA6419 /* MedicationDose+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "MedicationDose+CoreDataProperties.swift"; sourceTree = "<group>"; };
 		1905DBAB2F3DF8A900EA6419 /* MedicationDoseLog+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "MedicationDoseLog+CoreDataClass.swift"; sourceTree = "<group>"; };
 		1905DBAC2F3DF8A900EA6419 /* MedicationDoseLog+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "MedicationDoseLog+CoreDataProperties.swift"; sourceTree = "<group>"; };
-		19423B6D2ED6BD590004C99E /* ParkEase.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ParkEase.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		19423B6D2ED6BD590004C99E /* ParkyCare.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ParkyCare.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		198FFF662F5003F9004949FC /* RhythmicSession+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "RhythmicSession+CoreDataClass.swift"; sourceTree = "<group>"; };
 		198FFF672F5003F9004949FC /* RhythmicSession+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "RhythmicSession+CoreDataProperties.swift"; sourceTree = "<group>"; };
 		198FFF6A2F50082A004949FC /* CDSymptomLog+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CDSymptomLog+CoreDataClass.swift"; sourceTree = "<group>"; };
@@ -39,12 +39,12 @@
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
-		19423B7F2ED6BD5A0004C99E /* Exceptions for "Parkinsons" folder in "ParkEase" target */ = {
+		19423B7F2ED6BD5A0004C99E /* Exceptions for "Parkinsons" folder in "ParkyCare" target */ = {
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
 				Info.plist,
 			);
-			target = 19423B6C2ED6BD590004C99E /* ParkEase */;
+			target = 19423B6C2ED6BD590004C99E /* ParkyCare */;
 		};
 /* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
 
@@ -52,7 +52,7 @@
 		19423B6F2ED6BD590004C99E /* Parkinsons */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
 			exceptions = (
-				19423B7F2ED6BD5A0004C99E /* Exceptions for "Parkinsons" folder in "ParkEase" target */,
+				19423B7F2ED6BD5A0004C99E /* Exceptions for "Parkinsons" folder in "ParkyCare" target */,
 			);
 			path = Parkinsons;
 			sourceTree = "<group>";
@@ -95,7 +95,7 @@
 		19423B6E2ED6BD590004C99E /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				19423B6D2ED6BD590004C99E /* ParkEase.app */,
+				19423B6D2ED6BD590004C99E /* ParkyCare.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -112,9 +112,9 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		19423B6C2ED6BD590004C99E /* ParkEase */ = {
+		19423B6C2ED6BD590004C99E /* ParkyCare */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 19423B802ED6BD5A0004C99E /* Build configuration list for PBXNativeTarget "ParkEase" */;
+			buildConfigurationList = 19423B802ED6BD5A0004C99E /* Build configuration list for PBXNativeTarget "ParkyCare" */;
 			buildPhases = (
 				19423B692ED6BD590004C99E /* Sources */,
 				19423B6A2ED6BD590004C99E /* Frameworks */,
@@ -127,11 +127,11 @@
 			fileSystemSynchronizedGroups = (
 				19423B6F2ED6BD590004C99E /* Parkinsons */,
 			);
-			name = ParkEase;
+			name = ParkyCare;
 			packageProductDependencies = (
 			);
 			productName = Parkinsons;
-			productReference = 19423B6D2ED6BD590004C99E /* ParkEase.app */;
+			productReference = 19423B6D2ED6BD590004C99E /* ParkyCare.app */;
 			productType = "com.apple.product-type.application";
 		};
 /* End PBXNativeTarget section */
@@ -149,7 +149,7 @@
 					};
 				};
 			};
-			buildConfigurationList = 19423B682ED6BD590004C99E /* Build configuration list for PBXProject "ParkEase" */;
+			buildConfigurationList = 19423B682ED6BD590004C99E /* Build configuration list for PBXProject "ParkyCare" */;
 			developmentRegion = en;
 			hasScannedForEncodings = 0;
 			knownRegions = (
@@ -165,7 +165,7 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				19423B6C2ED6BD590004C99E /* ParkEase */,
+				19423B6C2ED6BD590004C99E /* ParkyCare */,
 			);
 		};
 /* End PBXProject section */
@@ -415,7 +415,7 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		19423B682ED6BD590004C99E /* Build configuration list for PBXProject "ParkEase" */ = {
+		19423B682ED6BD590004C99E /* Build configuration list for PBXProject "ParkyCare" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				19423B832ED6BD5A0004C99E /* Debug */,
@@ -424,7 +424,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		19423B802ED6BD5A0004C99E /* Build configuration list for PBXNativeTarget "ParkEase" */ = {
+		19423B802ED6BD5A0004C99E /* Build configuration list for PBXNativeTarget "ParkyCare" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				19423B812ED6BD5A0004C99E /* Debug */,
