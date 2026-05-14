@@ -25,6 +25,22 @@ class LevelSelectionPuzzleViewController: UIViewController,
     private var firstWeekdayOffset  = 0
     private var selectedDate: Date?
     private var layoutConfigured    = false   // guard to avoid duplicate layout setup
+    private var gradientLayer: CAGradientLayer?
+
+    private func setupGradientLayer() {
+        if gradientLayer == nil {
+            let gradient = CAGradientLayer()
+            gradient.colors = [
+                UIColor.systemBrown.withAlphaComponent(0.30).cgColor,
+                UIColor.systemBrown.withAlphaComponent(0.0).cgColor
+            ]
+            gradient.startPoint = CGPoint(x: 0.5, y: 0)
+            gradient.endPoint   = CGPoint(x: 0.5, y: 1)
+            view.layer.addSublayer(gradient)
+            gradientLayer = gradient
+        }
+        gradientLayer?.frame = CGRect(x: 0, y: 0, width: view.bounds.width, height: 140)
+    }
 
     // MARK: - Lifecycle
 
@@ -35,6 +51,7 @@ class LevelSelectionPuzzleViewController: UIViewController,
         updateMonthLabel()
         title = "Jigsaw Puzzle"
         tabBarController?.tabBar.isHidden = true
+        setupGradientLayer()
     }
 
     override func viewDidLayoutSubviews() {
@@ -46,6 +63,7 @@ class LevelSelectionPuzzleViewController: UIViewController,
             collectionView?.reloadData()
         }
         title = "Jigsaw Puzzle"
+        setupGradientLayer()
     }
 
     override func viewWillAppear(_ animated: Bool) {
@@ -54,6 +72,8 @@ class LevelSelectionPuzzleViewController: UIViewController,
         collectionView?.reloadData()
         title = "Jigsaw Puzzle"
         tabBarController?.tabBar.isHidden = true
+        navigationController?.setNavigationBarHidden(false, animated: animated)
+        setupGradientLayer()
     }
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
@@ -145,7 +165,7 @@ class LevelSelectionPuzzleViewController: UIViewController,
             isCompleted: isCompleted,
             showTodayOutline: showTodayOutline,
             enabled: !isFuture,
-            themeColor: UIColor(hex: "BF5AF2")
+            themeColor: UIColor.systemBrown
         )
         return cell
     }
@@ -159,7 +179,7 @@ class LevelSelectionPuzzleViewController: UIViewController,
         return CGSize(width: side, height: side)
     }
 
-    /// Tapping a past/today date selects it AND immediately launches the puzzle.
+    /// Tapping a past/today date selects it.
     func collectionView(_ collectionView: UICollectionView,
                         didSelectItemAt indexPath: IndexPath) {
         let offset = indexPath.item - firstWeekdayOffset
@@ -173,9 +193,6 @@ class LevelSelectionPuzzleViewController: UIViewController,
         selectedDate = day
         updateEmojiImage()
         collectionView.reloadData()
-
-        // Launch the puzzle immediately for the selected date
-        performNavigation(to: day)
     }
 
     // MARK: - Layout
@@ -191,11 +208,25 @@ class LevelSelectionPuzzleViewController: UIViewController,
         collectionView.collectionViewLayout = layout
     }
 
-    // MARK: - Play button (still works as fallback)
+    // MARK: - Play button
 
     @IBAction func playButtonTapped(_ sender: UIButton) {
         guard let date = selectedDate else { return }
-        performNavigation(to: date)
+
+        if PuzzleGameManager.shared.isCompleted(date: date) {
+            let alert = UIAlertController(
+                title: "Challenge Completed",
+                message: "You have already completed this daily challenge. Do you want to play again?",
+                preferredStyle: .alert
+            )
+            alert.addAction(UIAlertAction(title: "Yes", style: .default) { _ in
+                self.performNavigation(to: date)
+            })
+            alert.addAction(UIAlertAction(title: "No", style: .cancel))
+            present(alert, animated: true)
+        } else {
+            performNavigation(to: date)
+        }
     }
 }
 
@@ -211,24 +242,26 @@ extension LevelSelectionPuzzleViewController {
             DispatchQueue.main.async {
                 guard let self = self else { return }
 
-                // Dismiss the fullScreen SwiftUI hosting controller
-                self.dismiss(animated: true) {
-                    // Refresh calendar so the completed date fills with colour
-                    self.updateCompletionCount()
-                    self.collectionView?.reloadData()
+                // Refresh calendar state before pushing result
+                self.updateCompletionCount()
+                self.collectionView?.reloadData()
 
-                    // Navigate to ResultViewController
-                    self.showResultScreen(timeTaken: time)
-                }
+                // Navigate to ResultViewController directly via push
+                self.showResultScreen(timeTaken: time)
             }
         }
 
         let hostingController = UIHostingController(rootView: PuzzleGameView(viewModel: viewModel))
-        hostingController.modalPresentationStyle = .fullScreen
-        present(hostingController, animated: true)
+        // Hiding the back button and the entire bar so we only see the game's custom topBar
+        hostingController.navigationItem.hidesBackButton = true
+        navigationController?.setNavigationBarHidden(true, animated: true)
+        navigationController?.pushViewController(hostingController, animated: true)
     }
 
     private func showResultScreen(timeTaken: Int) {
+        // Restore the navigation bar for the result screen
+        navigationController?.setNavigationBarHidden(false, animated: true)
+
         // Try to load from the "Jigsaw Puzzle" storyboard first
         if let resultVC = resultViewControllerFromStoryboard(timeTaken: timeTaken) {
             if let nav = navigationController {

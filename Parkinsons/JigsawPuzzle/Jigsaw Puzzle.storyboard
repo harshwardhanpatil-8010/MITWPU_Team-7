@@ -12,14 +12,14 @@
         <!--PUZZLE -->
         <scene sceneID="Z1R-nq-4zZ">
             <objects>
-                <viewController storyboardIdentifier="PuzzleLandingPage" useStoryboardIdentifierAsRestorationIdentifier="YES" id="FJU-3F-czI" userLabel="PUZZLE " customClass="LevelSelectionPuzzleViewController" customModule="ParkEase" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="PuzzleLandingPage" useStoryboardIdentifierAsRestorationIdentifier="YES" id="FJU-3F-czI" userLabel="PUZZLE " customClass="LevelSelectionPuzzleViewController" customModule="ParkyCare" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="TUD-tt-8GS">
                         <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="puzzlepiece.extension.fill" catalog="system" translatesAutoresizingMaskIntoConstraints="NO" id="f8o-E2-Q49">
                                 <rect key="frame" x="106" y="151.66666666666666" width="180" height="137.99999999999997"/>
-                                <color key="tintColor" red="0.85098039215686272" green="0.5490196078431373" blue="0.41960784313725491" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <color key="tintColor" systemColor="systemBrownColor"/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="180" id="a8y-3Q-QyG"/>
                                     <constraint firstAttribute="height" constant="140" id="g8J-y0-5hO"/>
@@ -97,7 +97,7 @@
                                             <inset key="sectionInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
                                         </collectionViewFlowLayout>
                                         <cells>
-                                            <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="DateCell" id="O1i-rt-Gpn" customClass="DateCell" customModule="ParkEase" customModuleProvider="target">
+                                            <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="DateCell" id="O1i-rt-Gpn" customClass="DateCell" customModule="ParkyCare" customModuleProvider="target">
                                                 <rect key="frame" x="0.0" y="0.0" width="127.99999999999997" height="128"/>
                                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                                 <collectionViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" id="IIY-kk-Zn3">
@@ -174,7 +174,9 @@
                                     <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="52" id="D1A-9f-erE"/>
                                 </constraints>
                                 <state key="normal" title="Button"/>
-                                <buttonConfiguration key="configuration" style="filled" title="Play" cornerStyle="capsule"/>
+                                <buttonConfiguration key="configuration" style="filled" title="Play" cornerStyle="capsule">
+                                    <color key="baseBackgroundColor" systemColor="systemBrownColor"/>
+                                </buttonConfiguration>
                                 <connections>
                                     <action selector="playButtonTapped:" destination="FJU-3F-czI" eventType="touchUpInside" id="b8m-q4-3sU"/>
                                 </connections>
@@ -197,7 +199,7 @@
                             <constraint firstItem="fKc-Ez-mFH" firstAttribute="top" secondItem="f8o-E2-Q49" secondAttribute="bottom" constant="32.5" id="wdI-Nj-FUL"/>
                         </constraints>
                     </view>
-                    <navigationItem key="navigationItem" title="Match the Cards" id="qIV-m1-k4B">
+                    <navigationItem key="navigationItem" title="Jigsaw Puzzle" id="qIV-m1-k4B">
                         <barButtonItem key="rightBarButtonItem" title="Item" image="questionmark.circle" catalog="system" id="gca-Cx-w9O">
                             <connections>
                                 <segue destination="q4c-Ol-9om" kind="presentation" id="syE-cN-3Gs"/>
@@ -217,7 +219,7 @@
         <!--Game Puzzle View Controller-->
         <scene sceneID="0ag-kD-bGx">
             <objects>
-                <viewController id="8py-ei-nb3" customClass="GamePuzzleViewController" customModule="ParkEase" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController id="8py-ei-nb3" customClass="GamePuzzleViewController" customModule="ParkyCare" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="cHL-Bw-LJV">
                         <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -229,39 +231,39 @@
             </objects>
             <point key="canvasLocation" x="5582.4427480916029" y="146.47887323943664"/>
         </scene>
-        <!--Info Match The Cards View Controller-->
+        <!--Info Jigsaw Puzzle View Controller-->
         <scene sceneID="yVe-Iu-QpB">
             <objects>
-                <viewController id="q4c-Ol-9om" customClass="InfoMatchTheCardsViewController" customModule="ParkEase" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController id="q4c-Ol-9om" customClass="InfoJigsawPuzzleViewController" customModule="ParkyCare" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="9Pk-6s-RE2">
                         <rect key="frame" x="0.0" y="0.0" width="393" height="793"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="7UB-aP-fB3">
-                                <rect key="frame" x="16" y="113.00000000000001" width="361" height="130.33333333333337"/>
-                                <string key="text">1. You’ll see cards placed face down.
-2. Tap any card to flip it over.
-3. Then tap another card to find its match.
-4. If both cards match, they stay open.
-5. If not, they flip back—try again.
-6. Match all pairs to complete the game !</string>
+                                <rect key="frame" x="16" y="113.00000000000001" width="361" height="174.33333333333337"/>
+                                <string key="text">1. You will see a set of shuffled puzzle pieces.
+2. Drag and drop pieces onto the canvas.
+3. Fit pieces together based on their shape and image.
+4. If a piece is placed correctly, it will snap into place.
+5. Continue until the entire image is assembled.
+6. Complete the puzzle to finish the game!</string>
                                 <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Daily challenges" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="4tn-yq-0VC">
-                                <rect key="frame" x="16" y="274.33333333333331" width="361" height="21"/>
+                                <rect key="frame" x="16" y="318.33333333333331" width="361" height="21"/>
                                 <fontDescription key="fontDescription" style="UICTFontTextStyleHeadline"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Usd-ZX-2ca">
-                                <rect key="frame" x="16" y="302.33333333333331" width="361" height="218.33333333333331"/>
-                                <string key="text">1. Each level introduces a new set of cards for you to complete.
-2. Difficulty increases slowly as you move forward.
-3. Finish the current level to unlock the next one.
-4. Take your time, you can replay any level anytime.
-5. After completing each level, you can see the time taken to finish.</string>
+                                <rect key="frame" x="16" y="346.33333333333331" width="361" height="218.33333333333331"/>
+                                <string key="text">1. Each day presents a new puzzle challenge with varying complexity.
+2. Use the preview image as a guide if you get stuck.
+3. Take your time; there is no pressure to finish quickly.
+4. You can replay any completed daily challenge.
+5. Track your progress and assembly time for each day.</string>
                                 <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
@@ -273,7 +275,7 @@
                                 <nil key="highlightedColor"/>
                             </label>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="4ii-dX-oJJ">
-                                <rect key="frame" x="16" y="258.33333333333331" width="361" height="1"/>
+                                <rect key="frame" x="16" y="302.33333333333331" width="361" height="1"/>
                                 <color key="backgroundColor" systemColor="separatorColor"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="1" id="MKb-ac-OSa"/>
@@ -319,12 +321,12 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="jZE-6P-QoC" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="3868" y="880"/>
+            <point key="canvasLocation" x="4744" y="882"/>
         </scene>
         <!--Result View Controller-->
         <scene sceneID="UVK-w5-Umo">
             <objects>
-                <viewController storyboardIdentifier="ResultViewController" id="qzw-tZ-3Bh" customClass="resultViewController" customModule="ParkEase" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="ResultViewController" id="qzw-tZ-3Bh" customClass="resultViewController" customModule="ParkyCare" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="Kvg-KJ-Sra">
                         <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -354,7 +356,9 @@
                                     <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="178" id="Nuj-lx-uXd"/>
                                 </constraints>
                                 <state key="normal" title="Button"/>
-                                <buttonConfiguration key="configuration" style="filled" title="Finish" cornerStyle="capsule"/>
+                                <buttonConfiguration key="configuration" style="filled" title="Finish" cornerStyle="capsule">
+                                    <color key="baseBackgroundColor" systemColor="systemBlueColor"/>
+                                </buttonConfiguration>
                                 <connections>
                                     <action selector="FinishButtonAction:" destination="qzw-tZ-3Bh" eventType="touchUpInside" id="Y6V-Nj-6Nc"/>
                                     <action selector="finishButtonTapped:" destination="qzw-tZ-3Bh" eventType="touchUpInside" id="Yst-Au-hna"/>
@@ -403,13 +407,19 @@
         <image name="xmark" catalog="system" width="128" height="113"/>
         <image name="🎊" width="150" height="150"/>
         <systemColor name="separatorColor">
-            <color red="0.23529411764705882" green="0.23529411764705882" blue="0.2627450980392157" alpha="0.12" colorSpace="custom" customColorSpace="sRGB"/>
+            <color red="0.23529411759999999" green="0.23529411759999999" blue="0.26274509800000001" alpha="0.28999999999999998" colorSpace="custom" customColorSpace="sRGB"/>
         </systemColor>
         <systemColor name="systemBackgroundColor">
             <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
         </systemColor>
+        <systemColor name="systemBlueColor">
+            <color red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </systemColor>
+        <systemColor name="systemBrownColor">
+            <color red="0.63529411759999999" green="0.51764705879999995" blue="0.36862745099999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </systemColor>
         <systemColor name="systemGrayColor">
-            <color red="0.55686274509803924" green="0.55686274509803924" blue="0.57647058823529407" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <color red="0.5568627451" green="0.5568627451" blue="0.57647058819999997" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </systemColor>
     </resources>
 </document>

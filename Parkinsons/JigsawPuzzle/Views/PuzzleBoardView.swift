@@ -37,7 +37,7 @@ struct PuzzleBoardView: View {
                             RoundedRectangle(cornerRadius: 6, style: .continuous)
                                 .fill(
                                     isHovered
-                                        ? Color(UIColor(hex: "BF5AF2")).opacity(0.12)
+                                        ? Color(UIColor(hex: "9C6644")).opacity(0.12)
                                         : isOccupied
                                             ? Color.clear
                                             : Color(UIColor.systemGray6)
@@ -46,7 +46,7 @@ struct PuzzleBoardView: View {
                             RoundedRectangle(cornerRadius: 6, style: .continuous)
                                 .strokeBorder(
                                     isHovered
-                                        ? Color(UIColor(hex: "BF5AF2")).opacity(0.7)
+                                        ? Color(UIColor(hex: "9C6644")).opacity(0.7)
                                         : isOccupied
                                             ? Color.clear
                                             : Color(UIColor.separator).opacity(0.5),
