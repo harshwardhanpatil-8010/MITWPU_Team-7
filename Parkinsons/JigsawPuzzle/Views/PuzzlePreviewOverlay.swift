@@ -1,5 +1,3 @@
-// MARK: - PuzzlePreviewOverlay.swift
-// Full-screen overlay showing the completed puzzle image. Tap to dismiss.
 
 import SwiftUI
 

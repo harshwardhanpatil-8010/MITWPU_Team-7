@@ -1,4 +1,3 @@
-// MARK: - PuzzlePiece.swift
 
 import UIKit
 

@@ -1,6 +1,3 @@
-// MARK: - PuzzleBoardView.swift
-// Grid board: shows assembled puzzle during memorize, empty slots + placed pieces after shuffle.
-// Fixed: explicit white background, pieces clipped inside board bounds.
 
 import SwiftUI
 import UniformTypeIdentifiers
@@ -16,8 +13,6 @@ struct PuzzleBoardView: View {
             let ps = boardSize / CGFloat(gs)
 
             ZStack(alignment: .topLeading) {
-
-                // ── Board background: always pure white ───────────────
                 RoundedRectangle(cornerRadius: 14, style: .continuous)
                     .fill(Color.white)
                     .shadow(color: .black.opacity(0.10), radius: 10, x: 0, y: 4)
@@ -26,7 +21,6 @@ struct PuzzleBoardView: View {
                             .strokeBorder(Color(UIColor.separator).opacity(0.4), lineWidth: 1)
                     )
 
-                // ── Slot grid ─────────────────────────────────────────
                 ForEach(0..<gs, id: \.self) { row in
                     ForEach(0..<gs, id: \.self) { col in
                         let slotIdx    = row * gs + col
@@ -65,7 +59,6 @@ struct PuzzleBoardView: View {
                     }
                 }
 
-                // ── Placed pieces (clipped to board) ──────────────────
                 ForEach(viewModel.placedPositions.keys.sorted(), id: \.self) { pid in
                     if let piece = viewModel.piece(for: pid),
                        let pos   = viewModel.placedPositions[pid] {
@@ -97,14 +90,12 @@ struct PuzzleBoardView: View {
                     }
                 }
 
-                // ── Memorize overlay ──────────────────────────────────
                 if viewModel.isMemorizing {
                     memorizeOverlay(ps: ps)
                         .transition(.opacity)
                 }
             }
             .frame(width: boardSize, height: boardSize)
-            // CRITICAL: clip so no piece image bleeds outside the white card
             .clipShape(RoundedRectangle(cornerRadius: 14, style: .continuous))
             .onDrop(
                 of: [.text],
@@ -117,7 +108,6 @@ struct PuzzleBoardView: View {
     @ViewBuilder
     private func memorizeOverlay(ps: CGFloat) -> some View {
         ZStack(alignment: .topLeading) {
-            // White semi-opaque wash so the image shows clearly
             Color.white.opacity(0.15)
 
             ForEach(viewModel.allPieces) { piece in
@@ -147,7 +137,6 @@ struct PuzzleBoardView: View {
     }
 }
 
-// MARK: - Drop Delegate
 
 private struct BoardDropDelegate: DropDelegate {
     let vm: PuzzleViewModel

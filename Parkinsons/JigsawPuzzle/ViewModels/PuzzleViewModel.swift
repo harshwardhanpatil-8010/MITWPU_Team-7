@@ -1,6 +1,4 @@
-// MARK: - PuzzleViewModel.swift
-// Placement-based game model: memorize → shuffle → drag pieces from tray to board.
-// Fixed: game date stored and used for completion marking (was always using 'today').
+
 
 import SwiftUI
 import Combine
@@ -9,8 +7,8 @@ final class PuzzleViewModel: ObservableObject {
 
     @Published private(set) var allPieces:      [PuzzlePiece] = []
     @Published private(set) var trayPieces:     [PuzzlePiece] = []
-    @Published private(set) var boardSlots:     [Int: Int]    = [:]   // slotIdx → pieceID
-    @Published          var placedPositions:    [Int: CGPoint] = [:] // pieceID → offset in board
+    @Published private(set) var boardSlots:     [Int: Int]    = [:]
+    @Published          var placedPositions:    [Int: CGPoint] = [:]
     @Published private(set) var gameState:      GameState     = .notStarted
     @Published private(set) var memorizeProgress: Double      = 1.0
     @Published private(set) var difficulty:     GameDifficulty = .medium
@@ -24,10 +22,8 @@ final class PuzzleViewModel: ObservableObject {
     @Published private(set) var memorizeLabel   = ""
     @Published private(set) var hasSavedGame    = false
 
-    /// The date this puzzle session is for (determines emoji + completion record).
     private(set) var gameDate: Date = Date()
 
-    /// Callback when the game is won, passing total seconds taken.
     var onGameFinished: ((Int) -> Void)?
 
     private var timerCancellable: AnyCancellable?
@@ -38,7 +34,6 @@ final class PuzzleViewModel: ObservableObject {
         HapticService.shared.warmUp()
     }
 
-    // MARK: - Game lifecycle
 
     func startNewGame(difficulty: GameDifficulty, date: Date = Date()) {
         stopTimer()
@@ -87,7 +82,6 @@ final class PuzzleViewModel: ObservableObject {
         }
     }
 
-    // MARK: - Placement
 
     @discardableResult
     func placePiece(pieceID: Int, at position: CGPoint, boardSize: CGFloat) -> Bool {
@@ -103,7 +97,6 @@ final class PuzzleViewModel: ObservableObject {
         let dist = hypot(position.x - targetPos.x, position.y - targetPos.y)
 
         if dist < ps * 0.4 {
-            // Snap to correct position
             if let trayIdx = trayPieces.firstIndex(where: { $0.id == pieceID }) {
                 trayPieces.remove(at: trayIdx)
             }
@@ -115,7 +108,6 @@ final class PuzzleViewModel: ObservableObject {
             checkCompletion()
             return true
         } else {
-            // Wrong drop — piece returns to tray
             HapticService.shared.incorrectPlacement()
             if boardSlots.values.contains(pieceID) {
                 boardSlots.removeValue(forKey: piece.correctIndex)
@@ -132,7 +124,6 @@ final class PuzzleViewModel: ObservableObject {
         placedPositions[pieceID] = position
     }
 
-    // MARK: - Controls
 
     func restartPuzzle()  { startNewGame(difficulty: difficulty, date: gameDate) }
 
@@ -162,7 +153,6 @@ final class PuzzleViewModel: ObservableObject {
 
     func refreshSavedGameStatus() { hasSavedGame = GamePersistenceService.hasSavedGame }
 
-    // MARK: - Computed
 
     var gridSize: Int { difficulty.gridSize }
     var formattedTime: String { elapsedTime.mmss }
@@ -171,7 +161,6 @@ final class PuzzleViewModel: ObservableObject {
     var completionFraction: Double { totalPieces == 0 ? 0 : Double(placedCount) / Double(totalPieces) }
     func piece(for id: Int) -> PuzzlePiece? { allPieces.first { $0.id == id } }
 
-    // MARK: - Private
 
     private func checkCompletion() {
         guard boardSlots.count == allPieces.count else { return }
@@ -180,7 +169,6 @@ final class PuzzleViewModel: ObservableObject {
         showCelebration = false
         HapticService.shared.gameComplete()
 
-        // Mark the actual game date completed (not necessarily today)
         PuzzleGameManager.shared.markCompleted(date: gameDate)
         PuzzleGameManager.shared.saveCompletion(date: gameDate, time: Int(elapsedTime))
         GamePersistenceService.clearSavedGame()

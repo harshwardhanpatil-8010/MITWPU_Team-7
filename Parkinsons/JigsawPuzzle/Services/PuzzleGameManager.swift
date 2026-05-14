@@ -1,5 +1,3 @@
-// MARK: - PuzzleGameManager.swift
-// Manages daily completion status and times specifically for Jigsaw Puzzles.
 
 import Foundation
 

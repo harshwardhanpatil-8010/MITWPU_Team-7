@@ -6,16 +6,14 @@ class LevelSelectionPuzzleViewController: UIViewController,
                                           UICollectionViewDataSource,
                                           UICollectionViewDelegateFlowLayout {
 
-    // MARK: - Outlets
     @IBOutlet weak var monthAndYearOutlet: UILabel!
     @IBOutlet weak var collectionView: UICollectionView!
     @IBOutlet weak var completedLabel: UILabel!
     @IBOutlet weak var imageView: UIImageView!
 
-    // MARK: - Calendar state
     private var calendar: Calendar = {
         var c = Calendar(identifier: .gregorian)
-        c.firstWeekday = 2   // Monday first
+        c.firstWeekday = 2
         return c
     }()
 
@@ -24,25 +22,31 @@ class LevelSelectionPuzzleViewController: UIViewController,
     private var daysInMonth         = 0
     private var firstWeekdayOffset  = 0
     private var selectedDate: Date?
-    private var layoutConfigured    = false   // guard to avoid duplicate layout setup
-    private var gradientLayer: CAGradientLayer?
+    private var layoutConfigured    = false
+    private var gradientView: UIView?
 
     private func setupGradientLayer() {
-        if gradientLayer == nil {
+        if gradientView == nil {
+            let gView = UIView()
+            gView.isUserInteractionEnabled = false
             let gradient = CAGradientLayer()
             gradient.colors = [
-                UIColor.systemBrown.withAlphaComponent(0.30).cgColor,
-                UIColor.systemBrown.withAlphaComponent(0.0).cgColor
+                UIColor(red: 0.545, green: 0.271, blue: 0.075, alpha: 0.35).cgColor, // SaddleBrown
+                UIColor(red: 0.545, green: 0.271, blue: 0.075, alpha: 0.0).cgColor
             ]
             gradient.startPoint = CGPoint(x: 0.5, y: 0)
             gradient.endPoint   = CGPoint(x: 0.5, y: 1)
-            view.layer.addSublayer(gradient)
-            gradientLayer = gradient
+            gView.layer.addSublayer(gradient)
+            view.addSubview(gView)
+            gradientView = gView
         }
-        gradientLayer?.frame = CGRect(x: 0, y: 0, width: view.bounds.width, height: 140)
+        gradientView?.frame = CGRect(x: 0, y: 0, width: view.bounds.width, height: 140)
+        gradientView?.layer.sublayers?.first?.frame = gradientView?.bounds ?? .zero
+        if let gv = gradientView {
+            view.bringSubviewToFront(gv)
+        }
     }
 
-    // MARK: - Lifecycle
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -50,13 +54,11 @@ class LevelSelectionPuzzleViewController: UIViewController,
         setupMonth()
         updateMonthLabel()
         title = "Jigsaw Puzzle"
-        tabBarController?.tabBar.isHidden = true
         setupGradientLayer()
     }
 
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
-        // Re-configure layout once actual bounds are known (avoids zero-width on first pass)
         if !layoutConfigured {
             layoutConfigured = true
             configureLayout()
@@ -71,16 +73,18 @@ class LevelSelectionPuzzleViewController: UIViewController,
         updateCompletionCount()
         collectionView?.reloadData()
         title = "Jigsaw Puzzle"
+        
         tabBarController?.tabBar.isHidden = true
+        
         navigationController?.setNavigationBarHidden(false, animated: animated)
         setupGradientLayer()
     }
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
-        tabBarController?.tabBar.isHidden = false
+        if isMovingFromParent || isBeingDismissed {
+            tabBarController?.tabBar.isHidden = false
+        }
     }
-
-    // MARK: - Setup
 
     private func setupCollectionView() {
         guard let cv = collectionView else { return }
@@ -114,7 +118,6 @@ class LevelSelectionPuzzleViewController: UIViewController,
         iv.contentMode = .scaleAspectFit
     }
 
-    // MARK: - Completion count
 
     private func updateCompletionCount() {
         guard let label = completedLabel, let first = firstDayOfMonth else { return }
@@ -125,7 +128,6 @@ class LevelSelectionPuzzleViewController: UIViewController,
         label.text = "\(count)/\(daysInMonth) Completed"
     }
 
-    // MARK: - UICollectionViewDataSource
 
     func collectionView(_ collectionView: UICollectionView,
                         numberOfItemsInSection section: Int) -> Int {
@@ -155,7 +157,6 @@ class LevelSelectionPuzzleViewController: UIViewController,
         let isFuture         = cellDate > today
         let isCompleted      = PuzzleGameManager.shared.isCompleted(date: cellDate)
         let isSelected       = selectedDate.map { calendar.isDate(cellDate, inSameDayAs: $0) } ?? false
-        // Show today's ring only when it is today but NOT currently selected
         let showTodayOutline = isToday && !isSelected
 
         cell.configure(
@@ -170,7 +171,6 @@ class LevelSelectionPuzzleViewController: UIViewController,
         return cell
     }
 
-    // MARK: - UICollectionViewDelegateFlowLayout
 
     func collectionView(_ collectionView: UICollectionView,
                         layout collectionViewLayout: UICollectionViewLayout,
@@ -179,7 +179,6 @@ class LevelSelectionPuzzleViewController: UIViewController,
         return CGSize(width: side, height: side)
     }
 
-    /// Tapping a past/today date selects it.
     func collectionView(_ collectionView: UICollectionView,
                         didSelectItemAt indexPath: IndexPath) {
         let offset = indexPath.item - firstWeekdayOffset
@@ -187,15 +186,12 @@ class LevelSelectionPuzzleViewController: UIViewController,
 
         guard let tapped = calendar.date(byAdding: .day, value: offset, to: firstDayOfMonth) else { return }
         let day = calendar.startOfDay(for: tapped)
-        guard day <= today else { return }   // Block future dates
-
-        // Update selection & preview image
+        guard day <= today else { return }
         selectedDate = day
         updateEmojiImage()
         collectionView.reloadData()
     }
 
-    // MARK: - Layout
 
     private func configureLayout() {
         let layout  = UICollectionViewFlowLayout()
@@ -208,7 +204,6 @@ class LevelSelectionPuzzleViewController: UIViewController,
         collectionView.collectionViewLayout = layout
     }
 
-    // MARK: - Play button
 
     @IBAction func playButtonTapped(_ sender: UIButton) {
         guard let date = selectedDate else { return }
@@ -230,7 +225,6 @@ class LevelSelectionPuzzleViewController: UIViewController,
     }
 }
 
-// MARK: - Game navigation
 
 extension LevelSelectionPuzzleViewController {
 
@@ -242,27 +236,26 @@ extension LevelSelectionPuzzleViewController {
             DispatchQueue.main.async {
                 guard let self = self else { return }
 
-                // Refresh calendar state before pushing result
                 self.updateCompletionCount()
                 self.collectionView?.reloadData()
 
-                // Navigate to ResultViewController directly via push
                 self.showResultScreen(timeTaken: time)
             }
         }
 
+        tabBarController?.tabBar.isHidden = true
+
         let hostingController = UIHostingController(rootView: PuzzleGameView(viewModel: viewModel))
-        // Hiding the back button and the entire bar so we only see the game's custom topBar
         hostingController.navigationItem.hidesBackButton = true
         navigationController?.setNavigationBarHidden(true, animated: true)
         navigationController?.pushViewController(hostingController, animated: true)
     }
 
     private func showResultScreen(timeTaken: Int) {
-        // Restore the navigation bar for the result screen
+        tabBarController?.tabBar.isHidden = true
+
         navigationController?.setNavigationBarHidden(false, animated: true)
 
-        // Try to load from the "Jigsaw Puzzle" storyboard first
         if let resultVC = resultViewControllerFromStoryboard(timeTaken: timeTaken) {
             if let nav = navigationController {
                 nav.pushViewController(resultVC, animated: true)
@@ -273,8 +266,7 @@ extension LevelSelectionPuzzleViewController {
             return
         }
 
-        // Fallback: instantiate programmatically if storyboard lookup fails
-        let resultVC = resultViewController()
+        let resultVC = ResultViewController()
         resultVC.timeTaken = timeTaken
         if let nav = navigationController {
             nav.pushViewController(resultVC, animated: true)
@@ -284,11 +276,10 @@ extension LevelSelectionPuzzleViewController {
         }
     }
 
-    /// Attempts to load resultViewController from the "Jigsaw Puzzle" storyboard.
-    private func resultViewControllerFromStoryboard(timeTaken: Int) -> resultViewController? {
+    private func resultViewControllerFromStoryboard(timeTaken: Int) -> ResultViewController? {
         let sb = UIStoryboard(name: "Jigsaw Puzzle", bundle: nil)
-        // The storyboard identifier must match exactly: "ResultViewController"
-        guard let vc = sb.instantiateViewController(withIdentifier: "ResultViewController") as? resultViewController else {
+        
+        guard let vc = sb.instantiateViewController(withIdentifier: "ResultViewController") as? ResultViewController else {
             return nil
         }
         vc.timeTaken = timeTaken

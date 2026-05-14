@@ -1,5 +1,3 @@
-// MARK: - PuzzleGeneratorService.swift
-// Generates jigsaw puzzle pieces by slicing a real image with computed edge types.
 
 import UIKit
 
@@ -18,7 +16,6 @@ enum PuzzleGeneratorService {
         let tiles = ImageSlicingService.sliceImage(image, rows: size, columns: size)
         guard tiles.count == total else { return [] }
 
-        // Pre-compute internal edges
         var hEdges = [[EdgeType]](repeating: [EdgeType](repeating: .flat, count: size), count: size-1)
         var vEdges = [[EdgeType]](repeating: [EdgeType](repeating: .flat, count: size-1), count: size)
         for r in 0..<(size-1) { for c in 0..<size    { hEdges[r][c] = Bool.random() ? .tab : .blank } }
@@ -56,7 +53,6 @@ enum PuzzleGeneratorService {
         return renderer.image { ctx in
             let c = ctx.cgContext
             
-            // Draw a soft, calming radial gradient background
             let colors = [
                 UIColor(red: 1.0, green: 0.95, blue: 0.85, alpha: 1.0).cgColor,
                 UIColor(red: 0.98, green: 0.88, blue: 0.75, alpha: 1.0).cgColor
@@ -71,7 +67,6 @@ enum PuzzleGeneratorService {
                                  endCenter: center, endRadius: radius,
                                  options: .drawsAfterEndLocation)
             
-            // Draw the emoji centered
             let fontSize = size.width * 0.6
             let attrs: [NSAttributedString.Key: Any] = [
                 .font: UIFont.systemFont(ofSize: fontSize)

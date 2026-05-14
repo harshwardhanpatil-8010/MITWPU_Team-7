@@ -1,33 +1,25 @@
-//
-//  resultViewController.swift
-//
-//  Fixed:
-//  • "Finish" button reliably pops back to LevelSelectionPuzzleViewController
-//    whether presented modally or pushed onto a nav stack.
-//  • Label formatting handles hours too (edge-case for very long games).
-//  • Class and storyboard identifier both named "ResultViewController" — make
-//    sure your storyboard's Custom Class AND Storyboard ID are set to these.
-//
 
 import UIKit
 
-class resultViewController: UIViewController {
+class ResultViewController: UIViewController {
 
     @IBOutlet weak var timeTakenLabel: UILabel!
     @IBOutlet weak var FinishButton: UIButton!
 
     var timeTaken: Int = 0
 
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        tabBarController?.tabBar.isHidden = true
+    }
+
     override func viewDidLoad() {
         super.viewDidLoad()
-        // Hide the back button so users must tap Finish
         navigationItem.hidesBackButton = true
         updateTimeLabel()
         saveCompletion()
         showConfetti()
     }
-
-    // MARK: - Time label
 
     private func updateTimeLabel() {
         guard let label = timeTakenLabel else { return }
@@ -52,7 +44,6 @@ class resultViewController: UIViewController {
         PuzzleGameManager.shared.saveCompletion(date: today, time: timeTaken)
     }
 
-    // MARK: - Actions
 
     @IBAction func finishButtonTapped(_ sender: Any) {
         navigateBackToLevelSelection()
@@ -62,10 +53,8 @@ class resultViewController: UIViewController {
         navigateBackToLevelSelection()
     }
 
-    // MARK: - Navigation
 
     private func navigateBackToLevelSelection() {
-        // Case 1: pushed onto a nav stack — pop back to the level selection screen
         if let nav = navigationController {
             if let target = nav.viewControllers.first(where: { $0 is LevelSelectionPuzzleViewController }) {
                 nav.popToViewController(target, animated: true)
@@ -75,11 +64,9 @@ class resultViewController: UIViewController {
             return
         }
 
-        // Case 2: presented modally
         dismiss(animated: true)
     }
 
-    // MARK: - Confetti
 
     private func showConfetti() {
         let confettiLayer = CAEmitterLayer()

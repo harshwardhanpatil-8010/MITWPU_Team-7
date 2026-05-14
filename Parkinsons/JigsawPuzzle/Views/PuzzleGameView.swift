@@ -1,6 +1,3 @@
-// MARK: - PuzzleGameView.swift
-// Main gameplay: memorize banner → board with slots → tray of draggable pieces.
-// Fixed: tray clipped so pieces don't render above the card boundary.
 
 import SwiftUI
 
@@ -52,21 +49,17 @@ struct PuzzleGameView: View {
         .onDisappear { if viewModel.gameState == .playing { viewModel.saveCurrentProgress() } }
     }
 
-    // MARK: - Piece tray
 
     private var pieceTray: some View {
         VStack(spacing: PuzzleTheme.spacingXS) {
-            // Hint label
             HStack(spacing: 6) {
                 Image(systemName: "hand.draw.fill")
                     .foregroundColor(PuzzleTheme.accent)
-                Text("Drag pieces to the board")
+                Text("Long press and drag pieces to the board")
                     .font(PuzzleTheme.caption())
                     .foregroundColor(PuzzleTheme.textSecondary)
             }
             .padding(.top, PuzzleTheme.spacingS)
-
-            // Piece grid — ScrollView in case many pieces, clipped to card
             ScrollView(.vertical, showsIndicators: false) {
                 let columns = [GridItem(.adaptive(minimum: 72, maximum: 90))]
                 LazyVGrid(columns: columns, spacing: PuzzleTheme.spacingS) {
@@ -77,7 +70,7 @@ struct PuzzleGameView: View {
                 .padding(.horizontal, PuzzleTheme.spacingM)
                 .padding(.vertical, PuzzleTheme.spacingS)
             }
-            // Clip scroll content so nothing bleeds above the card
+           
             .clipped()
         }
         .frame(maxHeight: 240)
@@ -86,12 +79,10 @@ struct PuzzleGameView: View {
                 .fill(PuzzleTheme.cardBackground)
                 .shadow(color: PuzzleTheme.shadow, radius: 8, x: 0, y: -2)
         )
-        // Clip the whole tray card — pieces cannot render above this boundary
         .clipShape(RoundedRectangle(cornerRadius: PuzzleTheme.radiusM, style: .continuous))
         .padding(.horizontal, PuzzleTheme.spacingS)
     }
 
-    // MARK: - Memorize banner
 
     private var memorizeBanner: some View {
         VStack(spacing: PuzzleTheme.spacingS) {
@@ -102,7 +93,6 @@ struct PuzzleGameView: View {
                 .font(PuzzleTheme.title())
                 .foregroundColor(PuzzleTheme.textPrimary)
 
-            // Progress bar
             Capsule()
                 .fill(PuzzleTheme.accent.opacity(0.2))
                 .frame(width: 200, height: 6)
@@ -128,7 +118,6 @@ struct PuzzleGameView: View {
         .padding(.horizontal, PuzzleTheme.spacingM)
     }
 
-    // MARK: - Top bar
 
     private var topBar: some View {
         HStack {
@@ -154,7 +143,6 @@ struct PuzzleGameView: View {
     }
 }
 
-// MARK: - TrayPieceView
 
 private struct TrayPieceView: View {
     let piece: PuzzlePiece

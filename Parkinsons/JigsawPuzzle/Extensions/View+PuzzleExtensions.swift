@@ -1,17 +1,9 @@
-// MARK: - View+PuzzleExtensions.swift
-// Reusable SwiftUI view modifiers and helpers for the Jigsaw Puzzle game.
-// Apply these modifiers to keep individual views lean and consistent.
 
 import SwiftUI
 
-// MARK: - View Modifiers
 
 extension View {
 
-    // MARK: Card surface
-
-    /// Applies the standard puzzle card style:
-    /// white/dark background, rounded corners, and a soft shadow.
     func puzzleCard(cornerRadius: CGFloat = PuzzleTheme.radiusM) -> some View {
         self
             .background(
@@ -25,16 +17,12 @@ extension View {
             )
     }
 
-    // MARK: Primary button
-
-    /// Applies the large, rounded primary button appearance.
-    /// Use for main CTAs like "Start Game".
     func puzzlePrimaryButton(color: Color = PuzzleTheme.accent) -> some View {
         self
             .font(PuzzleTheme.buttonLabel())
             .foregroundColor(.white)
             .frame(maxWidth: .infinity)
-            .frame(height: 56)                              // ≥ 44 pt touch target
+            .frame(height: 56)
             .background(
                 RoundedRectangle(cornerRadius: PuzzleTheme.radiusL, style: .continuous)
                     .fill(color)
@@ -42,9 +30,6 @@ extension View {
             )
     }
 
-    // MARK: Secondary button
-
-    /// Applies a bordered secondary button appearance.
     func puzzleSecondaryButton(color: Color = PuzzleTheme.accent) -> some View {
         self
             .font(PuzzleTheme.headline())
@@ -57,9 +42,6 @@ extension View {
             )
     }
 
-    // MARK: Icon button
-
-    /// Applies a circular icon button style.
     func puzzleIconButton(size: CGFloat = 48) -> some View {
         self
             .frame(width: size, height: size)
@@ -70,9 +52,6 @@ extension View {
             )
     }
 
-    // MARK: Correct-placement glow
-
-    /// Animated green border glow shown when a piece is correctly placed.
     func correctPlacementGlow(isActive: Bool) -> some View {
         self.overlay(
             RoundedRectangle(cornerRadius: PuzzleConstants.pieceCornerRadius)
@@ -84,24 +63,16 @@ extension View {
         )
     }
 
-    // MARK: Shimmer (loading / shuffle hint)
-
-    /// Adds a subtle left-to-right shimmer animation.
-    /// Used during the animated shuffle at game start.
     func shimmer(isActive: Bool = true) -> some View {
         modifier(ShimmerModifier(isActive: isActive))
     }
 
-    // MARK: Conditional modifier helper
-
-    /// Applies a modifier only when `condition` is true.
     @ViewBuilder
     func `if`<Content: View>(_ condition: Bool, transform: (Self) -> Content) -> some View {
         if condition { transform(self) } else { self }
     }
 }
 
-// MARK: - ShimmerModifier
 
 private struct ShimmerModifier: ViewModifier {
     let isActive: Bool
@@ -134,10 +105,8 @@ private struct ShimmerModifier: ViewModifier {
     }
 }
 
-// MARK: - Color helpers
 
 extension Color {
-    /// Creates a Color from a hex string e.g. "#7EB8C9"
     init(hex: String) {
         let hex = hex.trimmingCharacters(in: CharacterSet.alphanumerics.inverted)
         var int: UInt64 = 0
@@ -157,10 +126,8 @@ extension Color {
     }
 }
 
-// MARK: - TimeInterval formatting
 
 extension TimeInterval {
-    /// Formats seconds as MM:SS string (e.g. 125 → "02:05").
     var mmss: String {
         let total = Int(self)
         return String(format: "%02d:%02d", total / 60, total % 60)

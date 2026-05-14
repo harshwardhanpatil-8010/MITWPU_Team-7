@@ -1,4 +1,3 @@
-// MARK: - HapticService.swift
 
 import UIKit
 
