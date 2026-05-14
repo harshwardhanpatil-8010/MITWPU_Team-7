@@ -134,6 +134,14 @@ class BreakTheBrickGameView: UIView {
     private var displayLink: CADisplayLink?
     private var lastTimestamp: CFTimeInterval = 0
 
+    private let topBoundaryLine = UIView()
+    private let topBoundaryY: CGFloat = 170
+
+    override func layoutSubviews() {
+        super.layoutSubviews()
+        topBoundaryLine.frame = CGRect(x: 0, y: topBoundaryY, width: bounds.width, height: 2)
+    }
+
     private let ballSize: CGFloat     = 14
     private let paddleH: CGFloat      = 12
     private let paddleBottom: CGFloat = 80
@@ -368,6 +376,10 @@ class BreakTheBrickGameView: UIView {
     override init(frame: CGRect) {
         super.init(frame: frame)
         backgroundColor = UIColor(red: 0.94, green: 0.97, blue: 1.0, alpha: 1)
+        
+        topBoundaryLine.backgroundColor = UIColor.systemGray4
+        addSubview(topBoundaryLine)
+        
         setupPaddle()
         setupBall()
         let pan = UIPanGestureRecognizer(target: self, action: #selector(handlePan(_:)))
@@ -453,8 +465,8 @@ class BreakTheBrickGameView: UIView {
                     brick.layer.shadowColor = UIColor.systemGray.cgColor
                     brick.tag = 1  // iron — indestructible
                 } else {
-                    brick.backgroundColor = UIColor.systemOrange
-                    brick.layer.shadowColor = UIColor.systemOrange.cgColor
+                    brick.backgroundColor = UIColor.systemTeal
+                    brick.layer.shadowColor = UIColor.systemTeal.cgColor
                     brick.tag = 0  // breakable
                     breakableBricksTotal += 1
                 }
@@ -470,7 +482,7 @@ class BreakTheBrickGameView: UIView {
         // Safety: ensure at least one breakable brick exists
         if breakableBricksTotal == 0, let first = bricks.first {
             first.tag = 0
-            first.backgroundColor = .systemOrange
+            first.backgroundColor = .systemTeal
             breakableBricksTotal = 1
         }
     }
@@ -521,7 +533,7 @@ class BreakTheBrickGameView: UIView {
         // Wall bounces — left/right walls align with brick grid edges
         if pos.x <= sidePad { pos.x = sidePad; ballVelocity.x = abs(ballVelocity.x) }
         if pos.x + ballSize >= bounds.width - sidePad { pos.x = bounds.width - sidePad - ballSize; ballVelocity.x = -abs(ballVelocity.x) }
-        if pos.y <= 0 { pos.y = 0; ballVelocity.y = abs(ballVelocity.y) }
+        if pos.y <= topBoundaryY + 2 { pos.y = topBoundaryY + 2; ballVelocity.y = abs(ballVelocity.y) }
 
         // Ball lost
         if pos.y + ballSize >= bounds.height {
