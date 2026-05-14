@@ -8,7 +8,7 @@
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
-        <!--Break The Brick Landing Page View Controller-->
+        <!--Break The Brick Landing View Controller-->
         <scene sceneID="BTB-Landing-Scene">
             <objects>
                 <viewController storyboardIdentifier="BreakTheBrickLandingViewController" useStoryboardIdentifierAsRestorationIdentifier="YES" id="BTB-Landing-VC" customClass="BreakTheBrickLandingViewController" customModule="ParkyCare" customModuleProvider="target" sceneMemberID="viewController">
@@ -106,24 +106,16 @@
                                 </collectionViewFlowLayout>
                                 <cells/>
                             </collectionView>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="BTB-Play-Btn">
-                                <rect key="frame" x="111.66666666666669" y="714" width="170" height="50"/>
-                                <color key="backgroundColor" systemColor="systemTealColor"/>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="lk2-RI-MSi">
+                                <rect key="frame" x="107.66666666666669" y="724" width="178" height="52"/>
                                 <constraints>
-                                    <constraint firstAttribute="height" constant="50" id="BTB-Play-H"/>
-                                    <constraint firstAttribute="width" constant="170" id="BTB-Play-W"/>
+                                    <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="178" id="3AJ-to-TKM"/>
+                                    <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="52" id="iHC-Pq-hti"/>
                                 </constraints>
-                                <fontDescription key="fontDescription" type="boldSystem" pointSize="18"/>
-                                <state key="normal" title="Play">
-                                    <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                </state>
-                                <userDefinedRuntimeAttributes>
-                                    <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
-                                        <integer key="value" value="25"/>
-                                    </userDefinedRuntimeAttribute>
-                                </userDefinedRuntimeAttributes>
+                                <state key="normal" title="Button"/>
+                                <buttonConfiguration key="configuration" style="filled" title="Play" cornerStyle="capsule"/>
                                 <connections>
-                                    <action selector="playButtonTapped:" destination="BTB-Landing-VC" eventType="touchUpInside" id="BTB-Play-Action"/>
+                                    <action selector="playButtonTapped:" destination="BTB-Landing-VC" eventType="touchUpInside" id="Yk7-Lx-5cu"/>
                                 </connections>
                             </button>
                         </subviews>
@@ -136,8 +128,6 @@
                             <constraint firstItem="BTB-Cal-Grid" firstAttribute="top" secondItem="BTB-Weekday-Hdr" secondAttribute="bottom" constant="10" id="BTB-C12"/>
                             <constraint firstItem="BTB-Cal-Grid" firstAttribute="leading" secondItem="BTB-Landing-Safe" secondAttribute="leading" constant="16" id="BTB-C13"/>
                             <constraint firstItem="BTB-Landing-Safe" firstAttribute="trailing" secondItem="BTB-Cal-Grid" secondAttribute="trailing" constant="16" id="BTB-C14"/>
-                            <constraint firstItem="BTB-Landing-Safe" firstAttribute="bottom" secondItem="BTB-Play-Btn" secondAttribute="bottom" constant="20" id="BTB-C15"/>
-                            <constraint firstItem="BTB-Play-Btn" firstAttribute="centerX" secondItem="BTB-Landing-View" secondAttribute="centerX" id="BTB-C16"/>
                             <constraint firstItem="BTB-Hero-Icon" firstAttribute="top" secondItem="BTB-Landing-View" secondAttribute="top" constant="100" id="BTB-C2"/>
                             <constraint firstItem="BTB-Daily-Hdr" firstAttribute="top" secondItem="BTB-Hero-Icon" secondAttribute="bottom" constant="30" id="BTB-C3"/>
                             <constraint firstItem="BTB-Daily-Hdr" firstAttribute="leading" secondItem="BTB-Landing-Safe" secondAttribute="leading" constant="24" id="BTB-C4"/>
@@ -146,13 +136,15 @@
                             <constraint firstItem="BTB-Comp-Lbl" firstAttribute="centerY" secondItem="BTB-Month-Lbl" secondAttribute="centerY" id="BTB-C7"/>
                             <constraint firstItem="BTB-Landing-Safe" firstAttribute="trailing" secondItem="BTB-Comp-Lbl" secondAttribute="trailing" constant="24" id="BTB-C8"/>
                             <constraint firstItem="BTB-Weekday-Hdr" firstAttribute="top" secondItem="BTB-Month-Lbl" secondAttribute="bottom" constant="10" id="BTB-C9"/>
+                            <constraint firstItem="BTB-Landing-Safe" firstAttribute="bottom" secondItem="lk2-RI-MSi" secondAttribute="bottom" constant="8" id="heq-xe-tQy"/>
+                            <constraint firstItem="lk2-RI-MSi" firstAttribute="centerX" secondItem="BTB-Landing-View" secondAttribute="centerX" id="t5F-ov-1xu"/>
                         </constraints>
                     </view>
                     <connections>
                         <outlet property="collectionView" destination="BTB-Cal-Grid" id="BTB-Out-Cal"/>
                         <outlet property="completedLabel" destination="BTB-Comp-Lbl" id="BTB-Out-Comp"/>
                         <outlet property="monthAndYearOutlet" destination="BTB-Month-Lbl" id="BTB-Out-Month"/>
-                        <outlet property="playButton" destination="BTB-Play-Btn" id="BTB-Out-Play"/>
+                        <outlet property="playButton" destination="lk2-RI-MSi" id="Qzm-MD-yuA"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="BTB-Landing-Resp" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
@@ -261,16 +253,10 @@
                                 <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                             </view>
                             <stackView opaque="NO" contentMode="scaleToFill" distribution="equalSpacing" alignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="BTB-Game-Hdr">
-                                <rect key="frame" x="24" y="169" width="345" height="30"/>
+                                <rect key="frame" x="24" y="126" width="345" height="30"/>
                                 <subviews>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Score: 0" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="BTB-Score-Lbl">
-                                        <rect key="frame" x="0.0" y="3" width="78.333333333333329" height="24"/>
-                                        <fontDescription key="fontDescription" type="boldSystem" pointSize="20"/>
-                                        <nil key="textColor"/>
-                                        <nil key="highlightedColor"/>
-                                    </label>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Level 1" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="BTB-Lvl-Lbl">
-                                        <rect key="frame" x="282" y="3" width="63" height="24"/>
+                                        <rect key="frame" x="0.0" y="3" width="345" height="24"/>
                                         <fontDescription key="fontDescription" type="boldSystem" pointSize="20"/>
                                         <nil key="textColor"/>
                                         <nil key="highlightedColor"/>
@@ -281,12 +267,12 @@
                                 </constraints>
                             </stackView>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Break the bricks!" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="BTB-Game-Feedback">
-                                <rect key="frame" x="40" y="215" width="313" height="24"/>
+                                <rect key="frame" x="40" y="172" width="313" height="24"/>
                                 <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="20"/>
                                 <color key="textColor" systemColor="secondaryLabelColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <progressView opaque="NO" contentMode="scaleToFill" verticalHuggingPriority="750" progress="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="BTB-Game-Prog">
+                            <progressView hidden="YES" opaque="NO" contentMode="scaleToFill" verticalHuggingPriority="750" progress="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="BTB-Game-Prog">
                                 <rect key="frame" x="40" y="750" width="313" height="4"/>
                                 <color key="progressTintColor" systemColor="systemTealColor"/>
                             </progressView>
@@ -302,7 +288,7 @@
                             <constraint firstItem="BTB-GameContainer" firstAttribute="top" secondItem="BTB-Game-View" secondAttribute="top" id="BTB-G2"/>
                             <constraint firstAttribute="trailing" secondItem="BTB-GameContainer" secondAttribute="trailing" id="BTB-G3"/>
                             <constraint firstAttribute="bottom" secondItem="BTB-GameContainer" secondAttribute="bottom" id="BTB-G4"/>
-                            <constraint firstItem="BTB-Game-Hdr" firstAttribute="top" secondItem="BTB-Game-Safe" secondAttribute="top" constant="51" id="BTB-G5"/>
+                            <constraint firstItem="BTB-Game-Hdr" firstAttribute="top" secondItem="BTB-Game-Safe" secondAttribute="top" constant="8" id="BTB-G5"/>
                             <constraint firstItem="BTB-Game-Safe" firstAttribute="trailing" secondItem="BTB-Game-Hdr" secondAttribute="trailing" constant="24" id="BTB-G6"/>
                             <constraint firstItem="BTB-Game-Hdr" firstAttribute="leading" secondItem="BTB-Game-Safe" secondAttribute="leading" constant="24" id="BTB-G7"/>
                             <constraint firstItem="BTB-Game-Feedback" firstAttribute="top" secondItem="BTB-Game-Hdr" secondAttribute="bottom" constant="16" id="BTB-G8"/>
@@ -313,8 +299,6 @@
                         <outlet property="feedbackLabel" destination="BTB-Game-Feedback" id="BTB-Out-Feedback"/>
                         <outlet property="gameContainerView" destination="BTB-GameContainer" id="BTB-Out-Container"/>
                         <outlet property="levelLabel" destination="BTB-Lvl-Lbl" id="BTB-Out-Lvl"/>
-                        <outlet property="progressView" destination="BTB-Game-Prog" id="BTB-Out-Prog"/>
-                        <outlet property="scoreLabel" destination="BTB-Score-Lbl" id="BTB-Out-Tmr"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="BTB-Game-Resp" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
@@ -357,34 +341,17 @@
                                     <stackView opaque="NO" contentMode="scaleToFill" distribution="fillEqually" translatesAutoresizingMaskIntoConstraints="NO" id="BTB-Res-Card-Stack">
                                         <rect key="frame" x="0.0" y="16" width="345" height="68"/>
                                         <subviews>
-                                            <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" alignment="center" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="BTB-Res-Card-S1">
-                                                <rect key="frame" x="0.0" y="0.0" width="172.66666666666666" height="68"/>
-                                                <subviews>
-                                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" text="SCORE" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="BTB-Stat-L1">
-                                                        <rect key="frame" x="65.333333333333329" y="0.0" width="41.666666666666671" height="26.333333333333332"/>
-                                                        <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="12"/>
-                                                        <color key="textColor" systemColor="secondaryLabelColor"/>
-                                                        <nil key="highlightedColor"/>
-                                                    </label>
-                                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" text="100" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="BTB-Out-SteadVal">
-                                                        <rect key="frame" x="60.666666666666671" y="34.333333333333314" width="51.333333333333329" height="33.666666666666657"/>
-                                                        <fontDescription key="fontDescription" type="boldSystem" pointSize="28"/>
-                                                        <nil key="textColor"/>
-                                                        <nil key="highlightedColor"/>
-                                                    </label>
-                                                </subviews>
-                                            </stackView>
                                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" alignment="center" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="BTB-Res-Card-S2">
-                                                <rect key="frame" x="172.66666666666663" y="0.0" width="172.33333333333337" height="68"/>
+                                                <rect key="frame" x="0.0" y="0.0" width="345" height="68"/>
                                                 <subviews>
                                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" text="DURATION" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="BTB-Stat-L2">
-                                                        <rect key="frame" x="54.333333333333343" y="0.0" width="63.666666666666657" height="14.333333333333334"/>
+                                                        <rect key="frame" x="140.66666666666666" y="0.0" width="63.666666666666657" height="26.333333333333332"/>
                                                         <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="12"/>
                                                         <color key="textColor" systemColor="secondaryLabelColor"/>
                                                         <nil key="highlightedColor"/>
                                                     </label>
                                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" text="02:15" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="BTB-Out-DurVal">
-                                                        <rect key="frame" x="48.666666666666686" y="22.333333333333311" width="75" height="45.666666666666657"/>
+                                                        <rect key="frame" x="135" y="34.333333333333314" width="75" height="33.666666666666657"/>
                                                         <fontDescription key="fontDescription" type="boldSystem" pointSize="28"/>
                                                         <nil key="textColor"/>
                                                         <nil key="highlightedColor"/>
@@ -393,13 +360,6 @@
                                             </stackView>
                                         </subviews>
                                     </stackView>
-                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="BTB-Res-Card-Sep">
-                                        <rect key="frame" x="172" y="20" width="1" height="60"/>
-                                        <color key="backgroundColor" systemColor="systemGray5Color"/>
-                                        <constraints>
-                                            <constraint firstAttribute="width" constant="1" id="BTB-Sep-W"/>
-                                        </constraints>
-                                    </view>
                                 </subviews>
                                 <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                                 <constraints>
@@ -407,9 +367,6 @@
                                     <constraint firstAttribute="trailing" secondItem="BTB-Res-Card-Stack" secondAttribute="trailing" id="BTB-Card-C2"/>
                                     <constraint firstItem="BTB-Res-Card-Stack" firstAttribute="top" secondItem="BTB-Res-Card" secondAttribute="top" constant="16" id="BTB-Card-C3"/>
                                     <constraint firstAttribute="bottom" secondItem="BTB-Res-Card-Stack" secondAttribute="bottom" constant="16" id="BTB-Card-C4"/>
-                                    <constraint firstItem="BTB-Res-Card-Sep" firstAttribute="centerX" secondItem="BTB-Res-Card" secondAttribute="centerX" id="BTB-Card-C5"/>
-                                    <constraint firstItem="BTB-Res-Card-Sep" firstAttribute="top" secondItem="BTB-Res-Card" secondAttribute="top" constant="20" id="BTB-Card-C6"/>
-                                    <constraint firstAttribute="bottom" secondItem="BTB-Res-Card-Sep" secondAttribute="bottom" constant="20" id="BTB-Card-C7"/>
                                     <constraint firstAttribute="height" constant="100" id="BTB-Card-H"/>
                                 </constraints>
                                 <userDefinedRuntimeAttributes>
@@ -463,7 +420,6 @@
                         <outlet property="doneButton" destination="BTB-Res-Done" id="BTB-Out-DoneBtn"/>
                         <outlet property="durationValueLabel" destination="BTB-Out-DurVal" id="BTB-Out-DurLabel"/>
                         <outlet property="messageLabel" destination="BTB-Res-Msg" id="BTB-Out-MsgLabel"/>
-                        <outlet property="scoreValueLabel" destination="BTB-Out-SteadVal" id="BTB-Out-SteadLabel"/>
                         <outlet property="titleLabel" destination="BTB-Res-Title" id="BTB-Out-TitleLabel"/>
                     </connections>
                 </viewController>
@@ -483,9 +439,6 @@
         </systemColor>
         <systemColor name="systemBackgroundColor">
             <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-        </systemColor>
-        <systemColor name="systemGray5Color">
-            <color red="0.89803921568627454" green="0.89803921568627454" blue="0.91764705882352937" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </systemColor>
         <systemColor name="systemTealColor">
             <color red="0.0" green="0.76470588235294112" blue="0.81568627450980391" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>

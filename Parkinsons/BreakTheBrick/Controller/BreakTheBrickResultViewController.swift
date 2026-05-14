@@ -7,11 +7,9 @@ class BreakTheBrickResultViewController: UIViewController {
 
     @IBOutlet weak var titleLabel: UILabel!
     @IBOutlet weak var messageLabel: UILabel!
-    @IBOutlet weak var scoreValueLabel: UILabel!
     @IBOutlet weak var durationValueLabel: UILabel!
     @IBOutlet weak var doneButton: UIButton!
 
-    var finalScore: Int = 0
     var duration: TimeInterval = 0
 
     override func viewDidLoad() {
@@ -39,9 +37,6 @@ class BreakTheBrickResultViewController: UIViewController {
         ]
         messageLabel.text = messages.randomElement()
         messageLabel.textColor = .secondaryLabel
-
-        scoreValueLabel.text = "\(finalScore)"
-        scoreValueLabel.textColor = .systemTeal
 
         let minutes = Int(duration) / 60
         let seconds = Int(duration) % 60
