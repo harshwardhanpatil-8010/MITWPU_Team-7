@@ -378,7 +378,7 @@ class HomeViewController: UIViewController, UICollectionViewDelegate {
             navigationController?.pushViewController(vc, animated: true)
         case 3:
             let storyboard = UIStoryboard(name: "BreakTheBrick", bundle: nil)
-            guard let vc = storyboard.instantiateViewController(withIdentifier: "BreakTheBrickLandingViewController") as? BreakTheBrickLandingViewController else { return }
+            guard let vc = storyboard.instantiateViewController(withIdentifier: "BreakTheBrickLandingViewController") as? BreakTheBrickLandingPageViewController else { return }
             navigationController?.pushViewController(vc, animated: true)
         
         default:
