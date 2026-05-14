@@ -57,7 +57,9 @@ class HomeViewController: UIViewController, UICollectionViewDelegate {
         TherapeuticGameModel(title: "Mimic the Emoji", description: "Complete your daily challenge!", iconName: "face.smiling", iconColor: .systemOrange),
         TherapeuticGameModel(title: "Match the Cards", description: "Complete your daily challenge!", iconName: "brain.fill", iconColor: .systemPurple),
 
-        TherapeuticGameModel(title: "StillSphere", description: "Complete your daily challenge!", iconName: "gyroscope", iconColor: .systemGreen)
+        TherapeuticGameModel(title: "StillSphere", description: "Complete your daily challenge!", iconName: "gyroscope", iconColor: .systemGreen),
+        
+        TherapeuticGameModel(title: "Break The Brick", description: "Complete your daily challenge!", iconName: "square.stack.3d.up.fill", iconColor: .systemTeal)
 
     ]
 
@@ -361,17 +363,22 @@ class HomeViewController: UIViewController, UICollectionViewDelegate {
 
     private func handleGamesSelection(at row: Int) {
         switch row {
-        case 2:
-            let storyboard = UIStoryboard(name: "StillSphere", bundle: nil)
-            guard let vc = storyboard.instantiateViewController(withIdentifier: "StillSphereLandingViewController") as? StillSphereLandingViewController else { return }
+        case 0:
+            let storyboard = UIStoryboard(name: "MimicTheEmoji", bundle: nil)
+            guard let vc = storyboard.instantiateViewController(withIdentifier: "EmojiLandingScreenID") as? EmojiLandingScreen else { return }
             navigationController?.pushViewController(vc, animated: true)
         case 1:
             let storyboard = UIStoryboard(name: "Match the Cards", bundle: nil)
             guard let vc = storyboard.instantiateViewController(withIdentifier: "matchTheCardsLandingPage") as? LevelSelectionViewController else { return }
             navigationController?.pushViewController(vc, animated: true)
-        case 0:
-            let storyboard = UIStoryboard(name: "MimicTheEmoji", bundle: nil)
-            guard let vc = storyboard.instantiateViewController(withIdentifier: "EmojiLandingScreenID") as? EmojiLandingScreen else { return }
+       
+        case 2:
+            let storyboard = UIStoryboard(name: "StillSphere", bundle: nil)
+            guard let vc = storyboard.instantiateViewController(withIdentifier: "StillSphereLandingViewController") as? StillSphereLandingViewController else { return }
+            navigationController?.pushViewController(vc, animated: true)
+        case 3:
+            let storyboard = UIStoryboard(name: "BreakTheBrick", bundle: nil)
+            guard let vc = storyboard.instantiateViewController(withIdentifier: "BreakTheBrickLandingViewController") as? BreakTheBrickLandingViewController else { return }
             navigationController?.pushViewController(vc, animated: true)
         
         default:
@@ -555,6 +562,13 @@ extension HomeViewController: UICollectionViewDataSource {
                 }.count
                 completionText = "\(completedCount)/\(daysInMonth) daily challenges completed"
                 isTodayCompleted = StillSphereManager.shared.isCompleted(date: today)
+            case 3:
+                let completedCount = (0..<daysInMonth).filter { offset in
+                    guard let date = calendar.date(byAdding: .day, value: offset, to: firstDayOfMonth) else { return false }
+                    return BreakTheBrickManager.shared.isCompleted(date: calendar.startOfDay(for: date))
+                }.count
+                completionText = "\(completedCount)/\(daysInMonth) daily challenges completed"
+                isTodayCompleted = BreakTheBrickManager.shared.isCompleted(date: today)
 
             default:
                 completionText = ""
