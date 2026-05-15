@@ -32,7 +32,6 @@ class CalenderCollectionViewCell: UICollectionViewCell {
         calenderDay.text = model.dayString
         calenderDate.text = model.dateString
         
-        // Fix #10 - Accessibility
         self.accessibilityLabel = "\(model.dayString) \(model.dateString)"
         self.accessibilityTraits = isFuture ? [.notEnabled] : (isSelected ? [.selected] : [])
         

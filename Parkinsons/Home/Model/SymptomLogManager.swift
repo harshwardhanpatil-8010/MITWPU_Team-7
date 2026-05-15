@@ -91,6 +91,44 @@ final class SymptomLogManager {
         }
     }
 
+    func fetchLogs(from startDate: Date, to endDate: Date) -> [SymptomLogEntry] {
+        let request: NSFetchRequest<CDSymptomLog> = CDSymptomLog.fetchRequest()
+        request.predicate = NSPredicate(
+            format: "date >= %@ AND date <= %@",
+            startOfDay(startDate) as NSDate,
+            endDate as NSDate
+        )
+        request.sortDescriptors = [NSSortDescriptor(key: "date", ascending: true)]
+
+        do {
+            let results = try context.fetch(request)
+            
+            // Group by date
+            let grouped = Dictionary(grouping: results) { cd -> Date in
+                return startOfDay(cd.date ?? Date())
+            }
+            
+            return grouped.map { (date, logs) in
+                let ratings = logs.compactMap { cd -> SymptomRating? in
+                    guard let symptom = SymptomType(rawValue: cd.symptom),
+                          let severity = SymptomSeverity(rawValue: cd.severity)
+                    else { return nil }
+
+                    return SymptomRating(
+                        name: symptom.displayName,
+                        iconName: symptom.iconName,
+                        selectedIntensity: SymptomRating.Intensity(rawValue: severity.rawValue)
+                    )
+                }
+                return SymptomLogEntry(date: date, ratings: ratings)
+            }.sorted { $0.date < $1.date }
+
+        } catch {
+            print("Fetch error:", error)
+            return []
+        }
+    }
+
     private func startOfDay(_ date: Date) -> Date {
         Calendar.current.startOfDay(for: date)
     }

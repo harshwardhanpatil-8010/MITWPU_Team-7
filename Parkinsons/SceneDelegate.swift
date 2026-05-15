@@ -41,12 +41,6 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
             window.rootViewController = tabBarVC
             
         }
-//        if hasCompletedOnboarding {
-//            let storyboard = UIStoryboard(name: "Jigsaw Puzzle", bundle: nil)
-//            let rootVC = storyboard.instantiateInitialViewController()!
-//                window.rootViewController = rootVC
-//            
-//        }
         else {
             let storyboard = UIStoryboard(name: "Login", bundle: nil)
             let featureVC = storyboard.instantiateViewController(withIdentifier: "OnboardingFeatureViewController")

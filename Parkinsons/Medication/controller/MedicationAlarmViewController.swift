@@ -6,7 +6,6 @@ import UIKit
 import CoreData
 import AVFoundation
 
-// MARK: - Notification payload model (decoded from userInfo)
 
 struct MedicationAlarmPayload {
     let doseID:        UUID
@@ -193,7 +192,6 @@ class MedicationAlarmViewController: UIViewController {
         stackView.translatesAutoresizingMaskIntoConstraints = false
         
         takenAllButton.setTitle("Taken All", for: .normal)
-        //takenAllButton.setImage(UIImage(systemName: "checkmark"), for: .normal)
         takenAllButton.configuration?.baseForegroundColor = .systemBlue
         takenAllButton.configuration?.baseBackgroundColor = .systemBlue
         takenAllButton.configuration?.cornerStyle = .capsule
@@ -201,7 +199,6 @@ class MedicationAlarmViewController: UIViewController {
         takenAllButton.addTarget(self, action: #selector(takenAllTapped), for: .touchUpInside)
         
         skipAllButton.setTitle("Skipped All", for: .normal)
-        //skipAllButton.setImage(UIImage(systemName: "xmark"), for: .normal)
         skipAllButton.configuration?.baseForegroundColor = .systemGray
         skipAllButton.configuration?.baseBackgroundColor = .systemGray
         skipAllButton.configuration?.cornerStyle = .capsule

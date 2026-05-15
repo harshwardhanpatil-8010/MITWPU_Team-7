@@ -39,7 +39,7 @@ final class PuzzleViewModel: ObservableObject {
         stopTimer()
         GamePersistenceService.clearSavedGame()
         self.difficulty = difficulty
-        self.gameDate   = Calendar.current.startOfDay(for: date)   // ← store the game's date
+        self.gameDate   = Calendar.current.startOfDay(for: date) 
         elapsedTime = 0; moveCount = 0; boardSlots = [:]; placedPositions = [:]
         showCelebration = false; showPreview = false
 

@@ -110,7 +110,6 @@ class SuccessViewController: UIViewController {
             {
              self.navigationController?.popToViewController(existingLandingVC, animated: true)
          } else {
-             // Fallback logic
              let storyboard = UIStoryboard(name: "Match the Cards", bundle: nil)
              let homeVC = storyboard.instantiateViewController(withIdentifier: "matchTheCardsLandingPage") as! LevelSelectionViewController
              self.navigationController?.setViewControllers([homeVC], animated: true)

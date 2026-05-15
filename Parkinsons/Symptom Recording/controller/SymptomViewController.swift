@@ -68,6 +68,55 @@ class SymptomViewController: UIViewController, SymptomRatingCellDelegate {
 
         navigationController?.navigationBar.standardAppearance = standardAppearance
         navigationController?.navigationBar.scrollEdgeAppearance = scrollAppearance
+        
+        setupNavigationBar()
+    }
+
+    private func setupNavigationBar() {
+        let shareButton = UIBarButtonItem(image: UIImage(systemName: "square.and.arrow.up"), style: .plain, target: self, action: #selector(shareTapped))
+        navigationItem.rightBarButtonItem = shareButton
+    }
+
+    @objc private func shareTapped() {
+        let alert = UIAlertController(title: "Export Symptom Report", message: "Choose the report period", preferredStyle: .actionSheet)
+        
+        alert.addAction(UIAlertAction(title: "Weekly Report", style: .default, handler: { _ in
+            self.generateAndShareReport(range: "Weekly")
+        }))
+        
+        alert.addAction(UIAlertAction(title: "Monthly Report", style: .default, handler: { _ in
+            self.generateAndShareReport(range: "Monthly")
+        }))
+        
+        alert.addAction(UIAlertAction(title: "Cancel", style: .cancel))
+        
+        if let popover = alert.popoverPresentationController {
+            popover.barButtonItem = navigationItem.rightBarButtonItem
+        }
+        
+        present(alert, animated: true)
+    }
+
+    private func generateAndShareReport(range: String) {
+        let loadingIndicator = UIActivityIndicatorView(style: .large)
+        loadingIndicator.center = view.center
+        view.addSubview(loadingIndicator)
+        loadingIndicator.startAnimating()
+        
+        SymptomReportGenerator.shared.generateReport(for: range, referenceDate: selectedDate) { [weak self] url in
+            DispatchQueue.main.async {
+                loadingIndicator.stopAnimating()
+                loadingIndicator.removeFromSuperview()
+                
+                guard let self = self, let url = url else { return }
+                
+                let activityVC = UIActivityViewController(activityItems: [url], applicationActivities: nil)
+                if let popover = activityVC.popoverPresentationController {
+                    popover.barButtonItem = self.navigationItem.rightBarButtonItem
+                }
+                self.present(activityVC, animated: true)
+            }
+        }
     }
 
 

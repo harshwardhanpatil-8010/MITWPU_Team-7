@@ -59,7 +59,7 @@ class HomeViewController: UIViewController, UICollectionViewDelegate {
     ]
     
     var therapeuticGamesData: [TherapeuticGameModel] = [
-        TherapeuticGameModel(title: "Mimic the Emoji", description: "Complete your daily challenge!", iconName: "face.smiling", iconColor: .systemOrange),
+        TherapeuticGameModel(title: "Mimic the Emoji", description: "Complete your daily challenge!", iconName: "face.smiling.fill", iconColor: .systemOrange),
         TherapeuticGameModel(title: "Match the Cards", description: "Complete your daily challenge!", iconName: "brain.fill", iconColor: .systemPurple),
         TherapeuticGameModel(title: "Jigsaw Puzzle", description: "Complete your daily challenge!", iconName: "puzzlepiece.extension.fill", iconColor: .systemBrown)
     ]

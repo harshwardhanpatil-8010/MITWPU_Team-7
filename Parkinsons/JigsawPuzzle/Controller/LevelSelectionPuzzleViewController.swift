@@ -31,7 +31,7 @@ class LevelSelectionPuzzleViewController: UIViewController,
             gView.isUserInteractionEnabled = false
             let gradient = CAGradientLayer()
             gradient.colors = [
-                UIColor(red: 0.545, green: 0.271, blue: 0.075, alpha: 0.35).cgColor, // SaddleBrown
+                UIColor(red: 0.545, green: 0.271, blue: 0.075, alpha: 0.35).cgColor,
                 UIColor(red: 0.545, green: 0.271, blue: 0.075, alpha: 0.0).cgColor
             ]
             gradient.startPoint = CGPoint(x: 0.5, y: 0)

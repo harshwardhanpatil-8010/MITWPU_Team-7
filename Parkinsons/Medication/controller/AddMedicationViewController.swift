@@ -221,7 +221,7 @@ class AddMedicationViewController: UIViewController,
         if !isEditMode {
             let nameValid     = !(medicationNameTextField.text ?? "").trimmingCharacters(in: .whitespaces).isEmpty
             let strengthValue = Int(strengthLabel.text ?? "") ?? 0
-            let strengthValid = strengthValue > 0           // must be > 0
+            let strengthValid = strengthValue > 0           
             let unitValid     = unitLabel.textColor == .label
             let typeValid     = typeLabel.textColor == .label
             let repeatValid   = selectedScheduleType != nil
