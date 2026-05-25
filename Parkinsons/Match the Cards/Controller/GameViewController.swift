@@ -25,6 +25,7 @@ class GameViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         setupCollectionView()
+        setupCustomBackButton()
     }
 
     override func viewDidAppear(_ animated: Bool) {
@@ -242,16 +243,32 @@ class GameViewController: UIViewController {
             preferredStyle: .alert
         )
 
-        alert.addAction(UIAlertAction(title: "Yes", style: .destructive) { _ in
+        alert.addAction(UIAlertAction(title: "Quit", style: .destructive) { _ in
             self.navigationController?.popViewController(animated: true)
         })
 
-        alert.addAction(UIAlertAction(title: "Resume", style: .cancel) { _ in
+        alert.addAction(UIAlertAction(title: "Cancel", style: .cancel) { _ in
             self.interactionsEnabled = previousState
             self.runTimer()
         })
 
         present(alert, animated: true)
+    }
+
+    private func setupCustomBackButton() {
+        if let navBar = view.subviews.first(where: { $0 is UINavigationBar }) as? UINavigationBar,
+           let navItem = navBar.topItem {
+            
+            let closeAction = UIAction { [weak self] _ in
+                self?.quitButtonTapped(self as Any)
+            }
+            
+            let closeButton = UIBarButtonItem(barButtonSystemItem: .close, target: nil, action: nil)
+            closeButton.primaryAction = closeAction
+            closeButton.tintColor = .label
+            
+            navItem.leftBarButtonItem = closeButton
+        }
     }
 
     private func checkMatch() {

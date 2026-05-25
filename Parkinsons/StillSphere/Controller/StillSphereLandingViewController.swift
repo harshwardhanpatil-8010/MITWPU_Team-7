@@ -47,6 +47,7 @@ class StillSphereLandingViewController: UIViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         navigationController?.setNavigationBarHidden(false, animated: animated)
+        navigationController?.navigationBar.tintColor = .label
         tabBarController?.tabBar.isHidden = true
         loadProgress()
         collectionView.reloadData()
@@ -71,11 +72,6 @@ class StillSphereLandingViewController: UIViewController {
     
     private func setupNavigationBar() {
         self.title = "StillSphere"
-        
-        let backImage = UIImage(systemName: "chevron.left")
-        let backButton = UIBarButtonItem(image: backImage, style: .plain, target: self, action: #selector(backTappedAction))
-        backButton.tintColor = .label
-        navigationItem.leftBarButtonItem = backButton
         
         let infoImage = UIImage(systemName: "questionmark.circle")
         let infoButton = UIBarButtonItem(image: infoImage, style: .plain, target: self, action: #selector(infoTappedAction))
@@ -141,10 +137,6 @@ class StillSphereLandingViewController: UIViewController {
         playButton.setTitle("Play", for: .normal)
     }
 
-    @objc private func backTappedAction() {
-        navigationController?.popViewController(animated: true)
-    }
-    
     @objc private func infoTappedAction() {
         let storyboard = UIStoryboard(name: "StillSphere", bundle: nil)
         if let infoVC = storyboard.instantiateViewController(withIdentifier: "StillSphereInfoViewController") as? StillSphereInfoViewController {

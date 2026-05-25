@@ -48,6 +48,7 @@ class EmojiLandingScreen: UIViewController, UICollectionViewDataSource, UICollec
         view.layer.addSublayer(gradient)
 
         configureLayout()
+        playButton.tintColor = UIColor(hex: "FF9500")
     }
 
     override func viewWillAppear(_ animated: Bool) {

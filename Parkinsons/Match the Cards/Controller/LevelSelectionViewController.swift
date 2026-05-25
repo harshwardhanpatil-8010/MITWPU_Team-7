@@ -36,7 +36,11 @@ UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
         updateCompletionCount()
         let gradient = navGradientOverlay
         gradient.frame = CGRect(x: 0, y: 0, width: view.bounds.width, height: 140)
-            view.layer.addSublayer(gradient)
+        view.layer.addSublayer(gradient)
+        
+        if let button = view.subviews.first(where: { $0 is UIButton }) as? UIButton {
+            button.tintColor = UIColor(hex: "BF5AF2")
+        }
     }
 
     override func viewWillAppear(_ animated: Bool) {

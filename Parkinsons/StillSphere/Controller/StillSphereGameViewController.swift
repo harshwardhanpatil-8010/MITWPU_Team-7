@@ -63,12 +63,16 @@ class StillSphereGameViewController: UIViewController {
     
     private func setupNavigationBar() {
         self.title = "StillSphere"
+        self.navigationItem.hidesBackButton = true
         
-        // Back Button
-        let backImage = UIImage(systemName: "chevron.left")
-        let backButton = UIBarButtonItem(image: backImage, style: .plain, target: self, action: #selector(backTappedAction))
-        backButton.tintColor = .label
-        navigationItem.leftBarButtonItem = backButton
+        // Close Button (uniform X button)
+        let closeAction = UIAction { [weak self] _ in
+            self?.backTappedAction()
+        }
+        let closeButton = UIBarButtonItem(barButtonSystemItem: .close, target: nil, action: nil)
+        closeButton.primaryAction = closeAction
+        closeButton.tintColor = .label
+        navigationItem.leftBarButtonItem = closeButton
         
         // Remove ? button during game
         navigationItem.rightBarButtonItem = nil
@@ -165,11 +169,11 @@ class StillSphereGameViewController: UIViewController {
             preferredStyle: .alert
         )
 
-        alert.addAction(UIAlertAction(title: "Yes", style: .destructive) { [weak self] _ in
+        alert.addAction(UIAlertAction(title: "Quit", style: .destructive) { [weak self] _ in
             self?.navigationController?.popViewController(animated: true)
         })
 
-        alert.addAction(UIAlertAction(title: "Resume", style: .cancel, handler: nil))
+        alert.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: nil))
 
         present(alert, animated: true)
     }

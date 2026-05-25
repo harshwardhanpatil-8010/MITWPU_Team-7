@@ -20,7 +20,7 @@ struct EmojiData {
         }),
         EmojiChallenge(emoji: "😗", name: "Pucker Lips", check: { anchor in
             let pucker = anchor.blendShapes[.mouthPucker]?.floatValue ?? 0
-            return pucker > 0.7
+            return pucker > 0.5
         }),
         EmojiChallenge(emoji: "😛", name: "Stick Out Tongue", check: { anchor in
             let tongue = anchor.blendShapes[.tongueOut]?.floatValue ?? 0
@@ -48,7 +48,7 @@ struct EmojiData {
         EmojiChallenge(emoji: "😑", name: "Squint Hard", check: { anchor in
             let squintL = anchor.blendShapes[.eyeSquintLeft]?.floatValue ?? 0
             let squintR = anchor.blendShapes[.eyeSquintRight]?.floatValue ?? 0
-            return squintL > 0.7 && squintR > 0.7
+            return squintL > 0.5 && squintR > 0.5
         }),
         EmojiChallenge(emoji: "😁", name: "Big Toothy Smile", check: { anchor in
             let stretchL = anchor.blendShapes[.mouthStretchLeft]?.floatValue ?? 0
@@ -62,7 +62,7 @@ struct EmojiData {
         }),
         EmojiChallenge(emoji: "😏", name: "Move Mouth Left", check: { anchor in
             let mouthLeft = anchor.blendShapes[.mouthLeft]?.floatValue ?? 0
-            return mouthLeft > 0.6
+            return mouthLeft > 0.5
         }),
                 EmojiChallenge(emoji: "😒", name: "Move Mouth Right", check: { anchor in
                     let mouthRight = anchor.blendShapes[.mouthRight]?.floatValue ?? 0
@@ -84,7 +84,7 @@ struct EmojiData {
                     let cheekSuck = anchor.blendShapes[.cheekPuff]?.floatValue ?? 0
                     let pressL = anchor.blendShapes[.mouthPressLeft]?.floatValue ?? 0
                     let pressR = anchor.blendShapes[.mouthPressRight]?.floatValue ?? 0
-                    return pressL > 0.6 && pressR > 0.6
+                    return pressL > 0.5 && pressR > 0.5
                 }),
                 EmojiChallenge(emoji: "😫", name: "Wide Open Jaw", check: { anchor in
                     let jawOpen = anchor.blendShapes[.jawOpen]?.floatValue ?? 0
