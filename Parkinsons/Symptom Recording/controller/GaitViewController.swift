@@ -18,15 +18,24 @@ class GaitViewController: UIViewController {
 
     enum SteadinessRange { case day, week, month, sixMonth, year }
 
-override func viewDidLoad() {
+    override func viewDidLoad() {
         super.viewDidLoad()
         GaitCardView.applyCardStyle()
-        title = "Walking Steadiness"
-        navigationItem.largeTitleDisplayMode = .never
         steadinessFreq.text  = "Loading..."
         steadinessRange.text = ""
         setupChart()
         walkingSteadinessGraph.backgroundColor = .clear
+        setupNavigationBar()
+    }
+
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        setupNavigationBar()
+    }
+
+    private func setupNavigationBar() {
+        title = "Walking Steadiness"
+        navigationItem.largeTitleDisplayMode = .never
 
         let scrollEdgeAppearance = UINavigationBarAppearance()
         scrollEdgeAppearance.configureWithTransparentBackground()
