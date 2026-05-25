@@ -11,16 +11,16 @@
         <!--Gait View Controller-->
         <scene sceneID="s0d-6b-0kx">
             <objects>
-                <viewController storyboardIdentifier="GaitVC" useStoryboardIdentifierAsRestorationIdentifier="YES" id="Y6W-OH-hqX" customClass="GaitViewController" customModule="Parkinsons" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="GaitVC" useStoryboardIdentifierAsRestorationIdentifier="YES" id="Y6W-OH-hqX" customClass="GaitViewController" customModule="ParkyCare" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="5EZ-qb-Rvc">
                         <rect key="frame" x="0.0" y="0.0" width="402" height="874"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Gmq-uI-I9u">
-                                <rect key="frame" x="0.0" y="124" width="402" height="1600"/>
+                                <rect key="frame" x="0.0" y="0.0" width="402" height="806"/>
                                 <subviews>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="7Kf-Zc-tMf">
-                                        <rect key="frame" x="0.0" y="0.0" width="402" height="1600"/>
+                                        <rect key="frame" x="0.0" y="0.0" width="402" height="678.33333333333337"/>
                                         <subviews>
                                             <segmentedControl opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="plain" selectedSegmentIndex="0" translatesAutoresizingMaskIntoConstraints="NO" id="raN-Ig-P22">
                                                 <rect key="frame" x="14" y="0.0" width="374" height="32"/>
@@ -36,13 +36,13 @@
                                                 </connections>
                                             </segmentedControl>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="About Walking Steadiness" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ZeR-3n-3BC">
-                                                <rect key="frame" x="32" y="429.66666666666663" width="370" height="28.666666666666686"/>
+                                                <rect key="frame" x="32" y="429.66666666666669" width="370" height="28.666666666666686"/>
                                                 <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="24"/>
                                                 <nil key="textColor"/>
                                                 <nil key="highlightedColor"/>
                                             </label>
                                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="sJN-Cb-KuH">
-                                                <rect key="frame" x="15" y="468.33333333333337" width="372" height="185"/>
+                                                <rect key="frame" x="15" y="468.33333333333326" width="372" height="185"/>
                                                 <subviews>
                                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" lineBreakMode="tailTruncation" numberOfLines="43" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="7Fn-35-UKb">
                                                         <rect key="frame" x="16" y="15" width="340" height="153"/>
@@ -61,7 +61,7 @@
                                                 </constraints>
                                             </view>
                                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="iQ6-jK-g0I">
-                                                <rect key="frame" x="16" y="116.66666666666663" width="370" height="289"/>
+                                                <rect key="frame" x="16" y="116.66666666666669" width="370" height="289"/>
                                                 <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                                                 <constraints>
                                                     <constraint firstAttribute="height" constant="289" id="Kz3-zg-tWT"/>
@@ -77,13 +77,13 @@
                                                         <nil key="highlightedColor"/>
                                                     </label>
                                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Range" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="p3s-gB-yKF">
-                                                        <rect key="frame" x="0.0" y="20.333333333333346" width="80" height="32.333333333333343"/>
+                                                        <rect key="frame" x="0.0" y="20.333333333333332" width="80" height="32.333333333333343"/>
                                                         <fontDescription key="fontDescription" type="boldSystem" pointSize="27"/>
                                                         <nil key="textColor"/>
                                                         <nil key="highlightedColor"/>
                                                     </label>
                                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Date" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="9nJ-r4-ZXS">
-                                                        <rect key="frame" x="0.0" y="52.666666666666657" width="32.333333333333336" height="18"/>
+                                                        <rect key="frame" x="0.0" y="52.666666666666671" width="32.333333333333336" height="18"/>
                                                         <fontDescription key="fontDescription" type="system" pointSize="15"/>
                                                         <color key="textColor" systemColor="secondaryLabelColor"/>
                                                         <nil key="highlightedColor"/>
@@ -91,7 +91,7 @@
                                                 </subviews>
                                             </stackView>
                                         </subviews>
-                                        <color key="backgroundColor" white="0" alpha="0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <constraints>
                                             <constraint firstItem="ZH6-Mh-C0B" firstAttribute="top" secondItem="raN-Ig-P22" secondAttribute="bottom" constant="10" id="3Nq-V1-3B2"/>
                                             <constraint firstItem="sJN-Cb-KuH" firstAttribute="top" secondItem="ZeR-3n-3BC" secondAttribute="bottom" constant="10" id="8Py-BZ-ecJ"/>
@@ -116,7 +116,6 @@
                                     <constraint firstAttribute="trailing" secondItem="7Kf-Zc-tMf" secondAttribute="trailing" id="7GB-y3-C1R"/>
                                     <constraint firstItem="7Kf-Zc-tMf" firstAttribute="leading" secondItem="Gmq-uI-I9u" secondAttribute="leading" id="aGg-Pc-41F"/>
                                     <constraint firstAttribute="trailing" secondItem="7Kf-Zc-tMf" secondAttribute="trailing" id="dlU-Qb-AlE"/>
-
                                     <constraint firstAttribute="bottom" secondItem="7Kf-Zc-tMf" secondAttribute="bottom" id="q8L-UA-39Z"/>
                                 </constraints>
                             </scrollView>
@@ -126,9 +125,9 @@
                         <constraints>
                             <constraint firstItem="Gmq-uI-I9u" firstAttribute="leading" secondItem="vDu-zF-Fre" secondAttribute="leading" id="DCE-2c-yAO"/>
                             <constraint firstItem="7Kf-Zc-tMf" firstAttribute="width" secondItem="5EZ-qb-Rvc" secondAttribute="width" id="Wpp-jT-Jas"/>
+                            <constraint firstItem="vDu-zF-Fre" firstAttribute="bottom" secondItem="Gmq-uI-I9u" secondAttribute="bottom" id="bTm-Qe-x1P"/>
                             <constraint firstItem="Gmq-uI-I9u" firstAttribute="trailing" secondItem="vDu-zF-Fre" secondAttribute="trailing" id="yhT-A0-ubc"/>
                             <constraint firstItem="Gmq-uI-I9u" firstAttribute="top" secondItem="5EZ-qb-Rvc" secondAttribute="top" id="zPK-ko-Fhx"/>
-                            <constraint firstItem="vDu-zF-Fre" firstAttribute="bottom" secondItem="Gmq-uI-I9u" secondAttribute="bottom" id="bTm-Qe-x1P"/>
                         </constraints>
                     </view>
                     <navigationItem key="navigationItem" id="wFG-UO-g4a"/>
@@ -149,7 +148,7 @@
         <!--Tremor View Controller-->
         <scene sceneID="P4c-s9-PsO">
             <objects>
-                <viewController storyboardIdentifier="TremorVC" useStoryboardIdentifierAsRestorationIdentifier="YES" id="YGw-1n-8Co" customClass="TremorViewController" customModule="Parkinsons" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="TremorVC" useStoryboardIdentifierAsRestorationIdentifier="YES" id="YGw-1n-8Co" customClass="TremorViewController" customModule="ParkyCare" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="1hS-Du-Pfr">
                         <rect key="frame" x="0.0" y="0.0" width="402" height="874"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -177,11 +176,8 @@
                                 <rect key="frame" x="15" y="592.33333333333337" width="372" height="104"/>
                                 <subviews>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="6" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="QNL-v3-11S">
-                                        <rect key="frame" x="15" y="15.000000000000007" width="342" height="114.66666666666669"/>
-                                        <string key="text">Tremors are involuntary, rhythmic shaking movements of a part of the body, most often the hands, arms, head, or legs.
-
-
-</string>
+                                        <rect key="frame" x="15" y="15" width="342" height="95.666666666666657"/>
+                                        <string key="text">Tremors are involuntary, rhythmic shaking movements of a part of the body, most often the hands, arms, head, or legs. The data displayed here specifically represents hand tremors.</string>
                                         <fontDescription key="fontDescription" type="system" pointSize="16"/>
                                         <nil key="textColor"/>
                                         <nil key="highlightedColor"/>
