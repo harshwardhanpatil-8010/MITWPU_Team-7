@@ -5,11 +5,58 @@ import CryptoKit
 class WorkoutManager {
     static let shared = WorkoutManager()
 
+    // Thread synchronization using NSRecursiveLock to support safe multi-threaded access 
+    // and reentrant calls during initialization/restoration.
+    private let lock = NSRecursiveLock()
+    private var hasRestored = false
+
+    /// CRASH EXPLANATION & PREVENTION:
+    /// Previously, WorkoutManager crashed on startup (EXC_BREAKPOINT / LLDB "parent is NULL") 
+    /// due to a circular dependency during static initialization:
+    /// 1. WorkoutManager.shared static initialization was triggered.
+    /// 2. `init()` called `restorePersistedSessionIfAvailable()`.
+    /// 3. If the persisted session was outdated, it called `clearPersistedSession()`.
+    /// 4. `clearPersistedSession()` called `DailyWorkoutSummaryStore.shared.saveWorkoutSummary()`.
+    /// 5. `saveWorkoutSummary()` accessed `WorkoutManager.shared` (which was still in the middle of initialization).
+    /// This resulted in a thread deadlock on the dispatch_once lock for the static property.
+    ///
+    /// To prevent this crash:
+    /// - The initializer is kept completely minimal, performing no heavy restoration or summary saving.
+    /// - We implemented lazy bootstrapping via `ensureRestored()`. Any access to the workout session properties 
+    ///   (`exercises`, `completedToday`, `skippedToday`) or operations triggering rollover will perform restoration 
+    ///   exactly once, when `WorkoutManager.shared` has already been fully constructed.
+    /// - We parameterized `clearPersistedSession(saveSummary:)` so we can bypass database sync 
+    ///   during the bootstrap/restoration phase.
     private init() {
-        restorePersistedSessionIfAvailable()
+        print("[WorkoutManager] init: Minimal initialization completed. Lazy bootstrapping will be used.")
     }
 
-    var lastCheckedMedState: MedState = .unknown
+    // Lazy bootstrap checker.
+    private func ensureRestored() {
+        lock.lock()
+        defer { lock.unlock() }
+
+        if hasRestored { return }
+        hasRestored = true
+
+        print("[WorkoutManager] restorePersistedSessionIfAvailable started")
+        restorePersistedSessionIfAvailable()
+        print("[WorkoutManager] session restore completed")
+    }
+
+    private var _lastCheckedMedState: MedState = .unknown
+    var lastCheckedMedState: MedState {
+        get {
+            lock.lock()
+            defer { lock.unlock() }
+            return _lastCheckedMedState
+        }
+        set {
+            lock.lock()
+            defer { lock.unlock() }
+            _lastCheckedMedState = newValue
+        }
+    }
 
     enum MedState: Equatable {
         case unknown
@@ -26,10 +73,67 @@ class WorkoutManager {
         )
     }
 
-    var userWantsToPushLimits: Bool = false
-    var exercises: [WorkoutExercise] = []
-    var completedToday: [UUID] = []
-    var skippedToday: [UUID] = []
+    private var _userWantsToPushLimits: Bool = false
+    var userWantsToPushLimits: Bool {
+        get {
+            lock.lock()
+            defer { lock.unlock() }
+            return _userWantsToPushLimits
+        }
+        set {
+            lock.lock()
+            defer { lock.unlock() }
+            _userWantsToPushLimits = newValue
+        }
+    }
+
+    private var _exercises: [WorkoutExercise] = []
+    var exercises: [WorkoutExercise] {
+        get {
+            lock.lock()
+            defer { lock.unlock() }
+            ensureRestored()
+            return _exercises
+        }
+        set {
+            lock.lock()
+            defer { lock.unlock() }
+            ensureRestored()
+            _exercises = newValue
+        }
+    }
+
+    private var _completedToday: [UUID] = []
+    var completedToday: [UUID] {
+        get {
+            lock.lock()
+            defer { lock.unlock() }
+            ensureRestored()
+            return _completedToday
+        }
+        set {
+            lock.lock()
+            defer { lock.unlock() }
+            ensureRestored()
+            _completedToday = newValue
+        }
+    }
+
+    private var _skippedToday: [UUID] = []
+    var skippedToday: [UUID] {
+        get {
+            lock.lock()
+            defer { lock.unlock() }
+            ensureRestored()
+            return _skippedToday
+        }
+        set {
+            lock.lock()
+            defer { lock.unlock() }
+            ensureRestored()
+            _skippedToday = newValue
+        }
+    }
 
     private let lastWorkoutCompletionDateKey = "lastWorkoutCompletionDate"
     private let lastWorkoutPositionKey       = "lastWorkoutPosition"
@@ -68,96 +172,177 @@ class WorkoutManager {
     }
 
     var diseaseStage: Int {
+        lock.lock()
+        defer { lock.unlock() }
         return UserDefaults.standard.integer(forKey: "diseaseStage")
     }
 
     private var lastWorkoutCompletionDate: Date? {
-        get { UserDefaults.standard.object(forKey: lastWorkoutCompletionDateKey) as? Date }
-        set { UserDefaults.standard.set(newValue, forKey: lastWorkoutCompletionDateKey) }
+        get {
+            lock.lock()
+            defer { lock.unlock() }
+            return UserDefaults.standard.object(forKey: lastWorkoutCompletionDateKey) as? Date
+        }
+        set {
+            lock.lock()
+            defer { lock.unlock() }
+            UserDefaults.standard.set(newValue, forKey: lastWorkoutCompletionDateKey)
+        }
     }
 
     func hasCompletedWorkoutToday() -> Bool {
+        lock.lock()
+        defer { lock.unlock() }
         guard let last = lastWorkoutCompletionDate else { return false }
         return Calendar.current.isDateInToday(last)
     }
 
     func setWorkoutCompleted() {
+        lock.lock()
+        defer { lock.unlock() }
         lastWorkoutCompletionDate = Date()
     }
 
     func syncSessionPersistence() {
+        lock.lock()
+        defer { lock.unlock() }
         persistCurrentSession()
-        DailyWorkoutSummaryStore.shared.saveWorkoutSummary()
     }
 
+    /// SAFELY HANDLING CORRUPTED OR OUTDATED PERSISTENCE:
+    /// Instead of using `try?` which fails silently or crashes, we implement:
+    /// - Explicit `do-catch` validation block.
+    /// - If JSON schema, struct format, or enum type mismatch is detected, we log a detailed error 
+    ///   and clear ONLY workout-specific keys in UserDefaults via `clearPersistedSession(saveSummary: false)`.
+    /// - Other UserDefaults keys (e.g. game rotation, layout settings, medication logs, stage) and CoreData structures
+    ///   remain untouched to prevent data loss.
     private func restorePersistedSessionIfAvailable() {
-        guard let storedDate = UserDefaults.standard.object(forKey: workoutSessionDateKey) as? Date else { return }
-
-        if !Calendar.current.isDate(storedDate, inSameDayAs: Date()) {
-            clearPersistedSession()
+        guard let storedDate = UserDefaults.standard.object(forKey: workoutSessionDateKey) as? Date else {
+            print("[WorkoutManager] restore: No persisted workout session found. Initializing fresh empty arrays.")
+            _exercises = []
+            _completedToday = []
+            _skippedToday = []
             return
         }
 
-        if let data = UserDefaults.standard.data(forKey: workoutSessionExercisesKey),
-           let decoded = try? JSONDecoder().decode([WorkoutExercise].self, from: data) {
-            exercises = decoded
+        if !Calendar.current.isDate(storedDate, inSameDayAs: Date()) {
+            print("[WorkoutManager] restore: Stored session date (\(storedDate)) is outdated. Clearing yesterday's session data.")
+            clearPersistedSession(saveSummary: false)
+            return
+        }
+
+        if let data = UserDefaults.standard.data(forKey: workoutSessionExercisesKey) {
+            do {
+                let decoded = try JSONDecoder().decode([WorkoutExercise].self, from: data)
+                _exercises = decoded
+                print("[WorkoutManager] restore: Successfully decoded \(_exercises.count) exercises.")
+            } catch {
+                print("[WorkoutManager] ERROR: Failed to decode stored exercises: \(error). Performing fallback session recovery.")
+                clearPersistedSession(saveSummary: false)
+            }
+        } else {
+            print("[WorkoutManager] restore: No exercise session data key found.")
+            _exercises = []
         }
 
         let completedStrings = UserDefaults.standard.stringArray(forKey: workoutSessionCompletedKey) ?? []
-        completedToday = completedStrings.compactMap(UUID.init(uuidString:))
+        _completedToday = completedStrings.compactMap { uuidString in
+            guard let uuid = UUID(uuidString: uuidString) else {
+                print("[WorkoutManager] restore WARNING: Invalid UUID string in completed array: \(uuidString)")
+                return nil
+            }
+            return uuid
+        }
 
         let skippedStrings = UserDefaults.standard.stringArray(forKey: workoutSessionSkippedKey) ?? []
-        skippedToday = skippedStrings.compactMap(UUID.init(uuidString:))
+        _skippedToday = skippedStrings.compactMap { uuidString in
+            guard let uuid = UUID(uuidString: uuidString) else {
+                print("[WorkoutManager] restore WARNING: Invalid UUID string in skipped array: \(uuidString)")
+                return nil
+            }
+            return uuid
+        }
     }
 
     private func persistCurrentSession() {
+        lock.lock()
+        defer { lock.unlock() }
+        ensureRestored()
+
+        print("[WorkoutManager] persistCurrentSession started")
         UserDefaults.standard.set(Calendar.current.startOfDay(for: Date()), forKey: workoutSessionDateKey)
 
-        if let data = try? JSONEncoder().encode(exercises) {
+        do {
+            let data = try JSONEncoder().encode(_exercises)
             UserDefaults.standard.set(data, forKey: workoutSessionExercisesKey)
+            print("[WorkoutManager] persistCurrentSession: Successfully encoded and saved \(_exercises.count) exercises.")
+        } catch {
+            print("[WorkoutManager] ERROR: Failed to encode current exercises: \(error)")
         }
 
-        let completed = completedToday.map(\.uuidString)
-        let skipped = skippedToday.map(\.uuidString)
+        let completed = _completedToday.map(\.uuidString)
+        let skipped = _skippedToday.map(\.uuidString)
         UserDefaults.standard.set(completed, forKey: workoutSessionCompletedKey)
         UserDefaults.standard.set(skipped, forKey: workoutSessionSkippedKey)
+        print("[WorkoutManager] persistence save completed")
         DailyWorkoutSummaryStore.shared.saveWorkoutSummary()
     }
 
-    private func clearPersistedSession() {
+    private func clearPersistedSession(saveSummary: Bool = true) {
+        lock.lock()
+        defer { lock.unlock() }
+
+        print("[WorkoutManager] clearPersistedSession triggered (saveSummary: \(saveSummary))")
         UserDefaults.standard.removeObject(forKey: workoutSessionDateKey)
         UserDefaults.standard.removeObject(forKey: workoutSessionExercisesKey)
         UserDefaults.standard.removeObject(forKey: workoutSessionCompletedKey)
         UserDefaults.standard.removeObject(forKey: workoutSessionSkippedKey)
-        exercises.removeAll()
-        completedToday.removeAll()
-        skippedToday.removeAll()
-        DailyWorkoutSummaryStore.shared.saveWorkoutSummary()
+        
+        _exercises.removeAll()
+        _completedToday.removeAll()
+        _skippedToday.removeAll()
+        
+        if saveSummary {
+            DailyWorkoutSummaryStore.shared.saveWorkoutSummary()
+        }
     }
 
     private func rollOverSessionIfNeeded() {
+        lock.lock()
+        defer { lock.unlock() }
+        ensureRestored()
+
         guard let storedDate = UserDefaults.standard.object(forKey: workoutSessionDateKey) as? Date else { return }
         if !Calendar.current.isDate(storedDate, inSameDayAs: Date()) {
-            clearPersistedSession()
+            print("[WorkoutManager] rollOverSessionIfNeeded: Stored session date is different. Clearing session.")
+            clearPersistedSession(saveSummary: true)
             lastCheckedMedState = .unknown
         }
     }
 
     func saveTodayPosition(_ position: ExercisePosition) {
+        lock.lock()
+        defer { lock.unlock() }
         UserDefaults.standard.set(position.rawValue, forKey: lastWorkoutPositionKey)
     }
 
     func loadLastWorkoutPosition() -> ExercisePosition? {
+        lock.lock()
+        defer { lock.unlock() }
         guard let raw = UserDefaults.standard.string(forKey: lastWorkoutPositionKey) else { return nil }
         return ExercisePosition(rawValue: raw)
     }
 
     func saveFeedback(_ value: Int) {
+        lock.lock()
+        defer { lock.unlock() }
         UserDefaults.standard.set(value, forKey: "lastWorkoutFeedback")
         UserDefaults.standard.set(Date(), forKey: "lastWorkoutFeedbackDate")
     }
 
     func loadLastFeedback() -> Int {
+        lock.lock()
+        defer { lock.unlock() }
         let value = UserDefaults.standard.integer(forKey: "lastWorkoutFeedback")
         return value == 0 ? 2 : value
     }
@@ -308,24 +493,37 @@ class WorkoutManager {
     }
 
     func generateDailyWorkout(for position: ExercisePosition) {
+        lock.lock()
+        defer { lock.unlock() }
+        ensureRestored()
+
         rollOverSessionIfNeeded()
         saveTodayPosition(position)
-        exercises = buildExerciseSet(position: position, applyFeedback: true, reduceIntensity: false)
+        _exercises = buildExerciseSet(position: position, applyFeedback: true, reduceIntensity: false)
         saveCurrentJSONHash()
         persistCurrentSession()
     }
+
     func generateDailyWorkoutIgnoringFeedback(for position: ExercisePosition) {
+        lock.lock()
+        defer { lock.unlock() }
+        ensureRestored()
+
         rollOverSessionIfNeeded()
         saveTodayPosition(position)
-        exercises = buildExerciseSet(position: position, applyFeedback: false, reduceIntensity: true)
+        _exercises = buildExerciseSet(position: position, applyFeedback: false, reduceIntensity: true)
         saveCurrentJSONHash()
         persistCurrentSession()
     }
 
     func generateDailyWorkoutReducedWithFeedback(for position: ExercisePosition) {
+        lock.lock()
+        defer { lock.unlock() }
+        ensureRestored()
+
         rollOverSessionIfNeeded()
         saveTodayPosition(position)
-        exercises = buildExerciseSet(position: position, applyFeedback: true, reduceIntensity: true)
+        _exercises = buildExerciseSet(position: position, applyFeedback: true, reduceIntensity: true)
         saveCurrentJSONHash()
         persistCurrentSession()
     }
@@ -387,11 +585,15 @@ class WorkoutManager {
     }
 
     func getTodayWorkout() -> [WorkoutExercise] {
+        lock.lock()
+        defer { lock.unlock() }
+        ensureRestored()
+
         rollOverSessionIfNeeded()
-        if exercises.isEmpty || bundleJSONChanged() {
+        if _exercises.isEmpty || bundleJSONChanged() {
             generateDailyWorkout(for: loadLastWorkoutPosition() ?? .seated)
         }
-        return exercises
+        return _exercises
     }
 
     private func calculateAdjustment(
@@ -476,19 +678,26 @@ class WorkoutManager {
     }
 
     func resetDailyProgress() {
-        completedToday.removeAll()
-        skippedToday.removeAll()
-        persistCurrentSession()
+        lock.lock()
+        defer { lock.unlock() }
+        ensureRestored()
 
+        _completedToday.removeAll()
+        _skippedToday.removeAll()
+        persistCurrentSession()
     }
 
     func resetAllExercises() {
+        lock.lock()
+        defer { lock.unlock() }
+        ensureRestored()
+
         resetDailyProgress()
 
         lastCheckedMedState   = .unknown
         userWantsToPushLimits = false
         UserDefaults.standard.removeObject(forKey: lastJSONHashKey)
-        clearPersistedSession()
+        clearPersistedSession(saveSummary: true)
         generateDailyWorkout(for: loadLastWorkoutPosition() ?? .seated)
     }
 }
