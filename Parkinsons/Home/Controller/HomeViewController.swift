@@ -335,11 +335,11 @@ class HomeViewController: UIViewController, UICollectionViewDelegate {
                 return section
 
             case .therapeuticGames:
-                let itemSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1), heightDimension: .fractionalHeight(1.0))
+                let itemSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: .fractionalHeight(1.0))
                 let item = NSCollectionLayoutItem(layoutSize: itemSize)
                 item.contentInsets = NSDirectionalEdgeInsets(top: 0, leading: 2, bottom: 0, trailing: 4)
                 let groupSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: .absolute(80))
-                let group = NSCollectionLayoutGroup.horizontal(layoutSize: groupSize, subitems: [item, item])
+                let group = NSCollectionLayoutGroup.horizontal(layoutSize: groupSize, subitems: [item])
                 let section = NSCollectionLayoutSection(group: group)
                 section.contentInsets = NSDirectionalEdgeInsets(top: 8, leading: 16, bottom: 24, trailing: 16)
                 section.interGroupSpacing = 10
@@ -421,7 +421,8 @@ class HomeViewController: UIViewController, UICollectionViewDelegate {
         case .exercises:
             handleExerciseSelection(at: indexPath.row)
         case .therapeuticGames:
-            handleGamesSelection(at: indexPath.row)
+            let gameIndex = GameRotationManager.shared.getGameForToday()
+            handleGamesSelection(at: gameIndex)
         default:
             collectionView.deselectItem(at: indexPath, animated: true)
         }
@@ -461,7 +462,7 @@ extension HomeViewController: UICollectionViewDataSource {
         case .calendar:         return dates.count
         case .medications:      return noMedicationsCreated ? 1 : todayDoses.count
         case .exercises:        return exerciseData.count
-        case .therapeuticGames: return therapeuticGamesData.count
+        case .therapeuticGames: return 1
         }
     }
 
@@ -532,7 +533,8 @@ extension HomeViewController: UICollectionViewDataSource {
             let completionText: String
             let isTodayCompleted: Bool
 
-            switch indexPath.item {
+            let gameIndex = GameRotationManager.shared.getGameForToday()
+            switch gameIndex {
             case 0:
                 let completedCount = (0..<daysInMonth).filter { offset in
                     guard let date = calendar.date(byAdding: .day, value: offset, to: firstDayOfMonth) else { return false }
@@ -560,7 +562,7 @@ extension HomeViewController: UICollectionViewDataSource {
                 completionText = ""
                 isTodayCompleted = false
             }
-            cell.configure(with: therapeuticGamesData[indexPath.item], completionText: completionText, isTodayCompleted: isTodayCompleted)
+            cell.configure(with: therapeuticGamesData[gameIndex], completionText: completionText, isTodayCompleted: isTodayCompleted)
             return cell
         }
     }
@@ -586,7 +588,7 @@ extension HomeViewController: UICollectionViewDataSource {
             case .exercises:
                 header.configure(title: "Guided Exercises", showInfoIcon: false)
             case .therapeuticGames:
-                header.configure(title: "Therapeutic Games", showInfoIcon: true)
+                header.configure(title: "Game for Today", showInfoIcon: true)
                 header.onInfoTap = { [weak self] in
                     self?.showGamesInfoPopup()
                 }
