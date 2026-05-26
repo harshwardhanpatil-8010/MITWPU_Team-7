@@ -878,6 +878,7 @@
                         <segue destination="nLe-cF-Rbs" kind="relationship" relationship="viewControllers" id="5u2-8H-9Wc"/>
                         <segue destination="wIr-ag-Mds" kind="relationship" relationship="viewControllers" id="quZ-Wb-rpZ"/>
                         <segue destination="bwp-oz-6zm" kind="relationship" relationship="viewControllers" id="0fH-PV-KRf"/>
+                        <segue destination="games-navigation-controller" kind="relationship" relationship="viewControllers" id="games-tab-segue"/>
                     </connections>
                 </tabBarController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="cFk-lH-maA" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
@@ -1044,8 +1045,45 @@
             </objects>
             <point key="canvasLocation" x="5696.9465648854957" y="-613.38028169014092"/>
         </scene>
+        <!--Games-->
+        <scene sceneID="games-navigation-scene">
+            <objects>
+                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="games-navigation-controller" sceneMemberID="viewController">
+                    <tabBarItem key="tabBarItem" title="Games" image="gamecontroller" catalog="system" selectedImage="gamecontroller.fill" id="games-tab-item"/>
+                    <toolbarItems/>
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" largeTitles="YES" id="games-nav-bar">
+                        <rect key="frame" x="0.0" y="118" width="393" height="106"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                    </navigationBar>
+                    <nil name="viewControllers"/>
+                    <connections>
+                        <segue destination="games-view-controller" kind="relationship" relationship="rootViewController" id="games-root-view-controller-segue"/>
+                    </connections>
+                </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="games-nav-placeholder" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="6600" y="1700"/>
+        </scene>
+        <!--Games View Controller-->
+        <scene sceneID="games-tab-scene">
+            <objects>
+                <viewController storyboardIdentifier="GamesViewController" useStoryboardIdentifierAsRestorationIdentifier="YES" id="games-view-controller" customClass="GamesViewController" customModule="ParkEase" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="games-view">
+                        <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <viewLayoutGuide key="safeArea" id="games-safe-area"/>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                    </view>
+                    <navigationItem key="navigationItem" title="Therapeutic Games" largeTitleDisplayMode="never" style="browser" id="games-nav-item"/>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="games-placeholder" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="7400" y="1700"/>
+        </scene>
     </scenes>
     <resources>
+        <image name="gamecontroller" catalog="system" width="128" height="82"/>
+        <image name="gamecontroller.fill" catalog="system" width="128" height="82"/>
         <image name="Screenshot 2025-12-12 at 3.45.03 PM" width="68" height="76"/>
         <image name="calendar" catalog="system" width="128" height="107"/>
         <image name="faceMild" width="258" height="224"/>

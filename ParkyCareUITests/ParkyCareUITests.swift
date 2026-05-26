@@ -32,6 +32,19 @@ final class ParkyCareUITests: XCTestCase {
     }
 
     @MainActor
+    func testGamesTabExistsAndCanBeTapped() throws {
+        let app = XCUIApplication()
+        app.launch()
+        
+        let gamesTab = app.tabBars.buttons["Games"]
+        XCTAssertTrue(gamesTab.waitForExistence(timeout: 5.0), "Games tab bar item should exist.")
+        gamesTab.tap()
+        
+        let navigationBar = app.navigationBars["Therapeutic Games"]
+        XCTAssertTrue(navigationBar.waitForExistence(timeout: 5.0), "The screen title should be 'Therapeutic Games'.")
+    }
+
+    @MainActor
     func testLaunchPerformance() throws {
         // This measures how long it takes to launch your application.
         measure(metrics: [XCTApplicationLaunchMetric()]) {
