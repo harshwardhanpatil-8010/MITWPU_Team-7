@@ -273,8 +273,14 @@ class _0minworkoutViewController: UIViewController {
             var localExercises = self.exercises
             var managerExercises = WorkoutManager.shared.exercises
             
-            for i in self.currentIndex..<localExercises.count {
+            let completedIDs = Set(WorkoutManager.shared.completedToday)
+            
+            for i in 0..<localExercises.count {
                 let exerciseID = localExercises[i].id
+                
+                // Skip exercises that are already completed
+                guard !completedIDs.contains(exerciseID) else { continue }
+                
                 let cat = localExercises[i].category
                 
                 if cat == .warmup || cat == .cooldown {
