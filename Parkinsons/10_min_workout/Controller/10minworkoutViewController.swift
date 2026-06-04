@@ -266,28 +266,35 @@ class _0minworkoutViewController: UIViewController {
             message: "Your feedback will help us alter the exercise set for you.",
             preferredStyle: .actionSheet
         )
-        let painAction = UIAlertAction(title: "Physical Pain / Fatigue", style: .default) { _ in
-            for i in self.currentIndex..<self.exercises.count {
-
-                let exerciseID = self.exercises[i].id
-                let cat = self.exercises[i].category
+        let painAction = UIAlertAction(title: "Physical Pain / Fatigue", style: .default) { [weak self] _ in
+            guard let self = self else { return }
+            
+            // Work on local copies, then assign back in one shot
+            var localExercises = self.exercises
+            var managerExercises = WorkoutManager.shared.exercises
+            
+            for i in self.currentIndex..<localExercises.count {
+                let exerciseID = localExercises[i].id
+                let cat = localExercises[i].category
+                
                 if cat == .warmup || cat == .cooldown {
-
-                    let currentDuration = self.exercises[i].duration ?? 40
-                    let newDuration = max(20, currentDuration - 10)
-                    self.exercises[i].duration = newDuration
-                    if let mi = WorkoutManager.shared.exercises.firstIndex(where: { $0.id == exerciseID }) {
-                        WorkoutManager.shared.exercises[mi].duration = newDuration
+                    localExercises[i].duration = 50
+                    if let mi = managerExercises.firstIndex(where: { $0.id == exerciseID }) {
+                        managerExercises[mi].duration = 50
                     }
                 } else {
-                    let currentReps = self.exercises[i].reps
+                    let currentReps = localExercises[i].reps
                     let newReps = max(4, currentReps - 2)
-                    self.exercises[i].reps = newReps
-                    if let mi = WorkoutManager.shared.exercises.firstIndex(where: { $0.id == exerciseID }) {
-                        WorkoutManager.shared.exercises[mi].reps = newReps
+                    localExercises[i].reps = newReps
+                    if let mi = managerExercises.firstIndex(where: { $0.id == exerciseID }) {
+                        managerExercises[mi].reps = newReps
                     }
                 }
             }
+            
+            // Assign modified arrays back in one shot
+            self.exercises = localExercises
+            WorkoutManager.shared.exercises = managerExercises
             WorkoutManager.shared.syncSessionPersistence()
             self.navigateToLandingPage()
         }
