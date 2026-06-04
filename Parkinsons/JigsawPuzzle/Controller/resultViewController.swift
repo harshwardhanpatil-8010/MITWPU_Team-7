@@ -1,47 +1,72 @@
+
 import UIKit
 
-class SuccessViewController: UIViewController {
+class ResultViewController: UIViewController {
 
     @IBOutlet weak var timeTakenLabel: UILabel!
-    @IBOutlet weak var finishButton: UIButton!
+    @IBOutlet weak var FinishButton: UIButton!
 
-    var timeTaken: Int!
+    var timeTaken: Int = 0
+
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        tabBarController?.tabBar.isHidden = true
+    }
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        navigationItem.hidesBackButton = true
         updateTimeLabel()
         saveCompletion()
         showConfetti()
     }
 
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
-        navigationItem.hidesBackButton = true
-        navigationItem.rightBarButtonItem = nil
-        tabBarController?.tabBar.isHidden = true
-    }
-
-    override func viewWillDisappear(_ animated: Bool) {
-        super.viewWillDisappear(animated)
-        tabBarController?.tabBar.isHidden = false
-    }
-
     private func updateTimeLabel() {
-        guard let timeTaken else { return }
+        guard let label = timeTakenLabel else { return }
 
         if timeTaken < 60 {
-            timeTakenLabel.text = "Time taken: \(timeTaken)s"
-        } else {
+            label.text = "Time taken: \(timeTaken)s"
+        } else if timeTaken < 3600 {
             let minutes = timeTaken / 60
             let seconds = timeTaken % 60
-            timeTakenLabel.text = "Time taken: \(minutes)min \(seconds)s"
+            label.text = String(format: "Time taken: %d:%02d", minutes, seconds)
+        } else {
+            let hours   = timeTaken / 3600
+            let minutes = (timeTaken % 3600) / 60
+            let seconds = timeTaken % 60
+            label.text = String(format: "Time taken: %d:%02d:%02d", hours, minutes, seconds)
         }
     }
 
     private func saveCompletion() {
         let today = Calendar.current.startOfDay(for: Date())
-        DailyGameManager.shared.saveCompletion(date: today, time: timeTaken)
+        PuzzleGameManager.shared.markCompleted(date: today)
+        PuzzleGameManager.shared.saveCompletion(date: today, time: timeTaken)
     }
+
+
+    @IBAction func finishButtonTapped(_ sender: Any) {
+        navigateBackToLevelSelection()
+    }
+
+    @IBAction func FinishButtonAction(_ sender: UIButton) {
+        navigateBackToLevelSelection()
+    }
+
+
+    private func navigateBackToLevelSelection() {
+        if let nav = navigationController {
+            if let target = nav.viewControllers.first(where: { $0 is LevelSelectionPuzzleViewController }) {
+                nav.popToViewController(target, animated: true)
+            } else {
+                nav.popToRootViewController(animated: true)
+            }
+            return
+        }
+
+        dismiss(animated: true)
+    }
+
 
     private func showConfetti() {
         let confettiLayer = CAEmitterLayer()
@@ -51,7 +76,7 @@ class SuccessViewController: UIViewController {
 
         let colors: [UIColor] = [
             .systemRed, .systemBlue, .systemGreen,
-            .systemOrange, .systemPurple, .systemYellow, .systemPink
+            .systemOrange, .systemBrown, .systemYellow, .systemPink
         ]
 
         confettiLayer.emitterCells = colors.map { color in
@@ -101,20 +126,5 @@ class SuccessViewController: UIViewController {
                 ctx.fillPath()
             }
         }
-    }
-
-    @IBAction func FinishButtonAction(_ sender: UIButton) {
-         if let existingLandingVC = self.navigationController?.viewControllers.first(where: { vc in
-
-             return vc is LevelSelectionViewController || vc is LevelSelectionPuzzleViewController})
-            {
-
-             self.navigationController?.popToViewController(existingLandingVC, animated: true)
-         } else {
-             let storyboard = UIStoryboard(name: "Match the Cards", bundle: nil)
-             let homeVC = storyboard.instantiateViewController(withIdentifier: "matchTheCardsLandingPage") as! LevelSelectionViewController
-
-             self.navigationController?.setViewControllers([homeVC], animated: true)
-         }
     }
 }

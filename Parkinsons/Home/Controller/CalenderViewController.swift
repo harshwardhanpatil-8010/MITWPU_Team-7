@@ -120,7 +120,7 @@ extension CalendarViewController: UICollectionViewDataSource, UICollectionViewDe
             return cell
         }
 
-        // Fix #3 – Compare at day granularity to avoid time-of-day / timezone issues
+
         let isFuture = calendar.compare(dayData.date, to: Date(), toGranularity: .day) == .orderedDescending
         let isToday = calendar.isDateInToday(dayData.date)
 
@@ -158,7 +158,7 @@ extension CalendarViewController: UICollectionViewDataSource, UICollectionViewDe
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         let dayData = sections[indexPath.section].days[indexPath.item]
 
-        // Fix #3 – Day-granularity future check
+
         let isFuture = calendar.compare(dayData.date, to: Date(), toGranularity: .day) == .orderedDescending
         if dayData.isDummy || isFuture { return }
 
