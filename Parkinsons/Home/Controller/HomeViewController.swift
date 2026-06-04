@@ -323,10 +323,12 @@ class HomeViewController: UIViewController, UICollectionViewDelegate {
 
             case .exercises:
                 let itemSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(0.5), heightDimension: .fractionalHeight(1.0))
-                let item = NSCollectionLayoutItem(layoutSize: itemSize)
-                item.contentInsets = NSDirectionalEdgeInsets(top: 0, leading: 2, bottom: 0, trailing: 4)
+                let leftItem = NSCollectionLayoutItem(layoutSize: itemSize)
+                leftItem.contentInsets = NSDirectionalEdgeInsets(top: 0, leading: 2, bottom: 0, trailing: 8)
+                let rightItem = NSCollectionLayoutItem(layoutSize: itemSize)
+                rightItem.contentInsets = NSDirectionalEdgeInsets(top: 0, leading: 8, bottom: 0, trailing: 2)
                 let groupSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: .absolute(189))
-                let group = NSCollectionLayoutGroup.horizontal(layoutSize: groupSize, subitems: [item, item])
+                let group = NSCollectionLayoutGroup.horizontal(layoutSize: groupSize, subitems: [leftItem, rightItem])
                 let section = NSCollectionLayoutSection(group: group)
                 section.contentInsets = NSDirectionalEdgeInsets(top: 8, leading: 16, bottom: 24, trailing: 16)
 
