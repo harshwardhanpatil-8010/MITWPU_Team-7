@@ -726,7 +726,7 @@ extension HomeViewController {
     private func showGamesInfoPopup() {
         let alert = UIAlertController(
             title: "Therapeutic Games",
-            message: "Daily games to enhance memory, focus and facial movement for people with Parkinson's disease. Mimic the Emoji boosts facial expression by copying emojis. Match the Cards improves memory and attention. Whack a Mole sharpens reaction time and hand-eye coordination. Play regularly to keep your mind active!",
+            message: "Daily games to enhance memory, focus, coordination, and facial movement for people with Parkinson's disease. Mimic the Emoji supports facial expression. Match the Cards improves memory and attention. Still Sphere trains steady movement control. Jigsaw Puzzle strengthens problem-solving and visual focus. Whack a Mole sharpens reaction time and hand-eye coordination. Break the Brick supports focus, timing, and quick motor response. Play regularly to keep your mind active!",
             preferredStyle: .alert
         )
         alert.addAction(UIAlertAction(title: "Got it", style: .default))

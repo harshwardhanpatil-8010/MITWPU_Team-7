@@ -32,8 +32,8 @@ class WhackAMoleGameViewController: UIViewController {
 
         let gameView = WhackAMoleGameView(
             viewModel: vm,
-            onGameEnd: { [weak self] score, hitBomb in
-                self?.handleGameEnd(score: score, hitBomb: hitBomb)
+            onGameEnd: { [weak self] score, hitBomb, timeElapsed in
+                self?.handleGameEnd(score: score, hitBomb: hitBomb, timeElapsed: timeElapsed)
             }
         )
 
@@ -59,7 +59,7 @@ class WhackAMoleGameViewController: UIViewController {
 
     override var supportedInterfaceOrientations: UIInterfaceOrientationMask { .all }
 
-    private func handleGameEnd(score: Int, hitBomb: Bool) {
+    private func handleGameEnd(score: Int, hitBomb: Bool, timeElapsed: Int) {
         WhackAMoleGameManager.shared.markCompleted(date: selectedDate)
         WhackAMoleGameManager.shared.saveScore(date: selectedDate, score: score)
 
@@ -67,6 +67,7 @@ class WhackAMoleGameViewController: UIViewController {
         successVC.score = score
         successVC.hitBomb = hitBomb
         successVC.selectedDate = selectedDate
+        successVC.timeElapsed = timeElapsed
         navigationController?.pushViewController(successVC, animated: true)
     }
 

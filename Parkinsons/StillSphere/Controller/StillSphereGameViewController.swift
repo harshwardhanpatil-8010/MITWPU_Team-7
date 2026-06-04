@@ -60,6 +60,8 @@ class StillSphereGameViewController: UIViewController {
         let gradient = navGradientOverlay
         gradient.frame = CGRect(x: 0, y: 0, width: view.bounds.width, height: 180)
         view.layer.insertSublayer(gradient, at: 1) // Above SKView
+        
+        progressView.isHidden = true
     }
     
     private func setupNavigationBar() {
@@ -191,6 +193,7 @@ class StillSphereScene: SKScene {
     
     private var sphere: SKShapeNode!
     private var targetArea: SKShapeNode!
+    private var progressOutline: SKShapeNode!
     
     private var filterAlpha: Double = 0.07 
     private var filteredX: Double = 0
@@ -202,18 +205,21 @@ class StillSphereScene: SKScene {
     
     private var currentLevel = 1
     private var steadinessSamples: [Double] = []
+    private var targetRadius: CGFloat = 0
 
     func setupLevel(_ level: Int) {
         currentLevel = level
         removeAllChildren()
         
-        backgroundColor = UIColor(red: 0.92, green: 0.96, blue: 1.0, alpha: 1.0)
+        backgroundColor = UIColor(red: 1.0, green: 0.97, blue: 0.82, alpha: 1.0)
         
         levelTimer = 0
         steadinessSamples = []
         
         let targetSize: CGFloat = level == 1 ? 135 : (level == 2 ? 115 : 95)
-        targetArea = SKShapeNode(circleOfRadius: targetSize / 2)
+        targetRadius = targetSize / 2
+        
+        targetArea = SKShapeNode(circleOfRadius: targetRadius)
         
         // Define safe zone margins to keep the ring fully on screen
         // Margin must be at least radius + extra for the glow and UI spacing
@@ -234,11 +240,18 @@ class StillSphereScene: SKScene {
             targetArea.position = CGPoint(x: randomX, y: randomY)
         }
         
-        targetArea.strokeColor = .white
-        targetArea.lineWidth = 5
-        targetArea.fillColor = themeColor.withAlphaComponent(0.3)
-        targetArea.glowWidth = 20
+        targetArea.strokeColor = themeColor.withAlphaComponent(0.25)
+        targetArea.lineWidth = 4
+        targetArea.fillColor = themeColor.withAlphaComponent(0.2)
+        targetArea.glowWidth = 0
         addChild(targetArea)
+        
+        progressOutline = SKShapeNode()
+        progressOutline.strokeColor = themeColor
+        progressOutline.lineWidth = 6
+        progressOutline.lineCap = .round
+        progressOutline.glowWidth = 0
+        targetArea.addChild(progressOutline)
         
         sphere = SKShapeNode(circleOfRadius: 24)
         if level == 1 {
@@ -249,9 +262,9 @@ class StillSphereScene: SKScene {
         }
         
         sphere.fillColor = .white
-        sphere.strokeColor = .systemGray4
-        sphere.lineWidth = 1.5
-        sphere.glowWidth = 10
+        sphere.strokeColor = .systemGray2
+        sphere.lineWidth = 2.0
+        sphere.glowWidth = 0
         addChild(sphere)
     }
 
@@ -281,16 +294,29 @@ class StillSphereScene: SKScene {
     
     private func checkSteadiness() {
         let dist = hypot(sphere.position.x - targetArea.position.x, sphere.position.y - targetArea.position.y)
-        let inTarget = dist < (targetArea.frame.width / 2)
+        let inTarget = dist < (targetRadius)
         
         if inTarget {
             levelTimer += 1.0/60.0
-            let sample = max(0, 1.0 - (dist / (targetArea.frame.width / 2)))
+            let sample = max(0, 1.0 - (dist / targetRadius))
             steadinessSamples.append(sample)
         }
         
-        let progress = levelTimer / levelDuration
+        let progress = min(1.0, max(0.0, levelTimer / levelDuration))
         onProgressUpdate?(progress)
+        
+        if progress > 0 {
+            let progressPath = UIBezierPath(
+                arcCenter: .zero,
+                radius: targetRadius,
+                startAngle: -.pi / 2,
+                endAngle: -.pi / 2 + 2.0 * .pi * progress,
+                clockwise: true
+            )
+            progressOutline.path = progressPath.cgPath
+        } else {
+            progressOutline.path = nil
+        }
         
         if progress >= 1.0 {
             let avg = steadinessSamples.reduce(0, +) / Double(max(1, steadinessSamples.count))
