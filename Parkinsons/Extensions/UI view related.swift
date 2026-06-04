@@ -99,20 +99,18 @@ enum AdaptiveCardLayout {
 extension UIView {
 
     func applyCardStyle() {
-        let cornerRadius: CGFloat = 30
-        let shadowColor: UIColor = .black
-        let shadowOpacity: Float = 0.09
-
-        let shadowRadius: CGFloat = 4
-        let shadowOffset: CGSize = .init(width: 0, height: 2)
-
-        self.layer.cornerRadius = cornerRadius
+        let targetCornerRadius: CGFloat = self.layer.cornerRadius > 0 ? self.layer.cornerRadius : 23
+        self.layer.cornerRadius = targetCornerRadius
         self.layer.masksToBounds = false
+        self.backgroundColor = .secondarySystemGroupedBackground
 
-        layer.shadowColor = shadowColor.cgColor
-        layer.shadowOpacity = shadowOpacity
-        layer.shadowRadius = shadowRadius
-        layer.shadowOffset = shadowOffset
+        layer.shadowColor = UIColor(red: 0.04, green: 0.06, blue: 0.15, alpha: 1.0).cgColor
+        layer.shadowOpacity = 0.05
+        layer.shadowRadius = 16
+        layer.shadowOffset = CGSize(width: 0, height: 6)
+        
+        layer.borderWidth = 1.0
+        layer.borderColor = UIColor.systemGray6.withAlphaComponent(0.85).cgColor
     }
 }
 

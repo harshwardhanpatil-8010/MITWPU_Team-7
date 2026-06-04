@@ -23,12 +23,8 @@ class gaitCard: UICollectionViewCell {
     }
 
     private func setupCardStyle() {
+        cardBackground.applyCardStyle()
         cardBackground.layer.cornerRadius = 20
-        cardBackground.layer.masksToBounds = false
-        cardBackground.layer.shadowColor   = UIColor.black.cgColor
-        cardBackground.layer.shadowOpacity = 0.09
-        cardBackground.layer.shadowRadius  = 4
-        cardBackground.layer.shadowOffset  = CGSize(width: 0, height: 2)
     }
 
     func configure(range: String) {

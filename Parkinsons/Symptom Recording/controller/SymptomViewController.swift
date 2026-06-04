@@ -32,6 +32,20 @@ class SymptomViewController: UIViewController, SymptomRatingCellDelegate {
         super.viewDidLoad()
         requestHealthKitIfNeeded()
 
+        view.backgroundColor = .systemGroupedBackground
+        collectionView.backgroundColor = .clear
+        tableView.backgroundColor = .clear
+
+        // Add premium top gradient to the Symptom screen
+        let gradientView = SubtleTopGradientView(themeColor: .systemBlue, height: 260)
+        view.addSubview(gradientView)
+        view.sendSubviewToBack(gradientView)
+        NSLayoutConstraint.activate([
+            gradientView.topAnchor.constraint(equalTo: view.topAnchor),
+            gradientView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+            gradientView.trailingAnchor.constraint(equalTo: view.trailingAnchor)
+        ])
+
         tableView.separatorStyle = .none
         registerCells()
         collectionView.dataSource = self
@@ -189,12 +203,8 @@ class SymptomViewController: UIViewController, SymptomRatingCellDelegate {
     }
 
     func setupSymptomBackgroundUI() {
+        symptomBackground.applyCardStyle()
         symptomBackground.layer.cornerRadius = 25
-        symptomBackground.layer.shadowColor = UIColor.black.cgColor
-        symptomBackground.layer.shadowOffset = CGSize(width: 0, height: 2)
-        symptomBackground.layer.shadowOpacity = 0.09
-        symptomBackground.layer.shadowRadius = 4
-        symptomBackground.layer.masksToBounds = false
     }
 
     func updateTableViewHeight() {

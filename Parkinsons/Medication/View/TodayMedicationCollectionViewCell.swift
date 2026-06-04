@@ -37,7 +37,6 @@ class TodayMedicationCollectionViewCell: UICollectionViewCell {
 
         dueStatus.isHidden = true
         medContainerView.alpha = 1.0
-        medContainerView.layer.borderWidth = 0
 
         if dose.logStatus != .none {
             medContainerView.alpha = 0.5

@@ -19,6 +19,14 @@ class LoggedMedicationCollectionViewCell: UICollectionViewCell {
 
     var onStatusTap: (() -> Void)?
 
+    override func awakeFromNib() {
+        super.awakeFromNib()
+        self.clipsToBounds = false
+        self.contentView.clipsToBounds = false
+        medContainerView.applyCardStyle()
+        medContainerView.layer.cornerRadius = 20
+    }
+
     func configure(with item: LoggedDoseItem) {
         medNameLabel.text = item.medicationName
         medUnitandformLabel.text = item.medicationForm

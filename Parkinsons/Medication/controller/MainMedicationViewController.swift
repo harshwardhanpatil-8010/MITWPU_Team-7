@@ -49,6 +49,31 @@ final class MainMedicationViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        view.backgroundColor = .systemGroupedBackground
+        medicationCollectionView.backgroundColor = .clear
+
+        // Configure scroll view transparency and force safe area inset adjustment
+        if let scrollView = view.subviews.first(where: { $0 is UIScrollView }) as? UIScrollView {
+            scrollView.backgroundColor = .clear
+            scrollView.contentInsetAdjustmentBehavior = .always
+            for subview in scrollView.subviews {
+                if !(subview is UIImageView) {
+                    subview.backgroundColor = .clear
+                }
+            }
+        }
+
+        // Add premium top gradient to the Medication screen
+        let gradientView = SubtleTopGradientView(themeColor: .systemBlue, height: 260)
+        view.addSubview(gradientView)
+        view.sendSubviewToBack(gradientView)
+        NSLayoutConstraint.activate([
+            gradientView.topAnchor.constraint(equalTo: view.topAnchor),
+            gradientView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+            gradientView.trailingAnchor.constraint(equalTo: view.trailingAnchor)
+        ])
+
         if isPresentedFromProfile {
                     setupProfilePresentationUI()
                 }

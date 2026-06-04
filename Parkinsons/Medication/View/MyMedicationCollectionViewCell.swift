@@ -17,6 +17,7 @@ class MyMedicationCollectionViewCell: UICollectionViewCell {
 
     override func awakeFromNib() {
         super.awakeFromNib()
+        medContainer.applyCardStyle()
         medContainer.layer.cornerRadius = 16
     }
 }
