@@ -27,9 +27,50 @@ class WorkoutManager {
     }
 
     var userWantsToPushLimits: Bool = false
-    var exercises: [WorkoutExercise] = []
-    var completedToday: [UUID] = []
-    var skippedToday: [UUID] = []
+    
+    private let lock = NSRecursiveLock()
+    
+    private var _exercises: [WorkoutExercise] = []
+    var exercises: [WorkoutExercise] {
+        get {
+            lock.lock()
+            defer { lock.unlock() }
+            return _exercises
+        }
+        set {
+            lock.lock()
+            _exercises = newValue
+            lock.unlock()
+        }
+    }
+    
+    private var _completedToday: [UUID] = []
+    var completedToday: [UUID] {
+        get {
+            lock.lock()
+            defer { lock.unlock() }
+            return _completedToday
+        }
+        set {
+            lock.lock()
+            _completedToday = newValue
+            lock.unlock()
+        }
+    }
+    
+    private var _skippedToday: [UUID] = []
+    var skippedToday: [UUID] {
+        get {
+            lock.lock()
+            defer { lock.unlock() }
+            return _skippedToday
+        }
+        set {
+            lock.lock()
+            _skippedToday = newValue
+            lock.unlock()
+        }
+    }
 
     private let lastWorkoutCompletionDateKey = "lastWorkoutCompletionDate"
     private let lastWorkoutPositionKey       = "lastWorkoutPosition"
@@ -403,9 +444,9 @@ class WorkoutManager {
 
         if previous == today || (previous == .seated && today == .standing) || (previous == .standing && today == .seated) {
             switch feedback {
-            case .easy:    return ( 2, -10)
+            case .easy:    return ( 2, 10)
             case .perfect: return ( 0, 0)
-            case .hard:    return (-1, 10)
+            case .hard:    return (-1, -10)
             }
         }
         return (0, 0)

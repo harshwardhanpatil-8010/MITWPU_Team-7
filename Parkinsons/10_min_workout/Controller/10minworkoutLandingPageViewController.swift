@@ -274,27 +274,28 @@ class _0minworkoutLandingPageViewController: UIViewController, UICollectionViewD
         let completedSet = Set(WorkoutManager.shared.completedToday)
         let skippedSet   = Set(WorkoutManager.shared.skippedToday)
 
-        let resumeIndex  = allExercises.firstIndex {
-            !completedSet.contains($0.id) && !skippedSet.contains($0.id)
+        let unresolvedSkipped = WorkoutManager.shared.skippedToday.filter { skippedID in
+            Set(allExercises.map(\.id)).contains(skippedID) && !completedSet.contains(skippedID)
         }
-
-        if let idx = resumeIndex {
+        
+        if let skipIdx = allExercises.firstIndex(where: { unresolvedSkipped.contains($0.id) }) {
             let countdown = ExerciseCountdownViewController()
             countdown.exercises     = allExercises
-            countdown.startingIndex = idx
+            countdown.startingIndex = skipIdx
+            countdown.isRevisitingSkipped = true
+            countdown.skippedIndicesToRevisit = allExercises.indices.filter {
+                unresolvedSkipped.contains(allExercises[$0].id)
+            }
             navigationController?.pushViewController(countdown, animated: true)
         } else {
-            let unresolvedSkipped = WorkoutManager.shared.skippedToday.filter { skippedID in
-                Set(allExercises.map(\.id)).contains(skippedID) && !completedSet.contains(skippedID)
+            let resumeIndex  = allExercises.firstIndex {
+                !completedSet.contains($0.id) && !skippedSet.contains($0.id)
             }
-            if let skipIdx = allExercises.firstIndex(where: { unresolvedSkipped.contains($0.id) }) {
+
+            if let idx = resumeIndex {
                 let countdown = ExerciseCountdownViewController()
                 countdown.exercises     = allExercises
-                countdown.startingIndex = skipIdx
-                countdown.isRevisitingSkipped = true
-                countdown.skippedIndicesToRevisit = allExercises.indices.filter {
-                    unresolvedSkipped.contains(allExercises[$0].id)
-                }
+                countdown.startingIndex = idx
                 navigationController?.pushViewController(countdown, animated: true)
             } else {
                 let sb = UIStoryboard(name: "10 minworkout", bundle: nil)
@@ -303,7 +304,6 @@ class _0minworkoutLandingPageViewController: UIViewController, UICollectionViewD
                     navigationController?.pushViewController(vc, animated: true)
                 }
             }
-
         }
     }
 

@@ -273,14 +273,18 @@ class _0minworkoutViewController: UIViewController {
                 let cat = self.exercises[i].category
                 if cat == .warmup || cat == .cooldown {
 
-                    self.exercises[i].duration = 50
+                    let currentDuration = self.exercises[i].duration ?? 40
+                    let newDuration = max(20, currentDuration - 10)
+                    self.exercises[i].duration = newDuration
                     if let mi = WorkoutManager.shared.exercises.firstIndex(where: { $0.id == exerciseID }) {
-                        WorkoutManager.shared.exercises[mi].duration = 50
+                        WorkoutManager.shared.exercises[mi].duration = newDuration
                     }
                 } else {
-                    self.exercises[i].reps = 6
+                    let currentReps = self.exercises[i].reps
+                    let newReps = max(4, currentReps - 2)
+                    self.exercises[i].reps = newReps
                     if let mi = WorkoutManager.shared.exercises.firstIndex(where: { $0.id == exerciseID }) {
-                        WorkoutManager.shared.exercises[mi].reps = 6
+                        WorkoutManager.shared.exercises[mi].reps = newReps
                     }
                 }
             }
@@ -487,7 +491,15 @@ extension _0minworkoutViewController: RestScreenDelegate {
         if isRevisitingSkipped {
             isRevisitingSkipped = false
             skippedIndicesToRevisit.removeAll()
-            showCompletion()
+            
+            if let nextMain = nextMainRunIndex(startingAt: 0) {
+                let countdown = ExerciseCountdownViewController()
+                countdown.exercises = exercises
+                countdown.startingIndex = nextMain
+                navigationController?.pushViewController(countdown, animated: true)
+            } else {
+                showCompletion()
+            }
         } else {
             checkForSkippedExercises()
         }
