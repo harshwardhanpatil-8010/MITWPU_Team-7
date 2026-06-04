@@ -24,17 +24,6 @@ class StillSphereGameViewController: UIViewController {
     private var totalSteadinessScore: Double = 0
     private var scoreCount = 0
 
-    private var navGradientOverlay: CAGradientLayer {
-        let gradient = CAGradientLayer()
-        gradient.colors = [
-            themeColor.withAlphaComponent(0.20).cgColor,
-            themeColor.withAlphaComponent(0.0).cgColor
-        ]
-        gradient.startPoint = CGPoint(x: 0.5, y: 0)
-        gradient.endPoint   = CGPoint(x: 0.5, y: 1)
-        return gradient
-    }
-
     override func viewDidLoad() {
         super.viewDidLoad()
         setupUI()
@@ -54,13 +43,10 @@ class StillSphereGameViewController: UIViewController {
     }
 
     private func setupUI() {
-        view.backgroundColor = .systemBackground
-        
-        // Add Gradient
-        let gradient = navGradientOverlay
-        gradient.frame = CGRect(x: 0, y: 0, width: view.bounds.width, height: 180)
-        view.layer.insertSublayer(gradient, at: 1) // Above SKView
-        
+        applySubtleGameTheme(
+            themeColor: .systemYellow,
+            subtleBgColor: UIColor(red: 1.0, green: 0.97, blue: 0.82, alpha: 1.0)
+        )
         progressView.isHidden = true
     }
     

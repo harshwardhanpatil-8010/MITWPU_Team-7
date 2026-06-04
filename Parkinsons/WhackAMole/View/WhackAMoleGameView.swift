@@ -188,7 +188,7 @@ struct WhackAMoleGameView: View {
     var body: some View {
         GeometryReader { geo in
             ZStack {
-                Color.white.ignoresSafeArea()
+                Color(red: 0.93, green: 0.98, blue: 0.93).ignoresSafeArea()
 
                 VStack(spacing: 0) {
                     hudBar.padding(.horizontal, 16).padding(.top, 4)

@@ -46,7 +46,11 @@ class BreakTheBrickGameViewController: UIViewController {
     }
 
     private func setupUI() {
-        view.backgroundColor = .systemBackground
+        applySubtleGameTheme(
+            themeColor: .systemTeal,
+            subtleBgColor: UIColor(red: 0.92, green: 0.98, blue: 0.98, alpha: 1.0)
+        )
+        gameContainerView?.backgroundColor = .clear
         feedbackLabel?.isHidden = true
     }
 
@@ -386,7 +390,7 @@ class BreakTheBrickGameView: UIView {
 
     override init(frame: CGRect) {
         super.init(frame: frame)
-        backgroundColor = UIColor(red: 0.94, green: 0.97, blue: 1.0, alpha: 1)
+        backgroundColor = UIColor(red: 0.92, green: 0.98, blue: 0.98, alpha: 1.0)
         
         topBoundaryLine.backgroundColor = UIColor.systemGray4
         addSubview(topBoundaryLine)

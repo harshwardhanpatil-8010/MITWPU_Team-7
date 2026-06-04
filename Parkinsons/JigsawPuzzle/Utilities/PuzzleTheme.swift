@@ -6,8 +6,8 @@ enum PuzzleTheme {
     static var background: Color {
         Color(UIColor { trait in
             trait.userInterfaceStyle == .dark
-                ? UIColor(red: 0.11, green: 0.11, blue: 0.12, alpha: 1)
-                : UIColor.white
+                ? UIColor(red: 0.15, green: 0.13, blue: 0.12, alpha: 1)
+                : UIColor(red: 0.97, green: 0.95, blue: 0.92, alpha: 1.0)
         })
     }
     static var cardBackground: Color {

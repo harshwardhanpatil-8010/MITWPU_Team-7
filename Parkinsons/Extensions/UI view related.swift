@@ -343,3 +343,66 @@ extension UIViewController {
         }
     }
 }
+
+// MARK: - Game Styling Helpers
+
+class SubtleTopGradientView: UIView {
+    private let gradientLayer = CAGradientLayer()
+    
+    init(themeColor: UIColor, height: CGFloat = 180) {
+        super.init(frame: .zero)
+        isUserInteractionEnabled = false
+        translatesAutoresizingMaskIntoConstraints = false
+        
+        gradientLayer.colors = [
+            themeColor.withAlphaComponent(0.20).cgColor,
+            themeColor.withAlphaComponent(0.0).cgColor
+        ]
+        gradientLayer.startPoint = CGPoint(x: 0.5, y: 0)
+        gradientLayer.endPoint   = CGPoint(x: 0.5, y: 1)
+        layer.addSublayer(gradientLayer)
+        
+        // Set fixed height constraint
+        heightAnchor.constraint(equalToConstant: height).isActive = true
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
+    override func layoutSubviews() {
+        super.layoutSubviews()
+        gradientLayer.frame = bounds
+    }
+}
+
+extension UIViewController {
+    func applySubtleGameTheme(themeColor: UIColor, subtleBgColor: UIColor) {
+        view.backgroundColor = subtleBgColor
+        
+        // Configure transparent navigation bar
+        let appearance = UINavigationBarAppearance()
+        appearance.configureWithTransparentBackground()
+        appearance.titleTextAttributes = [
+            .foregroundColor: UIColor.label,
+            .font: UIFont.boldSystemFont(ofSize: 18)
+        ]
+        
+        if let navBar = navigationController?.navigationBar {
+            navBar.standardAppearance = appearance
+            navBar.scrollEdgeAppearance = appearance
+        }
+        
+        // Add gradient view
+        let gradientView = SubtleTopGradientView(themeColor: themeColor)
+        view.addSubview(gradientView)
+        view.sendSubviewToBack(gradientView) // Ensure it is behind UI controls
+        
+        NSLayoutConstraint.activate([
+            gradientView.topAnchor.constraint(equalTo: view.topAnchor),
+            gradientView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+            gradientView.trailingAnchor.constraint(equalTo: view.trailingAnchor)
+        ])
+    }
+}
+

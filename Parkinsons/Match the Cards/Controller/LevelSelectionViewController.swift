@@ -13,30 +13,28 @@ UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
         c.firstWeekday = 2
         return c
     }()
-    private var navGradientOverlay: CAGradientLayer {
-        let gradient = CAGradientLayer()
-        gradient.colors = [
-            UIColor(hex: "BF5AF2").withAlphaComponent(0.30).cgColor,
-            UIColor(hex: "BF5AF2").withAlphaComponent(0.0).cgColor
-        ]
-        gradient.startPoint = CGPoint(x: 0.5, y: 0)
-        gradient.endPoint   = CGPoint(x: 0.5, y: 1)
-        return gradient
-    }
     private let today = Calendar(identifier: .gregorian).startOfDay(for: Date())
     private var firstDayOfMonth: Date!
     private var firstWeekdayOffset = 0
     private var daysInMonth = 0
     private var selectedDate: Date?
+    private var gradientAdded = false
 
     override func viewDidLoad() {
         super.viewDidLoad()
         setupCollectionView()
         setupMonth()
         updateCompletionCount()
-        let gradient = navGradientOverlay
-        gradient.frame = CGRect(x: 0, y: 0, width: view.bounds.width, height: 140)
-            view.layer.addSublayer(gradient)
+        
+        let gradientView = SubtleTopGradientView(themeColor: UIColor(hex: "BF5AF2"))
+        view.addSubview(gradientView)
+        view.sendSubviewToBack(gradientView)
+        
+        NSLayoutConstraint.activate([
+            gradientView.topAnchor.constraint(equalTo: view.topAnchor),
+            gradientView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+            gradientView.trailingAnchor.constraint(equalTo: view.trailingAnchor)
+        ])
     }
 
     override func viewWillAppear(_ animated: Bool) {
@@ -44,9 +42,6 @@ UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
         updateCompletionCount()
         collectionView.reloadData()
         tabBarController?.tabBar.isHidden = true
-        let gradient = navGradientOverlay
-        gradient.frame = CGRect(x: 0, y: 0, width: view.bounds.width, height: 140)
-            view.layer.addSublayer(gradient)
     }
 
     override func viewWillDisappear(_ animated: Bool) {

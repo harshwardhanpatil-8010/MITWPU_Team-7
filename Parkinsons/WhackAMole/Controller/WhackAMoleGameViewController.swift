@@ -8,6 +8,11 @@ class WhackAMoleGameViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
+        applySubtleGameTheme(
+            themeColor: .systemGreen,
+            subtleBgColor: UIColor(red: 0.93, green: 0.98, blue: 0.93, alpha: 1.0)
+        )
+
         // Native close button like Mimic the Emoji
         navigationItem.hidesBackButton = true
         let closeAction = UIAction { [weak self] _ in

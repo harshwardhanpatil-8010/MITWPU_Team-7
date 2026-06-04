@@ -202,8 +202,13 @@ class EmojiGameViewController: UIViewController {
     }
 
     func setupUI() {
+        applySubtleGameTheme(
+            themeColor: .systemOrange,
+            subtleBgColor: UIColor(red: 1.0, green: 0.96, blue: 0.92, alpha: 1.0)
+        )
+
         backgroundCard.layer.cornerRadius = 24
-        backgroundCard.backgroundColor = .white
+        backgroundCard.backgroundColor = UIColor(red: 1.0, green: 0.96, blue: 0.92, alpha: 1.0)
         cameraContainerView.layer.cornerRadius = 20
         cameraContainerView.clipsToBounds = true
         emojiLabel.font = UIFont.systemFont(ofSize: 150)

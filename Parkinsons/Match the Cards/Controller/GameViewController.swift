@@ -25,6 +25,24 @@ class GameViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         setupCollectionView()
+
+        applySubtleGameTheme(
+            themeColor: .systemPurple,
+            subtleBgColor: UIColor(red: 0.97, green: 0.94, blue: 1.0, alpha: 1.0)
+        )
+
+        collectionView.backgroundColor = .clear
+
+        if let navBar = view.subviews.first(where: { $0 is UINavigationBar }) as? UINavigationBar {
+            let appearance = UINavigationBarAppearance()
+            appearance.configureWithTransparentBackground()
+            navBar.standardAppearance = appearance
+            navBar.scrollEdgeAppearance = appearance
+            navBar.setBackgroundImage(UIImage(), for: .default)
+            navBar.shadowImage = UIImage()
+            navBar.isTranslucent = true
+            navBar.backgroundColor = .clear
+        }
     }
 
     override func viewDidAppear(_ animated: Bool) {

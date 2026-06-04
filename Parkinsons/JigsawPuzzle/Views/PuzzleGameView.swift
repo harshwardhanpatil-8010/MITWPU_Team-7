@@ -7,8 +7,20 @@ struct PuzzleGameView: View {
     @State private var boardAppeared = false
 
     var body: some View {
-        ZStack {
+        ZStack(alignment: .top) {
             PuzzleTheme.background.ignoresSafeArea()
+
+            // Subtle top gradient overlay (systemBrown matching theme)
+            LinearGradient(
+                gradient: Gradient(colors: [
+                    Color(red: 0.545, green: 0.271, blue: 0.075).opacity(0.18),
+                    Color(red: 0.545, green: 0.271, blue: 0.075).opacity(0)
+                ]),
+                startPoint: .top,
+                endPoint: .bottom
+            )
+            .frame(height: 180)
+            .ignoresSafeArea()
 
             VStack(spacing: PuzzleTheme.spacingS) {
                 topBar
