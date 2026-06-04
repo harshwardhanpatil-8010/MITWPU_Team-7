@@ -5,8 +5,11 @@ class WhackAMoleLandingViewController: UIViewController,
 
     private let iconImageView = UIImageView()
     private let dailyChallengeLabel = UILabel()
+    private let calendarContainerView = UIView()
     private let monthLabel = UILabel()
     private let completedLabel = UILabel()
+    private let completedStackView = UIStackView()
+    private let completedIconView = UIImageView()
     private let playButton = UIButton(type: .system)
     private var collectionView: UICollectionView!
     private let dayHeaderStack = UIStackView()
@@ -38,6 +41,11 @@ class WhackAMoleLandingViewController: UIViewController,
         addGradientOverlay()
     }
 
+    override func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
+        addGradientOverlay()
+    }
+
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         tabBarController?.tabBar.isHidden = true
@@ -56,7 +64,7 @@ class WhackAMoleLandingViewController: UIViewController,
     private func setupUI() {
         // Game icon
         let config = UIImage.SymbolConfiguration(pointSize: 100, weight: .medium)
-        iconImageView.image = UIImage(systemName: "hand.tap.fill", withConfiguration: config)
+        iconImageView.image = UIImage(systemName: "hammer.fill", withConfiguration: config)
         iconImageView.tintColor = themeColor
         iconImageView.contentMode = .scaleAspectFit
         iconImageView.translatesAutoresizingMaskIntoConstraints = false
@@ -64,35 +72,53 @@ class WhackAMoleLandingViewController: UIViewController,
 
         // "Daily Challenge" label
         dailyChallengeLabel.text = "Daily Challenge"
-        dailyChallengeLabel.font = .systemFont(ofSize: 22, weight: .bold)
+        dailyChallengeLabel.font = .systemFont(ofSize: 19, weight: .semibold)
+        dailyChallengeLabel.numberOfLines = 0
         dailyChallengeLabel.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(dailyChallengeLabel)
+
+        calendarContainerView.backgroundColor = .systemBackground
+        calendarContainerView.translatesAutoresizingMaskIntoConstraints = false
+        view.addSubview(calendarContainerView)
 
         // Month + Completed row
         monthLabel.font = .systemFont(ofSize: 17, weight: .semibold)
         monthLabel.translatesAutoresizingMaskIntoConstraints = false
-        view.addSubview(monthLabel)
+        calendarContainerView.addSubview(monthLabel)
 
-        completedLabel.font = .systemFont(ofSize: 15, weight: .medium)
-        completedLabel.textColor = .secondaryLabel
-        completedLabel.textAlignment = .right
+        completedIconView.image = UIImage(systemName: "checkmark.circle.fill")
+        completedIconView.tintColor = .white
+        completedIconView.contentMode = .scaleAspectFit
+        completedIconView.translatesAutoresizingMaskIntoConstraints = false
+
+        completedLabel.font = .systemFont(ofSize: 13, weight: .semibold)
+        completedLabel.textColor = .label
+        completedLabel.textAlignment = .natural
         completedLabel.translatesAutoresizingMaskIntoConstraints = false
-        view.addSubview(completedLabel)
+
+        completedStackView.axis = .horizontal
+        completedStackView.alignment = .center
+        completedStackView.spacing = 0
+        completedStackView.translatesAutoresizingMaskIntoConstraints = false
+        completedStackView.addArrangedSubview(completedIconView)
+        completedStackView.addArrangedSubview(completedLabel)
+        calendarContainerView.addSubview(completedStackView)
 
         // Day headers (Mon Tue Wed ...)
         dayHeaderStack.axis = .horizontal
-        dayHeaderStack.distribution = .fillEqually
+        dayHeaderStack.distribution = .equalCentering
+        dayHeaderStack.isBaselineRelativeArrangement = true
         dayHeaderStack.translatesAutoresizingMaskIntoConstraints = false
         let dayNames = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"]
         for name in dayNames {
             let lbl = UILabel()
             lbl.text = name
-            lbl.font = .systemFont(ofSize: 13, weight: .medium)
-            lbl.textColor = .secondaryLabel
+            lbl.font = .systemFont(ofSize: 17, weight: .regular)
+            lbl.textColor = .systemGray
             lbl.textAlignment = .center
             dayHeaderStack.addArrangedSubview(lbl)
         }
-        view.addSubview(dayHeaderStack)
+        calendarContainerView.addSubview(dayHeaderStack)
 
         // Collection View
         let layout = UICollectionViewFlowLayout()
@@ -105,17 +131,15 @@ class WhackAMoleLandingViewController: UIViewController,
         collectionView.dataSource = self
         collectionView.delegate = self
         collectionView.isScrollEnabled = false
-        collectionView.backgroundColor = .clear
+        collectionView.backgroundColor = .systemBackground
         collectionView.translatesAutoresizingMaskIntoConstraints = false
-        view.addSubview(collectionView)
+        calendarContainerView.addSubview(collectionView)
 
-        // Play button — BLUE like Match the Cards
         var btnConfig = UIButton.Configuration.filled()
         btnConfig.title = "Play"
         btnConfig.baseBackgroundColor = .systemBlue
         btnConfig.baseForegroundColor = .white
         btnConfig.cornerStyle = .capsule
-        btnConfig.contentInsets = NSDirectionalEdgeInsets(top: 14, leading: 60, bottom: 14, trailing: 60)
         playButton.configuration = btnConfig
         playButton.addTarget(self, action: #selector(playTapped), for: .touchUpInside)
         playButton.translatesAutoresizingMaskIntoConstraints = false
@@ -123,38 +147,47 @@ class WhackAMoleLandingViewController: UIViewController,
 
         NSLayoutConstraint.activate([
             // Icon
-            iconImageView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 20),
+            iconImageView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 32.5),
             iconImageView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-            iconImageView.heightAnchor.constraint(equalToConstant: 130),
-            iconImageView.widthAnchor.constraint(equalToConstant: 130),
+            iconImageView.heightAnchor.constraint(equalToConstant: 140),
+            iconImageView.widthAnchor.constraint(equalToConstant: 180),
 
             // Daily Challenge
-            dailyChallengeLabel.topAnchor.constraint(equalTo: iconImageView.bottomAnchor, constant: 20),
-            dailyChallengeLabel.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20),
+            dailyChallengeLabel.topAnchor.constraint(equalTo: iconImageView.bottomAnchor, constant: 32.5),
+            dailyChallengeLabel.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 16),
+            dailyChallengeLabel.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -16),
+
+            calendarContainerView.topAnchor.constraint(equalTo: dailyChallengeLabel.bottomAnchor, constant: 3),
+            calendarContainerView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor),
+            calendarContainerView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor),
+            calendarContainerView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -46),
 
             // Month label
-            monthLabel.topAnchor.constraint(equalTo: dailyChallengeLabel.bottomAnchor, constant: 4),
-            monthLabel.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20),
+            monthLabel.topAnchor.constraint(equalTo: calendarContainerView.topAnchor),
+            monthLabel.leadingAnchor.constraint(equalTo: calendarContainerView.leadingAnchor, constant: 16),
 
             // Completed label
-            completedLabel.centerYAnchor.constraint(equalTo: monthLabel.centerYAnchor),
-            completedLabel.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20),
+            completedStackView.topAnchor.constraint(equalTo: calendarContainerView.topAnchor, constant: 1),
+            completedStackView.trailingAnchor.constraint(equalTo: calendarContainerView.trailingAnchor, constant: -16),
+            completedIconView.widthAnchor.constraint(equalToConstant: 16),
+            completedIconView.heightAnchor.constraint(equalToConstant: 16),
 
             // Day headers
-            dayHeaderStack.topAnchor.constraint(equalTo: monthLabel.bottomAnchor, constant: 12),
-            dayHeaderStack.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16),
-            dayHeaderStack.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -16),
+            dayHeaderStack.topAnchor.constraint(equalTo: monthLabel.bottomAnchor, constant: 2),
+            dayHeaderStack.leadingAnchor.constraint(equalTo: calendarContainerView.leadingAnchor, constant: 16),
+            dayHeaderStack.trailingAnchor.constraint(equalTo: calendarContainerView.trailingAnchor, constant: -16),
 
             // Calendar
-            collectionView.topAnchor.constraint(equalTo: dayHeaderStack.bottomAnchor, constant: 4),
-            collectionView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16),
-            collectionView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -16),
-            collectionView.heightAnchor.constraint(equalTo: collectionView.widthAnchor, multiplier: 6.0/7.0),
+            collectionView.topAnchor.constraint(equalTo: dayHeaderStack.bottomAnchor, constant: 3.33),
+            collectionView.leadingAnchor.constraint(equalTo: calendarContainerView.leadingAnchor),
+            collectionView.trailingAnchor.constraint(equalTo: calendarContainerView.trailingAnchor),
+            calendarContainerView.bottomAnchor.constraint(equalTo: collectionView.bottomAnchor, constant: 50),
 
             // Play button
-            playButton.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -24),
+            playButton.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -16),
             playButton.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-            playButton.widthAnchor.constraint(greaterThanOrEqualToConstant: 200),
+            playButton.widthAnchor.constraint(greaterThanOrEqualToConstant: 178),
+            playButton.heightAnchor.constraint(greaterThanOrEqualToConstant: 52),
         ])
     }
 
