@@ -13,7 +13,6 @@ class resultMimicTheEmoji: UIViewController {
     var skippedCount: Int = 0
     var timeTaken: Int = 30
     var playedDate: Date?
-    private let themeColor = UIColor(hex: "FF9500")
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -23,57 +22,111 @@ class resultMimicTheEmoji: UIViewController {
             EmojiGameManager.shared.markAsCompleted(date: date)
         }
         NotificationCenter.default.post(name: .didUpdateGameCompletion, object: nil)
-        setupUI()
+        showConfetti()
+        setupResultCard()
+        displayResults()
     }
-    
     override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
         tabBarController?.tabBar.isHidden = true
     }
 
-    private func setupUI() {
-        let titleText: String
-        switch completedCount {
-        case 0...3:
-            titleText = "You can do better!"
-        case 4...7:
-            titleText = "Good Job!"
-        case 8...10:
-            titleText = "Excellent!"
-        default:
-            titleText = "Good Job!"
-        }
-
-        buildUnifiedResultScreen(
-            title: titleText,
-            symbolName: "hands.clap.fill",
-            emojiText: nil,
-            message: "You are improving your facial muscle control, emotional expression, and cognitive motor response.",
-            stats: [
-                ("Completed", "\(completedCount)"),
-                ("Skipped", "\(skippedCount)"),
-                ("Time", "\(timeTaken)s")
-            ],
-            themeColor: themeColor,
-            finishAction: #selector(finishActionTapped(_:))
-        )
-
-        showUniformConfetti()
+    func setupResultCard() {
+        resultCardBackground.layer.cornerRadius = 25
+        resultCardBackground.layer.shadowColor = UIColor.black.cgColor
+        resultCardBackground.layer.shadowOpacity = 0.09
+        resultCardBackground.layer.shadowOffset = CGSize(width: 0, height: 2)
+        resultCardBackground.layer.shadowRadius = 4
+        resultCardBackground.layer.masksToBounds = false
     }
 
-    @objc private func finishActionTapped(_ sender: Any) {
+    func displayResults() {
+        completedEmojiCount.text = "\(completedCount)"
+        skippedEmojiCount.text = "\(skippedCount)"
+        timeTakenCount.text = "\(timeTaken)"
+
+        switch completedCount {
+        case 0...3:
+            resultTitleLabel.text = "You can do better!"
+        case 4...7:
+            resultTitleLabel.text = "Good Job!"
+        case 8...10:
+            resultTitleLabel.text = "Excellent!"
+        default:
+            resultTitleLabel.text = "Good Job!"
+        }
+    }
+
+    private func showConfetti() {
+        let confettiLayer = CAEmitterLayer()
+        confettiLayer.emitterPosition = CGPoint(x: view.bounds.midX, y: -10)
+        confettiLayer.emitterShape = .line
+        confettiLayer.emitterSize = CGSize(width: view.bounds.width, height: 2)
+
+        let colors: [UIColor] = [
+            .systemRed, .systemBlue, .systemGreen,
+            .systemOrange, .systemPurple, .systemYellow, .systemPink
+        ]
+
+        confettiLayer.emitterCells = colors.map { color in
+            let cell = CAEmitterCell()
+            cell.birthRate = 6
+            cell.lifetime = 6
+            cell.velocity = 180
+            cell.velocityRange = 60
+            cell.emissionLongitude = .pi
+            cell.emissionRange = .pi / 4
+            cell.spin = 3
+            cell.spinRange = 4
+            cell.scale = 0.05
+            cell.scaleRange = 0.03
+            cell.color = color.cgColor
+            cell.contents = defaultConfettiImage().cgImage
+            return cell
+        }
+
+        view.layer.addSublayer(confettiLayer)
+
+        DispatchQueue.main.asyncAfter(deadline: .now() + 3) {
+            confettiLayer.birthRate = 0
+        }
+    }
+
+    private func defaultConfettiImage() -> UIImage {
+        let size = CGSize(width: 32, height: 20)
+        let renderer = UIGraphicsImageRenderer(size: size)
+
+        return renderer.image { context in
+            let ctx = context.cgContext
+            ctx.setFillColor(UIColor.white.cgColor)
+
+            if Bool.random() {
+                ctx.fill(CGRect(origin: .zero, size: size))
+            } else {
+                let radius = min(size.width, size.height) / 2
+                let center = CGPoint(x: size.width / 2, y: size.height / 2)
+                ctx.addArc(
+                    center: center,
+                    radius: radius,
+                    startAngle: 0,
+                    endAngle: .pi * 2,
+                    clockwise: false
+                )
+                ctx.fillPath()
+            }
+        }
+    }
+
+    @IBAction func finishButtonTapped(_ sender: UIButton) {
         if let nav = self.navigationController {
+
             if let landingVC = nav.viewControllers.first(where: { $0 is EmojiLandingScreen }) {
                 nav.popToViewController(landingVC, animated: true)
             } else {
                 nav.popViewController(animated: true)
             }
+
         } else {
             self.dismiss(animated: true, completion: nil)
         }
-    }
-
-    @IBAction func finishButtonTapped(_ sender: UIButton) {
-        finishActionTapped(sender)
     }
 }

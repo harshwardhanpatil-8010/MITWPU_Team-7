@@ -44,9 +44,9 @@ class RestScreenViewController: UIViewController {
         backgroundView.layer.cornerRadius = 35
         backgroundView.clipsToBounds = true
         backgroundView.layer.shadowColor = UIColor.black.cgColor
-        backgroundView.layer.shadowOpacity = 0.2
-        backgroundView.layer.shadowOffset = CGSize(width: 0, height: 1)
-        backgroundView.layer.shadowRadius = 3
+        backgroundView.layer.shadowOpacity = 0.09
+        backgroundView.layer.shadowOffset = CGSize(width: 0, height: 2)
+        backgroundView.layer.shadowRadius = 4
         backgroundView.layer.masksToBounds = false
         setupUI()
         setupBreathGuide()

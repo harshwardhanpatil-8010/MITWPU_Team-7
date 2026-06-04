@@ -71,9 +71,9 @@ class HomeViewController: UIViewController, UICollectionViewDelegate {
         view.backgroundColor = .white
         view.layer.cornerRadius = 34
         view.layer.shadowColor = UIColor.black.cgColor
-        view.layer.shadowOpacity = 0.1
+        view.layer.shadowOpacity = 0.09
         view.layer.shadowOffset = CGSize(width: 0, height: 2)
-        view.layer.shadowRadius = 8
+        view.layer.shadowRadius = 4
         view.translatesAutoresizingMaskIntoConstraints = false
         return view
     }()
@@ -323,10 +323,12 @@ class HomeViewController: UIViewController, UICollectionViewDelegate {
 
             case .exercises:
                 let itemSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(0.5), heightDimension: .fractionalHeight(1.0))
-                let item = NSCollectionLayoutItem(layoutSize: itemSize)
-                item.contentInsets = NSDirectionalEdgeInsets(top: 0, leading: 2, bottom: 0, trailing: 4)
+                let leftItem = NSCollectionLayoutItem(layoutSize: itemSize)
+                leftItem.contentInsets = NSDirectionalEdgeInsets(top: 0, leading: 2, bottom: 0, trailing: 8)
+                let rightItem = NSCollectionLayoutItem(layoutSize: itemSize)
+                rightItem.contentInsets = NSDirectionalEdgeInsets(top: 0, leading: 8, bottom: 0, trailing: 2)
                 let groupSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: .absolute(189))
-                let group = NSCollectionLayoutGroup.horizontal(layoutSize: groupSize, subitems: [item, item])
+                let group = NSCollectionLayoutGroup.horizontal(layoutSize: groupSize, subitems: [leftItem, rightItem])
                 let section = NSCollectionLayoutSection(group: group)
                 section.contentInsets = NSDirectionalEdgeInsets(top: 8, leading: 16, bottom: 24, trailing: 16)
 
@@ -491,8 +493,9 @@ extension HomeViewController: UICollectionViewDataSource {
             let model = dates[indexPath.row]
             let isSelected = calendar.isDate(model.date, inSameDayAs: selectedDate)
             let isToday = calendar.isDateInToday(model.date)
-            let isFuture = model.date > calendar.startOfDay(for: Date().addingTimeInterval(86400))
-            cell.configure(with: model, isSelected: isSelected, isToday: isToday, isFuture: isFuture)
+            let isFuture = calendar.compare(model.date, to: Date(), toGranularity: .day) == .orderedDescending
+            let progress = CalendarActivityProgressProvider.progress(for: model.date, calendar: calendar)
+            cell.configure(with: model, isSelected: isSelected, isToday: isToday, isFuture: isFuture, progress: progress)
             cell.isUserInteractionEnabled = !isFuture
             return cell
 
@@ -524,12 +527,13 @@ extension HomeViewController: UICollectionViewDataSource {
                 cell.setProgress(completed: completed, total: total)
             } else if indexPath.row == 1 {
                 cell.setThemeColor(UIColor(hex: "90AF81"))
-                if let lastSession = DataStore.shared.fetchSessions(for: selectedDate).first {
-                    let done = lastSession.elapsedSeconds
-                    let goal = max(lastSession.requestedDurationSeconds, 1)
-                    cell.setProgress(completed: done, total: goal)
+                let sessions = DataStore.shared.fetchSessions(for: selectedDate)
+                if !sessions.isEmpty {
+                    let done = sessions.reduce(0) { $0 + $1.elapsedSeconds }
+                    let goal = max(sessions.map(\.requestedDurationSeconds).max() ?? 1, 1)
+                    cell.setProgress(completed: min(done, goal), total: goal)
                     let percentage = Int((Double(done) / Double(goal)) * 100)
-                    cell.progressLabel.text = "\(percentage)%"
+                    cell.progressLabel.text = "\(min(percentage, 100))%"
                 } else {
                     cell.setProgress(completed: 0, total: 1)
                     cell.progressLabel.text = "0%"

@@ -124,12 +124,13 @@ extension CalendarViewController: UICollectionViewDataSource, UICollectionViewDe
         let isFuture = calendar.compare(dayData.date, to: Date(), toGranularity: .day) == .orderedDescending
         let isToday = calendar.isDateInToday(dayData.date)
 
-        let dateModel = DateModel(date: dayData.date, dayString: "", dateString: dayData.dayNumber)
+        let dateModel = DateModel(date: dayData.date, dayString: dayData.dayLetter, dateString: dayData.dayNumber)
+        let progress = CalendarActivityProgressProvider.progress(for: dayData.date, calendar: calendar)
 
-        cell.configure(with: dateModel, isSelected: dayData.isSelected, isToday: isToday)
+        cell.configure(with: dateModel, isSelected: dayData.isSelected, isToday: isToday, isFuture: isFuture, progress: progress)
 
         cell.isUserInteractionEnabled = !isFuture
-        cell.contentView.alpha = isFuture ? 0.3 : 1.0
+        cell.contentView.alpha = 1.0
 
         cell.accessibilityLabel = "\(dayData.dayNumber)"
         cell.accessibilityTraits = isFuture ? [.notEnabled] : (dayData.isSelected ? [.selected] : [])

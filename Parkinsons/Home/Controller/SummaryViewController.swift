@@ -277,9 +277,12 @@ class SummaryViewController: UIViewController {
                 section.boundarySupplementaryItems = [self.createHeaderItem(), footer]
 
             case .exercises:
-                let item = NSCollectionLayoutItem(layoutSize: .init(widthDimension: .fractionalWidth(0.5), heightDimension: .fractionalHeight(1.0)))
-                item.contentInsets = .init(top: 0, leading: 2, bottom: 0, trailing: 4)
-                let group = NSCollectionLayoutGroup.horizontal(layoutSize: .init(widthDimension: .fractionalWidth(1.0), heightDimension: .absolute(190)), subitems: [item, item])
+                let itemSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(0.5), heightDimension: .fractionalHeight(1.0))
+                let leftItem = NSCollectionLayoutItem(layoutSize: itemSize)
+                leftItem.contentInsets = .init(top: 0, leading: 2, bottom: 0, trailing: 8)
+                let rightItem = NSCollectionLayoutItem(layoutSize: itemSize)
+                rightItem.contentInsets = .init(top: 0, leading: 8, bottom: 0, trailing: 2)
+                let group = NSCollectionLayoutGroup.horizontal(layoutSize: .init(widthDimension: .fractionalWidth(1.0), heightDimension: .absolute(190)), subitems: [leftItem, rightItem])
                 section = NSCollectionLayoutSection(group: group)
                 section.boundarySupplementaryItems = [self.createHeaderItem()]
             }
@@ -419,15 +422,18 @@ extension SummaryViewController: UICollectionViewDataSource, UICollectionViewDel
                 cell.setThemeColor(UIColor(hex: "90AF81"))
 
                 let targetDate = dateToDisplay ?? Date()
-                if let lastSession = DataStore.shared.fetchSessions(for: targetDate).first {
+                let sessions = DataStore.shared.fetchSessions(for: targetDate)
+                if !sessions.isEmpty {
 
-                    let done = lastSession.elapsedSeconds
+                    let done = sessions.reduce(0) { $0 + $1.elapsedSeconds }
 
-                    let goal = max(lastSession.requestedDurationSeconds, 1)
+                    let goal = max(sessions.map(\.requestedDurationSeconds).max() ?? 1, 1)
 
-                    cell.setProgress(completed: done, total: goal)
+                    cell.setProgress(completed: min(done, goal), total: goal)
 
-                    cell.progressLabel.text = "\(Int((Double(done)/Double(goal))*100))%"
+                    let percentage = Int((Double(done) / Double(goal)) * 100)
+
+                    cell.progressLabel.text = "\(min(percentage, 100))%"
 
                 } else {
 

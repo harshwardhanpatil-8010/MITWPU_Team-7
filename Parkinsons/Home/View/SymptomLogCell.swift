@@ -38,9 +38,9 @@ class SymptomLogCell: UICollectionViewCell {
     func setupCardStyle() {
         let cornerRadius: CGFloat = 23
         let shadowColor: UIColor = .black
-        let shadowOpacity: Float = 0.15
-        let shadowRadius: CGFloat = 3
-        let shadowOffset: CGSize = .init(width: 0, height: 1)
+        let shadowOpacity: Float = 0.09
+        let shadowRadius: CGFloat = 4
+        let shadowOffset: CGSize = .init(width: 0, height: 2)
 
         backgroundCardView.layer.cornerRadius = cornerRadius
         backgroundCardView.layer.masksToBounds = false

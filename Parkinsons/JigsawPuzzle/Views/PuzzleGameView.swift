@@ -77,7 +77,7 @@ struct PuzzleGameView: View {
         .background(
             RoundedRectangle(cornerRadius: PuzzleTheme.radiusM, style: .continuous)
                 .fill(PuzzleTheme.cardBackground)
-                .shadow(color: PuzzleTheme.shadow, radius: 8, x: 0, y: -2)
+                .shadow(color: PuzzleTheme.shadow, radius: 6, x: 0, y: 2)
         )
         .clipShape(RoundedRectangle(cornerRadius: PuzzleTheme.radiusM, style: .continuous))
         .padding(.horizontal, PuzzleTheme.spacingS)
@@ -113,7 +113,7 @@ struct PuzzleGameView: View {
         .background(
             RoundedRectangle(cornerRadius: PuzzleTheme.radiusL, style: .continuous)
                 .fill(PuzzleTheme.cardBackground)
-                .shadow(color: .black.opacity(0.05), radius: 10, x: 0, y: 5)
+                .shadow(color: .black.opacity(0.06), radius: 6, x: 0, y: 2)
         )
         .padding(.horizontal, PuzzleTheme.spacingM)
     }

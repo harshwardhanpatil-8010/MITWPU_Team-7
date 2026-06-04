@@ -26,9 +26,9 @@ class tremorCard: UICollectionViewCell {
         cardBackground.layer.cornerRadius = 20
         cardBackground.layer.masksToBounds = false
         cardBackground.layer.shadowColor   = UIColor.black.cgColor
-        cardBackground.layer.shadowOpacity = 0.12
-        cardBackground.layer.shadowRadius  = 8
-        cardBackground.layer.shadowOffset  = CGSize(width: 0, height: 3)
+        cardBackground.layer.shadowOpacity = 0.09
+        cardBackground.layer.shadowRadius  = 4
+        cardBackground.layer.shadowOffset  = CGSize(width: 0, height: 2)
     }
 
     func configure(frequencyHz: Double?, isSteady: Bool = false, graphPoints: [AggregatedTremorPoint]) {

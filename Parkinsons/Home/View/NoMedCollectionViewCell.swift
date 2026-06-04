@@ -21,9 +21,9 @@ class NoMedCollectionViewCell: UICollectionViewCell {
         uiView.layer.cornerRadius = 23
         uiView.layer.masksToBounds = false
         uiView.layer.shadowColor = UIColor.black.cgColor
-        uiView.layer.shadowOpacity = 0.15
-        uiView.layer.shadowRadius = 3
-        uiView.layer.shadowOffset = CGSize(width: 0, height: 1)
+        uiView.layer.shadowOpacity = 0.09
+        uiView.layer.shadowRadius = 4
+        uiView.layer.shadowOffset = CGSize(width: 0, height: 2)
     }
 
     override func awakeFromNib() {

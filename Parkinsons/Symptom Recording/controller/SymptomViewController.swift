@@ -191,9 +191,9 @@ class SymptomViewController: UIViewController, SymptomRatingCellDelegate {
     func setupSymptomBackgroundUI() {
         symptomBackground.layer.cornerRadius = 25
         symptomBackground.layer.shadowColor = UIColor.black.cgColor
-        symptomBackground.layer.shadowOffset = CGSize(width: 0, height: 4)
-        symptomBackground.layer.shadowOpacity = 0.1
-        symptomBackground.layer.shadowRadius = 10
+        symptomBackground.layer.shadowOffset = CGSize(width: 0, height: 2)
+        symptomBackground.layer.shadowOpacity = 0.09
+        symptomBackground.layer.shadowRadius = 4
         symptomBackground.layer.masksToBounds = false
     }
 

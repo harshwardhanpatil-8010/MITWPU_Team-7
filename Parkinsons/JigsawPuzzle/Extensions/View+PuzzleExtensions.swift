@@ -48,7 +48,7 @@ extension View {
             .background(
                 Circle()
                     .fill(PuzzleTheme.cardBackground)
-                    .shadow(color: PuzzleTheme.shadow, radius: 8, x: 0, y: 2)
+                    .shadow(color: PuzzleTheme.shadow, radius: 6, x: 0, y: 2)
             )
     }
 
