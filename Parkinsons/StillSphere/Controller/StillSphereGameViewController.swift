@@ -155,7 +155,7 @@ class StillSphereGameViewController: UIViewController {
             date: sessionDate
         )
         
-        let storyboard = UIStoryboard(name: "StillSphere", bundle: nil)
+        let storyboard = UIStoryboard(name: "Still Sphere", bundle: nil)
         if let resultVC = storyboard.instantiateViewController(withIdentifier: "StillSphereResultViewController") as? StillSphereResultViewController {
             resultVC.steadinessScore = avgSteadiness
             resultVC.duration = duration

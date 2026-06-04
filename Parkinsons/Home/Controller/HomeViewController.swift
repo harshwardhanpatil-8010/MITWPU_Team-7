@@ -57,7 +57,7 @@ class HomeViewController: UIViewController, UICollectionViewDelegate {
         TherapeuticGameModel(title: "Mimic the Emoji", description: "Complete your daily challenge!", iconName: "face.smiling", iconColor: .systemOrange),
         TherapeuticGameModel(title: "Match the Cards", description: "Complete your daily challenge!", iconName: "brain.fill", iconColor: .systemPurple),
 
-        TherapeuticGameModel(title: "StillSphere", description: "Complete your daily challenge!", iconName: "gyroscope", iconColor: .systemGreen)
+        TherapeuticGameModel(title: "Still Sphere", description: "Complete your daily challenge!", iconName: "gyroscope", iconColor: .systemGreen)
 
     ]
 

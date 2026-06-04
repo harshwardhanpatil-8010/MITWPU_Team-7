@@ -14,7 +14,7 @@
         <!--Home View Controller-->
         <scene sceneID="s0d-6b-0kx">
             <objects>
-                <viewController storyboardIdentifier="HomePage" useStoryboardIdentifierAsRestorationIdentifier="YES" id="Y6W-OH-hqX" customClass="HomeViewController" customModule="ParkEase" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="HomePage" useStoryboardIdentifierAsRestorationIdentifier="YES" id="Y6W-OH-hqX" customClass="HomeViewController" customModule="ParkyCare" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="5EZ-qb-Rvc">
                         <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -49,7 +49,7 @@
                                     <inset key="sectionInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
                                 </collectionViewFlowLayout>
                                 <cells>
-                                    <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" id="dti-YL-ung" customClass="CalenderCollectionViewCell" customModule="ParkEase" customModuleProvider="target">
+                                    <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" id="dti-YL-ung" customClass="CalenderCollectionViewCell" customModule="ParkyCare" customModuleProvider="target">
                                         <rect key="frame" x="0.0" y="0.0" width="393" height="114"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <collectionViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" id="q8M-06-sOL">
@@ -101,7 +101,7 @@
         <!--Profile-->
         <scene sceneID="TTy-7d-Wv7">
             <objects>
-                <viewController storyboardIdentifier="profileViewController" title="Profile" id="E2u-Yx-rAh" customClass="profileViewController" customModule="ParkEase" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="profileViewController" title="Profile" id="E2u-Yx-rAh" customClass="profileViewController" customModule="ParkyCare" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="y1m-XG-2eK">
                         <rect key="frame" x="0.0" y="0.0" width="393" height="793"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -418,7 +418,7 @@
         <!--Summary View Controller-->
         <scene sceneID="JX6-DI-2Z2">
             <objects>
-                <viewController storyboardIdentifier="SummaryViewController" useStoryboardIdentifierAsRestorationIdentifier="YES" id="nNj-Yq-I9R" customClass="SummaryViewController" customModule="ParkEase" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="SummaryViewController" useStoryboardIdentifierAsRestorationIdentifier="YES" id="nNj-Yq-I9R" customClass="SummaryViewController" customModule="ParkyCare" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" ambiguous="YES" id="Lrf-5j-RG8">
                         <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -547,7 +547,7 @@
         <!--Symptom Log Detail View Controller-->
         <scene sceneID="mFU-7C-uHf">
             <objects>
-                <viewController storyboardIdentifier="SymptomLogDetailViewController" useStoryboardIdentifierAsRestorationIdentifier="YES" id="P6n-zy-mFU" customClass="SymptomLogDetailViewController" customModule="ParkEase" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="SymptomLogDetailViewController" useStoryboardIdentifierAsRestorationIdentifier="YES" id="P6n-zy-mFU" customClass="SymptomLogDetailViewController" customModule="ParkyCare" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="lWh-u5-ctl">
                         <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -608,7 +608,7 @@
         <!--Symptom Log History View Controller-->
         <scene sceneID="o37-3S-GnY">
             <objects>
-                <viewController storyboardIdentifier="SymptomLogHistoryViewController" useStoryboardIdentifierAsRestorationIdentifier="YES" id="7YL-b0-LPe" customClass="SymptomLogHistoryViewController" customModule="ParkEase" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="SymptomLogHistoryViewController" useStoryboardIdentifierAsRestorationIdentifier="YES" id="7YL-b0-LPe" customClass="SymptomLogHistoryViewController" customModule="ParkyCare" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="GyM-51-CCQ">
                         <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -898,7 +898,7 @@
         <!--Calendar View Controller-->
         <scene sceneID="DOP-pw-nKm">
             <objects>
-                <viewController storyboardIdentifier="CalendarViewController" useStoryboardIdentifierAsRestorationIdentifier="YES" id="YxW-ZH-lhD" customClass="CalendarViewController" customModule="ParkEase" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="CalendarViewController" useStoryboardIdentifierAsRestorationIdentifier="YES" id="YxW-ZH-lhD" customClass="CalendarViewController" customModule="ParkyCare" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="h36-Sr-ApG">
                         <rect key="frame" x="0.0" y="0.0" width="393" height="793"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -999,7 +999,7 @@
         <!--Rhythmic Walking Summary View Controller-->
         <scene sceneID="611-QI-srz">
             <objects>
-                <viewController storyboardIdentifier="RhythmicWalkingSummaryViewController" useStoryboardIdentifierAsRestorationIdentifier="YES" id="pfy-PR-ZqD" customClass="RhythmicWalkingSummaryViewController" customModule="ParkEase" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="RhythmicWalkingSummaryViewController" useStoryboardIdentifierAsRestorationIdentifier="YES" id="pfy-PR-ZqD" customClass="RhythmicWalkingSummaryViewController" customModule="ParkyCare" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="MEU-0B-3rj">
                         <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -1051,8 +1051,8 @@
                 <navigationController automaticallyAdjustsScrollViewInsets="NO" id="games-navigation-controller" sceneMemberID="viewController">
                     <tabBarItem key="tabBarItem" title="Games" image="gamecontroller" catalog="system" selectedImage="gamecontroller.fill" id="games-tab-item"/>
                     <toolbarItems/>
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" largeTitles="YES" id="games-nav-bar">
-                        <rect key="frame" x="0.0" y="118" width="393" height="106"/>
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="games-nav-bar">
+                        <rect key="frame" x="0.0" y="118" width="393" height="54"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
                     <nil name="viewControllers"/>
@@ -1064,17 +1064,17 @@
             </objects>
             <point key="canvasLocation" x="6600" y="1700"/>
         </scene>
-        <!--Games View Controller-->
+        <!--Therapeutic Games-->
         <scene sceneID="games-tab-scene">
             <objects>
-                <viewController storyboardIdentifier="GamesViewController" useStoryboardIdentifierAsRestorationIdentifier="YES" id="games-view-controller" customClass="GamesViewController" customModule="ParkEase" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="GamesViewController" useStoryboardIdentifierAsRestorationIdentifier="YES" id="games-view-controller" customClass="GamesViewController" customModule="ParkyCare" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="games-view">
                         <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <viewLayoutGuide key="safeArea" id="games-safe-area"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                     </view>
-                    <navigationItem key="navigationItem" title="Therapeutic Games" largeTitleDisplayMode="never" style="browser" id="games-nav-item"/>
+                    <navigationItem key="navigationItem" title="Therapeutic Games" largeTitleDisplayMode="never" id="games-nav-item"/>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="games-placeholder" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
@@ -1082,11 +1082,11 @@
         </scene>
     </scenes>
     <resources>
-        <image name="gamecontroller" catalog="system" width="128" height="82"/>
-        <image name="gamecontroller.fill" catalog="system" width="128" height="82"/>
         <image name="Screenshot 2025-12-12 at 3.45.03 PM" width="68" height="76"/>
         <image name="calendar" catalog="system" width="128" height="107"/>
         <image name="faceMild" width="258" height="224"/>
+        <image name="gamecontroller" catalog="system" width="128" height="79"/>
+        <image name="gamecontroller.fill" catalog="system" width="128" height="79"/>
         <image name="list.bullet.clipboard" catalog="system" width="98" height="128"/>
         <image name="list.bullet.clipboard.fill" catalog="system" width="98" height="128"/>
         <image name="menu" width="1072" height="210"/>
