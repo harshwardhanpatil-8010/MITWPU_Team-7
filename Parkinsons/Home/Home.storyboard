@@ -14,7 +14,7 @@
         <!--Home View Controller-->
         <scene sceneID="s0d-6b-0kx">
             <objects>
-                <viewController storyboardIdentifier="HomePage" useStoryboardIdentifierAsRestorationIdentifier="YES" id="Y6W-OH-hqX" customClass="HomeViewController" customModule="ParkEase" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="HomePage" useStoryboardIdentifierAsRestorationIdentifier="YES" id="Y6W-OH-hqX" customClass="HomeViewController" customModule="ParkyCare" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="5EZ-qb-Rvc">
                         <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -49,7 +49,7 @@
                                     <inset key="sectionInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
                                 </collectionViewFlowLayout>
                                 <cells>
-                                    <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" id="dti-YL-ung" customClass="CalenderCollectionViewCell" customModule="ParkEase" customModuleProvider="target">
+                                    <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" id="dti-YL-ung" customClass="CalenderCollectionViewCell" customModule="ParkyCare" customModuleProvider="target">
                                         <rect key="frame" x="0.0" y="0.0" width="393" height="114"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <collectionViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" id="q8M-06-sOL">
@@ -101,7 +101,7 @@
         <!--Profile-->
         <scene sceneID="TTy-7d-Wv7">
             <objects>
-                <viewController storyboardIdentifier="profileViewController" title="Profile" id="E2u-Yx-rAh" customClass="profileViewController" customModule="ParkEase" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="profileViewController" title="Profile" id="E2u-Yx-rAh" customClass="profileViewController" customModule="ParkyCare" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="y1m-XG-2eK">
                         <rect key="frame" x="0.0" y="0.0" width="393" height="793"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -146,16 +146,16 @@
                                         </constraints>
                                     </view>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="VVs-SS-Yja">
-                                        <rect key="frame" x="8" y="306.66666666666669" width="377" height="247.00000000000006"/>
+                                        <rect key="frame" x="16" y="306.66666666666669" width="361" height="247.00000000000006"/>
                                         <subviews>
                                             <stackView opaque="NO" contentMode="scaleAspectFit" axis="vertical" alignment="center" spacing="2" translatesAutoresizingMaskIntoConstraints="NO" id="LWa-Ap-rd7">
-                                                <rect key="frame" x="4" y="12" width="369" height="223"/>
+                                                <rect key="frame" x="4" y="12" width="353" height="223"/>
                                                 <subviews>
                                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="blH-kP-fSd">
-                                                        <rect key="frame" x="6" y="0.0" width="357" height="52"/>
+                                                        <rect key="frame" x="6" y="0.0" width="341" height="52"/>
                                                         <subviews>
                                                             <stackView opaque="NO" contentMode="scaleToFill" semanticContentAttribute="forceLeftToRight" distribution="fillProportionally" spacing="14" translatesAutoresizingMaskIntoConstraints="NO" id="Ugb-tD-oes">
-                                                                <rect key="frame" x="16" y="0.0" width="325" height="52"/>
+                                                                <rect key="frame" x="16" y="0.0" width="309" height="52"/>
                                                                 <subviews>
                                                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Name" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="lwg-cG-ZcQ">
                                                                         <rect key="frame" x="0.0" y="0.0" width="111" height="52"/>
@@ -194,18 +194,18 @@
                                                         </constraints>
                                                     </view>
                                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="DmJ-uW-Zbt">
-                                                        <rect key="frame" x="20" y="54" width="329" height="1"/>
+                                                        <rect key="frame" x="20" y="54" width="313" height="1"/>
                                                         <color key="backgroundColor" systemColor="separatorColor"/>
                                                         <constraints>
                                                             <constraint firstAttribute="height" constant="1" id="Ees-aw-VTh"/>
-                                                            <constraint firstAttribute="width" constant="329" id="t33-xg-5PN"/>
+                                                            <constraint firstAttribute="width" constant="313" id="t33-xg-5PN"/>
                                                         </constraints>
                                                     </view>
                                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="01c-0T-cfv">
-                                                        <rect key="frame" x="4" y="57" width="361" height="52"/>
+                                                        <rect key="frame" x="4" y="57" width="345" height="52"/>
                                                         <subviews>
                                                             <stackView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="hqS-KS-Yyb">
-                                                                <rect key="frame" x="16" y="0.0" width="329" height="52"/>
+                                                                <rect key="frame" x="16" y="0.0" width="313" height="52"/>
                                                                 <subviews>
                                                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Date of Birth" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="bTh-Su-84j">
                                                                         <rect key="frame" x="0.0" y="0.0" width="96" height="52"/>
@@ -238,18 +238,18 @@
                                                         </constraints>
                                                     </view>
                                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="6Qg-jk-3rf">
-                                                        <rect key="frame" x="20" y="111" width="329" height="1"/>
+                                                        <rect key="frame" x="20" y="111" width="313" height="1"/>
                                                         <color key="backgroundColor" systemColor="separatorColor"/>
                                                         <constraints>
-                                                            <constraint firstAttribute="width" constant="329" id="PSn-xR-RKo"/>
+                                                            <constraint firstAttribute="width" constant="313" id="PSn-xR-RKo"/>
                                                             <constraint firstAttribute="height" constant="1" id="pJ0-U2-rrv"/>
                                                         </constraints>
                                                     </view>
                                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="9EA-uw-xlc">
-                                                        <rect key="frame" x="4" y="114" width="361" height="52"/>
+                                                        <rect key="frame" x="4" y="114" width="345" height="52"/>
                                                         <subviews>
                                                             <stackView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="GJH-4A-0oD">
-                                                                <rect key="frame" x="16" y="0.0" width="329" height="52"/>
+                                                                <rect key="frame" x="16" y="0.0" width="313" height="52"/>
                                                                 <subviews>
                                                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Sex" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="7P3-0P-yh8">
                                                                         <rect key="frame" x="0.0" y="0.0" width="239" height="52"/>
@@ -293,17 +293,17 @@
                                                         </constraints>
                                                     </view>
                                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="6fu-EL-hf7">
-                                                        <rect key="frame" x="16" y="168" width="337" height="1"/>
+                                                        <rect key="frame" x="16" y="168" width="321" height="1"/>
                                                         <color key="backgroundColor" systemColor="separatorColor"/>
                                                         <constraints>
                                                             <constraint firstAttribute="height" constant="1" id="Elm-vc-qZe"/>
                                                         </constraints>
                                                     </view>
                                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="bv8-6l-Vtn">
-                                                        <rect key="frame" x="1.6666666666666572" y="171" width="365.66666666666674" height="52"/>
+                                                        <rect key="frame" x="1.6666666666666572" y="171" width="349.66666666666674" height="52"/>
                                                         <subviews>
                                                             <stackView opaque="NO" contentMode="scaleToFill" semanticContentAttribute="forceLeftToRight" distribution="fillProportionally" spacing="14" translatesAutoresizingMaskIntoConstraints="NO" id="AAK-7O-K0O">
-                                                                <rect key="frame" x="16" y="0.0" width="333.66666666666669" height="52"/>
+                                                                <rect key="frame" x="16" y="0.0" width="317.66666666666669" height="52"/>
                                                                 <subviews>
                                                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Stage" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ojh-A0-o4j">
                                                                         <rect key="frame" x="0.0" y="0.0" width="111" height="52"/>
@@ -373,11 +373,11 @@
                                 <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                                 <constraints>
                                     <constraint firstItem="YCm-Cl-pvf" firstAttribute="top" secondItem="zue-hZ-5cI" secondAttribute="bottom" constant="25" id="4OJ-Zr-nSO"/>
-                                    <constraint firstItem="VVs-SS-Yja" firstAttribute="leading" secondItem="lse-ik-cY0" secondAttribute="leading" constant="8" id="IfR-00-xOI"/>
+                                    <constraint firstItem="VVs-SS-Yja" firstAttribute="leading" secondItem="lse-ik-cY0" secondAttribute="leading" constant="16" id="IfR-00-xOI"/>
                                     <constraint firstItem="w6B-Tp-hJo" firstAttribute="top" secondItem="YCm-Cl-pvf" secondAttribute="bottom" constant="50" id="Lkd-aN-h3Z"/>
                                     <constraint firstAttribute="trailing" secondItem="w6B-Tp-hJo" secondAttribute="trailing" constant="16" id="brH-1r-JJy"/>
                                     <constraint firstAttribute="trailing" secondItem="zue-hZ-5cI" secondAttribute="trailing" id="dh7-vo-OgZ"/>
-                                    <constraint firstAttribute="trailing" secondItem="VVs-SS-Yja" secondAttribute="trailing" constant="8" id="ggY-oD-Gdi"/>
+                                    <constraint firstAttribute="trailing" secondItem="VVs-SS-Yja" secondAttribute="trailing" constant="16" id="ggY-oD-Gdi"/>
                                     <constraint firstItem="YCm-Cl-pvf" firstAttribute="leading" secondItem="lse-ik-cY0" secondAttribute="leading" constant="136" id="gjN-1o-oFC"/>
                                     <constraint firstItem="VVs-SS-Yja" firstAttribute="top" secondItem="w6B-Tp-hJo" secondAttribute="bottom" constant="8" id="n2O-Lb-uWF"/>
                                     <constraint firstItem="zue-hZ-5cI" firstAttribute="leading" secondItem="lse-ik-cY0" secondAttribute="leading" id="pbh-qK-aXF"/>
@@ -418,7 +418,7 @@
         <!--Summary View Controller-->
         <scene sceneID="JX6-DI-2Z2">
             <objects>
-                <viewController storyboardIdentifier="SummaryViewController" useStoryboardIdentifierAsRestorationIdentifier="YES" id="nNj-Yq-I9R" customClass="SummaryViewController" customModule="ParkEase" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="SummaryViewController" useStoryboardIdentifierAsRestorationIdentifier="YES" id="nNj-Yq-I9R" customClass="SummaryViewController" customModule="ParkyCare" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" ambiguous="YES" id="Lrf-5j-RG8">
                         <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -547,7 +547,7 @@
         <!--Symptom Log Detail View Controller-->
         <scene sceneID="mFU-7C-uHf">
             <objects>
-                <viewController storyboardIdentifier="SymptomLogDetailViewController" useStoryboardIdentifierAsRestorationIdentifier="YES" id="P6n-zy-mFU" customClass="SymptomLogDetailViewController" customModule="ParkEase" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="SymptomLogDetailViewController" useStoryboardIdentifierAsRestorationIdentifier="YES" id="P6n-zy-mFU" customClass="SymptomLogDetailViewController" customModule="ParkyCare" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="lWh-u5-ctl">
                         <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -608,7 +608,7 @@
         <!--Symptom Log History View Controller-->
         <scene sceneID="o37-3S-GnY">
             <objects>
-                <viewController storyboardIdentifier="SymptomLogHistoryViewController" useStoryboardIdentifierAsRestorationIdentifier="YES" id="7YL-b0-LPe" customClass="SymptomLogHistoryViewController" customModule="ParkEase" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="SymptomLogHistoryViewController" useStoryboardIdentifierAsRestorationIdentifier="YES" id="7YL-b0-LPe" customClass="SymptomLogHistoryViewController" customModule="ParkyCare" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="GyM-51-CCQ">
                         <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -897,7 +897,7 @@
         <!--Calendar View Controller-->
         <scene sceneID="DOP-pw-nKm">
             <objects>
-                <viewController storyboardIdentifier="CalendarViewController" useStoryboardIdentifierAsRestorationIdentifier="YES" id="YxW-ZH-lhD" customClass="CalendarViewController" customModule="ParkEase" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="CalendarViewController" useStoryboardIdentifierAsRestorationIdentifier="YES" id="YxW-ZH-lhD" customClass="CalendarViewController" customModule="ParkyCare" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="h36-Sr-ApG">
                         <rect key="frame" x="0.0" y="0.0" width="393" height="793"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -998,7 +998,7 @@
         <!--Rhythmic Walking Summary View Controller-->
         <scene sceneID="611-QI-srz">
             <objects>
-                <viewController storyboardIdentifier="RhythmicWalkingSummaryViewController" useStoryboardIdentifierAsRestorationIdentifier="YES" id="pfy-PR-ZqD" customClass="RhythmicWalkingSummaryViewController" customModule="ParkEase" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="RhythmicWalkingSummaryViewController" useStoryboardIdentifierAsRestorationIdentifier="YES" id="pfy-PR-ZqD" customClass="RhythmicWalkingSummaryViewController" customModule="ParkyCare" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="MEU-0B-3rj">
                         <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -1069,13 +1069,13 @@
             <color white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
         </systemColor>
         <systemColor name="separatorColor">
-            <color red="0.23529411764705882" green="0.23529411764705882" blue="0.2627450980392157" alpha="0.12" colorSpace="custom" customColorSpace="sRGB"/>
+            <color red="0.23529411759999999" green="0.23529411759999999" blue="0.26274509800000001" alpha="0.28999999999999998" colorSpace="custom" customColorSpace="sRGB"/>
         </systemColor>
         <systemColor name="systemBackgroundColor">
             <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
         </systemColor>
         <systemColor name="tintColor">
-            <color red="0.0" green="0.53333333333333333" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <color red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </systemColor>
     </resources>
 </document>
