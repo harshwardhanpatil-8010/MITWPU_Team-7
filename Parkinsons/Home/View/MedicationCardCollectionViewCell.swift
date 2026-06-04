@@ -124,10 +124,13 @@ class MedicationCardCollectionViewCell: UICollectionViewCell {
     func setupCardStyle() {
         BackgroundMedication.layer.cornerRadius = 23
         BackgroundMedication.layer.masksToBounds = false
-        BackgroundMedication.layer.shadowColor = UIColor.black.cgColor
-        BackgroundMedication.layer.shadowOpacity = 0.09
-        BackgroundMedication.layer.shadowRadius = 4
-        BackgroundMedication.layer.shadowOffset = CGSize(width: 0, height: 2)
+        BackgroundMedication.backgroundColor = .secondarySystemGroupedBackground
+        BackgroundMedication.layer.shadowColor = UIColor(red: 0.04, green: 0.06, blue: 0.15, alpha: 1.0).cgColor
+        BackgroundMedication.layer.shadowOpacity = 0.05
+        BackgroundMedication.layer.shadowRadius = 16
+        BackgroundMedication.layer.shadowOffset = CGSize(width: 0, height: 6)
+        BackgroundMedication.layer.borderWidth = 1.0
+        BackgroundMedication.layer.borderColor = UIColor.systemGray6.withAlphaComponent(0.85).cgColor
     }
 
     // MARK: - Configure

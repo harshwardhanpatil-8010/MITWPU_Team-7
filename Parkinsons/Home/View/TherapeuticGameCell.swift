@@ -24,10 +24,13 @@ class TherapeuticGameCell: UICollectionViewCell {
     private func setupCardStyle() {
         backgroundCardView.layer.cornerRadius = 23
         backgroundCardView.layer.masksToBounds = false
-        backgroundCardView.layer.shadowColor = UIColor.black.cgColor
-        backgroundCardView.layer.shadowOpacity = 0.09
-        backgroundCardView.layer.shadowRadius = 4
-        backgroundCardView.layer.shadowOffset = CGSize(width: 0, height: 2)
+        backgroundCardView.backgroundColor = .secondarySystemGroupedBackground
+        backgroundCardView.layer.shadowColor = UIColor(red: 0.04, green: 0.06, blue: 0.15, alpha: 1.0).cgColor
+        backgroundCardView.layer.shadowOpacity = 0.05
+        backgroundCardView.layer.shadowRadius = 16
+        backgroundCardView.layer.shadowOffset = CGSize(width: 0, height: 6)
+        backgroundCardView.layer.borderWidth = 1.0
+        backgroundCardView.layer.borderColor = UIColor.systemGray6.withAlphaComponent(0.85).cgColor
     }
 
     private func setupWhackMoleHoleIcon() {

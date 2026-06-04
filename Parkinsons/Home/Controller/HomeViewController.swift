@@ -83,12 +83,26 @@ class HomeViewController: UIViewController, UICollectionViewDelegate {
     override func viewDidLoad() {
         super.viewDidLoad()
 
+        view.backgroundColor = .systemGroupedBackground
+        mainCollectionView.backgroundColor = .clear
+
+        // Add premium top gradient to the Home screen
+        let gradientView = SubtleTopGradientView(themeColor: .systemBlue, height: 260)
+        view.addSubview(gradientView)
+        view.sendSubviewToBack(gradientView)
+        NSLayoutConstraint.activate([
+            gradientView.topAnchor.constraint(equalTo: view.topAnchor),
+            gradientView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+            gradientView.trailingAnchor.constraint(equalTo: view.trailingAnchor)
+        ])
+
         let savedFull = UserDefaults.standard.string(forKey: "UserFullName") ?? "John"
         let firstName = savedFull.components(separatedBy: " ").first ?? savedFull
         self.NameOfUser.text = "Hello \(firstName)!"
 
         updateGreeting()
         registerCells()
+        setupTabBarStyle()
 
         mainCollectionView.dataSource = self
         mainCollectionView.delegate = self
@@ -129,6 +143,7 @@ class HomeViewController: UIViewController, UICollectionViewDelegate {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         self.tabBarController?.tabBar.isHidden = false
+        setupTabBarStyle()
         updateGreeting()
         mainCollectionView.setCollectionViewLayout(generateLayout(), animated: false)
         mainCollectionView.performBatchUpdates({
@@ -149,6 +164,31 @@ class HomeViewController: UIViewController, UICollectionViewDelegate {
     }
 
     // MARK: - Helpers
+
+    private func setupTabBarStyle() {
+        let appearance = UITabBarAppearance()
+        appearance.configureWithDefaultBackground()
+        appearance.backgroundColor = UIColor.secondarySystemGroupedBackground.withAlphaComponent(0.95)
+        
+        let blurEffect = UIBlurEffect(style: .systemChromeMaterial)
+        appearance.backgroundEffect = blurEffect
+        appearance.shadowColor = UIColor.separator.withAlphaComponent(0.3)
+        
+        let activeColor = UIColor.systemBlue
+        let inactiveColor = UIColor.systemGray
+        
+        appearance.stackedLayoutAppearance.normal.iconColor = inactiveColor
+        appearance.stackedLayoutAppearance.normal.titleTextAttributes = [.foregroundColor: inactiveColor]
+        appearance.stackedLayoutAppearance.selected.iconColor = activeColor
+        appearance.stackedLayoutAppearance.selected.titleTextAttributes = [.foregroundColor: activeColor]
+        
+        if let tabBar = tabBarController?.tabBar {
+            tabBar.standardAppearance = appearance
+            if #available(iOS 15.0, *) {
+                tabBar.scrollEdgeAppearance = appearance
+            }
+        }
+    }
 
     private func updateGreeting() {
         if let fullName = UserDefaults.standard.string(forKey: "userName")?
