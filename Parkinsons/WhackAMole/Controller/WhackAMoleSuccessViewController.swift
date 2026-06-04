@@ -30,12 +30,17 @@ class WhackAMoleSuccessViewController: UIViewController {
         
         let diff = WhackAMoleGameManager.shared.difficultyLabel(for: selectedDate)
         
-        let messageText = "Difficulty: \(diff)\n\nYou are improving your reaction time and hand-eye coordination."
+        let messageText: String
+        if hitBomb {
+            messageText = "You hit a bomb! 💥\n\nDon't worry, better luck next time!"
+        } else {
+            messageText = "Difficulty: \(diff)\n\nYou are improving your reaction time and hand-eye coordination."
+        }
 
         buildUnifiedResultScreen(
-            title: hitBomb ? "Boom!" : "Good job!",
-            symbolName: hitBomb ? nil : "hands.clap.fill",
-            emojiText: hitBomb ? "💥" : nil,
+            title: hitBomb ? "Boom!" : "Good Job!",
+            symbolName: nil,
+            emojiText: hitBomb ? "💣" : nil,
             message: messageText,
             stats: [
                 ("Score", "\(score)"),

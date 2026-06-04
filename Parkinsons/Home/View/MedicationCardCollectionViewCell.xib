@@ -90,7 +90,7 @@
                             <constraint firstItem="Bt6-g5-kih" firstAttribute="leading" secondItem="d2F-1Q-w9l" secondAttribute="leading" constant="16" id="dey-vD-iPv"/>
                             <constraint firstAttribute="bottom" secondItem="Bt6-g5-kih" secondAttribute="bottom" constant="12" id="fjl-CT-jfo"/>
                             <constraint firstItem="qIE-uB-JZ7" firstAttribute="leading" secondItem="d2F-1Q-w9l" secondAttribute="leading" constant="16" id="gGs-Hr-Vo7"/>
-                            <constraint firstAttribute="trailing" relation="lessThanOrEqual" secondItem="Bt6-g5-kih" secondAttribute="trailing" constant="16" id="gNY-cz-jIz"/>
+                            <constraint firstAttribute="trailing" secondItem="Bt6-g5-kih" secondAttribute="trailing" constant="16" id="gNY-cz-jIz"/>
                         </constraints>
                     </view>
                 </subviews>

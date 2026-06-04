@@ -71,6 +71,9 @@ class MedicationCardCollectionViewCell: UICollectionViewCell {
 
         takenButton.layer.cornerRadius = 18
         skippedButton.layer.cornerRadius = 18
+
+        AdaptiveCardLayout.applyFlexibleText(nameLabel, detailLabel)
+        AdaptiveCardLayout.applyActionControls(takenButton, skippedButton)
     }
 
     override func layoutSubviews() {

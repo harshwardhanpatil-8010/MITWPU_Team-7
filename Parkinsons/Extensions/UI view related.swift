@@ -8,6 +8,94 @@
 import Foundation
 import UIKit
 
+// MARK: - Adaptive layout (iPhone SE → Pro Max)
+
+enum AdaptiveCardLayout {
+
+    static func applyFlexibleText(_ labels: UILabel...) {
+        labels.forEach { label in
+            label.numberOfLines = 1
+            label.lineBreakMode = .byTruncatingTail
+            label.setContentCompressionResistancePriority(.defaultLow, for: .horizontal)
+            label.setContentHuggingPriority(.defaultLow, for: .horizontal)
+        }
+    }
+
+    static func applyFixedChrome(_ views: UIView...) {
+        views.forEach { view in
+            view.setContentCompressionResistancePriority(.required, for: .horizontal)
+            view.setContentHuggingPriority(.required, for: .horizontal)
+        }
+    }
+
+    static func applyActionControls(_ views: UIView...) {
+        views.forEach { view in
+            view.setContentCompressionResistancePriority(.required, for: .horizontal)
+            view.setContentHuggingPriority(.defaultHigh, for: .horizontal)
+        }
+    }
+
+    static func configureCompactActionButton(_ button: UIButton) {
+        var config = button.configuration ?? UIButton.Configuration.filled()
+        config.titleLineBreakMode = .byTruncatingTail
+        config.contentInsets = NSDirectionalEdgeInsets(top: 6, leading: 8, bottom: 6, trailing: 8)
+        if config.titleTextAttributesTransformer == nil {
+            config.titleTextAttributesTransformer = UIConfigurationTextAttributesTransformer { incoming in
+                var outgoing = incoming
+                outgoing.font = UIFont.systemFont(ofSize: 13, weight: .semibold)
+                return outgoing
+            }
+        }
+        button.configuration = config
+        button.titleLabel?.adjustsFontSizeToFitWidth = true
+        button.titleLabel?.minimumScaleFactor = 0.75
+        applyActionControls(button)
+    }
+
+    /// Deactivates equal-width constraints that assume a fixed device width in Interface Builder.
+    static func relaxRigidEqualWidths(in root: UIView, minimumConstant: CGFloat = 72) {
+        func visit(_ view: UIView) {
+            view.constraints.forEach { constraint in
+                guard constraint.isActive,
+                      constraint.relation == .equal,
+                      constraint.secondItem == nil,
+                      constraint.firstItem === view,
+                      constraint.firstAttribute == .width,
+                      constraint.constant >= minimumConstant else { return }
+                constraint.isActive = false
+            }
+            view.subviews.forEach(visit)
+        }
+        visit(root)
+    }
+
+    static func ensureTrailingPin(
+        child: UIView,
+        to parent: UIView,
+        inset: CGFloat,
+        replacingLessThanOrEqual: Bool = true
+    ) {
+        parent.constraints.forEach { constraint in
+            guard replacingLessThanOrEqual,
+                  constraint.relation == .lessThanOrEqual,
+                  (constraint.firstItem as? UIView) === parent || (constraint.secondItem as? UIView) === parent,
+                  (constraint.firstItem as? UIView) === child || (constraint.secondItem as? UIView) === child,
+                  constraint.firstAttribute == .trailing || constraint.secondAttribute == .trailing else { return }
+            constraint.isActive = false
+        }
+        if !parent.constraints.contains(where: { c in
+            c.isActive && c.relation == .equal &&
+            ((c.firstItem as? UIView) === child && c.firstAttribute == .trailing && (c.secondItem as? UIView) === parent) ||
+             ((c.secondItem as? UIView) === child && c.secondAttribute == .trailing && (c.firstItem as? UIView) === parent)
+        }) {
+            child.translatesAutoresizingMaskIntoConstraints = false
+            NSLayoutConstraint.activate([
+                child.trailingAnchor.constraint(equalTo: parent.trailingAnchor, constant: -inset)
+            ])
+        }
+    }
+}
+
 extension UIView {
 
     func applyCardStyle() {
@@ -109,142 +197,145 @@ extension UIViewController {
         // Clear storyboard/existing views
         view.subviews.forEach { $0.removeFromSuperview() }
         view.backgroundColor = .systemBackground
-        
+
+        // ── Title Label (large, centered, at the top) ──────────────────────
         let titleLabel = UILabel()
         titleLabel.text = title
-        titleLabel.font = .systemFont(ofSize: 40, weight: .bold)
+        titleLabel.font = .systemFont(ofSize: 36, weight: .bold)
         titleLabel.textAlignment = .center
         titleLabel.textColor = .label
+        titleLabel.numberOfLines = 1
+        titleLabel.adjustsFontSizeToFitWidth = true
+        titleLabel.minimumScaleFactor = 0.7
         titleLabel.translatesAutoresizingMaskIntoConstraints = false
+        view.addSubview(titleLabel)
 
-        let iconContainer = UIView()
-        iconContainer.translatesAutoresizingMaskIntoConstraints = false
-        
-        if let symbolName = symbolName {
-            let symbolImageView = UIImageView(
-                image: UIImage(systemName: symbolName, withConfiguration: UIImage.SymbolConfiguration(pointSize: 100, weight: .semibold))
-            )
-            symbolImageView.tintColor = themeColor
-            symbolImageView.contentMode = .scaleAspectFit
-            symbolImageView.translatesAutoresizingMaskIntoConstraints = false
-            iconContainer.addSubview(symbolImageView)
-            NSLayoutConstraint.activate([
-                symbolImageView.centerXAnchor.constraint(equalTo: iconContainer.centerXAnchor),
-                symbolImageView.centerYAnchor.constraint(equalTo: iconContainer.centerYAnchor),
-                symbolImageView.widthAnchor.constraint(equalTo: iconContainer.widthAnchor),
-                symbolImageView.heightAnchor.constraint(equalTo: iconContainer.heightAnchor)
-            ])
-        } else if let emojiText = emojiText {
-            let emojiLabel = UILabel()
-            emojiLabel.text = emojiText
-            emojiLabel.font = .systemFont(ofSize: 100)
-            emojiLabel.textAlignment = .center
-            emojiLabel.translatesAutoresizingMaskIntoConstraints = false
-            iconContainer.addSubview(emojiLabel)
-            NSLayoutConstraint.activate([
-                emojiLabel.centerXAnchor.constraint(equalTo: iconContainer.centerXAnchor),
-                emojiLabel.centerYAnchor.constraint(equalTo: iconContainer.centerYAnchor),
-                emojiLabel.widthAnchor.constraint(equalTo: iconContainer.widthAnchor),
-                emojiLabel.heightAnchor.constraint(equalTo: iconContainer.heightAnchor)
-            ])
-        }
+        // ── Icon Emoji (custom if provided, else 👏) ─────────────────────
+        let iconLabel = UILabel()
+        iconLabel.text = emojiText ?? "👏"
+        iconLabel.font = .systemFont(ofSize: 100)
+        iconLabel.textAlignment = .center
+        iconLabel.translatesAutoresizingMaskIntoConstraints = false
 
+        // ── Message Label ──────────────────────────────────────────────────
         let messageLabel = UILabel()
         messageLabel.text = message
-        messageLabel.font = .systemFont(ofSize: 20, weight: .regular)
+        messageLabel.font = .systemFont(ofSize: 17, weight: .regular)
         messageLabel.textColor = .secondaryLabel
         messageLabel.numberOfLines = 0
         messageLabel.textAlignment = .center
         messageLabel.translatesAutoresizingMaskIntoConstraints = false
 
+        // ── Stats Card ────────────────────────────────────────────────────
         let statsCard = UIView()
-        statsCard.backgroundColor = .secondarySystemBackground
+        statsCard.backgroundColor = .systemBackground
         statsCard.layer.cornerRadius = 24
+        statsCard.layer.masksToBounds = false
+        statsCard.layer.shadowColor = UIColor.black.cgColor
+        statsCard.layer.shadowOpacity = 0.09
+        statsCard.layer.shadowRadius = 4
+        statsCard.layer.shadowOffset = CGSize(width: 0, height: 2)
         statsCard.translatesAutoresizingMaskIntoConstraints = false
 
         let statColumns = stats.map { stat -> UIStackView in
             let colTitleLabel = UILabel()
             colTitleLabel.text = stat.0
-            colTitleLabel.font = .systemFont(ofSize: 15, weight: .regular)
-            colTitleLabel.textColor = .secondaryLabel
+            colTitleLabel.font = .systemFont(ofSize: 14, weight: .regular)
+            colTitleLabel.textColor = .black
             colTitleLabel.textAlignment = .center
 
             let colValueLabel = UILabel()
             colValueLabel.text = stat.1
-            colValueLabel.font = .systemFont(ofSize: 22, weight: .bold)
-            colValueLabel.textColor = themeColor
+            colValueLabel.font = .systemFont(ofSize: 24, weight: .bold)
+            colValueLabel.textColor = .black
             colValueLabel.textAlignment = .center
 
-            let stack = UIStackView(arrangedSubviews: [colTitleLabel, colValueLabel])
+            let stack = UIStackView(arrangedSubviews: [colValueLabel, colTitleLabel])
             stack.axis = .vertical
-            stack.spacing = 6
+            stack.spacing = 4
             stack.alignment = .center
             stack.distribution = .fill
             stack.translatesAutoresizingMaskIntoConstraints = false
             return stack
         }
 
-        let dividerView: () -> UIView = {
-            let view = UIView()
-            view.backgroundColor = .separator
-            view.translatesAutoresizingMaskIntoConstraints = false
-            view.widthAnchor.constraint(equalToConstant: 1).isActive = true
-            return view
+        let makeDivider: () -> UIView = {
+            let v = UIView()
+            v.backgroundColor = UIColor.separator
+            v.translatesAutoresizingMaskIntoConstraints = false
+            v.widthAnchor.constraint(equalToConstant: 1).isActive = true
+            return v
         }
 
-        let statViews = statColumns.enumerated().flatMap { index, column -> [UIView] in
-            index == 0 ? [column] : [dividerView(), column]
+        let statViews: [UIView] = statColumns.enumerated().flatMap { index, col -> [UIView] in
+            index == 0 ? [col] : [makeDivider(), col]
         }
 
-        let statsStack = UIStackView(arrangedSubviews: statViews)
-        statsStack.axis = .horizontal
-        statsStack.alignment = .fill
-        statsStack.distribution = .fill
-        statsStack.translatesAutoresizingMaskIntoConstraints = false
-        statsCard.addSubview(statsStack)
+        let statsRowStack = UIStackView(arrangedSubviews: statViews)
+        statsRowStack.axis = .horizontal
+        statsRowStack.alignment = .fill
+        statsRowStack.distribution = .fill
+        statsRowStack.translatesAutoresizingMaskIntoConstraints = false
+        statsCard.addSubview(statsRowStack)
 
+        // ── Body stack (icon + message + stats card) centred on screen ─────
+        let bodyStack = UIStackView(arrangedSubviews: [iconLabel, messageLabel, statsCard])
+        bodyStack.axis = .vertical
+        bodyStack.spacing = 20
+        bodyStack.alignment = .center
+        bodyStack.translatesAutoresizingMaskIntoConstraints = false
+        view.addSubview(bodyStack)
+
+        // ── Finish Button (pinned to bottom safe area) ─────────────────────
         var config = UIButton.Configuration.filled()
         config.title = "Finish"
         config.baseBackgroundColor = .systemBlue
         config.baseForegroundColor = .white
         config.cornerStyle = .capsule
+        config.buttonSize = .large
 
-        let finishButton = UIButton(type: .system)
-        finishButton.configuration = config
+        let finishButton = UIButton(configuration: config)
         finishButton.addTarget(self, action: finishAction, for: .touchUpInside)
         finishButton.translatesAutoresizingMaskIntoConstraints = false
-
-        let stack = UIStackView(arrangedSubviews: [titleLabel, iconContainer, messageLabel, statsCard, finishButton])
-        stack.axis = .vertical
-        stack.spacing = 24
-        stack.alignment = .center
-        stack.translatesAutoresizingMaskIntoConstraints = false
-        view.addSubview(stack)
+        view.addSubview(finishButton)
 
         NSLayoutConstraint.activate([
-            stack.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-            stack.centerYAnchor.constraint(equalTo: view.centerYAnchor, constant: -10),
-            stack.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 24),
-            stack.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -24),
+            // Title: top of safe area, centred
+            titleLabel.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 24),
+            titleLabel.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 24),
+            titleLabel.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -24),
 
-            iconContainer.heightAnchor.constraint(equalToConstant: 120),
-            iconContainer.widthAnchor.constraint(equalToConstant: 120),
+            // Body stack: centred vertically, shifted slightly up
+            bodyStack.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            bodyStack.centerYAnchor.constraint(equalTo: view.centerYAnchor, constant: -10),
+            bodyStack.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 24),
+            bodyStack.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -24),
 
-            messageLabel.leadingAnchor.constraint(equalTo: stack.leadingAnchor, constant: 12),
-            messageLabel.trailingAnchor.constraint(equalTo: stack.trailingAnchor, constant: -12),
+            // Icon
+            iconLabel.widthAnchor.constraint(equalTo: bodyStack.widthAnchor),
 
-            statsCard.leadingAnchor.constraint(equalTo: stack.leadingAnchor),
-            statsCard.trailingAnchor.constraint(equalTo: stack.trailingAnchor),
-            
-            statsStack.topAnchor.constraint(equalTo: statsCard.topAnchor, constant: 18),
-            statsStack.bottomAnchor.constraint(equalTo: statsCard.bottomAnchor, constant: -18),
-            statsStack.leadingAnchor.constraint(equalTo: statsCard.leadingAnchor, constant: 16),
-            statsStack.trailingAnchor.constraint(equalTo: statsCard.trailingAnchor, constant: -16),
+            // Message
+            messageLabel.leadingAnchor.constraint(equalTo: bodyStack.leadingAnchor, constant: 8),
+            messageLabel.trailingAnchor.constraint(equalTo: bodyStack.trailingAnchor, constant: -8),
 
-            finishButton.widthAnchor.constraint(greaterThanOrEqualToConstant: 180),
-            finishButton.heightAnchor.constraint(greaterThanOrEqualToConstant: 50)
+            // Stats card: full width
+            statsCard.leadingAnchor.constraint(equalTo: bodyStack.leadingAnchor),
+            statsCard.trailingAnchor.constraint(equalTo: bodyStack.trailingAnchor),
+
+            // Stats row inside card
+            statsRowStack.topAnchor.constraint(equalTo: statsCard.topAnchor, constant: 20),
+            statsRowStack.bottomAnchor.constraint(equalTo: statsCard.bottomAnchor, constant: -20),
+            statsRowStack.leadingAnchor.constraint(equalTo: statsCard.leadingAnchor, constant: 16),
+            statsRowStack.trailingAnchor.constraint(equalTo: statsCard.trailingAnchor, constant: -16),
+
+            // Finish button: pinned to bottom safe area
+            finishButton.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -24),
+            finishButton.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 24),
+            finishButton.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -24),
+            finishButton.heightAnchor.constraint(greaterThanOrEqualToConstant: 54)
         ])
 
+        // Equal widths for stat columns
         if let firstColumn = statColumns.first {
             NSLayoutConstraint.activate(statColumns.dropFirst().map {
                 $0.widthAnchor.constraint(equalTo: firstColumn.widthAnchor)

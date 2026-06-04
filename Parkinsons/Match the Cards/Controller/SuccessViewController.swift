@@ -40,9 +40,12 @@ class SuccessViewController: UIViewController {
             durationText = "0s"
         }
 
+        let titles = ["Good Job!", "Well Done!"]
+        let randomTitle = titles.randomElement() ?? "Good Job!"
+
         buildUnifiedResultScreen(
-            title: "Good job!",
-            symbolName: "hands.clap.fill",
+            title: randomTitle,
+            symbolName: nil,
             emojiText: nil,
             message: "You are improving your memory recall, concentration, and cognitive association.",
             stats: [
