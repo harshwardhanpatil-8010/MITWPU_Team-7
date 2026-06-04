@@ -177,7 +177,7 @@ private struct SeededPos: Identifiable {
 
 struct WhackAMoleGameView: View {
     @StateObject var viewModel: WhackAMoleViewModel
-    let onGameEnd: (Int, Bool) -> Void
+    let onGameEnd: (Int, Bool, Int) -> Void
 
     private let grassMain  = Color(red: 0.42, green: 0.73, blue: 0.28)
     private let grassDark  = Color(red: 0.30, green: 0.58, blue: 0.18)
@@ -205,16 +205,15 @@ struct WhackAMoleGameView: View {
                         .transition(.move(edge: .bottom).combined(with: .opacity))
                 }
 
-                if viewModel.gameState == .bombHit { bombOverlay }
             }
         }
         .onAppear { viewModel.startGame() }
         .onDisappear { viewModel.cleanup() }
         .onChange(of: viewModel.gameState) { newState in
             if newState == .timeUp {
-                DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) { onGameEnd(viewModel.score, false) }
+                DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) { onGameEnd(viewModel.score, false, viewModel.totalTime - viewModel.timeRemaining) }
             } else if newState == .bombHit {
-                DispatchQueue.main.asyncAfter(deadline: .now() + 1.2) { onGameEnd(viewModel.score, true) }
+                DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) { onGameEnd(viewModel.score, true, viewModel.totalTime - viewModel.timeRemaining) }
             }
         }
     }
@@ -357,7 +356,7 @@ struct WhackAMoleGameView: View {
                         moleCharacter(isBomb: hole.isBomb, w: w)
                             .transition(.asymmetric(
                                 insertion: .move(edge: .bottom).combined(with: .opacity),
-                                removal: .scale(scale: 0.5).combined(with: .opacity)
+                                removal: .move(edge: .bottom).combined(with: .opacity)
                             ))
                             .zIndex(1)
                     }
@@ -485,15 +484,4 @@ struct WhackAMoleGameView: View {
         }
     }
 
-    private var bombOverlay: some View {
-        ZStack {
-            Color.black.opacity(0.55).ignoresSafeArea()
-            VStack(spacing: 16) {
-                Text("💥").font(.system(size: 80))
-                Text("BOOM!").font(.system(size: 42, weight: .black, design: .rounded)).foregroundColor(.red)
-                Text("You hit a bomb!").font(.system(size: 18, weight: .medium)).foregroundColor(.white)
-            }
-        }
-        .transition(.opacity)
-    }
 }

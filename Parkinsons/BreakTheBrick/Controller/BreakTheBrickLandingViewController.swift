@@ -27,7 +27,7 @@ class BreakTheBrickLandingViewController: UIViewController {
     private var navGradientOverlay: CAGradientLayer {
         let gradient = CAGradientLayer()
         gradient.colors = [
-            UIColor.systemTeal.withAlphaComponent(0.15).cgColor,
+            UIColor.systemTeal.withAlphaComponent(0.30).cgColor,
             UIColor.systemTeal.withAlphaComponent(0.0).cgColor
         ]
         gradient.startPoint = CGPoint(x: 0.5, y: 0)
@@ -60,17 +60,19 @@ class BreakTheBrickLandingViewController: UIViewController {
         view.backgroundColor = .systemBackground
 
         let gradient = navGradientOverlay
-        gradient.frame = CGRect(x: 0, y: 0, width: view.bounds.width, height: 180)
+        gradient.frame = CGRect(x: 0, y: 0, width: view.bounds.width, height: 140)
         view.layer.insertSublayer(gradient, at: 0)
 
-        playButton.backgroundColor = .systemTeal
-        playButton.setTitleColor(.white, for: .normal)
-        playButton.setTitle("Play", for: .normal)
-        playButton.layer.cornerRadius = 25
+        var config = UIButton.Configuration.filled()
+        config.title = "Play"
+        config.baseBackgroundColor = .systemBlue
+        config.baseForegroundColor = .white
+        config.cornerStyle = .capsule
+        playButton.configuration = config
     }
 
     private func setupNavigationBar() {
-        self.title = "Break The Brick"
+        self.title = "Break the Brick"
 
         let backImage = UIImage(systemName: "chevron.left")
         let backButton = UIBarButtonItem(image: backImage, style: .plain, target: self, action: #selector(backTappedAction))

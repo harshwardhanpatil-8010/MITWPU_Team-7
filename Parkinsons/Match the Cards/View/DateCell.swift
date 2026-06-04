@@ -152,11 +152,35 @@ class DateCell: UICollectionViewCell {
 
             dateLabel.font = UIFont.systemFont(ofSize: 20, weight: .bold)
 
+            if isSelected {
+
+                labelBackgroundView.layer.borderWidth = 3
+
+                labelBackgroundView.layer.borderColor = UIColor.white.cgColor
+
+                outerRingView.isHidden = false
+
+                outerRingView.layer.borderWidth = 2
+
+                outerRingView.layer.borderColor = themeColor.cgColor
+
+            }
+
         } else {
 
             dateLabel.textColor = enabled ? .label : .systemGray4
 
             dateLabel.font = UIFont.systemFont(ofSize: 20, weight: .medium)
+
+            if isSelected {
+
+                labelBackgroundView.layer.borderWidth = 2
+
+                labelBackgroundView.layer.borderColor = themeColor.cgColor
+
+                dateLabel.textColor = themeColor
+
+            }
 
         }
 
@@ -169,20 +193,6 @@ class DateCell: UICollectionViewCell {
         }
 
 
-
-        if isSelected {
-
-            labelBackgroundView.layer.borderWidth = 2
-
-            labelBackgroundView.layer.borderColor = themeColor.cgColor
-
-            if !isCompleted {
-
-                dateLabel.textColor = themeColor
-
-            }
-
-        }
 
         setNeedsLayout()
 

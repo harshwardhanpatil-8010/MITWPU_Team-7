@@ -47,6 +47,7 @@ class BreakTheBrickGameViewController: UIViewController {
 
     private func setupUI() {
         view.backgroundColor = .systemBackground
+        feedbackLabel?.isHidden = true
     }
 
     private func setupNavigationBar() {
@@ -69,7 +70,7 @@ class BreakTheBrickGameViewController: UIViewController {
         guard gameContainerView != nil else { return }
         sessionStartTime = Date()
         levelLabel.text = "❤️❤️❤️"
-        feedbackLabel.text = ""
+        feedbackLabel?.text = ""
 
         let gv = BreakTheBrickGameView(frame: gameContainerView.bounds)
         gv.autoresizingMask = [.flexibleWidth, .flexibleHeight]
@@ -80,7 +81,7 @@ class BreakTheBrickGameViewController: UIViewController {
         gv.onLivesUpdate    = { [weak self] lives in
             self?.levelLabel.text = String(repeating: "❤️", count: max(0, lives))
         }
-        gv.onFeedbackUpdate = { [weak self] text in self?.feedbackLabel.text = text }
+        gv.onFeedbackUpdate = { [weak self] text in self?.feedbackLabel?.text = text }
 
         gv.setupLevel(currentLevel)
         gv.startGame()
@@ -136,6 +137,16 @@ class BreakTheBrickGameView: UIView {
 
     private let topBoundaryLine = UIView()
     private let topBoundaryY: CGFloat = 170
+
+    enum GameState {
+        case readyToStart
+        case playing
+        case ballLost
+        case gameOver
+        case levelClear
+    }
+    private var gameState: GameState = .readyToStart
+    private let overlayLabel = UILabel()
 
     override func layoutSubviews() {
         super.layoutSubviews()
@@ -382,8 +393,13 @@ class BreakTheBrickGameView: UIView {
         
         setupPaddle()
         setupBall()
+        setupOverlayLabel()
+
         let pan = UIPanGestureRecognizer(target: self, action: #selector(handlePan(_:)))
         addGestureRecognizer(pan)
+
+        let tap = UITapGestureRecognizer(target: self, action: #selector(handleTap(_:)))
+        addGestureRecognizer(tap)
     }
 
     required init?(coder: NSCoder) { super.init(coder: coder) }
@@ -422,6 +438,22 @@ class BreakTheBrickGameView: UIView {
         addSubview(ball)
     }
 
+    private func setupOverlayLabel() {
+        overlayLabel.numberOfLines = 0
+        overlayLabel.textAlignment = .center
+        overlayLabel.textColor = .systemTeal
+        overlayLabel.font = .systemFont(ofSize: 26, weight: .bold)
+        overlayLabel.translatesAutoresizingMaskIntoConstraints = false
+        addSubview(overlayLabel)
+        
+        NSLayoutConstraint.activate([
+            overlayLabel.centerXAnchor.constraint(equalTo: centerXAnchor),
+            overlayLabel.centerYAnchor.constraint(equalTo: centerYAnchor),
+            overlayLabel.leadingAnchor.constraint(greaterThanOrEqualTo: leadingAnchor, constant: 20),
+            overlayLabel.trailingAnchor.constraint(lessThanOrEqualTo: trailingAnchor, constant: -20)
+        ])
+    }
+
     func setupLevel(_ level: Int) {
         currentLevel = max(1, min(level, 31))
         bricksDestroyed = 0
@@ -434,6 +466,10 @@ class BreakTheBrickGameView: UIView {
         layoutIfNeeded()
         buildBricks()
         resetPositions()
+
+        gameState = .readyToStart
+        overlayLabel.text = "Tap to Start"
+        overlayLabel.isHidden = false
     }
 
     private func buildBricks() {
@@ -494,8 +530,10 @@ class BreakTheBrickGameView: UIView {
         let py = bounds.height - paddleBottom
         paddle.frame = CGRect(x: cx - paddleW / 2, y: py, width: paddleW, height: paddleH)
 
-        ball.frame = CGRect(x: cx - ballSize / 2, y: py - ballSize - 4,
-                            width: ballSize, height: ballSize)
+        // Ball rests directly on top of the paddle (the "hit brick")
+        let ballX = cx - ballSize / 2
+        let ballY = py - ballSize
+        ball.frame = CGRect(x: ballX, y: ballY, width: ballSize, height: ballSize)
 
         let speed: CGFloat = min(260 + CGFloat(currentLevel - 1) * 15, 520)
         let angle = CGFloat.pi * 0.25 + CGFloat.random(in: -0.15...0.15)
@@ -522,7 +560,10 @@ class BreakTheBrickGameView: UIView {
         if lastTimestamp == 0 { lastTimestamp = now }
         let dt = min(now - lastTimestamp, 1.0 / 30.0)
         lastTimestamp = now
-        update(dt: CGFloat(dt))
+        
+        if gameState == .playing {
+            update(dt: CGFloat(dt))
+        }
     }
 
     private func update(dt: CGFloat) {
@@ -540,21 +581,13 @@ class BreakTheBrickGameView: UIView {
             lives -= 1
             onLivesUpdate?(lives)
             if lives > 0 {
-                isRunning = false
-                displayLink?.invalidate()
-                onFeedbackUpdate?("Ball lost! 😬")
-                DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) { [weak self] in
-                    guard let self = self else { return }
-                    self.resetPositions()
-                    self.startGame()
-                    self.onFeedbackUpdate?("")
-                }
+                gameState = .ballLost
+                overlayLabel.text = "Ball lost! 😬\nTap to Continue"
+                overlayLabel.isHidden = false
             } else {
-                stopGame()
-                onFeedbackUpdate?("Game Over! 😢")
-                DispatchQueue.main.asyncAfter(deadline: .now() + 1.5) { [weak self] in
-                    self?.onLevelComplete?()
-                }
+                gameState = .gameOver
+                overlayLabel.text = "Game Over! 😢\nTap to Finish"
+                overlayLabel.isHidden = false
             }
             return
         }
@@ -626,11 +659,9 @@ class BreakTheBrickGameView: UIView {
         })
 
         if bricksDestroyed >= breakableBricksTotal {
-            stopGame()
-            onFeedbackUpdate?("Level clear! 🎉")
-            DispatchQueue.main.asyncAfter(deadline: .now() + 0.8) { [weak self] in
-                self?.onLevelComplete?()
-            }
+            gameState = .levelClear
+            overlayLabel.text = "Level clear! 🎉\nTap to Finish"
+            overlayLabel.isHidden = false
         }
     }
 
@@ -640,5 +671,44 @@ class BreakTheBrickGameView: UIView {
         var newX = paddle.frame.origin.x + dx
         newX = max(sidePad, min(bounds.width - sidePad - paddle.frame.width, newX))
         paddle.frame.origin.x = newX
+
+        if gameState == .readyToStart || gameState == .ballLost {
+            ball.frame.origin.x = paddle.frame.midX - ballSize / 2
+        }
+    }
+
+    @objc private func handleTap(_ gr: UITapGestureRecognizer) {
+        switch gameState {
+        case .readyToStart:
+            gameState = .playing
+            overlayLabel.isHidden = true
+            
+            let speed: CGFloat = min(260 + CGFloat(currentLevel - 1) * 15, 520)
+            let angle = CGFloat.pi * 0.25 + CGFloat.random(in: -0.15...0.15)
+            ballVelocity = CGPoint(x: speed * cos(angle), y: -speed)
+            
+        case .ballLost:
+            if lives > 0 {
+                resetPositions()
+                gameState = .readyToStart
+                overlayLabel.text = "Tap to Start"
+                overlayLabel.isHidden = false
+            } else {
+                gameState = .gameOver
+                overlayLabel.text = "Game Over! 😢\nTap to Finish"
+                overlayLabel.isHidden = false
+            }
+            
+        case .gameOver:
+            stopGame()
+            onLevelComplete?()
+            
+        case .levelClear:
+            stopGame()
+            onLevelComplete?()
+            
+        case .playing:
+            break
+        }
     }
 }

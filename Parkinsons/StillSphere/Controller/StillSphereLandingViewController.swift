@@ -18,6 +18,7 @@ class StillSphereLandingViewController: UIViewController {
     
     private let manager = StillSphereManager.shared
     private let today = Calendar(identifier: .gregorian).startOfDay(for: Date())
+    private let themeColor = UIColor.systemYellow
     
     private var firstDayOfMonth: Date!
     private var daysInMonth = 0
@@ -27,8 +28,8 @@ class StillSphereLandingViewController: UIViewController {
     private var navGradientOverlay: CAGradientLayer {
         let gradient = CAGradientLayer()
         gradient.colors = [
-            UIColor.systemGreen.withAlphaComponent(0.15).cgColor,
-            UIColor.systemGreen.withAlphaComponent(0.0).cgColor
+            themeColor.withAlphaComponent(0.30).cgColor,
+            themeColor.withAlphaComponent(0.0).cgColor
         ]
         gradient.startPoint = CGPoint(x: 0.5, y: 0)
         gradient.endPoint   = CGPoint(x: 0.5, y: 1)
@@ -60,17 +61,19 @@ class StillSphereLandingViewController: UIViewController {
         view.backgroundColor = .systemBackground
         
         let gradient = navGradientOverlay
-        gradient.frame = CGRect(x: 0, y: 0, width: view.bounds.width, height: 180)
+        gradient.frame = CGRect(x: 0, y: 0, width: view.bounds.width, height: 140)
         view.layer.insertSublayer(gradient, at: 0)
-        
-        playButton.backgroundColor = .systemGreen
-        playButton.setTitleColor(.white, for: .normal)
-        playButton.setTitle("Play", for: .normal)
-        playButton.layer.cornerRadius = 25
+
+        var config = UIButton.Configuration.filled()
+        config.title = "Play"
+        config.baseBackgroundColor = .systemBlue
+        config.baseForegroundColor = .white
+        config.cornerStyle = .capsule
+        playButton.configuration = config
     }
     
     private func setupNavigationBar() {
-        self.title = "StillSphere"
+        self.title = "Still Sphere"
         
         let backImage = UIImage(systemName: "chevron.left")
         let backButton = UIBarButtonItem(image: backImage, style: .plain, target: self, action: #selector(backTappedAction))
@@ -207,7 +210,7 @@ extension StillSphereLandingViewController: UICollectionViewDelegate, UICollecti
             isCompleted: isCompleted,
             showTodayOutline: showTodayOutline,
             enabled: !isFuture,
-            themeColor: .systemGreen
+            themeColor: themeColor
         )
         
         return cell
