@@ -419,15 +419,18 @@ extension SummaryViewController: UICollectionViewDataSource, UICollectionViewDel
                 cell.setThemeColor(UIColor(hex: "90AF81"))
 
                 let targetDate = dateToDisplay ?? Date()
-                if let lastSession = DataStore.shared.fetchSessions(for: targetDate).first {
+                let sessions = DataStore.shared.fetchSessions(for: targetDate)
+                if !sessions.isEmpty {
 
-                    let done = lastSession.elapsedSeconds
+                    let done = sessions.reduce(0) { $0 + $1.elapsedSeconds }
 
-                    let goal = max(lastSession.requestedDurationSeconds, 1)
+                    let goal = max(sessions.map(\.requestedDurationSeconds).max() ?? 1, 1)
 
-                    cell.setProgress(completed: done, total: goal)
+                    cell.setProgress(completed: min(done, goal), total: goal)
 
-                    cell.progressLabel.text = "\(Int((Double(done)/Double(goal))*100))%"
+                    let percentage = Int((Double(done) / Double(goal)) * 100)
+
+                    cell.progressLabel.text = "\(min(percentage, 100))%"
 
                 } else {
 

@@ -491,8 +491,9 @@ extension HomeViewController: UICollectionViewDataSource {
             let model = dates[indexPath.row]
             let isSelected = calendar.isDate(model.date, inSameDayAs: selectedDate)
             let isToday = calendar.isDateInToday(model.date)
-            let isFuture = model.date > calendar.startOfDay(for: Date().addingTimeInterval(86400))
-            cell.configure(with: model, isSelected: isSelected, isToday: isToday, isFuture: isFuture)
+            let isFuture = calendar.compare(model.date, to: Date(), toGranularity: .day) == .orderedDescending
+            let progress = CalendarActivityProgressProvider.progress(for: model.date, calendar: calendar)
+            cell.configure(with: model, isSelected: isSelected, isToday: isToday, isFuture: isFuture, progress: progress)
             cell.isUserInteractionEnabled = !isFuture
             return cell
 
@@ -524,12 +525,13 @@ extension HomeViewController: UICollectionViewDataSource {
                 cell.setProgress(completed: completed, total: total)
             } else if indexPath.row == 1 {
                 cell.setThemeColor(UIColor(hex: "90AF81"))
-                if let lastSession = DataStore.shared.fetchSessions(for: selectedDate).first {
-                    let done = lastSession.elapsedSeconds
-                    let goal = max(lastSession.requestedDurationSeconds, 1)
-                    cell.setProgress(completed: done, total: goal)
+                let sessions = DataStore.shared.fetchSessions(for: selectedDate)
+                if !sessions.isEmpty {
+                    let done = sessions.reduce(0) { $0 + $1.elapsedSeconds }
+                    let goal = max(sessions.map(\.requestedDurationSeconds).max() ?? 1, 1)
+                    cell.setProgress(completed: min(done, goal), total: goal)
                     let percentage = Int((Double(done) / Double(goal)) * 100)
-                    cell.progressLabel.text = "\(percentage)%"
+                    cell.progressLabel.text = "\(min(percentage, 100))%"
                 } else {
                     cell.setProgress(completed: 0, total: 1)
                     cell.progressLabel.text = "0%"
