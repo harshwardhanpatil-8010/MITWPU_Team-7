@@ -55,14 +55,14 @@ class HomeViewController: UIViewController, UICollectionViewDelegate {
 
     var therapeuticGamesData: [TherapeuticGameModel] = [
 
-        TherapeuticGameModel(title: "Mimic the Emoji", description: "Complete your daily challenge!", iconName: "face.smiling", iconColor: .systemOrange),
-        TherapeuticGameModel(title: "Match the Cards", description: "Complete your daily challenge!", iconName: "brain.fill", iconColor: .systemPurple),
+        TherapeuticGameModel(title: "Mimic the Emoji", description: "Complete your daily challenge!", iconName: "face.smiling", iconColor: UIColor(hex: "#C98A6B")),
+        TherapeuticGameModel(title: "Match the Cards", description: "Complete your daily challenge!", iconName: "brain.fill", iconColor: UIColor(hex: "#4DAFB3")),
 
-        TherapeuticGameModel(title: "Still Sphere", description: "Complete your daily challenge!", iconName: "gyroscope", iconColor: .systemYellow),
+        TherapeuticGameModel(title: "Still Sphere", description: "Complete your daily challenge!", iconName: "gyroscope", iconColor: UIColor(hex: "#D58A9C")),
 
-        TherapeuticGameModel(title: "Jigsaw Puzzle", description: "Complete your daily challenge!", iconName: "puzzlepiece.extension.fill", iconColor: .systemBrown),
-        TherapeuticGameModel(title: "Whack a Mole", description: "Complete your daily challenge!", iconName: "hammer.fill", iconColor: .systemGreen),
-        TherapeuticGameModel(title: "Break the Brick", description: "Complete your daily challenge!", iconName: "square.stack.3d.up.fill", iconColor: .systemTeal)
+        TherapeuticGameModel(title: "Jigsaw Puzzle", description: "Complete your daily challenge!", iconName: "puzzlepiece.extension.fill", iconColor: UIColor(hex: "#7A8DB3")),
+        TherapeuticGameModel(title: "Whack a Mole", description: "Complete your daily challenge!", iconName: "hammer.fill", iconColor: UIColor(hex: "#D4B15A")),
+        TherapeuticGameModel(title: "Break the Brick", description: "Complete your daily challenge!", iconName: "square.stack.3d.up.fill", iconColor: UIColor(hex: "#6B73D6"))
 
     ]
 

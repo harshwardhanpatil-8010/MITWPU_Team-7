@@ -18,7 +18,7 @@ class StillSphereLandingViewController: UIViewController {
     
     private let manager = StillSphereManager.shared
     private let today = Calendar(identifier: .gregorian).startOfDay(for: Date())
-    private let themeColor = UIColor.systemYellow
+    private let themeColor = UIColor(hex: "#D58A9C")
     
     private var firstDayOfMonth: Date!
     private var daysInMonth = 0

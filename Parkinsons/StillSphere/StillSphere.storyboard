@@ -11,39 +11,39 @@
         <!--Still Sphere Landing View Controller-->
         <scene sceneID="SS-Landing-Scene">
             <objects>
-                <viewController storyboardIdentifier="StillSphereLandingViewController" id="SS-Landing-VC" customClass="StillSphereLandingViewController" customModule="ParkEase" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="StillSphereLandingViewController" id="SS-Landing-VC" customClass="StillSphereLandingViewController" customModule="ParkyCare" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="SS-Landing-View">
                         <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="gyroscope" catalog="system" translatesAutoresizingMaskIntoConstraints="NO" id="SS-Hero-Icon">
-                                <rect key="frame" x="121.66666666666669" y="100.66666666666667" width="150" height="148.66666666666669"/>
-                                <color key="tintColor" systemColor="systemYellowColor"/>
+                                <rect key="frame" x="106.66666666666669" y="151.33333333333331" width="180" height="138.66666666666663"/>
+                                <color key="tintColor" red="0.83529411764705885" green="0.54117647058823526" blue="0.61176470588235299" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="140" id="SS-Hero-H"/>
                                     <constraint firstAttribute="width" constant="180" id="SS-Hero-W"/>
                                 </constraints>
                             </imageView>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Daily Challenge" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="SS-Daily-Hdr">
-                                <rect key="frame" x="24" y="280" width="159.33333333333334" height="26.333333333333314"/>
+                                <rect key="frame" x="16" y="323" width="137" height="23"/>
                                 <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="19"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="May 2026" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="SS-Month-Lbl">
-                                <rect key="frame" x="24" y="310.33333333333331" width="79.666666666666671" height="20.333333333333314"/>
+                                <rect key="frame" x="16" y="349" width="79.666666666666671" height="20.333333333333314"/>
                                 <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="17"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="0/31 Completed" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="SS-Comp-Lbl">
-                                <rect key="frame" x="269" y="312.66666666666669" width="100" height="15.666666666666686"/>
+                                <rect key="frame" x="277" y="351.33333333333331" width="100" height="15.666666666666686"/>
                                 <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="13"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <stackView opaque="NO" contentMode="scaleToFill" distribution="fillEqually" translatesAutoresizingMaskIntoConstraints="NO" id="SS-Weekday-Hdr">
-                                <rect key="frame" x="16" y="340.66666666666669" width="361" height="20"/>
+                                <rect key="frame" x="16" y="371.33333333333331" width="361" height="20"/>
                                 <subviews>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Mon" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="SS-W1">
                                         <rect key="frame" x="0.0" y="0.0" width="51.666666666666664" height="20"/>
@@ -93,7 +93,7 @@
                                 </constraints>
                             </stackView>
                             <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="SS-Cal-Grid">
-                                <rect key="frame" x="16" y="370.66666666666674" width="361" height="320"/>
+                                <rect key="frame" x="16" y="394.66666666666674" width="361" height="320"/>
                                 <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="320" id="SS-Cal-H"/>
@@ -107,7 +107,7 @@
                                 <cells/>
                             </collectionView>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="SS-Play-Btn">
-                                <rect key="frame" x="111.66666666666669" y="714" width="170" height="50"/>
+                                <rect key="frame" x="107.66666666666669" y="716" width="178" height="52"/>
                                 <color key="backgroundColor" systemColor="systemBlueColor"/>
                                 <constraints>
                                     <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="52" id="SS-Play-H"/>
@@ -161,7 +161,7 @@
         <!--Still Sphere Info View Controller-->
         <scene sceneID="SS-Info-Scene">
             <objects>
-                <viewController storyboardIdentifier="StillSphereInfoViewController" useStoryboardIdentifierAsRestorationIdentifier="YES" id="SS-Info-VC" customClass="StillSphereInfoViewController" customModule="ParkEase" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="StillSphereInfoViewController" useStoryboardIdentifierAsRestorationIdentifier="YES" id="SS-Info-VC" customClass="StillSphereInfoViewController" customModule="ParkyCare" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="SS-Info-View">
                         <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -252,7 +252,7 @@
         <!--Still Sphere Game View Controller-->
         <scene sceneID="SS-Game-Scene">
             <objects>
-                <viewController storyboardIdentifier="StillSphereGameViewController" id="SS-Game-VC" customClass="StillSphereGameViewController" customModule="ParkEase" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="StillSphereGameViewController" id="SS-Game-VC" customClass="StillSphereGameViewController" customModule="ParkyCare" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="SS-Game-View">
                         <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -325,7 +325,7 @@
         <!--Still Sphere Result View Controller-->
         <scene sceneID="SS-Result-Scene">
             <objects>
-                <viewController storyboardIdentifier="StillSphereResultViewController" id="SS-Result-VC" customClass="StillSphereResultViewController" customModule="ParkEase" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="StillSphereResultViewController" id="SS-Result-VC" customClass="StillSphereResultViewController" customModule="ParkyCare" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="SS-Result-View">
                         <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -419,7 +419,7 @@
                                     </userDefinedRuntimeAttribute>
                                     <userDefinedRuntimeAttribute type="boolean" keyPath="layer.masksToBounds" value="NO"/>
                                     <userDefinedRuntimeAttribute type="number" keyPath="layer.shadowOpacity">
-                                        <real key="value" value="0.09"/>
+                                        <real key="value" value="0.089999999999999997"/>
                                     </userDefinedRuntimeAttribute>
                                     <userDefinedRuntimeAttribute type="size" keyPath="layer.shadowOffset">
                                         <size key="value" width="0.0" height="2"/>
@@ -477,25 +477,25 @@
         <image name="gyroscope" catalog="system" width="128" height="123"/>
         <image name="xmark" catalog="system" width="128" height="113"/>
         <systemColor name="secondaryLabelColor">
-            <color red="0.23529411764705882" green="0.23529411764705882" blue="0.2627450980392157" alpha="0.59999999999999998" colorSpace="custom" customColorSpace="sRGB"/>
+            <color red="0.23529411759999999" green="0.23529411759999999" blue="0.26274509800000001" alpha="0.59999999999999998" colorSpace="custom" customColorSpace="sRGB"/>
         </systemColor>
         <systemColor name="separatorColor">
-            <color red="0.23529411764705882" green="0.23529411764705882" blue="0.2627450980392157" alpha="0.12" colorSpace="custom" customColorSpace="sRGB"/>
+            <color red="0.23529411759999999" green="0.23529411759999999" blue="0.26274509800000001" alpha="0.28999999999999998" colorSpace="custom" customColorSpace="sRGB"/>
         </systemColor>
         <systemColor name="systemBackgroundColor">
             <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
         </systemColor>
         <systemColor name="systemBlueColor">
-            <color red="0.0" green="0.47843137254901963" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <color red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </systemColor>
         <systemColor name="systemGray5Color">
-            <color red="0.89803921568627454" green="0.89803921568627454" blue="0.91764705882352937" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <color red="0.8980392157" green="0.8980392157" blue="0.91764705879999997" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </systemColor>
         <systemColor name="systemGrayColor">
-            <color red="0.55686274509803924" green="0.55686274509803924" blue="0.57647058823529407" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <color red="0.5568627451" green="0.5568627451" blue="0.57647058819999997" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </systemColor>
         <systemColor name="systemYellowColor">
-            <color red="1" green="0.80000000000000004" blue="0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <color red="1" green="0.80000000000000004" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </systemColor>
     </resources>
 </document>

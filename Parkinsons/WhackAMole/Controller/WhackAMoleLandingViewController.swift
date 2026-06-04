@@ -27,7 +27,7 @@ class WhackAMoleLandingViewController: UIViewController,
     private var firstWeekdayOffset = 0
     private var selectedDate: Date?
 
-    private let themeColor = UIColor(red: 0.20, green: 0.78, blue: 0.35, alpha: 1)
+    private let themeColor = UIColor(hex: "#D4B15A")
 
     // MARK: - Lifecycle
 

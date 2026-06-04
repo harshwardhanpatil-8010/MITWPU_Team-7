@@ -22,6 +22,7 @@ class EmojiLandingScreen: UIViewController, UICollectionViewDataSource, UICollec
     private var daysInMonth = 0
     private var firstWeekdayOffset = 0
     private var selectedDate: Date?
+    private let themeColor = UIColor(hex: "#C98A6B")
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -202,13 +203,9 @@ class EmojiLandingScreen: UIViewController, UICollectionViewDataSource, UICollec
         let gradient = CAGradientLayer()
 
         gradient.colors = [
-            UIColor(hex: "FF9500")
-                .withAlphaComponent(0.30)
-                .cgColor,
+            themeColor.withAlphaComponent(0.30).cgColor,
 
-            UIColor(hex: "FF9500")
-                .withAlphaComponent(0.0)
-                .cgColor
+            themeColor.withAlphaComponent(0.0).cgColor
         ]
 
         gradient.startPoint = CGPoint(x: 0.5, y: 0)
@@ -274,7 +271,7 @@ class EmojiLandingScreen: UIViewController, UICollectionViewDataSource, UICollec
             isCompleted: isCompleted,
             showTodayOutline: isToday && !isSelected,
             enabled: !isFuture,
-            themeColor: UIColor(hex: "FF9500")
+            themeColor: themeColor
         )
 
         return cell

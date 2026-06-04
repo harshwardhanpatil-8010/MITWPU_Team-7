@@ -18,6 +18,7 @@ class BreakTheBrickLandingViewController: UIViewController {
 
     private let manager = BreakTheBrickManager.shared
     private let today = Calendar(identifier: .gregorian).startOfDay(for: Date())
+    private let themeColor = UIColor(hex: "#6B73D6")
 
     private var firstDayOfMonth: Date!
     private var daysInMonth = 0
@@ -27,8 +28,8 @@ class BreakTheBrickLandingViewController: UIViewController {
     private var navGradientOverlay: CAGradientLayer {
         let gradient = CAGradientLayer()
         gradient.colors = [
-            UIColor.systemTeal.withAlphaComponent(0.30).cgColor,
-            UIColor.systemTeal.withAlphaComponent(0.0).cgColor
+            themeColor.withAlphaComponent(0.30).cgColor,
+            themeColor.withAlphaComponent(0.0).cgColor
         ]
         gradient.startPoint = CGPoint(x: 0.5, y: 0)
         gradient.endPoint   = CGPoint(x: 0.5, y: 1)
@@ -204,7 +205,7 @@ extension BreakTheBrickLandingViewController: UICollectionViewDelegate, UICollec
             isCompleted: isCompleted,
             showTodayOutline: showTodayOutline,
             enabled: !isFuture,
-            themeColor: .systemTeal
+            themeColor: themeColor
         )
 
         return cell

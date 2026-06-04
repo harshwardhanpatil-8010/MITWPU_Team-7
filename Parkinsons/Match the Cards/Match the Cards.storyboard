@@ -12,14 +12,14 @@
         <!--Match the Cards-->
         <scene sceneID="PI8-Ar-JOi">
             <objects>
-                <viewController storyboardIdentifier="matchTheCardsLandingPage" useStoryboardIdentifierAsRestorationIdentifier="YES" id="JqZ-U1-ZY8" customClass="LevelSelectionViewController" customModule="ParkEase" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="matchTheCardsLandingPage" useStoryboardIdentifierAsRestorationIdentifier="YES" id="JqZ-U1-ZY8" customClass="LevelSelectionViewController" customModule="ParkyCare" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="5Dl-Ag-ztt">
                         <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="brain.fill" catalog="system" translatesAutoresizingMaskIntoConstraints="NO" id="Jln-MY-x4G">
                                 <rect key="frame" x="106" y="150.66666666666663" width="180" height="140.33333333333337"/>
-                                <color key="tintColor" systemColor="systemPurpleColor"/>
+                                <color key="tintColor" red="0.30196078431372547" green="0.68627450980392157" blue="0.70196078431372544" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="180" id="1M8-gd-nVL"/>
                                     <constraint firstAttribute="height" constant="140" id="MOx-9l-JPD"/>
@@ -97,7 +97,7 @@
                                             <inset key="sectionInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
                                         </collectionViewFlowLayout>
                                         <cells>
-                                            <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="DateCell" id="6Nm-KV-UlB" customClass="DateCell" customModule="ParkEase" customModuleProvider="target">
+                                            <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="DateCell" id="6Nm-KV-UlB" customClass="DateCell" customModule="ParkyCare" customModuleProvider="target">
                                                 <rect key="frame" x="0.0" y="0.0" width="127.99999999999997" height="128"/>
                                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                                 <collectionViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" id="Q65-6l-kjJ">
@@ -226,7 +226,7 @@
         <!--Info Match The Cards View Controller-->
         <scene sceneID="OzG-1b-fjQ">
             <objects>
-                <viewController id="nXu-fE-t2i" customClass="InfoMatchTheCardsViewController" customModule="ParkEase" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController id="nXu-fE-t2i" customClass="InfoMatchTheCardsViewController" customModule="ParkyCare" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="CIW-uW-C5v">
                         <rect key="frame" x="0.0" y="0.0" width="393" height="793"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -318,7 +318,7 @@
         <!--Game View Controller-->
         <scene sceneID="WfP-G2-Dat">
             <objects>
-                <viewController storyboardIdentifier="GameViewController" id="cR1-vI-89a" customClass="GameViewController" customModule="ParkEase" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="GameViewController" id="cR1-vI-89a" customClass="GameViewController" customModule="ParkyCare" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="ZPa-rp-8Vz">
                         <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -339,7 +339,7 @@
                                     <inset key="sectionInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
                                 </collectionViewFlowLayout>
                                 <cells>
-                                    <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="CardCell" id="nbq-z8-vsD" customClass="MatchTheCardCollectionViewCell" customModule="ParkEase" customModuleProvider="target">
+                                    <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="CardCell" id="nbq-z8-vsD" customClass="MatchTheCardCollectionViewCell" customModule="ParkyCare" customModuleProvider="target">
                                         <rect key="frame" x="56.666666666666664" y="0.0" width="248" height="186"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <collectionViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" id="ETV-Sd-P4R">
@@ -395,7 +395,7 @@
         <!--Success View Controller-->
         <scene sceneID="SPz-Im-EKC">
             <objects>
-                <viewController storyboardIdentifier="SuccessViewController" id="F4j-j0-rPB" customClass="SuccessViewController" customModule="ParkEase" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="SuccessViewController" id="F4j-j0-rPB" customClass="SuccessViewController" customModule="ParkyCare" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="CIa-cA-WP3">
                         <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -476,16 +476,13 @@
         <image name="xmark" catalog="system" width="128" height="113"/>
         <image name="🎊" width="150" height="150"/>
         <systemColor name="separatorColor">
-            <color red="0.23529411764705882" green="0.23529411764705882" blue="0.2627450980392157" alpha="0.12" colorSpace="custom" customColorSpace="sRGB"/>
+            <color red="0.23529411759999999" green="0.23529411759999999" blue="0.26274509800000001" alpha="0.28999999999999998" colorSpace="custom" customColorSpace="sRGB"/>
         </systemColor>
         <systemColor name="systemBackgroundColor">
             <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
         </systemColor>
         <systemColor name="systemGrayColor">
-            <color red="0.55686274509803924" green="0.55686274509803924" blue="0.57647058823529407" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-        </systemColor>
-        <systemColor name="systemPurpleColor">
-            <color red="0.79607843137254897" green="0.18823529411764706" blue="0.8784313725490196" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <color red="0.5568627451" green="0.5568627451" blue="0.57647058819999997" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </systemColor>
     </resources>
 </document>

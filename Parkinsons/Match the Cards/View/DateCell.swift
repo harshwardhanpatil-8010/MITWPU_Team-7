@@ -74,7 +74,7 @@ class DateCell: UICollectionViewCell {
 
             labelBackgroundView.centerYAnchor.constraint(equalTo: contentView.centerYAnchor),
 
-            labelBackgroundView.widthAnchor.constraint(equalTo: contentView.widthAnchor, multiplier: 0.88),
+            labelBackgroundView.widthAnchor.constraint(equalTo: contentView.widthAnchor, multiplier: 0.78),
 
             labelBackgroundView.heightAnchor.constraint(equalTo: labelBackgroundView.widthAnchor),
 
@@ -242,3 +242,14 @@ class DateCell: UICollectionViewCell {
 
 }
 
+extension UIView {
+    func tintLargeImageViews(_ color: UIColor, minimumSide: CGFloat = 80) {
+        subviews.forEach { subview in
+            if let imageView = subview as? UIImageView,
+               max(imageView.bounds.width, imageView.bounds.height) >= minimumSide {
+                imageView.tintColor = color
+            }
+            subview.tintLargeImageViews(color, minimumSide: minimumSide)
+        }
+    }
+}

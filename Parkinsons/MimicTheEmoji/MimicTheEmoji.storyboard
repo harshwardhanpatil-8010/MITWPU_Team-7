@@ -9,20 +9,17 @@
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
-
         <!--Mimic the Emoji-->
         <scene sceneID="w4R-e2-MAU">
             <objects>
-                <viewController storyboardIdentifier="EmojiLandingScreenID" title="Mimic the Emoji" useStoryboardIdentifierAsRestorationIdentifier="YES" id="AEg-aT-B4j" customClass="EmojiLandingScreen" customModule="ParkEase" customModuleProvider="target" sceneMemberID="viewController">
-
+                <viewController storyboardIdentifier="EmojiLandingScreenID" title="Mimic the Emoji" useStoryboardIdentifierAsRestorationIdentifier="YES" id="AEg-aT-B4j" customClass="EmojiLandingScreen" customModule="ParkyCare" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="40a-JY-YdK">
                         <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-
                             <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="smiley" catalog="system" translatesAutoresizingMaskIntoConstraints="NO" id="7aX-Yq-Jzs">
                                 <rect key="frame" x="106.66666666666669" y="151.33333333333331" width="180" height="138.66666666666663"/>
-                                <color key="tintColor" systemColor="systemOrangeColor"/>
+                                <color key="tintColor" red="0.78823529411764703" green="0.54117647058823526" blue="0.41960784313725491" alpha="1" colorSpace="calibratedRGB"/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="180" id="9gu-oy-vWe"/>
                                     <constraint firstAttribute="height" constant="140" id="KIN-xM-EzW"/>
@@ -30,7 +27,6 @@
                             </imageView>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="0aA-Qp-don">
                                 <rect key="frame" x="0.0" y="349" width="393" height="389"/>
-
                                 <subviews>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="January 2026" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="qhA-DW-pOk">
                                         <rect key="frame" x="16.000000000000007" y="0.0" width="110.66666666666669" height="20.333333333333332"/>
@@ -85,7 +81,6 @@
                                             </label>
                                         </subviews>
                                     </stackView>
-
                                     <stackView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="pHD-qg-ZuK">
                                         <rect key="frame" x="263" y="1" width="114" height="16"/>
                                         <subviews>
@@ -109,22 +104,19 @@
                                         <rect key="frame" x="0.0" y="46" width="393" height="293"/>
                                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                                         <collectionViewFlowLayout key="collectionViewLayout" automaticEstimatedItemSize="YES" minimumLineSpacing="10" minimumInteritemSpacing="10" id="iXx-u3-aNW">
-
                                             <size key="itemSize" width="128" height="128"/>
                                             <size key="headerReferenceSize" width="0.0" height="0.0"/>
                                             <size key="footerReferenceSize" width="0.0" height="0.0"/>
                                             <inset key="sectionInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
                                         </collectionViewFlowLayout>
                                         <cells>
-
-                                            <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="DateCell" id="7n7-1Z-khN" customClass="DateCell" customModule="ParkEase" customModuleProvider="target">
+                                            <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="DateCell" id="7n7-1Z-khN" customClass="DateCell" customModule="ParkyCare" customModuleProvider="target">
                                                 <rect key="frame" x="0.0" y="0.0" width="127.99999999999997" height="128"/>
                                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                                 <collectionViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" id="EBs-pO-oHY">
                                                     <rect key="frame" x="0.0" y="0.0" width="127.99999999999997" height="128"/>
                                                     <autoresizingMask key="autoresizingMask"/>
                                                 </collectionViewCellContentView>
-
                                             </collectionViewCell>
                                         </cells>
                                     </collectionView>
@@ -132,7 +124,6 @@
                                 <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                                 <constraints>
                                     <constraint firstItem="qhA-DW-pOk" firstAttribute="top" secondItem="0aA-Qp-don" secondAttribute="top" id="6d1-NM-Bx0"/>
-
                                     <constraint firstAttribute="bottom" secondItem="icA-Be-QOe" secondAttribute="bottom" constant="50" id="9Es-QS-9Xq"/>
                                     <constraint firstAttribute="trailing" secondItem="pHD-qg-ZuK" secondAttribute="trailing" constant="16" id="FgD-Jf-F93"/>
                                     <constraint firstItem="VmY-sX-3E0" firstAttribute="top" secondItem="qhA-DW-pOk" secondAttribute="bottom" constant="2" id="HQD-Ic-3Dc"/>
@@ -156,7 +147,6 @@
                                 <constraints>
                                     <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="178" id="S3x-tj-lGG"/>
                                     <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="52" id="mbZ-JZ-Q52"/>
-
                                 </constraints>
                                 <state key="normal" title="Button"/>
                                 <buttonConfiguration key="configuration" style="filled" title="Play" cornerStyle="capsule"/>
@@ -164,12 +154,10 @@
                                     <action selector="playButtonTapped:" destination="AEg-aT-B4j" eventType="touchUpInside" id="PSX-7e-8V1"/>
                                 </connections>
                             </button>
-
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="i17-Z1-IRh"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                         <constraints>
-
                             <constraint firstItem="5fQ-k3-UFl" firstAttribute="leading" secondItem="i17-Z1-IRh" secondAttribute="leading" constant="16" id="82p-U5-Ey5"/>
                             <constraint firstItem="7aX-Yq-Jzs" firstAttribute="top" secondItem="i17-Z1-IRh" secondAttribute="top" constant="32.5" id="BmG-y2-Pyb"/>
                             <constraint firstItem="0aA-Qp-don" firstAttribute="trailing" secondItem="i17-Z1-IRh" secondAttribute="trailing" id="DIV-vl-4cf"/>
@@ -185,7 +173,6 @@
                     </view>
                     <connections>
                         <outlet property="collectionView" destination="icA-Be-QOe" id="2V4-3q-AzF"/>
-
                         <outlet property="completedLabel" destination="ApT-8p-MC6" id="YHV-n0-EvZ"/>
                         <outlet property="monthAndYearOutlet" destination="qhA-DW-pOk" id="YbO-o4-Inu"/>
                         <outlet property="playButton" destination="d9j-NU-iKa" id="863-yK-e8G"/>
@@ -193,14 +180,12 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="kAU-qM-YSQ" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-
             <point key="canvasLocation" x="1218" y="140"/>
         </scene>
         <!--Emoji Game View Controller-->
         <scene sceneID="L1D-vc-qa5">
             <objects>
-                <viewController storyboardIdentifier="EmojiGameViewController" useStoryboardIdentifierAsRestorationIdentifier="YES" id="mD5-tf-3Ic" customClass="EmojiGameViewController" customModule="ParkEase" customModuleProvider="target" sceneMemberID="viewController">
-
+                <viewController storyboardIdentifier="EmojiGameViewController" useStoryboardIdentifierAsRestorationIdentifier="YES" id="mD5-tf-3Ic" customClass="EmojiGameViewController" customModule="ParkyCare" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="PVl-rL-XER">
                         <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -215,27 +200,22 @@
                                 </items>
                             </navigationBar>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="HOV-OP-pNe">
-
                                 <rect key="frame" x="16" y="108" width="361" height="616"/>
                                 <subviews>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Emoji Name" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="2yR-gs-8Aa">
                                         <rect key="frame" x="0.0" y="-40" width="361" height="20.333333333333332"/>
                                         <fontDescription key="fontDescription" style="UICTFontTextStyleHeadline"/>
-
                                         <nil key="textColor"/>
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Score: 100" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="kEP-ye-1el">
-                                <rect key="frame" x="8" y="-3.6666666666666714" width="86" height="22"/>
-
+                                        <rect key="frame" x="8" y="-3.6666666666666714" width="86" height="22"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="18"/>
                                         <nil key="textColor"/>
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="6jm-hg-c4y" customClass="ARView" customModule="RealityKit">
-
                                         <rect key="frame" x="8" y="26.333333333333314" width="345" height="581.66666666666674"/>
-
                                         <subviews>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Emoji" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="KEs-o7-xL3">
                                                 <rect key="frame" x="92" y="34" width="71" height="36"/>
@@ -251,9 +231,7 @@
                                         </constraints>
                                     </view>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Time Left: 100" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="CAX-sj-qaP">
-
                                         <rect key="frame" x="238" y="-3.6666666666666714" width="115" height="22"/>
-
                                         <fontDescription key="fontDescription" type="system" pointSize="18"/>
                                         <nil key="textColor"/>
                                         <nil key="highlightedColor"/>
@@ -261,7 +239,6 @@
                                 </subviews>
                                 <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                                 <constraints>
-
                                     <constraint firstItem="CAX-sj-qaP" firstAttribute="top" secondItem="2yR-gs-8Aa" secondAttribute="bottom" constant="16" id="2Mz-uZ-45Y"/>
                                     <constraint firstItem="kEP-ye-1el" firstAttribute="leading" secondItem="HOV-OP-pNe" secondAttribute="leading" constant="8" id="5Hc-Xq-Q4n"/>
                                     <constraint firstItem="6jm-hg-c4y" firstAttribute="top" secondItem="kEP-ye-1el" secondAttribute="bottom" constant="8" id="AXR-M7-HCO"/>
@@ -284,28 +261,22 @@
                                 </constraints>
                                 <state key="normal" title="Button"/>
                                 <buttonConfiguration key="configuration" style="filled" title="Skip" cornerStyle="capsule"/>
-
                             </button>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="GfA-Yt-JmV"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                         <constraints>
-
                             <constraint firstItem="GfA-Yt-JmV" firstAttribute="bottom" secondItem="HOV-OP-pNe" secondAttribute="bottom" constant="60" id="6y3-Ue-JCO"/>
                             <constraint firstItem="GfA-Yt-JmV" firstAttribute="bottom" secondItem="9mw-Qg-v0y" secondAttribute="bottom" constant="10" id="HNo-ka-Bwu"/>
-
                             <constraint firstItem="lM6-9O-KdX" firstAttribute="leading" secondItem="PVl-rL-XER" secondAttribute="leading" id="Nz7-HV-LYZ"/>
                             <constraint firstItem="HOV-OP-pNe" firstAttribute="leading" secondItem="GfA-Yt-JmV" secondAttribute="leading" constant="16" id="Ru0-4k-S7N"/>
                             <constraint firstItem="lM6-9O-KdX" firstAttribute="leading" secondItem="GfA-Yt-JmV" secondAttribute="leading" id="c1d-v2-6SZ"/>
                             <constraint firstItem="lM6-9O-KdX" firstAttribute="top" secondItem="PVl-rL-XER" secondAttribute="top" constant="48" id="cGz-xP-c2Y"/>
-
                             <constraint firstItem="GfA-Yt-JmV" firstAttribute="trailing" secondItem="HOV-OP-pNe" secondAttribute="trailing" constant="16" id="nxE-6k-VbA"/>
                             <constraint firstItem="HOV-OP-pNe" firstAttribute="top" secondItem="lM6-9O-KdX" secondAttribute="bottom" constant="16" id="pqx-md-uCg"/>
                             <constraint firstItem="lM6-9O-KdX" firstAttribute="centerX" secondItem="HOV-OP-pNe" secondAttribute="centerX" id="qYi-0B-Mwh"/>
                             <constraint firstItem="lM6-9O-KdX" firstAttribute="trailing" secondItem="GfA-Yt-JmV" secondAttribute="trailing" id="t8h-Nc-ybP"/>
-
                             <constraint firstItem="9mw-Qg-v0y" firstAttribute="centerX" secondItem="PVl-rL-XER" secondAttribute="centerX" id="wYa-xX-MLy"/>
-
                         </constraints>
                     </view>
                     <connections>
@@ -325,32 +296,24 @@
         <!--Result Mimic The Emoji-->
         <scene sceneID="Ttr-CQ-R0h">
             <objects>
-
-                <viewController storyboardIdentifier="resultMimicTheEmoji" useStoryboardIdentifierAsRestorationIdentifier="YES" id="zFe-Fq-c1L" customClass="resultMimicTheEmoji" customModule="ParkEase" customModuleProvider="target" sceneMemberID="viewController">
-
+                <viewController storyboardIdentifier="resultMimicTheEmoji" useStoryboardIdentifierAsRestorationIdentifier="YES" id="zFe-Fq-c1L" customClass="resultMimicTheEmoji" customModule="ParkyCare" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="HrB-cI-GHf">
                         <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="🎊" translatesAutoresizingMaskIntoConstraints="NO" id="CZU-3s-2gZ">
-
                                 <rect key="frame" x="56" y="230" width="281" height="150"/>
-
                                 <constraints>
                                     <constraint firstAttribute="width" secondItem="CZU-3s-2gZ" secondAttribute="height" multiplier="15:8" id="oLP-6b-yu8"/>
                                 </constraints>
                             </imageView>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Good job!" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="CwJ-CA-yG0">
-
                                 <rect key="frame" x="16" y="148" width="361" height="52"/>
-
                                 <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="43"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
-
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" text="Your facial stiffness has reduced! " textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="eqF-Ze-Nwg">
-
                                 <rect key="frame" x="16" y="424.33333333333331" width="361" height="28.666666666666686"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="24"/>
                                 <nil key="textColor"/>
@@ -458,12 +421,10 @@
                                 </constraints>
                             </view>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="AF7-HU-aqk">
-
                                 <rect key="frame" x="107.33333333333333" y="687" width="178.33333333333337" height="52"/>
                                 <constraints>
                                     <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="52" id="0CZ-bl-07B"/>
                                     <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="178" id="mw1-FM-4qq"/>
-
                                 </constraints>
                                 <state key="normal" title="Button"/>
                                 <buttonConfiguration key="configuration" style="filled" title="Finish" cornerStyle="capsule"/>
@@ -476,7 +437,6 @@
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                         <constraints>
                             <constraint firstItem="q9q-rH-b8n" firstAttribute="trailing" secondItem="eqF-Ze-Nwg" secondAttribute="trailing" constant="16" id="DOF-UH-sfo"/>
-
                             <constraint firstItem="AF7-HU-aqk" firstAttribute="top" secondItem="NG2-Vw-qgD" secondAttribute="bottom" constant="84" id="HVj-4R-9Ir"/>
                             <constraint firstItem="CwJ-CA-yG0" firstAttribute="leading" secondItem="q9q-rH-b8n" secondAttribute="leading" constant="16" id="IPf-7h-ojk"/>
                             <constraint firstItem="NG2-Vw-qgD" firstAttribute="top" secondItem="HrB-cI-GHf" secondAttribute="top" constant="507" id="L6g-pf-3Qr"/>
@@ -491,16 +451,13 @@
                             <constraint firstItem="eqF-Ze-Nwg" firstAttribute="leading" secondItem="q9q-rH-b8n" secondAttribute="leading" constant="16" id="lDU-Pk-hEY"/>
                             <constraint firstItem="NG2-Vw-qgD" firstAttribute="leading" secondItem="q9q-rH-b8n" secondAttribute="leading" constant="16" id="skq-Hj-7TC"/>
                             <constraint firstItem="CwJ-CA-yG0" firstAttribute="top" secondItem="q9q-rH-b8n" secondAttribute="top" constant="30" id="yj0-7Q-dzV"/>
-
                         </constraints>
                     </view>
                     <connections>
                         <outlet property="completedEmojiCount" destination="n8D-22-oZ3" id="0bL-BS-pUp"/>
                         <outlet property="finishButton" destination="AF7-HU-aqk" id="PV3-IN-3rV"/>
                         <outlet property="resultCardBackground" destination="NG2-Vw-qgD" id="TQy-2E-Q4g"/>
-
                         <outlet property="resultTitleLabel" destination="CwJ-CA-yG0" id="AbC-De-FGH"/>
-
                         <outlet property="skippedEmojiCount" destination="cl6-f7-dxk" id="yWJ-qZ-ee5"/>
                         <outlet property="timeTakenCount" destination="TKX-WX-crb" id="Mwx-DL-uK2"/>
                     </connections>
@@ -509,11 +466,10 @@
             </objects>
             <point key="canvasLocation" x="2866.4122137404579" y="130.98591549295776"/>
         </scene>
-
         <!--Info Mimic The Emoji View Controller-->
         <scene sceneID="hSF-0V-XdX">
             <objects>
-                <viewController storyboardIdentifier="InfoMimicTheEmojiViewController" useStoryboardIdentifierAsRestorationIdentifier="YES" id="D9s-Va-0Dw" customClass="InfoMimicTheEmojiViewController" customModule="ParkEase" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="InfoMimicTheEmojiViewController" useStoryboardIdentifierAsRestorationIdentifier="YES" id="D9s-Va-0Dw" customClass="InfoMimicTheEmojiViewController" customModule="ParkyCare" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="ORw-h4-3Y1">
                         <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -608,22 +564,19 @@
         <image name="xmark" catalog="system" width="128" height="113"/>
         <image name="🎊" width="150" height="150"/>
         <systemColor name="separatorColor">
-            <color red="0.23529411764705882" green="0.23529411764705882" blue="0.2627450980392157" alpha="0.12" colorSpace="custom" customColorSpace="sRGB"/>
+            <color red="0.23529411759999999" green="0.23529411759999999" blue="0.26274509800000001" alpha="0.28999999999999998" colorSpace="custom" customColorSpace="sRGB"/>
         </systemColor>
-
         <systemColor name="systemBackgroundColor">
             <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
         </systemColor>
         <systemColor name="systemGray5Color">
-
-            <color red="0.89803921568627454" green="0.89803921568627454" blue="0.91764705882352937" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <color red="0.8980392157" green="0.8980392157" blue="0.91764705879999997" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </systemColor>
         <systemColor name="systemGrayColor">
-            <color red="0.55686274509803924" green="0.55686274509803924" blue="0.57647058823529407" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <color red="0.5568627451" green="0.5568627451" blue="0.57647058819999997" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </systemColor>
         <systemColor name="systemOrangeColor">
-            <color red="1" green="0.55294117647058827" blue="0.15686274509803921" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-
+            <color red="1" green="0.58431372550000005" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </systemColor>
     </resources>
 </document>

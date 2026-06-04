@@ -13,11 +13,12 @@ UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
         c.firstWeekday = 2
         return c
     }()
+    private let themeColor = UIColor(hex: "#4DAFB3")
     private var navGradientOverlay: CAGradientLayer {
         let gradient = CAGradientLayer()
         gradient.colors = [
-            UIColor(hex: "BF5AF2").withAlphaComponent(0.30).cgColor,
-            UIColor(hex: "BF5AF2").withAlphaComponent(0.0).cgColor
+            themeColor.withAlphaComponent(0.30).cgColor,
+            themeColor.withAlphaComponent(0.0).cgColor
         ]
         gradient.startPoint = CGPoint(x: 0.5, y: 0)
         gradient.endPoint   = CGPoint(x: 0.5, y: 1)
@@ -129,7 +130,7 @@ UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
             isCompleted: isCompleted,
             showTodayOutline: showTodayOutline,
             enabled: !isFuture,
-            themeColor: UIColor(hex: "BF5AF2")
+            themeColor: themeColor
         )
         return cell
     }

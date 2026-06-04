@@ -24,6 +24,7 @@ class LevelSelectionPuzzleViewController: UIViewController,
     private var selectedDate: Date?
     private var layoutConfigured    = false
     private var gradientView: UIView?
+    private let themeColor = UIColor(hex: "#7A8DB3")
 
     private func setupGradientLayer() {
         if gradientView == nil {
@@ -31,8 +32,8 @@ class LevelSelectionPuzzleViewController: UIViewController,
             gView.isUserInteractionEnabled = false
             let gradient = CAGradientLayer()
             gradient.colors = [
-                UIColor(red: 0.545, green: 0.271, blue: 0.075, alpha: 0.35).cgColor,
-                UIColor(red: 0.545, green: 0.271, blue: 0.075, alpha: 0.0).cgColor
+                themeColor.withAlphaComponent(0.35).cgColor,
+                themeColor.withAlphaComponent(0.0).cgColor
             ]
             gradient.startPoint = CGPoint(x: 0.5, y: 0)
             gradient.endPoint   = CGPoint(x: 0.5, y: 1)
@@ -166,7 +167,7 @@ class LevelSelectionPuzzleViewController: UIViewController,
             isCompleted: isCompleted,
             showTodayOutline: showTodayOutline,
             enabled: !isFuture,
-            themeColor: UIColor.systemBrown
+            themeColor: themeColor
         )
         return cell
     }
