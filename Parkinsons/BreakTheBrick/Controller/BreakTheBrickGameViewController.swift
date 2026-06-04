@@ -501,8 +501,8 @@ class BreakTheBrickGameView: UIView {
                     brick.layer.shadowColor = UIColor.systemGray.cgColor
                     brick.tag = 1  // iron — indestructible
                 } else {
-                    brick.backgroundColor = UIColor.systemTeal
-                    brick.layer.shadowColor = UIColor.systemTeal.cgColor
+                    brick.backgroundColor = UIColor.systemBrown
+                    brick.layer.shadowColor = UIColor.systemBrown.cgColor
                     brick.tag = 0  // breakable
                     breakableBricksTotal += 1
                 }
@@ -518,7 +518,7 @@ class BreakTheBrickGameView: UIView {
         // Safety: ensure at least one breakable brick exists
         if breakableBricksTotal == 0, let first = bricks.first {
             first.tag = 0
-            first.backgroundColor = .systemTeal
+            first.backgroundColor = .systemBrown
             breakableBricksTotal = 1
         }
     }

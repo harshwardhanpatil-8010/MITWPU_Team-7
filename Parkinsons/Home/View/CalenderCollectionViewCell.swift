@@ -242,7 +242,7 @@ class CalenderCollectionViewCell: UICollectionViewCell {
         isFuture: Bool,
         progress: CalendarActivityProgress
     ) {
-        calenderDay.text = model.dateString
+        calenderDay.text = model.dayString
         calenderDate.text = model.dateString
         ringsView.setProgress(workout: progress.workoutProgress, walking: progress.walkingProgress)
         ringsView.isDimmed = isFuture
@@ -257,7 +257,7 @@ class CalenderCollectionViewCell: UICollectionViewCell {
             return
         }
 
-        calenderDay.textColor = .secondaryLabel
+        calenderDay.textColor = .label
         calenderDate.textColor = .label
         dayBadgeView.backgroundColor = .clear
 
