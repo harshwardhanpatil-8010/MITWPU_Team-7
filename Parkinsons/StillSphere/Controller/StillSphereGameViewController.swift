@@ -14,6 +14,7 @@ class StillSphereGameViewController: UIViewController {
     @IBOutlet weak var progressView: UIProgressView!
 
     var sessionDate: Date = Date() // Received from landing screen
+    private let themeColor = UIColor.systemYellow
     
     private let motionManager = CMMotionManager()
     private var scene: StillSphereScene?
@@ -26,8 +27,8 @@ class StillSphereGameViewController: UIViewController {
     private var navGradientOverlay: CAGradientLayer {
         let gradient = CAGradientLayer()
         gradient.colors = [
-            UIColor.systemGreen.withAlphaComponent(0.20).cgColor,
-            UIColor.systemGreen.withAlphaComponent(0.0).cgColor
+            themeColor.withAlphaComponent(0.20).cgColor,
+            themeColor.withAlphaComponent(0.0).cgColor
         ]
         gradient.startPoint = CGPoint(x: 0.5, y: 0)
         gradient.endPoint   = CGPoint(x: 0.5, y: 1)
@@ -62,7 +63,7 @@ class StillSphereGameViewController: UIViewController {
     }
     
     private func setupNavigationBar() {
-        self.title = "StillSphere"
+        self.title = "Still Sphere"
         
         // Back Button
         let backImage = UIImage(systemName: "chevron.left")
@@ -93,6 +94,7 @@ class StillSphereGameViewController: UIViewController {
         progressView.progress = 0
         
         let gameScene = StillSphereScene(size: skView.bounds.size)
+        gameScene.themeColor = themeColor
         gameScene.scaleMode = .aspectFill
         
         gameScene.onLevelComplete = { [weak self] steadiness in
@@ -185,6 +187,7 @@ class StillSphereScene: SKScene {
     var onLevelComplete: ((Double) -> Void)?
     var onProgressUpdate: ((Double) -> Void)?
     var onTimeUpdate: ((Double) -> Void)?
+    var themeColor: UIColor = .systemYellow
     
     private var sphere: SKShapeNode!
     private var targetArea: SKShapeNode!
@@ -233,7 +236,7 @@ class StillSphereScene: SKScene {
         
         targetArea.strokeColor = .white
         targetArea.lineWidth = 5
-        targetArea.fillColor = .systemGreen.withAlphaComponent(0.3)
+        targetArea.fillColor = themeColor.withAlphaComponent(0.3)
         targetArea.glowWidth = 20
         addChild(targetArea)
         

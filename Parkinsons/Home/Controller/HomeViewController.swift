@@ -58,10 +58,10 @@ class HomeViewController: UIViewController, UICollectionViewDelegate {
         TherapeuticGameModel(title: "Mimic the Emoji", description: "Complete your daily challenge!", iconName: "face.smiling", iconColor: .systemOrange),
         TherapeuticGameModel(title: "Match the Cards", description: "Complete your daily challenge!", iconName: "brain.fill", iconColor: .systemPurple),
 
-        TherapeuticGameModel(title: "StillSphere", description: "Complete your daily challenge!", iconName: "gyroscope", iconColor: .systemGreen),
+        TherapeuticGameModel(title: "Still Sphere", description: "Complete your daily challenge!", iconName: "gyroscope", iconColor: .systemYellow),
 
         TherapeuticGameModel(title: "Jigsaw Puzzle", description: "Complete your daily challenge!", iconName: "puzzlepiece.extension.fill", iconColor: .systemBrown),
-        TherapeuticGameModel(title: "Whack a Mole", description: "Complete your daily challenge!", iconName: "hammer.fill", iconColor: .systemIndigo),
+        TherapeuticGameModel(title: "Whack a Mole", description: "Complete your daily challenge!", iconName: "hammer.fill", iconColor: .systemGreen),
         TherapeuticGameModel(title: "Break the Brick", description: "Complete your daily challenge!", iconName: "square.stack.3d.up.fill", iconColor: .systemTeal)
 
     ]
@@ -726,7 +726,7 @@ extension HomeViewController {
     private func showGamesInfoPopup() {
         let alert = UIAlertController(
             title: "Therapeutic Games",
-            message: "Daily games to enhance memory, focus and facial movement for people with Parkinson's disease. Mimic the Emoji boosts facial expression by copying emojis. Match the Cards improves memory and attention. Whack-a-Mole sharpens reaction time and hand-eye coordination. Play regularly to keep your mind active!",
+            message: "Daily games to enhance memory, focus and facial movement for people with Parkinson's disease. Mimic the Emoji boosts facial expression by copying emojis. Match the Cards improves memory and attention. Whack a Mole sharpens reaction time and hand-eye coordination. Play regularly to keep your mind active!",
             preferredStyle: .alert
         )
         alert.addAction(UIAlertAction(title: "Got it", style: .default))

@@ -20,13 +20,13 @@
                                 <rect key="frame" x="121.66666666666669" y="98.333333333333314" width="150" height="152"/>
                                 <color key="tintColor" systemColor="systemTealColor"/>
                                 <constraints>
-                                    <constraint firstAttribute="height" constant="150" id="BTB-Hero-H"/>
-                                    <constraint firstAttribute="width" constant="150" id="BTB-Hero-W"/>
+                                    <constraint firstAttribute="height" constant="140" id="BTB-Hero-H"/>
+                                    <constraint firstAttribute="width" constant="180" id="BTB-Hero-W"/>
                                 </constraints>
                             </imageView>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Daily Challenge" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="BTB-Daily-Hdr">
                                 <rect key="frame" x="24" y="280" width="159.33333333333334" height="26.333333333333314"/>
-                                <fontDescription key="fontDescription" type="boldSystem" pointSize="22"/>
+                                <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="19"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
@@ -47,44 +47,44 @@
                                 <subviews>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Mon" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="BTB-W1">
                                         <rect key="frame" x="0.0" y="0.0" width="51.666666666666664" height="20"/>
-                                        <fontDescription key="fontDescription" type="system" weight="medium" pointSize="13"/>
-                                        <color key="textColor" systemColor="secondaryLabelColor"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                        <color key="textColor" systemColor="systemGrayColor"/>
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Tue" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="BTB-W2">
                                         <rect key="frame" x="51.666666666666671" y="0.0" width="51.333333333333329" height="20"/>
-                                        <fontDescription key="fontDescription" type="system" weight="medium" pointSize="13"/>
-                                        <color key="textColor" systemColor="secondaryLabelColor"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                        <color key="textColor" systemColor="systemGrayColor"/>
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Wed" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="BTB-W3">
                                         <rect key="frame" x="103.00000000000001" y="0.0" width="51.666666666666671" height="20"/>
-                                        <fontDescription key="fontDescription" type="system" weight="medium" pointSize="13"/>
-                                        <color key="textColor" systemColor="secondaryLabelColor"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                        <color key="textColor" systemColor="systemGrayColor"/>
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Thu" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="BTB-W4">
                                         <rect key="frame" x="154.66666666666666" y="0.0" width="51.666666666666657" height="20"/>
-                                        <fontDescription key="fontDescription" type="system" weight="medium" pointSize="13"/>
-                                        <color key="textColor" systemColor="secondaryLabelColor"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                        <color key="textColor" systemColor="systemGrayColor"/>
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Fri" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="BTB-W5">
                                         <rect key="frame" x="206.33333333333334" y="0.0" width="51.666666666666657" height="20"/>
-                                        <fontDescription key="fontDescription" type="system" weight="medium" pointSize="13"/>
-                                        <color key="textColor" systemColor="secondaryLabelColor"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                        <color key="textColor" systemColor="systemGrayColor"/>
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Sat" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="BTB-W6">
                                         <rect key="frame" x="258" y="0.0" width="51.333333333333314" height="20"/>
-                                        <fontDescription key="fontDescription" type="system" weight="medium" pointSize="13"/>
-                                        <color key="textColor" systemColor="secondaryLabelColor"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                        <color key="textColor" systemColor="systemGrayColor"/>
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Sun" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="BTB-W7">
                                         <rect key="frame" x="309.33333333333331" y="0.0" width="51.666666666666686" height="20"/>
-                                        <fontDescription key="fontDescription" type="system" weight="medium" pointSize="13"/>
-                                        <color key="textColor" systemColor="secondaryLabelColor"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                        <color key="textColor" systemColor="systemGrayColor"/>
                                         <nil key="highlightedColor"/>
                                     </label>
                                 </subviews>
@@ -125,18 +125,18 @@
                             <constraint firstItem="BTB-Hero-Icon" firstAttribute="centerX" secondItem="BTB-Landing-View" secondAttribute="centerX" id="BTB-C1"/>
                             <constraint firstItem="BTB-Weekday-Hdr" firstAttribute="leading" secondItem="BTB-Landing-Safe" secondAttribute="leading" constant="16" id="BTB-C10"/>
                             <constraint firstItem="BTB-Landing-Safe" firstAttribute="trailing" secondItem="BTB-Weekday-Hdr" secondAttribute="trailing" constant="16" id="BTB-C11"/>
-                            <constraint firstItem="BTB-Cal-Grid" firstAttribute="top" secondItem="BTB-Weekday-Hdr" secondAttribute="bottom" constant="10" id="BTB-C12"/>
+                            <constraint firstItem="BTB-Cal-Grid" firstAttribute="top" secondItem="BTB-Weekday-Hdr" secondAttribute="bottom" constant="3.3300000000000001" id="BTB-C12"/>
                             <constraint firstItem="BTB-Cal-Grid" firstAttribute="leading" secondItem="BTB-Landing-Safe" secondAttribute="leading" constant="16" id="BTB-C13"/>
                             <constraint firstItem="BTB-Landing-Safe" firstAttribute="trailing" secondItem="BTB-Cal-Grid" secondAttribute="trailing" constant="16" id="BTB-C14"/>
-                            <constraint firstItem="BTB-Hero-Icon" firstAttribute="top" secondItem="BTB-Landing-View" secondAttribute="top" constant="100" id="BTB-C2"/>
-                            <constraint firstItem="BTB-Daily-Hdr" firstAttribute="top" secondItem="BTB-Hero-Icon" secondAttribute="bottom" constant="30" id="BTB-C3"/>
-                            <constraint firstItem="BTB-Daily-Hdr" firstAttribute="leading" secondItem="BTB-Landing-Safe" secondAttribute="leading" constant="24" id="BTB-C4"/>
-                            <constraint firstItem="BTB-Month-Lbl" firstAttribute="top" secondItem="BTB-Daily-Hdr" secondAttribute="bottom" constant="4" id="BTB-C5"/>
+                            <constraint firstItem="BTB-Hero-Icon" firstAttribute="top" secondItem="BTB-Landing-Safe" secondAttribute="top" constant="32.5" id="BTB-C2"/>
+                            <constraint firstItem="BTB-Daily-Hdr" firstAttribute="top" secondItem="BTB-Hero-Icon" secondAttribute="bottom" constant="32.5" id="BTB-C3"/>
+                            <constraint firstItem="BTB-Daily-Hdr" firstAttribute="leading" secondItem="BTB-Landing-Safe" secondAttribute="leading" constant="16" id="BTB-C4"/>
+                            <constraint firstItem="BTB-Month-Lbl" firstAttribute="top" secondItem="BTB-Daily-Hdr" secondAttribute="bottom" constant="3" id="BTB-C5"/>
                             <constraint firstItem="BTB-Month-Lbl" firstAttribute="leading" secondItem="BTB-Daily-Hdr" secondAttribute="leading" id="BTB-C6"/>
                             <constraint firstItem="BTB-Comp-Lbl" firstAttribute="centerY" secondItem="BTB-Month-Lbl" secondAttribute="centerY" id="BTB-C7"/>
-                            <constraint firstItem="BTB-Landing-Safe" firstAttribute="trailing" secondItem="BTB-Comp-Lbl" secondAttribute="trailing" constant="24" id="BTB-C8"/>
-                            <constraint firstItem="BTB-Weekday-Hdr" firstAttribute="top" secondItem="BTB-Month-Lbl" secondAttribute="bottom" constant="10" id="BTB-C9"/>
-                            <constraint firstItem="BTB-Landing-Safe" firstAttribute="bottom" secondItem="lk2-RI-MSi" secondAttribute="bottom" constant="8" id="heq-xe-tQy"/>
+                            <constraint firstItem="BTB-Landing-Safe" firstAttribute="trailing" secondItem="BTB-Comp-Lbl" secondAttribute="trailing" constant="16" id="BTB-C8"/>
+                            <constraint firstItem="BTB-Weekday-Hdr" firstAttribute="top" secondItem="BTB-Month-Lbl" secondAttribute="bottom" constant="2" id="BTB-C9"/>
+                            <constraint firstItem="BTB-Landing-Safe" firstAttribute="bottom" secondItem="lk2-RI-MSi" secondAttribute="bottom" constant="16" id="heq-xe-tQy"/>
                             <constraint firstItem="lk2-RI-MSi" firstAttribute="centerX" secondItem="BTB-Landing-View" secondAttribute="centerX" id="t5F-ov-1xu"/>
                         </constraints>
                     </view>
@@ -439,6 +439,9 @@
         </systemColor>
         <systemColor name="systemBackgroundColor">
             <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+        </systemColor>
+        <systemColor name="systemGrayColor">
+            <color red="0.55686274509803924" green="0.55686274509803924" blue="0.57647058823529407" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </systemColor>
         <systemColor name="systemTealColor">
             <color red="0.0" green="0.76470588235294112" blue="0.81568627450980391" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>

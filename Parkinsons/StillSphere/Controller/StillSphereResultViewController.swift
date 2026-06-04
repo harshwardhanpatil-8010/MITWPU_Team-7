@@ -13,6 +13,7 @@ class StillSphereResultViewController: UIViewController {
     
     var steadinessScore: Double = 0
     var duration: TimeInterval = 0
+    private let themeColor = UIColor.systemYellow
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -41,14 +42,14 @@ class StillSphereResultViewController: UIViewController {
         messageLabel.textColor = .secondaryLabel
         
         steadinessValueLabel.text = String(format: "%.0f%%", steadinessScore)
-        steadinessValueLabel.textColor = .systemGreen
+        steadinessValueLabel.textColor = themeColor
         
         let minutes = Int(duration) / 60
         let seconds = Int(duration) % 60
         durationValueLabel.text = String(format: "%02d:%02d", minutes, seconds)
         
         doneButton.layer.cornerRadius = 12
-        doneButton.backgroundColor = .systemGreen
+        doneButton.backgroundColor = themeColor
         doneButton.setTitleColor(.white, for: .normal)
         
         // Trigger confetti or similar reinforcement if available
@@ -61,7 +62,7 @@ class StillSphereResultViewController: UIViewController {
         emitter.emitterShape = .line
         emitter.emitterSize = CGSize(width: view.bounds.width, height: 1)
         
-        let colors: [UIColor] = [.systemGreen, .systemTeal, .systemBlue, .white]
+        let colors: [UIColor] = [themeColor, .systemOrange, .systemTeal, .white]
         let cells: [CAEmitterCell] = colors.map { color in
             let cell = CAEmitterCell()
             cell.birthRate = 4
