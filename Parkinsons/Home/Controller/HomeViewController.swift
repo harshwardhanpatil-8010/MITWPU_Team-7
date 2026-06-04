@@ -66,6 +66,22 @@ class HomeViewController: UIViewController, UICollectionViewDelegate {
 
     ]
 
+    private var isShowingAllGames = false
+
+    private var recommendedTherapeuticGameIndex: Int {
+        guard !therapeuticGamesData.isEmpty else { return 0 }
+        let startOfToday = calendar.startOfDay(for: Date())
+        let daysSinceReference = calendar.dateComponents([.day], from: Date(timeIntervalSince1970: 0), to: startOfToday).day ?? 0
+        return abs(daysSinceReference) % therapeuticGamesData.count
+    }
+
+    private var visibleTherapeuticGameIndexes: [Int] {
+        if isShowingAllGames {
+            return Array(therapeuticGamesData.indices)
+        }
+        return [recommendedTherapeuticGameIndex]
+    }
+
     private let floatingBar: UIView = {
         let view = UIView()
         view.backgroundColor = .white
@@ -398,6 +414,14 @@ class HomeViewController: UIViewController, UICollectionViewDelegate {
         }
     }
 
+    private func toggleTherapeuticGamesVisibility() {
+        isShowingAllGames.toggle()
+        guard let gamesSection = homeSections.firstIndex(of: .therapeuticGames) else { return }
+        mainCollectionView.performBatchUpdates {
+            mainCollectionView.reloadSections(IndexSet(integer: gamesSection))
+        }
+    }
+
     private func handleExerciseSelection(at row: Int) {
         switch row {
         case 0:
@@ -440,7 +464,8 @@ class HomeViewController: UIViewController, UICollectionViewDelegate {
         case .exercises:
             handleExerciseSelection(at: indexPath.row)
         case .therapeuticGames:
-            handleGamesSelection(at: indexPath.row)
+            let gameIndex = visibleTherapeuticGameIndexes[indexPath.row]
+            handleGamesSelection(at: gameIndex)
         default:
             collectionView.deselectItem(at: indexPath, animated: true)
         }
@@ -480,7 +505,7 @@ extension HomeViewController: UICollectionViewDataSource {
         case .calendar:         return dates.count
         case .medications:      return noMedicationsCreated ? 1 : todayDoses.count
         case .exercises:        return exerciseData.count
-        case .therapeuticGames: return therapeuticGamesData.count
+        case .therapeuticGames: return visibleTherapeuticGameIndexes.count
         }
     }
 
@@ -543,6 +568,7 @@ extension HomeViewController: UICollectionViewDataSource {
 
         case .therapeuticGames:
             let cell = mainCollectionView.dequeueReusableCell(withReuseIdentifier: "therapeutic_game_cell", for: indexPath) as! TherapeuticGameCell
+            let gameIndex = visibleTherapeuticGameIndexes[indexPath.item]
             var calendar = Calendar(identifier: .gregorian)
             calendar.firstWeekday = 2
             let now = Date()
@@ -553,7 +579,7 @@ extension HomeViewController: UICollectionViewDataSource {
             let completionText: String
             let isTodayCompleted: Bool
 
-            switch indexPath.item {
+            switch gameIndex {
             case 0:
                 let completedCount = (0..<daysInMonth).filter { offset in
                     guard let date = calendar.date(byAdding: .day, value: offset, to: firstDayOfMonth) else { return false }
@@ -585,7 +611,7 @@ extension HomeViewController: UICollectionViewDataSource {
                     return PuzzleGameManager.shared.isCompleted(date: calendar.startOfDay(for: date))
                 }.count
                 completionText = "\(completedCount)/\(daysInMonth) daily challenges completed"
-                isTodayCompleted = DailyGameManager.shared.isCompleted(date: today)
+                isTodayCompleted = PuzzleGameManager.shared.isCompleted(date: today)
 
             case 4:
                 let completedCount = (0..<daysInMonth).filter { offset in
@@ -610,7 +636,7 @@ extension HomeViewController: UICollectionViewDataSource {
                 
             
             }
-            cell.configure(with: therapeuticGamesData[indexPath.item], completionText: completionText, isTodayCompleted: isTodayCompleted)
+            cell.configure(with: therapeuticGamesData[gameIndex], completionText: completionText, isTodayCompleted: isTodayCompleted)
             return cell
         }
     }
@@ -623,6 +649,7 @@ extension HomeViewController: UICollectionViewDataSource {
             header.setTitleAlignment(.left)
             header.setFont(size: 20, weight: .bold)
             header.onInfoTap = nil
+            header.onToggleTap = nil
 
             switch sectionType {
             case .calendar:
@@ -636,9 +663,16 @@ extension HomeViewController: UICollectionViewDataSource {
             case .exercises:
                 header.configure(title: "Guided Exercises", showInfoIcon: false)
             case .therapeuticGames:
-                header.configure(title: "Therapeutic Games", showInfoIcon: true)
+                header.configure(
+                    title: "Game for Today",
+                    showInfoIcon: true,
+                    toggleTitle: isShowingAllGames ? "Show Less" : "Show All"
+                )
                 header.onInfoTap = { [weak self] in
                     self?.showGamesInfoPopup()
+                }
+                header.onToggleTap = { [weak self] in
+                    self?.toggleTherapeuticGamesVisibility()
                 }
             }
             return header
