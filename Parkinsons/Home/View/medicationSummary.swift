@@ -27,9 +27,9 @@ class MedicationSummaryCell: UICollectionViewCell {
         backgroundCardView.layer.cornerRadius = cornerRadius
         backgroundCardView.layer.masksToBounds = false
         backgroundCardView.layer.shadowColor = UIColor.black.cgColor
-        backgroundCardView.layer.shadowOpacity = 0.1
-        backgroundCardView.layer.shadowRadius = 8
-        backgroundCardView.layer.shadowOffset = CGSize(width: 0, height: 4)
+        backgroundCardView.layer.shadowOpacity = 0.09
+        backgroundCardView.layer.shadowRadius = 4
+        backgroundCardView.layer.shadowOffset = CGSize(width: 0, height: 2)
     }
 
     override func layoutSubviews() {

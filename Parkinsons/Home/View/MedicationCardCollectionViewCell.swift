@@ -122,9 +122,9 @@ class MedicationCardCollectionViewCell: UICollectionViewCell {
         BackgroundMedication.layer.cornerRadius = 23
         BackgroundMedication.layer.masksToBounds = false
         BackgroundMedication.layer.shadowColor = UIColor.black.cgColor
-        BackgroundMedication.layer.shadowOpacity = 0.15
-        BackgroundMedication.layer.shadowRadius = 3
-        BackgroundMedication.layer.shadowOffset = CGSize(width: 0, height: 1)
+        BackgroundMedication.layer.shadowOpacity = 0.09
+        BackgroundMedication.layer.shadowRadius = 4
+        BackgroundMedication.layer.shadowOffset = CGSize(width: 0, height: 2)
     }
 
     // MARK: - Configure

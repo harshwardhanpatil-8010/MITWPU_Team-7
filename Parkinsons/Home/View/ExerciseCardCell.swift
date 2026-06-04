@@ -61,9 +61,9 @@ class ExerciseCardCell: UICollectionViewCell {
         backgroundCardView.layer.cornerRadius = cornerRadius
         backgroundCardView.layer.masksToBounds = false
         backgroundCardView.layer.shadowColor = UIColor.black.cgColor
-        backgroundCardView.layer.shadowOpacity = 0.15
-        backgroundCardView.layer.shadowRadius = 3
-        backgroundCardView.layer.shadowOffset = CGSize(width: 0, height: 1)
+        backgroundCardView.layer.shadowOpacity = 0.09
+        backgroundCardView.layer.shadowRadius = 4
+        backgroundCardView.layer.shadowOffset = CGSize(width: 0, height: 2)
     }
 
 }

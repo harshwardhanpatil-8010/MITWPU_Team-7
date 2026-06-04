@@ -33,7 +33,7 @@ enum PuzzleTheme {
 
     static var separator: Color { Color(UIColor.separator) }
 
-    static let shadow = Color.black.opacity(0.08)
+    static let shadow = Color.black.opacity(0.06)
 
     static func difficultyColor(for difficulty: GameDifficulty) -> Color {
         switch difficulty {
@@ -81,9 +81,9 @@ enum PuzzleTheme {
     static let radiusL: CGFloat  = 24
     static let radiusXL: CGFloat = 32
 
-    static let shadowRadius: CGFloat  = 12
-    static let shadowY: CGFloat       = 4
-    static let shadowOpacity: Float   = 0.08
+    static let shadowRadius: CGFloat  = 6
+    static let shadowY: CGFloat       = 2
+    static let shadowOpacity: Float   = 0.06
 
     static let minimumTouchTarget: CGFloat = 44
 }

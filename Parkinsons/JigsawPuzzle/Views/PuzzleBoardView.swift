@@ -15,7 +15,7 @@ struct PuzzleBoardView: View {
             ZStack(alignment: .topLeading) {
                 RoundedRectangle(cornerRadius: 14, style: .continuous)
                     .fill(Color.white)
-                    .shadow(color: .black.opacity(0.10), radius: 10, x: 0, y: 4)
+                    .shadow(color: .black.opacity(0.06), radius: 6, x: 0, y: 2)
                     .overlay(
                         RoundedRectangle(cornerRadius: 14, style: .continuous)
                             .strokeBorder(Color(UIColor.separator).opacity(0.4), lineWidth: 1)

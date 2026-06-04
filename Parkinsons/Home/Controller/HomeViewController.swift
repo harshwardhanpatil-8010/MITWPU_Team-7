@@ -71,9 +71,9 @@ class HomeViewController: UIViewController, UICollectionViewDelegate {
         view.backgroundColor = .white
         view.layer.cornerRadius = 34
         view.layer.shadowColor = UIColor.black.cgColor
-        view.layer.shadowOpacity = 0.1
+        view.layer.shadowOpacity = 0.09
         view.layer.shadowOffset = CGSize(width: 0, height: 2)
-        view.layer.shadowRadius = 8
+        view.layer.shadowRadius = 4
         view.translatesAutoresizingMaskIntoConstraints = false
         return view
     }()
