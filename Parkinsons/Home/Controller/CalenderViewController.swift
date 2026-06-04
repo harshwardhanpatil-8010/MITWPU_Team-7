@@ -130,7 +130,7 @@ extension CalendarViewController: UICollectionViewDataSource, UICollectionViewDe
         cell.configure(with: dateModel, isSelected: dayData.isSelected, isToday: isToday, isFuture: isFuture, progress: progress)
 
         cell.isUserInteractionEnabled = !isFuture
-        cell.contentView.alpha = isFuture ? 0.3 : 1.0
+        cell.contentView.alpha = 1.0
 
         cell.accessibilityLabel = "\(dayData.dayNumber)"
         cell.accessibilityTraits = isFuture ? [.notEnabled] : (dayData.isSelected ? [.selected] : [])

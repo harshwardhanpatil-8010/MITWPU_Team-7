@@ -146,11 +146,20 @@ final class CalendarActivityRingsView: UIView {
     }
 
     private func updateLayerColors() {
-        let alpha: CGFloat = isDimmed ? 0.18 : 1
-        workoutTrackLayer.strokeColor = workoutColor.withAlphaComponent(isDimmed ? 0.08 : 0.18).cgColor
-        walkingTrackLayer.strokeColor = walkingColor.withAlphaComponent(isDimmed ? 0.08 : 0.18).cgColor
-        workoutProgressLayer.strokeColor = workoutColor.withAlphaComponent(alpha).cgColor
-        walkingProgressLayer.strokeColor = walkingColor.withAlphaComponent(alpha).cgColor
+        if isDimmed {
+            let trackColor = UIColor.systemGray4.withAlphaComponent(0.75).cgColor
+            let progressColor = UIColor.systemGray3.withAlphaComponent(0.9).cgColor
+            workoutTrackLayer.strokeColor = trackColor
+            walkingTrackLayer.strokeColor = trackColor
+            workoutProgressLayer.strokeColor = progressColor
+            walkingProgressLayer.strokeColor = progressColor
+            return
+        }
+
+        workoutTrackLayer.strokeColor = workoutColor.withAlphaComponent(0.18).cgColor
+        walkingTrackLayer.strokeColor = walkingColor.withAlphaComponent(0.18).cgColor
+        workoutProgressLayer.strokeColor = workoutColor.cgColor
+        walkingProgressLayer.strokeColor = walkingColor.cgColor
     }
 }
 
@@ -194,7 +203,7 @@ class CalenderCollectionViewCell: UICollectionViewCell {
         dayBadgeView.layer.cornerRadius = badgeSize / 2
         calenderDay.frame = dayBadgeView.bounds
         ringsView.frame = CGRect(x: ringX, y: ringTop, width: ringDiameter, height: ringDiameter)
-        calenderDate.frame = ringsView.frame
+        calenderDate.frame = .zero
     }
 
     private func setupRingCalendarCell() {
@@ -212,13 +221,18 @@ class CalenderCollectionViewCell: UICollectionViewCell {
         contentView.addSubview(ringsView)
         contentView.addSubview(calenderDate)
 
+        calenderDay.translatesAutoresizingMaskIntoConstraints = true
         calenderDay.textAlignment = .center
+        calenderDay.contentMode = .center
+        calenderDay.baselineAdjustment = .alignCenters
         calenderDay.font = .systemFont(ofSize: 15, weight: .semibold)
 
+        calenderDate.translatesAutoresizingMaskIntoConstraints = true
         calenderDate.textAlignment = .center
         calenderDate.font = .systemFont(ofSize: 12, weight: .semibold)
         calenderDate.adjustsFontSizeToFitWidth = true
         calenderDate.minimumScaleFactor = 0.75
+        calenderDate.isHidden = true
     }
 
     func configure(
@@ -228,17 +242,17 @@ class CalenderCollectionViewCell: UICollectionViewCell {
         isFuture: Bool,
         progress: CalendarActivityProgress
     ) {
-        calenderDay.text = model.dayString.uppercased()
+        calenderDay.text = model.dateString
         calenderDate.text = model.dateString
         ringsView.setProgress(workout: progress.workoutProgress, walking: progress.walkingProgress)
         ringsView.isDimmed = isFuture
 
-        self.accessibilityLabel = "\(model.dayString) \(model.dateString)"
+        self.accessibilityLabel = model.dateString
         self.accessibilityTraits = isFuture ? [.notEnabled] : (isSelected ? [.selected] : [])
 
         if isFuture {
-            calenderDay.textColor = .systemGray5
-            calenderDate.textColor = .systemGray5
+            calenderDay.textColor = .systemGray3
+            calenderDate.textColor = .systemGray3
             dayBadgeView.backgroundColor = .clear
             return
         }

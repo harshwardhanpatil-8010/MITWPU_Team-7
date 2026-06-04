@@ -4,7 +4,6 @@ class DateCapsuleCell: UICollectionViewCell {
     @IBOutlet weak var containerView: UIView!
     @IBOutlet weak var dateNumberLabel: UILabel!
 
-    private let dayInitialLabel = UILabel()
     private let dayBadgeView = UIView()
     private let ringsView = CalendarActivityRingsView()
 
@@ -37,9 +36,8 @@ class DateCapsuleCell: UICollectionViewCell {
             height: badgeSize
         )
         dayBadgeView.layer.cornerRadius = badgeSize / 2
-        dayInitialLabel.frame = dayBadgeView.bounds
+        dateNumberLabel.frame = dayBadgeView.bounds
         ringsView.frame = CGRect(x: ringX, y: ringTop, width: ringDiameter, height: ringDiameter)
-        dateNumberLabel.frame = ringsView.frame
     }
 
     private func setupRingCalendarCell() {
@@ -48,18 +46,17 @@ class DateCapsuleCell: UICollectionViewCell {
         contentView.backgroundColor = .clear
         backgroundColor = .clear
 
-        dayBadgeView.clipsToBounds = true
         dayBadgeView.backgroundColor = .clear
+        dayBadgeView.clipsToBounds = true
         containerView.addSubview(dayBadgeView)
-        dayBadgeView.addSubview(dayInitialLabel)
+        dayBadgeView.addSubview(dateNumberLabel)
         containerView.addSubview(ringsView)
-        containerView.addSubview(dateNumberLabel)
 
-        dayInitialLabel.textAlignment = .center
-        dayInitialLabel.font = .systemFont(ofSize: 15, weight: .semibold)
-
+        dateNumberLabel.translatesAutoresizingMaskIntoConstraints = true
         dateNumberLabel.textAlignment = .center
-        dateNumberLabel.font = .systemFont(ofSize: 12, weight: .semibold)
+        dateNumberLabel.contentMode = .center
+        dateNumberLabel.baselineAdjustment = .alignCenters
+        dateNumberLabel.font = .systemFont(ofSize: 15, weight: .semibold)
         dateNumberLabel.adjustsFontSizeToFitWidth = true
         dateNumberLabel.minimumScaleFactor = 0.75
     }
@@ -71,24 +68,20 @@ class DateCapsuleCell: UICollectionViewCell {
         isFuture: Bool,
         progress: CalendarActivityProgress
     ) {
-        dayInitialLabel.text = model.dayString.uppercased()
         dateNumberLabel.text = model.dateString
         ringsView.setProgress(workout: progress.workoutProgress, walking: progress.walkingProgress)
         ringsView.isDimmed = isFuture
 
-        dayInitialLabel.textColor = isFuture ? .systemGray5 : .secondaryLabel
-        dateNumberLabel.textColor = isFuture ? .systemGray5 : .label
+        dateNumberLabel.textColor = isFuture ? .systemGray3 : .label
         dayBadgeView.backgroundColor = .clear
 
         if isSelected {
-            dayInitialLabel.textColor = .white
-            dateNumberLabel.textColor = .label
+            dateNumberLabel.textColor = .white
             dayBadgeView.backgroundColor = .systemGray2
             return
         }
 
         if isToday && !isFuture {
-            dayInitialLabel.textColor = .systemBlue
             dateNumberLabel.textColor = .systemBlue
         }
     }
