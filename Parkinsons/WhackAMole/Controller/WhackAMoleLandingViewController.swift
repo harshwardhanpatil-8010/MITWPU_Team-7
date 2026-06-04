@@ -4,6 +4,7 @@ class WhackAMoleLandingViewController: UIViewController,
     UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
 
     private let iconImageView = UIImageView()
+    private let moleHoleImageView = UIImageView()
     private let dailyChallengeLabel = UILabel()
     private let calendarContainerView = UIView()
     private let monthLabel = UILabel()
@@ -33,7 +34,7 @@ class WhackAMoleLandingViewController: UIViewController,
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .systemBackground
-        title = "Whack-a-Mole"
+        title = "Whack a Mole"
         setupInfoButton()
         setupUI()
         setupMonth()
@@ -69,6 +70,13 @@ class WhackAMoleLandingViewController: UIViewController,
         iconImageView.contentMode = .scaleAspectFit
         iconImageView.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(iconImageView)
+
+        let holeConfig = UIImage.SymbolConfiguration(pointSize: 52, weight: .bold)
+        moleHoleImageView.image = UIImage(systemName: "oval.fill", withConfiguration: holeConfig)
+        moleHoleImageView.tintColor = themeColor
+        moleHoleImageView.contentMode = .scaleToFill
+        moleHoleImageView.translatesAutoresizingMaskIntoConstraints = false
+        view.addSubview(moleHoleImageView)
 
         // "Daily Challenge" label
         dailyChallengeLabel.text = "Daily Challenge"
@@ -151,6 +159,11 @@ class WhackAMoleLandingViewController: UIViewController,
             iconImageView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
             iconImageView.heightAnchor.constraint(equalToConstant: 140),
             iconImageView.widthAnchor.constraint(equalToConstant: 180),
+
+            moleHoleImageView.widthAnchor.constraint(equalToConstant: 105),
+            moleHoleImageView.heightAnchor.constraint(equalToConstant: 18),
+            moleHoleImageView.trailingAnchor.constraint(equalTo: iconImageView.trailingAnchor, constant: 0),
+            moleHoleImageView.bottomAnchor.constraint(equalTo: iconImageView.bottomAnchor, constant: -8),
 
             // Daily Challenge
             dailyChallengeLabel.topAnchor.constraint(equalTo: iconImageView.bottomAnchor, constant: 32.5),

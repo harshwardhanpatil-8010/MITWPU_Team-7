@@ -61,7 +61,7 @@ class HomeViewController: UIViewController, UICollectionViewDelegate {
     var therapeuticGamesData: [TherapeuticGameModel] = [
         TherapeuticGameModel(title: "Mimic the Emoji", description: "Complete your daily challenge!", iconName: "face.smiling", iconColor: .systemOrange),
         TherapeuticGameModel(title: "Match the Cards", description: "Complete your daily challenge!", iconName: "brain.fill", iconColor: .systemPurple),
-        TherapeuticGameModel(title: "Whack-a-Mole", description: "Complete your daily challenge!", iconName: "hand.tap.fill", iconColor: .systemGreen)
+        TherapeuticGameModel(title: "Whack a Mole", description: "Complete your daily challenge!", iconName: "hammer.fill", iconColor: .systemGreen)
     ]
     
     private let floatingBar: UIView = {
@@ -683,7 +683,7 @@ extension HomeViewController {
     private func showGamesInfoPopup() {
         let alert = UIAlertController(
             title: "Therapeutic Games",
-            message: "Daily games to enhance memory, focus and facial movement for people with Parkinson's disease. Mimic the Emoji boosts facial expression by copying emojis. Match the Cards improves memory and attention. Whack-a-Mole sharpens reaction time and hand-eye coordination. Play regularly to keep your mind active!",
+            message: "Daily games to enhance memory, focus and facial movement for people with Parkinson's disease. Mimic the Emoji boosts facial expression by copying emojis. Match the Cards improves memory and attention. Whack a Mole sharpens reaction time and hand-eye coordination. Play regularly to keep your mind active!",
             preferredStyle: .alert
         )
         alert.addAction(UIAlertAction(title: "Got it", style: .default))
