@@ -32,7 +32,7 @@ class ResultViewController: UIViewController {
         }
 
         buildUnifiedResultScreen(
-            title: "Good job!",
+            title: celebrationResultTitle(),
             symbolName: "hands.clap.fill",
             emojiText: nil,
             message: "You are improving your cognitive planning and spatial reasoning.",

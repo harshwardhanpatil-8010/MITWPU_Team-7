@@ -33,7 +33,7 @@ class StillSphereResultViewController: UIViewController {
         let durationText = String(format: "%02d:%02d", minutes, seconds)
 
         buildUnifiedResultScreen(
-            title: "Good job!",
+            title: celebrationResultTitle(),
             symbolName: "hands.clap.fill",
             emojiText: nil,
             message: "You are improving your steady movement control.",

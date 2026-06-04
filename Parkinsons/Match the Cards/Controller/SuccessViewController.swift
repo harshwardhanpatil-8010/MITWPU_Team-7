@@ -41,7 +41,7 @@ class SuccessViewController: UIViewController {
         }
 
         buildUnifiedResultScreen(
-            title: "Good job!",
+            title: celebrationResultTitle(),
             symbolName: "hands.clap.fill",
             emojiText: nil,
             message: "You are improving your memory recall, concentration, and cognitive association.",

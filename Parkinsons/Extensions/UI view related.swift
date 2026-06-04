@@ -96,6 +96,10 @@ extension UIViewController {
             }
         }
     }
+
+    func celebrationResultTitle() -> String {
+        Bool.random() ? "Good Job!" : "Well Done!"
+    }
     
     func buildUnifiedResultScreen(
         title: String,
@@ -109,13 +113,15 @@ extension UIViewController {
         // Clear storyboard/existing views
         view.subviews.forEach { $0.removeFromSuperview() }
         view.backgroundColor = .systemBackground
+        navigationItem.largeTitleDisplayMode = .never
         
         let titleLabel = UILabel()
         titleLabel.text = title
-        titleLabel.font = .systemFont(ofSize: 40, weight: .bold)
+        titleLabel.font = .systemFont(ofSize: 43, weight: .bold)
         titleLabel.textAlignment = .center
         titleLabel.textColor = .label
         titleLabel.translatesAutoresizingMaskIntoConstraints = false
+        view.addSubview(titleLabel)
 
         let iconContainer = UIView()
         iconContainer.translatesAutoresizingMaskIntoConstraints = false
@@ -124,7 +130,7 @@ extension UIViewController {
             let symbolImageView = UIImageView(
                 image: UIImage(systemName: symbolName, withConfiguration: UIImage.SymbolConfiguration(pointSize: 100, weight: .semibold))
             )
-            symbolImageView.tintColor = themeColor
+            symbolImageView.tintColor = UIColor(red: 0.94, green: 0.71, blue: 0.45, alpha: 1)
             symbolImageView.contentMode = .scaleAspectFit
             symbolImageView.translatesAutoresizingMaskIntoConstraints = false
             iconContainer.addSubview(symbolImageView)
@@ -152,27 +158,32 @@ extension UIViewController {
         let messageLabel = UILabel()
         messageLabel.text = message
         messageLabel.font = .systemFont(ofSize: 20, weight: .regular)
-        messageLabel.textColor = .secondaryLabel
+        messageLabel.textColor = .black
         messageLabel.numberOfLines = 0
         messageLabel.textAlignment = .center
         messageLabel.translatesAutoresizingMaskIntoConstraints = false
 
         let statsCard = UIView()
-        statsCard.backgroundColor = .secondarySystemBackground
-        statsCard.layer.cornerRadius = 24
+        statsCard.backgroundColor = .systemBackground
+        statsCard.layer.cornerRadius = 18
+        statsCard.layer.masksToBounds = false
+        statsCard.layer.shadowColor = UIColor.black.cgColor
+        statsCard.layer.shadowOpacity = 0.09
+        statsCard.layer.shadowRadius = 4
+        statsCard.layer.shadowOffset = CGSize(width: 0, height: 2)
         statsCard.translatesAutoresizingMaskIntoConstraints = false
 
         let statColumns = stats.map { stat -> UIStackView in
             let colTitleLabel = UILabel()
             colTitleLabel.text = stat.0
             colTitleLabel.font = .systemFont(ofSize: 15, weight: .regular)
-            colTitleLabel.textColor = .secondaryLabel
+            colTitleLabel.textColor = .black
             colTitleLabel.textAlignment = .center
 
             let colValueLabel = UILabel()
             colValueLabel.text = stat.1
             colValueLabel.font = .systemFont(ofSize: 22, weight: .bold)
-            colValueLabel.textColor = themeColor
+            colValueLabel.textColor = .black
             colValueLabel.textAlignment = .center
 
             let stack = UIStackView(arrangedSubviews: [colTitleLabel, colValueLabel])
@@ -214,33 +225,42 @@ extension UIViewController {
         finishButton.addTarget(self, action: finishAction, for: .touchUpInside)
         finishButton.translatesAutoresizingMaskIntoConstraints = false
 
-        let stack = UIStackView(arrangedSubviews: [titleLabel, iconContainer, messageLabel, statsCard, finishButton])
-        stack.axis = .vertical
-        stack.spacing = 24
-        stack.alignment = .center
-        stack.translatesAutoresizingMaskIntoConstraints = false
-        view.addSubview(stack)
+        let contentStack = UIStackView(arrangedSubviews: [iconContainer, messageLabel, statsCard])
+        contentStack.axis = .vertical
+        contentStack.spacing = 24
+        contentStack.alignment = .center
+        contentStack.translatesAutoresizingMaskIntoConstraints = false
+        view.addSubview(contentStack)
+        view.addSubview(finishButton)
 
         NSLayoutConstraint.activate([
-            stack.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-            stack.centerYAnchor.constraint(equalTo: view.centerYAnchor, constant: -10),
-            stack.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 24),
-            stack.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -24),
+            titleLabel.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 30),
+            titleLabel.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 16),
+            titleLabel.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -16),
 
-            iconContainer.heightAnchor.constraint(equalToConstant: 120),
-            iconContainer.widthAnchor.constraint(equalToConstant: 120),
+            contentStack.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            contentStack.centerYAnchor.constraint(equalTo: view.centerYAnchor, constant: -12),
+            contentStack.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 24),
+            contentStack.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -24),
+            contentStack.topAnchor.constraint(greaterThanOrEqualTo: titleLabel.bottomAnchor, constant: 24),
+            contentStack.bottomAnchor.constraint(lessThanOrEqualTo: finishButton.topAnchor, constant: -32),
 
-            messageLabel.leadingAnchor.constraint(equalTo: stack.leadingAnchor, constant: 12),
-            messageLabel.trailingAnchor.constraint(equalTo: stack.trailingAnchor, constant: -12),
+            iconContainer.heightAnchor.constraint(equalToConstant: 142),
+            iconContainer.widthAnchor.constraint(equalToConstant: 200),
 
-            statsCard.leadingAnchor.constraint(equalTo: stack.leadingAnchor),
-            statsCard.trailingAnchor.constraint(equalTo: stack.trailingAnchor),
+            messageLabel.leadingAnchor.constraint(equalTo: contentStack.leadingAnchor, constant: 12),
+            messageLabel.trailingAnchor.constraint(equalTo: contentStack.trailingAnchor, constant: -12),
+
+            statsCard.leadingAnchor.constraint(equalTo: contentStack.leadingAnchor),
+            statsCard.trailingAnchor.constraint(equalTo: contentStack.trailingAnchor),
             
             statsStack.topAnchor.constraint(equalTo: statsCard.topAnchor, constant: 18),
             statsStack.bottomAnchor.constraint(equalTo: statsCard.bottomAnchor, constant: -18),
             statsStack.leadingAnchor.constraint(equalTo: statsCard.leadingAnchor, constant: 16),
             statsStack.trailingAnchor.constraint(equalTo: statsCard.trailingAnchor, constant: -16),
 
+            finishButton.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            finishButton.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -35),
             finishButton.widthAnchor.constraint(greaterThanOrEqualToConstant: 180),
             finishButton.heightAnchor.constraint(greaterThanOrEqualToConstant: 50)
         ])

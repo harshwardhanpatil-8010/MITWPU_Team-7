@@ -33,9 +33,9 @@ class WhackAMoleSuccessViewController: UIViewController {
         let messageText = "Difficulty: \(diff)\n\nYou are improving your reaction time and hand-eye coordination."
 
         buildUnifiedResultScreen(
-            title: hitBomb ? "Boom!" : "Good job!",
-            symbolName: hitBomb ? nil : "hands.clap.fill",
-            emojiText: hitBomb ? "💥" : nil,
+            title: celebrationResultTitle(),
+            symbolName: "hands.clap.fill",
+            emojiText: nil,
             message: messageText,
             stats: [
                 ("Score", "\(score)"),
@@ -46,7 +46,7 @@ class WhackAMoleSuccessViewController: UIViewController {
             finishAction: #selector(finishTapped)
         )
 
-        hitBomb ? showSmokeEffect() : showUniformConfetti()
+        showUniformConfetti()
     }
 
     @objc private func finishTapped() {

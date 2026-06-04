@@ -24,6 +24,7 @@ class resultMimicTheEmoji: UIViewController {
         NotificationCenter.default.post(name: .didUpdateGameCompletion, object: nil)
         showConfetti()
         setupResultCard()
+        setupResultLayout()
         displayResults()
     }
     override func viewWillAppear(_ animated: Bool) {
@@ -31,7 +32,8 @@ class resultMimicTheEmoji: UIViewController {
     }
 
     func setupResultCard() {
-        resultCardBackground.layer.cornerRadius = 25
+        resultCardBackground.backgroundColor = .systemBackground
+        resultCardBackground.layer.cornerRadius = 18
         resultCardBackground.layer.shadowColor = UIColor.black.cgColor
         resultCardBackground.layer.shadowOpacity = 0.09
         resultCardBackground.layer.shadowOffset = CGSize(width: 0, height: 2)
@@ -39,21 +41,62 @@ class resultMimicTheEmoji: UIViewController {
         resultCardBackground.layer.masksToBounds = false
     }
 
+    private func setupResultLayout() {
+        setLabelsBlack(in: view)
+        resultTitleLabel.textAlignment = .center
+        resultTitleLabel.font = .systemFont(ofSize: 43, weight: .bold)
+
+        let clappingHands = UIImage(
+            systemName: "hands.clap.fill",
+            withConfiguration: UIImage.SymbolConfiguration(pointSize: 100, weight: .semibold)
+        )
+        if let resultImageView = view.subviews.compactMap({ $0 as? UIImageView }).first {
+            resultImageView.image = clappingHands
+            resultImageView.tintColor = UIColor(red: 0.94, green: 0.71, blue: 0.45, alpha: 1)
+            resultImageView.contentMode = .scaleAspectFit
+
+            let imageConstraints = view.constraints.filter {
+                $0.firstItem === resultImageView || $0.secondItem === resultImageView
+            } + resultImageView.constraints
+            NSLayoutConstraint.deactivate(imageConstraints)
+
+            NSLayoutConstraint.activate([
+                resultImageView.topAnchor.constraint(equalTo: resultTitleLabel.bottomAnchor, constant: 30),
+                resultImageView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+                resultImageView.widthAnchor.constraint(equalToConstant: 200),
+                resultImageView.heightAnchor.constraint(equalToConstant: 142)
+            ])
+        }
+
+        let finishConstraints = view.constraints.filter {
+            $0.firstItem === finishButton || $0.secondItem === finishButton
+        }
+        NSLayoutConstraint.deactivate(finishConstraints)
+
+        NSLayoutConstraint.activate([
+            finishButton.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            finishButton.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -35),
+            finishButton.widthAnchor.constraint(greaterThanOrEqualToConstant: 180),
+            finishButton.heightAnchor.constraint(greaterThanOrEqualToConstant: 50)
+        ])
+    }
+
+    private func setLabelsBlack(in view: UIView) {
+        view.subviews.forEach { subview in
+            if let label = subview as? UILabel {
+                label.textColor = .black
+            }
+
+            setLabelsBlack(in: subview)
+        }
+    }
+
     func displayResults() {
         completedEmojiCount.text = "\(completedCount)"
         skippedEmojiCount.text = "\(skippedCount)"
         timeTakenCount.text = "\(timeTaken)"
 
-        switch completedCount {
-        case 0...3:
-            resultTitleLabel.text = "You can do better!"
-        case 4...7:
-            resultTitleLabel.text = "Good Job!"
-        case 8...10:
-            resultTitleLabel.text = "Excellent!"
-        default:
-            resultTitleLabel.text = "Good Job!"
-        }
+        resultTitleLabel.text = celebrationResultTitle()
     }
 
     private func showConfetti() {
