@@ -60,7 +60,8 @@ class HomeViewController: UIViewController, UICollectionViewDelegate {
 
         TherapeuticGameModel(title: "StillSphere", description: "Complete your daily challenge!", iconName: "gyroscope", iconColor: .systemGreen),
 
-        TherapeuticGameModel(title: "Jigsaw Puzzle", description: "Complete your daily challenge!", iconName: "puzzlepiece.extension.fill", iconColor: .systemBrown)
+        TherapeuticGameModel(title: "Jigsaw Puzzle", description: "Complete your daily challenge!", iconName: "puzzlepiece.extension.fill", iconColor: .systemBrown),
+        TherapeuticGameModel(title: "Whack a Mole", description: "Complete your daily challenge!", iconName: "hammer.fill", iconColor: .systemIndigo)
 
     ]
 
@@ -382,7 +383,9 @@ class HomeViewController: UIViewController, UICollectionViewDelegate {
             let storyboard = UIStoryboard(name: "Jigsaw Puzzle", bundle: nil)
             guard let vc = storyboard.instantiateViewController(withIdentifier: "PuzzleLandingPage") as? LevelSelectionPuzzleViewController else { return }
             navigationController?.pushViewController(vc, animated: true)
-
+        case 4:
+            let vc = WhackAMoleLandingViewController()
+            navigationController?.pushViewController(vc, animated: true)
         default:
             break
         }
@@ -575,6 +578,13 @@ extension HomeViewController: UICollectionViewDataSource {
                 completionText = "\(completedCount)/\(daysInMonth) daily challenges completed"
                 isTodayCompleted = DailyGameManager.shared.isCompleted(date: today)
 
+            case 4:
+                let completedCount = (0..<daysInMonth).filter { offset in
+                    guard let date = calendar.date(byAdding: .day, value: offset, to: firstDayOfMonth) else { return false }
+                    return WhackAMoleGameManager.shared.isCompleted(date: calendar.startOfDay(for: date))
+                }.count
+                completionText = "\(completedCount)/\(daysInMonth) daily challenges completed"
+                isTodayCompleted = WhackAMoleGameManager.shared.isCompleted(date: today)
             default:
                 completionText = ""
                 isTodayCompleted = false

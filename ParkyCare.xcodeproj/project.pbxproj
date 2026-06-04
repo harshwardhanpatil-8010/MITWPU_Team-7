@@ -55,18 +55,15 @@
 		198FFF6B2F50082A004949FC /* CDSymptomLog+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CDSymptomLog+CoreDataProperties.swift"; sourceTree = "<group>"; };
 		19C7FADE2F1F4DA600A3A885 /* ARKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ARKit.framework; path = System/Library/Frameworks/ARKit.framework; sourceTree = SDKROOT; };
 		19C7FAE02F1F4DB700A3A885 /* RealityKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = RealityKit.framework; path = System/Library/Frameworks/RealityKit.framework; sourceTree = SDKROOT; };
-
-		84E97DFE2FB4523E0057D236 /* ParkyCareUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = ParkyCareUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
-		84E97E092FB453D60057D236 /* knowledge-base-template.xctestplan */ = {isa = PBXFileReference; lastKnownFileType = text; name = "knowledge-base-template.xctestplan"; path = "../../Downloads/knowledge-base-template.xctestplan"; sourceTree = "<group>"; };
-
 		3434FB9C3D71E7FE05675221 /* PuzzleViewModel.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = PuzzleViewModel.swift; sourceTree = "<group>"; };
 		3B74288A383E38C9C1A9D423 /* PuzzleGeneratorService.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = PuzzleGeneratorService.swift; sourceTree = "<group>"; };
+		84E97DFE2FB4523E0057D236 /* ParkyCareUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = ParkyCareUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		84E97E092FB453D60057D236 /* knowledge-base-template.xctestplan */ = {isa = PBXFileReference; lastKnownFileType = text; name = "knowledge-base-template.xctestplan"; path = "../../Downloads/knowledge-base-template.xctestplan"; sourceTree = "<group>"; };
 		9C54B7BEA6DCCEDE9E336D42 /* PuzzleBoardView.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = PuzzleBoardView.swift; sourceTree = "<group>"; };
 		9DE95A24BB29147E03020F39 /* HapticService.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = HapticService.swift; sourceTree = "<group>"; };
 		AA739B8B27632171879503E8 /* PuzzlePieceShape.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = PuzzlePieceShape.swift; sourceTree = "<group>"; };
 		BDB7222569F8095A692476A1 /* PuzzleGameView.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = PuzzleGameView.swift; sourceTree = "<group>"; };
 		D6625E57E32B4934A286B5D6 /* PuzzlePiece.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = PuzzlePiece.swift; sourceTree = "<group>"; };
-
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
@@ -229,11 +226,9 @@
 			fileSystemSynchronizedGroups = (
 				19423B6F2ED6BD590004C99E /* Parkinsons */,
 			);
-
 			name = ParkyCare;
 			packageProductDependencies = (
 			);
-
 			productName = Parkinsons;
 			productReference = 19423B6D2ED6BD590004C99E /* ParkyCare.app */;
 			productType = "com.apple.product-type.application";

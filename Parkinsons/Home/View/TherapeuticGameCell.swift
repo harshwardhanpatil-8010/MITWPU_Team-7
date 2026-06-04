@@ -1,3 +1,5 @@
+
+
 import UIKit
 
 class TherapeuticGameCell: UICollectionViewCell {
@@ -8,11 +10,15 @@ class TherapeuticGameCell: UICollectionViewCell {
     @IBOutlet weak var completionLabel: UILabel!
     @IBOutlet weak var iconImageView: UIImageView!
 
+    private let whackMoleHoleImageView = UIImageView()
+
+
     override func awakeFromNib() {
         super.awakeFromNib()
         self.clipsToBounds = false
         self.contentView.clipsToBounds = false
         setupCardStyle()
+        setupWhackMoleHoleIcon()
     }
 
     private func setupCardStyle() {
@@ -24,12 +30,31 @@ class TherapeuticGameCell: UICollectionViewCell {
         backgroundCardView.layer.shadowOffset = CGSize(width: 0, height: 1)
     }
 
+    private func setupWhackMoleHoleIcon() {
+        let config = UIImage.SymbolConfiguration(pointSize: 16, weight: .bold)
+        whackMoleHoleImageView.image = UIImage(systemName: "oval.fill", withConfiguration: config)
+        whackMoleHoleImageView.tintColor = .systemGreen
+        whackMoleHoleImageView.contentMode = .scaleToFill
+        whackMoleHoleImageView.translatesAutoresizingMaskIntoConstraints = false
+        whackMoleHoleImageView.isHidden = true
+        contentView.addSubview(whackMoleHoleImageView)
+
+        NSLayoutConstraint.activate([
+            whackMoleHoleImageView.widthAnchor.constraint(equalToConstant: 22),
+            whackMoleHoleImageView.heightAnchor.constraint(equalToConstant: 6),
+            whackMoleHoleImageView.trailingAnchor.constraint(equalTo: iconImageView.trailingAnchor, constant: 1),
+            whackMoleHoleImageView.bottomAnchor.constraint(equalTo: iconImageView.bottomAnchor, constant: -3)
+        ])
+    }
+
     func configure(with model: TherapeuticGameModel, completionText: String, isTodayCompleted: Bool) {
         titleLabel.text = model.title
 
         completionLabel.text = completionText
 
         iconImageView.image = UIImage(systemName: model.iconName ?? "")
-             iconImageView.tintColor = model.iconColor
+        iconImageView.tintColor = model.iconColor
+        whackMoleHoleImageView.isHidden = model.title != "Whack a Mole"
+        whackMoleHoleImageView.tintColor = model.iconColor
     }
 }
