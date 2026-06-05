@@ -23,7 +23,11 @@ class CalendarViewController: UIViewController {
         super.viewDidLoad()
         setupCalendarData()
         setupCollectionView()
-
+        collectionView.contentInsetAdjustmentBehavior = .never
+        // Ensure the navigation bar stays above the collection view
+        if let navBar = view.subviews.first(where: { $0 is UINavigationBar }) {
+            view.bringSubviewToFront(navBar)
+        }
     }
 
     override func viewDidAppear(_ animated: Bool) {
