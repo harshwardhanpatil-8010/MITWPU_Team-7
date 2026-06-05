@@ -235,11 +235,15 @@ class profileViewController: UIViewController, UITextFieldDelegate {
 
         selectedSex = gender
 
-        let savedStage = defaults.string(
+        let savedStageInt = defaults.integer(
             forKey: "diseaseStage"
-        ) ?? "Not Known"
+        )
 
-        selectedStage = savedStage
+        if savedStageInt >= 1 && savedStageInt <= 5 {
+            selectedStage = "Stage \(savedStageInt)"
+        } else {
+            selectedStage = "Not Known"
+        }
 
         if let dob = defaults.object(
             forKey: "userDOB"
@@ -340,8 +344,14 @@ class profileViewController: UIViewController, UITextFieldDelegate {
             forKey: "userDOB"
         )
 
+        let stageNumber = Int(
+            selectedStage
+                .components(separatedBy: " ")
+                .last ?? ""
+        ) ?? 0
+
         defaults.set(
-            selectedStage,
+            stageNumber,
             forKey: "diseaseStage"
         )
 
