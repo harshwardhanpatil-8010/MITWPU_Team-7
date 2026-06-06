@@ -14,17 +14,26 @@ class LoggedMedicationCollectionViewCell: UICollectionViewCell {
     @IBOutlet weak var medNameLabel: UILabel!
     @IBOutlet weak var medStatusImage: UIImageView!
     @IBOutlet weak var medFormImage: UIImageView!
+    @IBOutlet weak var timeLabel: UILabel!
 
     var onStatusTap: (() -> Void)?
 
+    override func awakeFromNib() {
+        super.awakeFromNib()
+        clipsToBounds = false
+        contentView.clipsToBounds = false
+        medContainerView.applyCardStyle()
+        medContainerView.layer.cornerRadius = 20
+    }
+
     func configure(with item: LoggedDoseItem) {
         medNameLabel.text = item.medicationName
+        medUnitandformLabel.text = item.medicationForm
         medFormImage.image = UIImage(named: item.iconName)
 
         let formatter = DateFormatter()
         formatter.timeStyle = .short
-        let timeStr = formatter.string(from: item.loggedTime)
-        medUnitandformLabel.text = "\(item.medicationForm) · Logged at \(timeStr)"
+        timeLabel.text = formatter.string(from: item.loggedTime)
 
         switch item.status {
         case .taken:

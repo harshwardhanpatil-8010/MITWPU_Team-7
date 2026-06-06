@@ -128,7 +128,7 @@ class WorkoutManager {
 
     func syncSessionPersistence() {
         persistCurrentSession()
-        DailyWorkoutSummaryStore.shared.saveWorkoutSummary()
+        DailyWorkoutSummaryStore.shared.saveWorkoutSummary(manager: self)
     }
 
     private func restorePersistedSessionIfAvailable() {
@@ -162,7 +162,7 @@ class WorkoutManager {
         let skipped = skippedToday.map(\.uuidString)
         UserDefaults.standard.set(completed, forKey: workoutSessionCompletedKey)
         UserDefaults.standard.set(skipped, forKey: workoutSessionSkippedKey)
-        DailyWorkoutSummaryStore.shared.saveWorkoutSummary()
+        DailyWorkoutSummaryStore.shared.saveWorkoutSummary(manager: self)
     }
 
     private func clearPersistedSession() {
@@ -173,7 +173,7 @@ class WorkoutManager {
         exercises.removeAll()
         completedToday.removeAll()
         skippedToday.removeAll()
-        DailyWorkoutSummaryStore.shared.saveWorkoutSummary()
+        DailyWorkoutSummaryStore.shared.saveWorkoutSummary(manager: self)
     }
 
     private func rollOverSessionIfNeeded() {

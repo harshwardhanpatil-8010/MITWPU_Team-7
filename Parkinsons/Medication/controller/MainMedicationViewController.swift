@@ -250,6 +250,7 @@ final class MainMedicationViewController: UIViewController {
         medicationCollectionView.backgroundColor = .clear
         medicationCollectionView.alwaysBounceVertical = false
         medicationCollectionView.isScrollEnabled = false
+        medicationCollectionView.clipsToBounds = false
 
         medicationCollectionView.register(UINib(nibName: "TodayMedicationCollectionViewCell", bundle: nil), forCellWithReuseIdentifier: "TodayMedicationCollectionViewCell")
         medicationCollectionView.register(UINib(nibName: "MyMedicationCollectionViewCell", bundle: nil), forCellWithReuseIdentifier: "MyMedicationCollectionViewCell")
@@ -404,14 +405,12 @@ extension MainMedicationViewController: UICollectionViewDelegateFlowLayout {
     }
 
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        let horizontalPadding: CGFloat = 40
-        _ = collectionView.bounds.width - horizontalPadding
-        let height: CGFloat =  80
+        let height: CGFloat = (currentSegment == .today) ? 88 : 80
         return CGSize(width: collectionView.bounds.width, height: height)
     }
 
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat {
-        return (currentSegment == .myMedication) ? 0 : 0
+        return (currentSegment == .myMedication) ? 0 : 12
     }
 }
 
@@ -481,14 +480,25 @@ extension MainMedicationViewController {
 extension MainMedicationViewController: MedicationSectionHeaderViewDelegate {
     func didTapShowAllToday() {
         isShowingAllUpcoming.toggle()
-        medicationCollectionView.performBatchUpdates({
-            medicationCollectionView.reloadSections(IndexSet(integer: 0))
-        }) { [weak self] _ in
-            guard let self = self else { return }
-            self.updateCollectionViewHeight()
-            UIView.animate(withDuration: 0.25) {
+        
+        let countDifference = upcomingDoses.count - 3
+        let heightDifference = CGFloat(countDifference) * 100.0
+        
+        if isShowingAllUpcoming {
+            medicationCollectionViewHeightConstraint.constant += heightDifference
+        } else {
+            medicationCollectionViewHeightConstraint.constant -= heightDifference
+        }
+        
+        UIView.animate(withDuration: 0.3) {
+            self.view.layoutIfNeeded()
+            self.medicationCollectionView.performBatchUpdates({
+                self.medicationCollectionView.reloadSections(IndexSet(integer: 0))
+            }, completion: { [weak self] _ in
+                guard let self = self else { return }
+                self.updateCollectionViewHeight()
                 self.view.layoutIfNeeded()
-            }
+            })
         }
     }
 

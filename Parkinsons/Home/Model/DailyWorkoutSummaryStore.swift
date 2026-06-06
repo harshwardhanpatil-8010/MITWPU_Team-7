@@ -34,10 +34,10 @@ class DailyWorkoutSummaryStore {
         return (try? context.fetch(request)) ?? []
     }
 
-    func saveWorkoutSummary(for date: Date = Date()) {
+    func saveWorkoutSummary(for date: Date = Date(), manager: WorkoutManager? = nil) {
         let existingSummaries = fetchSummaries(for: date)
         let summary = existingSummaries.first ?? DailyWorkoutSummary(context: context)
-        let manager = WorkoutManager.shared
+        let manager = manager ?? WorkoutManager.shared
         let startOfDay = Calendar.current.startOfDay(for: date)
         let allExercises = manager.exercises
         let completedIDs = manager.completedToday
