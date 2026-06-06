@@ -7,7 +7,9 @@ import CoreData
 
 struct DoseData {
     var dose: MedicationDose?
-    var time: Date
+    var period: String
+    var startTime: Date
+    var endTime: Date
 }
 
 protocol AddMedicationDelegate: AnyObject {
@@ -40,7 +42,7 @@ class AddMedicationViewController: UIViewController,
     weak var delegate: AddMedicationDelegate?
     var isEditMode: Bool   = false
     var medicationToEdit: Medication!
-    var doseArray: [DoseData]  = [DoseData(dose: nil, time: Date())]
+    var doseArray: [DoseData]  = [DoseData(dose: nil, period: "Morning", startTime: Calendar.current.date(bySettingHour: 8, minute: 0, second: 0, of: Date()) ?? Date(), endTime: Calendar.current.date(bySettingHour: 11, minute: 0, second: 0, of: Date()) ?? Date())]
 
     @IBOutlet weak var tickButton: UIBarButtonItem!
     @IBOutlet weak var backgroundView: UIView!
@@ -75,6 +77,13 @@ class AddMedicationViewController: UIViewController,
             UIAction { [weak self] _ in self?.evaluateTickButtonState() },
             for: .editingChanged
         )
+
+        let toolbar = UIToolbar()
+        toolbar.sizeToFit()
+        let flexibleSpace = UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil)
+        let doneButton = UIBarButtonItem(title: "Done", style: .done, target: self, action: #selector(dismissKeyboard))
+        toolbar.setItems([flexibleSpace, doneButton], animated: false)
+        strengthLabel.inputAccessoryView = toolbar
 
         let tap = UITapGestureRecognizer(target: self, action: #selector(dismissKeyboard))
         view.addGestureRecognizer(tap)
@@ -163,9 +172,11 @@ class AddMedicationViewController: UIViewController,
         strengthUnitLabel.textColor = .placeholderText
     }
 
-    func didUpdateTime(cell: DoseTableViewCell, newTime: Date) {
+    func didUpdateDose(cell: DoseTableViewCell, period: String, startTime: Date, endTime: Date) {
         if let indexPath = doseTableView.indexPath(for: cell) {
-            doseArray[indexPath.row].time = newTime
+            doseArray[indexPath.row].period = period
+            doseArray[indexPath.row].startTime = startTime
+            doseArray[indexPath.row].endTime = endTime
             evaluateTickButtonState()
         }
     }
@@ -199,7 +210,10 @@ class AddMedicationViewController: UIViewController,
         let doseSet = med.doses as? Set<MedicationDose> ?? []
         doseArray = doseSet
             .sorted { $0.doseTime ?? Date() < $1.doseTime ?? Date() }
-            .map { DoseData(dose: $0, time: $0.doseTime ?? Date()) }
+            .map { dose in
+                let info = getPeriodAndRange(for: dose)
+                return DoseData(dose: dose, period: info.period, startTime: info.rangeStart, endTime: info.rangeEnd)
+            }
 
         doseStepper.value = Double(doseArray.count)
         doseTableView.reloadData()
@@ -241,10 +255,16 @@ class AddMedicationViewController: UIViewController,
         let repeatChanged   = selectedScheduleType != original.medicationScheduleType ||
                               (selectedScheduleDays ?? []) != (original.medicationScheduleDays as? [Int] ?? [])
 
-        let originalDoseTimes = (original.doses as? Set<MedicationDose> ?? [])
-            .compactMap { $0.doseTime?.timeIntervalSince1970 }.sorted()
-        let currentDoseTimes  = doseArray.map { $0.time.timeIntervalSince1970 }.sorted()
-        let dosesChanged      = originalDoseTimes != currentDoseTimes
+        let originalDosesRepresentation = (original.doses as? Set<MedicationDose> ?? [])
+            .sorted { $0.doseTime ?? Date() < $1.doseTime ?? Date() }
+            .map { dose -> String in
+                let info = getPeriodAndRange(for: dose)
+                return "\(info.period)_\(Int(info.rangeStart.timeIntervalSince1970))_\(Int(info.rangeEnd.timeIntervalSince1970))"
+            }
+        let currentDosesRepresentation = doseArray.map {
+            "\($0.period)_\(Int($0.startTime.timeIntervalSince1970))_\(Int($0.endTime.timeIntervalSince1970))"
+        }
+        let dosesChanged = originalDosesRepresentation != currentDosesRepresentation
 
         tickButton.isEnabled = nameChanged || strengthChanged || unitChanged ||
                                typeChanged || repeatChanged || dosesChanged
@@ -292,7 +312,36 @@ class AddMedicationViewController: UIViewController,
 
     @IBAction func doseStepperChanged(_ sender: UIStepper) {
         let newCount = Int(sender.value)
-        if newCount > doseArray.count { doseArray.append(DoseData(dose: nil, time: Date())) } else { doseArray.removeLast() }
+        if newCount > doseArray.count {
+            let idx = doseArray.count
+            let period: String
+            let startH: Int
+            let endH: Int
+            let endM: Int
+
+            if idx == 0 {
+                period = "Morning"
+                startH = 8; endH = 11; endM = 0
+            } else if idx == 1 {
+                period = "Afternoon"
+                startH = 12; endH = 15; endM = 0
+            } else if idx == 2 {
+                period = "Evening"
+                startH = 17; endH = 20; endM = 0
+            } else if idx == 3 {
+                period = "Night"
+                startH = 21; endH = 23; endM = 59
+            } else {
+                period = "Morning"
+                startH = 8; endH = 11; endM = 0
+            }
+            let cal = Calendar.current
+            let start = cal.date(bySettingHour: startH, minute: 0, second: 0, of: Date()) ?? Date()
+            let end = cal.date(bySettingHour: endH, minute: endM, second: 0, of: Date()) ?? Date()
+            doseArray.append(DoseData(dose: nil, period: period, startTime: start, endTime: end))
+        } else {
+            doseArray.removeLast()
+        }
         doseTableView.reloadData()
         evaluateTickButtonState()
     }
@@ -356,7 +405,10 @@ class AddMedicationViewController: UIViewController,
                 dose.doseStatus = "none"
                 dose.medication = medication
             }
-            dose.doseTime = data.time
+            dose.dosePeriod = data.period
+            dose.rangeStartTime = data.startTime
+            dose.rangeEndTime = data.endTime
+            dose.doseTime = data.startTime
         }
 
         if isEditMode {
@@ -382,6 +434,49 @@ class AddMedicationViewController: UIViewController,
         alert.addAction(UIAlertAction(title: "OK", style: .default))
         present(alert, animated: true)
     }
+
+    private func getPeriodAndRange(for dose: MedicationDose) -> (period: String, rangeStart: Date, rangeEnd: Date) {
+        if let period = dose.dosePeriod,
+           let start = dose.rangeStartTime,
+           let end = dose.rangeEndTime {
+            return (period, start, end)
+        }
+
+        let date = dose.doseTime ?? Date()
+        let cal = Calendar.current
+        let hour = cal.component(.hour, from: date)
+
+        let period: String
+        let startHour: Int
+        let endHour: Int
+        let endMin: Int
+
+        if hour >= 5 && hour < 12 {
+            period = "Morning"
+            startHour = 8
+            endHour = 11
+            endMin = 0
+        } else if hour >= 12 && hour < 17 {
+            period = "Afternoon"
+            startHour = 12
+            endHour = 15
+            endMin = 0
+        } else if hour >= 17 && hour < 21 {
+            period = "Evening"
+            startHour = 17
+            endHour = 20
+            endMin = 0
+        } else {
+            period = "Night"
+            startHour = 21
+            endHour = 23
+            endMin = 59
+        }
+
+        let start = cal.date(bySettingHour: startHour, minute: 0, second: 0, of: date) ?? date
+        let end = cal.date(bySettingHour: endHour, minute: endMin, second: 0, of: date) ?? date
+        return (period, start, end)
+    }
 }
 
 // MARK: - TableView (Dose rows)
@@ -394,9 +489,9 @@ extension AddMedicationViewController {
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "DoseCell", for: indexPath) as! DoseTableViewCell
-        cell.delegate             = self
-        cell.doseNumberLabel.text = "\(indexPath.row + 1)"
-        cell.timePicker.date      = doseArray[indexPath.row].time
+        cell.delegate = self
+        let data = doseArray[indexPath.row]
+        cell.configure(period: data.period, startTime: data.startTime, endTime: data.endTime, doseIndex: indexPath.row + 1)
         return cell
     }
 

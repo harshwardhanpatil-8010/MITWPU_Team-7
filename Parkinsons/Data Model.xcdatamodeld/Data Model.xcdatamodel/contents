@@ -31,9 +31,12 @@
         <relationship name="logs" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="MedicationDoseLog" inverseName="medication" inverseEntity="MedicationDoseLog"/>
     </entity>
     <entity name="MedicationDose" representedClassName="MedicationDose" syncable="YES">
+        <attribute name="dosePeriod" optional="YES" attributeType="String"/>
         <attribute name="doseStatus" optional="YES" attributeType="String"/>
         <attribute name="doseTime" attributeType="Date" usesScalarValueType="NO"/>
         <attribute name="id" attributeType="UUID" usesScalarValueType="NO"/>
+        <attribute name="rangeEndTime" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
+        <attribute name="rangeStartTime" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
         <relationship name="logs" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="MedicationDoseLog" inverseName="dose" inverseEntity="MedicationDoseLog"/>
         <relationship name="medication" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Medication" inverseName="doses" inverseEntity="Medication"/>
     </entity>

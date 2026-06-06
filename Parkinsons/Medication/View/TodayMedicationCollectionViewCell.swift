@@ -28,12 +28,23 @@ class TodayMedicationCollectionViewCell: UICollectionViewCell {
         medUnitAndTypeLabel.text = dose.medicationForm
         medFormImage.image = UIImage(named: dose.iconName)
 
-        let formatter = DateFormatter()
-        formatter.dateFormat = "h:mm"
-        timeLabel.text = formatter.string(from: dose.scheduledTime)
+        if let period = dose.dosePeriod,
+           let start = dose.rangeStartTime,
+           let end = dose.rangeEndTime {
+            let formatter = DateFormatter()
+            formatter.timeStyle = .short
+            let startStr = formatter.string(from: start)
+            let endStr = formatter.string(from: end)
+            timeLabel.text = period
+            timeAmPmLabel.text = "\(startStr) - \(endStr)"
+        } else {
+            let formatter = DateFormatter()
+            formatter.dateFormat = "h:mm"
+            timeLabel.text = formatter.string(from: dose.scheduledTime)
 
-        formatter.dateFormat = "a"
-        timeAmPmLabel.text = formatter.string(from: dose.scheduledTime)
+            formatter.dateFormat = "a"
+            timeAmPmLabel.text = formatter.string(from: dose.scheduledTime)
+        }
 
         dueStatus.isHidden = true
         medContainerView.alpha = 1.0

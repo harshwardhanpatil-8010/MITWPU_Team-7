@@ -26,9 +26,20 @@ extension MyMedicationCollectionViewCell {
     func configure(with medication: Medication) {
 
         medTitle.text = medication.medicationName
-        medUnitandForm.text = medication.medicationForm
-
+        let strength = medication.medicationStrength
+        let unit = medication.medicationUnit ?? ""
+        let form = medication.medicationForm ?? ""
         let doseCount = medication.doses?.count ?? 0
+
+        let strengthPart = strength > 0 ? "\(strength) \(unit)" : unit
+        let doseString = doseCount == 1 ? "1 dose" : "\(doseCount) doses"
+
+        var details: [String] = []
+        if !strengthPart.trimmingCharacters(in: .whitespaces).isEmpty { details.append(strengthPart) }
+        if !form.trimmingCharacters(in: .whitespaces).isEmpty { details.append(form) }
+        details.append(doseString)
+
+        medUnitandForm.text = details.joined(separator: " · ")
 
         medImage.image = UIImage(
             named: medication.medicationIconName ?? ""

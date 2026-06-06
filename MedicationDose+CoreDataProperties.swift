@@ -17,9 +17,12 @@ extension MedicationDose {
         return NSFetchRequest<MedicationDose>(entityName: "MedicationDose")
     }
 
+    @NSManaged public var dosePeriod: String?
     @NSManaged public var doseStatus: String?
     @NSManaged public var doseTime: Date?
     @NSManaged public var id: UUID?
+    @NSManaged public var rangeEndTime: Date?
+    @NSManaged public var rangeStartTime: Date?
     @NSManaged public var logs: NSSet?
     @NSManaged public var medication: Medication?
 

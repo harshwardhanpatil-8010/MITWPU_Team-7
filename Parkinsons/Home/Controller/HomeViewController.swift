@@ -717,13 +717,25 @@ extension HomeViewController: MedicationCardDelegate {
 
         // If the medication is not yet due (scheduled time is in the future)
         if dose.scheduledTime > now {
-            let formatter = DateFormatter()
-            formatter.timeStyle = .short
-            let timeString = formatter.string(from: dose.scheduledTime)
+            let message: String
+            if let period = dose.dosePeriod,
+               let start = dose.rangeStartTime,
+               let end = dose.rangeEndTime {
+                let formatter = DateFormatter()
+                formatter.timeStyle = .short
+                let startStr = formatter.string(from: start)
+                let endStr = formatter.string(from: end)
+                message = "This medication is scheduled for \(period) (\(startStr) - \(endStr)). Are you sure you want to log it now?"
+            } else {
+                let formatter = DateFormatter()
+                formatter.timeStyle = .short
+                let timeString = formatter.string(from: dose.scheduledTime)
+                message = "This medication is scheduled for \(timeString). Are you sure you want to log it now?"
+            }
 
             let alert = UIAlertController(
                 title: "Early Logging",
-                message: "This medication is scheduled for \(timeString). Are you sure you want to log it now?",
+                message: message,
                 preferredStyle: .alert
             )
 

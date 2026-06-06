@@ -132,9 +132,19 @@ class MedicationCardCollectionViewCell: UICollectionViewCell {
     func configure(with dose: TodayDoseItem) {
         currentDose = dose
 
-        let formatter = DateFormatter()
-        formatter.dateFormat = "h:mm a"
-        timeLabel.text = formatter.string(from: dose.scheduledTime)
+        if let period = dose.dosePeriod,
+           let start = dose.rangeStartTime,
+           let end = dose.rangeEndTime {
+            let formatter = DateFormatter()
+            formatter.timeStyle = .short
+            let startStr = formatter.string(from: start)
+            let endStr = formatter.string(from: end)
+            timeLabel.text = "\(period) (\(startStr) - \(endStr))"
+        } else {
+            let formatter = DateFormatter()
+            formatter.dateFormat = "h:mm a"
+            timeLabel.text = formatter.string(from: dose.scheduledTime)
+        }
         nameLabel.text = dose.medicationName
         detailLabel.text = dose.medicationForm
         iconImageView.image = UIImage(named: dose.iconName)

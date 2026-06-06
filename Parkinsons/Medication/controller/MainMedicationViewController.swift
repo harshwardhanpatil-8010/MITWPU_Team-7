@@ -185,13 +185,25 @@ final class MainMedicationViewController: UIViewController {
 
         // If scheduled for the future, show warning first
         if dose.scheduledTime > now {
-            let formatter = DateFormatter()
-            formatter.timeStyle = .short
-            let timeString = formatter.string(from: dose.scheduledTime)
+            let message: String
+            if let period = dose.dosePeriod,
+               let start = dose.rangeStartTime,
+               let end = dose.rangeEndTime {
+                let formatter = DateFormatter()
+                formatter.timeStyle = .short
+                let startStr = formatter.string(from: start)
+                let endStr = formatter.string(from: end)
+                message = "This medication is scheduled for \(period) (\(startStr) - \(endStr)). Are you sure you want to log it now?"
+            } else {
+                let formatter = DateFormatter()
+                formatter.timeStyle = .short
+                let timeString = formatter.string(from: dose.scheduledTime)
+                message = "This medication is scheduled for \(timeString). Are you sure you want to log it now?"
+            }
 
             let earlyAlert = UIAlertController(
                 title: "Early Logging",
-                message: "This medication is scheduled for \(timeString). Are you sure you want to log it now?",
+                message: message,
                 preferredStyle: .alert
             )
 
@@ -274,12 +286,7 @@ final class MainMedicationViewController: UIViewController {
     }
 
     private func updateUIForSegment() {
-        if currentSegment == .myMedication {
-            editButton.isHidden = false
-            editButton.isEnabled = !myMedications.isEmpty
-        } else {
-            editButton.isHidden = true
-        }
+        editButton.isHidden = true
     }
 
     @IBAction func editButtonTapped(_ sender: Any) {
@@ -410,9 +417,21 @@ extension MainMedicationViewController: UICollectionViewDelegateFlowLayout {
 
 extension MainMedicationViewController: UICollectionViewDelegate {
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        guard currentSegment == .today, indexPath.section == 0 else { return }
-        let dose = indexPath.item < dueDoses.count ? dueDoses[indexPath.item] : displayedUpcomingDoses[indexPath.item - dueDoses.count]
-        presentDoseAlert(for: dose)
+        if currentSegment == .today {
+            guard indexPath.section == 0 else { return }
+            let dose = indexPath.item < dueDoses.count ? dueDoses[indexPath.item] : displayedUpcomingDoses[indexPath.item - dueDoses.count]
+            presentDoseAlert(for: dose)
+        } else {
+            let selected = myMedications[indexPath.item]
+            let storyboard = UIStoryboard(name: "Medication", bundle: nil)
+            let vc = storyboard.instantiateViewController(withIdentifier: "AddMedVC") as! AddMedicationViewController
+            vc.isEditMode = true
+            vc.medicationToEdit = selected
+            vc.delegate = self
+            let nav = UINavigationController(rootViewController: vc)
+            nav.modalPresentationStyle = .formSheet
+            present(nav, animated: true)
+        }
     }
 }
 
@@ -462,8 +481,14 @@ extension MainMedicationViewController {
 extension MainMedicationViewController: MedicationSectionHeaderViewDelegate {
     func didTapShowAllToday() {
         isShowingAllUpcoming.toggle()
-        medicationCollectionView.performBatchUpdates {
+        medicationCollectionView.performBatchUpdates({
             medicationCollectionView.reloadSections(IndexSet(integer: 0))
+        }) { [weak self] _ in
+            guard let self = self else { return }
+            self.updateCollectionViewHeight()
+            UIView.animate(withDuration: 0.25) {
+                self.view.layoutIfNeeded()
+            }
         }
     }
 

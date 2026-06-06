@@ -15,6 +15,9 @@ struct TodayDoseItem {
     let iconName: String
     let scheduledTime: Date
     var logStatus: DoseStatus
+    let dosePeriod: String?
+    let rangeStartTime: Date?
+    let rangeEndTime: Date?
 
     var isDue: Bool {
         let now = Date()
