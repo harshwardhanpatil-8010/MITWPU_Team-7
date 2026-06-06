@@ -360,7 +360,6 @@
                                 </subviews>
                                 <constraints>
                                     <constraint firstItem="Hfk-85-OG6" firstAttribute="leading" secondItem="7jw-pn-Zn7" secondAttribute="leading" id="Qkj-RS-XQw"/>
-                                    <constraint firstAttribute="height" constant="1600" id="Ze2-IU-9Nb"/>
                                     <constraint firstAttribute="trailing" secondItem="Hfk-85-OG6" secondAttribute="trailing" id="bAQ-Pd-bJU"/>
                                     <constraint firstAttribute="bottom" secondItem="Hfk-85-OG6" secondAttribute="bottom" id="neQ-HK-7xe"/>
                                     <constraint firstItem="Hfk-85-OG6" firstAttribute="top" secondItem="7jw-pn-Zn7" secondAttribute="top" id="pcb-Xp-KWs"/>
@@ -387,6 +386,7 @@
                             <constraint firstAttribute="trailing" secondItem="n15-eu-lVI" secondAttribute="trailing" constant="20" id="OHk-Pk-FCS"/>
                             <constraint firstItem="7jw-pn-Zn7" firstAttribute="leading" secondItem="QdL-I8-GU4" secondAttribute="leading" id="Rsz-aJ-DKE"/>
                             <constraint firstItem="7jw-pn-Zn7" firstAttribute="top" secondItem="QdL-I8-GU4" secondAttribute="top" id="SpP-sf-Ul5"/>
+                            <constraint firstItem="7jw-pn-Zn7" firstAttribute="bottom" secondItem="QdL-I8-GU4" secondAttribute="bottom" id="x2A-bc-def"/>
                             <constraint firstItem="Hfk-85-OG6" firstAttribute="width" secondItem="Tp7-KI-kCB" secondAttribute="width" id="iO4-rF-l5O"/>
                             <constraint firstItem="n15-eu-lVI" firstAttribute="leading" secondItem="Tp7-KI-kCB" secondAttribute="leading" constant="20" id="vb5-Lk-RfO"/>
                             <constraint firstItem="QdL-I8-GU4" firstAttribute="bottom" secondItem="n15-eu-lVI" secondAttribute="bottom" constant="25" id="vgM-k7-Fcw"/>

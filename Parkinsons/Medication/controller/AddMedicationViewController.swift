@@ -92,6 +92,7 @@ class AddMedicationViewController: UIViewController,
         backgroundView.layer.cornerRadius = 16
         doseTableView.dataSource          = self
         doseTableView.delegate            = self
+        doseTableView.isScrollEnabled     = false
         doseStepper.value                 = Double(doseArray.count)
 
         repeatStack.isUserInteractionEnabled     = true
@@ -104,6 +105,8 @@ class AddMedicationViewController: UIViewController,
         } else {
             UnitAndTypeStore.shared.reset()
             resetUnitAndTypeUI()
+            doseTableView.reloadData()
+            updateDoseTableViewHeight()
         }
 
         repeatStack.addGestureRecognizer(
@@ -217,6 +220,7 @@ class AddMedicationViewController: UIViewController,
 
         doseStepper.value = Double(doseArray.count)
         doseTableView.reloadData()
+        updateDoseTableViewHeight()
         originalMedicationSnapshot = med
         tickButton.isEnabled       = false
     }
@@ -279,9 +283,12 @@ class AddMedicationViewController: UIViewController,
     }
 
     private func updateDoseTableInsets() {
-        let bottomInset: CGFloat = deleteButton.isHidden ? 16 : (deleteButton.bounds.height + 56)
-        doseTableView.contentInset.bottom                = bottomInset
-        doseTableView.verticalScrollIndicatorInsets.bottom = bottomInset
+        if let contentView = backgroundView.superview,
+           let scrollView = contentView.superview as? UIScrollView {
+            let bottomInset: CGFloat = deleteButton.isHidden ? 16 : (deleteButton.bounds.height + 56)
+            scrollView.contentInset.bottom = bottomInset
+            scrollView.verticalScrollIndicatorInsets.bottom = bottomInset
+        }
     }
 
     // MARK: - IBActions
@@ -339,10 +346,15 @@ class AddMedicationViewController: UIViewController,
             let start = cal.date(bySettingHour: startH, minute: 0, second: 0, of: Date()) ?? Date()
             let end = cal.date(bySettingHour: endH, minute: endM, second: 0, of: Date()) ?? Date()
             doseArray.append(DoseData(dose: nil, period: period, startTime: start, endTime: end))
+            
+            DispatchQueue.main.async { [weak self] in
+                self?.scrollToBottom()
+            }
         } else {
             doseArray.removeLast()
         }
         doseTableView.reloadData()
+        updateDoseTableViewHeight()
         evaluateTickButtonState()
     }
 
@@ -477,6 +489,43 @@ class AddMedicationViewController: UIViewController,
         let end = cal.date(bySettingHour: endHour, minute: endMin, second: 0, of: date) ?? date
         return (period, start, end)
     }
+
+    private func updateDoseTableViewHeight() {
+        doseTableView.layoutIfNeeded()
+        let contentHeight = doseTableView.contentSize.height
+
+        if let tableHeightConstraint = doseTableView.constraints.first(where: { $0.firstAttribute == .height }) {
+            tableHeightConstraint.constant = contentHeight
+        }
+
+        if let bgHeightConstraint = backgroundView.constraints.first(where: { $0.firstAttribute == .height }) {
+            let newBgHeight = 265 + contentHeight
+            bgHeightConstraint.constant = newBgHeight
+
+            if let contentView = backgroundView.superview {
+                if let contentHeightConstraint = contentView.constraints.first(where: { $0.firstAttribute == .height }) {
+                    contentHeightConstraint.constant = newBgHeight + 289.0
+                }
+                if let scrollView = contentView.superview as? UIScrollView {
+                    scrollView.alwaysBounceVertical = true
+                }
+            }
+        }
+    }
+
+    private func scrollToBottom() {
+        if let contentView = backgroundView.superview,
+           let scrollView = contentView.superview as? UIScrollView {
+            scrollView.layoutIfNeeded()
+            let bottomOffset = CGPoint(
+                x: 0,
+                y: scrollView.contentSize.height - scrollView.bounds.size.height + scrollView.contentInset.bottom
+            )
+            if bottomOffset.y > 0 {
+                scrollView.setContentOffset(bottomOffset, animated: true)
+            }
+        }
+    }
 }
 
 // MARK: - TableView (Dose rows)
@@ -485,6 +534,10 @@ extension AddMedicationViewController {
 
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         doseArray.count
+    }
+
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        return 72
     }
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -499,6 +552,7 @@ extension AddMedicationViewController {
         guard let indexPath = doseTableView.indexPath(for: cell) else { return }
         doseArray.remove(at: indexPath.row)
         doseTableView.deleteRows(at: [indexPath], with: .fade)
+        updateDoseTableViewHeight()
         doseStepper.value = Double(doseArray.count)
         renumberDoses()
         evaluateTickButtonState()
