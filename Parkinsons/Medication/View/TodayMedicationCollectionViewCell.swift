@@ -12,8 +12,6 @@ class TodayMedicationCollectionViewCell: UICollectionViewCell {
     @IBOutlet weak var medUnitAndTypeLabel: UILabel!
     @IBOutlet weak var medNameLabel: UILabel!
     @IBOutlet weak var medFormImage: UIImageView!
-    @IBOutlet weak var timeAmPmLabel: UILabel!
-    @IBOutlet weak var timeLabel: UILabel!
     @IBOutlet weak var medContainerView: UIView!
 
     @IBOutlet weak var dueStatus: UILabel!
@@ -25,9 +23,9 @@ class TodayMedicationCollectionViewCell: UICollectionViewCell {
 
     func configure(with dose: TodayDoseItem) {
         medNameLabel.text = dose.medicationName
-        medUnitAndTypeLabel.text = dose.medicationForm
         medFormImage.image = UIImage(named: dose.iconName)
 
+        var detail = dose.medicationForm
         if let period = dose.dosePeriod,
            let start = dose.rangeStartTime,
            let end = dose.rangeEndTime {
@@ -35,16 +33,14 @@ class TodayMedicationCollectionViewCell: UICollectionViewCell {
             formatter.timeStyle = .short
             let startStr = formatter.string(from: start)
             let endStr = formatter.string(from: end)
-            timeLabel.text = period
-            timeAmPmLabel.text = "\(startStr) - \(endStr)"
+            detail += " · \(period) (\(startStr) - \(endStr))"
         } else {
             let formatter = DateFormatter()
-            formatter.dateFormat = "h:mm"
-            timeLabel.text = formatter.string(from: dose.scheduledTime)
-
-            formatter.dateFormat = "a"
-            timeAmPmLabel.text = formatter.string(from: dose.scheduledTime)
+            formatter.dateFormat = "h:mm a"
+            let timeStr = formatter.string(from: dose.scheduledTime)
+            detail += " · \(timeStr)"
         }
+        medUnitAndTypeLabel.text = detail
 
         dueStatus.isHidden = true
         medContainerView.alpha = 1.0
