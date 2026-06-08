@@ -16,7 +16,7 @@ class HomeViewController: UIViewController, UICollectionViewDelegate {
         return cal
     }()
 
-    @IBOutlet weak var NameOfUser: UILabel!
+    @IBOutlet weak var NameOfUser: UILabel?
     private let todayViewModel = TodayMedicationViewModel()
     private var todayDoses: [TodayDoseItem] = []
 
@@ -26,7 +26,7 @@ class HomeViewController: UIViewController, UICollectionViewDelegate {
         return ((try? context.count(for: request)) ?? 0) == 0
     }
 
-    @IBOutlet weak var NameLabel: UILabel!
+    @IBOutlet weak var NameLabel: UILabel?
     @IBOutlet weak var mainCollectionView: UICollectionView!
 
     private var medicationLoggedObserver: NSObjectProtocol?
@@ -101,8 +101,9 @@ class HomeViewController: UIViewController, UICollectionViewDelegate {
 
         let savedFull = UserDefaults.standard.string(forKey: "UserFullName") ?? "John"
         let firstName = savedFull.components(separatedBy: " ").first ?? savedFull
-        self.NameOfUser.text = "Hello \(firstName)!"
+        self.NameOfUser?.text = "Hello \(firstName)!"
 
+        setupNavigationBarAppearance()
         updateGreeting()
         registerCells()
 
@@ -144,6 +145,8 @@ class HomeViewController: UIViewController, UICollectionViewDelegate {
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
+        setupNavigationBarAppearance()
+
         self.tabBarController?.tabBar.isHidden = false
         updateGreeting()
         mainCollectionView.setCollectionViewLayout(generateLayout(), animated: false)
@@ -152,6 +155,35 @@ class HomeViewController: UIViewController, UICollectionViewDelegate {
         }, completion: { _ in
             self.scrollToSelectedDate(animated: false)
         })
+    }
+
+    private func setupNavigationBarAppearance() {
+        navigationItem.title = "Today"
+        if #available(iOS 16.0, *) {
+            navigationItem.style = .browser
+        }
+        navigationController?.navigationBar.prefersLargeTitles = false
+        navigationItem.largeTitleDisplayMode = .never
+
+        let scrollAppearance = UINavigationBarAppearance()
+        scrollAppearance.configureWithTransparentBackground()
+        scrollAppearance.titleTextAttributes = [
+            .font: UIFont.systemFont(ofSize: 32, weight: .bold),
+            .foregroundColor: UIColor.label
+        ]
+
+        let standardAppearance = UINavigationBarAppearance()
+        standardAppearance.configureWithDefaultBackground()
+        standardAppearance.titleTextAttributes = [
+            .font: UIFont.systemFont(ofSize: 17, weight: .semibold),
+            .foregroundColor: UIColor.label
+        ]
+
+        navigationController?.navigationBar.standardAppearance = standardAppearance
+        navigationController?.navigationBar.scrollEdgeAppearance = scrollAppearance
+
+        navigationItem.standardAppearance = standardAppearance
+        navigationItem.scrollEdgeAppearance = scrollAppearance
     }
 
     // MARK: - IBActions
