@@ -171,38 +171,62 @@ class CalenderCollectionViewCell: UICollectionViewCell {
 
     private let dayBadgeView = UIView()
     private let ringsView = CalendarActivityRingsView()
+    private let capsuleBackgroundView = UIView()
 
     override func awakeFromNib() {
         super.awakeFromNib()
         self.clipsToBounds = false
         self.contentView.clipsToBounds = false
+        self.layer.masksToBounds = false
+        self.contentView.layer.masksToBounds = false
         setupRingCalendarCell()
     }
 
     override func prepareForReuse() {
         super.prepareForReuse()
-        contentView.alpha = 1
+        contentView.alpha = 1.0
+        capsuleBackgroundView.alpha = 1.0
         isUserInteractionEnabled = true
         ringsView.setProgress(workout: 0, walking: 0)
+        ringsView.isDimmed = false
     }
 
     override func layoutSubviews() {
         super.layoutSubviews()
 
-        let badgeSize: CGFloat = min(26, max(20, bounds.width * 0.42))
-        let ringTop = badgeSize + 4
-        let ringDiameter = min(bounds.width - 6, bounds.height - ringTop)
-        let ringX = (bounds.width - ringDiameter) / 2
+        let capsuleWidth: CGFloat = 46
+        let capsuleHeight: CGFloat = 90
 
+        // Center the capsule background view vertically inside the cell
+        capsuleBackgroundView.frame = CGRect(
+            x: (bounds.width - capsuleWidth) / 2,
+            y: (bounds.height - capsuleHeight) / 2,
+            width: capsuleWidth,
+            height: capsuleHeight
+        )
+        capsuleBackgroundView.layer.cornerRadius = capsuleWidth / 2
+
+        // Day label centered in the top section
+        let badgeSize: CGFloat = 28
         dayBadgeView.frame = CGRect(
-            x: (bounds.width - badgeSize) / 2,
-            y: 0,
+            x: (capsuleWidth - badgeSize) / 2,
+            y: 8,
             width: badgeSize,
             height: badgeSize
         )
         dayBadgeView.layer.cornerRadius = badgeSize / 2
         calenderDay.frame = dayBadgeView.bounds
-        ringsView.frame = CGRect(x: ringX, y: ringTop, width: ringDiameter, height: ringDiameter)
+
+        // Rings view centered in the bottom section
+        let ringDiameter: CGFloat = 34
+        ringsView.frame = CGRect(
+            x: (capsuleWidth - ringDiameter) / 2,
+            y: 46,
+            width: ringDiameter,
+            height: ringDiameter
+        )
+
+        // Keep date label hidden and out of the layout
         calenderDate.frame = .zero
     }
 
@@ -214,18 +238,30 @@ class CalenderCollectionViewCell: UICollectionViewCell {
         contentView.backgroundColor = .clear
         backgroundColor = .clear
 
+        // Configure vertical pill style background
+        capsuleBackgroundView.backgroundColor = .white
+        capsuleBackgroundView.layer.cornerRadius = 23
+        capsuleBackgroundView.layer.shadowColor = UIColor.black.cgColor
+        capsuleBackgroundView.layer.shadowOpacity = 0.08
+        capsuleBackgroundView.layer.shadowOffset = CGSize(width: 0, height: 2)
+        capsuleBackgroundView.layer.shadowRadius = 4
+        capsuleBackgroundView.layer.masksToBounds = false
+
+        contentView.addSubview(capsuleBackgroundView)
+
         dayBadgeView.backgroundColor = .clear
-        dayBadgeView.clipsToBounds = true
-        contentView.addSubview(dayBadgeView)
+        dayBadgeView.clipsToBounds = false
+        capsuleBackgroundView.addSubview(dayBadgeView)
         dayBadgeView.addSubview(calenderDay)
-        contentView.addSubview(ringsView)
-        contentView.addSubview(calenderDate)
 
         calenderDay.translatesAutoresizingMaskIntoConstraints = true
         calenderDay.textAlignment = .center
         calenderDay.contentMode = .center
         calenderDay.baselineAdjustment = .alignCenters
-        calenderDay.font = .systemFont(ofSize: 15, weight: .semibold)
+        calenderDay.font = .systemFont(ofSize: 19, weight: .bold)
+
+        capsuleBackgroundView.addSubview(ringsView)
+        contentView.addSubview(calenderDate)
 
         calenderDate.translatesAutoresizingMaskIntoConstraints = true
         calenderDate.textAlignment = .center
@@ -254,24 +290,26 @@ class CalenderCollectionViewCell: UICollectionViewCell {
             calenderDay.textColor = .systemGray3
             calenderDate.textColor = .systemGray3
             dayBadgeView.backgroundColor = .clear
+            capsuleBackgroundView.alpha = 0.4
             return
         }
 
-        calenderDay.textColor = .label
+        capsuleBackgroundView.alpha = 1.0
         calenderDate.textColor = .label
         dayBadgeView.backgroundColor = .clear
 
         if isSelected {
-            calenderDay.textColor = .white
+            calenderDay.textColor = UIColor(hex: "0088FF")
             calenderDate.textColor = .label
-            dayBadgeView.backgroundColor = .systemGray2
             return
         }
 
         if isToday {
-            calenderDay.textColor = .systemBlue
+            calenderDay.textColor = UIColor(hex: "0088FF")
             calenderDate.textColor = .systemBlue
             return
         }
+
+        calenderDay.textColor = .secondaryLabel
     }
 }
