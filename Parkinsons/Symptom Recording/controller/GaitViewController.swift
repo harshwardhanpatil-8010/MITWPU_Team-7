@@ -11,6 +11,7 @@ class GaitViewController: UIViewController {
     @IBOutlet weak var GaitCardView: UIView!
     @IBOutlet weak var scrollView: UIScrollView!
 
+    var selectedDate: Date = Date()
     private let chartView = WalkingSteadinessChartView()
     private var aggregatedPoints: [(date: Date, value: Double)] = []
     private var currentRange: SteadinessRange = .day
@@ -18,7 +19,7 @@ class GaitViewController: UIViewController {
 
     enum SteadinessRange { case day, week, month, sixMonth, year }
 
-override func viewDidLoad() {
+    override func viewDidLoad() {
         super.viewDidLoad()
         GaitCardView.applyCardStyle()
         title = "Walking Steadiness"
@@ -98,33 +99,43 @@ override func viewDidLoad() {
 
     private func fetchData(for range: SteadinessRange) {
         let cal = Calendar.current
-        let now = Date()
+        let referenceDate = selectedDate
+        let end = cal.date(byAdding: .day, value: 1, to: cal.startOfDay(for: referenceDate))!
 
         steadinessFreq.text  = "Loading..."
         steadinessRange.text = ""
         let start: Date = {
             switch range {
-            case .day:      return cal.date(byAdding: .weekOfYear, value: -1, to: now)!
-            case .week:     return cal.date(byAdding: .day, value: -7, to: now)!
-            case .month:    return cal.date(byAdding: .month, value: -1, to: now)!
-            case .sixMonth: return cal.date(byAdding: .month, value: -6, to: now)!
-            case .year:     return cal.date(byAdding: .year, value: -1, to: now)!
+            case .day:      return cal.date(byAdding: .weekOfYear, value: -1, to: end)!
+            case .week:     return cal.date(byAdding: .day, value: -7, to: end)!
+            case .month:    return cal.date(byAdding: .month, value: -1, to: end)!
+            case .sixMonth: return cal.date(byAdding: .month, value: -6, to: end)!
+            case .year:     return cal.date(byAdding: .year, value: -1, to: end)!
             }
         }()
 
-        updateDateLabel(range: range, start: start, now: now)
+        updateDateLabel(range: range, start: start, now: referenceDate)
 
-        HealthKitManager.shared.fetchWalkingSteadinessSamples(from: start, to: now) { [weak self] rawSamples in
+        HealthKitManager.shared.checkWalkingSteadinessAvailability { [weak self] available in
             DispatchQueue.main.async {
                 guard let self = self else { return }
-
-                if !rawSamples.isEmpty {
-                    let points = rawSamples
-                        .sorted { $0.0 < $1.0 }
-                        .map { (date: $0.0, value: min(max($0.1 * 100.0, 0), 100)) }
-                    self.finalize(points: points)
+                if available {
+                    HealthKitManager.shared.fetchWalkingSteadinessSamples(from: start, to: end) { rawSamples in
+                        DispatchQueue.main.async {
+                            if !rawSamples.isEmpty {
+                                let points = rawSamples
+                                    .sorted { $0.0 < $1.0 }
+                                    .map { (date: $0.0, value: min(max($0.1 * 100.0, 0), 100)) }
+                                self.finalize(points: points)
+                            } else {
+                                self.steadinessFreq.text  = "No Data"
+                                self.steadinessRange.text = ""
+                                self.configureChart(with: [])
+                            }
+                        }
+                    }
                 } else {
-                    self.fetchComputedFallback(from: start, to: now)
+                    self.fetchComputedFallback(from: start, to: end)
                 }
             }
         }
@@ -140,6 +151,11 @@ override func viewDidLoad() {
                     self.steadinessFreq.text  = "No Data"
                     self.steadinessRange.text = ""
                     self.configureChart(with: [])
+                    
+                    // Show the setup instructions modal sheet if there is no data at all
+                    let setupVC = WalkingSteadinessSetupViewController()
+                    setupVC.modalPresentationStyle = .formSheet
+                    self.present(setupVC, animated: true, completion: nil)
                 }
             }
         }

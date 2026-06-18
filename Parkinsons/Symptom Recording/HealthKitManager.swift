@@ -303,4 +303,21 @@ extension HealthKitManager {
             completion(self.calculateWalkingSteadiness(speedValues: speeds, stepLengthValues: stepLengths))
         }
     }
+
+    func checkWalkingSteadinessAvailability(completion: @escaping (Bool) -> Void) {
+        guard let type = HKQuantityType.quantityType(forIdentifier: .appleWalkingSteadiness) else {
+            completion(false)
+            return
+        }
+        let query = HKSampleQuery(sampleType: type, predicate: nil, limit: 1, sortDescriptors: nil) { _, samples, error in
+            if let error = error {
+                print("Checking walking steadiness availability failed:", error.localizedDescription)
+                completion(false)
+                return
+            }
+            let available = !(samples?.isEmpty ?? true)
+            completion(available)
+        }
+        healthStore.execute(query)
+    }
 }

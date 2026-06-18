@@ -28,11 +28,20 @@ class TremorViewController: UIViewController {
         setupNavigationBar()
         tremorFreq.text      = "Measuring…"
         tremorFreq.textColor = .secondaryLabel
+        
+        NotificationCenter.default.addObserver(self, selector: #selector(handleTremorMeasurementStarted(_:)), name: NSNotification.Name("TremorMeasurementStarted"), object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(handleTremorDataUpdated(_:)), name: NSNotification.Name("TremorDataUpdated"), object: nil)
     }
 
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         updateTremorUI(for: currentRange)
+        
+        if TremorTracker.shared.isRecordingActive {
+            tremorFreq.text = "Measuring…"
+            tremorFreq.textColor = .secondaryLabel
+        }
+        
         startRecording()
     }
     override func viewDidLayoutSubviews() {
@@ -45,24 +54,35 @@ class TremorViewController: UIViewController {
 
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
-        TremorMotionManager.shared.cancelRecording()
+        // Removed global cancelRecording to track on any screen as requested
     }
     private func startRecording() {
-        TremorMotionManager.shared.recordTremorFrequency(duration: 5.0) { [weak self] result in
+        TremorTracker.shared.checkAndRunMeasurementIfNeeded()
+    }
+
+    @objc private func handleTremorMeasurementStarted(_ notification: Notification) {
+        DispatchQueue.main.async { [weak self] in
             guard let self = self else { return }
+            self.tremorFreq.text = "Measuring…"
+            self.tremorFreq.textColor = .secondaryLabel
+        }
+    }
 
-            TremorDataStore.shared.save(result: result)
-
-            switch result {
-            case .steady:
-                self.tremorFreq.text      = "Steady"
-                self.tremorFreq.textColor = .black
-            case .tremor(let hz):
-                self.tremorFreq.text      = String(format: "%.1f Hz", hz)
-                self.tremorFreq.textColor = .black
-            }
-
+    @objc private func handleTremorDataUpdated(_ notification: Notification) {
+        DispatchQueue.main.async { [weak self] in
+            guard let self = self else { return }
             self.updateTremorUI(for: self.currentRange)
+            
+            if let result = notification.userInfo?["result"] as? TremorMotionManager.TremorResult {
+                switch result {
+                case .steady:
+                    self.tremorFreq.text = "Steady"
+                    self.tremorFreq.textColor = .black
+                case .tremor(let hz):
+                    self.tremorFreq.text = String(format: "%.1f Hz", hz)
+                    self.tremorFreq.textColor = .black
+                }
+            }
         }
     }
 

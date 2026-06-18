@@ -51,7 +51,7 @@ class SymptomViewController: UIViewController, SymptomRatingCellDelegate {
         ]
 
         let screenWidth = UIScreen.main.bounds.width
-        scrollAppearance.titlePositionAdjustment = UIOffset(horizontal: -(screenWidth / 2) + 100, vertical: 0)
+        scrollAppearance.titlePositionAdjustment = UIOffset(horizontal: -(screenWidth / 2) + 110, vertical: 0)
 
         let standardAppearance = UINavigationBarAppearance()
         standardAppearance.configureWithDefaultBackground()
@@ -62,12 +62,14 @@ class SymptomViewController: UIViewController, SymptomRatingCellDelegate {
         standardAppearance.titlePositionAdjustment = UIOffset(horizontal: 0, vertical: 0)
 
         navigationController?.navigationBar.prefersLargeTitles = false
+        navigationItem.title = "Symptoms"
         navigationItem.largeTitleDisplayMode = .never
-
-        navigationController?.navigationBar.standardAppearance = standardAppearance
-        navigationController?.navigationBar.scrollEdgeAppearance = scrollAppearance
+        navigationItem.standardAppearance = standardAppearance
+        navigationItem.scrollEdgeAppearance = scrollAppearance
         
         setupNavigationBar()
+        NotificationCenter.default.addObserver(self, selector: #selector(handleTremorMeasurementStarted(_:)), name: NSNotification.Name("TremorMeasurementStarted"), object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(handleTremorDataUpdated(_:)), name: NSNotification.Name("TremorDataUpdated"), object: nil)
     }
 
     private func setupNavigationBar() {
@@ -120,16 +122,29 @@ class SymptomViewController: UIViewController, SymptomRatingCellDelegate {
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         fetchTremorData()
+        
+        // Present walking steadiness setup modal for first-time users
+        if !UserDefaults.standard.bool(forKey: "hasShownGaitSetup") {
+            UserDefaults.standard.set(true, forKey: "hasShownGaitSetup")
+            let setupVC = WalkingSteadinessSetupViewController()
+            setupVC.modalPresentationStyle = .formSheet
+            self.present(setupVC, animated: true, completion: nil)
+        }
     }
 
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
-        TremorMotionManager.shared.cancelRecording()
+        // Removed global cancelRecording to track on any screen as requested
     }
 
     private func loadTodayTremorData() {
         let s = TremorDataStore.shared.fetchSamples(for: .day, referenceDate: selectedDate)
         todayAggregatedPoints = s.map { AggregatedTremorPoint(date: $0.date, avgHz: $0.frequencyHz) }
+        if let lastSample = s.last {
+            tremorFrequencyHz = lastSample.isSteady ? 0.0 : lastSample.frequencyHz
+        } else {
+            tremorFrequencyHz = nil
+        }
     }
 
     private func requestHealthKitIfNeeded() {
@@ -141,16 +156,24 @@ class SymptomViewController: UIViewController, SymptomRatingCellDelegate {
     }
 
     private func fetchTremorData() {
-        TremorMotionManager.shared.recordTremorFrequency(duration: 5.0) { [weak self] result in
+        loadTodayTremorData()
+        collectionView.reloadSections(IndexSet(integer: Section.tremor.rawValue))
+        TremorTracker.shared.checkAndRunMeasurementIfNeeded()
+    }
+
+    @objc private func handleTremorMeasurementStarted(_ notification: Notification) {
+        DispatchQueue.main.async { [weak self] in
             guard let self = self else { return }
-            TremorDataStore.shared.save(result: result)
-            switch result {
-            case .steady: self.tremorFrequencyHz = 0.0
-            case .tremor(let hz): self.tremorFrequencyHz = hz
-            }
+            self.tremorFrequencyHz = nil
+            guard self.isViewLoaded, self.view.window != nil else { return }
+            self.collectionView.reloadSections(IndexSet(integer: Section.tremor.rawValue))
+        }
+    }
+
+    @objc private func handleTremorDataUpdated(_ notification: Notification) {
+        DispatchQueue.main.async { [weak self] in
+            guard let self = self else { return }
             self.loadTodayTremorData()
-            // Only reload if the view is still on screen — avoids NSInternalInconsistencyException
-            // when the completion fires during a navigation transition away from this screen.
             guard self.isViewLoaded, self.view.window != nil else { return }
             self.collectionView.reloadSections(IndexSet(integer: Section.tremor.rawValue))
         }
@@ -160,27 +183,49 @@ class SymptomViewController: UIViewController, SymptomRatingCellDelegate {
         let end = Calendar.current.date(byAdding: .day, value: 1, to: Calendar.current.startOfDay(for: selectedDate))!
         let start = Calendar.current.date(byAdding: .weekOfYear, value: -1, to: end)!
 
-        HealthKitManager.shared.fetchWalkingSteadinessSamples(from: start, to: end) { [weak self] samples in
+        HealthKitManager.shared.checkWalkingSteadinessAvailability { [weak self] available in
             DispatchQueue.main.async {
                 guard let self = self else { return }
-                if !samples.isEmpty {
-                    let points = samples.sorted { $0.0 < $1.0 }.map { (date: $0.0, value: min(max($0.1 * 100, 0), 100)) }
-                    let avg = points.map { $0.value }.reduce(0, +) / Double(points.count)
-                    self.gaitRangeText = String(format: "%.0f / 100", avg)
-                    self.gaitGraphPoints = points
+                if available {
+                    HealthKitManager.shared.fetchWalkingSteadinessSamples(from: start, to: end) { samples in
+                        DispatchQueue.main.async {
+                            if !samples.isEmpty {
+                                let points = samples.sorted { $0.0 < $1.0 }.map { (date: $0.0, value: min(max($0.1 * 100, 0), 100)) }
+                                let avg = points.map { $0.value }.reduce(0, +) / Double(points.count)
+                                self.gaitRangeText = String(format: "%.0f / 100", avg)
+                                self.gaitGraphPoints = points
+                            } else {
+                                self.gaitRangeText = "No Data"
+                                self.gaitGraphPoints = []
+                            }
+                            self.collectionView.reloadSections(IndexSet(integer: Section.gait.rawValue))
+                        }
+                    }
                 } else {
-                    self.gaitRangeText = "No Data"
-                    self.gaitGraphPoints = []
+                    // Fall back to custom computed steadiness samples
+                    HealthKitManager.shared.fetchComputedSteadinessSamples(from: start, to: end) { computedSamples in
+                        DispatchQueue.main.async {
+                            if !computedSamples.isEmpty {
+                                let points = computedSamples.sorted { $0.0 < $1.0 }.map { (date: $0.0, value: min(max($0.1, 0), 100)) }
+                                let avg = points.map { $0.value }.reduce(0, +) / Double(points.count)
+                                self.gaitRangeText = String(format: "%.0f / 100 (Custom)", avg)
+                                self.gaitGraphPoints = points
+                            } else {
+                                self.gaitRangeText = "No Data"
+                                self.gaitGraphPoints = []
+                            }
+                            self.collectionView.reloadSections(IndexSet(integer: Section.gait.rawValue))
+                        }
+                    }
                 }
-                self.collectionView.reloadSections(IndexSet(integer: Section.gait.rawValue))
             }
         }
     }
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
+        loadTodayTremorData()
         collectionView.reloadData()
-
     }
 
     func setupTableViewUI() {
@@ -284,8 +329,17 @@ extension SymptomViewController: UICollectionViewDataSource, UICollectionViewDel
         case .tremor:
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "tremor_cell", for: indexPath) as! tremorCard
 
-            let displayHz: Double? = (tremorFrequencyHz == nil || tremorFrequencyHz == 0.0) ? nil : tremorFrequencyHz
-            let isSteady = tremorFrequencyHz == 0.0
+            let isMeasuring = TremorTracker.shared.isRecordingActive
+            let displayHz: Double?
+            let isSteady: Bool
+            
+            if isMeasuring {
+                displayHz = nil
+                isSteady = false
+            } else {
+                displayHz = (tremorFrequencyHz == nil || tremorFrequencyHz == 0.0) ? nil : tremorFrequencyHz
+                isSteady = tremorFrequencyHz == 0.0
+            }
             cell.configure(frequencyHz: displayHz, isSteady: isSteady, graphPoints: todayAggregatedPoints)
             return cell
 
@@ -314,7 +368,9 @@ extension SymptomViewController: UICollectionViewDataSource, UICollectionViewDel
             vc.selectedDate = selectedDate
             navigationController?.pushViewController(vc, animated: true)
         case .gait:
-            navigationController?.pushViewController(sb.instantiateViewController(withIdentifier: "GaitVC"), animated: true)
+            let vc = sb.instantiateViewController(withIdentifier: "GaitVC") as! GaitViewController
+            vc.selectedDate = selectedDate
+            navigationController?.pushViewController(vc, animated: true)
         }
     }
 }

@@ -54,6 +54,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 
     func sceneDidBecomeActive(_ scene: UIScene) {
         MedicationAlarmScheduler.shared.start()
+        UserDefaults.standard.set(Date(), forKey: "lastForegroundTime")
     }
 
     func sceneWillResignActive(_ scene: UIScene) {
@@ -61,8 +62,8 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     }
 
     func sceneWillEnterForeground(_ scene: UIScene) {
-
         MedicationNotificationManager.shared.rescheduleAll()
+        UserDefaults.standard.set(Date(), forKey: "lastForegroundTime")
     }
 
     func sceneDidEnterBackground(_ scene: UIScene) {

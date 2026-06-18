@@ -30,14 +30,14 @@ final class TremorDataStore {
     func save(result: TremorMotionManager.TremorResult, date: Date = Date()) {
         switch result {
         case .steady:
-            saveInternal(TremorSample.steady(date: date), dedupInterval: 300)
+            saveInternal(TremorSample.steady(date: date), dedupInterval: 10)
         case .tremor(let hz):
-            saveInternal(TremorSample(date: date, frequencyHz: hz), dedupInterval: 60)
+            saveInternal(TremorSample(date: date, frequencyHz: hz), dedupInterval: 10)
         }
     }
 
     func save(_ sample: TremorSample) {
-        saveInternal(sample, dedupInterval: 60)
+        saveInternal(sample, dedupInterval: 10)
     }
 
     private func saveInternal(_ sample: TremorSample, dedupInterval: TimeInterval) {

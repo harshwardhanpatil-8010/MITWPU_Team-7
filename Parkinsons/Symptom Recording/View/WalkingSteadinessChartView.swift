@@ -47,6 +47,11 @@ class WalkingSteadinessChartView: UIView {
     private func uh(_ r: CGRect) -> CGFloat { r.height - pBottom - pTop  }
 
     private func pt(at i: Int, in rect: CGRect) -> CGPoint {
+        if points.count == 1 {
+            let x = pLeft + uw(rect) / 2
+            let y = rect.height - pBottom - CGFloat(points[0].value / 100.0) * uh(rect)
+            return CGPoint(x: x, y: y)
+        }
         let safe = max(points.count - 1, 1)
         let x = pLeft + CGFloat(i) / CGFloat(safe) * uw(rect)
         let y = rect.height - pBottom - CGFloat(points[i].value / 100.0) * uh(rect)

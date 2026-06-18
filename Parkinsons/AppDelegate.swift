@@ -65,7 +65,25 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         UNUserNotificationCenter.current().delegate = self
         MedicationNotificationManager.shared.requestPermissionAndScheduleAll()
 
+        // MARK: - Tremor Tracking Setup
+        TremorTracker.shared.registerBackgroundTasks()
+        TremorTracker.shared.start()
+        application.setMinimumBackgroundFetchInterval(UIApplication.backgroundFetchIntervalMinimum)
+
         return true
+    }
+
+    func application(
+        _ application: UIApplication,
+        performFetchWithCompletionHandler completionHandler: @escaping (UIBackgroundFetchResult) -> Void
+    ) {
+        TremorTracker.shared.checkAndRunMeasurementIfNeeded { measured in
+            if measured {
+                completionHandler(.newData)
+            } else {
+                completionHandler(.noData)
+            }
+        }
     }
 
     // MARK: - UISceneSession Lifecycle
